@@ -106,6 +106,15 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Paste clipboard text when in Gal-Map.
+        /// </summary>
+        internal static string pasteGalMap {
+            get {
+                return ResourceManager.GetString("pasteGalMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Force show the Body info overlay..
         /// </summary>
         internal static string showBodyInfo {
@@ -124,11 +133,20 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Force toggle the FSD jump overlay to be visible without starting to jump. Will not appear if there is no active route..
+        ///   Looks up a localized string similar to Force toggle the FSD jump overlay without starting to jump..
         /// </summary>
         internal static string showJumpInfo {
             get {
                 return ResourceManager.GetString("showJumpInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make the system notes window visible..
+        /// </summary>
+        internal static string showSystemNotes {
+            get {
+                return ResourceManager.GetString("showSystemNotes", resourceCulture);
             }
         }
         
@@ -138,6 +156,78 @@ namespace SrvSurvey.Properties {
         internal static string toggleAllVisibility {
             get {
                 return ResourceManager.GetString("toggleAllVisibility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add or remove tracker #1.
+        /// </summary>
+        internal static string track1 {
+            get {
+                return ResourceManager.GetString("track1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add or remove tracker #2.
+        /// </summary>
+        internal static string track2 {
+            get {
+                return ResourceManager.GetString("track2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add or remove tracker #3.
+        /// </summary>
+        internal static string track3 {
+            get {
+                return ResourceManager.GetString("track3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add or remove tracker #4.
+        /// </summary>
+        internal static string track4 {
+            get {
+                return ResourceManager.GetString("track4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add or remove tracker #5.
+        /// </summary>
+        internal static string track5 {
+            get {
+                return ResourceManager.GetString("track5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add or remove tracker #6.
+        /// </summary>
+        internal static string track6 {
+            get {
+                return ResourceManager.GetString("track6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add or remove tracker #7.
+        /// </summary>
+        internal static string track7 {
+            get {
+                return ResourceManager.GetString("track7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add or remove tracker #8.
+        /// </summary>
+        internal static string track8 {
+            get {
+                return ResourceManager.GetString("track8", resourceCulture);
             }
         }
     }

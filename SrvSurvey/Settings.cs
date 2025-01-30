@@ -221,7 +221,7 @@ namespace SrvSurvey
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool overlayTombs = false;
 
-        public bool enableJourneys = false;
+        public bool systemNotesTopMost = false;
 
         #region loading / saving
 

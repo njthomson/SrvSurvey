@@ -78,6 +78,10 @@
     <value>* ZOOM OUT ON MAPS AT HUMAN AND GUARDIAN SITES. →→→!</value>
     <comment>Zoom out on maps at Human and Guardian sites.</comment>
   </data>
+  <data name="pasteGalMap">
+    <value>* PASTE CLIPBOARD TEXT WHEN IN GAL-MAP →→→!</value>
+    <comment>Paste clipboard text when in Gal-Map</comment>
+  </data>
   <data name="showBodyInfo">
     <value>* FORCE SHOW THE BODY INFO OVERLAY. →→→!</value>
     <comment>Force show the Body info overlay.</comment>
@@ -87,11 +91,47 @@
     <comment>Force show the FSS info overlay.</comment>
   </data>
   <data name="showJumpInfo">
-    <value>* FORCE TOGGLE THE FSD JUMP OVERLAY TO BE VISIBLE WITHOUT STARTING TO JUMP. WILL NOT APPEAR IF THERE IS NO ACTIVE ROUTE. →→→!</value>
-    <comment>Force toggle the FSD jump overlay to be visible without starting to jump. Will not appear if there is no active route.</comment>
+    <value>* FORCE TOGGLE THE FSD JUMP OVERLAY WITHOUT STARTING TO JUMP. →→→!</value>
+    <comment>Force toggle the FSD jump overlay without starting to jump.</comment>
+  </data>
+  <data name="showSystemNotes">
+    <value>* MAKE THE SYSTEM NOTES WINDOW VISIBLE. →→→!</value>
+    <comment>Make the system notes window visible.</comment>
   </data>
   <data name="toggleAllVisibility">
     <value>* TOGGLES VISIBILITY OF ALL OVERLAY WINDOWS. →→→!</value>
     <comment>Toggles visibility of all overlay windows.</comment>
+  </data>
+  <data name="track1">
+    <value>* ADD OR REMOVE TRACKER #1 →→→!</value>
+    <comment>Add or remove tracker #1</comment>
+  </data>
+  <data name="track2">
+    <value>* ADD OR REMOVE TRACKER #2 →→→!</value>
+    <comment>Add or remove tracker #2</comment>
+  </data>
+  <data name="track3">
+    <value>* ADD OR REMOVE TRACKER #3 →→→!</value>
+    <comment>Add or remove tracker #3</comment>
+  </data>
+  <data name="track4">
+    <value>* ADD OR REMOVE TRACKER #4 →→→!</value>
+    <comment>Add or remove tracker #4</comment>
+  </data>
+  <data name="track5">
+    <value>* ADD OR REMOVE TRACKER #5 →→→!</value>
+    <comment>Add or remove tracker #5</comment>
+  </data>
+  <data name="track6">
+    <value>* ADD OR REMOVE TRACKER #6 →→→!</value>
+    <comment>Add or remove tracker #6</comment>
+  </data>
+  <data name="track7">
+    <value>* ADD OR REMOVE TRACKER #7 →→→!</value>
+    <comment>Add or remove tracker #7</comment>
+  </data>
+  <data name="track8">
+    <value>* ADD OR REMOVE TRACKER #8 →→→!</value>
+    <comment>Add or remove tracker #8</comment>
   </data>
 </root>

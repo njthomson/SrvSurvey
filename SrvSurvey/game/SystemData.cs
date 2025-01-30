@@ -117,6 +117,11 @@ namespace SrvSurvey.game
             }
         }
 
+        public static SystemData From(StarRef starRef, string fid)
+        {
+            return Load(starRef.name, starRef.id64, fid, true)!;
+        }
+
         public static SystemData From(ISystemDataStarter entry, string? fid = null, string? cmdrName = null)
         {
             lock (cache)
@@ -1818,6 +1823,9 @@ namespace SrvSurvey.game
 
         [JsonIgnore]
         public List<ApiSystemDump.System.Station>? spanshStations;
+
+        [JsonIgnore]
+        public string folderImages => Path.Combine(Game.settings.screenshotTargetFolder!, this.name);
     }
 
     internal class SummaryGenus

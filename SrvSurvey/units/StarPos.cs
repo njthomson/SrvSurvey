@@ -110,8 +110,8 @@ namespace SrvSurvey.units
     /// <summary> A reference to a star system </summary>
     internal class StarRef
     {
-        public long id64;
         public string name;
+        public long id64;
         public double x;
         public double y;
         public double z;

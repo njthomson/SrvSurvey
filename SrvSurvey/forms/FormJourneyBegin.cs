@@ -19,6 +19,9 @@ namespace SrvSurvey.forms
             lblWarning.Text = null;
             btnAccept.Enabled = false;
 
+            this.MinimizeBox = false;
+            this.hideFakeClose = true;
+
             Util.applyTheme(this);
         }
 
@@ -39,7 +42,7 @@ namespace SrvSurvey.forms
             var start = DateTimeOffset.Now;
 
             // confirm valid name
-            var rejectReason = CommanderJourney.nameIsValid(this.cmdr.fid, name);
+            var rejectReason = CommanderJourney.validate(this.cmdr.fid, name, startingJump);
             // confirm starting system is selected
             if (rejectReason == null && radioSystem.Checked && comboStartFrom.SelectedSystem == null)
                 rejectReason = "No system selected";
@@ -53,16 +56,33 @@ namespace SrvSurvey.forms
                 setWarning(rejectReason);
                 return;
             }
+
             // create journey file + update cmdr settings with that filename
-            var journey = CommanderJourney.Create(this.cmdr.fid, this.cmdr.commander, name, startingJump!);
+            var journey = new CommanderJourney(this.cmdr.fid, startingJump!.timestamp)
+            {
+                commander = this.cmdr.commander,
+                name = name,
+                description = "",
+                startingJournal = Path.GetFileName(this.startingJournal!.filepath),
+            };
             journey.Save();
 
-            Task.Run(() => journey.doProcessPastJournals(this.startingJournal!));
+            // prep for running threaded operation
+            btnAccept.Enabled = false;
+            //btnReject.Enabled = false;
+            lblWarning.Text = "Processing journal files...";
+            lblWarning.Visible = true;
+            Application.DoEvents();
 
-            if (Game.activeGame != null) Game.activeGame.journey = journey;
-            this.cmdr.activeJourney = Path.GetFileNameWithoutExtension(journey.filepath);
-            this.cmdr.Save();
-            this.Close();
+            journey.doCatchup(this.startingJournal!).continueOnMain(this, () => 
+            {
+                lblWarning.Visible = false;
+                if (Game.activeGame != null) Game.activeGame.journey = journey;
+                this.cmdr.activeJourney = Path.GetFileNameWithoutExtension(journey.filepath);
+                this.cmdr.Save();
+                this.Close();
+                MessageBox.Show("Don't forget to take notes in systems and use the journey viewer.\r\nSafe travels out in the black.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            });
         }
 
         private void setWarning(string? txt)
@@ -75,7 +95,7 @@ namespace SrvSurvey.forms
         private void txtName_TextChanged(object sender, EventArgs e)
         {
             // make sure name has no filename illegal characters
-            setWarning(CommanderJourney.nameIsValid(this.cmdr.fid, txtName.Text));
+            setWarning(CommanderJourney.validate(this.cmdr.fid, txtName.Text));
         }
 
         private void radioNow_CheckedChanged(object sender, EventArgs e)
@@ -92,13 +112,13 @@ namespace SrvSurvey.forms
                         comboStartFrom.SelectedSystem = cmdr.getCurrentStarRef();
 
                     nextSystemAddress = comboStartFrom.SelectedSystem.id64;
-                    lblLastVisited.Text = $"Last visited '{comboStartFrom.SelectedSystem.name}' ...?";
+                    lblLastVisited.Text = $"Last visited '{comboStartFrom.SelectedSystem.name}' ... reading journal files ...";
 
                 }
                 else if (radioNow.Checked)
                 {
                     nextSystemAddress = cmdr.currentSystemAddress;
-                    lblLastVisited.Text = $"Last visited '{cmdr.currentSystem}' ...?";
+                    lblLastVisited.Text = $"Last visited '{cmdr.currentSystem}' ... reading journal files ...";
                 }
 
                 if (startingJump == null || nextSystemAddress != startingJump?.SystemAddress)
@@ -111,17 +131,16 @@ namespace SrvSurvey.forms
 
         private void comboStartFrom_selectedSystemChanged(SrvSurvey.units.StarRef starSystem)
         {
+            lblLastVisited.Text = "";
             var data = SystemData.Load(starSystem.name, starSystem.id64, cmdr.fid, true);
             if (data == null)
             {
-                lblLastVisited.Visible = false;
                 setWarning($"You nave not visited: {starSystem.name}");
                 return;
             }
 
             setWarning(null);
-            var duration = DateTimeOffset.Now - data.lastVisited;
-            lblLastVisited.Text = $"Last visited '{starSystem.name}' {Util.timeSpanToString(duration)} ...?";
+            lblLastVisited.Text = $"Last visited '{starSystem.name}' ... reading journal files ...";
             lblLastVisited.Visible = true;
 
             btnAccept.Enabled = false;

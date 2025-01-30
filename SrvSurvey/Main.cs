@@ -78,13 +78,12 @@ namespace SrvSurvey
             };
 
             comboDev.Visible = Debugger.IsAttached;
-            btnJourney.Enabled = Game.settings.enableJourneys;
 
             // keep these hidden from official app-store builds for now
             if (Program.isAppStoreBuild)
             {
-                btnJourney.Visible = false;
-                txtCommander.Width += btnJourney.Right - txtCommander.Right;
+                while (menuJourney.Items.Count > 1)
+                    menuJourney.Items.RemoveAt(1);
             }
 
             Util.applyTheme(this);
@@ -265,6 +264,8 @@ namespace SrvSurvey
                         // do this once first so we know the window location
                         timer1_Tick(null!, null!);
 
+                        this.startHooks();
+
                         if (Elite.isGameRunning || Program.useLastIfShutdown)
                             this.newGame();
 
@@ -272,8 +273,6 @@ namespace SrvSurvey
                         btnCodexShow.Enabled = FormShowCodex.allow;
 
                         this.timer1.Start();
-
-                        this.startHooks();
 
                         if (Game.settings.focusGameOnStart)
                             this.BeginInvoke(() => Elite.setFocusED());
@@ -472,7 +471,7 @@ namespace SrvSurvey
         {
             Game.log($"Main.removeGame, has old game: {this.game != null}");
             Program.closeAllPlotters();
-            this.hook.stopDirectX();
+            this.hook?.stopDirectX();
 
             if (this.game != null)
             {
@@ -640,7 +639,7 @@ namespace SrvSurvey
             // exploration stats
             if (game == null)
             {
-                btnResetExploration.Enabled = false;
+                menuResetOldTrip.Enabled = false;
                 txtExplorationValue.Text = "";
                 txtJumps.Text = "";
                 txtDistance.Text = "";
@@ -648,7 +647,7 @@ namespace SrvSurvey
             }
             else
             {
-                btnResetExploration.Enabled = true;
+                menuResetOldTrip.Enabled = true;
                 txtExplorationValue.Text = Util.credits(game.cmdr.explRewards, true);
                 txtJumps.Text = game.cmdr.countJumps.ToString("N0");
                 txtDistance.Text = game.cmdr.distanceTravelled.ToString("N1") + " ly";
@@ -1781,13 +1780,11 @@ namespace SrvSurvey
             var hasActiveJourney = cmdr?.activeJourney != null;
 
             // show BEGIN only when there's no active journey
-            menuJourney.Items[0].Visible = !hasActiveJourney;
+            menuJourney.Items[2].Visible = !hasActiveJourney;
             // show NOTES when journey is active and we're in a system
-            menuJourney.Items[1].Visible = hasActiveJourney;
-            // show REVIEW when there is any journey
-            menuJourney.Items[2].Enabled = hasActiveJourney;
-            // show EDIT when there is an active journey
             menuJourney.Items[3].Visible = hasActiveJourney;
+            // show REVIEW when there is any journey
+            menuJourney.Items[4].Enabled = hasActiveJourney;
         }
 
         private void menuJourneyBegin_Click(object sender, EventArgs e)

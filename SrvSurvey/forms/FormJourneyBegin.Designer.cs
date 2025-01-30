@@ -101,6 +101,7 @@
             radioNow.Name = "radioNow";
             radioNow.Size = new Size(152, 20);
             radioNow.TabIndex = 3;
+            radioNow.TabStop = true;
             radioNow.Text = "This journey starts now";
             radioNow.UseVisualStyleBackColor = true;
             radioNow.CheckedChanged += radioNow_CheckedChanged;
@@ -113,6 +114,7 @@
             radioSystem.Name = "radioSystem";
             radioSystem.Size = new Size(190, 20);
             radioSystem.TabIndex = 5;
+            radioSystem.TabStop = true;
             radioSystem.Text = "This journey started in system:";
             radioSystem.UseVisualStyleBackColor = true;
             radioSystem.CheckedChanged += radioNow_CheckedChanged;
@@ -120,6 +122,7 @@
             // comboStartFrom
             // 
             comboStartFrom.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            comboStartFrom.Enabled = false;
             comboStartFrom.FlatStyle = FlatStyle.System;
             comboStartFrom.FormattingEnabled = true;
             comboStartFrom.Location = new Point(286, 156);
@@ -133,12 +136,12 @@
             // lblWarning
             // 
             lblWarning.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            lblWarning.FlatStyle = FlatStyle.System;
+            lblWarning.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblWarning.Location = new Point(16, 231);
             lblWarning.Name = "lblWarning";
             lblWarning.Size = new Size(369, 23);
             lblWarning.TabIndex = 8;
-            lblWarning.Text = "---";
+            lblWarning.Text = "A prior journey started from there";
             lblWarning.TextAlign = ContentAlignment.MiddleRight;
             lblWarning.Visible = false;
             // 

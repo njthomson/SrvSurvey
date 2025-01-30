@@ -172,6 +172,7 @@ namespace SrvSurvey
         private void tb_TextChanged(object? sender, EventArgs e)
         {
             this.OnTextChanged(e);
+            if (this.TextChanged2 != null) TextChanged2(sender, e);
         }
 
         #region TextBox overrides
@@ -184,6 +185,9 @@ namespace SrvSurvey
             get => tb.Text;
             set => tb.Text = value;
         }
+
+        [Browsable(true)]
+        public event EventHandler? TextChanged2;
 
         public override Color BackColor
         {
@@ -557,6 +561,7 @@ namespace SrvSurvey
                 {
                     Game.log($"knownMatch: {knownMatch}");
                     this.SelectedSystem = knownMatch;
+                    this.lastQuery = query;
                     return;
                 }
 

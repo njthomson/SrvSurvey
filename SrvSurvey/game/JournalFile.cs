@@ -181,7 +181,7 @@ namespace SrvSurvey
             Game.log($"searchJournalsDeep: count: {count}");
         }
 
-        public JournalFile? walkDeep(bool searchUp, Func<IJournalEntry, bool> func, Func<JournalFile, bool>? finishWhen = null)
+        public JournalFile walkDeep(bool searchUp, Func<IJournalEntry, bool> func, Func<JournalFile, bool>? finishWhen = null)
         {
             if (string.IsNullOrEmpty(this.cmdrName)) Debugger.Break();
 

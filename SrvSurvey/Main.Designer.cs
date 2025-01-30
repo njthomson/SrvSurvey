@@ -44,7 +44,6 @@ namespace SrvSurvey
             btnPasteLatLong = new Button();
             lblTrackTargetStatus = new Label();
             groupCmdr = new GroupBox();
-            btnJourney = new Button();
             btnCopyLocation = new Button();
             txtCommander = new TextBox();
             txtNearBody = new TextBox();
@@ -100,10 +99,11 @@ namespace SrvSurvey
             lblBig = new Label();
             comboDev = new ComboBox();
             menuJourney = new ButtonContextMenuStrip(components);
+            menuResetOldTrip = new ToolStripMenuItem();
+            toolStripSeparator1 = new ToolStripSeparator();
             menuJourneyBegin = new ToolStripMenuItem();
             menuJourneyNotes = new ToolStripMenuItem();
             menuJourneyReview = new ToolStripMenuItem();
-            menuJourneyEdit = new ToolStripMenuItem();
             groupBox1.SuspendLayout();
             groupCmdr.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -212,7 +212,6 @@ namespace SrvSurvey
             // 
             // groupCmdr
             // 
-            groupCmdr.Controls.Add(btnJourney);
             groupCmdr.Controls.Add(btnCopyLocation);
             groupCmdr.Controls.Add(txtCommander);
             groupCmdr.Controls.Add(txtNearBody);
@@ -225,20 +224,6 @@ namespace SrvSurvey
             groupCmdr.TabIndex = 2;
             groupCmdr.TabStop = false;
             groupCmdr.Text = "Commander:";
-            // 
-            // btnJourney
-            // 
-            btnJourney.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnJourney.BackColor = SystemColors.ControlDark;
-            btnJourney.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
-            btnJourney.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
-            btnJourney.FlatStyle = FlatStyle.Flat;
-            btnJourney.Location = new Point(313, 19);
-            btnJourney.Name = "btnJourney";
-            btnJourney.Size = new Size(93, 20);
-            btnJourney.TabIndex = 6;
-            btnJourney.Text = "Journey";
-            btnJourney.UseVisualStyleBackColor = false;
             // 
             // btnCopyLocation
             // 
@@ -264,7 +249,7 @@ namespace SrvSurvey
             txtCommander.Location = new Point(6, 19);
             txtCommander.Name = "txtCommander";
             txtCommander.ReadOnly = true;
-            txtCommander.Size = new Size(302, 20);
+            txtCommander.Size = new Size(400, 20);
             txtCommander.TabIndex = 0;
             txtCommander.Text = "GRINNING2002 ?";
             // 
@@ -795,17 +780,15 @@ namespace SrvSurvey
             // 
             btnResetExploration.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnResetExploration.BackColor = SystemColors.ControlDark;
-            btnResetExploration.Enabled = false;
             btnResetExploration.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnResetExploration.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnResetExploration.FlatStyle = FlatStyle.Flat;
-            btnResetExploration.Location = new Point(6, 41);
+            btnResetExploration.Location = new Point(8, 40);
             btnResetExploration.Name = "btnResetExploration";
-            btnResetExploration.Size = new Size(58, 21);
+            btnResetExploration.Size = new Size(53, 21);
             btnResetExploration.TabIndex = 5;
-            btnResetExploration.Text = "Reset";
+            btnResetExploration.Text = "...";
             btnResetExploration.UseVisualStyleBackColor = false;
-            btnResetExploration.Click += btnResetExploration_Click;
             // 
             // label1
             // 
@@ -928,40 +911,45 @@ namespace SrvSurvey
             // menuJourney
             // 
             menuJourney.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            menuJourney.Items.AddRange(new ToolStripItem[] { menuJourneyBegin, menuJourneyNotes, menuJourneyReview, menuJourneyEdit });
+            menuJourney.Items.AddRange(new ToolStripItem[] { menuResetOldTrip, toolStripSeparator1, menuJourneyBegin, menuJourneyNotes, menuJourneyReview });
             menuJourney.Name = "menuJourney";
             menuJourney.RenderMode = ToolStripRenderMode.System;
-            menuJourney.Size = new Size(181, 170);
-            menuJourney.targetButton = btnJourney;
+            menuJourney.Size = new Size(317, 176);
+            menuJourney.targetButton = btnResetExploration;
             menuJourney.Opening += menuJourney_Opening;
+            // 
+            // menuResetOldTrip
+            // 
+            menuResetOldTrip.Name = "menuResetOldTrip";
+            menuResetOldTrip.Size = new Size(316, 36);
+            menuResetOldTrip.Text = "Reset trip counters";
+            menuResetOldTrip.Click += btnResetExploration_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(313, 6);
             // 
             // menuJourneyBegin
             // 
             menuJourneyBegin.Name = "menuJourneyBegin";
-            menuJourneyBegin.Size = new Size(180, 36);
-            menuJourneyBegin.Text = "Begin";
+            menuJourneyBegin.Size = new Size(316, 36);
+            menuJourneyBegin.Text = "Start a new journey ...";
             menuJourneyBegin.Click += menuJourneyBegin_Click;
             // 
             // menuJourneyNotes
             // 
             menuJourneyNotes.Name = "menuJourneyNotes";
-            menuJourneyNotes.Size = new Size(180, 36);
-            menuJourneyNotes.Text = "Notes";
+            menuJourneyNotes.Size = new Size(316, 36);
+            menuJourneyNotes.Text = "System Notes";
             menuJourneyNotes.Click += menuJourneyNotes_Click;
             // 
             // menuJourneyReview
             // 
             menuJourneyReview.Name = "menuJourneyReview";
-            menuJourneyReview.Size = new Size(180, 36);
-            menuJourneyReview.Text = "Review";
+            menuJourneyReview.Size = new Size(316, 36);
+            menuJourneyReview.Text = "View Journey";
             menuJourneyReview.Click += menuJourneyReview_Click;
-            // 
-            // menuJourneyEdit
-            // 
-            menuJourneyEdit.Name = "menuJourneyEdit";
-            menuJourneyEdit.Size = new Size(180, 36);
-            menuJourneyEdit.Text = "Edit";
-            menuJourneyEdit.Click += menuJourneyEdit_Click;
             // 
             // Main
             // 
@@ -1080,11 +1068,11 @@ namespace SrvSurvey
         private ButtonContextMenuStrip menuSearchTools;
         private ToolStripMenuItem menuSpherical;
         private ToolStripMenuItem menuBoxel;
-        private Button btnJourney;
         private ButtonContextMenuStrip menuJourney;
         private ToolStripMenuItem menuJourneyBegin;
         private ToolStripMenuItem menuJourneyNotes;
         private ToolStripMenuItem menuJourneyReview;
-        private ToolStripMenuItem menuJourneyEdit;
+        private ToolStripMenuItem menuResetOldTrip;
+        private ToolStripSeparator toolStripSeparator1;
     }
 }

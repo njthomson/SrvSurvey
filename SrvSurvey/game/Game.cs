@@ -551,6 +551,7 @@ namespace SrvSurvey.game
                 this.cmdr = CommanderSettings.Load(loadEntry.FID, journals.isOdyssey, loadEntry.Commander);
                 this.cmdrCodex = cmdr.loadCodex();
                 this.journey = cmdr.loadActiveJourney();
+                this.journey?.doCatchup(this.journals!);
             }
 
             // if we have MainMenu music - we know we're not actively playing

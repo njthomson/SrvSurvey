@@ -42,6 +42,16 @@ namespace SrvSurvey.forms
 
         public static T show<T>(Form? parent = null) where T : BaseForm, new()
         {
+            return show<T>(parent, null);
+        }
+
+        public static T show<T>(Action<T> beforeShow) where T : BaseForm, new()
+        {
+            return show<T>(null, beforeShow);
+        }
+
+        public static T show<T>(Form? parent, Action<T>? beforeShow) where T : BaseForm, new()
+        {
             var name = typeof(T).Name;
 
             var form = activeForms.GetValueOrDefault(name) as T;
@@ -55,6 +65,8 @@ namespace SrvSurvey.forms
             // apply previous location?
             if (form.trackPosition) form.applySavedLocation();
 
+            // invoke any beforeShow actions?
+            if (beforeShow != null) beforeShow(form);
             form.beforeShowing();
 
             Util.showForm(form, parent);
@@ -150,7 +162,7 @@ namespace SrvSurvey.forms
         private void hookChildMouseEvents(Control ctrl)
         {
             // unless the control has editable text and not one of these ...
-            if (ctrl.Cursor != Cursors.IBeam && !(ctrl is Button) && !(ctrl is ComboBox) && !(ctrl is StatusStrip))
+            if (ctrl.Cursor != Cursors.IBeam && !(ctrl is Button) && !(ctrl is ComboBox) && !(ctrl is StatusStrip) && !(ctrl is SplitContainer))
             {
                 // ... hook into their mouse events
                 ctrl.MouseDown += new MouseEventHandler((object? sender, MouseEventArgs e) => startDragging(sender, e));
@@ -223,6 +235,7 @@ namespace SrvSurvey.forms
         private int titleHeight = 24;
 
         public bool renderOwnTitleBar = true;
+        public bool hideFakeClose = false;
 
         private Button? fakeClose;
         private Button? fakeMinimize;
@@ -256,24 +269,27 @@ namespace SrvSurvey.forms
             this.Height += titleHeight;
 
             // add fake close
-            fakeClose = new Button()
+            if (!this.hideFakeClose)
             {
-                Anchor = AnchorStyles.Top | AnchorStyles.Right,
-                Text = "X",
-                Font = GameColors.fontMiddle,
-                AutoSize = false,
-                Width = titleHeight,
-                Height = titleHeight,
-                Top = 0,
-                Left = this.ClientSize.Width - titleHeight,
-                FlatStyle = FlatStyle.Flat,
-                BackColor = SystemColors.ControlDarkDark,
-            };
-            fakeClose.FlatAppearance.BorderSize = 0;
-            fakeClose.FlatAppearance.MouseOverBackColor = Color.Firebrick;
-            fakeClose.FlatAppearance.MouseDownBackColor = Color.DarkRed;
-            fakeClose.Click += new EventHandler((object? sender, EventArgs args) => this.Close());
-            this.Controls.Add(fakeClose);
+                fakeClose = new Button()
+                {
+                    Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                    Text = "X",
+                    Font = GameColors.fontMiddle,
+                    AutoSize = false,
+                    Width = titleHeight,
+                    Height = titleHeight,
+                    Top = 0,
+                    Left = this.ClientSize.Width - titleHeight,
+                    FlatStyle = FlatStyle.Flat,
+                    BackColor = SystemColors.ControlDarkDark,
+                };
+                fakeClose.FlatAppearance.BorderSize = 0;
+                fakeClose.FlatAppearance.MouseOverBackColor = Color.Firebrick;
+                fakeClose.FlatAppearance.MouseDownBackColor = Color.DarkRed;
+                fakeClose.Click += new EventHandler((object? sender, EventArgs args) => this.Close());
+                this.Controls.Add(fakeClose);
+            }
 
             // add fake minimize
             if (this.MinimizeBox)

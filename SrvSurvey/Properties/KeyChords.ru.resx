@@ -78,6 +78,10 @@
     <value>Уменьшение масштаба на картах на объектах для людей и Стражей.</value>
     <comment>Zoom out on maps at Human and Guardian sites.</comment>
   </data>
+  <data name="pasteGalMap">
+    <value>Вставка текста из буфера обмена в Gal-Map</value>
+    <comment>Paste clipboard text when in Gal-Map</comment>
+  </data>
   <data name="showBodyInfo">
     <value>Принудительно отобразите наложение «Информация о теле».</value>
     <comment>Force show the Body info overlay.</comment>
@@ -87,11 +91,47 @@
     <comment>Force show the FSS info overlay.</comment>
   </data>
   <data name="showJumpInfo">
-    <value>С усилием переключите наложение прыжка FSD, чтобы оно было видно, не начиная прыжк. Не появится, если нет активного маршрута.</value>
-    <comment>Force toggle the FSD jump overlay to be visible without starting to jump. Will not appear if there is no active route.</comment>
+    <value>Принудительно переключите наложение прыжка FSD, не начиная прыжк.</value>
+    <comment>Force toggle the FSD jump overlay without starting to jump.</comment>
+  </data>
+  <data name="showSystemNotes">
+    <value>Сделайте окно системных заметок видимым.</value>
+    <comment>Make the system notes window visible.</comment>
   </data>
   <data name="toggleAllVisibility">
     <value>Переключает видимость всех окон наложения.</value>
     <comment>Toggles visibility of all overlay windows.</comment>
+  </data>
+  <data name="track1">
+    <value>Добавление или удаление трекера #1</value>
+    <comment>Add or remove tracker #1</comment>
+  </data>
+  <data name="track2">
+    <value>Добавление или удаление трекера #2</value>
+    <comment>Add or remove tracker #2</comment>
+  </data>
+  <data name="track3">
+    <value>Добавление или удаление трекера #3</value>
+    <comment>Add or remove tracker #3</comment>
+  </data>
+  <data name="track4">
+    <value>Добавление или удаление трекера #4</value>
+    <comment>Add or remove tracker #4</comment>
+  </data>
+  <data name="track5">
+    <value>Добавление или удаление трекера #5</value>
+    <comment>Add or remove tracker #5</comment>
+  </data>
+  <data name="track6">
+    <value>Добавление или удаление трекера #6</value>
+    <comment>Add or remove tracker #6</comment>
+  </data>
+  <data name="track7">
+    <value>Добавление или удаление трекера #7</value>
+    <comment>Add or remove tracker #7</comment>
+  </data>
+  <data name="track8">
+    <value>Добавление или удаление трекера #8</value>
+    <comment>Add or remove tracker #8</comment>
   </data>
 </root>

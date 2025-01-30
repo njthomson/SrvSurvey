@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.plotters;
 using System.Diagnostics;
@@ -78,6 +79,8 @@ namespace SrvSurvey
             { KeyAction.pasteGalMap, "" },
             { KeyAction.copyNextBoxel, "CTRL C" },
             { KeyAction.showFssInfo, "ALT F" },
+            { KeyAction.showBodyInfo, "ALT B" },
+            { KeyAction.showSystemNotes, "CTRL SHIFT N" },
             { KeyAction.track1, "ALT CTRL F1" },
             { KeyAction.track2, "ALT CTRL F2" },
             { KeyAction.track3, "ALT CTRL F3" },
@@ -106,6 +109,7 @@ namespace SrvSurvey
                 case KeyAction.pasteGalMap: return pasteGalMap();
                 case KeyAction.showFssInfo: return toggleFSSInfo();
                 case KeyAction.showBodyInfo: return toggleBodyInfo();
+                case KeyAction.showSystemNotes: return showSystemNotes();
                 case KeyAction.track1: return trackLocation(1);
                 case KeyAction.track2: return trackLocation(2);
                 case KeyAction.track3: return trackLocation(3);
@@ -239,6 +243,14 @@ namespace SrvSurvey
             return true;
         }
 
+        private static bool showSystemNotes()
+        {
+            if (Game.activeGame?.isShutdown == false && Game.activeGame.fsdJumping == false && Game.activeGame.systemData != null)
+                BaseForm.show<FormSystemNotes>();
+
+            return true;
+        }
+
         private static bool trackLocation(int n)
         {
             if (Game.activeGame != null)
@@ -274,6 +286,8 @@ namespace SrvSurvey
         showFssInfo,
         /// <summary> Force show PlotBodyInfo </summary>
         showBodyInfo,
+        /// <summary> Make the system notes window appear </summary>
+        showSystemNotes,
         /// <summary> Track the current location as #1 </summary>
         track1,
         /// <summary> Track the current location as #2 </summary>

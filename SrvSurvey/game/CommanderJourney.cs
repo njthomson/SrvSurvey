@@ -13,7 +13,7 @@ namespace SrvSurvey.game
 
         private static readonly string dataFolder = Path.Combine(Program.dataFolder, $"journey");
 
-        public static CommanderJourney Load(string fid, string filename)
+        public static CommanderJourney? Load(string fid, string filename)
         {
             var folder = Path.Combine(CommanderJourney.dataFolder, fid);
             Directory.CreateDirectory(folder);
@@ -22,43 +22,38 @@ namespace SrvSurvey.game
 
             Game.log($"Loading journey: /journey/{fid}/{filename}.json");
             var journey = Data.Load<CommanderJourney>(filepath)!;
-            if (journey == null) throw new Exception($"Cannot find: ./journey/{fid}/{filename}.json");
+            if (journey == null) return null;
 
             // prep certain properties after loading
-            journey.currentSystem = journey.visitedSystems.Last();
+            journey.currentSystem = journey.visitedSystems.LastOrDefault();
 
             return journey;
         }
 
-        public static CommanderJourney Create(string fid, string cmdr, string name, FSDJump startingJump)
+        public CommanderJourney() { }
+
+        public CommanderJourney(string fid, DateTimeOffset timestamp)
         {
+            this.fid = fid;
+            this.startTime = timestamp.AddMilliseconds(-10);
+            this.watermark = timestamp.AddMilliseconds(-10);
+
             var folder = Path.Combine(CommanderJourney.dataFolder, fid);
             Directory.CreateDirectory(folder);
 
-            var filename = startingJump.timestamp.ToIsoFileString() + ".json";
-            var filepath = Path.Combine(folder, filename);
+            var filename = timestamp.ToIsoFileString() + ".json";
+            this.filepath = Path.Combine(folder, filename);
             if (File.Exists(filepath))
                 throw new Exception($"Cannot create: ./journey/{fid}/{filename}");
 
             Game.log($"Journey.load: Creating a new journey: '{name}' ({filename})");
-            var journey = new CommanderJourney()
-            {
-                filepath = filepath,
-                fid = fid,
-                commander = cmdr,
-                name = name,
-
-                watermark = startingJump.timestamp,
-            };
-
-            return journey;
         }
 
 
         /// <summary>
         /// Returns null if name is valid, otherwise a reason why it is not.
         /// </summary>
-        public static string? nameIsValid(string fid, string name)
+        public static string? validate(string fid, string name, FSDJump? startingJump = null)
         {
             if (string.IsNullOrWhiteSpace(name))
                 return "Name is blank";
@@ -68,6 +63,17 @@ namespace SrvSurvey.game
             //    return "Name cannot contain characters \\ / : * ? \" < > |";
 
             // TODO: open existing files to make sure name is not already in use
+
+            // confirm no journey started at the same time
+            if (startingJump != null)
+            {
+                var folder = Path.Combine(CommanderJourney.dataFolder, fid);
+                var filename = startingJump.timestamp.ToIsoFileString() + ".json";
+                var filepath = Path.Combine(folder, filename);
+                if (File.Exists(filepath))
+                    return "A prior journey started from there";
+            }
+
             //var folder = Path.Combine(CommanderJourney.dataFolder, fid);
             //if (Directory.GetFiles(folder, $"{name}.json").Any())
             //    return "That name has been used before";
@@ -98,6 +104,12 @@ namespace SrvSurvey.game
         public string commander;
         public string name;
         public string description;
+
+        public string startingJournal;
+        public DateTimeOffset startTime;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public DateTimeOffset? endTime;
+
         /// <summary> The time stamp from the last journal entry we processed </summary>
         public DateTimeOffset watermark;
 
@@ -110,10 +122,11 @@ namespace SrvSurvey.game
         public bool postProcessing;
 
         [JsonIgnore]
-        public SystemStats currentSystem;
+        public SystemStats? currentSystem;
 
-        #region journal processing
+        #region batch journal processing
 
+        /*
         public void doProcessPastJournals(JournalFile journal)
         {
             Game.log($"doProcessPastJournals: starting from: {journal.Entries.FirstOrDefault()?.timestamp}");
@@ -124,7 +137,12 @@ namespace SrvSurvey.game
             {
                 journal.walkDeep(false, (entry) =>
                 {
-                    this.processJournalEntry(entry, false);
+                    // ignore anything before ...
+                    if (entry.timestamp >= this.watermark)
+                    {
+                        this.onJournalEntry((dynamic)entry);
+                        this.watermark = entry.timestamp;
+                    }
                     return false;
                 });
 
@@ -137,9 +155,57 @@ namespace SrvSurvey.game
 
             Game.log($"doProcessPastJournals: complete");
         }
+        */
+        public Task doCatchup(JournalFile journal)
+        {
+            var started = DateTime.Now;
+            Game.log($"!! doCatchup: starting from watermark: {this.watermark}, {journal.Entries.FirstOrDefault()?.timestamp}");
+            if (this.postProcessing) throw new Exception("Why are we double processing?");
+            this.postProcessing = true;
+
+            return Task.Run(async () =>
+            {
+                try
+                {
+                    // rewind to the water mark
+                    var startingJournal = journal.walkDeep(true, (entry) =>
+                    {
+                        return entry.timestamp < this.watermark;
+                    });
+
+                    // now process forwards from that point
+                    var first = true;
+                    startingJournal.walkDeep(false, (entry) =>
+                    {
+                        // ignore anything before ...
+                        if (first && entry.timestamp <= this.watermark) return false;
+                        first = false;
+                        if (entry.timestamp < this.watermark) return false;
+
+                        this.onJournalEntry((dynamic)entry);
+                        this.watermark = entry.timestamp;
+                        return false;
+                    });
+
+                }
+                finally
+                {
+                    this.Save();
+                    Game.log($"!! doCatchup: complete: watermark: {this.watermark}, duration: {DateTime.Now - started}");
+                    this.postProcessing = false;
+                }
+            });
+        }
+
+        #endregion
+
+        #region journal processing
 
         public void processJournalEntry(IJournalEntry entry, bool autoSave)
         {
+            // don't process anything here if we're catching up - it'll get to it eventually
+            if (this.postProcessing) return;
+
             // ignore anything before ...
             if (entry.timestamp < this.watermark) return;
 
@@ -165,43 +231,94 @@ namespace SrvSurvey.game
             visitedSystems.Add(currentSystem);
         }
 
+        private void onJournalEntry(StartJump entry)
+        {
+            // close out the current system
+            if (currentSystem != null)
+            {
+                currentSystem.departed = entry.timestamp;
+                currentSystem = null;
+            }
+        }
+
         private void onJournalEntry(FSSDiscoveryScan entry)
         {
+            if (currentSystem == null) return;
+
             // HONK!
-            currentSystem.count.honks += 1;
             currentSystem.count.bodyCount = entry.BodyCount;
         }
 
         private void onJournalEntry(FSSAllBodiesFound entry)
         {
+            if (currentSystem == null) return;
+
             // FSS complete
             currentSystem.count.bodyCount = entry.Count;
         }
 
         public void onJournalEntry(Scan entry)
         {
+            if (currentSystem == null) return;
+
+            // ignore asteroid clusters
+            if (entry.PlanetClass == null && entry.StarType == null) return;
+
             // Effectively (but not entirely) FSS scans
             currentSystem.count.bodyScans++;
         }
 
         public void onJournalEntry(SAAScanComplete entry)
         {
+            if (currentSystem == null) return;
+
             // DSS complete
             currentSystem.count.dss++;
         }
 
         private void onJournalEntry(Touchdown entry)
         {
+            if (currentSystem == null) return;
+
             currentSystem.count.touchdown++;
 
             // track how many times we land on each body
+            currentSystem.landedOn ??= new();
             var shortName = entry.Body.Replace(entry.StarSystem, "").Replace(" ", "");
             if (!currentSystem.landedOn.ContainsKey(shortName)) currentSystem.landedOn[shortName] = new();
             currentSystem.landedOn[shortName] += 1;
         }
 
+        private void onJournalEntry(FSSBodySignals entry)
+        {
+            if (currentSystem == null) return;
+            currentSystem.saaSignals ??= new();
+
+            // Biological, Geological, Human, Thargoid, etc
+            foreach (var signal in entry.Signals)
+            {
+                var key = signal.Type.Replace("$SAA_SignalType_", "").Replace(";", "");
+                if (!currentSystem.saaSignals.ContainsKey(key)) currentSystem.saaSignals[key] = 0;
+                currentSystem.saaSignals[key] += signal.Count;
+            }
+        }
+
+        private void onJournalEntry(FSSSignalDiscovered entry)
+        {
+            if (currentSystem == null) return;
+            currentSystem.fssSignals ??= new();
+
+            var key = entry.SignalType;
+            if (!currentSystem.fssSignals.ContainsKey(key)) currentSystem.fssSignals[key] = 0;
+            currentSystem.fssSignals[key] += 1;
+        }
+
+
         public void onJournalEntry(CodexEntry entry)
         {
+            if (currentSystem == null) return;
+            currentSystem.codexScanned ??= new();
+
             var alreadyScanned = currentSystem.codexScanned.Contains(entry.EntryID);
 
             // get a count of distinct things scanned
@@ -216,6 +333,7 @@ namespace SrvSurvey.game
             // count per sub-category, eg: "Organic structures"
             if (!alreadyScanned && !string.IsNullOrWhiteSpace(entry.SubCategory_Localised))
             {
+                currentSystem.subCats ??= new();
                 if (!currentSystem.subCats.ContainsKey(entry.SubCategory_Localised)) currentSystem.subCats[entry.SubCategory_Localised] = new();
                 currentSystem.subCats[entry.SubCategory_Localised] += 1;
             }
@@ -223,11 +341,20 @@ namespace SrvSurvey.game
 
         public void onJournalEntry(ScanOrganic entry)
         {
+            if (currentSystem == null) return;
+
             // count the 3rd and final scan
             if (entry.ScanType == ScanType.Analyse)
                 currentSystem.count.organic++;
 
             // TODO: Maybe count the others?
+        }
+
+        public void onJournalEntry(Screenshot entry)
+        {
+            if (currentSystem == null) return;
+
+            currentSystem.count.screenshots += 1;
         }
 
         #endregion
@@ -254,15 +381,20 @@ namespace SrvSurvey.game
                 totalDistance += sys.starRef.getDistanceFrom(lastStarRef);
                 lastStarRef = sys.starRef;
 
-                countBodiesLanded += sys.landedOn.Count;
-                countTotalLandings += sys.landedOn.Values.Sum();
-                countCodexScans += sys.codexScanned.Count;
+                countBodiesLanded += sys.landedOn?.Count ?? 0;
+                countTotalLandings += sys.landedOn?.Values.Sum() ?? 0;
+                countCodexScans += sys.codexScanned?.Count ?? 0;
                 if (sys.fssAllBodies) countFssComplete += 1;
 
-                foreach (var (key, value) in sys.subCats)
+                // TODO: saaSignals
+                // TODO: fssSignals
+                if (sys.subCats != null)
                 {
-                    if (!totalSubCats.ContainsKey(key)) totalSubCats[key] = 0;
-                    totalSubCats[key] += value;
+                    foreach (var (key, value) in sys.subCats)
+                    {
+                        if (!totalSubCats.ContainsKey(key)) totalSubCats[key] = 0;
+                        totalSubCats[key] += value;
+                    }
                 }
             }
 
@@ -276,6 +408,7 @@ namespace SrvSurvey.game
                 { "Total DSS:", totalCounts.dss.ToString("N0") },
                 { "Landed on bodies:", countBodiesLanded.ToString("N0") },
                 { "Count touchdowns:", countTotalLandings.ToString("N0") },
+                { "Screenshots taken:", totalCounts.screenshots.ToString("N0") },
                 { "Organisms scanned:", totalCounts.organic.ToString("N0") },
                 { "Codex scans:", countCodexScans.ToString("N0") },
                 { "NEW Codex scans:", totalCounts.codexNew.ToString("N0") },
@@ -295,12 +428,20 @@ namespace SrvSurvey.game
         {
             public StarRef starRef;
             public DateTimeOffset arrived;
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
             public DateTimeOffset? departed;
 
             public Counts count;
-            public Dictionary<string, int> landedOn = new();
-            public HashSet<long> codexScanned = new();
-            public Dictionary<string, int> subCats = new();
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+            public Dictionary<string, int>? landedOn;
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+            public HashSet<long>? codexScanned;
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+            public Dictionary<string, int>? subCats;
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+            public Dictionary<string, int>? saaSignals;
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+            public Dictionary<string, int>? fssSignals;
 
             public SystemStats() { }
 
@@ -321,19 +462,28 @@ namespace SrvSurvey.game
             public struct Counts
             {
                 /// <summary> Count of bodies scanned </summary>
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
                 public int bodyScans;
                 /// <summary> Count of bodies DSS scanned </summary>
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
                 public int dss;
                 /// <summary> Count of NEW codex scans </summary>
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
                 public int codexNew;
                 /// <summary> Count 3rd ScanOrganic events </summary>
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
                 public int organic;
                 /// <summary> Count 3rd ScanOrganic events </summary>
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
                 public int touchdown;
                 /// <summary> Count of bodies in system </summary>
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
                 public int bodyCount;
-                /// <summary> Count of honks (FSSDiscoveryScan) </summary>
-                public int honks; // <-- maybe not worth it?
+                /// <summary> Count of screenshots taken </summary>
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+                public int screenshots;
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+                public int notes;
 
                 public override string ToString()
                 {
@@ -350,42 +500,13 @@ namespace SrvSurvey.game
                         organic = c1.organic + c2.organic,
                         touchdown = c1.touchdown + c2.touchdown,
                         bodyCount = c1.bodyCount + c2.bodyCount,
-                        honks = c1.honks + c2.honks,
+                        screenshots = c1.screenshots + c2.screenshots,
+                        notes = c1.notes + c2.notes,
                     };
                 }
             }
         }
 
-        /* MAYBE NOT ?
-        
-        private void appendTimeEntry(BaseTimeEntry timeEntry)
-        {
-
-        }
-
-        abstract class BaseTimeEntry
-        {
-            public DateTimeOffset time;
-
-            public abstract string text { get; }
-        }
-
-        class FsdJumpEntry : BaseTimeEntry
-        {
-            public long address;
-            public string name;
-            public override string text => $"Jumped to {name}";
-        }
-
-        class LandedEntry : BaseTimeEntry
-        {
-            public int id;
-            public string name;
-            public override string text => $"Landed on {name}";
-        }
-        */
-
         #endregion
-
     }
 }

@@ -303,8 +303,18 @@ namespace SrvSurvey.game
         {
             if (this.activeJourney == null)
                 return null;
-            else
-                return CommanderJourney.Load(this.fid, this.activeJourney);
+            
+            var journey = CommanderJourney.Load(this.fid, this.activeJourney);
+
+            if (journey == null)
+            {
+                // we lost the file?
+                Game.log($"Journey file not found: {activeJourney}");
+                activeJourney = null;
+                this.Save();
+            }
+
+            return journey;
         }
     }
 
