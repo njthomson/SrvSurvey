@@ -140,7 +140,7 @@ namespace SrvSurvey.plotters
                 dty += four;
                 drawTextAt(eight, $"Temp: {temp}K");
                 drawTextAt(oneTwenty, body.type == SystemBodyType.Star ? $"Class: {body.starType}" : body.planetClass!);
-                newLine(true);
+                newLine(+one, true);
             }
 
             // gravity | pressure
@@ -158,13 +158,19 @@ namespace SrvSurvey.plotters
             // bio signals
             if (body.bioSignalCount > 0)
             {
-                dty -= four;
+                dty -= three;
                 drawTextAt(eight, $"Bio signals: {body.bioSignalCount}", GameColors.brushCyan);
                 drawTextAt($"( value: {body.getMinMaxBioRewards(false)} cr )", GameColors.brushCyan);
                 newLine(+four, true);
             }
 
-            // geo signals ?
+            // geo signals
+            if (body.geoSignalCount> 0)
+            {
+                dty -= three;
+                drawTextAt(eight, $"Geo signals: {body.geoSignalCount}", GameColors.brushCyan);
+                newLine(+four, true);
+            }
 
             // volcanism
             if (planetish && body.type != SystemBodyType.Giant)
@@ -198,7 +204,7 @@ namespace SrvSurvey.plotters
                         newLine(true);
                     }
                 }
-                dty += four;
+                dty += six;
 
                 // materials
                 if (body.materials != null)

@@ -228,6 +228,7 @@
             // 
             resources.ApplyResources(checkAutoCopy, "checkAutoCopy");
             checkAutoCopy.Name = "checkAutoCopy";
+            checkAutoCopy.CheckedChanged += checkAutoCopy_CheckedChanged;
             // 
             // numMax
             // 

@@ -13,30 +13,70 @@ namespace SrvSurvey.forms
             InitializeComponent();
         }
 
-        public void setSystem(SystemStats systemStats)
+        public void setSystem(SystemStats sys)
         {
-            this.systemData = SystemData.From(systemStats.starRef, CommanderSettings.currentOrLastFid);
+            this.systemData = SystemData.From(sys.starRef, CommanderSettings.currentOrLastFid);
 
             txtSystemName.Text = systemData.name;
             txtNotes.Text = systemData.notes;
-            txtStuff.Text = $"Arrived: {systemStats.arrived.LocalDateTime.ToShortDateString()} Departed: {systemStats.departed?.LocalDateTime.ToShortDateString()}"; // => {systemStats.departed!.Value - systemStats.arrived}";
+            txtStuff.Text = $"Arrived: {sys.arrived.LocalDateTime.ToShortDateString()} Departed: {sys.departed?.LocalDateTime.ToShortDateString()}"; // => {systemStats.departed!.Value - systemStats.arrived}";
 
             // TODO: make a better panel of system stats
             txtRoughStats.Text = "";
-            if (systemStats.count.codexNew > 0) txtRoughStats.Text += $"New codex scans: {systemStats.count.codexNew}\r\n";
-            if (systemStats.count.organic > 0) txtRoughStats.Text += $"Organic scans: {systemStats.count.organic}\r\n";
-            if (systemStats.landedOn?.Count > 0) txtRoughStats.Text += $"Landed on:\r\n ► {string.Join("\r\n ► ", systemStats.landedOn.Keys)}\r\n";
-            if (systemStats.fssSignals?.Count > 0) txtRoughStats.Text += $"Signals:\r\n ► {string.Join("\r\n ► ", systemStats.fssSignals.Keys)}\r\n";
-            if (systemStats.saaSignals?.Count > 0) txtRoughStats.Text += $"Signals:\r\n ► {string.Join("\r\n ► ", systemStats.saaSignals.Keys)}\r\n";
-            if (systemStats.codexScanned?.Count > 0) txtRoughStats.Text += $"Scanned:\r\n ► {string.Join("\r\n ► ", systemStats.codexScanned.Select(id => Game.codexRef.matchFromEntryId(id.ToString(), true)?.variant.englishName ?? id.ToString()))}\r\n";
 
-            if (systemStats.fssAllBodies)
-                txtRoughStats.Text += $"FSS all bodies\r\n";
+            // bio stuff
+            if (sys.count.rewardBio > 0)
+            {
+                txtRoughStats.Text += $"► Bio rewards: {Util.credits(sys.count.rewardBio)} from {sys.count.organic} scans:\r\n";
+                var lines = sys.codexScanned?
+                    .Select(id => Game.codexRef.matchFromEntryId(id.ToString(), true)?.variant.englishName)
+                    .Where(t => t != null)
+                    .Select(t => $"   - {t}");
+                if (lines != null)
+                    txtRoughStats.Text += string.Join("\r\n", lines);
+                txtRoughStats.Text += "\r\n";
+            }
+
+            if (sys.count.rewardExp > 0) txtRoughStats.Text += $"► Exploration rewards: {Util.credits(sys.count.rewardExp)}\r\n";
+
+            // new codex scans
+            var regionalFirsts = sys.codexNew?.Where(k => !txtRoughStats.Text.Contains(k)).ToList();
+            if (regionalFirsts?.Count > 0)
+            {
+                txtRoughStats.Text += $"► First regional scan of:\r\n";
+                var lines = regionalFirsts.Select(key => $"  - {key}\r\n");
+                if (lines != null) txtRoughStats.Text += string.Join("", lines);
+            }
+
+            // touchdowns?
+            if (sys.landedOn?.Count > 0)
+                txtRoughStats.Text += $"► Touched down {sys.count.touchdown} times across {sys.landedOn.Count} bodies.\r\n";
+
+            // interesting signals?
+            if (sys.fssSignals?.Count > 0 || sys.saaSignals?.Count > 0)
+            {
+                txtRoughStats.Text += $"► Signals encountered:\r\n";
+                var lines = sys.fssSignals?.Keys.Select(key => $"  - {key}: {sys.fssSignals[key]}");
+                if (lines != null) txtRoughStats.Text += string.Join("", lines);
+                lines = sys.saaSignals?.Keys.Select(key => $"  - {key}: {sys.saaSignals[key]}");
+                if (lines != null) txtRoughStats.Text += string.Join("", lines);
+                txtRoughStats.Text += "\r\n";
+            }
+
+            // exploration stuff
+            var bodyNotStarCount = sys.count.bodyCount - sys.count.stars;
+            var txt = "";
+            if (sys.count.bodyScans == sys.count.bodyCount && sys.count.bodyCount > 0)
+                txt = $"► FSS all {sys.count.bodyCount} bodies";
             else
-                txtRoughStats.Text += $"FSS {systemStats.count.bodyScans} of {systemStats.count.bodyCount} bodies\r\n";
-
-            if (txtRoughStats.Text.Length == 0)
-                txtRoughStats.Text = "ugh";
+                txt = $"► FSS {sys.count.bodyScans} of {sys.count.bodyCount} bodies";
+            if (sys.count.dss == bodyNotStarCount && sys.count.bodyCount > 0)
+                txt += ", DSS all bodies.";
+            else if (sys.count.dss > 0)
+                txt += $", DSS {sys.count.dss} of {bodyNotStarCount} bodies.";
+            else
+                txt += $", No DSS.";
+            txtRoughStats.Text += txt + "\r\n";
 
             // how many images?
             flowImages.Controls.Clear();

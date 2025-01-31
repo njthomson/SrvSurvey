@@ -1750,7 +1750,7 @@ namespace SrvSurvey.game
             {
                 var dist = body.distanceFromArrivalLS - star.distanceFromArrivalLS;
                 var dist2 = Math.Pow(dist, 2);
-                var distMag = dist2.ToString().Length;
+                var distMag = dist2.ToString().Length; // Really just using the magnitude not the actual number
                 var relativeHeat = star.surfaceTemperature / distMag;
 
                 if (relativeHeat > maxValue)
@@ -2138,7 +2138,7 @@ namespace SrvSurvey.game
 
             var dist = bodyDistanceFromArrivalLS - this.distanceFromArrivalLS;
             var dist2 = Math.Pow(dist, 2);
-            var distMag = dist2.ToString().Length;
+            var distMag = dist2.ToString().Length; // Really just using the magnitude not the actual number
             var relativeHeat = this.surfaceTemperature / distMag;
 
             return relativeHeat;

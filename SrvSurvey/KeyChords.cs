@@ -194,15 +194,29 @@ namespace SrvSurvey
 
         private static bool pasteGalMap()
         {
-            if (Game.activeGame?.mode == GameMode.GalaxyMap && Clipboard.ContainsText(TextDataFormat.Text))
+            if (Game.activeGame?.mode != GameMode.GalaxyMap) return true;
+
+            string? keysToSend = null;
+            // if boxel searching is active, but it has clipboard auto-copy disabled
+            // AND we're within the boxel itself - send the next boxel system NOT what is in the clipboard
+            var bs = Game.activeGame?.cmdr?.boxelSearch;
+            if (bs?.active == true && bs?.autoCopy == false && bs.nextSystem != null && bs.current?.containsChild(Boxel.parse(Game.activeGame?.systemData?.name)) == true)
             {
-                var txt = Clipboard.GetText(TextDataFormat.Text);
-                Game.log($"Paste in gal-map: {txt}");
+                keysToSend = bs.nextSystem;
+            }
+            else if (Clipboard.ContainsText(TextDataFormat.Text))
+            {
+                keysToSend = Clipboard.GetText(TextDataFormat.Text);
+            }
+
+            if (keysToSend != null)
+            {
+                Game.log($"Paste in gal-map: {keysToSend}");
 
                 Elite.setFocusED();
                 Program.defer(() =>
                 {
-                    SendKeys.SendWait(txt);
+                    SendKeys.SendWait(keysToSend);
                 });
             }
 
@@ -246,7 +260,9 @@ namespace SrvSurvey
         private static bool showSystemNotes()
         {
             if (Game.activeGame?.isShutdown == false && Game.activeGame.fsdJumping == false && Game.activeGame.systemData != null)
-                BaseForm.show<FormSystemNotes>();
+            {
+                Program.defer(() => BaseForm.show<FormSystemNotes>().Activate());
+            }
 
             return true;
         }

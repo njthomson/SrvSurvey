@@ -116,7 +116,7 @@ namespace SrvSurvey.plotters
                 }
 
                 // ... and it has bio signals ...
-                if (targetBody?.bioSignalCount > 0 && game.isMode(GameMode.ExternalPanel, GameMode.SystemMap))
+                if (targetBody?.bioSignalCount > 0 && game.isMode(GameMode.ExternalPanel, GameMode.SystemMap, GameMode.Orrery))
                 {
                     // ... show it's details for ~5 seconds
                     this.durationBody = targetBody;

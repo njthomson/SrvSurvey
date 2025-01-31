@@ -78,6 +78,7 @@ namespace SrvSurvey.game
         public bool currentEmpty;
 
         /// <summary> Known systems in the current boxel </summary>
+        // TODO: Use a dictionary <Boxel, ...>
         [JsonIgnore]
         public HashSet<System> systems = new HashSet<System>(new System.Comparer());
 

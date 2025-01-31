@@ -59,11 +59,15 @@ namespace SrvSurvey.forms
                 // TODO: a proper mechanism to classify which systems are interesting
                 var txt = "";
                 if (sys.count.screenshots > 0)
-                    txt += $"{sys.count.screenshots} pic ";
+                    txt += $"P";
+                if (sys.count.organic > 0)
+                    txt += $"B";
                 if (sys.count.notes > 0)
-                    txt += $"+notes ";
-                if (sys.subCats?.Count > 0)
-                    txt += $"+codex ";
+                    txt += $"N";
+                if (sys.count.codexNew > 0)
+                    txt += $"C";
+                if (sys.count.touchdown > 0)
+                    txt += $"T";
 
                 if (txt.Length > 0)
                     item.SubItems.Add(txt.Trim());

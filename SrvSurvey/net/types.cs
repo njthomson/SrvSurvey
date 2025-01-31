@@ -123,7 +123,7 @@ namespace SrvSurvey.canonn
         public string hud_category; // "Biology"
         public string name; //         "$Codex_Ent_Seed_Name;"
         public string platform; //     "legacy"
-        public long? reward; //          1593700
+        public int? reward; //          1593700
         public string sub_category; // "$Codex_SubCategory_Organic_Structures;"
         public string sub_class; //    "Brain Tree"
 

@@ -60,9 +60,9 @@
             // btnClose
             // 
             btnClose.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnClose.Location = new Point(739, 488);
+            btnClose.Location = new Point(739, 553);
             btnClose.Name = "btnClose";
-            btnClose.Size = new Size(75, 23);
+            btnClose.Size = new Size(75, 26);
             btnClose.TabIndex = 4;
             btnClose.Text = "Close";
             btnClose.UseVisualStyleBackColor = true;
@@ -82,7 +82,7 @@
             listQuickStats.Name = "listQuickStats";
             listQuickStats.ShowGroups = false;
             listQuickStats.ShowItemToolTips = true;
-            listQuickStats.Size = new Size(235, 439);
+            listQuickStats.Size = new Size(235, 495);
             listQuickStats.TabIndex = 3;
             listQuickStats.UseCompatibleStateImageBehavior = false;
             listQuickStats.View = View.Details;
@@ -104,7 +104,7 @@
             listSystems.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2 });
             listSystems.Location = new Point(0, 0);
             listSystems.Name = "listSystems";
-            listSystems.Size = new Size(197, 433);
+            listSystems.Size = new Size(197, 494);
             listSystems.TabIndex = 0;
             listSystems.UseCompatibleStateImageBehavior = false;
             listSystems.View = View.Details;
@@ -125,10 +125,10 @@
             tabControl1.Appearance = TabAppearance.FlatButtons;
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
-            tabControl1.Location = new Point(12, 12);
+            tabControl1.Location = new Point(12, 14);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(802, 470);
+            tabControl1.Size = new Size(802, 533);
             tabControl1.SizeMode = TabSizeMode.Fixed;
             tabControl1.TabIndex = 0;
             // 
@@ -138,10 +138,10 @@
             tabPage1.Controls.Add(txtJourneyName);
             tabPage1.Controls.Add(listQuickStats);
             tabPage1.Controls.Add(txtDescription);
-            tabPage1.Location = new Point(4, 27);
+            tabPage1.Location = new Point(4, 29);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(794, 439);
+            tabPage1.Size = new Size(794, 500);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Overview";
             tabPage1.UseVisualStyleBackColor = true;
@@ -150,14 +150,14 @@
             // 
             txtByline.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtByline.BackColor = SystemColors.Control;
-            txtByline.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtByline.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             txtByline.ForeColor = SystemColors.WindowText;
-            txtByline.Location = new Point(0, 33);
+            txtByline.Location = new Point(0, 37);
             txtByline.Margin = new Padding(0, 3, 0, 3);
             txtByline.Name = "txtByline";
             txtByline.Padding = new Padding(3, 0, 3, 0);
             txtByline.ReadOnly = true;
-            txtByline.Size = new Size(547, 30);
+            txtByline.Size = new Size(547, 34);
             txtByline.TabIndex = 1;
             txtByline.Text = "cmdr Stuff | Jan 2nd 2025 ~ Dec 31st 3304";
             // 
@@ -166,13 +166,13 @@
             txtJourneyName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtJourneyName.BackColor = SystemColors.Window;
             txtJourneyName.BorderStyle = BorderStyle.FixedSingle;
-            txtJourneyName.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtJourneyName.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             txtJourneyName.ForeColor = SystemColors.WindowText;
             txtJourneyName.Location = new Point(0, 0);
             txtJourneyName.Margin = new Padding(0);
             txtJourneyName.Name = "txtJourneyName";
             txtJourneyName.Padding = new Padding(3, 0, 3, 0);
-            txtJourneyName.Size = new Size(547, 30);
+            txtJourneyName.Size = new Size(547, 34);
             txtJourneyName.TabIndex = 0;
             txtJourneyName.Text = "journey name";
             txtJourneyName.TextChanged2 += journey_TextChanged;
@@ -180,13 +180,13 @@
             // txtDescription
             // 
             txtDescription.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtDescription.Location = new Point(0, 66);
+            txtDescription.Location = new Point(0, 75);
             txtDescription.Margin = new Padding(0);
             txtDescription.Multiline = true;
             txtDescription.Name = "txtDescription";
             txtDescription.ScrollBars = ScrollBars.Vertical;
             txtDescription.ShortcutsEnabled = false;
-            txtDescription.Size = new Size(547, 373);
+            txtDescription.Size = new Size(547, 420);
             txtDescription.TabIndex = 2;
             txtDescription.Text = "journey description";
             txtDescription.TextChanged += journey_TextChanged;
@@ -194,10 +194,10 @@
             // tabPage2
             // 
             tabPage2.Controls.Add(splitContainer1);
-            tabPage2.Location = new Point(4, 27);
+            tabPage2.Location = new Point(4, 29);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(794, 439);
+            tabPage2.Size = new Size(794, 500);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Visited Systems";
             tabPage2.UseVisualStyleBackColor = true;
@@ -217,7 +217,7 @@
             // 
             splitContainer1.Panel2.BackColor = SystemColors.WindowFrame;
             splitContainer1.Panel2.Controls.Add(panelSystem);
-            splitContainer1.Size = new Size(788, 433);
+            splitContainer1.Size = new Size(788, 494);
             splitContainer1.SplitterDistance = 197;
             splitContainer1.TabIndex = 4;
             // 
@@ -228,15 +228,15 @@
             panelSystem.Location = new Point(0, 0);
             panelSystem.Margin = new Padding(0);
             panelSystem.Name = "panelSystem";
-            panelSystem.Size = new Size(587, 433);
+            panelSystem.Size = new Size(587, 494);
             panelSystem.TabIndex = 0;
             // 
             // btnSave
             // 
             btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSave.Location = new Point(658, 488);
+            btnSave.Location = new Point(658, 553);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(75, 23);
+            btnSave.Size = new Size(75, 26);
             btnSave.TabIndex = 3;
             btnSave.Text = "&Save";
             btnSave.UseVisualStyleBackColor = true;
@@ -246,9 +246,9 @@
             // btnProcess
             // 
             btnProcess.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnProcess.Location = new Point(16, 488);
+            btnProcess.Location = new Point(16, 553);
             btnProcess.Name = "btnProcess";
-            btnProcess.Size = new Size(139, 23);
+            btnProcess.Size = new Size(139, 26);
             btnProcess.TabIndex = 1;
             btnProcess.Text = "Re-process journals";
             btnProcess.UseVisualStyleBackColor = true;
@@ -257,9 +257,9 @@
             // btnConclude
             // 
             btnConclude.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnConclude.Location = new Point(161, 488);
+            btnConclude.Location = new Point(161, 553);
             btnConclude.Name = "btnConclude";
-            btnConclude.Size = new Size(131, 23);
+            btnConclude.Size = new Size(131, 26);
             btnConclude.TabIndex = 2;
             btnConclude.Text = "Conclude journey";
             btnConclude.UseVisualStyleBackColor = true;
@@ -267,14 +267,15 @@
             // 
             // FormJourneyViewer
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(826, 523);
+            ClientSize = new Size(826, 593);
             Controls.Add(btnConclude);
             Controls.Add(btnProcess);
             Controls.Add(btnSave);
             Controls.Add(tabControl1);
             Controls.Add(btnClose);
+            Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "FormJourneyViewer";
             Text = "Journey: ";
             tabControl1.ResumeLayout(false);

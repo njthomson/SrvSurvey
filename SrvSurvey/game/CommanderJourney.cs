@@ -163,7 +163,7 @@ namespace SrvSurvey.game
             if (this.postProcessing) throw new Exception("Why are we double processing?");
             this.postProcessing = true;
 
-            return Task.Run(async () =>
+            return Task.Run(() =>
             {
                 try
                 {
@@ -266,6 +266,12 @@ namespace SrvSurvey.game
 
             // Effectively (but not entirely) FSS scans
             currentSystem.count.bodyScans++;
+
+            if (entry.StarType != null)
+                currentSystem.count.stars++;
+
+            var reward = Util.GetBodyValue(entry, false);
+            currentSystem.count.rewardExp += reward;
         }
 
         public void onJournalEntry(SAAScanComplete entry)
@@ -274,6 +280,31 @@ namespace SrvSurvey.game
 
             // DSS complete
             currentSystem.count.dss++;
+
+            // NOTE: When re-processing journal entries, it's possible SystemData is more populated that we know about at this point :(
+
+            var sysData = SystemData.Load(currentSystem.starRef.name, currentSystem.starRef.id64, this.fid, false);
+            var body = sysData?.bodies.Find(b => b.id == entry.BodyID);
+            if (sysData == null || body == null) throw new Exception("Why no body?");
+
+            // increment by difference between the FSS and DSS reward (and we are going to assume they FSS'd first)
+            var rewardFss = Util.GetBodyValue(body, false, false);
+            var rewardDss = Util.GetBodyValue(body, true, entry.ProbesUsed <= entry.EfficiencyTarget);
+            var delta = rewardDss - rewardDss;
+            currentSystem.count.rewardExp += delta;
+
+            // UGH. Perhaps we should do this upon exiting a system?
+            //// have we mapped all mappable bodies in the system?
+            //var countMappableBodies = sysData.bodies.Count(_ => _.type == SystemBodyType.LandableBody || _.type == SystemBodyType.SolidBody || _.type == SystemBodyType.Giant);
+            //if (this.dssBodyCount == countMappableBodies && !this.dssAllBodies)
+            //{
+            //    this.dssAllBodies = true;
+            //    if (Game.activeGame?.systemData == this)
+            //    {
+            //        var bonus = countMappableBodies * 10_000;
+            //        Game.activeGame.cmdr.applyExplReward(bonus, $"DSS mapped all valid bodies");
+            //    }
+            //}
         }
 
         private void onJournalEntry(Touchdown entry)
@@ -286,7 +317,7 @@ namespace SrvSurvey.game
             currentSystem.landedOn ??= new();
             var shortName = entry.Body.Replace(entry.StarSystem, "").Replace(" ", "");
             if (!currentSystem.landedOn.ContainsKey(shortName)) currentSystem.landedOn[shortName] = new();
-            currentSystem.landedOn[shortName] += 1;
+            currentSystem.landedOn[shortName]++;
         }
 
         private void onJournalEntry(FSSBodySignals entry)
@@ -326,7 +357,12 @@ namespace SrvSurvey.game
 
             // new for galactic region
             if (entry.IsNewEntry)
+            {
                 currentSystem.count.codexNew += 1;
+
+                currentSystem.codexNew ??= new();
+                currentSystem.codexNew.Add(entry.Name_Localised);
+            }
 
             // TODO: track cmdr first scans here? Or just join against that data when viewing?
 
@@ -345,7 +381,12 @@ namespace SrvSurvey.game
 
             // count the 3rd and final scan
             if (entry.ScanType == ScanType.Analyse)
+            {
                 currentSystem.count.organic++;
+
+                var species = Game.codexRef.matchFromSpecies(entry.Species);
+                currentSystem.count.rewardBio += species.reward;
+            }
 
             // TODO: Maybe count the others?
         }
@@ -410,6 +451,8 @@ namespace SrvSurvey.game
                 { "Count touchdowns:", countTotalLandings.ToString("N0") },
                 { "Screenshots taken:", totalCounts.screenshots.ToString("N0") },
                 { "Organisms scanned:", totalCounts.organic.ToString("N0") },
+                { "Exobiology rewards:", totalCounts.rewardBio.ToString("N0") },
+                { "Exploration rewards:", "~" + totalCounts.rewardExp.ToString("N0") },
                 { "Codex scans:", countCodexScans.ToString("N0") },
                 { "NEW Codex scans:", totalCounts.codexNew.ToString("N0") },
             };
@@ -436,6 +479,8 @@ namespace SrvSurvey.game
             public Dictionary<string, int>? landedOn;
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
             public HashSet<long>? codexScanned;
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+            public HashSet<string>? codexNew;
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
             public Dictionary<string, int>? subCats;
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
@@ -484,10 +529,16 @@ namespace SrvSurvey.game
                 public int screenshots;
                 [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
                 public int notes;
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+                public int rewardBio;
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+                public int rewardExp;
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+                public int stars;
 
                 public override string ToString()
                 {
-                    return $"bodyScans: {bodyScans}, dss: {dss}, codexNew: {codexNew}, organic: {organic}, touchdown: {touchdown}";
+                    return $"bodyScans:{bodyScans}, dss:{dss}, codexNew:{codexNew}, organic:{organic}, touchdown:{touchdown}, bodyCount:{bodyCount}, screenshots:{screenshots}, notes:{notes}, rewardBio:{rewardBio}, rewardExp:{rewardExp}, stars:{stars}";
                 }
 
                 public static Counts operator +(Counts c1, Counts c2)
@@ -502,6 +553,9 @@ namespace SrvSurvey.game
                         bodyCount = c1.bodyCount + c2.bodyCount,
                         screenshots = c1.screenshots + c2.screenshots,
                         notes = c1.notes + c2.notes,
+                        rewardBio = c1.rewardBio + c2.rewardBio,
+                        rewardExp = c1.rewardExp + c2.rewardExp,
+                        stars = c1.stars + c2.stars,
                     };
                 }
             }

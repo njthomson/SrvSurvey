@@ -59,14 +59,14 @@
             // 
             txtSystemName.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtSystemName.BackColor = SystemColors.Control;
-            txtSystemName.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtSystemName.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             txtSystemName.ForeColor = SystemColors.WindowText;
             txtSystemName.Location = new Point(0, 0);
             txtSystemName.Margin = new Padding(0);
             txtSystemName.Name = "txtSystemName";
             txtSystemName.Padding = new Padding(3, 0, 3, 3);
             txtSystemName.ReadOnly = true;
-            txtSystemName.Size = new Size(723, 30);
+            txtSystemName.Size = new Size(723, 34);
             txtSystemName.TabIndex = 0;
             txtSystemName.Text = "system name";
             // 
@@ -79,7 +79,7 @@
             txtNotes.Name = "txtNotes";
             txtNotes.ScrollBars = ScrollBars.Vertical;
             txtNotes.ShortcutsEnabled = false;
-            txtNotes.Size = new Size(562, 187);
+            txtNotes.Size = new Size(419, 212);
             txtNotes.TabIndex = 1;
             txtNotes.TextChanged += txtNotes_TextChanged;
             // 
@@ -88,12 +88,12 @@
             txtStuff.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtStuff.BackColor = SystemColors.Control;
             txtStuff.ForeColor = SystemColors.WindowText;
-            txtStuff.Location = new Point(0, 33);
+            txtStuff.Location = new Point(0, 37);
             txtStuff.Margin = new Padding(0, 3, 0, 3);
             txtStuff.Name = "txtStuff";
             txtStuff.Padding = new Padding(3, 0, 3, 0);
             txtStuff.ReadOnly = true;
-            txtStuff.Size = new Size(723, 30);
+            txtStuff.Size = new Size(723, 34);
             txtStuff.TabIndex = 1;
             txtStuff.Text = "stuff";
             // 
@@ -113,10 +113,10 @@
             flowImages.Controls.Add(pictureBox1);
             flowImages.Controls.Add(pictureBox2);
             flowImages.Controls.Add(pictureBox3);
-            flowImages.Location = new Point(0, 28);
+            flowImages.Location = new Point(0, 32);
             flowImages.Margin = new Padding(0);
             flowImages.Name = "flowImages";
-            flowImages.Size = new Size(723, 277);
+            flowImages.Size = new Size(723, 312);
             flowImages.TabIndex = 2;
             // 
             // pictureBox1
@@ -124,7 +124,7 @@
             pictureBox1.BackColor = Color.FromArgb(255, 128, 128);
             pictureBox1.Location = new Point(3, 3);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(320, 160);
+            pictureBox1.Size = new Size(320, 181);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
@@ -133,27 +133,27 @@
             pictureBox2.BackColor = Color.FromArgb(128, 255, 128);
             pictureBox2.Location = new Point(329, 3);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(320, 160);
+            pictureBox2.Size = new Size(320, 181);
             pictureBox2.TabIndex = 1;
             pictureBox2.TabStop = false;
             // 
             // pictureBox3
             // 
             pictureBox3.BackColor = Color.FromArgb(128, 128, 255);
-            pictureBox3.Location = new Point(3, 169);
+            pictureBox3.Location = new Point(3, 190);
             pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(320, 160);
+            pictureBox3.Size = new Size(320, 181);
             pictureBox3.TabIndex = 2;
             pictureBox3.TabStop = false;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.Location = new Point(0, 2);
             label1.Margin = new Padding(3, 0, 3, 3);
             label1.Name = "label1";
-            label1.Size = new Size(175, 21);
+            label1.Size = new Size(163, 19);
             label1.TabIndex = 0;
             label1.Text = "Photos in this system:";
             // 
@@ -161,7 +161,7 @@
             // 
             split.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             split.BackColor = SystemColors.ButtonShadow;
-            split.Location = new Point(0, 66);
+            split.Location = new Point(0, 74);
             split.Margin = new Padding(0);
             split.Name = "split";
             split.Orientation = Orientation.Horizontal;
@@ -178,16 +178,17 @@
             split.Panel2.Controls.Add(checkJourneyImagesOnly);
             split.Panel2.Controls.Add(flowImages);
             split.Panel2.Controls.Add(label1);
-            split.Size = new Size(723, 496);
-            split.SplitterDistance = 187;
+            split.Size = new Size(723, 563);
+            split.SplitterDistance = 212;
+            split.SplitterWidth = 5;
             split.TabIndex = 5;
             // 
             // btnSaveNotes
             // 
             btnSaveNotes.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSaveNotes.Location = new Point(490, 161);
+            btnSaveNotes.Location = new Point(348, 183);
             btnSaveNotes.Name = "btnSaveNotes";
-            btnSaveNotes.Size = new Size(51, 23);
+            btnSaveNotes.Size = new Size(51, 26);
             btnSaveNotes.TabIndex = 0;
             btnSaveNotes.Text = "&Save";
             btnSaveNotes.UseVisualStyleBackColor = true;
@@ -197,12 +198,12 @@
             // txtRoughStats
             // 
             txtRoughStats.Dock = DockStyle.Right;
-            txtRoughStats.Location = new Point(562, 0);
+            txtRoughStats.Location = new Point(419, 0);
             txtRoughStats.Multiline = true;
             txtRoughStats.Name = "txtRoughStats";
             txtRoughStats.ReadOnly = true;
             txtRoughStats.ScrollBars = ScrollBars.Vertical;
-            txtRoughStats.Size = new Size(161, 187);
+            txtRoughStats.Size = new Size(304, 212);
             txtRoughStats.TabIndex = 2;
             // 
             // checkJourneyImagesOnly
@@ -210,9 +211,9 @@
             checkJourneyImagesOnly.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             checkJourneyImagesOnly.AutoSize = true;
             checkJourneyImagesOnly.Enabled = false;
-            checkJourneyImagesOnly.Location = new Point(537, 6);
+            checkJourneyImagesOnly.Location = new Point(525, 7);
             checkJourneyImagesOnly.Name = "checkJourneyImagesOnly";
-            checkJourneyImagesOnly.Size = new Size(186, 19);
+            checkJourneyImagesOnly.Size = new Size(198, 21);
             checkJourneyImagesOnly.TabIndex = 1;
             checkJourneyImagesOnly.Text = "Only images from this journey";
             checkJourneyImagesOnly.UseVisualStyleBackColor = true;
@@ -231,17 +232,18 @@
             table.RowStyles.Add(new RowStyle());
             table.RowStyles.Add(new RowStyle());
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            table.Size = new Size(723, 562);
+            table.Size = new Size(723, 637);
             table.TabIndex = 6;
             // 
             // ViewJourneySystem
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(table);
             DoubleBuffered = true;
+            Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "ViewJourneySystem";
-            Size = new Size(723, 562);
+            Size = new Size(723, 637);
             flowImages.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();

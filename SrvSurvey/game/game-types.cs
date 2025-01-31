@@ -277,7 +277,7 @@ namespace SrvSurvey.game
 
         public string name;   // $Codex_Ent_Stratum_07_Name;
         public string englishName; // Stratum Tectonicas
-        public long reward; // 19010800
+        public int reward; // 19010800
         public string entryIdPrefix; // 24207
 
         public List<BioVariant> variants;

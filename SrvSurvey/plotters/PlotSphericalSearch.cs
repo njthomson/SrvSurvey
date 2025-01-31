@@ -46,7 +46,7 @@ namespace SrvSurvey.plotters
             });
 
             // put next boxel system in clipboard?
-            Util.deferAfter(500, () =>
+            Util.deferAfter(250, () =>
             {
                 if (game.cmdr.boxelSearch?.active == true && game.cmdr.boxelSearch.autoCopy)
                 {
@@ -119,10 +119,14 @@ namespace SrvSurvey.plotters
 
         private string? checkBoxel(Boxel? bx)
         {
-            if (bx != null && game.cmdr.boxelSearch?.boxel.containsChild(bx) == false)
-                return $"► {bx.name} is outside search boxel";
-            else if (bx?.massCode < game.cmdr.boxelSearch?.lowMassCode)
-                return $"► {bx.name} mass code too low";
+            if (bx == null || game.cmdr.boxelSearch == null)
+                return null;
+            else if (!game.cmdr.boxelSearch.boxel.containsChild(bx))
+                return $"✋ Outside search boxel";
+            else if (bx.massCode < game.cmdr.boxelSearch.lowMassCode)
+                return $"⚠️ Mass code too low";
+            else if (game.cmdr.boxelSearch.systems.FirstOrDefault(sys => sys.name == bx)?.complete == true)
+                return $"✔️ System already surveyed";
             else
                 return null;
         }
@@ -308,13 +312,13 @@ namespace SrvSurvey.plotters
             if (this.badDestination?.Length > 0)
             {
                 newLine(+eight, true);
-                this.drawTextAt2b(eight, this.Width - 4, this.badDestination, GameColors.red, ff);
+                this.drawTextAt2b(eight, this.Width - 4, this.badDestination, GameColors.red, GameColors.fontMiddle);
                 dtx += ten;
             }
             else if (this.destinationName != null)
             {
                 newLine(+eight, true);
-                this.drawTextAt2b(eight, this.Width - 4, $"► Destination is valid", GameColors.Cyan, ff);
+                this.drawTextAt2b(eight, this.Width - 4, $"► Destination is valid", GameColors.Orange, ff);
                 dtx += ten;
             }
 
