@@ -77,23 +77,11 @@
   <data name="&gt;&gt;btnBegin.Name" xml:space="preserve">
     <value>btnBegin</value>
   </data>
-  <data name="&gt;&gt;btnBegin.Name" xml:space="preserve">
-    <value>btnBegin</value>
-  </data>
-  <data name="&gt;&gt;btnBegin.Parent" xml:space="preserve">
-    <value>tableConfig</value>
-  </data>
   <data name="&gt;&gt;btnBegin.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
   <data name="&gt;&gt;btnBegin.Type" xml:space="preserve">
     <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;btnBegin.Type" xml:space="preserve">
-    <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;btnBegin.ZOrder" xml:space="preserve">
-    <value>6</value>
   </data>
   <data name="&gt;&gt;btnBegin.ZOrder" xml:space="preserve">
     <value>6</value>
@@ -125,17 +113,8 @@
   <data name="&gt;&gt;btnConfigCancel.Name" xml:space="preserve">
     <value>btnConfigCancel</value>
   </data>
-  <data name="&gt;&gt;btnConfigCancel.Name" xml:space="preserve">
-    <value>btnConfigCancel</value>
-  </data>
   <data name="&gt;&gt;btnConfigCancel.Parent" xml:space="preserve">
     <value>tableConfig</value>
-  </data>
-  <data name="&gt;&gt;btnConfigCancel.Parent" xml:space="preserve">
-    <value>tableConfig</value>
-  </data>
-  <data name="&gt;&gt;btnConfigCancel.Type" xml:space="preserve">
-    <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;btnConfigCancel.Type" xml:space="preserve">
     <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
@@ -143,29 +122,14 @@
   <data name="&gt;&gt;btnConfigCancel.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="&gt;&gt;btnConfigCancel.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;btnConfigNav.Name" xml:space="preserve">
-    <value>btnConfigNav</value>
-  </data>
   <data name="&gt;&gt;btnConfigNav.Name" xml:space="preserve">
     <value>btnConfigNav</value>
   </data>
   <data name="&gt;&gt;btnConfigNav.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
-  <data name="&gt;&gt;btnConfigNav.Parent" xml:space="preserve">
-    <value>tableConfig</value>
-  </data>
   <data name="&gt;&gt;btnConfigNav.Type" xml:space="preserve">
     <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;btnConfigNav.Type" xml:space="preserve">
-    <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;btnConfigNav.ZOrder" xml:space="preserve">
-    <value>7</value>
   </data>
   <data name="&gt;&gt;btnConfigNav.ZOrder" xml:space="preserve">
     <value>7</value>
@@ -215,17 +179,8 @@
   <data name="&gt;&gt;checkCompleteOnEnterSystem.Name" xml:space="preserve">
     <value>checkCompleteOnEnterSystem</value>
   </data>
-  <data name="&gt;&gt;checkCompleteOnEnterSystem.Name" xml:space="preserve">
-    <value>checkCompleteOnEnterSystem</value>
-  </data>
   <data name="&gt;&gt;checkCompleteOnEnterSystem.Parent" xml:space="preserve">
     <value>tableConfig</value>
-  </data>
-  <data name="&gt;&gt;checkCompleteOnEnterSystem.Parent" xml:space="preserve">
-    <value>tableConfig</value>
-  </data>
-  <data name="&gt;&gt;checkCompleteOnEnterSystem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;checkCompleteOnEnterSystem.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -233,17 +188,8 @@
   <data name="&gt;&gt;checkCompleteOnEnterSystem.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
-  <data name="&gt;&gt;checkCompleteOnEnterSystem.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
   <data name="&gt;&gt;checkCompleteOnFssAllBodies.Name" xml:space="preserve">
     <value>checkCompleteOnFssAllBodies</value>
-  </data>
-  <data name="&gt;&gt;checkCompleteOnFssAllBodies.Name" xml:space="preserve">
-    <value>checkCompleteOnFssAllBodies</value>
-  </data>
-  <data name="&gt;&gt;checkCompleteOnFssAllBodies.Parent" xml:space="preserve">
-    <value>tableConfig</value>
   </data>
   <data name="&gt;&gt;checkCompleteOnFssAllBodies.Parent" xml:space="preserve">
     <value>tableConfig</value>
@@ -251,17 +197,8 @@
   <data name="&gt;&gt;checkCompleteOnFssAllBodies.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;checkCompleteOnFssAllBodies.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;checkCompleteOnFssAllBodies.ZOrder" xml:space="preserve">
     <value>10</value>
-  </data>
-  <data name="&gt;&gt;checkCompleteOnFssAllBodies.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;checkSkipVisited.Name" xml:space="preserve">
-    <value>checkSkipVisited</value>
   </data>
   <data name="&gt;&gt;checkSkipVisited.Name" xml:space="preserve">
     <value>checkSkipVisited</value>
@@ -269,17 +206,8 @@
   <data name="&gt;&gt;checkSkipVisited.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
-  <data name="&gt;&gt;checkSkipVisited.Parent" xml:space="preserve">
-    <value>tableConfig</value>
-  </data>
   <data name="&gt;&gt;checkSkipVisited.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkSkipVisited.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkSkipVisited.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="&gt;&gt;checkSkipVisited.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -287,23 +215,11 @@
   <data name="&gt;&gt;checkSpinKnownToSpansh.Name" xml:space="preserve">
     <value>checkSpinKnownToSpansh</value>
   </data>
-  <data name="&gt;&gt;checkSpinKnownToSpansh.Name" xml:space="preserve">
-    <value>checkSpinKnownToSpansh</value>
-  </data>
-  <data name="&gt;&gt;checkSpinKnownToSpansh.Parent" xml:space="preserve">
-    <value>tableConfig</value>
-  </data>
   <data name="&gt;&gt;checkSpinKnownToSpansh.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
   <data name="&gt;&gt;checkSpinKnownToSpansh.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkSpinKnownToSpansh.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkSpinKnownToSpansh.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="&gt;&gt;checkSpinKnownToSpansh.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -335,17 +251,8 @@
   <data name="&gt;&gt;comboFrom.Name" xml:space="preserve">
     <value>comboFrom</value>
   </data>
-  <data name="&gt;&gt;comboFrom.Name" xml:space="preserve">
-    <value>comboFrom</value>
-  </data>
   <data name="&gt;&gt;comboFrom.Parent" xml:space="preserve">
     <value>panelList</value>
-  </data>
-  <data name="&gt;&gt;comboFrom.Parent" xml:space="preserve">
-    <value>panelList</value>
-  </data>
-  <data name="&gt;&gt;comboFrom.Type" xml:space="preserve">
-    <value>SrvSurvey.ComboStarSystem, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;comboFrom.Type" xml:space="preserve">
     <value>SrvSurvey.ComboStarSystem, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
@@ -353,29 +260,14 @@
   <data name="&gt;&gt;comboFrom.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;comboFrom.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;comboLowMassCode.Name" xml:space="preserve">
-    <value>comboLowMassCode</value>
-  </data>
   <data name="&gt;&gt;comboLowMassCode.Name" xml:space="preserve">
     <value>comboLowMassCode</value>
   </data>
   <data name="&gt;&gt;comboLowMassCode.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
-  <data name="&gt;&gt;comboLowMassCode.Parent" xml:space="preserve">
-    <value>tableConfig</value>
-  </data>
   <data name="&gt;&gt;comboLowMassCode.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;comboLowMassCode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;comboLowMassCode.ZOrder" xml:space="preserve">
-    <value>14</value>
   </data>
   <data name="&gt;&gt;comboLowMassCode.ZOrder" xml:space="preserve">
     <value>14</value>
@@ -389,23 +281,11 @@
   <data name="&gt;&gt;dateStart.Name" xml:space="preserve">
     <value>dateStart</value>
   </data>
-  <data name="&gt;&gt;dateStart.Name" xml:space="preserve">
-    <value>dateStart</value>
-  </data>
-  <data name="&gt;&gt;dateStart.Parent" xml:space="preserve">
-    <value>tableConfig</value>
-  </data>
   <data name="&gt;&gt;dateStart.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
   <data name="&gt;&gt;dateStart.Type" xml:space="preserve">
     <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dateStart.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dateStart.ZOrder" xml:space="preserve">
-    <value>13</value>
   </data>
   <data name="&gt;&gt;dateStart.ZOrder" xml:space="preserve">
     <value>13</value>
@@ -437,23 +317,11 @@
   <data name="&gt;&gt;label2.Name" xml:space="preserve">
     <value>label2</value>
   </data>
-  <data name="&gt;&gt;label2.Name" xml:space="preserve">
-    <value>label2</value>
-  </data>
-  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
-    <value>panelList</value>
-  </data>
   <data name="&gt;&gt;label2.Parent" xml:space="preserve">
     <value>panelList</value>
   </data>
   <data name="&gt;&gt;label2.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -473,17 +341,8 @@
   <data name="&gt;&gt;label4.Name" xml:space="preserve">
     <value>label4</value>
   </data>
-  <data name="&gt;&gt;label4.Name" xml:space="preserve">
-    <value>label4</value>
-  </data>
   <data name="&gt;&gt;label4.Parent" xml:space="preserve">
     <value>tableConfig</value>
-  </data>
-  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>tableConfig</value>
-  </data>
-  <data name="&gt;&gt;label4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label4.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -491,17 +350,8 @@
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
-  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
   <data name="&gt;&gt;label5.Name" xml:space="preserve">
     <value>label5</value>
-  </data>
-  <data name="&gt;&gt;label5.Name" xml:space="preserve">
-    <value>label5</value>
-  </data>
-  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
-    <value>tableConfig</value>
   </data>
   <data name="&gt;&gt;label5.Parent" xml:space="preserve">
     <value>tableConfig</value>
@@ -509,17 +359,8 @@
   <data name="&gt;&gt;label5.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
     <value>4</value>
-  </data>
-  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;label6.Name" xml:space="preserve">
-    <value>label6</value>
   </data>
   <data name="&gt;&gt;label6.Name" xml:space="preserve">
     <value>label6</value>
@@ -527,17 +368,8 @@
   <data name="&gt;&gt;label6.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>tableConfig</value>
-  </data>
   <data name="&gt;&gt;label6.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
     <value>5</value>
@@ -545,17 +377,8 @@
   <data name="&gt;&gt;labelGraphic.Name" xml:space="preserve">
     <value>labelGraphic</value>
   </data>
-  <data name="&gt;&gt;labelGraphic.Name" xml:space="preserve">
-    <value>labelGraphic</value>
-  </data>
   <data name="&gt;&gt;labelGraphic.Parent" xml:space="preserve">
     <value>panelGraphic</value>
-  </data>
-  <data name="&gt;&gt;labelGraphic.Parent" xml:space="preserve">
-    <value>panelGraphic</value>
-  </data>
-  <data name="&gt;&gt;labelGraphic.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;labelGraphic.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -563,17 +386,8 @@
   <data name="&gt;&gt;labelGraphic.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;labelGraphic.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="&gt;&gt;lblBadBoxel.Name" xml:space="preserve">
     <value>lblBadBoxel</value>
-  </data>
-  <data name="&gt;&gt;lblBadBoxel.Name" xml:space="preserve">
-    <value>lblBadBoxel</value>
-  </data>
-  <data name="&gt;&gt;lblBadBoxel.Parent" xml:space="preserve">
-    <value>tableConfig</value>
   </data>
   <data name="&gt;&gt;lblBadBoxel.Parent" xml:space="preserve">
     <value>tableConfig</value>
@@ -581,17 +395,8 @@
   <data name="&gt;&gt;lblBadBoxel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblBadBoxel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;lblBadBoxel.ZOrder" xml:space="preserve">
     <value>15</value>
-  </data>
-  <data name="&gt;&gt;lblBadBoxel.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="&gt;&gt;lblBoxelCount.Name" xml:space="preserve">
-    <value>lblBoxelCount</value>
   </data>
   <data name="&gt;&gt;lblBoxelCount.Name" xml:space="preserve">
     <value>lblBoxelCount</value>
@@ -599,17 +404,8 @@
   <data name="&gt;&gt;lblBoxelCount.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
-  <data name="&gt;&gt;lblBoxelCount.Parent" xml:space="preserve">
-    <value>tableConfig</value>
-  </data>
   <data name="&gt;&gt;lblBoxelCount.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblBoxelCount.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblBoxelCount.ZOrder" xml:space="preserve">
-    <value>16</value>
   </data>
   <data name="&gt;&gt;lblBoxelCount.ZOrder" xml:space="preserve">
     <value>16</value>
@@ -617,23 +413,11 @@
   <data name="&gt;&gt;lblConfigHeader.Name" xml:space="preserve">
     <value>lblConfigHeader</value>
   </data>
-  <data name="&gt;&gt;lblConfigHeader.Name" xml:space="preserve">
-    <value>lblConfigHeader</value>
-  </data>
-  <data name="&gt;&gt;lblConfigHeader.Parent" xml:space="preserve">
-    <value>tableConfig</value>
-  </data>
   <data name="&gt;&gt;lblConfigHeader.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
   <data name="&gt;&gt;lblConfigHeader.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblConfigHeader.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblConfigHeader.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="&gt;&gt;lblConfigHeader.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -659,23 +443,11 @@
   <data name="&gt;&gt;list.Name" xml:space="preserve">
     <value>list</value>
   </data>
-  <data name="&gt;&gt;list.Name" xml:space="preserve">
-    <value>list</value>
-  </data>
-  <data name="&gt;&gt;list.Parent" xml:space="preserve">
-    <value>panelList</value>
-  </data>
   <data name="&gt;&gt;list.Parent" xml:space="preserve">
     <value>panelList</value>
   </data>
   <data name="&gt;&gt;list.Type" xml:space="preserve">
     <value>System.Windows.Forms.ListView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;list.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;list.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="&gt;&gt;list.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -719,23 +491,11 @@
   <data name="&gt;&gt;panelGraphic.Name" xml:space="preserve">
     <value>panelGraphic</value>
   </data>
-  <data name="&gt;&gt;panelGraphic.Name" xml:space="preserve">
-    <value>panelGraphic</value>
-  </data>
-  <data name="&gt;&gt;panelGraphic.Parent" xml:space="preserve">
-    <value>tableConfig</value>
-  </data>
   <data name="&gt;&gt;panelGraphic.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
   <data name="&gt;&gt;panelGraphic.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panelGraphic.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panelGraphic.ZOrder" xml:space="preserve">
-    <value>8</value>
   </data>
   <data name="&gt;&gt;panelGraphic.ZOrder" xml:space="preserve">
     <value>8</value>

@@ -106,19 +106,19 @@ namespace SrvSurvey.plotters
             var systemName = undiscoveredSystem
                 ? $"⚑ {game.systemData.name}"
                 : game.systemData.name;
-            drawTextAt(systemName, undiscoveredSystem ? GameColors.brushCyan : null, GameColors.fontSmallBold);
+            drawTextAt2(systemName, undiscoveredSystem ? GameColors.Cyan : null, GameColors.Fonts.gothic_12B);
             newLine(+eight, true);
 
             // 2nd line body count / values
             var bodyCount = game.systemData.bodies.Count(_ => _.scanned && _.type != SystemBodyType.Asteroid);
-            drawTextAt(eight, $"Scanned {bodyCount} bodies: {Util.credits(game.systemData.sumRewards())}");
+            drawTextAt2(eight, $"Scanned {bodyCount} bodies: {Util.credits(game.systemData.sumRewards())}");
             newLine(true);
-            drawTextAt(eight, $"( Hiding bodies < {Util.credits(Game.settings.hideFssLowValueAmount)} )", GameColors.brushGameOrangeDim);
+            drawTextAt2(eight, $"( Hiding bodies < {Util.credits(Game.settings.hideFssLowValueAmount)} )", GameColors.OrangeDim);
             newLine(+eight, true);
 
             if (scans.Count == 0)
             {
-                drawTextAt(eight, "(scan to populate)");
+                drawTextAt2(eight, "(scan to populate)");
                 newLine(true);
             }
 
@@ -144,38 +144,40 @@ namespace SrvSurvey.plotters
                 var prefix = scan.body.wasDiscovered ? "" : "⚑ ";
                 var txt = $"{prefix}{scan.body.shortName} - {planetClass}"; // ◌◎◉☆★☄☼☀⛀⛃✔✨✶✪❓❔❓⛬❗❕ * ❒❱✪❍❌✋❖⟡⦁⦂⧫⇲
                 var suffixes = new List<string>();
-                if (scan.body.terraformable) suffixes.Add("T");
-                if (scan.body.type == SystemBodyType.LandableBody) suffixes.Add("L");
-                if (suffixes.Count > 0) txt += $" ({string.Join(',', suffixes)})";
+                if (scan.body.terraformable) suffixes.Add("🏕️");
+                if (scan.body.type == SystemBodyType.LandableBody) suffixes.Add("🚀");
+                if (scan.body.firstFootFall) suffixes.Add("🦶");
+                if (suffixes.Count > 0) txt += $" {string.Join(',', suffixes)}";
                 if (scan.body.type == SystemBodyType.Star)
                     txt = $"{prefix}{scan.body.shortName} - {scan.body.starType} Star";
 
-                drawTextAt(oneSix, txt, highlight ? GameColors.brushCyan : null, GameColors.fontSmall2);
+                drawTextAt2(oneSix, txt, highlight ? GameColors.Cyan : null, GameColors.fontSmall2);
                 newLine(true);
 
                 // 2nd line: scan values
-                var reward = scan.body.reward.ToString("N0"); // scan.reward ?
-                drawTextAt(thirty, $"{reward}", dssWorthy ? GameColors.brushCyan : null);
+                var reward = (scan.body.dssComplete ? "✔️ " : "") + Util.credits(scan.body.reward, true); // scan.reward ?
+                
+                drawTextAt2(thirty, reward, dssWorthy ? GameColors.Cyan : null);
                 if (scan.body.type != SystemBodyType.Star && !scan.body.dssComplete)
                 {
-                    drawTextAt("| ", GameColors.brushGameOrangeDim);
-                    drawTextAt(scan.dssReward.ToString("N0"), dssWorthy ? GameColors.brushCyan : null);
+                    drawTextAt2(" | ", GameColors.OrangeDim);
+                    drawTextAt2(scan.dssReward.ToString("N0"), dssWorthy ? GameColors.Cyan : null);
                 }
 
                 if (scan.body.bioSignalCount > 0)
                 {
-                    drawTextAt("| ", GameColors.brushGameOrangeDim);
+                    drawTextAt2(" | ", GameColors.OrangeDim);
                     var analyzed = scan.body.countAnalyzedBioSignals == scan.body.bioSignalCount;
-                    var sz = drawTextAt($"{scan.body.bioSignalCount} Genus", analyzed ? GameColors.brushGameOrange : GameColors.brushCyan);
+                    var sz = drawTextAt2($"{scan.body.bioSignalCount} Genus", analyzed ? GameColors.Orange : GameColors.Cyan);
                     if (analyzed)
                         strikeThrough(dtx, dty + two + sz.Height / 2, -sz.Width, false);
                 }
 
                 if (!Game.settings.hideGeoCountInFssInfo && scan.body.geoSignalCount > 0)
                 {
-                    drawTextAt("| ", GameColors.brushGameOrangeDim);
+                    drawTextAt2(" | ", GameColors.OrangeDim);
                     var analyzed = scan.body.geoSignalNames.Count == scan.body.geoSignalCount;
-                    var sz = drawTextAt($"{scan.body.geoSignalCount} Geo", analyzed ? GameColors.brushGameOrange : GameColors.brushCyan);
+                    var sz = drawTextAt2($"{scan.body.geoSignalCount} Geo", analyzed ? GameColors.Orange : GameColors.Cyan);
                     if (analyzed)
                         strikeThrough(dtx, dty + two + sz.Height / 2, -sz.Width, false);
 
@@ -189,9 +191,9 @@ namespace SrvSurvey.plotters
                     break;
             }
 
-            drawTextAt(eight, "Scan value | DSS value", GameColors.brushGameOrangeDim);
+            drawTextAt2(eight, "Scan value | DSS value", GameColors.OrangeDim);
             newLine(true);
-            drawTextAt(eight, "⚑ Undiscovered", GameColors.brushGameOrangeDim);
+            drawTextAt2(eight, "🏕️ Terraformable\n🚀 Landable ⚑ Undiscovered", GameColors.OrangeDim);
             newLine(true);
 
             this.formAdjustSize(+oneEight, +ten);

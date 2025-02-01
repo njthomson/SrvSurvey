@@ -67,7 +67,7 @@ namespace SrvSurvey
             lblSysEst.Anchor = AnchorStyles.Right;
             lblSysEst.AutoSize = true;
             lblSysEst.FlatStyle = FlatStyle.System;
-            lblSysEst.Location = new Point(11, 31);
+            lblSysEst.Location = new Point(10, 31);
             lblSysEst.Name = "lblSysEst";
             lblSysEst.Size = new Size(117, 12);
             lblSysEst.TabIndex = 1;
@@ -79,7 +79,7 @@ namespace SrvSurvey
             tree.CausesValidation = false;
             tree.Dock = DockStyle.Fill;
             tree.DrawMode = TreeViewDrawMode.OwnerDrawAll;
-            tree.Font = new Font("Lucida Console", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            tree.Font = new Font("Lucida Console", 9.75F);
             tree.ForeColor = SystemColors.Info;
             tree.FullRowSelect = true;
             tree.HideSelection = false;
@@ -104,7 +104,7 @@ namespace SrvSurvey
             lblSysEstFF.Anchor = AnchorStyles.Right;
             lblSysEstFF.AutoSize = true;
             lblSysEstFF.FlatStyle = FlatStyle.System;
-            lblSysEstFF.Location = new Point(25, 52);
+            lblSysEstFF.Location = new Point(24, 52);
             lblSysEstFF.Name = "lblSysEstFF";
             lblSysEstFF.Size = new Size(103, 12);
             lblSysEstFF.TabIndex = 3;
@@ -116,11 +116,11 @@ namespace SrvSurvey
             txtScanCount.BackColor = Color.Black;
             txtScanCount.BorderStyle = BorderStyle.FixedSingle;
             txtScanCount.ForeColor = Color.Red;
-            txtScanCount.Location = new Point(382, 49);
+            txtScanCount.Location = new Point(380, 49);
             txtScanCount.Margin = new Padding(0, 1, 0, 1);
             txtScanCount.Name = "txtScanCount";
             txtScanCount.ReadOnly = true;
-            txtScanCount.Size = new Size(100, 19);
+            txtScanCount.Size = new Size(102, 19);
             txtScanCount.TabIndex = 8;
             txtScanCount.Text = "99 of 99";
             txtScanCount.TextAlign = HorizontalAlignment.Center;
@@ -130,7 +130,7 @@ namespace SrvSurvey
             lblScanCount.Anchor = AnchorStyles.Right;
             lblScanCount.AutoSize = true;
             lblScanCount.FlatStyle = FlatStyle.System;
-            lblScanCount.Location = new Point(272, 52);
+            lblScanCount.Location = new Point(270, 52);
             lblScanCount.Margin = new Padding(6, 0, 0, 0);
             lblScanCount.Name = "lblScanCount";
             lblScanCount.Size = new Size(110, 12);
@@ -143,7 +143,7 @@ namespace SrvSurvey
             txtSysEst.BackColor = Color.Black;
             txtSysEst.BorderStyle = BorderStyle.FixedSingle;
             txtSysEst.ForeColor = Color.Red;
-            txtSysEst.Location = new Point(131, 28);
+            txtSysEst.Location = new Point(130, 28);
             txtSysEst.Margin = new Padding(0, 1, 0, 1);
             txtSysEst.Name = "txtSysEst";
             txtSysEst.ReadOnly = true;
@@ -158,7 +158,7 @@ namespace SrvSurvey
             txtSysEstFF.BackColor = Color.Black;
             txtSysEstFF.BorderStyle = BorderStyle.FixedSingle;
             txtSysEstFF.ForeColor = Color.Red;
-            txtSysEstFF.Location = new Point(131, 49);
+            txtSysEstFF.Location = new Point(130, 49);
             txtSysEstFF.Margin = new Padding(0, 1, 0, 1);
             txtSysEstFF.Name = "txtSysEstFF";
             txtSysEstFF.ReadOnly = true;
@@ -173,7 +173,7 @@ namespace SrvSurvey
             txtSystem.BackColor = Color.Black;
             txtSystem.BorderStyle = BorderStyle.FixedSingle;
             tableTop.SetColumnSpan(txtSystem, 4);
-            txtSystem.Font = new Font("Lucida Console", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            txtSystem.Font = new Font("Lucida Console", 12F);
             txtSystem.ForeColor = Color.Red;
             txtSystem.Location = new Point(0, 0);
             txtSystem.Margin = new Padding(0, 0, 0, 1);
@@ -219,7 +219,7 @@ namespace SrvSurvey
             lblSysActual.Anchor = AnchorStyles.Right;
             lblSysActual.AutoSize = true;
             lblSysActual.FlatStyle = FlatStyle.System;
-            lblSysActual.Location = new Point(276, 31);
+            lblSysActual.Location = new Point(274, 31);
             lblSysActual.Name = "lblSysActual";
             lblSysActual.Size = new Size(103, 12);
             lblSysActual.TabIndex = 5;
@@ -231,11 +231,11 @@ namespace SrvSurvey
             txtSysActual.BackColor = Color.Black;
             txtSysActual.BorderStyle = BorderStyle.FixedSingle;
             txtSysActual.ForeColor = Color.Red;
-            txtSysActual.Location = new Point(382, 28);
+            txtSysActual.Location = new Point(380, 28);
             txtSysActual.Margin = new Padding(0, 1, 0, 1);
             txtSysActual.Name = "txtSysActual";
             txtSysActual.ReadOnly = true;
-            txtSysActual.Size = new Size(100, 19);
+            txtSysActual.Size = new Size(102, 19);
             txtSysActual.TabIndex = 6;
             txtSysActual.Text = "999.9M cr";
             txtSysActual.TextAlign = HorizontalAlignment.Center;
@@ -261,6 +261,7 @@ namespace SrvSurvey
             statusStrip1.TabIndex = 3;
             statusStrip1.TabStop = true;
             statusStrip1.Text = "statusStrip1";
+            statusStrip1.DoubleClick += statusStrip1_DoubleClick;
             // 
             // toolFiller
             // 
@@ -374,7 +375,7 @@ namespace SrvSurvey
             Controls.Add(flowButtons);
             Controls.Add(panelTop);
             Controls.Add(statusStrip1);
-            Font = new Font("Lucida Console", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            Font = new Font("Lucida Console", 9F);
             ForeColor = Color.FromArgb(255, 128, 0);
             Margin = new Padding(3, 2, 3, 2);
             Name = "FormPredictions";

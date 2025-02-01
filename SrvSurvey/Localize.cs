@@ -17,6 +17,7 @@ namespace SrvSurvey
         {
             { "English", "en" },
             { "Deutsch", "de" },
+            { "Español", "es" },
             { "Русский", "ru" },
             { "Pseudo",  "ps" },
         };

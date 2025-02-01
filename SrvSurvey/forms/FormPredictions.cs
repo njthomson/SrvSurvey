@@ -63,6 +63,7 @@ namespace SrvSurvey
             tree.MouseWheel += Tree_MouseWheel;
             tree.TreeViewNodeSorter = NodeSorter.ByName;
             tree.ForeColor = GameColors.Orange;
+            this.DoubleBuffered = true;
 
             btnCurrentBody.Text = currentBodyOnly ? "❌ Current body only" : "  Current body only";
 
@@ -773,14 +774,12 @@ namespace SrvSurvey
         {
             treeMode = TreeViewMode.Everything;
             doTreeViewMode();
-            //game.targetBody?.predictSpecies();
         }
 
         private void btnCollapseAll_Click(object sender, EventArgs e)
         {
             treeMode = TreeViewMode.BodiesOnly;
             doTreeViewMode();
-            //refresh();
         }
 
         private void btnCurrentBody_Click(object sender, EventArgs e)
@@ -791,6 +790,12 @@ namespace SrvSurvey
 
             Game.settings.formPredictionsCurrentBodyOnly = currentBodyOnly;
             Game.settings.Save();
+        }
+
+        private void statusStrip1_DoubleClick(object sender, EventArgs e)
+        {
+            game?.targetBody?.predictSpecies();
+            refresh();
         }
 
         enum TreeViewMode
