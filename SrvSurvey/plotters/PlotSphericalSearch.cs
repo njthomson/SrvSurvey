@@ -318,7 +318,7 @@ namespace SrvSurvey.plotters
             else if (this.destinationName != null)
             {
                 newLine(+eight, true);
-                this.drawTextAt2b(eight, this.Width - 4, $"► Destination is valid", GameColors.Orange, ff);
+                this.drawTextAt2b(eight, this.Width - 4, $"✔️ Destination is valid", GameColors.Orange, ff);
                 dtx += ten;
             }
 

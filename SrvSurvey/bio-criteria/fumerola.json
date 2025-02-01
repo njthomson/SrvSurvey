@@ -370,12 +370,12 @@
         "body [Icy]"
       ],
       "commonChildren": [
-        { "variant": "Magenta", "query": [ "mats [Mercury]" ] },
-        { "variant": "Cobalt", "query": [ " mats [Niobium]" ] },
-        { "variant": "Cyan", "query": [ "   mats [Tin]" ] },
-        { "variant": "Yellow", "query": [ " mats [Tungsten]" ] },
-        { "variant": "Gold", "query": [ "   mats [Molybdenum]" ] },
-        { "variant": "Orange", "query": [ " mats [Cadmium]" ] }
+        { "variant": "Peach", "query": [ "     mats [Mercury]" ] },
+        { "variant": "Red", "query": [ "       mats [Niobium]" ] },
+        { "variant": "Mulberry", "query": [ "  mats [Tin]" ] },
+        { "variant": "Aquamarine", "query": [ "mats [Tungsten]" ] },
+        { "variant": "Lime", "query": [ "      mats [Molybdenum]" ] },
+        { "variant": "White", "query": [ "     mats [Cadmium]" ] }
       ],
       "children": [
         {

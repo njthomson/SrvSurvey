@@ -514,7 +514,7 @@ namespace SrvSurvey
                 Program.showPlotter<PlotPulse>();
 
             this.updateAllControls();
-            this.hook.startDirectX(Game.settings.hookDirectXDeviceId_TEST);
+            this.hook?.startDirectX(Game.settings.hookDirectXDeviceId_TEST);
 
             Game.log($"migratedScannedOrganicsInEntryId: {newGame.cmdr?.migratedScannedOrganicsInEntryId}, migratedNonSystemDataOrganics: {newGame.cmdr?.migratedNonSystemDataOrganics}");
             if (newGame?.cmdr != null && (!newGame.cmdr.migratedScannedOrganicsInEntryId || !newGame.cmdr.migratedNonSystemDataOrganics))

@@ -45,7 +45,7 @@
             "  gravity [0.05 ~ 0.267]",
             "     temp [200 ~ 251]",
             " pressure [ ~ 0]",
-            "volcanism [Major Water Geysers,Major Water Magma,Minor Carbon Dioxide Geysers]"
+            "volcanism [Major Water Geysers,Major Water Magma,Minor Carbon Dioxide Geysers,Water Geysers]"
           ]
         },
         {

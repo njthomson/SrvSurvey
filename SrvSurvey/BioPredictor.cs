@@ -20,7 +20,7 @@ namespace BioCriterias
         public static List<string> predict(SystemBody body)
         {
             var predictor = predict(body, null);
-            return predictor?.predictions.ToList() ?? new ();
+            return predictor?.predictions.ToList() ?? new();
         }
 
         private static BioPredictor? predict(SystemBody body, string? targetVariant = null)
@@ -32,50 +32,55 @@ namespace BioCriterias
                 if (BioCriteria.allCriteria.Count == 0 || Debugger.IsAttached) BioCriteria.readCriteria();
             }
 
-            var parentStar = body.system.getParentStarTypes(body, true).FirstOrDefault();
-            if (parentStar == null)
-            {
-                Game.log($"Why null from getParentStarTypes? For {body.name}");
-                parentStar = "";
-            }
-            var brightestParentStar = body.system.getBrightestParentStarType(body);
-
+            // get the primary star for the system
             var primaryStar = body.system.bodies.FirstOrDefault(b => b.isMainStar);
             if (primaryStar == null)
-                Game.log($"Why null from bodies.Find(b => b.isMainStar)? For {body.name}");
-            var primaryStarType = Util.flattenStarType(primaryStar?.starType);
-
-            var parentStars = new List<string>() { parentStar, brightestParentStar }
-                .Where(s => !string.IsNullOrEmpty(s))
-                .ToList();
-
-            // --- alternate "brightest" ---
-            var parentStars2 = body.system.getParentStars(body, false);
-            if (parentStars2.Count > 0)
             {
-                var parentsByBrightness = parentStars2
-                    .ToDictionary(s => s, s => s.getRelativeBrightness(body.distanceFromArrivalLS))
-                    .OrderByDescending(s => s.Value)
-                    .Take(2);
+                Game.log($"Why no primary star? For {body.name}");
+                Debugger.Break();
+            }
+            var primaryStarType = Util.flattenStarType(primaryStar?.starType) ?? "";
 
-                var brightest = parentsByBrightness.First();
-                parentStars.Clear();
-                parentStars.Add(Util.flattenStarType(brightest.Key.starType));
+            // calculate relative brightness for all parent stars
+            var parentsByBrightness = body.system.getParentStars(body, false)
+                .ToDictionary(s => s, s => body.getRelativeBrightness(s))
+                .Where(s => s.Value > 0)
+                .OrderByDescending(s => s.Value)
+                .ToDictionary(_ => _.Key, _ => _.Value);
+            Game.log($"Radiant stars for '{body.name}': \r\n" + string.Join("\r\n", parentsByBrightness.Select(_ => $"> {_.Key.shortName} ({_.Key.starType}) : {_.Value}")));
 
-                if (parentStars2.Count >= 2)
+
+            if (parentsByBrightness.Count == 0)
+            {
+                Game.log($"Why no parent stars? For {body.name}");
+                Debugger.Break();
+                return null;
+            }
+
+            // take the 1st brightest parent star
+            var brightest = parentsByBrightness.First();
+            var parentStarTypes = new List<string>();
+            parentStarTypes.Add(Util.flattenStarType(brightest.Key.starType));
+
+            // consider the 2nd if the type is different but the value is really close
+            if (parentsByBrightness.Count > 1)
+            {
+                var nextBrightest = parentsByBrightness.Skip(1).First();
+                var nextBrightestType = Util.flattenStarType(nextBrightest.Key.starType);
+                if (parentStarTypes[0] != nextBrightestType)
                 {
-                    var nextBrightest = parentsByBrightness.Last();
                     var delta = nextBrightest.Value / brightest.Value;
-                    Game.log($"{brightest.Key.name}: {brightest.Value} vs {nextBrightest.Key.name}: {nextBrightest.Value} => {delta}");
+                    Game.log($"{brightest.Key.name} ({brightest.Key.starType}): {brightest.Value:N10} vs {nextBrightest.Key.name} ({nextBrightest.Key.starType}): {nextBrightest.Value:N10} => {delta}");
 
-                    if (delta > 0.93d)
-                        parentStars.Add(Util.flattenStarType(nextBrightest.Key.starType));
+                    if (delta < 0.01d) // allow a 2nd if they're really close
+                        parentStarTypes.Add(Util.flattenStarType(nextBrightest.Key.starType));
                 }
             }
 
-            if (parentStars.All(s => s == null))
+            if (parentStarTypes.All(s => s == null))
             {
                 Game.log($"Parent stars are not right?! body: {body.name}");
+                Debugger.Break();
                 return null;
             }
 
@@ -99,9 +104,7 @@ namespace BioCriterias
                 { "Volcanism", string.IsNullOrEmpty(body.volcanism) ? "None" : body.volcanism },
                 { "Materials", body.materials },
                 { "Region", GalacticRegions.currentIdx.ToString() },
-                // Take the first parent star(s) AND the "relative hottest" from the parent chain
-                { "Star", parentStars },
-                { "ParentStar", parentStar },
+                { "Star", parentStarTypes },
                 { "PrimaryStar", primaryStarType },
                 { "Nebulae", body.system.nebulaDist },
                 { "Guardian", withinGuardianBubble.ToString() },
@@ -259,7 +262,7 @@ namespace BioCriterias
                 if (logOrganism == "*" || (!string.IsNullOrWhiteSpace(logOrganism) && currentName.EndsWith(logOrganism, StringComparison.OrdinalIgnoreCase)))
                 {
                     var queryTxt = "\t" + string.Join("\r\n\t", query!);
-                    Game.log($"Prediction failures for organism: {logOrganism} / {currentName}\r\n{queryTxt}\r\n > " + string.Join("\r\n > ", failures));
+                    Game.log($"Prediction failures for organism: {logOrganism} / {currentName}\r\n{queryTxt}\r\n ? " + string.Join("\r\n ? ", failures) + "\r\n");
                 }
             }
 
@@ -422,7 +425,7 @@ namespace BioCriterias
             }
             else
             {
-                Game.log($"testCompositionQuery: Unexpected bodyValue type: {bodyValue?.GetType().Name ?? "(is null)"} ({clause})");
+                //Game.log($"testCompositionQuery: Unexpected bodyValue type: {bodyValue?.GetType().Name ?? "(is null)"} ({clause})");
                 //Debugger.Break();
             }
         }
@@ -452,42 +455,33 @@ namespace BioCriterias
             // predict this system
             foreach (var body in systemData.bodies)
             {
+                var realBody = bioStats.bodies.Find(b => b.bodyId == body.id);
+                if (realBody?.signals?.biology == null) continue; // skip bodies without known bio signals
+
                 BioPredictor.logOrganism = "";
-                var predictions = BioPredictor.predict(body); // <---
+                var predictions = BioPredictor.predict(body); // <--- drag execution up to here
 
-                if (predictions.Count > 0)
+                var countSuccess = predictions.Count(p => realBody.signals.biology.Contains(p));
+                var missed = realBody.signals.biology.Where(b => !predictions.Contains(b)).Order().ToList();
+                var wrong = predictions.Where(p => !realBody.signals.biology.Contains(p)).Order().ToList();
+                var countWrong = predictions.Count - countSuccess;
+                var txt = $"\r\n** {body.system.address} '{body.name}' ({body.id}) - actual count: {realBody.signals.biology.Count}, success: {countSuccess}, missed: {missed.Count}, wrong: {wrong.Count} **\r\nREAL:\r\n\t" + string.Join("\r\n\t", realBody.signals.biology) + $"\r\nPREDICTED WRONG:\r\n\t" + string.Join("\r\n\t", wrong) + "\r\n";
+
+                if (predictions.Count > 0 && missed.Count > 0)
                 {
-                    var realBody = bioStats.bodies.Find(b => b.bodyId == body.id);
-                    if (realBody?.signals?.biology != null)
-                    {
-                        var countSuccess = predictions.Count(p => realBody.signals.biology.Contains(p));
-                        var missed = realBody.signals.biology.Where(b => !predictions.Contains(b)).Order().ToList();
-                        var wrong = predictions.Where(p => !realBody.signals.biology.Contains(p)).Order().ToList();
-                        var countWrong = predictions.Count - countSuccess;
-                        var txt = $"\r\n** {body.system.address} '{body.name}' ({body.id}) - actual count: {realBody.signals.biology.Count}, success: {countSuccess}, missed: {missed.Count}, wrong: {wrong.Count} **\r\nREAL:\r\n\t" + string.Join("\r\n\t", realBody.signals.biology) + $"\r\nPREDICTED WRONG:\r\n\t" + string.Join("\r\n\t", wrong) + "\r\n";
-
-                        if (missed.Count > 0)
-                        {
-                            txt += $"MISSED: \r\n\t" + string.Join("\r\n\t", missed);
-                            BioPredictor.logOrganism = missed.First().Split(" ")[1]; // revert for non-legacy organisms
-                            Game.log(txt);
-                            Debugger.Break();
-                        }
-                        else if (wrong.Count > 5)
-                        {
-                            Game.log(txt);
-                        }
-                        else
-                        {
-                            Game.log(txt);
-                        }
-                    }
-                    else
-                    {
-                        Game.log($"\r\n** {body.system.address} '{body.name}' ({body.id}) nothing real, but predicted: **\r\n\t" + string.Join("\r\n\t", predictions) + "\r\n");
-                        //Debugger.Break();
-                    }
-
+                    txt += $"MISSED: \r\n\t" + string.Join("\r\n\t", missed);
+                    BioPredictor.logOrganism = missed.First().Split(" ")[1]; // for legacy bio's - comment out .split(..)
+                    Game.log(txt);
+                    Debugger.Break(); // When this hits. Clear the debug console and drag the execution point up to the "BioPredictor.predict(body)" line above
+                }
+                else if (wrong.Count > 5)
+                {
+                    // TODO: write these to some file?
+                    Game.log(txt);
+                }
+                else
+                {
+                    Game.log(txt);
                 }
             }
 
@@ -511,17 +505,10 @@ namespace BioCriterias
                 //1728262770315, //    Graea Hypue AA-Z d50     - Norma Expanse
                 //1659543293579, //    Graea Hypue AA-Z d48     - Norma Expanse
                 //1350305648267, //    Graea Hypue AA-Z d39     - Norma Expanse
-                //7373867459, //       Ushosts LC-M d7-0        - Elysian Shore
-                //113170581619, //     Slegi XV-C d13-3         - Elysian Shore
-                //8055311831762, //    NLTT 55164               - Inner Orion Spur
-                //721911088556658, //  Eorld Byoe BQ-G c13-2626 - Ryker's Hope
-                //1005802506067, //    Heart Sector ZE-A d29    - Elysian Shore
-                //2789153444971, //    Phimbo GC-D d12-81       - Perseus Arm
-                //33682769023907, //   Phroi Pra PP-V d3-980    - Galactic Centre
 
-                ///* more from me */
+                /* more from me */
                 //1144147218059, //    Graea Hypue AA-Z d33     - Norma Expanse
-                //1659576977859, //    Swoiwns OE-O d7-48       - Inner Orion Spur
+                //1659576977859, //    Swoiwns OE-O d7-48       - Inner Orion Spur // BC1 is trouble? needs help
                 //319933188363, //     Wregoe JA-Z d9           - Inner Orion Spur
                 //546399072737, //     Nyeajeou VP-G b56-0      - Temple
                 //241824687268, //     HIP 17694                - Inner Orion Spur
@@ -530,21 +517,22 @@ namespace BioCriterias
                 //2930853613195, //    Graea Hypue AA-Z d85     - Norma Expanse
                 //40280107390979, //   Bleethuae LN-B d1172     - Izanami
                 //83718410970, //      HIP 76045                - Inner Orion Spur
-                //2557619442410, //    HIP 97950                - Inner Orion Spur
+                ////2557619442410, //    HIP 97950                - Inner Orion Spur <-- ABC 1 f, g, h: no parent star?
                 //52850328756, //      GD 140                   - Inner Orion Spur
                 //125860586676, //     HR 5716                  - Inner Orion Spur
-                //7373867459, //       Ushosts LC-M d7-0        - Elysian Shore
-                //113170581619, //     Slegi XV-C d13-3         - Elysian Shore
+                ////7373867459, //       Ushosts LC-M d7-0        - Elysian Shore <-- AB 1 e: no parent star?
+                ////113170581619, //     Slegi XV-C d13-3         - Elysian Shore <-- AB 3 a: no parent star?
                 //8055311831762, //    NLTT 55164               - Inner Orion Spur
                 //721911088556658, //  Eorld Byoe BQ-G c13-2626 - Ryker's Hope
                 //1005802506067, //    Heart Sector ZE-A d29    - Elysian Shore
                 //2789153444971, //    Phimbo GC-D d12-81       - Perseus Arm
                 //33682769023907, //   Phroi Pra PP-V d3-980    - Galactic Centre
 
+
                 ///* New places to try */
                 //147547244739, //     Outorst OC-M d7-4         - Elysian Shore
                 //79347697283, //      Cyoidai VI-B d2           - Sanguineous Rim
-                //8084881608371, //    Graea Hypue IS-R d5-235   - Norma Expanse // legacy in atmosphere :/
+                //8084881608371, //    Graea Hypue IS-R d5-235   - Norma Expanse // legacy in atmosphere :/ fails to predict brain tree's - this is on purpose
                 //37790682707, //      Bleae Phlai AK-I d9-1     - Errant Marches
                 //10887906389, //      Eor Audst LM-W f1-20      - Odin's Hold
                 //234056927058952, //  Phroi Pri GM-W a1-13      - Galactic Centre
@@ -552,17 +540,10 @@ namespace BioCriterias
                 //5264816150115, //    Hypaa Bliae ND-H d11-153  - Outer Orion-Perseus Conflux
                 //3464481251, //       Pidgio GS-H d11-0         - Errant Marches
                 //51239337267043, //   Blua Eaec ED-H d11-1491   - Inner Scutum-Centaurus Arm
-                //683033437569, //     Col 173 Sector VV-D b28-0 - Inner Orion Spur
+                //683033437569, //     Col 173 Sector VV-D b28-0 - Inner Orion Spur <-- B 3: many are wrong? needs help
                 //113808345931, //     Blu Euq NH-L d8-3         - Inner Orion Spur
                 //305709086413707, //  Stuemeae FG-Y d8897       - Galactic Centre
-                //184943642675, //     Heguae NL-P d5-5          - Sanguineous Rim
-                //7373867459, //       Ushosts LC-M d7-0         - Elysian Shore
-                //113170581619, //     Slegi XV-C d13-3          - Elysian Shore
-                //8055311831762, //    NLTT 55164                - Inner Orion Spur
-                //721911088556658, //  Eorld Byoe BQ-G c13-2626  - Ryker's Hope
-                //1005802506067, //    Heart Sector ZE-A d29     - Elysian Shore
-                //2789153444971, //    Phimbo GC-D d12-81        - Perseus Arm
-                //33682769023907, //   Phroi Pra PP-V d3-980     - Galactic Centre
+                //184943642675, //     Heguae NL-P d5-5          - Sanguineous Rim <-- AB 1 b: many are wrong? needs help
 
                 ///* top 20 bodies */
                 //216887347755, //     Aucoks RX-S d4-6         - Inner Orion Spur
@@ -570,12 +551,12 @@ namespace BioCriterias
                 //43847125659, //      Drojau BG-W d2-1         - Inner Orion Spur
                 //2302134985738, //    Athaiwyg EG-Y c8         - Arcadian Stream
                 //672833020273, //     Flyooe Eohn CS-H b43-0   - Sanguineous Rim
-                //3931941933746, //    Lyncis Sector CL-Y c14   - Inner Orion Spur
+                ////3931941933746, //    Lyncis Sector CL-Y c14   - Inner Orion Spur <-- ABC 1 c,d, etc: no parent stars?
                 //11548763827697, //   Blaa Drye WC-F b58-5     - Temple
                 //11360960255658, //   Blau Eur RZ-O c19-41     - Hawking's Gap
                 //721151664337, //     Slegeae SU-R b24-0       - Sanguineous Rim
                 //674712855233, //     Outotz ZQ-K b22-0        - Sanguineous Rim
-                //102509547578, //     Hegou FB-S c6-0          - Sanguineous Rim
+                ////102509547578, //     Hegou FB-S c6-0          - Sanguineous Rim <-- bodies with no parent stars
                 //2851187073897, //    Oochoss NM-K b42-1       - Elysian Shore
                 //1148829126400920, // Byoomao CG-D a108-65     - Galactic Centre
                 //111098727130, //     Groem BL-E c25-0         - Kepler's Crest
@@ -585,8 +566,8 @@ namespace BioCriterias
                 //787453456673, //     Nyeakeia ZA-V b33-0      - Hawking's Gap
                 //629372094563, //     Hegoo FW-E d11-18        - Sanguineous Rim
                 //1976177703003690, // Choomee IF-R c4-7189     - Empyrean Straits
-                //7373867459, //       Ushosts LC-M d7-0        - Elysian Shore
-                //113170581619, //     Slegi XV-C d13-3         - Elysian Shore
+                ////7373867459, //       Ushosts LC-M d7-0        - Elysian Shore <-- AB 1 e: no parent star?
+                ////113170581619, //     Slegi XV-C d13-3         - Elysian Shore <-- bodies with no parent stars
                 //8055311831762, //    NLTT 55164               - Inner Orion Spur
                 //721911088556658, //  Eorld Byoe BQ-G c13-2626 - Ryker's Hope
                 //1005802506067, //    Heart Sector ZE-A d29    - Elysian Shore
@@ -594,7 +575,7 @@ namespace BioCriterias
                 //33682769023907, //   Phroi Pra PP-V d3-980    - Galactic Centre
 
                 ///* top 20 systems */
-                //3107241202402, //    Col 285 Sector BS-I c10-11 - Inner Orion Spur
+                ////3107241202402, //    Col 285 Sector BS-I c10-11 - Inner Orion Spur <-- bodies with no parent stars
                 //2962579378659, //    Kyloagh PE-G d11-86        - Orion-Cygnus Arm
                 //16604217544995, //   Eol Prou QS-T d3-483       - Inner Scutum-Centaurus Arm
                 //1182223274666, //    Synuefai MW-U c19-4        - Inner Orion Spur
@@ -603,21 +584,20 @@ namespace BioCriterias
                 //233444419892, //     Hypio Flyao XP-P e5-54     - Arcadian Stream
                 //10612427019, //      HIP 56843                  - Inner Orion Spur
                 //10376464763, //      HD 221180                  - Inner Orion Spur
-                //3626137373140, //    Phaa Audst GW-W e1-844     - Odin's Hold
-                //91956533317099, //   Pru Aim GR-D d12-2676      - Inner Scutum-Centaurus Arm - revisit ABCD 1 a - Clypeus Speculumi distance calculation needs fixing
-                //15149635267028, //   Phua Aub WU-X e1-3527      - Galactic Centre
+                ////3626137373140, //    Phaa Audst GW-W e1-844     - Odin's Hold <-- bodies with no parent stars
+                //91956533317099, //   Pru Aim GR-D d12-2676      - Inner Scutum-Centaurus Arm - revisit ABCD 1 a - Clypeus Speculumi distance calculation needs fixing  <-- bodies with no parent stars
+                ////15149635267028, //   Phua Aub WU-X e1-3527      - Galactic Centre <-- bodies with no parent stars
                 //455962777099, //     Scheau Bluae JC-B d1-13    - Odin's Hold
                 //1693617998187, //    Synuefue ZX-F d12-49       - Inner Orion Spur
-                //27118431768755, //   Dryio Flyuae IY-Q d5-789   - Inner Scutum-Centaurus Arm
+                ////27118431768755, //   Dryio Flyuae IY-Q d5-789   - Inner Scutum-Centaurus Arm <-- bodies with no parent stars
                 //1005903105339, //    Skaude GD-Q d6-29          - Inner Scutum-Centaurus Arm
                 //800801672259, //     Flyooe Hypue FT-O d7-23    - Inner Orion Spur
-                //2004164284331, //    Byoi Aip VE-R d4-58        - Norma Arm // Stratum Emerald star F vs N ??
+                //2004164284331, //    Byoi Aip VE-R d4-58        - Norma Arm // Stratum Emerald star F vs N ?? needs help
                 //14096678161971, //   Clooku HI-R d5-410         - Inner Scutum-Centaurus Arm
                 //175621288252019, //  Dumbio GN-B d13-5111       - Odin's Hold
 
                 ///* more ad-hoc systems */
-                //7373867459, //       Ushosts LC-M d7-0        - Elysian Shore
-                //113170581619, //     Slegi XV-C d13-3         - Elysian Shore
+                ////113170581619, //     Slegi XV-C d13-3         - Elysian Shore <-- bodies with no parent stars
                 //8055311831762, //    NLTT 55164               - Inner Orion Spur
                 //721911088556658, //  Eorld Byoe BQ-G c13-2626 - Ryker's Hope
                 //1005802506067, //    Heart Sector ZE-A d29    - Elysian Shore
@@ -632,11 +612,11 @@ namespace BioCriterias
                 //1726677521610, // Bleae Thaa XX-H c23-6
                 //516869988849, // Slegue TP-Z b57-0
 
-                /* Bark Mounds */
-                // resume here !!!
+                ///* Bark Mounds */
+                //// resume here !!!
                 //13876099622273, // Pencil Sector MR-W b1-6
                 //2036007784483, // Eulail RX-T d3-59
-                //869487643043, // IC 4604 Sector DL-Y d25
+                //869487643043, // IC 4604 Sector DL-Y d25 <-- wrong star L vs G for Fonticulua Campestris? needs help
 
                 //// Amphora Plant
                 //13648186819, // Eifoqs XZ-N d7-0
@@ -655,7 +635,7 @@ namespace BioCriterias
 
                 ///* Brain Trees */
                 //802563263091, // Eta Carina Sector EL-Y d23
-                //835329116475, // Col 132 Sector BM-M d7-24
+                ////835329116475, // Col 132 Sector BM-M d7-24 <-- bodies with no parent stars
                 //1797418617131, // Col 140 Sector BQ-Y d52
 
                 ///* Tubers */
@@ -664,8 +644,12 @@ namespace BioCriterias
                 ///* Shards */
                 //100562634522, // Aidoms MT-U c2-0 (partially useful)
 
-                /* Fonticulua Campestris */
-                77409424274, // Prae Drye XN-W c16-0 A 3
+                ///* Fonticulua Campestris */
+                //77409424274, // Prae Drye XN-W c16-0 A 3
+
+                //361481876986, //       Greae Flyao UF-D c29-1   - check 1 d
+                //3650755408786, //      Prae Pruae EG-Y c16-13 // ? Why no Fonticular Campestris - Amethyst 
+                //6406178542290, // Guathiti 8 a // No Fumerola Nitris Lime
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");

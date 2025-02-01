@@ -136,7 +136,7 @@ namespace SrvSurvey.plotters
 
 
             // Prohibited goods?
-            if (station.market.prohibitedCommodities.Count > 0)
+            if (station.market?.prohibitedCommodities.Count > 0)
             {
                 newLine(+ten, true);
                 drawTextAt2(eight, "Prohibited:");

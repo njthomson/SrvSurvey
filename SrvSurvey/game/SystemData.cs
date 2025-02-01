@@ -569,7 +569,8 @@ namespace SrvSurvey.game
             nameof(FSSSignalDiscovered),
         };
 
-        public void Journals_onJournalEntry(IJournalEntry entry, bool autoSave) { 
+        public void Journals_onJournalEntry(IJournalEntry entry, bool autoSave)
+        {
             var dirty = this.onJournalEntry((dynamic)entry);
 
             if (dirty && autoSave)
@@ -1327,6 +1328,7 @@ namespace SrvSurvey.game
                 if (body.semiMajorAxis == 0) body.semiMajorAxis = Util.lsToM(entry.semiMajorAxis ?? 0); // convert from LS to M
                 if (body.absoluteMagnitude == 0) body.absoluteMagnitude = entry.absoluteMagnitude ?? 0;
                 if (body.radius == 0 && entry.radius != null) body.radius = entry.radius.Value * 1000;
+                if (body.radius == 0 && entry.solarRadius != null) body.radius = (decimal)entry.solarRadius * 695_700_000; // radius of the sun in m
                 if (body.parents == null && entry.parents != null) body.parents = entry.parents;
                 if (body.planetClass == null) body.planetClass = getPlanetClassFromExternal(entry.subType);
                 if (!string.IsNullOrEmpty(entry.terraformingState))
@@ -1342,7 +1344,7 @@ namespace SrvSurvey.game
                     body.atmosphereComposition = entry.atmosphereComposition.ToDictionary(_ => Util.compositionToCamel(_.Key), _ => _.Value);
                 if (body.materials == null && entry.materials != null) body.materials = entry.materials;
                 if (body.volcanism == null && entry.volcanismType != null) body.volcanism = entry.volcanismType == "No volcanism" ? "" : entry.volcanismType;
-                if (body.starType == null && entry.subType != null && entry.spectralClass != null)
+                if (body.starType == null && entry.subType != null)
                 {
                     body.starType = parseStarType(entry.subType);
                     //body.starSubClass = int.Parse(entry.spectralClass[1]);
@@ -2126,33 +2128,45 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public List<SystemBody> parentBodies
         {
-            get => this.parents
-                .Select(p => this.system.bodies.FirstOrDefault(b => b.id == p.id))
-                .Where(b => b != null)
-                .ToList()!;
+            get => this.parents == null
+                ? new List<SystemBody>()
+                : this.parents
+                    .Select(p => this.system.bodies.FirstOrDefault(b => b.id == p.id))
+                    .Where(b => b != null)
+                    .ToList()!;
         }
 
-        public double getRelativeBrightness(double bodyDistanceFromArrivalLS)
+        public double getRelativeBrightness(SystemBody star)
         {
-            if (this.starType == null) return 0;
+            if (star.starType == null) return 0;
 
-            var dist = bodyDistanceFromArrivalLS - this.distanceFromArrivalLS;
-            var dist2 = Math.Pow(dist, 2);
-            var distMag = dist2.ToString().Length; // Really just using the magnitude not the actual number
-            var relativeHeat = this.surfaceTemperature / distMag;
+            var commonParent = getCommonParent(star);
+            if (commonParent == null) return 0;
 
-            return relativeHeat;
+            var dist = this.euclidianDistance(commonParent);
+            dist += star.euclidianDistance(commonParent);
+            dist = Math.Pow(dist, 0.5);
+            Game.log($"Euclidian distance from {this.name} to {star.name}: {dist}");
+            var temp2 = Math.Pow(star.surfaceTemperature, 2);
+            var sqrtWat = (double)star.radius * temp2 / dist;
+            return Math.Pow(sqrtWat, 2);
         }
 
-        public double sumSemiMajorAxis(int targetBodyId)
+        public SystemBody? getCommonParent(SystemBody sibling)
         {
+            return parentBodies.Find(p => p == sibling || sibling.parentBodies.Contains(p));
+        }
+
+
+        public double euclidianDistance(SystemBody target)
+        {
+            if (target == this) return 0;
             // start with our own distance, then sum our parents until we reach (and include) the target
-            var dist = this.semiMajorAxis;
-
+            var dist = Math.Pow(this.semiMajorAxis, 2);
             foreach (var parent in this.parentBodies)
             {
-                dist += parent.semiMajorAxis;
-                if (parent.id == targetBodyId) break;
+                dist += Math.Pow(parent.semiMajorAxis, 2);
+                if (parent.id == target.id) break;
             }
 
             return dist;

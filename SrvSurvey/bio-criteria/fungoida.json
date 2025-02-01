@@ -254,7 +254,8 @@
     {
       "species": "Stabitis",
       "query": [
-        "# hit count: 10000"
+        "# hit count: 10000",
+        "  regions [1,4,7,8,16,17,18,35]"
       ],
       "commonChildren": [
         { "variant": "Green", "query": [ "  mats [Mercury]" ] },
