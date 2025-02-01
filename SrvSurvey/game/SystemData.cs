@@ -74,12 +74,13 @@ namespace SrvSurvey.game
                 {
                     // make all entries aware of their parent body
                     body.organisms?.ForEach(org => org.body = body);
-
-                    // make predictions based on what we know
-                    if (Game.ready && Game.activeGame?.fid == fid && !skipPredictSpecies)
-                        body.predictSpecies();
                 }
             }
+
+            // make predictions based on what we know - after everything else
+            if (Game.ready && Game.activeGame?.fid == fid && !skipPredictSpecies)
+                foreach (var body in systemData.bodies)
+                    body.predictSpecies();
 
             return systemData;
         }
