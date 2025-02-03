@@ -104,6 +104,8 @@ namespace SrvSurvey
             menuJourneyBegin = new ToolStripMenuItem();
             menuJourneyNotes = new ToolStripMenuItem();
             menuJourneyReview = new ToolStripMenuItem();
+            toolStripSeparator2 = new ToolStripSeparator();
+            menuFollowRoute = new ToolStripMenuItem();
             groupBox1.SuspendLayout();
             groupCmdr.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -911,10 +913,10 @@ namespace SrvSurvey
             // menuJourney
             // 
             menuJourney.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            menuJourney.Items.AddRange(new ToolStripItem[] { menuResetOldTrip, toolStripSeparator1, menuJourneyBegin, menuJourneyNotes, menuJourneyReview });
+            menuJourney.Items.AddRange(new ToolStripItem[] { menuResetOldTrip, toolStripSeparator1, menuJourneyBegin, menuJourneyNotes, menuJourneyReview, toolStripSeparator2, menuFollowRoute });
             menuJourney.Name = "menuJourney";
             menuJourney.RenderMode = ToolStripRenderMode.System;
-            menuJourney.Size = new Size(317, 176);
+            menuJourney.Size = new Size(317, 218);
             menuJourney.targetButton = btnResetExploration;
             menuJourney.Opening += menuJourney_Opening;
             // 
@@ -941,15 +943,27 @@ namespace SrvSurvey
             // 
             menuJourneyNotes.Name = "menuJourneyNotes";
             menuJourneyNotes.Size = new Size(316, 36);
-            menuJourneyNotes.Text = "System Notes";
+            menuJourneyNotes.Text = "System Notes ...";
             menuJourneyNotes.Click += menuJourneyNotes_Click;
             // 
             // menuJourneyReview
             // 
             menuJourneyReview.Name = "menuJourneyReview";
             menuJourneyReview.Size = new Size(316, 36);
-            menuJourneyReview.Text = "View Journey";
+            menuJourneyReview.Text = "View Journey ...";
             menuJourneyReview.Click += menuJourneyReview_Click;
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(313, 6);
+            // 
+            // menuFollowRoute
+            // 
+            menuFollowRoute.Name = "menuFollowRoute";
+            menuFollowRoute.Size = new Size(316, 36);
+            menuFollowRoute.Text = "Follow a route ...";
+            menuFollowRoute.Click += menuFollowRoute_Click;
             // 
             // Main
             // 
@@ -1074,5 +1088,7 @@ namespace SrvSurvey
         private ToolStripMenuItem menuJourneyReview;
         private ToolStripMenuItem menuResetOldTrip;
         private ToolStripSeparator toolStripSeparator1;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripMenuItem menuFollowRoute;
     }
 }

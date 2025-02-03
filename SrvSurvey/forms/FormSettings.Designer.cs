@@ -36,6 +36,7 @@ namespace SrvSurvey
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
             tabPage1 = new TabPage();
+            checkBox35 = new CheckBox();
             checkBox38 = new CheckBox();
             linkJournalFolder = new LinkLabel();
             linkResetWatchFolder = new LinkLabel();
@@ -149,6 +150,7 @@ namespace SrvSurvey
             lblScreenshotTarget = new Label();
             checkLocalTime = new CheckBox();
             tabPage6 = new TabPage();
+            checkJumpInfoIfDestination = new CheckBox();
             checkBox36 = new CheckBox();
             btnSwapCache = new FlatButton();
             checkBox32 = new CheckBox();
@@ -232,7 +234,6 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
-            checkBox35 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -384,6 +385,18 @@ namespace SrvSurvey
             tabPage1.Size = new Size(651, 448);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
+            // 
+            // checkBox35
+            // 
+            checkBox35.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            checkBox35.AutoSize = true;
+            checkBox35.Location = new Point(434, 367);
+            checkBox35.Name = "checkBox35";
+            checkBox35.Size = new Size(201, 19);
+            checkBox35.TabIndex = 37;
+            checkBox35.Tag = "hideOverlaysFromMouseInFSS_TEST";
+            checkBox35.Text = "Hide overlays from mouse cursor";
+            checkBox35.UseVisualStyleBackColor = true;
             // 
             // checkBox38
             // 
@@ -1816,6 +1829,7 @@ namespace SrvSurvey
             // 
             tabPage6.BackColor = SystemColors.Control;
             tabPage6.BorderStyle = BorderStyle.Fixed3D;
+            tabPage6.Controls.Add(checkJumpInfoIfDestination);
             tabPage6.Controls.Add(checkBox36);
             tabPage6.Controls.Add(btnSwapCache);
             tabPage6.Controls.Add(checkBox32);
@@ -1851,6 +1865,18 @@ namespace SrvSurvey
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
             // 
+            // checkJumpInfoIfDestination
+            // 
+            checkJumpInfoIfDestination.AutoSize = true;
+            checkJumpInfoIfDestination.FlatStyle = FlatStyle.System;
+            checkJumpInfoIfDestination.Location = new Point(31, 423);
+            checkJumpInfoIfDestination.Name = "checkJumpInfoIfDestination";
+            checkJumpInfoIfDestination.Size = new Size(238, 20);
+            checkJumpInfoIfDestination.TabIndex = 34;
+            checkJumpInfoIfDestination.Tag = "showPlotJumpInfoIfNextHop";
+            checkJumpInfoIfDestination.Text = "Show if destination is next hop in route";
+            checkJumpInfoIfDestination.UseVisualStyleBackColor = true;
+            // 
             // checkBox36
             // 
             checkBox36.AutoSize = true;
@@ -1879,11 +1905,10 @@ namespace SrvSurvey
             // 
             // checkBox32
             // 
-            checkBox32.AutoSize = true;
             checkBox32.FlatStyle = FlatStyle.System;
-            checkBox32.Location = new Point(10, 422);
+            checkBox32.Location = new Point(424, 6);
             checkBox32.Name = "checkBox32";
-            checkBox32.Size = new Size(271, 20);
+            checkBox32.Size = new Size(217, 46);
             checkBox32.TabIndex = 22;
             checkBox32.Tag = "useLastUpdatedFromSpanshNotEDSM";
             checkBox32.Text = "Use last updated time from Spansh not EDSM";
@@ -2876,18 +2901,6 @@ namespace SrvSurvey
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
             // 
-            // checkBox35
-            // 
-            checkBox35.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            checkBox35.AutoSize = true;
-            checkBox35.Location = new Point(434, 367);
-            checkBox35.Name = "checkBox35";
-            checkBox35.Size = new Size(201, 19);
-            checkBox35.TabIndex = 37;
-            checkBox35.Tag = "hideOverlaysFromMouseInFSS_TEST";
-            checkBox35.Text = "Hide overlays from mouse cursor";
-            checkBox35.UseVisualStyleBackColor = true;
-            // 
             // FormSettings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -3176,5 +3189,6 @@ namespace SrvSurvey
         private CheckBox checkBox37;
         private CheckBox checkBox38;
         private CheckBox checkBox35;
+        private CheckBox checkJumpInfoIfDestination;
     }
 }

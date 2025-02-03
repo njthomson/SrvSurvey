@@ -52,6 +52,22 @@ namespace SrvSurvey.net
             });
         }
 
+        public Task<StarRef?> getSystemRef(string systemName)
+        {
+            return NetCache.query(systemName, async () =>
+            {
+                Game.log($"Searching Spansh api/systems for SystemRef by name: {systemName}");
+
+                // https://spansh.co.uk/api/systems/field_values/system_names?q=Colonia
+                var json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/systems/field_values/system_names?q={Uri.EscapeDataString(systemName)}");
+                var systems = JsonConvert.DeserializeObject<GetSystemResponse>(json)!;
+
+                var firstMatch = systems.min_max.FirstOrDefault();
+                return firstMatch;
+            });
+        }
+
+        /*
         public async Task<ApiSystem.Record> getSystem(long systemAddress)
         {
             Game.log($"Requesting Spansh api/system/{systemAddress}");
@@ -61,6 +77,7 @@ namespace SrvSurvey.net
             var system = JsonConvert.DeserializeObject<ApiSystem>(json)!;
             return system.record;
         }
+        */
 
         public Task<ApiSystemDump.System> getSystemDump(long systemAddress, bool useCache = false)
         {
@@ -108,81 +125,60 @@ namespace SrvSurvey.net
                 if (from != null) q.reference_coords = from;
 
                 var obj = await this.querySystems(q);
-                Game.log(obj);
                 return obj;
             });
         }
 
-        public async Task getMinorFactionSystems()
+        public async Task<TouristRoute?> getTouristRoute(Guid routeId)
         {
-            Game.log($"Requesting api/systems/search for factions by body");
+            Game.log($"Spansh.getTouristRoute: {routeId}");
 
-            var factions = new List<string>()
+            try
             {
-                "Raven Colonial Corporation",
-                "Steven Gordon Jolliffe",
-                "Elite Secret Service",
-                "The Blue Brotherhood",
-                "Guardians of Cygnus"
-            };
-
-            var factionsTxt = string.Join(",", factions.Select(_ => $"\"{_}\""));
-            var json = "{\"filters\":{\"minor_faction_presences\":{\"value\":[" + factionsTxt + "]}},\"sort\":[{\"distance\":{\"direction\":\"asc\"}}],\"size\":200,\"page\":0,\"reference_system\":\"Banka\"}";
-
-            var body = new StringContent(json, Encoding.ASCII, "application/json");
-
-            var response = await Spansh.client.PostAsync($"https://spansh.co.uk/api/systems/search", body);
-            var responseText = await response.Content.ReadAsStringAsync();
-            if (responseText == "{\"error\":\"Invalid request\"}")
-            {
-                Debugger.Break();
-                throw new Exception("Bad Spansh request: " + responseText);
+                // https://spansh.co.uk/api/results/69ECD234-E12F-11EF-B000-86AB9ACB91F4
+                var json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/results/{routeId.ToString().ToUpper()}");
+                var touristRoute = JsonConvert.DeserializeObject<TouristRoute>(json)!;
+                return touristRoute;
             }
-
-            var results = JsonConvert.DeserializeObject<SystemsSearchResults>(responseText)!;
-
-            var foos = new List<MinorFactionSystem>();
-            foreach (var system in results.results)
+            catch (Exception ex)
             {
-                var foo = new MinorFactionSystem
-                {
-                    name = system.name,
-                    coords = new MinorFactionSystem.Coords { x = system.x, y = system.y, z = system.z },
-                    cat = new List<int> { },
-                    infos = $"Population: {system.population.ToString("N0")}%3Cbr%20%3E"
-                };
+                Util.isFirewallProblem(ex);
+                return null;
+            }
+        }
 
-                foreach (var fac in system.minor_faction_presences)
+        public class TouristRoute
+        {
+            public Guid job;
+            public string state;
+            public string status;
+            // TODO: parameters?
+            public Result result;
+
+            public class Result
+            {
+                public Guid job;
+                public int range;
+                public string source_system;
+                public List<string> destination_systems;
+                public List<Jump> system_jumps;
+
+                public class Jump
                 {
-                    var idx = factions.IndexOf(fac.name);
-                    if (idx != -1)
+                    public double distance;
+                    public long id64;
+                    public int jumps;
+                    public string system;
+                    public double x;
+                    public double y;
+                    public double z;
+
+                    public StarRef toStarRef()
                     {
-                        foo.cat.Add(idx);
-                        foo.infos += "%3Cbr%20%3E" + $"{fac.name}: {fac.influence.ToString("N2")}%";
+                        return new StarRef(x, y, z, system, id64);
                     }
                 }
-
-                switch (system.name)
-                {
-                    case "Banka": // Raven Colonial Corporation
-                    case "Hungalun": //Steven Gordon Jolliffe
-                    case "Loperada": // Elite Secret Service
-                    case "Bhumians": // The Blue Brotherhood
-                    case "Dyavansana": // Guardians of Cygnus
-                        foo.cat[0] = 99;
-                        break;
-                }
-
-                foos.Add(foo);
             }
-
-            var txt = JsonConvert.SerializeObject(foos, Formatting.None)
-                .Replace("]},", "]},\r\n");
-            txt = txt.Insert(1, "\r\n");
-            txt = txt.Insert(txt.Length - 1, "\r\n");
-            Clipboard.SetText(txt);
-
-            Game.log($"Processed {results.size} of {results.count} results");
         }
 
         public async Task getClause(string genus, string species, string gas)

@@ -197,17 +197,20 @@ namespace SrvSurvey
             if (Game.activeGame?.mode != GameMode.GalaxyMap) return true;
 
             string? keysToSend = null;
+
+            // use next hop in route?
+            if (keysToSend == null && Game.activeGame?.cmdr?.route1?.active == true)
+                keysToSend = Game.activeGame.cmdr.route1.nextHop?.name;
+
             // if boxel searching is active, but it has clipboard auto-copy disabled
             // AND we're within the boxel itself - send the next boxel system NOT what is in the clipboard
             var bs = Game.activeGame?.cmdr?.boxelSearch;
             if (bs?.active == true && bs?.autoCopy == false && bs.nextSystem != null && bs.current?.containsChild(Boxel.parse(Game.activeGame?.systemData?.name)) == true)
-            {
                 keysToSend = bs.nextSystem;
-            }
-            else if (Clipboard.ContainsText(TextDataFormat.Text))
-            {
+
+            // use what ever text is in the clip board
+            if (keysToSend == null)
                 keysToSend = Clipboard.GetText(TextDataFormat.Text);
-            }
 
             if (keysToSend != null)
             {

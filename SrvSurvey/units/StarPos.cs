@@ -124,7 +124,15 @@ namespace SrvSurvey.units
             this.y = pos[1];
             this.z = pos[2];
             this.name = systemName;
+            this.id64 = address;
+        }
 
+        public StarRef(double x, double y, double z, string systemName, long address)
+        {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.name = systemName;
             this.id64 = address;
         }
 

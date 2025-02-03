@@ -59,6 +59,12 @@ namespace SrvSurvey
 
             return newItem;
         }
+
+        public static void setChildrenEnabled(this Control parent, bool enabled)
+        {
+            foreach (Control child in parent.Controls) 
+                child.Enabled = enabled;
+        }
     }
 
     class FlatButton : Button

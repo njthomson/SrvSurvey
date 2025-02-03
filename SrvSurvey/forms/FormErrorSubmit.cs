@@ -23,6 +23,7 @@ namespace SrvSurvey
 
         public Exception ex;
         private int logLineCount = 0;
+        private string recentLogs;
 
         private FormErrorSubmit(Exception ex)
         {
@@ -33,7 +34,13 @@ namespace SrvSurvey
             txtSteps.Height = txtStack.Height;
             checkIncludeLogs.Checked = false;
 
-            // Not themes
+            // capture recent logs NOW as the error presumably just happened vs later when people notice the error dialog
+            this.recentLogs = String.Join('\n', Game.logs.TakeLast(this.logLineCount));
+            // and include the version of the game if possible
+            var gameFileHeader = Game.activeGame?.journals?.Entries.FirstOrDefault();
+            if (gameFileHeader != null) this.recentLogs = JsonConvert.SerializeObject(gameFileHeader) + "\r\n" + this.recentLogs;
+
+            // Not themed
         }
 
         private void ErrorSubmit_Load(object sender, EventArgs e)
@@ -65,15 +72,7 @@ namespace SrvSurvey
             form.Add("exception-stack", ex.StackTrace!);
 
             if (checkIncludeLogs.Checked)
-            {
-                var lines = String.Join('\n', Game.logs.TakeLast(this.logLineCount));
-
-                // and include the version of the game if possible
-                var gameFileHeader = Game.activeGame?.journals?.Entries.FirstOrDefault();
-                if (gameFileHeader != null) lines = JsonConvert.SerializeObject(gameFileHeader) + "\r\n" + lines;
-
-                form.Add("logs", lines);
-            }
+                form.Add("logs", this.recentLogs);
 
             var query = "template=crash-report.yml&" + String.Join(
                 "&",

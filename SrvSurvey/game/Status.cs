@@ -235,6 +235,11 @@ namespace SrvSurvey
         public int Body { get; set; }
         public string Name { get; set; }
         public string Name_Localised { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Name} ({System})";
+        }
     }
 
     [Flags]

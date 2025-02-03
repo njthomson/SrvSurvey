@@ -139,6 +139,7 @@ namespace SrvSurvey.game
         public float shipMaxJump;
         public SettlementMatCollectionData? matStatsTracker;
         private string? lastDestination;
+        public bool destinationNextRouteHop = false;
 
         /// <summary>
         /// An arbitrary point on a planet surface. Doesn't really matter where, so long as it isn't too far away.
@@ -371,13 +372,41 @@ namespace SrvSurvey.game
                     onDockedWhenSafe(CalcMethod.ManualDock, false);
             }
 
-            if (this.lastDestination != status?.Destination?.Name)
+            var destinationHash = status.Destination?.ToString();
+            if (this.lastDestination != destinationHash)
             {
-                FormPredictions.invalidate();
-                this.lastDestination = status?.Destination?.Name;
+                this.statusDestinationChanged();
+                this.lastDestination = destinationHash;
             }
 
             this.checkModeChange();
+        }
+
+        private void statusDestinationChanged()
+        {
+            FormPredictions.invalidate();
+
+            // is destination the next hop on the route?
+            destinationNextRouteHop = false;
+            if (this.status.Destination?.System > 0)
+            {
+                var currentHop = this.navRoute.Route.FirstOrDefault(r => r.SystemAddress == this.systemData?.address);
+                if (currentHop != null)
+                {
+                    var destinationHop = this.navRoute.Route.FirstOrDefault(r => r.SystemAddress == this.status.Destination.System);
+                    if (destinationHop != null)
+                    {
+                        var idxCurrent = this.navRoute.Route.IndexOf(currentHop);
+                        var idxDestination = this.navRoute.Route.IndexOf(destinationHop);
+
+                        if (idxDestination == idxCurrent + 1)
+                        {
+                            // destination is next hop in route!
+                            destinationNextRouteHop = true;
+                        }
+                    }
+                }
+            }
         }
 
         public GameMode mode
@@ -1132,6 +1161,10 @@ namespace SrvSurvey.game
             // update boxel search?
             if (cmdr.boxelSearch?.active == true)
                 cmdr.boxelSearch.markComplete(entry.SystemAddress, entry.StarSystem, entry.StarPos);
+
+            // update route progress?
+            if (cmdr.route1?.active == true)
+                cmdr.route1.setNextHop(StarRef.from(entry));
         }
 
         private void onJournalEntry(CarrierJump entry)
@@ -1186,12 +1219,14 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(FSSAllBodiesFound entry)
         {
-            // update boxel search?
-            if (cmdr.boxelSearch?.active == true)
-                Program.defer(() =>
-                {
+            Program.defer(() =>
+            {
+                // update boxel search?
+                if (cmdr.boxelSearch?.active == true)
                     cmdr.boxelSearch.markComplete(entry.SystemAddress, entry.SystemName, null);
-                });
+
+                Program.invalidate<PlotFSSInfo>();
+            });
         }
 
         private void onJournalEntry(Scan entry)

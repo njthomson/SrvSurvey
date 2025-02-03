@@ -120,16 +120,16 @@
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnCopyJournalPath.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAA7SURBVDhPY6AZcHJy+k8IQ5ViB4QUUN0AEIcQRgHYDMAH
-        Rg0YFAaANKBjqBwYkOwCdEAVAwhhWgAGBgBhZVAaagsceQAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wAAADsABataJCQAAADtJREFUOE9joBlwcnL6TwhDlWIHhBRQ3QAQhxBGAdgMwAdGDRgUBoA0oGOoHBiQ
+        7AJ0QBUDCGFaAAYGAGFlUBpqCxx5AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="btnCopyStack.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAA7SURBVDhPY6AZcHJy+k8IQ5ViB4QUUN0AEIcQRgHYDMAH
-        Rg0YFAaANKBjqBwYkOwCdEAVAwhhWgAGBgBhZVAaagsceQAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wQAADsEBuJFr7QAAADtJREFUOE9joBlwcnL6TwhDlWIHhBRQ3QAQhxBGAdgMwAdGDRgUBoA0oGOoHBiQ
+        7AJ0QBUDCGFaAAYGAGFlUBpqCxx5AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

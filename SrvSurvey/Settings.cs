@@ -41,6 +41,7 @@ namespace SrvSurvey
         public bool highlightRegionalFirsts = false;
         public bool autoShowPlotGalMap = true;
         public bool autoShowPlotJumpInfo = true;
+        public bool showPlotJumpInfoIfNextHop = false;
         public bool useLastUpdatedFromSpanshNotEDSM = false;
 
         public bool autoShowPlotBodyInfo = true;

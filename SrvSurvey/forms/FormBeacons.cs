@@ -41,7 +41,7 @@ namespace SrvSurvey
             menuOpenDataFile.Visible = Debugger.IsAttached;
             menuOpenPubData.Visible = Debugger.IsAttached;
 
-            if (Game.activeGame?.cmdr.decodeTheRuinsMissionActive == TahMissionStatus.Active || Game.activeGame?.cmdr.decodeTheLogsMissionActive == TahMissionStatus.Active)
+            if (Game.activeGame?.cmdr?.decodeTheRuinsMissionActive == TahMissionStatus.Active || Game.activeGame?.cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active)
                 checkOnlyNeeded.Checked = true;
 
             Util.applyTheme(this);
@@ -65,8 +65,8 @@ namespace SrvSurvey
 
             var incRamTah = checkRamTah.Checked;
 
-            var eitherMissionActive = Game.activeGame?.cmdr.decodeTheRuinsMissionActive == TahMissionStatus.Active
-                || Game.activeGame?.cmdr.decodeTheLogsMissionActive == TahMissionStatus.Active;
+            var eitherMissionActive = Game.activeGame?.cmdr?.decodeTheRuinsMissionActive == TahMissionStatus.Active
+                || Game.activeGame?.cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active;
 
             var incRamTahRuins = Canonn.ShowLogs.None;
             var incRamTahLogs = Canonn.ShowLogs.None;

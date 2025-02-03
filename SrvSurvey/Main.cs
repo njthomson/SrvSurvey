@@ -1807,6 +1807,11 @@ namespace SrvSurvey
             BaseForm.show<FormSystemNotes>(this);
         }
 
+        private void menuFollowRoute_Click(object sender, EventArgs e)
+        {
+            BaseForm.show<FormRoute>();
+        }
+
         private void btnCodexShow_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormShowCodex>();

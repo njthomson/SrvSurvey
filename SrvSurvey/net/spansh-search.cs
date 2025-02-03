@@ -37,6 +37,8 @@ namespace SrvSurvey.net
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
             public StarRef? reference_coords;
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+            public string? reference_system;
 
             public Dictionary<string, Filter> filters;
 
@@ -57,6 +59,30 @@ namespace SrvSurvey.net
                 public List<string> value;
                 public Values() { value = new(); }
                 public Values(params string[] values) { this.value = values.ToList(); }
+            }
+
+            internal class MinMax : Filter
+            {
+                // "distance":{"min":"0","max":"10"},
+                public string min;
+                public string max;
+
+                public MinMax() { }
+                public MinMax(string min, string max) { this.min = min; this.max = max; }
+            }
+
+            internal class Comparison : Filter
+            {
+                // "population":{"comparison":"<=>","value":[0, 0]
+                public string comparison = "<=>";
+                [JsonIgnore]
+                public int min;
+                [JsonIgnore]
+                public int max;
+                public int[] value => new int[] { min, max };
+
+                public Comparison() { }
+                public Comparison(int min, int max) { this.min = min; this.max = max; }
             }
         }
 

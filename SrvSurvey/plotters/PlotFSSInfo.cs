@@ -106,11 +106,13 @@ namespace SrvSurvey.plotters
             var systemName = undiscoveredSystem
                 ? $"⚑ {game.systemData.name}"
                 : game.systemData.name;
+            if (game.systemData.fssAllBodies) systemName += " ✔️";
             drawTextAt2(systemName, undiscoveredSystem ? GameColors.Cyan : null, GameColors.Fonts.gothic_12B);
             newLine(+eight, true);
 
             // 2nd line body count / values
-            var bodyCount = game.systemData.bodies.Count(_ => _.scanned && _.type != SystemBodyType.Asteroid);
+            var bodyCount = game.systemData.bodies.Count(_ => _.scanned && _.type != SystemBodyType.Asteroid).ToString();
+            if (game.systemData.fssAllBodies) bodyCount = "all " + bodyCount;
             drawTextAt2(eight, $"Scanned {bodyCount} bodies: {Util.credits(game.systemData.sumRewards())}");
             newLine(true);
             drawTextAt2(eight, $"( Hiding bodies < {Util.credits(Game.settings.hideFssLowValueAmount)} )", GameColors.OrangeDim);

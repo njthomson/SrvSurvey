@@ -1211,6 +1211,8 @@ namespace SrvSurvey.game
                     else
                         body.type = SystemBody.typeFrom(null!, entry.subType!, entry.isLandable, entry.name);
                 }
+                if (body.type == SystemBodyType.SolidBody && entry.isLandable == true) body.type = SystemBodyType.LandableBody;
+                
                 if (body.distanceFromArrivalLS == 0) body.distanceFromArrivalLS = entry.distanceToArrival;
                 if (body.semiMajorAxis == 0) body.semiMajorAxis = Util.lsToM(entry.semiMajorAxis ?? 0); // convert from LS to M
                 if (body.absoluteMagnitude == 0) body.absoluteMagnitude = entry.absoluteMagnitude;
@@ -1324,6 +1326,7 @@ namespace SrvSurvey.game
                     else
                         body.type = SystemBody.typeFrom(null!, entry.subType!, entry.isLandable ?? false, entry.name);
                 }
+                if (body.type == SystemBodyType.SolidBody && entry.isLandable == true) body.type = SystemBodyType.LandableBody;
 
                 if (body.distanceFromArrivalLS == 0) body.distanceFromArrivalLS = entry.distanceToArrival ?? 0;
                 if (body.semiMajorAxis == 0) body.semiMajorAxis = Util.lsToM(entry.semiMajorAxis ?? 0); // convert from LS to M

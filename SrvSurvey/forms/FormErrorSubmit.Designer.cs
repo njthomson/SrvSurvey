@@ -47,10 +47,10 @@
             // 
             linkMain.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             linkMain.LinkArea = new LinkArea(90, 45);
-            linkMain.Location = new Point(13, 9);
+            linkMain.Location = new Point(13, 12);
             linkMain.Margin = new Padding(4, 0, 4, 0);
             linkMain.Name = "linkMain";
-            linkMain.Size = new Size(534, 29);
+            linkMain.Size = new Size(505, 40);
             linkMain.TabIndex = 6;
             linkMain.TabStop = true;
             linkMain.Text = "Oops! This is embarrasing. Please submit this error report, or enter details manually at: https://github.com/njthomson/SrvSurvey/issues";
@@ -61,46 +61,45 @@
             // 
             label2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             label2.AutoSize = true;
-            label2.Location = new Point(13, 191);
+            label2.Location = new Point(15, 241);
             label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
-            label2.Size = new Size(264, 12);
+            label2.Size = new Size(234, 17);
             label2.TabIndex = 8;
             label2.Text = "Share what was happening just before:";
             // 
             // txtStack
             // 
             txtStack.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtStack.Font = new Font("Lucida Sans Typewriter", 6F, FontStyle.Regular, GraphicsUnit.Point);
-            txtStack.Location = new Point(14, 41);
-            txtStack.Margin = new Padding(4, 3, 4, 3);
+            txtStack.Font = new Font("Lucida Sans Typewriter", 6F);
+            txtStack.Location = new Point(15, 57);
+            txtStack.Margin = new Padding(4, 5, 4, 5);
             txtStack.Multiline = true;
             txtStack.Name = "txtStack";
             txtStack.ReadOnly = true;
             txtStack.ScrollBars = ScrollBars.Both;
-            txtStack.Size = new Size(533, 141);
+            txtStack.Size = new Size(533, 179);
             txtStack.TabIndex = 7;
             // 
             // txtSteps
             // 
             txtSteps.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtSteps.Location = new Point(14, 206);
-            txtSteps.Margin = new Padding(4, 3, 4, 3);
+            txtSteps.Location = new Point(14, 263);
+            txtSteps.Margin = new Padding(4, 5, 4, 5);
             txtSteps.Multiline = true;
             txtSteps.Name = "txtSteps";
             txtSteps.ScrollBars = ScrollBars.Both;
-            txtSteps.Size = new Size(533, 149);
+            txtSteps.Size = new Size(533, 209);
             txtSteps.TabIndex = 0;
             // 
             // btnSubmit
             // 
             btnSubmit.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnSubmit.AutoSize = true;
-            btnSubmit.FlatStyle = FlatStyle.Flat;
-            btnSubmit.Location = new Point(203, 442);
-            btnSubmit.Margin = new Padding(4, 3, 4, 3);
+            btnSubmit.Location = new Point(204, 593);
+            btnSubmit.Margin = new Padding(4, 5, 4, 5);
             btnSubmit.Name = "btnSubmit";
-            btnSubmit.Size = new Size(224, 24);
+            btnSubmit.Size = new Size(224, 34);
             btnSubmit.TabIndex = 3;
             btnSubmit.Text = "&Create issue on GitHub.com";
             btnSubmit.UseVisualStyleBackColor = true;
@@ -110,9 +109,10 @@
             // 
             checkIncludeLogs.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             checkIncludeLogs.AutoSize = true;
-            checkIncludeLogs.Location = new Point(14, 361);
+            checkIncludeLogs.Location = new Point(15, 480);
+            checkIncludeLogs.Margin = new Padding(3, 5, 3, 5);
             checkIncludeLogs.Name = "checkIncludeLogs";
-            checkIncludeLogs.Size = new Size(164, 16);
+            checkIncludeLogs.Size = new Size(148, 21);
             checkIncludeLogs.TabIndex = 1;
             checkIncludeLogs.Text = "Include verbose logs";
             checkIncludeLogs.UseVisualStyleBackColor = true;
@@ -121,10 +121,10 @@
             // 
             btnLogs.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnLogs.AutoSize = true;
-            btnLogs.FlatStyle = FlatStyle.Flat;
-            btnLogs.Location = new Point(14, 442);
+            btnLogs.Location = new Point(15, 593);
+            btnLogs.Margin = new Padding(3, 5, 3, 5);
             btnLogs.Name = "btnLogs";
-            btnLogs.Size = new Size(110, 24);
+            btnLogs.Size = new Size(110, 34);
             btnLogs.TabIndex = 2;
             btnLogs.Text = "View logs";
             btnLogs.UseVisualStyleBackColor = true;
@@ -135,11 +135,10 @@
             btnClose.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnClose.AutoSize = true;
             btnClose.DialogResult = DialogResult.Cancel;
-            btnClose.FlatStyle = FlatStyle.Flat;
-            btnClose.Location = new Point(435, 442);
-            btnClose.Margin = new Padding(4, 3, 4, 3);
+            btnClose.Location = new Point(436, 593);
+            btnClose.Margin = new Padding(4, 5, 4, 5);
             btnClose.Name = "btnClose";
-            btnClose.Size = new Size(112, 24);
+            btnClose.Size = new Size(112, 34);
             btnClose.TabIndex = 4;
             btnClose.Text = "Close";
             btnClose.UseVisualStyleBackColor = true;
@@ -148,10 +147,10 @@
             // 
             linkToDiscord.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             linkToDiscord.LinkArea = new LinkArea(108, 14);
-            linkToDiscord.Location = new Point(14, 401);
+            linkToDiscord.Location = new Point(15, 535);
             linkToDiscord.Margin = new Padding(4, 0, 4, 0);
             linkToDiscord.Name = "linkToDiscord";
-            linkToDiscord.Size = new Size(534, 29);
+            linkToDiscord.Size = new Size(534, 41);
             linkToDiscord.TabIndex = 10;
             linkToDiscord.TabStop = true;
             linkToDiscord.Text = "(Submitting on GitHub.com requires an account. Issues may also be reported on our Discord server in channel #error-reports)";
@@ -163,10 +162,10 @@
             linkJournal.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             linkJournal.AutoSize = true;
             linkJournal.LinkArea = new LinkArea(22, 200);
-            linkJournal.Location = new Point(14, 380);
+            linkJournal.Location = new Point(15, 506);
             linkJournal.Margin = new Padding(4, 0, 4, 0);
             linkJournal.Name = "linkJournal";
-            linkJournal.Size = new Size(373, 18);
+            linkJournal.Size = new Size(325, 22);
             linkJournal.TabIndex = 11;
             linkJournal.TabStop = true;
             linkJournal.Text = "Current journal file: Journal.0000-00-00T000000.00.log";
@@ -176,11 +175,11 @@
             // btnCopyJournalPath
             // 
             btnCopyJournalPath.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnCopyJournalPath.FlatStyle = FlatStyle.Flat;
             btnCopyJournalPath.Image = (Image)resources.GetObject("btnCopyJournalPath.Image");
-            btnCopyJournalPath.Location = new Point(394, 375);
+            btnCopyJournalPath.Location = new Point(347, 504);
+            btnCopyJournalPath.Margin = new Padding(3, 5, 3, 5);
             btnCopyJournalPath.Name = "btnCopyJournalPath";
-            btnCopyJournalPath.Size = new Size(23, 23);
+            btnCopyJournalPath.Size = new Size(23, 26);
             btnCopyJournalPath.TabIndex = 27;
             btnCopyJournalPath.UseVisualStyleBackColor = true;
             btnCopyJournalPath.Click += btnCopyJournalPath_Click;
@@ -188,11 +187,11 @@
             // btnCopyStack
             // 
             btnCopyStack.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnCopyStack.FlatStyle = FlatStyle.Flat;
             btnCopyStack.Image = (Image)resources.GetObject("btnCopyStack.Image");
-            btnCopyStack.Location = new Point(503, 43);
+            btnCopyStack.Location = new Point(524, 26);
+            btnCopyStack.Margin = new Padding(3, 5, 3, 5);
             btnCopyStack.Name = "btnCopyStack";
-            btnCopyStack.Size = new Size(23, 23);
+            btnCopyStack.Size = new Size(23, 26);
             btnCopyStack.TabIndex = 28;
             btnCopyStack.UseVisualStyleBackColor = true;
             btnCopyStack.Click += btnCopyStack_Click;
@@ -200,9 +199,9 @@
             // FormErrorSubmit
             // 
             AcceptButton = btnSubmit;
-            AutoScaleDimensions = new SizeF(7F, 12F);
+            AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(560, 478);
+            ClientSize = new Size(560, 637);
             Controls.Add(btnCopyStack);
             Controls.Add(btnCopyJournalPath);
             Controls.Add(linkJournal);
@@ -215,11 +214,11 @@
             Controls.Add(txtStack);
             Controls.Add(label2);
             Controls.Add(linkMain);
-            Font = new Font("Lucida Sans Typewriter", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Icon = (Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
-            Margin = new Padding(4, 3, 4, 3);
-            MinimumSize = new Size(503, 435);
+            Margin = new Padding(4, 5, 4, 5);
+            MinimumSize = new Size(503, 600);
             Name = "FormErrorSubmit";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Oops...";

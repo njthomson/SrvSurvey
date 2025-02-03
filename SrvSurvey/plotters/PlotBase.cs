@@ -378,7 +378,7 @@ namespace SrvSurvey.plotters
 
                 if (forceRepaint)
                 {
-                    g.FillRectangle(Brushes.Black, 0, 0, this.Width, this.Height);
+                    g.FillRectangle(C.Brushes.black, 0, 0, this.Width, this.Height);
                     this.formSize = new SizeF();
                     this.dtx = eight;
                     this.dty = ten;
@@ -405,6 +405,9 @@ namespace SrvSurvey.plotters
             }
             catch (Exception ex)
             {
+                // ignore this entirely
+                if (ex is ArgumentException && ex.TargetSite?.Name == "MeasureString")
+                    return;
                 Game.log($"{this.GetType().Name}.OnPaintBackground error: {ex}");
             }
         }

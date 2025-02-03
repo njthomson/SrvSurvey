@@ -81,6 +81,7 @@
             comboLowMassCode = new ComboBox();
             lblBadBoxel = new Label();
             lblBoxelCount = new Label();
+            label7 = new Label();
             contextList.SuspendLayout();
             status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numMax).BeginInit();
@@ -243,7 +244,7 @@
             // panelList
             // 
             resources.ApplyResources(panelList, "panelList");
-            tableTop.SetColumnSpan(panelList, 6);
+            tableTop.SetColumnSpan(panelList, 7);
             panelList.Controls.Add(comboFrom);
             panelList.Controls.Add(label2);
             panelList.Controls.Add(list);
@@ -253,18 +254,20 @@
             // 
             resources.ApplyResources(tableTop, "tableTop");
             tableTop.Controls.Add(panelList, 0, 3);
-            tableTop.Controls.Add(txtCurrent, 1, 1);
+            tableTop.Controls.Add(txtCurrent, 2, 1);
             tableTop.Controls.Add(label1, 0, 0);
-            tableTop.Controls.Add(txtMainBoxel, 1, 0);
-            tableTop.Controls.Add(btnParent, 0, 1);
-            tableTop.Controls.Add(btnConfig, 5, 0);
+            tableTop.Controls.Add(txtMainBoxel, 2, 0);
+            tableTop.Controls.Add(btnParent, 1, 1);
             tableTop.Controls.Add(label3, 0, 4);
             tableTop.Controls.Add(flowCommands, 0, 2);
+            tableTop.Controls.Add(btnConfig, 6, 0);
+            tableTop.Controls.Add(label7, 0, 1);
             tableTop.Name = "tableTop";
             // 
             // label1
             // 
             resources.ApplyResources(label1, "label1");
+            tableTop.SetColumnSpan(label1, 2);
             label1.Name = "label1";
             // 
             // txtMainBoxel
@@ -286,14 +289,14 @@
             // label3
             // 
             resources.ApplyResources(label3, "label3");
-            tableTop.SetColumnSpan(label3, 6);
+            tableTop.SetColumnSpan(label3, 7);
             label3.FlatStyle = FlatStyle.System;
             label3.Name = "label3";
             // 
             // flowCommands
             // 
             resources.ApplyResources(flowCommands, "flowCommands");
-            tableTop.SetColumnSpan(flowCommands, 6);
+            tableTop.SetColumnSpan(flowCommands, 7);
             flowCommands.Controls.Add(checkAutoCopy);
             flowCommands.Controls.Add(btnCopyNext);
             flowCommands.Controls.Add(btnBoxelEmpty);
@@ -452,6 +455,11 @@
             tableConfig.SetColumnSpan(lblBoxelCount, 2);
             lblBoxelCount.Name = "lblBoxelCount";
             // 
+            // label7
+            // 
+            resources.ApplyResources(label7, "label7");
+            label7.Name = "label7";
+            // 
             // FormBoxelSearch
             // 
             resources.ApplyResources(this, "$this");
@@ -527,5 +535,6 @@
         private FlowLayoutPanel flowCommands;
         private Label lblBadBoxel;
         private ColumnHeader colSpansh;
+        private Label label7;
     }
 }

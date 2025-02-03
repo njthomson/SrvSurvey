@@ -142,6 +142,9 @@ namespace SrvSurvey.game
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public BoxelSearch? boxelSearch;
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public Route? route1;
+
         #endregion
 
         public void applyExplReward(long reward, string reason)
@@ -303,7 +306,7 @@ namespace SrvSurvey.game
         {
             if (this.activeJourney == null)
                 return null;
-            
+
             var journey = CommanderJourney.Load(this.fid, this.activeJourney);
 
             if (journey == null)
@@ -338,5 +341,41 @@ namespace SrvSurvey.game
         NotStarted,
         Active,
         Complete,
+    }
+
+    internal class Route
+    {
+        public bool active;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public List<StarRef> hops;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public StarRef? lastHop;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public StarRef? nextHop;
+
+        public void clear()
+        {
+            hops.Clear();
+            lastHop = null;
+            nextHop = null;
+        }
+
+        /// <summary>
+        /// Returns the next route system or null if none or not valid
+        /// </summary>
+        public void setNextHop(StarRef star)
+        {
+            for (var n = 0; n < hops.Count - 1; n++)
+            {
+                if (hops[n] == star)
+                {
+                    lastHop = hops[n];
+                    nextHop = hops[n + 1];
+                    Game.log($"Route.setNextHop: in '{star}', set next: '{nextHop}'");
+                    return;
+                }
+            }
+        }
+
     }
 }
