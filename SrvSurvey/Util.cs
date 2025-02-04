@@ -1344,7 +1344,15 @@ namespace SrvSurvey
         /// </summary>
         public static string ToLocalShortDateTime24Hours(this DateTimeOffset dateTime)
         {
-            return dateTime.LocalDateTime.ToShortDateString() + "  " + dateTime.LocalDateTime.ToString("HH:mm");
+            return dateTime.LocalDateTime.ToShortDateString() + " " + dateTime.LocalDateTime.ToString("HH:mm");
+        }
+
+        /// <summary>
+        /// Returns a string using Galactic short date and 24 hour time
+        /// </summary>
+        public static string ToGalacticShortDateTime24Hours(this DateTimeOffset dateTime)
+        {
+            return dateTime.AddYears(1286).UtcDateTime.ToShortDateString() + " " + dateTime.UtcDateTime.ToString("HH:mm");
         }
     }
 

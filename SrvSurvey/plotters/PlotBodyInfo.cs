@@ -147,6 +147,7 @@ namespace SrvSurvey.plotters
             if (planetish)
             {
                 var isHighGravity = body.surfaceGravity >= Game.settings.highGravityWarningLevel * 10;
+                // if (body.surfaceGravity > 2.69) gravity = "🚫 " + gravity; // show a warning icon if body gravity is too high to exit ships/SRV
                 drawTextAt2(eight, $"Gravity: {gravity}g", isHighGravity ? GameColors.red : null);
                 var pressure = (body.surfacePressure / 100_000f).ToString("N4") + "(atm)";
                 if (pressure == "0.0000(atm)") pressure = "None";

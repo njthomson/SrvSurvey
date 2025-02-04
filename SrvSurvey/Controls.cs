@@ -52,10 +52,11 @@ namespace SrvSurvey
         }
 
         /// <summary> Creates a ToolStripItem with the given text and tag </summary>
-        public static ListViewItem Add(this ListView.ListViewItemCollection items, string text, string subItem1)
+        public static ListViewItem Add(this ListView.ListViewItemCollection items, string text, string name, object? tag)
         {
             var newItem = items.Add(text);
-            newItem.SubItems.Add(subItem1);
+            newItem.Name = name;
+            newItem.Tag = tag;
 
             return newItem;
         }

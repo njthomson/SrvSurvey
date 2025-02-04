@@ -223,6 +223,8 @@ namespace SrvSurvey
         public bool overlayTombs = false;
 
         public bool systemNotesTopMost = false;
+        public bool viewJourneyTopMost = false;
+        public bool viewJourneyGalacticTime = true;
 
         #region loading / saving
 

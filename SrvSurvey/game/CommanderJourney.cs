@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SrvSurvey.forms;
 using SrvSurvey.units;
 using System.Diagnostics.CodeAnalysis;
 
@@ -222,19 +223,20 @@ namespace SrvSurvey.game
         private void onJournalEntry(FSDJump entry)
         {
             // close out the current system
-            if (currentSystem != null)
-            {
+            if (currentSystem != null && currentSystem.departed != null)
                 currentSystem.departed = entry.timestamp;
-            }
 
             currentSystem = new SystemStats(entry);
             visitedSystems.Add(currentSystem);
+
+            // if journey viewer is open - make it refresh
+            BaseForm.get<FormJourneyViewer>()?.refresh();
         }
 
         private void onJournalEntry(StartJump entry)
         {
             // close out the current system
-            if (currentSystem != null)
+            if (currentSystem != null && entry.JumpType == "Hyperspace")
             {
                 currentSystem.departed = entry.timestamp;
                 currentSystem = null;
@@ -396,6 +398,9 @@ namespace SrvSurvey.game
             if (currentSystem == null) return;
 
             currentSystem.count.screenshots += 1;
+
+            // if journey viewer is open - make it refresh
+            BaseForm.get<FormJourneyViewer>()?.refresh();
         }
 
         #endregion
@@ -498,7 +503,7 @@ namespace SrvSurvey.game
 
             public override string ToString()
             {
-                return $"{starRef.name} ({arrived} ~ {arrived})";
+                return $"{starRef.name} ({arrived.ToString("yyyy/MM/dd HH:mm:ss")} ~ {departed?.ToString("yyyy/MM/dd HH:mm:ss")})";
             }
 
             [JsonIgnore]
@@ -558,6 +563,27 @@ namespace SrvSurvey.game
                         stars = c1.stars + c2.stars,
                     };
                 }
+            }
+
+            public override int GetHashCode()
+            {
+                return starRef.id64.GetHashCode() + arrived.GetHashCode();
+            }
+
+            public override bool Equals(object? obj)
+            {
+                var other = obj as SystemStats;
+                return this.GetHashCode() == other?.GetHashCode();
+            }
+
+            public static bool operator ==(SystemStats? s1, SystemStats? s2)
+            {
+                return s1?.GetHashCode() == s2?.GetHashCode();
+            }
+
+            public static bool operator !=(SystemStats? s1, SystemStats? s2)
+            {
+                return s1?.GetHashCode() != s2?.GetHashCode();
             }
         }
 

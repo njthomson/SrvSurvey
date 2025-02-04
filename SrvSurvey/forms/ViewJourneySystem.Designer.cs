@@ -40,7 +40,6 @@
             pictureBox3 = new PictureBox();
             label1 = new Label();
             split = new SplitContainer();
-            btnSaveNotes = new Button();
             txtRoughStats = new TextBox();
             checkJourneyImagesOnly = new CheckBox();
             table = new TableLayoutPanel();
@@ -79,7 +78,7 @@
             txtNotes.Name = "txtNotes";
             txtNotes.ScrollBars = ScrollBars.Vertical;
             txtNotes.ShortcutsEnabled = false;
-            txtNotes.Size = new Size(419, 212);
+            txtNotes.Size = new Size(419, 217);
             txtNotes.TabIndex = 1;
             txtNotes.TextChanged += txtNotes_TextChanged;
             // 
@@ -93,7 +92,7 @@
             txtStuff.Name = "txtStuff";
             txtStuff.Padding = new Padding(3, 0, 3, 0);
             txtStuff.ReadOnly = true;
-            txtStuff.Size = new Size(723, 34);
+            txtStuff.Size = new Size(723, 20);
             txtStuff.TabIndex = 1;
             txtStuff.Text = "stuff";
             // 
@@ -116,7 +115,7 @@
             flowImages.Location = new Point(0, 32);
             flowImages.Margin = new Padding(0);
             flowImages.Name = "flowImages";
-            flowImages.Size = new Size(723, 312);
+            flowImages.Size = new Size(723, 317);
             flowImages.TabIndex = 2;
             // 
             // pictureBox1
@@ -161,14 +160,13 @@
             // 
             split.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             split.BackColor = SystemColors.ButtonShadow;
-            split.Location = new Point(0, 74);
+            split.Location = new Point(0, 60);
             split.Margin = new Padding(0);
             split.Name = "split";
             split.Orientation = Orientation.Horizontal;
             // 
             // split.Panel1
             // 
-            split.Panel1.Controls.Add(btnSaveNotes);
             split.Panel1.Controls.Add(txtNotes);
             split.Panel1.Controls.Add(txtRoughStats);
             // 
@@ -178,22 +176,10 @@
             split.Panel2.Controls.Add(checkJourneyImagesOnly);
             split.Panel2.Controls.Add(flowImages);
             split.Panel2.Controls.Add(label1);
-            split.Size = new Size(723, 563);
-            split.SplitterDistance = 212;
+            split.Size = new Size(723, 577);
+            split.SplitterDistance = 217;
             split.SplitterWidth = 5;
             split.TabIndex = 5;
-            // 
-            // btnSaveNotes
-            // 
-            btnSaveNotes.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSaveNotes.Location = new Point(348, 183);
-            btnSaveNotes.Name = "btnSaveNotes";
-            btnSaveNotes.Size = new Size(51, 26);
-            btnSaveNotes.TabIndex = 0;
-            btnSaveNotes.Text = "&Save";
-            btnSaveNotes.UseVisualStyleBackColor = true;
-            btnSaveNotes.Visible = false;
-            btnSaveNotes.Click += btnSaveNotes_Click;
             // 
             // txtRoughStats
             // 
@@ -203,7 +189,7 @@
             txtRoughStats.Name = "txtRoughStats";
             txtRoughStats.ReadOnly = true;
             txtRoughStats.ScrollBars = ScrollBars.Vertical;
-            txtRoughStats.Size = new Size(304, 212);
+            txtRoughStats.Size = new Size(304, 217);
             txtRoughStats.TabIndex = 2;
             // 
             // checkJourneyImagesOnly
@@ -271,7 +257,6 @@
         private Label label1;
         private SplitContainer split;
         private CheckBox checkJourneyImagesOnly;
-        private Button btnSaveNotes;
         private TableLayoutPanel table;
         private TextBox txtRoughStats;
     }

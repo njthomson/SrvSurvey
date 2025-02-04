@@ -70,6 +70,7 @@ namespace SrvSurvey.forms
             var count = 0;
             try
             {
+                route.hops ??= new();
                 foreach (var name in names)
                 {
                     var response = await Game.spansh.getSystemRef(name);

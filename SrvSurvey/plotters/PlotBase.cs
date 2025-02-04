@@ -362,7 +362,7 @@ namespace SrvSurvey.plotters
                 //this.resetPlotter(e.Graphics);
                 this.g = e.Graphics;
                 this.g.SmoothingMode = SmoothingMode.HighQuality;
-                this.formSize = new SizeF();
+                this.formSize = new SizeF(2, 0);
                 this.dtx = eight;
                 this.dty = ten;
                 this.forceRepaint = false;
@@ -379,7 +379,7 @@ namespace SrvSurvey.plotters
                 if (forceRepaint)
                 {
                     g.FillRectangle(C.Brushes.black, 0, 0, this.Width, this.Height);
-                    this.formSize = new SizeF();
+                    this.formSize = new SizeF(2, 0);
                     this.dtx = eight;
                     this.dty = ten;
                     if (this.BackgroundImage != null)
@@ -406,8 +406,11 @@ namespace SrvSurvey.plotters
             catch (Exception ex)
             {
                 // ignore this entirely
-                if (ex is ArgumentException && ex.TargetSite?.Name == "MeasureString")
+                if (ex is ArgumentException && (ex.TargetSite?.Name == "MeasureString" || ex.TargetSite?.Name == "CheckErrorStatus"))
+                {
+                    Debugger.Break(); // Is this still happening?
                     return;
+                }
                 Game.log($"{this.GetType().Name}.OnPaintBackground error: {ex}");
             }
         }
@@ -815,7 +818,7 @@ namespace SrvSurvey.plotters
         {
             this.g = g;
             this.g.SmoothingMode = SmoothingMode.HighQuality;
-            this.formSize = new SizeF();
+            this.formSize = new SizeF(2, 0);
             this.dtx = eight;
             this.dty = ten;
         }

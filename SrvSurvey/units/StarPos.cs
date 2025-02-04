@@ -1,5 +1,8 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
+using System.Diagnostics;
+using System.Globalization;
 
 namespace SrvSurvey.units
 {
@@ -108,6 +111,7 @@ namespace SrvSurvey.units
     }
 
     /// <summary> A reference to a star system </summary>
+    [JsonConverter(typeof(StarRef.JsonConverter))]
     internal class StarRef
     {
         public string name;
@@ -199,6 +203,72 @@ namespace SrvSurvey.units
         public static implicit operator double[](StarRef pos)
         {
             return new double[] { pos.x, pos.y, pos.z };
+        }
+
+        class JsonConverter : Newtonsoft.Json.JsonConverter
+        {
+            public override bool CanConvert(Type objectType)
+            {
+                return false;
+            }
+
+            public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+            {
+                try
+                {
+                    var obj = serializer.Deserialize<JToken>(reader);
+                    if (obj == null) return null;
+
+                    // read old format
+                    if (obj.Type == JTokenType.Object)
+                    {
+                        var star2 = new StarRef()
+                        {
+                            name = obj["name"]?.Value<string>()!,
+                            id64 = obj["id64"]?.Value<long>() ?? 0,
+                            x = obj["x"]?.Value<double>() ?? 0,
+                            y = obj["y"]?.Value<double>() ?? 0,
+                            z = obj["z"]?.Value<double>() ?? 0,
+                        };
+                        return star2;
+                    }
+                    else if (obj.Type == JTokenType.Null)
+                        return null;
+                    else if (obj.Type != JTokenType.String)
+                        throw new Exception($"Unexpected json type: {obj.Type}");
+
+                    // decode a joined string
+                    var txt = obj.Value<string>()!;
+                    var parts = txt.Split('|');
+                    if (parts.Length != 5) throw new Exception($"Unexpected StarRef: {txt}");
+
+                    var star = new StarRef()
+                    {
+                        name = parts[0],
+                        id64 = long.Parse(parts[1], CultureInfo.InvariantCulture),
+                        x = double.Parse(parts[2], CultureInfo.InvariantCulture),
+                        y = double.Parse(parts[3], CultureInfo.InvariantCulture),
+                        z = double.Parse(parts[4], CultureInfo.InvariantCulture),
+                    };
+                    return star;
+                }
+                catch (Exception ex)
+                {
+                    Game.log($"Failed to parse StarRef: ${ex}");
+                    Debugger.Break();
+                    return null;
+                }
+            }
+
+            public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+            {
+                var star = value as StarRef;
+                if (star == null) throw new Exception($"Unexpected type: {value?.GetType().Name}");
+
+                // encode as a singular string
+                var json = $"{star.name}|{star.id64}|{star.x}|{star.y}|{star.z}";
+                writer.WriteValue(json);
+            }
         }
     }
 }

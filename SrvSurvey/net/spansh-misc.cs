@@ -11,6 +11,27 @@ namespace SrvSurvey.net
 {
     partial class Spansh
     {
+        public async Task getFactionSystems()
+        {
+            var targetFaction = "Raven Colonial Corporation";
+            Game.log($"getFactionSystems:");
+
+            // get controlled systems 
+            var q1 = new SystemQuery
+            {
+                page = 0,
+                size = 50,
+                sort = new() { new("name", SortOrder.asc) },
+                filters = new() { { "minor_faction_presences", new SystemQuery.Value(targetFaction) } }
+            };
+            var response = await this.querySystems(q1);
+            var factionSystems = response.results.Select(s => s.name);
+
+            var txt = string.Join("\n", factionSystems);
+            Clipboard.SetText(txt);
+            Game.log(txt);
+        }
+
         public async Task getRavenColonizeTargets()
         {
             Game.log($"getRavenColonizeTargets:");

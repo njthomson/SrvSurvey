@@ -19,7 +19,7 @@ namespace SrvSurvey.plotters
                     || Game.activeGame.mode == GameMode.FSDJumping
                     // or a keystroke forced it
                     || (PlotJumpInfo.forceShow && Game.activeGame.mode != GameMode.FSS)
-                    || (Game.settings.showPlotJumpInfoIfNextHop && Game.activeGame.destinationNextRouteHop && Game.activeGame.isMode(GameMode.Flying, GameMode.SuperCruising))
+                    || (Game.settings.showPlotJumpInfoIfNextHop && Game.activeGame.destinationNextRouteHop && Game.activeGame.isMode(GameMode.SuperCruising))
                 );
         }
 

@@ -30,7 +30,7 @@
         {
             ListViewItem listViewItem1 = new ListViewItem("Praea Euq GQ-P c5-8");
             ListViewItem listViewItem2 = new ListViewItem("Swoilz OO-X d2-10");
-            btnClose = new FlatButton();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormJourneyViewer));
             listQuickStats = new ListView();
             colMetricName = new ColumnHeader();
             colMetricCount = new ColumnHeader();
@@ -45,9 +45,16 @@
             tabPage2 = new TabPage();
             splitContainer1 = new SplitContainer();
             panelSystem = new Panel();
-            btnSave = new FlatButton();
-            btnProcess = new Button();
-            btnConclude = new Button();
+            status = new StatusStrip();
+            menuStatus = new ToolStripStatusLabel();
+            menuSaveUpdates = new ToolStripSplitButton();
+            menuDiscard = new ToolStripSplitButton();
+            menuOptions = new ToolStripDropDownButton();
+            menuTopMost = new ToolStripMenuItem();
+            menuGalacticTime = new ToolStripMenuItem();
+            toolStripSeparator1 = new ToolStripSeparator();
+            menuReprocessJournals = new ToolStripMenuItem();
+            menuConclude = new ToolStripMenuItem();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -55,18 +62,8 @@
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            status.SuspendLayout();
             SuspendLayout();
-            // 
-            // btnClose
-            // 
-            btnClose.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnClose.Location = new Point(739, 553);
-            btnClose.Name = "btnClose";
-            btnClose.Size = new Size(75, 26);
-            btnClose.TabIndex = 4;
-            btnClose.Text = "Close";
-            btnClose.UseVisualStyleBackColor = true;
-            btnClose.Click += btnClose_Click;
             // 
             // listQuickStats
             // 
@@ -76,13 +73,13 @@
             listQuickStats.FullRowSelect = true;
             listQuickStats.GridLines = true;
             listQuickStats.HeaderStyle = ColumnHeaderStyle.Nonclickable;
-            listQuickStats.Location = new Point(553, 0);
+            listQuickStats.Location = new Point(577, 0);
             listQuickStats.Margin = new Padding(3, 0, 0, 0);
             listQuickStats.MultiSelect = false;
             listQuickStats.Name = "listQuickStats";
             listQuickStats.ShowGroups = false;
             listQuickStats.ShowItemToolTips = true;
-            listQuickStats.Size = new Size(235, 495);
+            listQuickStats.Size = new Size(241, 538);
             listQuickStats.TabIndex = 3;
             listQuickStats.UseCompatibleStateImageBehavior = false;
             listQuickStats.View = View.Details;
@@ -101,10 +98,12 @@
             // 
             listSystems.Columns.AddRange(new ColumnHeader[] { colSystem, colInterest });
             listSystems.Dock = DockStyle.Fill;
+            listSystems.FullRowSelect = true;
+            listSystems.HeaderStyle = ColumnHeaderStyle.Nonclickable;
             listSystems.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2 });
             listSystems.Location = new Point(0, 0);
             listSystems.Name = "listSystems";
-            listSystems.Size = new Size(197, 494);
+            listSystems.Size = new Size(203, 532);
             listSystems.TabIndex = 0;
             listSystems.UseCompatibleStateImageBehavior = false;
             listSystems.View = View.Details;
@@ -121,14 +120,14 @@
             // 
             // tabControl1
             // 
-            tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tabControl1.Appearance = TabAppearance.FlatButtons;
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
-            tabControl1.Location = new Point(12, 14);
+            tabControl1.Dock = DockStyle.Fill;
+            tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(802, 533);
+            tabControl1.Size = new Size(826, 571);
             tabControl1.SizeMode = TabSizeMode.Fixed;
             tabControl1.TabIndex = 0;
             // 
@@ -141,7 +140,7 @@
             tabPage1.Location = new Point(4, 29);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(794, 500);
+            tabPage1.Size = new Size(818, 538);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Overview";
             tabPage1.UseVisualStyleBackColor = true;
@@ -157,7 +156,7 @@
             txtByline.Name = "txtByline";
             txtByline.Padding = new Padding(3, 0, 3, 0);
             txtByline.ReadOnly = true;
-            txtByline.Size = new Size(547, 34);
+            txtByline.Size = new Size(571, 34);
             txtByline.TabIndex = 1;
             txtByline.Text = "cmdr Stuff | Jan 2nd 2025 ~ Dec 31st 3304";
             // 
@@ -172,7 +171,7 @@
             txtJourneyName.Margin = new Padding(0);
             txtJourneyName.Name = "txtJourneyName";
             txtJourneyName.Padding = new Padding(3, 0, 3, 0);
-            txtJourneyName.Size = new Size(547, 34);
+            txtJourneyName.Size = new Size(571, 34);
             txtJourneyName.TabIndex = 0;
             txtJourneyName.Text = "journey name";
             txtJourneyName.TextChanged2 += journey_TextChanged;
@@ -186,7 +185,7 @@
             txtDescription.Name = "txtDescription";
             txtDescription.ScrollBars = ScrollBars.Vertical;
             txtDescription.ShortcutsEnabled = false;
-            txtDescription.Size = new Size(547, 420);
+            txtDescription.Size = new Size(571, 463);
             txtDescription.TabIndex = 2;
             txtDescription.Text = "journey description";
             txtDescription.TextChanged += journey_TextChanged;
@@ -197,7 +196,7 @@
             tabPage2.Location = new Point(4, 29);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(794, 500);
+            tabPage2.Size = new Size(818, 538);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Visited Systems";
             tabPage2.UseVisualStyleBackColor = true;
@@ -217,8 +216,8 @@
             // 
             splitContainer1.Panel2.BackColor = SystemColors.WindowFrame;
             splitContainer1.Panel2.Controls.Add(panelSystem);
-            splitContainer1.Size = new Size(788, 494);
-            splitContainer1.SplitterDistance = 197;
+            splitContainer1.Size = new Size(812, 532);
+            splitContainer1.SplitterDistance = 203;
             splitContainer1.TabIndex = 4;
             // 
             // panelSystem
@@ -228,53 +227,108 @@
             panelSystem.Location = new Point(0, 0);
             panelSystem.Margin = new Padding(0);
             panelSystem.Name = "panelSystem";
-            panelSystem.Size = new Size(587, 494);
+            panelSystem.Size = new Size(605, 532);
             panelSystem.TabIndex = 0;
             // 
-            // btnSave
+            // status
             // 
-            btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSave.Location = new Point(658, 553);
-            btnSave.Name = "btnSave";
-            btnSave.Size = new Size(75, 26);
-            btnSave.TabIndex = 3;
-            btnSave.Text = "&Save";
-            btnSave.UseVisualStyleBackColor = true;
-            btnSave.Visible = false;
-            btnSave.Click += btnSave_Click;
+            status.Items.AddRange(new ToolStripItem[] { menuStatus, menuSaveUpdates, menuDiscard, menuOptions });
+            status.Location = new Point(0, 571);
+            status.Name = "status";
+            status.Size = new Size(826, 22);
+            status.TabIndex = 5;
+            status.Text = "statusStrip1";
             // 
-            // btnProcess
+            // menuStatus
             // 
-            btnProcess.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnProcess.Location = new Point(16, 553);
-            btnProcess.Name = "btnProcess";
-            btnProcess.Size = new Size(139, 26);
-            btnProcess.TabIndex = 1;
-            btnProcess.Text = "Re-process journals";
-            btnProcess.UseVisualStyleBackColor = true;
-            btnProcess.Click += btnProcess_Click;
+            menuStatus.Name = "menuStatus";
+            menuStatus.Size = new Size(566, 17);
+            menuStatus.Spring = true;
+            menuStatus.Text = "-";
             // 
-            // btnConclude
+            // menuSaveUpdates
             // 
-            btnConclude.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnConclude.Location = new Point(161, 553);
-            btnConclude.Name = "btnConclude";
-            btnConclude.Size = new Size(131, 26);
-            btnConclude.TabIndex = 2;
-            btnConclude.Text = "Conclude journey";
-            btnConclude.UseVisualStyleBackColor = true;
-            btnConclude.Click += btnConclude_Click;
+            menuSaveUpdates.BackColor = SystemColors.ActiveCaption;
+            menuSaveUpdates.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            menuSaveUpdates.DropDownButtonWidth = 0;
+            menuSaveUpdates.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            menuSaveUpdates.Image = (Image)resources.GetObject("menuSaveUpdates.Image");
+            menuSaveUpdates.ImageTransparentColor = Color.Magenta;
+            menuSaveUpdates.Name = "menuSaveUpdates";
+            menuSaveUpdates.Size = new Size(87, 20);
+            menuSaveUpdates.Text = "&Save changes";
+            menuSaveUpdates.Visible = false;
+            menuSaveUpdates.ButtonClick += btnSave_Click;
+            // 
+            // menuDiscard
+            // 
+            menuDiscard.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            menuDiscard.DropDownButtonWidth = 0;
+            menuDiscard.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            menuDiscard.Image = (Image)resources.GetObject("menuDiscard.Image");
+            menuDiscard.ImageTransparentColor = Color.Magenta;
+            menuDiscard.Name = "menuDiscard";
+            menuDiscard.Size = new Size(53, 20);
+            menuDiscard.Text = "&Discard";
+            menuDiscard.Visible = false;
+            menuDiscard.ButtonClick += menuDiscard_ButtonClick;
+            // 
+            // menuOptions
+            // 
+            menuOptions.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            menuOptions.DropDownItems.AddRange(new ToolStripItem[] { menuTopMost, menuGalacticTime, toolStripSeparator1, menuReprocessJournals, menuConclude });
+            menuOptions.Image = (Image)resources.GetObject("menuOptions.Image");
+            menuOptions.ImageTransparentColor = Color.Magenta;
+            menuOptions.Name = "menuOptions";
+            menuOptions.Size = new Size(74, 20);
+            menuOptions.Text = "Options ...";
+            // 
+            // menuTopMost
+            // 
+            menuTopMost.Checked = true;
+            menuTopMost.CheckOnClick = true;
+            menuTopMost.CheckState = CheckState.Checked;
+            menuTopMost.Name = "menuTopMost";
+            menuTopMost.Size = new Size(204, 22);
+            menuTopMost.Text = "Top most";
+            menuTopMost.Click += menuTopMost_Click;
+            // 
+            // menuGalacticTime
+            // 
+            menuGalacticTime.Checked = true;
+            menuGalacticTime.CheckOnClick = true;
+            menuGalacticTime.CheckState = CheckState.Checked;
+            menuGalacticTime.Name = "menuGalacticTime";
+            menuGalacticTime.Size = new Size(204, 22);
+            menuGalacticTime.Text = "Galactic time zone";
+            menuGalacticTime.Click += menuGalacticTime_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(201, 6);
+            // 
+            // menuReprocessJournals
+            // 
+            menuReprocessJournals.Name = "menuReprocessJournals";
+            menuReprocessJournals.Size = new Size(204, 22);
+            menuReprocessJournals.Text = "Re-process journal items";
+            menuReprocessJournals.Click += btnProcess_Click;
+            // 
+            // menuConclude
+            // 
+            menuConclude.Name = "menuConclude";
+            menuConclude.Size = new Size(204, 22);
+            menuConclude.Text = "Conclude journey";
+            menuConclude.Click += btnConclude_Click;
             // 
             // FormJourneyViewer
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(826, 593);
-            Controls.Add(btnConclude);
-            Controls.Add(btnProcess);
-            Controls.Add(btnSave);
             Controls.Add(tabControl1);
-            Controls.Add(btnClose);
+            Controls.Add(status);
             Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "FormJourneyViewer";
             Text = "Journey: ";
@@ -286,12 +340,13 @@
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            status.ResumeLayout(false);
+            status.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-
-        private FlatButton btnClose;
         private ListView listQuickStats;
         private ColumnHeader colMetricName;
         private ColumnHeader colMetricCount;
@@ -305,9 +360,16 @@
         private TextBox2 txtByline;
         private SplitContainer splitContainer1;
         private Panel panelSystem;
-        private FlatButton btnSave;
-        private Button btnProcess;
-        private Button btnConclude;
         private ColumnHeader colInterest;
+        private StatusStrip status;
+        private ToolStripDropDownButton menuOptions;
+        private ToolStripMenuItem menuTopMost;
+        private ToolStripMenuItem menuGalacticTime;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem menuReprocessJournals;
+        private ToolStripStatusLabel menuStatus;
+        private ToolStripMenuItem menuConclude;
+        private ToolStripSplitButton menuDiscard;
+        private ToolStripSplitButton menuSaveUpdates;
     }
 }

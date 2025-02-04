@@ -6,20 +6,39 @@ namespace SrvSurvey.forms
 {
     internal partial class ViewJourneySystem : UserControl
     {
-        private SystemData systemData;
+        public SystemData systemData { get; private set; }
+        public SystemStats systemStats { get; private set; }
+        public bool dirty { get; private set; }
 
-        public ViewJourneySystem()
+        private FormJourneyViewer viewForm;
+
+        public ViewJourneySystem(FormJourneyViewer viewForm)
         {
             InitializeComponent();
+            this.viewForm = viewForm;
+        }
+
+        public void refreshTexts()
+        {
+            if (systemStats == null || systemData == null) return;
+
+            txtNotes.Text = systemData.notes;
+
+            var arrivedTime = Game.settings.viewJourneyGalacticTime ? systemStats.arrived.ToGalacticShortDateTime24Hours() : systemStats.arrived.ToLocalShortDateTime24Hours();
+            var departedTime = Game.settings.viewJourneyGalacticTime ? systemStats.departed?.ToGalacticShortDateTime24Hours() : systemStats.departed?.ToLocalShortDateTime24Hours();
+            if (departedTime != null)
+                txtStuff.Text  = $"Arrived: {arrivedTime} - Departed: " + departedTime;
+            else
+                txtStuff.Text  = $"Arrived: {arrivedTime} - " + Util.timeSpanToString(DateTimeOffset.Now - systemStats.arrived);
         }
 
         public void setSystem(SystemStats sys)
         {
+            this.systemStats = sys;
             this.systemData = SystemData.From(sys.starRef, CommanderSettings.currentOrLastFid);
 
             txtSystemName.Text = systemData.name;
-            txtNotes.Text = systemData.notes;
-            txtStuff.Text = $"Arrived: {sys.arrived.LocalDateTime.ToShortDateString()} Departed: {sys.departed?.LocalDateTime.ToShortDateString()}"; // => {systemStats.departed!.Value - systemStats.arrived}";
+            this.refreshTexts();
 
             // TODO: make a better panel of system stats
             txtRoughStats.Text = "";
@@ -124,16 +143,25 @@ namespace SrvSurvey.forms
             return pb;
         }
 
-        private void btnSaveNotes_Click(object sender, EventArgs e)
+        public void saveUpdates()
         {
+            Game.log($"ViewJourneySystem.saveUpdates: {this.systemData.name}");
             this.systemData.notes = txtNotes.Text;
             this.systemData.Save();
-            btnSaveNotes.Visible = false;
+            this.dirty = false;
+        }
+
+        public void discardChanges()
+        {
+            Game.log($"ViewJourneySystem.discard: {this.systemData.name}");
+            txtNotes.Text = this.systemData.notes;
+            this.dirty = false;
         }
 
         private void txtNotes_TextChanged(object sender, EventArgs e)
         {
-            btnSaveNotes.Visible = this.systemData.notes != txtNotes.Text;
+            this.dirty = this.systemData.notes != txtNotes.Text;
+            viewForm.updateSaveVisible();
         }
     }
 }

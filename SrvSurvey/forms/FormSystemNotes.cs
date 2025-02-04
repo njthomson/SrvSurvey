@@ -56,6 +56,9 @@ namespace SrvSurvey.forms
             systemData.notes = txtNotes.Text;
             systemData.Save();
             this.Close();
+
+            // if journey viewer is open - make it refresh
+            BaseForm.get<FormJourneyViewer>()?.refresh();
         }
 
         private void menuAlwaysOnTop_Click(object sender, EventArgs e)
