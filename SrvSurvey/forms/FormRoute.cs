@@ -283,7 +283,7 @@ namespace SrvSurvey.forms
             Game.log($"Saving route: {route.filepath}");
             route.Save();
 
-            if (route.active)
+            if (route.active && PlotSphericalSearch.allowPlotter)
                 Program.showPlotter<PlotSphericalSearch>(); // needed? .Invalidate();
             else
                 Program.invalidate<PlotSphericalSearch>();
