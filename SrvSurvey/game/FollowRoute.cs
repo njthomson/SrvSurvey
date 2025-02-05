@@ -77,7 +77,7 @@ namespace SrvSurvey.game
             this.active = true;
 
             // set next hop based on last, or the first hop if none
-            if (this.last < 1)
+            if (this.last < 0)
                 this.nextHop = hops.FirstOrDefault();
             else
                 this.nextHop = hops[last + 1];
@@ -158,14 +158,36 @@ namespace SrvSurvey.game
 
             public static Hop from(Spansh.Route.Result jump)
             {
-                // Summarize body/landmark info as: "A 5: Stratum Tectonicas\nB 2: Stratum Tectonicas"
-                var parts = jump.bodies?.Select(b =>
+                string? notes = null;
+                if (jump.bodies != null)
                 {
-                    var bodyShortName = b.name.Replace($"{jump.name} ", "");
-                    var landmarks = b.landmarks?.Any() == true ? string.Join(", ", b.landmarks.Select(l => l.subtype)) : "?";
-                    return $"{bodyShortName}: {landmarks}";
-                });
-                var notes = parts?.Any() == true ? string.Join("\n", parts) : null;
+                    // Summarize body/landmark info as: "Stratum Tectonicas: [A5, B2]\r\nTussock Ignis: [A5]"
+                    var mapLandmarkToBody = new Dictionary<string, HashSet<string>>();
+                    foreach (var body in jump.bodies)
+                    {
+                        var bodyShortName = body.name.Replace($"{jump.name} ", "").Replace(" ", "");
+                        if (body.landmarks == null)
+                        {
+                            // serialize body names to "Scan"
+                            mapLandmarkToBody
+                                .init("Scan")
+                                .Add(bodyShortName);
+                        }
+                        else
+                        {
+                            // serialize landmarks on the body
+                            foreach (var landmark in body.landmarks)
+                            {
+                                mapLandmarkToBody
+                                    .init(landmark.subtype)
+                                    .Add(bodyShortName);
+                            }
+                        }
+                    }
+                    if (mapLandmarkToBody.Count > 0)
+                        notes = string.Join("\r\n", mapLandmarkToBody.Select(_ => $"{_.Key}: [{string.Join(", ", _.Value)}]"));
+                }
+
                 return new Hop(jump.name, jump.id64, jump.x, jump.y, jump.z, notes);
             }
 
@@ -199,7 +221,7 @@ namespace SrvSurvey.game
                 {
                     try
                     {
-                        var obj = serializer.Deserialize<JToken>(reader);
+                        var obj = JToken.Load(reader);
                         if (obj == null) return null;
 
                         var hop = new Hop

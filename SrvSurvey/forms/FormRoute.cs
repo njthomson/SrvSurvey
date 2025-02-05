@@ -230,6 +230,9 @@ namespace SrvSurvey.forms
             {
                 updatingListChecks = true;
 
+                // hide the 3rd column at first
+                list.Columns[2].Width = 0;
+                var hasNotes = false;
                 var lastStar = lastIdx == -1 ? cmdr.getCurrentStarRef() : hops[0];
                 for (int n = 0; n < hops.Count; n++)
                 {
@@ -242,8 +245,17 @@ namespace SrvSurvey.forms
                     var dist = star.getDistanceFrom(lastStar);
                     var subDist = item.SubItems.Add($"{dist:N2} ly");
                     subDist.Tag = dist;
+
+                    var subNotes = item.SubItems.Add("");
+                    if (star.refuel) subNotes.Text += "⛽ Refuel ";
+                    if (star.neutron) subNotes.Text += "⚠️ Neutron ";
+                    if (star.notes != null) subNotes.Text += star.notes;
+                    if (!string.IsNullOrEmpty(subNotes.Text)) hasNotes = true;
+
                     lastStar = star;
                 }
+                if (hasNotes)
+                    list.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.ColumnContent);
 
                 setStatusLabel();
             }

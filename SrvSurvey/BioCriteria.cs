@@ -95,7 +95,7 @@ namespace BioCriterias
 
             public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
             {
-                var obj = serializer.Deserialize<JToken>(reader);
+                var obj = JToken.Load(reader);
                 if (obj == null || !obj.HasValues) return null;
 
                 var query = obj["query"]?.ToObject<List<Clause>>();

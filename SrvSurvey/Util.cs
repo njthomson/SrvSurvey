@@ -1,4 +1,5 @@
 ﻿using DecimalMath;
+using SharpDX.DirectInput;
 using SrvSurvey.canonn;
 using SrvSurvey.forms;
 using SrvSurvey.game;
@@ -1353,6 +1354,15 @@ namespace SrvSurvey
         public static string ToGalacticShortDateTime24Hours(this DateTimeOffset dateTime)
         {
             return dateTime.AddYears(1286).UtcDateTime.ToShortDateString() + " " + dateTime.UtcDateTime.ToString("HH:mm");
+        }
+
+        public static TValue init<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key) where TKey : notnull
+        {
+            // initialize dictionary entry if not found
+            if (!dictionary.ContainsKey(key))
+                dictionary[key] = Activator.CreateInstance<TValue>();
+
+            return dictionary[key];
         }
     }
 

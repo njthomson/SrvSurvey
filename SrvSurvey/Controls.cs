@@ -63,7 +63,7 @@ namespace SrvSurvey
 
         public static void setChildrenEnabled(this Control parent, bool enabled)
         {
-            foreach (Control child in parent.Controls) 
+            foreach (Control child in parent.Controls)
                 child.Enabled = enabled;
         }
     }
@@ -155,7 +155,7 @@ namespace SrvSurvey
     public class TextBox2 : Panel
     {
         private TextBox tb;
-        private Button? bc;
+        public Button? eb { get; private set; }
 
         public TextBox2()
         {
@@ -255,63 +255,91 @@ namespace SrvSurvey
         [Browsable(true)]
         [DefaultValue(false)]
         [RefreshProperties(RefreshProperties.Repaint)]
-        public bool UseClearButton
+        public EdgeButton UseEdgeButton
         {
-            get => this.bc != null;
+            get => _edgeButtonType;
             set
             {
+                if (_edgeButtonType == value) return;
+
                 // remove if needed
-                if (value == false && this.bc != null)
+                if (value == EdgeButton.None && eb != null)
                 {
-                    this.Controls.Remove(this.bc);
-                    this.bc = null;
+                    this.Controls.Remove(this.eb);
+                    this.eb = null;
 
                     tb.Width = this.ClientSize.Width;
-
                 }
-                else if (value == true && this.bc == null)
+                else if (value != EdgeButton.None && this.eb == null)
                 {
-                    createButtonClear();
+                    createEdgeButton();
+                }
+                else if (eb != null)
+                {
+                    // force a redraw if the type is changing
+                    eb.Invalidate();
                 }
 
-                //   tb.Visible = bc == null;
-
-                tb.BackColor = Color.Cyan;
+                _edgeButtonType = value;
             }
         }
+        private EdgeButton _edgeButtonType;
 
-        private void createButtonClear()
+        private void createEdgeButton()
         {
-            this.bc = new FlatButton()
+            this.eb = new FlatButton()
             {
                 Anchor = AnchorStyles.Right,
                 AutoSize = false,
             };
 
-            bc.Size = new Size(16, 16);
-            bc.Left = this.ClientSize.Width - bc.Width - 1;
-            bc.Top = Util.centerIn(this.Height, bc.Height) - 1;
-            bc.Paint += B_Paint;
-            bc.Click += Bc_Click;
+            eb.Size = new Size(16, 16);
+            eb.Left = this.ClientSize.Width - eb.Width - 1;
+            eb.Top = Util.centerIn(this.Height, eb.Height) - 1;
+            eb.Paint += eb_Paint;
+            eb.Click += eb_Click;
 
-            tb.Width = bc.Left;
+            tb.Width = eb.Left;
 
-            this.Controls.Add(bc);
-            this.Controls.SetChildIndex(bc, 0);
+            this.Controls.Add(eb);
+            this.Controls.SetChildIndex(eb, 0);
         }
 
-        private void Bc_Click(object? sender, EventArgs e)
+        private void eb_Click(object? sender, EventArgs e)
         {
-            tb.Text = "";
-            tb.Focus();
+            if (this._edgeButtonType == EdgeButton.Clear)
+            {
+                tb.Text = "";
+                tb.Focus();
+            }
         }
 
-        private void B_Paint(object? sender, PaintEventArgs e)
+        private void eb_Paint(object? sender, PaintEventArgs e)
         {
-            if (bc == null || this.IsDisposed) return;
+            if (eb == null || this.IsDisposed) return;
             const int w = 3;
-            e.Graphics.DrawLine(SystemPens.WindowText, w, w, bc.Width - 1 - w, bc.Height - 1 - w);
-            e.Graphics.DrawLine(SystemPens.WindowText, w, bc.Width - 1 - w, bc.Height - 1 - w, w);
+            var y = eb.Height - 5;
+
+            if (_edgeButtonType == EdgeButton.Clear)
+            {
+                // Draw an X
+                e.Graphics.DrawLine(SystemPens.WindowText, w, w, eb.Width - 1 - w, eb.Height - 1 - w);
+                e.Graphics.DrawLine(SystemPens.WindowText, w, eb.Width - 1 - w, eb.Height - 1 - w, w);
+            }
+            else if (_edgeButtonType == EdgeButton.Dots)
+            {
+                // 3 dots
+                e.Graphics.FillEllipse(SystemBrushes.WindowText, 3, y, 3, -3);
+                e.Graphics.FillEllipse(SystemBrushes.WindowText, 6, y, 3, -3);
+                e.Graphics.FillEllipse(SystemBrushes.WindowText, 9, y, 3, -3);
+            }
+        }
+
+        public enum EdgeButton
+        {
+            None,
+            Clear,
+            Dots
         }
 
         #endregion

@@ -165,6 +165,7 @@ namespace SrvSurvey.net
             public int count;
             /// <summary> Page starts from this row </summary>
             public int from;
+            public StarRef reference;
             public JObject /* SystemQuery */ search; // TODO: write custom JSON deserializer that can make this be strongly typed
             public string search_reference;
             /// <summary> Size of this page </summary>

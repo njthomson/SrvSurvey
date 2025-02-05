@@ -216,7 +216,14 @@ namespace SrvSurvey.units
             {
                 try
                 {
-                    var obj = serializer.Deserialize<JToken>(reader);
+                    if (objectType != typeof(StarRef))
+                    {
+                        // TODO: is there a more elegant way than removing the converter type after it is auto-assigned?
+                        serializer.ContractResolver.ResolveContract(objectType).Converter = null;
+                        return serializer.Deserialize(reader, objectType);
+                    }
+
+                    var obj = JToken.Load(reader);
                     if (obj == null) return null;
 
                     // read old format

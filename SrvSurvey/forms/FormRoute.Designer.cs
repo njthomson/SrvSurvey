@@ -43,6 +43,7 @@
             btnSave = new Button();
             checkActive = new CheckBox();
             checkAutoCopy = new CheckBox();
+            colNotes = new ColumnHeader();
             menuImport.SuspendLayout();
             status.SuspendLayout();
             SuspendLayout();
@@ -51,7 +52,7 @@
             // 
             list.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             list.CheckBoxes = true;
-            list.Columns.AddRange(new ColumnHeader[] { colSystem, colDistance });
+            list.Columns.AddRange(new ColumnHeader[] { colSystem, colDistance, colNotes });
             list.Location = new Point(12, 41);
             list.Name = "list";
             list.Size = new Size(454, 355);
@@ -63,7 +64,7 @@
             // colSystem
             // 
             colSystem.Text = "System";
-            colSystem.Width = 260;
+            colSystem.Width = 200;
             // 
             // colDistance
             // 
@@ -166,6 +167,11 @@
             checkAutoCopy.Text = "Auto copy when in Gal-Map";
             checkAutoCopy.UseVisualStyleBackColor = true;
             // 
+            // colNotes
+            // 
+            colNotes.Text = "Notes";
+            colNotes.Width = 160;
+            // 
             // FormRoute
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -203,5 +209,6 @@
         private ToolStripMenuItem menuSystemNamesFile;
         private CheckBox checkActive;
         private CheckBox checkAutoCopy;
+        private ColumnHeader colNotes;
     }
 }

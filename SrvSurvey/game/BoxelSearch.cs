@@ -721,7 +721,7 @@ namespace SrvSurvey.game
         {
             try
             {
-                var obj = serializer.Deserialize<JToken>(reader);
+                var obj = JToken.Load(reader);
                 if (obj == null || !obj.HasValues) return null;
 
                 // read the simple fields

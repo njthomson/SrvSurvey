@@ -237,7 +237,7 @@ namespace SrvSurvey
 
             public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
             {
-                var obj = serializer.Deserialize<JToken>(reader);
+                var obj = JToken.Load(reader);
                 if (obj == null || !obj.HasValues) return null;
 
                 var data = new HumanSitePoi2
@@ -424,7 +424,7 @@ namespace SrvSurvey
 
             public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
             {
-                var obj = serializer.Deserialize<JToken>(reader);
+                var obj = JToken.Load(reader);
                 if (obj == null || !obj.HasValues) return null;
 
                 var data = new Building2
