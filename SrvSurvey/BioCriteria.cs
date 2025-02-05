@@ -102,7 +102,7 @@ namespace BioCriterias
                 var children = obj["children"]?.ToObject<List<BioCriteria>>();
                 var commonChildren = obj["commonChildren"]?.ToObject<List<BioCriteria>>();
 
-                var citeria = new BioCriteria
+                var criteria = new BioCriteria
                 {
                     genus = obj["genus"]?.Value<string>(),
                     species = obj["species"]?.Value<string>(),
@@ -113,7 +113,7 @@ namespace BioCriterias
                     commonChildren = commonChildren,
                 };
 
-                return citeria;
+                return criteria;
             }
 
             public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)

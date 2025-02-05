@@ -194,7 +194,7 @@ namespace SrvSurvey.plotters
                 if (!body.dssComplete)
                 {
                     dty -= four;
-                    this.drawTextAt(ten, $"DSS required", GameColors.brushCyan);
+                    this.drawTextAt(ten, $"► DSS required", GameColors.brushCyan);
                     newLine(+four, true);
                 }
 
@@ -511,6 +511,7 @@ namespace SrvSurvey.plotters
             // draw a row for each body
             var sortedBodies = game.systemData.bodies.OrderBy(b => b.shortName).ToList();
             var anyFF = false;
+            var fssNeeded = false;
             foreach (var body in sortedBodies)
             {
                 if (body.bioSignalCount == 0) continue;
@@ -547,71 +548,6 @@ namespace SrvSurvey.plotters
                 if (dtx > boxRight)
                     boxRight = dtx;
 
-                /*
-                // draw a box for each signal we know about
-                var signalCount = body.bioSignalCount;
-                var x = boxLeft;
-                if (body.organisms?.Count > 0)
-                {
-                    // draw volume boxes for what we do know...
-                    foreach (var org in body.organisms)
-                    {
-                        var min = body.getBioRewardForGenus(org, true);
-                        var max = body.getBioRewardForGenus(org, false);
-                        var volCol = highlight ? VolColor.Blue : VolColor.Orange;
-                        if (org.entryId == 0)
-                        {
-                            // genus not yet scanned - we should have predictions for it though
-                            volCol = VolColor.Grey;
-                            var matchGenus = Game.codexRef.matchFromGenus(org.genus)!;
-                            var isGold = body.genusPredictions[matchGenus].Any(s => s.Value.Any(v => !game.cmdrCodex.isDiscovered(v.entryId)));
-                            if (Game.settings.highlightRegionalFirsts)
-                                isGold |= body.genusPredictions[matchGenus].Any(s => s.Value.Any(v => !game.cmdrCodex.isDiscoveredInRegion(v.entryId, game.cmdr.galacticRegion)));
-                            if (isGold) volCol = VolColor.Gold;
-                        }
-                        else if (org.isFirst)
-                        {
-                            // genus was scanned
-                            volCol = VolColor.Gold;
-                        }
-                        drawVolumeBars(g, x, dty + oneFive, volCol, min, max);
-                        x += oneTwo;
-                    }
-                    signalCount -= body.organisms.Count;
-                }
-
-                // ... and draw more boxes for those we don't
-                // using the first and last for the min/max of all the potentials
-                // and ? boxes for anything in between
-                if (signalCount == 1)
-                {
-                    //long min = body.predictions.Count > 0 ? body.predictions.Values.Min(p => p.reward) : -1;
-                    long min = body.predictions.Count > 0 ? body.predictions.Values.Min(p => p.reward) : 0;
-                    long max = body.predictions.Count > 0 ? body.predictions.Values.Max(p => p.reward) : -1;
-                    var volCol = highlight ? VolColor.Blue : VolColor.Orange;
-                    if (potentialFirstDiscovery) volCol = VolColor.Gold;
-                    drawVolumeBars(g, x, dty + oneFive, volCol, min, max);
-                    x += oneTwo;
-                }
-                else if (signalCount > 1)
-                {
-                    // first is min
-                    long min = body.predictions.Count > 0 ? body.predictions.Values.Min(p => p.reward) : 0;
-                    drawVolumeBars(g, x, dty + oneFive, highlight, min);
-                    x += oneTwo;
-
-                    for (var n = 1; n < signalCount - 1; n++)
-                    {
-                        drawVolumeBars(g, x, dty + oneFive, highlight, -1, -1);
-                        x += oneTwo;
-                    }
-
-                    // last is max
-                    long max = body.predictions.Count > 0 ? body.predictions.Values.Max(p => p.reward) : 0;
-                    drawVolumeBars(g, x, dty + oneFive, highlight, min, max, potentialFirstDiscovery);
-                    x += oneTwo;
-                }
-                // */
 
                 // credits
                 b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
@@ -623,6 +559,18 @@ namespace SrvSurvey.plotters
 
                 dtx = lastTextSize.Width + boxRight + oneTwo;
                 newLine(+four, true);
+
+                // if we are missing predictions - we need to FSS the system to feed the predictor
+                if ((body.organisms?.Count(o => o.entryId > 0) ?? 0) < body.bioSignalCount && body.genusPredictions.Count == 0)
+                    fssNeeded = true;
+            }
+
+            // fss needed?
+            if (fssNeeded)
+            {
+                dty += two;
+                this.drawTextAt(six, "► System FSS required", GameColors.brushCyan, GameColors.fontSmall);
+                newLine(true);
             }
 
             this.dty += four;

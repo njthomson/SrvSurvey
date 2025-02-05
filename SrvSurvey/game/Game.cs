@@ -1141,12 +1141,16 @@ namespace SrvSurvey.game
         {
             if (cmdr.boxelSearch?.active == true)
                 Program.defer(() => cmdr.boxelSearch.updateFromRoute(navRoute.Route));
+
+            Program.invalidate<PlotSphericalSearch>();
         }
 
         private void onJournalEntry(NavRouteClear entry)
         {
             this.fsdTarget = null;
             PlotJumpInfo.forceShow = false;
+
+            Program.invalidate<PlotSphericalSearch>();
         }
 
         private void onJournalEntry(FSDJump entry)
@@ -1163,8 +1167,8 @@ namespace SrvSurvey.game
                 cmdr.boxelSearch.markComplete(entry.SystemAddress, entry.StarSystem, entry.StarPos);
 
             // update route progress?
-            if (cmdr.route1?.active == true)
-                cmdr.route1.setNextHop(StarRef.from(entry));
+            if (cmdr.route?.active == true)
+                cmdr.route.setNextHop(StarRef.from(entry));
         }
 
         private void onJournalEntry(CarrierJump entry)

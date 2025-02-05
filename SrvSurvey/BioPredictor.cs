@@ -53,7 +53,7 @@ namespace BioCriterias
             if (parentsByBrightness.Count == 0)
             {
                 Game.log($"Why no parent stars? For {body.name}");
-                Debugger.Break();
+                // Debugger.Break();
                 return null;
             }
 

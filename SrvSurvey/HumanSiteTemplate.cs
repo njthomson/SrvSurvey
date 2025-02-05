@@ -271,7 +271,7 @@ namespace SrvSurvey
 
                 if (data.size == 0)
                 {
-                    // all but landing pags
+                    // all but landing pads
                     obj["floor"] = JToken.FromObject(data.floor);
                     obj["level"] = JToken.FromObject(data.level);
                 }

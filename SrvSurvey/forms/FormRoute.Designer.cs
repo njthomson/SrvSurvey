@@ -38,12 +38,11 @@
             menuImportNames = new ToolStripMenuItem();
             menuSystemNamesFile = new ToolStripMenuItem();
             menuSpanshTourist = new ToolStripMenuItem();
-            menuSpanshTouristFile = new ToolStripMenuItem();
             status = new StatusStrip();
             lblStatus = new ToolStripStatusLabel();
             btnSave = new Button();
-            btnClear = new Button();
             checkActive = new CheckBox();
+            checkAutoCopy = new CheckBox();
             menuImport.SuspendLayout();
             status.SuspendLayout();
             SuspendLayout();
@@ -51,6 +50,7 @@
             // list
             // 
             list.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            list.CheckBoxes = true;
             list.Columns.AddRange(new ColumnHeader[] { colSystem, colDistance });
             list.Location = new Point(12, 41);
             list.Name = "list";
@@ -58,6 +58,7 @@
             list.TabIndex = 0;
             list.UseCompatibleStateImageBehavior = false;
             list.View = View.Details;
+            list.ItemChecked += list_ItemChecked;
             // 
             // colSystem
             // 
@@ -90,38 +91,31 @@
             // 
             // menuImport
             // 
-            menuImport.Items.AddRange(new ToolStripItem[] { menuImportNames, menuSystemNamesFile, menuSpanshTourist, menuSpanshTouristFile });
+            menuImport.Items.AddRange(new ToolStripItem[] { menuImportNames, menuSystemNamesFile, menuSpanshTourist });
             menuImport.Name = "menuImport";
-            menuImport.Size = new Size(234, 92);
+            menuImport.Size = new Size(250, 70);
             menuImport.targetButton = btnImport;
             // 
             // menuImportNames
             // 
             menuImportNames.Name = "menuImportNames";
-            menuImportNames.Size = new Size(233, 22);
-            menuImportNames.Text = "Copied system names ...";
+            menuImportNames.Size = new Size(249, 22);
+            menuImportNames.Text = "System names from clipboard";
             menuImportNames.Click += menuImportNames_Click;
             // 
             // menuSystemNamesFile
             // 
             menuSystemNamesFile.Name = "menuSystemNamesFile";
-            menuSystemNamesFile.Size = new Size(233, 22);
-            menuSystemNamesFile.Text = "System names file ...";
+            menuSystemNamesFile.Size = new Size(249, 22);
+            menuSystemNamesFile.Text = "System names from file";
             menuSystemNamesFile.Click += menuSystemNamesFile_Click;
             // 
             // menuSpanshTourist
             // 
             menuSpanshTourist.Name = "menuSpanshTourist";
-            menuSpanshTourist.Size = new Size(233, 22);
-            menuSpanshTourist.Text = "Copied Spansh tourist route ...";
+            menuSpanshTourist.Size = new Size(249, 22);
+            menuSpanshTourist.Text = "Spansh route URL from clipboard";
             menuSpanshTourist.Click += menuSpanshTourist_Click;
-            // 
-            // menuSpanshTouristFile
-            // 
-            menuSpanshTouristFile.Name = "menuSpanshTouristFile";
-            menuSpanshTouristFile.Size = new Size(233, 22);
-            menuSpanshTouristFile.Text = "Spansh tourist file ...";
-            menuSpanshTouristFile.Click += menuSpanshTouristFile_Click;
             // 
             // status
             // 
@@ -140,7 +134,6 @@
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(463, 19);
             lblStatus.Spring = true;
-            lblStatus.Text = "-";
             // 
             // btnSave
             // 
@@ -153,35 +146,33 @@
             btnSave.UseVisualStyleBackColor = true;
             btnSave.Click += btnSave_Click;
             // 
-            // btnClear
-            // 
-            btnClear.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnClear.Location = new Point(12, 402);
-            btnClear.Name = "btnClear";
-            btnClear.Size = new Size(75, 23);
-            btnClear.TabIndex = 5;
-            btnClear.Text = "Clear";
-            btnClear.UseVisualStyleBackColor = true;
-            btnClear.Click += btnClear_Click;
-            // 
             // checkActive
             // 
-            checkActive.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             checkActive.AutoSize = true;
-            checkActive.Location = new Point(364, 12);
+            checkActive.Location = new Point(111, 15);
             checkActive.Name = "checkActive";
             checkActive.Size = new Size(102, 19);
             checkActive.TabIndex = 6;
             checkActive.Text = "Route is active";
             checkActive.UseVisualStyleBackColor = true;
             // 
+            // checkAutoCopy
+            // 
+            checkAutoCopy.AutoSize = true;
+            checkAutoCopy.Location = new Point(245, 15);
+            checkAutoCopy.Name = "checkAutoCopy";
+            checkAutoCopy.Size = new Size(175, 19);
+            checkAutoCopy.TabIndex = 7;
+            checkAutoCopy.Text = "Auto copy when in Gal-Map";
+            checkAutoCopy.UseVisualStyleBackColor = true;
+            // 
             // FormRoute
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(478, 450);
+            Controls.Add(checkAutoCopy);
             Controls.Add(checkActive);
-            Controls.Add(btnClear);
             Controls.Add(btnSave);
             Controls.Add(status);
             Controls.Add(btnClose);
@@ -209,9 +200,8 @@
         private StatusStrip status;
         private ToolStripStatusLabel lblStatus;
         private Button btnSave;
-        private Button btnClear;
         private ToolStripMenuItem menuSystemNamesFile;
-        private ToolStripMenuItem menuSpanshTouristFile;
         private CheckBox checkActive;
+        private CheckBox checkAutoCopy;
     }
 }

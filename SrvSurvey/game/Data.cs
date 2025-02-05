@@ -62,10 +62,10 @@ namespace SrvSurvey.game
                 {
                     try
                     {
+                        attempts++;
                         var json = JsonConvert.SerializeObject(this, Formatting.Indented);
                         if (json.Length == 0) return;
 
-                        attempts++;
                         File.WriteAllText(this.filepath, json);
                         success = true;
                     }

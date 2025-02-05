@@ -1,25 +1,31 @@
-﻿using Newtonsoft.Json.Linq;
-using SrvSurvey.game;
+﻿using SrvSurvey.game;
+using SrvSurvey.plotters;
 using SrvSurvey.units;
 using System.Data;
-using System.Text.RegularExpressions;
+using static SrvSurvey.net.Spansh;
 
 namespace SrvSurvey.forms
 {
     [Draggable, TrackPosition]
     internal partial class FormRoute : SizableForm
     {
-        private Route route = new();
         private CommanderSettings cmdr;
+        private List<FollowRoute.Hop> hops;
+        private int lastIdx;
+        private bool updatingListChecks;
 
         public FormRoute()
         {
             InitializeComponent();
             this.cmdr = CommanderSettings.LoadCurrentOrLast();
+            updatingListChecks = true;
 
-            // clone the route
-            this.route = JObject.FromObject(cmdr.route1 ?? new()).ToObject<Route>()!;
-            checkActive.Checked = this.route.active;
+            // update UX from route
+            var route = cmdr.route;
+            this.hops = route.hops.ToList(); // make a copy of the List
+            this.lastIdx = route.last;
+            this.checkActive.Checked = route.active;
+            this.checkAutoCopy.Checked = route.autoCopy;
 
             prepList();
         }
@@ -64,23 +70,50 @@ namespace SrvSurvey.forms
             Task.Run(() => doImportNames(lines));
         }
 
+        private void menuSpanshTouristFile_Click(object sender, EventArgs e)
+        {
+            var dialog = new OpenFileDialog()
+            {
+                Title = "Choose import file",
+                DefaultExt = "csv",
+                Filter = "CSV files|*.csv",
+                Multiselect = false,
+            };
+
+            var rslt = dialog.ShowDialog(this);
+            if (rslt != DialogResult.OK) return;
+            if (string.IsNullOrEmpty(dialog.FileName) || !File.Exists(dialog.FileName)) return;
+
+            var lines = File.ReadAllLines(dialog.FileName)
+                .Skip(1)
+                .Select(l => l.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).First().Trim('"'))
+                .ToArray();
+
+            var msg = $"Importing ~{lines.Length} rows...";
+            Game.log(msg);
+            lblStatus.Text = msg;
+            this.setChildrenEnabled(false);
+
+            Task.Run(() => doImportNames(lines));
+        }
 
         private async Task doImportNames(string[] names)
         {
             var count = 0;
             try
             {
-                route.hops ??= new();
+                this.lastIdx = -1;
+                this.hops.Clear();
                 foreach (var name in names)
                 {
-                    var response = await Game.spansh.getSystemRef(name);
-                    if (response == null)
+                    var star = await Game.spansh.getSystemRef(name);
+                    if (star == null)
                     {
                         Game.log($"Unknown star system: {name}");
                         continue;
                     }
 
-                    route.hops.Add(response);
+                    hops.Add(new FollowRoute.Hop(star.name, star.id64, star.x, star.y, star.z));
                     count++;
                     this.Invoke(() => prepList());
                 }
@@ -101,11 +134,9 @@ namespace SrvSurvey.forms
 
         }
 
-        private Regex regTouristUrl = new Regex(@"\/(.*?)\?", RegexOptions.Singleline | RegexOptions.Compiled);
-
         private void menuSpanshTourist_Click(object sender, EventArgs e)
         {
-            var rslt = MessageBox.Show(this, "To proceed: copy the Spansh url of the tourist route to the clipboard", "SrvSurvey", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            var rslt = MessageBox.Show(this, "To proceed: copy the URL of any Spansh route to the clipboard", "SrvSurvey", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (rslt != DialogResult.OK || !Clipboard.ContainsText(TextDataFormat.Text)) return;
 
             var text = Clipboard.GetText();
@@ -118,38 +149,59 @@ namespace SrvSurvey.forms
                 lblStatus.Text = "Failed to find a tourist route ID";
                 return;
             }
-            //var rr = new Regex(@"/(.+?)\?.+$", RegexOptions.Singleline | RegexOptions.Compiled);
-            //var match = rr.Match(text);           //regTouristUrl
-            //if (!Guid.TryParse(match.Groups[1].Value, out var routeId)) return;
 
-            var msg = $"Importing route: '{routeId}' ...";
+            var routeType = "route";
+            if (parts.Contains("tourist"))
+                routeType = "tourist";
+            else if (parts.Contains("plotter"))
+                routeType = "neutron";
+            else if (parts.Contains("exact-plotter"))
+                routeType = "galaxy";
+
+            var msg = $"Importing {routeType} route: '{routeId}' ...";
             Game.log(msg);
             lblStatus.Text = msg;
             this.setChildrenEnabled(false);
-            Task.Run(() => doImportTouristRoute(routeId));
+            Task.Run(() => doImportSpanshRoute(routeId, routeType));
         }
 
-        private async Task doImportTouristRoute(Guid routeId)
+        private async Task doImportSpanshRoute(Guid routeId, string routeType)
         {
             var status = "";
-            var count = 0;
             try
             {
-                var response = await Game.spansh.getTouristRoute(routeId);
-                if (response?.result?.system_jumps == null)
+                List<FollowRoute.Hop>? parsedHops = null;
+                if (routeType == "tourist")
+                {
+                    var response = await Game.spansh.getRoute<TouristRoute>(routeId);
+                    parsedHops = response?.result?.system_jumps.Select(j => FollowRoute.Hop.from(j)).ToList()!;
+                }
+                else if (routeType == "galaxy")
+                {
+                    var response = await Game.spansh.getRoute<GalaxyRoute>(routeId);
+                    parsedHops = response?.result?.jumps.Select(j => FollowRoute.Hop.from(j)).ToList()!;
+                }
+                else if (routeType == "neutron")
+                {
+                    var response = await Game.spansh.getRoute<NeutronRoute>(routeId);
+                    parsedHops = response?.result?.system_jumps.Select(j => FollowRoute.Hop.from(j)).ToList()!;
+                }
+                else
+                {
+                    var response = await Game.spansh.getRoute<Route>(routeId);
+                    parsedHops = response?.result?.Select(j => FollowRoute.Hop.from(j)).ToList()!;
+                }
+
+                if (parsedHops == null)
                 {
                     status = $"Route not found: {routeId}";
                     return;
                 }
 
-                this.route.clear();
-                foreach (var jump in response.result.system_jumps)
-                {
-                    route.hops.Add(jump.toStarRef());
-                    count++;
-                    this.Invoke(() => prepList());
-                }
-                status = $"Successfully imported {count} hops";
+                this.lastIdx = -1;
+                this.hops.Clear();
+                this.hops.AddRange(parsedHops);
+                status = $"Successfully imported {this.hops.Count} hops";
             }
             catch (Exception ex)
             {
@@ -159,41 +211,12 @@ namespace SrvSurvey.forms
             {
                 Program.defer(() =>
                 {
-                    Game.log($"doImportNames: imported {count} hops");
+                    Game.log($"doImportNames: imported {this.hops.Count} hops");
+                    prepList();
                     lblStatus.Text = status;
                     this.setChildrenEnabled(true);
                 });
             }
-
-        }
-
-        private void menuSpanshTouristFile_Click(object sender, EventArgs e)
-        {
-            var dialog = new OpenFileDialog()
-            {
-                Title = "Choose import file",
-                DefaultExt = "csv",
-                Filter = "CSV files|*.csv",
-                Multiselect = false,
-            };
-
-            var rslt = dialog.ShowDialog(this);
-            if (rslt != DialogResult.OK) return;
-            if (string.IsNullOrEmpty(dialog.FileName) || !File.Exists(dialog.FileName)) return;
-
-
-            var lines = File.ReadAllLines(dialog.FileName)
-                .Skip(1)
-                .Select(l => l.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).First().Trim('"'))
-                .ToArray();
-
-
-            var msg = $"Importing ~{lines.Length} rows...";
-            Game.log(msg);
-            lblStatus.Text = msg;
-            this.setChildrenEnabled(false);
-
-            Task.Run(() => doImportNames(lines));
         }
 
         #endregion
@@ -201,18 +224,43 @@ namespace SrvSurvey.forms
         private void prepList()
         {
             list.Items.Clear();
-            if (this.route.hops == null || this.route.hops.Count == 0) return;
+            if (this.hops == null || this.hops.Count == 0) return;
 
-            StarRef lastStar = cmdr.getCurrentStarRef();
-            foreach (var entry in this.route.hops)
+            try
             {
-                var item = list.Items.Add(entry.name);
-                item.Tag = entry;
+                updatingListChecks = true;
 
-                var dist = entry.getDistanceFrom(lastStar);
-                var subDist = item.SubItems.Add($"{dist:N1} ly");
-                subDist.Tag = dist;
+                var lastStar = lastIdx == -1 ? cmdr.getCurrentStarRef() : hops[0];
+                for (int n = 0; n < hops.Count; n++)
+                {
+                    var star = hops[n];
+                    var item = list.Items.Add(star.name);
+                    item.Name = star.name;
+                    item.Tag = star;
+                    item.Checked = n <= lastIdx;
+
+                    var dist = star.getDistanceFrom(lastStar);
+                    var subDist = item.SubItems.Add($"{dist:N2} ly");
+                    subDist.Tag = dist;
+                    lastStar = star;
+                }
+
+                setStatusLabel();
             }
+            finally
+            {
+                Program.defer(() => updatingListChecks = false);
+            }
+        }
+
+        private void setStatusLabel()
+        {
+            if (lastIdx == -1)
+                this.lblStatus.Text = $"Route not started";
+            else if (lastIdx + 1 == hops.Count)
+                this.lblStatus.Text = $"Route complete";
+            else
+                this.lblStatus.Text = $"Route progress: {lastIdx + 1} of {hops.Count}";
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -223,24 +271,58 @@ namespace SrvSurvey.forms
         private void btnSave_Click(object sender, EventArgs e)
         {
             // replace and save
-            this.route.active = checkActive.Checked;
-            cmdr.route1 = this.route;
-            if (cmdr.route1.hops.Count == 0)
-                cmdr.route1 = null;
+            var route = cmdr.route;
+            route.autoCopy = checkAutoCopy.Checked;
+            route.last = lastIdx;
+            route.hops = this.hops;
+            if (checkActive.Enabled && checkActive.Checked)
+                route.activate();
+            else
+                route.disable();
 
-            if (route.lastHop == null)
-                route.nextHop = route.hops.FirstOrDefault();
+            Game.log($"Saving route: {route.filepath}");
+            route.Save();
 
-            cmdr.Save();
+            if (route.active)
+                Program.showPlotter<PlotSphericalSearch>(); // needed? .Invalidate();
+            else
+                Program.invalidate<PlotSphericalSearch>();
+
             this.Close();
         }
 
-        private void btnClear_Click(object sender, EventArgs e)
+        private void list_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
-            route.clear();
-            prepList();
+            if (updatingListChecks) return;
+            try
+            {
+                updatingListChecks = true;
+
+                lastIdx = list.Items.IndexOf(e.Item);
+                if (!e.Item.Checked) lastIdx--;
+
+                // make everything prior the click item be checked
+                for (int n = 0; n < list.Items.Count; n++)
+                    list.Items[n].Checked = n <= lastIdx;
+
+                // if the final item is checked, disable the activate checkbox
+                checkActive.Enabled = !list.Items[^1].Checked;
+
+                setStatusLabel();
+            }
+            finally
+            {
+                Program.defer(() => updatingListChecks = false);
+            }
         }
 
+        /// <summary> Called from external code to update which systems are checked, if this window is open and we are FSD jumping between systems </summary>
+        public void updateChecks(StarRef star)
+        {
+            var idx = hops.FindIndex(h => h.id64 == star.id64);
+            if (idx == -1) return;
 
+            list.Items[idx].Checked = true;
+        }
     }
 }

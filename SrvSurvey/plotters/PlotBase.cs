@@ -359,6 +359,9 @@ namespace SrvSurvey.plotters
 
             try
             {
+                // how often does this happen?
+                if (this.g != null) Debugger.Break();
+
                 //this.resetPlotter(e.Graphics);
                 this.g = e.Graphics;
                 this.g.SmoothingMode = SmoothingMode.HighQuality;
@@ -378,6 +381,9 @@ namespace SrvSurvey.plotters
 
                 if (forceRepaint)
                 {
+                    // how often does this happen?
+                    if (this.g != e.Graphics) Debugger.Break();
+
                     g.FillRectangle(C.Brushes.black, 0, 0, this.Width, this.Height);
                     this.formSize = new SizeF(2, 0);
                     this.dtx = eight;
@@ -412,6 +418,10 @@ namespace SrvSurvey.plotters
                     return;
                 }
                 Game.log($"{this.GetType().Name}.OnPaintBackground error: {ex}");
+            }
+            finally
+            {
+                this.g = null!;
             }
         }
 

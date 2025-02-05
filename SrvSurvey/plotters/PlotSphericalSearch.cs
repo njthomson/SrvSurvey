@@ -9,17 +9,19 @@ namespace SrvSurvey.plotters
         {
             get => Game.activeGame != null
                 && Game.activeGame.mode == GameMode.GalaxyMap
-                && (sphereLimitActive || boxelSearchActive);
+                && (sphereLimitActive || boxelSearchActive || routeFollowActive);
         }
 
-        private static bool sphereLimitActive { get => Game.activeGame?.cmdr.sphereLimit.active == true; }
-        private static bool boxelSearchActive { get => Game.activeGame?.cmdr.boxelSearch?.active == true; }
+        private static bool sphereLimitActive { get => Game.activeGame?.cmdr?.sphereLimit.active == true; }
+        private static bool boxelSearchActive { get => Game.activeGame?.cmdr?.boxelSearch?.active == true; }
+        private static bool routeFollowActive { get => Game.activeGame?.cmdr?.route?.active == true; }
 
         private double distance = -1;
         private string targetSystemName;
         private string? destinationName;
         private string? badDestination;
-        private bool nextSystemCopied;
+        private bool nextBoxelSystemCopied;
+        private bool nextRouteSystemCopied;
 
         private PlotSphericalSearch() : base()
         {
@@ -45,10 +47,19 @@ namespace SrvSurvey.plotters
                 measureDistanceToSystem();
             });
 
-            // put next boxel system in clipboard?
+            // put next system in clipboard?
             Util.deferAfter(250, () =>
             {
-                if (game.cmdr.boxelSearch?.active == true && game.cmdr.boxelSearch.autoCopy)
+                if (this.IsDisposed) return;
+
+                // give priority to route following over boxel searches
+                if (game.cmdr.route?.useNextHop == true)
+                {
+                    Clipboard.SetText(game.cmdr.route.nextHop?.name!);
+                    this.nextRouteSystemCopied = true;
+                    this.Invalidate();
+                }
+                else if (game.cmdr.boxelSearch?.active == true && game.cmdr.boxelSearch.autoCopy)
                 {
                     // only pre-fill clipboard if we're inside the boxel search area
                     var insideSearchArea = game.cmdr.boxelSearch.boxel.containsChild(game.cmdr.getCurrentBoxel());
@@ -59,7 +70,7 @@ namespace SrvSurvey.plotters
                         {
                             Game.log($"Setting next boxel search system to clipboard: {text}");
                             Clipboard.SetText(text);
-                            this.nextSystemCopied = true;
+                            this.nextBoxelSystemCopied = true;
                             this.Invalidate();
                         }
                     }
@@ -224,7 +235,7 @@ namespace SrvSurvey.plotters
 
         protected override void onPaintPlotter(PaintEventArgs e)
         {
-            if (!sphereLimitActive && !boxelSearchActive)
+            if (!this.allow)
             {
                 Program.closePlotter<PlotSphericalSearch>();
                 return;
@@ -233,9 +244,11 @@ namespace SrvSurvey.plotters
             if (sphereLimitActive)
                 this.drawSphereLimit();
             if (boxelSearchActive)
-                this.drawBoxelSearch();
+                this.drawBoxelSearch(sphereLimitActive);
+            if (routeFollowActive)
+                this.drawRouteFollow(sphereLimitActive || boxelSearchActive);
 
-            if (sphereLimitActive && formSize.Width < scaled(240)) formSize.Width = scaled(240);
+            if (formSize.Width < scaled(240)) formSize.Width = scaled(240);
             this.formAdjustSize(0, +ten);
         }
 
@@ -274,9 +287,9 @@ namespace SrvSurvey.plotters
             newLine(true);
         }
 
-        private void drawBoxelSearch()
+        private void drawBoxelSearch(bool drawLine)
         {
-            if (sphereLimitActive)
+            if (drawLine)
             {
                 dty += four;
                 strikeThrough(eight, dty, this.Width - oneSix, false);
@@ -322,13 +335,55 @@ namespace SrvSurvey.plotters
                 dtx += ten;
             }
 
-            if (this.nextSystemCopied)
+            if (this.nextBoxelSystemCopied)
             {
                 newLine(+eight, true);
                 this.drawTextAt2b(eight, this.Width - 4, "► Next search copied", GameColors.Cyan, GameColors.fontSmall);
             }
 
             newLine(+two, true);
+        }
+
+        private void drawRouteFollow(bool drawLine)
+        {
+
+            if (drawLine)
+            {
+                dty += four;
+                strikeThrough(eight, dty, this.Width - oneSix, false);
+                dty += eight;
+            }
+            else
+            {
+                dty += one;
+            }
+
+            var ff = GameColors.Fonts.gothic_10;
+            var ww = ten + Util.maxWidth(ff, RES("Boxel"), "Distance:");
+            var route = game.cmdr.route!;
+
+            var txt = $"Following route: ";
+            if (route.last != -1) txt += $" #{route.last + 1} of {route.hops.Count}";
+            this.drawTextAt2(eight, txt, ff);
+            newLine(true);
+
+            var dist = route.nextHop?.getDistanceFrom(game.cmdr.getCurrentStarRef()).ToString("N2") ?? "?";
+            this.drawTextAt2(eight, $"Next hop: {dist} ly away", ff);
+            newLine(true);
+
+            // highlight if nextHop is NOT the current route final destination
+            var col = C.orange;
+            if (game.navRoute.Route.LastOrDefault()?.SystemAddress != route.nextHop?.id64)
+                col = C.cyan;
+
+            this.drawTextAt2(twoEight, route.nextHop?.name ?? "?", col, GameColors.Fonts.gothic_12B);
+            newLine(+four, true);
+
+            if (this.nextRouteSystemCopied)
+            {
+                this.drawTextAt2b(eight, this.Width - 4, "► Next system copied", GameColors.Cyan, GameColors.fontSmall);
+                newLine(+four, true);
+            }
         }
     }
 }

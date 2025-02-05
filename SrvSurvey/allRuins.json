@@ -8310,14 +8310,14 @@
     ],
     "latitude": 16.408377,
     "longitude": -142.726776,
-    "siteHeading": -1,
-    "relicTowerHeading": -1,
-    "surveyProgress": 0,
+    "siteHeading": 263,
+    "relicTowerHeading": 30,
+    "surveyProgress": 100,
     "legacyLatitude": 16.408377,
     "legacyLongitude": -142.726776,
     "legacySiteHeading": -1,
     "legacyRelicTowerHeading": -1,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 355,

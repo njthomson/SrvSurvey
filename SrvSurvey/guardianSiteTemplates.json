@@ -789,7 +789,7 @@
       { "name": "p24", "type": "tablet", "angle": 181.7, "dist": 499.0 },
       { "name": "p25", "type": "casket", "angle": 179.3, "dist": 394.0 },
       { "name": "p26", "type": "casket", "angle": 193.3, "dist": 226.0 },
-      { "name": "p27", "type": "casket", "angle": 168.3, "dist": 276.0 },
+      { "name": "p27", "type": "orb", "angle": 168.3, "dist": 276.0 },
       { "name": "p28", "type": "orb", "angle": 141.4, "dist": 538.0 },
       { "name": "p29", "type": "urn", "angle": 125.6, "dist": 606.0 },
       { "name": "p30", "type": "totem", "angle": 122.0, "dist": 534.0 },

@@ -137,8 +137,8 @@ namespace SrvSurvey.net
             {
                 // https://spansh.co.uk/api/results/69ECD234-E12F-11EF-B000-86AB9ACB91F4
                 var json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/results/{routeId.ToString().ToUpper()}");
-                var touristRoute = JsonConvert.DeserializeObject<TouristRoute>(json)!;
-                return touristRoute;
+                var route = JsonConvert.DeserializeObject<TouristRoute>(json)!;
+                return route;
             }
             catch (Exception ex)
             {
@@ -147,12 +147,129 @@ namespace SrvSurvey.net
             }
         }
 
-        public class TouristRoute
+        public async Task<T?> getRoute<T>(Guid routeId) where T : RouteBase
+        {
+            Game.log($"Spansh.getTouristRoute: {routeId}");
+
+            try
+            {
+                var count = 5;
+                while (count > 0)
+                {
+                    // https://spansh.co.uk/api/results/69ECD234-E12F-11EF-B000-86AB9ACB91F4
+                    var json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/results/{routeId.ToString().ToUpper()}");
+                    var route = JsonConvert.DeserializeObject<T>(json)!;
+
+                    if (route.state == "completed" && route.status == "ok")
+                        return route;
+
+                    // wait 5 seconds before trying again
+                    Game.log($"Spansh.getRoute: routeId: {routeId}, state: {route.state}, status: {route.status}");
+                    count--;
+                    await Task.Delay(5000);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Util.isFirewallProblem(ex);
+                return null;
+            }
+        }
+
+        public class RouteBase
         {
             public Guid job;
             public string state;
             public string status;
             // TODO: parameters?
+        }
+
+        /// <summary>
+        /// For Exomastery, Road to Riches and Neutron plots
+        /// </summary>
+        public class Route : RouteBase
+        {
+            public List<Result> result;
+
+            public class Result
+            {
+                public double? distance;
+                public long id64;
+                public int jumps;
+                public string name;
+                public double x;
+                public double y;
+                public double z;
+
+                public List<Body>? bodies;
+
+                public class Body
+                {
+                    public double distance_to_arrival;
+                    public long estimated_mapping_value;
+                    public long estimated_scan_value;
+                    public long id;
+                    public long id64;
+                    public bool? is_terraformable;
+                    public long? landmark_value;
+                    public List<LandMark>? landmarks;
+                    public string name;
+                    public string subtype;
+                    public string type;
+
+                    public class LandMark
+                    {
+                        public int count;
+                        public string subtype;
+                        public string type;
+                        public long value;
+                    }
+                }
+
+                public StarRef toStarRef()
+                {
+                    return new StarRef(x, y, z, name, id64);
+                }
+
+            }
+        }
+
+        public class NeutronRoute : RouteBase
+        {
+            public Result result;
+
+            public class Result
+            {
+                public string destination_system;
+                public double distance;
+                public int efficiency;
+                public Guid job;
+                public int range;
+                public string source_system;
+                public List<Jump> system_jumps;
+
+                public class Jump
+                {
+                    public double distance_jumped;
+                    public double distance_left;
+                    public long id64;
+                    public int jumps;
+                    public string system;
+                    public double x;
+                    public double y;
+                    public double z;
+
+                    public StarRef toStarRef()
+                    {
+                        return new StarRef(x, y, z, system, id64);
+                    }
+                }
+            }
+        }
+
+        public class TouristRoute : RouteBase
+        {
             public Result result;
 
             public class Result
@@ -176,6 +293,38 @@ namespace SrvSurvey.net
                     public StarRef toStarRef()
                     {
                         return new StarRef(x, y, z, system, id64);
+                    }
+                }
+            }
+        }
+
+        public class GalaxyRoute : RouteBase
+        {
+            public Result result;
+
+            public class Result
+            {
+                public bool refuel_every_scoopable;
+                public List<Jump> jumps;
+
+                public class Jump
+                {
+                    public double distance;
+                    public double distance_to_destination;
+                    public double fuel_in_tank;
+                    public double fuel_used;
+                    public bool has_neutron;
+                    public long id64;
+                    public bool is_scoopable;
+                    public bool must_refuel;
+                    public string name;
+                    public double x;
+                    public double y;
+                    public double z;
+
+                    public StarRef toStarRef()
+                    {
+                        return new StarRef(x, y, z, name, id64);
                     }
                 }
             }
