@@ -633,7 +633,7 @@ namespace SrvSurvey.game
             body.radius = entry.Radius;
             body.parents = entry.Parents;
             body.wasDiscovered = entry.WasDiscovered;
-            body.wasMapped = entry.WasMapped;
+            if (!body.wasMapped && entry.WasMapped) body.wasMapped = true;
             body.surfaceGravity = entry.SurfaceGravity;
             body.surfaceTemperature = entry.SurfaceTemperature;
             body.surfacePressure = entry.SurfacePressure;

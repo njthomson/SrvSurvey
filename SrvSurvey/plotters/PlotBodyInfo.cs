@@ -105,17 +105,17 @@ namespace SrvSurvey.plotters
                 return;
             }
 
-            // terraformable, undisdiscovered?
+            // terraformable, undiscovered?
             var subStatus = new List<string>();
-            if (body.terraformable)
-                subStatus.Add("🏕️ Terraformable");
+            if (body.terraformable || body.planetClass?.StartsWith("Earth") == true)
+                subStatus.Add("🌎 Terraformable");
             if (!body.wasDiscovered && !body.wasMapped)
-                subStatus.Add("Undiscovered");
+                subStatus.Add("⚑ Undiscovered");
             else if (!body.wasMapped && body.dssComplete)
                 subStatus.Add("✔️ First mapped");
-            else if (!body.wasMapped && !this.withinHumanBubble)
+            else if (body.scanned && !body.wasMapped && !this.withinHumanBubble)
                 subStatus.Add("Unmapped");
-
+            
             if (subStatus.Count > 0)
             {
                 drawTextAt2(this.ClientSize.Width - ten, $"( {string.Join(", ", subStatus)} )", GameColors.Cyan, null, true);

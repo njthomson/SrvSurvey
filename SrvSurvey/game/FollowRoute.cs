@@ -46,7 +46,7 @@ namespace SrvSurvey.game
         #region data members
 
         /// <summary> If we are actively following this route </summary>
-        public bool active = false;
+        public bool active = true;
         /// <summary> If we should auto copy the next hop to the clip board when entering the Gal-Map </summary>
         public bool autoCopy = true;
         /// <summary> The index of the last hop we reached </summary>
@@ -99,7 +99,7 @@ namespace SrvSurvey.game
         {
             // exit early if we didn't start yet, or we jumped into a system that is not a known hop
             var idx = hops.FindIndex(h => h.id64 == star.id64);
-            if (!active || idx == -1) return;
+            if (!active) return;
 
             var dirty = false;
 
@@ -109,13 +109,15 @@ namespace SrvSurvey.game
                 this.last = idx;
                 this.disable();
                 Game.log($"Route.setNextHop: reached end of route in: '{star}'");
+                dirty = true;
             }
             else if (last + 1 == idx)
             {
                 // we reached the next hop in the route - move to the system in the route
                 this.last = idx;
                 this.nextHop = hops[idx + 1];
-                Game.log($"Route.setNextHop: in '{star}', set next: '{nextHop}'");
+                Game.log($"Route.setNextHop: #{idx + 1} in '{star}', set next: '{nextHop}'");
+                dirty = true;
             }
             else if (idx >= 0)
             {
@@ -123,10 +125,9 @@ namespace SrvSurvey.game
             }
 
             if (dirty)
-            {
                 this.Save();
-                BaseForm.get<FormRoute>()?.updateChecks(star);
-            }
+
+            BaseForm.get<FormRoute>()?.updateChecks(star);
         }
 
         /// <summary> If we should auto-copy the next hop </summary>
@@ -163,7 +164,7 @@ namespace SrvSurvey.game
                 {
                     // Summarize body/landmark info as: "Stratum Tectonicas: [A5, B2]\r\nTussock Ignis: [A5]"
                     var mapLandmarkToBody = new Dictionary<string, HashSet<string>>();
-                    foreach (var body in jump.bodies)
+                    foreach (var body in jump.bodies.OrderBy(b => b.id))
                     {
                         var bodyShortName = body.name.Replace($"{jump.name} ", "").Replace(" ", "");
                         if (body.landmarks == null)

@@ -68,6 +68,7 @@
             txtSystemName.Size = new Size(723, 34);
             txtSystemName.TabIndex = 0;
             txtSystemName.Text = "system name";
+            txtSystemName.UseEdgeButton = TextBox2.EdgeButton.None;
             // 
             // txtNotes
             // 
@@ -77,7 +78,6 @@
             txtNotes.Multiline = true;
             txtNotes.Name = "txtNotes";
             txtNotes.ScrollBars = ScrollBars.Vertical;
-            txtNotes.ShortcutsEnabled = false;
             txtNotes.Size = new Size(419, 217);
             txtNotes.TabIndex = 1;
             txtNotes.TextChanged += txtNotes_TextChanged;
@@ -95,6 +95,7 @@
             txtStuff.Size = new Size(723, 20);
             txtStuff.TabIndex = 1;
             txtStuff.Text = "stuff";
+            txtStuff.UseEdgeButton = TextBox2.EdgeButton.None;
             // 
             // imageList1
             // 
@@ -115,7 +116,7 @@
             flowImages.Location = new Point(0, 32);
             flowImages.Margin = new Padding(0);
             flowImages.Name = "flowImages";
-            flowImages.Size = new Size(723, 317);
+            flowImages.Size = new Size(723, 316);
             flowImages.TabIndex = 2;
             // 
             // pictureBox1

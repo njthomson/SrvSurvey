@@ -14,7 +14,7 @@ namespace SrvSurvey.plotters
 
         private static bool sphereLimitActive { get => Game.activeGame?.cmdr?.sphereLimit.active == true; }
         private static bool boxelSearchActive { get => Game.activeGame?.cmdr?.boxelSearch?.active == true; }
-        private static bool routeFollowActive { get => Game.activeGame?.cmdr?.route?.active == true; }
+        private static bool routeFollowActive { get => Game.activeGame?.cmdr?.route?.active == true && Game.activeGame.cmdr.route.nextHop != null; }
 
         private double distance = -1;
         private string targetSystemName;
@@ -376,13 +376,20 @@ namespace SrvSurvey.plotters
             if (game.navRoute.Route.LastOrDefault()?.SystemAddress != route.nextHop?.id64)
                 col = C.cyan;
 
+            dty += four;
             this.drawTextAt2(twoEight, route.nextHop?.name ?? "?", col, GameColors.Fonts.gothic_12B);
             newLine(+four, true);
 
+            if (route.nextHop?.notes != null)
+            {
+                this.drawTextAt2(eight, "► " + route.nextHop.notes, col, ff);
+                newLine(true);
+            }
+
             if (this.nextRouteSystemCopied)
             {
-                this.drawTextAt2b(eight, this.Width - 4, "► Next system copied", GameColors.Cyan, GameColors.fontSmall);
-                newLine(+four, true);
+                this.drawTextAt2b(eight, this.Width - 4, "► Next system copied", GameColors.Cyan, ff);
+                newLine(true);
             }
         }
     }

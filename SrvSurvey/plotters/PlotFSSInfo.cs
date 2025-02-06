@@ -146,7 +146,7 @@ namespace SrvSurvey.plotters
                 var prefix = scan.body.wasDiscovered ? "" : "⚑ ";
                 var txt = $"{prefix}{scan.body.shortName} - {planetClass}"; // ◌◎◉☆★☄☼☀⛀⛃✔✨✶✪❓❔❓⛬❗❕ * ❒❱✪❍❌✋❖⟡⦁⦂⧫⇲
                 var suffixes = new List<string>();
-                if (scan.body.terraformable) suffixes.Add("🏕️");
+                if (scan.body.terraformable || scan.body.planetClass?.StartsWith("Earth") == true) suffixes.Add("🌎");
                 if (scan.body.type == SystemBodyType.LandableBody) suffixes.Add("🚀");
                 if (scan.body.firstFootFall) suffixes.Add("🦶");
                 if (suffixes.Count > 0) txt += $" {string.Join(',', suffixes)}";
@@ -195,7 +195,7 @@ namespace SrvSurvey.plotters
 
             drawTextAt2(eight, "Scan value | DSS value", GameColors.OrangeDim);
             newLine(true);
-            drawTextAt2(eight, "🏕️ Terraformable\n🚀 Landable ⚑ Undiscovered", GameColors.OrangeDim);
+            drawTextAt2(eight, "🌎 Terraformable\n🚀 Landable ⚑ Undiscovered", GameColors.OrangeDim);
             newLine(true);
 
             this.formAdjustSize(+oneEight, +ten);

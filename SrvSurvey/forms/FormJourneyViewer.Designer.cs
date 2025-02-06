@@ -159,6 +159,7 @@
             txtByline.Size = new Size(571, 34);
             txtByline.TabIndex = 1;
             txtByline.Text = "cmdr Stuff | Jan 2nd 2025 ~ Dec 31st 3304";
+            txtByline.UseEdgeButton = TextBox2.EdgeButton.None;
             // 
             // txtJourneyName
             // 
@@ -174,6 +175,7 @@
             txtJourneyName.Size = new Size(571, 34);
             txtJourneyName.TabIndex = 0;
             txtJourneyName.Text = "journey name";
+            txtJourneyName.UseEdgeButton = TextBox2.EdgeButton.None;
             txtJourneyName.TextChanged2 += journey_TextChanged;
             // 
             // txtDescription
@@ -184,7 +186,6 @@
             txtDescription.Multiline = true;
             txtDescription.Name = "txtDescription";
             txtDescription.ScrollBars = ScrollBars.Vertical;
-            txtDescription.ShortcutsEnabled = false;
             txtDescription.Size = new Size(571, 463);
             txtDescription.TabIndex = 2;
             txtDescription.Text = "journey description";
@@ -242,7 +243,7 @@
             // menuStatus
             // 
             menuStatus.Name = "menuStatus";
-            menuStatus.Size = new Size(566, 17);
+            menuStatus.Size = new Size(737, 17);
             menuStatus.Spring = true;
             menuStatus.Text = "-";
             // 

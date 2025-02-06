@@ -41,9 +41,9 @@ namespace SrvSurvey.plotters
                 if (!lastFssBody.wasDiscovered) lastBodyName = $"⚑ {lastBodyName}";
 
                 var suffixes = new List<string>();
-                if (lastFssBody.terraformable) suffixes.Add("🏕️");
+                if (lastFssBody.terraformable || lastFssBody.planetClass?.StartsWith("Earth") == true) suffixes.Add("🌎");
                 if (lastFssBody.type == SystemBodyType.LandableBody) suffixes.Add("🚀");
-                if (suffixes.Count > 0) lastBodyName += $" {string.Join(',', suffixes)}";
+                if (suffixes.Count > 0) lastBodyName += $"  {string.Join(',', suffixes)}";
 
                 lastInitialValue = Util.GetBodyValue(lastFssBody, false, false).ToString("N0");
                 lastMappedValue = Util.GetBodyValue(lastFssBody, true, true).ToString("N0");
@@ -118,9 +118,9 @@ namespace SrvSurvey.plotters
             if (!entry.WasDiscovered) lastBodyName = $"⚑ {lastBodyName}";
 
             var suffixes = new List<string>();
-            if (entry.TerraformState == "Terraformable") suffixes.Add("🏕️");
+            if (entry.TerraformState == "Terraformable" || entry.PlanetClass?.StartsWith("Earth") == true) suffixes.Add("🌎");
             if (entry.Landable) suffixes.Add("🚀");
-            if (suffixes.Count > 0) lastBodyName += $" {string.Join(',', suffixes)}";
+            if (suffixes.Count > 0) lastBodyName += $"  {string.Join(',', suffixes)}";
 
             lastInitialValue = Util.GetBodyValue(entry, false).ToString("N0");
             lastMappedValue = Util.GetBodyValue(entry, true).ToString("N0");

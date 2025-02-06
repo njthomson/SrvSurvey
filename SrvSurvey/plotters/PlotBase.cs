@@ -382,7 +382,11 @@ namespace SrvSurvey.plotters
                 if (forceRepaint)
                 {
                     // how often does this happen?
-                    if (this.g != e.Graphics) Debugger.Break();
+                    if (this.g != e.Graphics)
+                    {
+                        Debugger.Break();
+                        return; // skip? as we already rendered at the larger size
+                    }
 
                     g.FillRectangle(C.Brushes.black, 0, 0, this.Width, this.Height);
                     this.formSize = new SizeF(2, 0);

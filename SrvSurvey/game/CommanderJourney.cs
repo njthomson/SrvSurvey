@@ -455,6 +455,7 @@ namespace SrvSurvey.game
                 { "Landed on bodies:", countBodiesLanded.ToString("N0") },
                 { "Count touchdowns:", countTotalLandings.ToString("N0") },
                 { "Screenshots taken:", totalCounts.screenshots.ToString("N0") },
+                { "Notes taken:", totalCounts.notes.ToString("N0") },
                 { "Organisms scanned:", totalCounts.organic.ToString("N0") },
                 { "Exobiology rewards:", totalCounts.rewardBio.ToString("N0") },
                 { "Exploration rewards:", "~" + totalCounts.rewardExp.ToString("N0") },

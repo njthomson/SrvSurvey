@@ -146,6 +146,11 @@ namespace SrvSurvey.forms
         public void saveUpdates()
         {
             Game.log($"ViewJourneySystem.saveUpdates: {this.systemData.name}");
+
+            // inc count if we're in that system currently
+            if (systemData == Game.activeGame?.systemData)
+                this.systemStats.count.notes++;
+
             this.systemData.notes = txtNotes.Text;
             this.systemData.Save();
             this.dirty = false;

@@ -154,7 +154,7 @@ namespace SrvSurvey.plotters
             else
             {
                 // show potential guardian stuff as a special line
-                var list = new List<string>();
+                var list = new HashSet<string>();
 
                 var countRuins = Game.canonn.allRuins.Count(r => r.systemAddress == next.SystemAddress);
                 if (countRuins > 0) list.Add($"Ruins: {countRuins}");
@@ -172,6 +172,16 @@ namespace SrvSurvey.plotters
                 }
             }
 
+            if (game.cmdr.route.active && game.cmdr.route.nextHop?.id64 == next.SystemAddress)
+            {
+                netData.special ??= new();
+                var set = netData.special.init("Route hop");
+                set.Add($"#{game.cmdr.route.last + 1} of {game.cmdr.route.hops.Count}");
+                // and show any notes
+                if (game.cmdr.route.nextHop?.notes != null)
+                    set.Add(game.cmdr.route.nextHop.notes!);
+            }
+
             // are we entering a different galactic region?
             if (next.StarPos != null)
             {
@@ -179,7 +189,7 @@ namespace SrvSurvey.plotters
                 if (nextRegion.Name != GalacticRegions.current)
                 {
                     netData.special ??= new();
-                    netData.special["Now entering"] = new() { nextRegion.Name };
+                    netData.special.init("Now entering").Add(nextRegion.Name);
                 }
             }
             else

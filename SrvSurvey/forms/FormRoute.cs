@@ -13,26 +13,38 @@ namespace SrvSurvey.forms
         private List<FollowRoute.Hop> hops;
         private int lastIdx;
         private bool updatingListChecks;
+        private bool imported = false;
 
         public FormRoute()
         {
             InitializeComponent();
             this.cmdr = CommanderSettings.LoadCurrentOrLast();
-            updatingListChecks = true;
+            this.updatingListChecks = true;
+            list.FullRowSelect = true;
+
+            // ensure min-width leaves space enough for the Save button, then hide it
+            this.btnSave.Visible = true;
+            toolStrip1.PerformLayout();
+            var sz = toolStrip1.GetPreferredSize(Size.Empty);
+            Game.log(sz);
+            this.MinimumSize = new Size(sz.Width + 32, 200);
+            this.btnSave.Visible = false;
 
             // update UX from route
             var route = cmdr.route;
             this.hops = route.hops.ToList(); // make a copy of the List
             this.lastIdx = route.last;
-            this.checkActive.Checked = route.active;
-            this.checkAutoCopy.Checked = route.autoCopy;
+            this.btnActive.Checked = route.active;
+            this.btnAutoCopy.Checked = route.autoCopy;
 
             prepList();
+
+            Util.applyTheme(this);
         }
 
         #region import data
 
-        private void menuImportNames_Click(object sender, EventArgs e)
+        private void btnNamesFromClipboard_Click(object sender, EventArgs e)
         {
             var rslt = MessageBox.Show(this, "To proceed: copy a number of system names to the clipboard, one system per line.", "SrvSurvey", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (rslt != DialogResult.OK || !Clipboard.ContainsText(TextDataFormat.Text)) return;
@@ -46,7 +58,7 @@ namespace SrvSurvey.forms
             Task.Run(() => doImportNames(names));
         }
 
-        private void menuSystemNamesFile_Click(object sender, EventArgs e)
+        private void btnNamesFromFile_Click(object sender, EventArgs e)
         {
             var dialog = new OpenFileDialog()
             {
@@ -102,6 +114,7 @@ namespace SrvSurvey.forms
             var count = 0;
             try
             {
+                this.imported = true;
                 this.lastIdx = -1;
                 this.hops.Clear();
                 foreach (var name in names)
@@ -129,12 +142,12 @@ namespace SrvSurvey.forms
                     Game.log($"doImportNames: imported {count} systems");
                     lblStatus.Text = $"Imported {count} systems";
                     this.setChildrenEnabled(true);
+                    btnSave.Visible = true;
                 });
             }
-
         }
 
-        private void menuSpanshTourist_Click(object sender, EventArgs e)
+        private void btnImportSpanshUrl_Click(object sender, EventArgs e)
         {
             var rslt = MessageBox.Show(this, "To proceed: copy the URL of any Spansh route to the clipboard", "SrvSurvey", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (rslt != DialogResult.OK || !Clipboard.ContainsText(TextDataFormat.Text)) return;
@@ -198,6 +211,7 @@ namespace SrvSurvey.forms
                     return;
                 }
 
+                this.imported = true;
                 this.lastIdx = -1;
                 this.hops.Clear();
                 this.hops.AddRange(parsedHops);
@@ -215,6 +229,7 @@ namespace SrvSurvey.forms
                     prepList();
                     lblStatus.Text = status;
                     this.setChildrenEnabled(true);
+                    btnSave.Visible = true;
                 });
             }
         }
@@ -242,6 +257,10 @@ namespace SrvSurvey.forms
                     item.Tag = star;
                     item.Checked = n <= lastIdx;
 
+                    var highlight = list.Items[n].Text == cmdr.currentSystem
+                        || (n - 1 == lastIdx && n > 0 && list.Items[n - 1].Text != cmdr.currentSystem);
+                    item.BackColor = highlight ? Color.Black : SystemColors.WindowFrame;
+
                     var dist = star.getDistanceFrom(lastStar);
                     var subDist = item.SubItems.Add($"{dist:N2} ly");
                     subDist.Tag = dist;
@@ -254,6 +273,9 @@ namespace SrvSurvey.forms
 
                     lastStar = star;
                 }
+
+                list.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
+                list.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.ColumnContent);
                 if (hasNotes)
                     list.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.ColumnContent);
 
@@ -275,32 +297,27 @@ namespace SrvSurvey.forms
                 this.lblStatus.Text = $"Route progress: {lastIdx + 1} of {hops.Count}";
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             // replace and save
             var route = cmdr.route;
-            route.autoCopy = checkAutoCopy.Checked;
+            route.autoCopy = btnAutoCopy.Checked;
             route.last = lastIdx;
             route.hops = this.hops;
-            if (checkActive.Enabled && checkActive.Checked)
+            if (btnActive.Enabled && btnActive.Checked)
                 route.activate();
             else
                 route.disable();
 
             Game.log($"Saving route: {route.filepath}");
             route.Save();
+            this.imported = false;
+            this.btnSave.Visible = false;
 
             if (route.active && PlotSphericalSearch.allowPlotter)
                 Program.showPlotter<PlotSphericalSearch>(); // needed? .Invalidate();
             else
                 Program.invalidate<PlotSphericalSearch>();
-
-            this.Close();
         }
 
         private void list_ItemChecked(object sender, ItemCheckedEventArgs e)
@@ -315,12 +332,17 @@ namespace SrvSurvey.forms
 
                 // make everything prior the click item be checked
                 for (int n = 0; n < list.Items.Count; n++)
+                {
+                    var highlight = list.Items[n].Text == cmdr.currentSystem
+                        || (n - 1 == lastIdx && n > 0 && list.Items[n - 1].Text != cmdr.currentSystem);
+                    list.Items[n].BackColor = highlight ? Color.Black : SystemColors.WindowFrame;
                     list.Items[n].Checked = n <= lastIdx;
+                }
 
                 // if the final item is checked, disable the activate checkbox
-                checkActive.Enabled = !list.Items[^1].Checked;
-
+                btnActive.Enabled = !list.Items[^1].Checked;
                 setStatusLabel();
+                btnSave.Visible = this.isDirty;
             }
             finally
             {
@@ -332,9 +354,48 @@ namespace SrvSurvey.forms
         public void updateChecks(StarRef star)
         {
             var idx = hops.FindIndex(h => h.id64 == star.id64);
-            if (idx == -1) return;
+            if (idx >= 0)
+            {
+                // update checks if we just arrived in a route hop
+                list.Items[idx].Checked = true;
+                lblStatus.Text = $"Arrived at hop #{idx} {star.name}";
+            }
+            else if (cmdr.route.nextHop != null)
+            {
+                // or adjust adjust highlighting if we just left one
+                var nextIdx = list.Items.IndexOfKey(cmdr.route.nextHop.name);
+                if (nextIdx > 0)
+                {
+                    list.Items[nextIdx].BackColor = Color.Black;
+                    list.Items[nextIdx - 1].BackColor = SystemColors.WindowFrame;
+                }
+                setStatusLabel();
+            }
+        }
 
-            list.Items[idx].Checked = true;
+        private void btnActive_CheckedChanged(object sender, EventArgs e)
+        {
+            btnActive.Text = (btnActive.Checked ? "✔️ " : "   ") + "Route active";
+            btnActive.Enabled = hops.Count > 0 && lastIdx < hops.Count;
+            btnSave.Visible = this.isDirty;
+        }
+
+        private void btnAutoCopy_CheckedChanged(object sender, EventArgs e)
+        {
+            btnAutoCopy.Text = (btnAutoCopy.Checked ? "✔️ " : "   ") + "Auto copy in Gal-Map";
+            btnSave.Visible = this.isDirty;
+        }
+
+        private bool isDirty
+        {
+            get
+            {
+                var route = cmdr.route;
+                return imported
+                    || route.last != this.lastIdx
+                    || route.autoCopy != btnAutoCopy.Checked
+                    || route.active != btnActive.Checked;
+            }
         }
     }
 }

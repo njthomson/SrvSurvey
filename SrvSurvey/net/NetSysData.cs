@@ -61,7 +61,7 @@ namespace SrvSurvey.net
         };
 
         /// <summary> A collection of special things worth rendering </summary>
-        public Dictionary<string, List<string>>? special;
+        public Dictionary<string, HashSet<string>>? special;
 
         private Action<Source, NetSysData> func;
         private Task<ApiSystemDump.System>? getSystemDump;
@@ -292,25 +292,22 @@ namespace SrvSurvey.net
                     // any traders or brokers?
                     if (station.services?.Contains("Material Trader") == true)
                     {
-                        this.special ??= new ();
-                        if (!this.special.ContainsKey(station.name)) this.special[station.name] = new List<string>();
+                        this.special ??= new();
                         var matTrader = Misc.NetSysData_MaterialTrader + " " + getMatTraderWithType(station);
-                        this.special[station.name].Add(matTrader);
+                        this.special.init(station.name).Add(matTrader);
                     }
                     if (station.services?.Contains("Technology Broker") == true)
                     {
                         this.special ??= new();
-                        if (!this.special.ContainsKey(station.name)) this.special[station.name] = new List<string>();
                         var techBroker = Misc.NetSysData_TechBroker + " " + getTechBrokerType(station);
-                        this.special[station.name].Add(techBroker);
+                        this.special.init(station.name).Add(techBroker);
                     }
 
                     // or Engineers?
                     if (station.government == "Engineer")
                     {
                         this.special ??= new();
-                        if (!this.special.ContainsKey(station.name)) this.special[station.name] = new List<string>();
-                        this.special[station.name].Add($"{station.controllingFaction} {Misc.NetSysData_Engineer}");
+                        this.special.init(station.name).Add($"{station.controllingFaction} {Misc.NetSysData_Engineer}");
                     }
                 }
                 if (countFC > 0) this.countPOI["FC"] = countFC;
