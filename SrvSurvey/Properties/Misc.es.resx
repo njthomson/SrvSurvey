@@ -64,7 +64,7 @@
     <comment>Activate</comment>
   </data>
   <data name="FormBoxelSearch_Disable">
-    <value>Inutilizar</value>
+    <value>Desactivar</value>
     <comment>Disable</comment>
   </data>
   <data name="FormBoxelSearch_HideList">
@@ -76,7 +76,7 @@
     <comment>This is not a boxel generated system name.</comment>
   </data>
   <data name="FormBoxelSearch_SearchNotActive">
-    <value>La búsqueda de Boxel no está activa.</value>
+    <value>La búsqueda por boxel no está activa.</value>
     <comment>Boxel search is not active.</comment>
   </data>
   <data name="FormBoxelSearch_ShowList">
@@ -84,11 +84,11 @@
     <comment>⏷ Show list</comment>
   </data>
   <data name="FormBoxelSearch_SpanshUpdated">
-    <value>Español actualizado: {0}</value>
+    <value>Actualización de Spansh: {0}</value>
     <comment>Spansh updated: {0}</comment>
   </data>
   <data name="FormBoxelSearch_SpanshUpdatedBodies">
-    <value>Español actualizado: {0}, cuerpos: {1}</value>
+    <value>Actualización de Spansh: {0}, cuerpos: {1}</value>
     <comment>Spansh updated: {0}, bodies: {1}</comment>
   </data>
   <data name="FormBoxelSearch_UndiscoveredSystem">
@@ -108,7 +108,7 @@
     <comment>Bodies</comment>
   </data>
   <data name="NetSysData_DiscoveredAll">
-    <value>Cuerpos descubiertos, {0}</value>
+    <value>Descubierto, {0} cuerpos</value>
     <comment>Discovered, {0} bodies</comment>
   </data>
   <data name="NetSysData_DiscoveredPartial">
@@ -128,7 +128,7 @@
     <comment>FC</comment>
   </data>
   <data name="NetSysData_Genus">
-    <value>Género</value>
+    <value>Genomas</value>
     <comment>Genus</comment>
   </data>
   <data name="NetSysData_Guardian">
@@ -140,7 +140,7 @@
     <comment>(Human)</comment>
   </data>
   <data name="NetSysData_Manufactured">
-    <value>(Fabricado)</value>
+    <value>(Manufacturado)</value>
     <comment>(Manufactured)</comment>
   </data>
   <data name="NetSysData_MaterialTrader">
@@ -148,7 +148,7 @@
     <comment>Material Trader</comment>
   </data>
   <data name="NetSysData_Outposts">
-    <value>Puestos</value>
+    <value>Puestos avanzados</value>
     <comment>Outposts</comment>
   </data>
   <data name="NetSysData_Raw">
@@ -164,7 +164,7 @@
     <comment>Star ports</comment>
   </data>
   <data name="NetSysData_TechBroker">
-    <value>Corredor de tecnología</value>
+    <value>Bróker de tecnología</value>
     <comment>Tech Broker</comment>
   </data>
   <data name="NetSysData_UndiscoveredSystem">
@@ -180,11 +180,11 @@
     <comment>Wars</comment>
   </data>
   <data name="PlotFlightWarning_SurfaceGravityWarning">
-    <value>Advertencia: Gravedad superficial {0}g</value>
+    <value>Advertencia: Gravedad en superficie {0}g</value>
     <comment>Warning: Surface gravity {0}g</comment>
   </data>
   <data name="PlotGalMap_CountGenus">
-    <value>Género {0}x</value>
+    <value>{0}x Genomas</value>
     <comment>{0}x Genus</comment>
   </data>
   <data name="PlotGalMap_Current">
@@ -216,7 +216,7 @@
     <comment>No route set</comment>
   </data>
   <data name="PlotGalMap_RouteFooter">
-    <value>Total: ► {0} saltos ► Distancia: {1} ly</value>
+    <value>Total: ► {0} saltos ► Distancia: {1} al</value>
     <comment>Total: ► {0} jumps ► Distance: {1} ly</comment>
   </data>
   <data name="PlotGalMap_Selected">
@@ -232,19 +232,19 @@
     <comment> {0}x bodies: </comment>
   </data>
   <data name="PlotSysStatus_FssCompleteLong">
-    <value>FSS {0}% completado</value>
+    <value>ECS completado al {0}%</value>
     <comment>FSS {0}% complete</comment>
   </data>
   <data name="PlotSysStatus_FssCompleteShort">
-    <value>FSS {0}%</value>
+    <value>ECS {0}%</value>
     <comment>FSS {0}%</comment>
   </data>
   <data name="PlotSysStatus_FssNotStarted">
-    <value>FSS no iniciado</value>
+    <value>ECS no iniciado</value>
     <comment>FSS not started</comment>
   </data>
   <data name="PlotSysStatus_Header">
-    <value>Encuesta DSS: </value>
+    <value>Análisis ECS: </value>
     <comment>DSS survey: </comment>
   </data>
   <data name="PlotSysStatus_NextSystem">
@@ -256,14 +256,14 @@
     <comment>None</comment>
   </data>
   <data name="PlotSysStatus_NonBodySignals">
-    <value>► {0} señales no corporales</value>
+    <value>► {0} señales no planetarias</value>
     <comment>► {0} non-body signals</comment>
   </data>
   <data name="Settings_CreateFolderNotFound">
-    <value>No se puede encontrar la carpeta:
+    <value>No se encontra la carpeta:
 {0}
 
-¿Te gustaría crearlo?</value>
+¿Te gustaría crearla?</value>
     <comment>Cannot find folder:
 {0}
 
