@@ -77,8 +77,12 @@ namespace SrvSurvey.game
             this.active = true;
 
             // set next hop based on last, or the first hop if none
-            if (this.last < 0)
+            if (this.last == -1)
+            {
                 this.nextHop = hops.FirstOrDefault();
+                if (Game.activeGame?.systemData?.address == nextHop?.id64 && hops.Count > 1)
+                    this.nextHop = hops[1];
+            }
             else
                 this.nextHop = hops[last + 1];
 

@@ -3,6 +3,7 @@ using SrvSurvey.widgets;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(420, 100)]
     internal class PlotFSS : PlotBase, PlotterForm
     {
         public static bool allowPlotter

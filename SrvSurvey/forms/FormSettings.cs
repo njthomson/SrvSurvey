@@ -755,7 +755,7 @@ namespace SrvSurvey
             {
                 plotter.Width = (int)numHumanSitePlotterWidth.Value;
                 plotter.Height = (int)numHumanSitePlotterHeight.Value;
-                plotter.BackgroundImage = GameGraphics.getBackgroundForForm(plotter);
+                plotter.BackgroundImage = GameGraphics.getBackgroundImage(plotter);
                 plotter.reposition(Elite.getWindowRect());
                 plotter.Invalidate();
             }

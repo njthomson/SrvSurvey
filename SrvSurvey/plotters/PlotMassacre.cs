@@ -4,6 +4,7 @@ using SrvSurvey.widgets;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(180, 200)]
     internal class PlotMassacre : PlotBase, PlotterForm
     {
         public static bool allowPlotter

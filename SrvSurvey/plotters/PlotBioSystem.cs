@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(200, 200)]
     internal class PlotBioSystem : PlotBase, PlotterForm
     {
         public static bool allowPlotter
@@ -364,16 +365,11 @@ namespace SrvSurvey.plotters
             var x = two;
             var y = this.Height - one;
             var w = (this.Width - x - x);
-            //Game.log($"r: {r}, w: {w}");
+            // slide to the left
             g.DrawLine(GameColors.penGameOrangeDim2, x, y, x + w * r, y);
             g.DrawLine(GameColors.penGameOrangeDim2, x, one, x + w * r, one);
 
-            //var x = four;
-            //var y = ClientSize.Height - oneTwo;
-            //var h = this.Height - twoFour;
-            //g.DrawLine(GameColors.penGameOrangeDim4, x, y, x, y - h * r);
-
-            this.formGrow(false, true);
+            this.formGrow(false, true); // TODO: still needed?
         }
 
         private bool shouldBeGold(string? prefix)

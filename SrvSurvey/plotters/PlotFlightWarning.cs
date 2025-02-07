@@ -4,6 +4,7 @@ using SrvSurvey.widgets;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(300, 80)]
     internal class PlotFlightWarning : PlotBase, PlotterForm
     {
         public static bool allowPlotter
@@ -51,6 +52,7 @@ namespace SrvSurvey.plotters
             this.Width = (int)(sz.Width + pad * 2);
             this.Height = (int)(sz.Height + pad * 2);
 
+            // TODO: use `this.reposition` + `formAdjustSize`
             PlotPos.reposition(this, Elite.getWindowRect());
 
             var rect = new RectangleF(0, 0, sz.Width + pad * 2, sz.Height + pad * 2);

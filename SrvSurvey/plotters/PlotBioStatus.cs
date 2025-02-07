@@ -7,6 +7,7 @@ using System.Diagnostics;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(480, 80)]
     internal partial class PlotBioStatus : PlotBase, PlotterForm
     {
         public static bool allowPlotter

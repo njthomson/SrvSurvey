@@ -4,6 +4,7 @@ using SrvSurvey.widgets;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(380, 100)]
     internal class PlotTrackers : PlotBase, PlotterForm
     {
         public static bool allowPlotter
@@ -68,6 +69,8 @@ namespace SrvSurvey.plotters
 
         public override void reposition(Rectangle gameRect)
         {
+            // NOT calling base class
+
             // match opacity of PlotGrounded
             this.Opacity = PlotPos.getOpacity(nameof(PlotGrounded));
 

@@ -7,6 +7,7 @@ using System.Drawing.Drawing2D;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(308, 300)]
     internal class PlotPriorScans : PlotBase, PlotterForm
     {
         public static bool allowPlotter
@@ -56,7 +57,7 @@ namespace SrvSurvey.plotters
             if (this.Height != formHeight)
             {
                 this.Height = formHeight;
-                this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
+                this.BackgroundImage = GameGraphics.getBackgroundImage(this);
             }
 
             this.mid = this.Size / 2;

@@ -2914,7 +2914,6 @@ namespace SrvSurvey
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormSettings";
-            ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "SrvSurvey Settings";
             Load += FormSettings_Load;

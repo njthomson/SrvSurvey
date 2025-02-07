@@ -6,6 +6,7 @@ using System.Diagnostics;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(540, 100)]
     internal class PlotJumpInfo : PlotBase, PlotterForm
     {
         public static bool allowPlotter

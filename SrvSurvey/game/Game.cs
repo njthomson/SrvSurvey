@@ -1426,6 +1426,16 @@ namespace SrvSurvey.game
             log($"Game.CargoTransfer: Current cargo:\r\n  " + string.Join("\r\n  ", this.cargoFile.Inventory));
         }
 
+        private void onJournalEntry(CargoDepot entry)
+        {
+            // if we just handed in some required cargo but have some remainder, show a message for what remains
+            if (entry.UpdateType == "Deliver" && entry.ItemsDelivered < entry.TotalItemsToDeliver)
+            {
+                var remaining = entry.TotalItemsToDeliver - entry.ItemsDelivered;
+                PlotFloatie.showMessage($"Deliver {entry.CargoType}: {remaining} units remaining");
+            }
+        }
+
         private static Dictionary<string, string> inventoryItemNameMap = new Dictionary<string, string>()
         {
             { "ca", "ancientcasket" },

@@ -52,7 +52,7 @@ namespace SrvSurvey
         public void startDirectX(Guid? newDeviceId)
         {
             // exit early if the device isn't changing
-            if (this.activeDeviceId == newDeviceId) // && this.taskDirectX != null)
+            if (this.activeDeviceId == newDeviceId || newDeviceId == null) // && this.taskDirectX != null)
                 return;
 
             if (this.taskDirectX == null)
@@ -138,7 +138,6 @@ namespace SrvSurvey
             {
                 try
                 {
-
                     if (cancelPollingTask)
                     {
                         Game.log("DirectX hook disabled");
@@ -154,6 +153,10 @@ namespace SrvSurvey
                         Game.log($"Using {device.Capabilities.Type} device '{device.Properties.InstanceName}' by ID: {newDeviceId}");
                         this.activeDeviceId = newDeviceId;
                         device.Properties.BufferSize = 128;
+                        Program.control.Invoke(() =>
+                        {
+                            device.SetCooperativeLevel(Main.form.Handle, CooperativeLevel.NonExclusive | CooperativeLevel.Background);
+                        });
                         device.Acquire();
                     }
 
@@ -187,10 +190,9 @@ namespace SrvSurvey
                     // log the error if we think we should have a device
                     if (device != null)
                         Game.log($"beginPollDirectX failed: {ex.Message}");
+
                     //if ((uint)ex.HResult == 0x8007001E)
-                    //{
                     //    Game.log($"Lost connection to device - start polling loop to reconnect");
-                    //}
 
                     device = null;
 

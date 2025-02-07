@@ -3,6 +3,7 @@ using SrvSurvey.widgets;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(200, 280)]
     internal class PlotRamTah : PlotBase, PlotterForm
     {
         public static bool allowPlotter
@@ -144,7 +145,7 @@ namespace SrvSurvey.plotters
             if (this.Size != sz.ToSize())
             {
                 this.Size = sz.ToSize();
-                this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
+                this.BackgroundImage = GameGraphics.getBackgroundImage(this);
                 this.reposition(Elite.getWindowRect());
             }
         }

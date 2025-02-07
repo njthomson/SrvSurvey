@@ -4,6 +4,7 @@ using System.Drawing.Drawing2D;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(240, 80)]
     internal class PlotMiniTrack : PlotBase, PlotterForm
     {
         private PenBrush pb = new PenBrush(C.orange, 3, LineCap.Flat);

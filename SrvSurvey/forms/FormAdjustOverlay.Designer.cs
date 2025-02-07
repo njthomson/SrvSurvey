@@ -53,6 +53,7 @@
             checkVScreen = new CheckBox();
             flowLayoutPanel3 = new FlowLayoutPanel();
             lblAdvise = new Label();
+            checkShowAll = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)numY).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numX).BeginInit();
             groupBox1.SuspendLayout();
@@ -70,9 +71,9 @@
             lblChoose.FlatStyle = FlatStyle.System;
             lblChoose.Location = new Point(12, 9);
             lblChoose.Name = "lblChoose";
-            lblChoose.Size = new Size(125, 15);
+            lblChoose.Size = new Size(107, 15);
             lblChoose.TabIndex = 0;
-            lblChoose.Text = "Choose &active overlay:";
+            lblChoose.Text = "Choose &an overlay:";
             // 
             // comboPlotter
             // 
@@ -233,7 +234,7 @@
             groupBox1.Controls.Add(flowLayoutPanel4);
             groupBox1.Controls.Add(flowLayoutPanel1);
             groupBox1.Controls.Add(flowLayoutPanel2);
-            groupBox1.Location = new Point(12, 35);
+            groupBox1.Location = new Point(15, 58);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(400, 163);
             groupBox1.TabIndex = 2;
@@ -363,7 +364,7 @@
             flowLayoutPanel3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel3.Controls.Add(btnAccept);
             flowLayoutPanel3.Controls.Add(btnCancel);
-            flowLayoutPanel3.Location = new Point(253, 256);
+            flowLayoutPanel3.Location = new Point(253, 274);
             flowLayoutPanel3.Name = "flowLayoutPanel3";
             flowLayoutPanel3.Size = new Size(162, 29);
             flowLayoutPanel3.TabIndex = 4;
@@ -371,20 +372,34 @@
             // lblAdvise
             // 
             lblAdvise.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            lblAdvise.Location = new Point(12, 205);
+            lblAdvise.Location = new Point(15, 228);
             lblAdvise.Name = "lblAdvise";
             lblAdvise.Size = new Size(400, 39);
             lblAdvise.TabIndex = 3;
             lblAdvise.Text = "\"Screen\" based positions will be relative to the top / left corner of your primary monitor.";
+            // 
+            // checkShowAll
+            // 
+            checkShowAll.AutoSize = true;
+            checkShowAll.FlatStyle = FlatStyle.System;
+            checkShowAll.Location = new Point(143, 35);
+            checkShowAll.Margin = new Padding(0);
+            checkShowAll.Name = "checkShowAll";
+            checkShowAll.Size = new Size(122, 20);
+            checkShowAll.TabIndex = 2;
+            checkShowAll.Text = "Show all overlays";
+            checkShowAll.UseVisualStyleBackColor = true;
+            checkShowAll.CheckedChanged += checkShowAll_CheckedChanged;
             // 
             // FormAdjustOverlay
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(427, 297);
+            ClientSize = new Size(427, 315);
             Controls.Add(lblAdvise);
             Controls.Add(flowLayoutPanel3);
+            Controls.Add(checkShowAll);
             Controls.Add(groupBox1);
             Controls.Add(comboPlotter);
             Controls.Add(lblChoose);
@@ -440,5 +455,6 @@
         private CheckBox checkOpacity;
         private FlowLayoutPanel flowLayoutPanel5;
         private NumericUpDown numOpacity;
+        private CheckBox checkShowAll;
     }
 }

@@ -30,5 +30,6 @@
   "PlotSysStatus": "left:8, bottom:44",
   "PlotTrackTarget": "center:480, top:8",
   "PlotMiniTrack": "right: 8, top:8",
-  "PlotStationInfo": "left: 8, middle:0"
+  "PlotStationInfo": "left: 8, middle:0",
+  "PlotFloatie": "center: 0, bottom:24"
 }

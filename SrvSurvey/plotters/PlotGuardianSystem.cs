@@ -3,6 +3,7 @@ using SrvSurvey.widgets;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(300, 200)]
     internal class PlotGuardianSystem : PlotBase, PlotterForm
     {
         public static bool allowPlotter
@@ -108,7 +109,7 @@ namespace SrvSurvey.plotters
             if (this.Size != sz.ToSize())
             {
                 this.Size = sz.ToSize();
-                this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
+                this.BackgroundImage = GameGraphics.getBackgroundImage(this);
                 this.Invalidate();
             }
         }

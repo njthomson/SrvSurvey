@@ -6,6 +6,7 @@ using System.Drawing.Drawing2D;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(320, 440)]
     internal partial class PlotGrounded : PlotBase, PlotterForm
     {
         public static bool allowPlotter
