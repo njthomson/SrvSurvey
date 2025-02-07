@@ -59,19 +59,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ActiveFighter">
-    <value>El luchador está activo</value>
+    <value>Caza desplegado</value>
     <comment>Fighter is active</comment>
   </data>
   <data name="AGRI">
-    <value>AGRICULTURA</value>
+    <value>AGRI</value>
     <comment>AGRI</comment>
   </data>
   <data name="AutoDock1">
-    <value>Acoplamiento automático en curso</value>
+    <value>Aterrizaje automático en curso</value>
     <comment>Auto dock in progress</comment>
   </data>
   <data name="AutoDock2">
-    <value>Compatible con la identificación automática de la liquidación</value>
+    <value>Compatible con la auto-identificación de asentamiento</value>
     <comment>Settlement auto-identification supported</comment>
   </data>
   <data name="AutoDock3">
@@ -87,15 +87,15 @@
     <comment>Too far away</comment>
   </data>
   <data name="DockingApproved">
-    <value>Acoplamiento aprobado: almohadilla #{0}</value>
+    <value>Aterrizaje aceptado: plataforma #{0}</value>
     <comment>Docking approved: pad #{0}</comment>
   </data>
   <data name="DockingDenied">
-    <value>Acoplamiento denegado</value>
+    <value>Aterrizaje denegado</value>
     <comment>Docking denied</comment>
   </data>
   <data name="DockingRequested">
-    <value>Acoplamiento solicitado</value>
+    <value>Aterrizaje solicitado</value>
     <comment>Docking requested</comment>
   </data>
   <data name="EXT">
@@ -127,19 +127,19 @@
     <comment>1. Walk to the center of any landing pad and crouch</comment>
   </data>
   <data name="HelpFoot2">
-    <value>2. Coloque el pie izquierdo sobre las ranuras centrales</value>
+    <value>2. Coloca el pie izquierdo sobre las ranuras centrales</value>
     <comment>2. Place your left foot over the the center grooves</comment>
   </data>
   <data name="HelpFoot3">
-    <value>3. Enfréntate con los chevrones de adelante a tu izquierda</value>
+    <value>3. Gira a la izquierda y mira las marcas en forma de V que tienes delante</value>
     <comment>3. Face with the chevrons ahead to your left</comment>
   </data>
   <data name="HelpFoot4">
-    <value>4. Apunta al final del ritmo que tienes por delante</value>
+    <value>4. Apunta al final de la ranura que está delante de ti</value>
     <comment>4. Aim at the end of the groove ahead of you</comment>
   </data>
   <data name="HelpFoot5">
-    <value>5. Enviar mensaje '{0}'</value>
+    <value>5. Envía el mensaje '{0}'</value>
     <comment>5. Send message '{0}'</comment>
   </data>
   <data name="HelpFoot6">
@@ -147,7 +147,7 @@
     <comment>See the wiki for more info</comment>
   </data>
   <data name="HelpShip1">
-    <value>La liquidación se identificará después de la próxima acción</value>
+    <value>El asentamiento será identificado tras la próxima acción</value>
     <comment>Settlement will be identified after next action</comment>
   </data>
   <data name="HelpShip2">
@@ -155,7 +155,7 @@
     <comment>To manually identify</comment>
   </data>
   <data name="HelpShip3">
-    <value>Enviar '{0}' cuando está acoplado</value>
+    <value>Envía '{0}' cuando estés aterrizado</value>
     <comment>Send '{0}' when docked</comment>
   </data>
   <data name="Hostile">
@@ -175,19 +175,19 @@
     <comment>Known settlement</comment>
   </data>
   <data name="LAB">
-    <value>LABORATORIO</value>
+    <value>LAB</value>
     <comment>LAB</comment>
   </data>
   <data name="ManualDock1">
-    <value>Acoplamiento manual en curso</value>
+    <value>Aterrizaje manual en curso</value>
     <comment>Manual docking in progress</comment>
   </data>
   <data name="ManualDock2">
-    <value>La identificación de la liquidación se retrasará</value>
+    <value>La identificación del asentamiento se retrasará</value>
     <comment>Settlement identification will be delayed</comment>
   </data>
   <data name="ManualDock3">
-    <value>Se recomienda el acoplamiento automático</value>
+    <value>Se recomienda el aterrizaje automático</value>
     <comment>Auto dock recommended</comment>
   </data>
   <data name="MED">
@@ -195,7 +195,7 @@
     <comment>MED</comment>
   </data>
   <data name="NoSpace">
-    <value>No hay almohadillas disponibles</value>
+    <value>No hay plataformas disponibles</value>
     <comment>No pads available</comment>
   </data>
   <data name="Offenses">
@@ -203,11 +203,11 @@
     <comment>Offenses</comment>
   </data>
   <data name="OnApproach">
-    <value>Sobre la aproximación</value>
+    <value>Aproximándose</value>
     <comment>On approach</comment>
   </data>
   <data name="POW">
-    <value>Prisionero de guerra</value>
+    <value>POW</value>
     <comment>POW</comment>
   </data>
   <data name="PWR">
@@ -219,11 +219,11 @@
     <comment>RES</comment>
   </data>
   <data name="STO">
-    <value>De la tónica de Servicio</value>
+    <value>STO</value>
     <comment>STO</comment>
   </data>
   <data name="TooLarge">
-    <value>Envío demasiado grande</value>
+    <value>Nave demasiado grande</value>
     <comment>Ship too large</comment>
   </data>
   <data name="Unknown">
@@ -231,15 +231,15 @@
     <comment>Unknown</comment>
   </data>
   <data name="UnknownTypeHeading">
-    <value>Tipo de asentamiento y rumbo desconocidos</value>
+    <value>Tipo de asentamiento y orientación desconocidos</value>
     <comment>Unknown settlement type and heading</comment>
   </data>
   <data name="UnkownHeading">
-    <value>Rumbo de liquidación desconocido</value>
+    <value>Orientación del asentamiento desconocida</value>
     <comment>Unknown settlement heading</comment>
   </data>
   <data name="YourRep">
-    <value>Su reputación: {0}</value>
+    <value>Tu reputación: {0}</value>
     <comment>Your reputation: {0}</comment>
   </data>
   <data name="ZoomHeader">
