@@ -326,7 +326,7 @@
     <value>5</value>
   </data>
   <data name="btnTargetCurrent.Text">
-    <value>&amp;Ubicación actual de destino</value>
+    <value>&amp;Usar coordenadas actuales</value>
     <comment>&amp;Target current location</comment>
   </data>
   <data name="button1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -351,7 +351,7 @@
     <value>4</value>
   </data>
   <data name="button1.Text">
-    <value>&amp;Objetivo claro</value>
+    <value>&amp;Borrar coordenadas</value>
     <comment>&amp;Clear target</comment>
   </data>
   <data name="flowLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -391,7 +391,7 @@
     <value>0</value>
   </data>
   <data name="label2.Text">
-    <value>Latitudo:</value>
+    <value>Latitud:</value>
     <comment>Latitute:</comment>
   </data>
   <data name="label3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -432,9 +432,9 @@
     <value>0</value>
   </data>
   <data name="label6.Text">
-    <value>¿Tienes un consejo de un misterioso extraño para ir a algún Lat/Long en algún planeta o luna?
+    <value>¿Recibiste un soplo de un extraño misterioso para ir a unas determinadas coordenadas de un planeta o luna?
 
-Ingrese a alguna posición de latitud / longitud y aparecerá una guía cuando se acerque.</value>
+Introduce la posición en latitud/longitud y aparecerá una guía cuando te acerques al cuerpo.</value>
     <comment>Got a tip from a mysterious stranger to go to some Lat/Long on some planet or moon?
 
 Enter some Lat/Long position and guidance will appear when you approach.</comment>
@@ -479,7 +479,7 @@ Enter some Lat/Long position and guidance will appear when you approach.</commen
     <value>CenterParent</value>
   </data>
   <data name="$this.Text">
-    <value>Establecer coordenadas de latitud y longitud</value>
+    <value>Establecer coordenadas</value>
     <comment>Set lat/long co-ordinates</comment>
   </data>
   <data name="txtLat.Location" type="System.Drawing.Point, System.Drawing">
