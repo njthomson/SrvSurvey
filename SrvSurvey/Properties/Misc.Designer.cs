@@ -225,18 +225,18 @@ namespace SrvSurvey.Properties {
         /// <summary>
         ///   Looks up a localized string similar to (Guardian).
         /// </summary>
-        internal static string NetSysData_Guardian {
+        internal static string NetSysData_GuardianBroker {
             get {
-                return ResourceManager.GetString("NetSysData_Guardian", resourceCulture);
+                return ResourceManager.GetString("NetSysData_GuardianBroker", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to (Human).
         /// </summary>
-        internal static string NetSysData_Human {
+        internal static string NetSysData_HumanBroker {
             get {
-                return ResourceManager.GetString("NetSysData_Human", resourceCulture);
+                return ResourceManager.GetString("NetSysData_HumanBroker", resourceCulture);
             }
         }
         

@@ -61,7 +61,7 @@ namespace SrvSurvey.net
         };
 
         /// <summary> A collection of special things worth rendering </summary>
-        public Dictionary<string, HashSet<string>>? special;
+        public Dictionary<string, HashSet<string>> special = new();
 
         private Action<Source, NetSysData> func;
         private Task<ApiSystemDump.System>? getSystemDump;
@@ -292,13 +292,11 @@ namespace SrvSurvey.net
                     // any traders or brokers?
                     if (station.services?.Contains("Material Trader") == true)
                     {
-                        this.special ??= new();
                         var matTrader = Misc.NetSysData_MaterialTrader + " " + getMatTraderWithType(station);
                         this.special.init(station.name).Add(matTrader);
                     }
                     if (station.services?.Contains("Technology Broker") == true)
                     {
-                        this.special ??= new();
                         var techBroker = Misc.NetSysData_TechBroker + " " + getTechBrokerType(station);
                         this.special.init(station.name).Add(techBroker);
                     }
@@ -306,7 +304,6 @@ namespace SrvSurvey.net
                     // or Engineers?
                     if (station.government == "Engineer")
                     {
-                        this.special ??= new();
                         this.special.init(station.name).Add($"{station.controllingFaction} {Misc.NetSysData_Engineer}");
                     }
                 }
@@ -348,10 +345,10 @@ namespace SrvSurvey.net
             var secondary_economy = station?.economies?.OrderBy(e => e.Value).Skip(1).FirstOrDefault().Key?.ToLowerInvariant();
 
             // See: https://github.com/EDCD/FDevIDs/blob/master/How%20to%20determine%20MatTrader%20and%20Broker%20type
-            if (primary_economy == "high tech") return Misc.NetSysData_Guardian;
-            if (primary_economy == "industrial") return Misc.NetSysData_Human; // human may be set as a default and it is not needed
-            if (secondary_economy == "high tech") return Misc.NetSysData_Guardian;
-            if (secondary_economy != null && secondary_economy != "high tech") return Misc.NetSysData_Human; // needs a confirmation
+            if (primary_economy == "high tech") return Misc.NetSysData_GuardianBroker;
+            if (primary_economy == "industrial") return Misc.NetSysData_HumanBroker; // human may be set as a default and it is not needed
+            if (secondary_economy == "high tech") return Misc.NetSysData_GuardianBroker;
+            if (secondary_economy != null && secondary_economy != "high tech") return Misc.NetSysData_HumanBroker; // needs a confirmation
 
             Debugger.Break();
             return null;

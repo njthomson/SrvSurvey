@@ -62,6 +62,18 @@
     <value>* DISCOVERED BY {0} {1} →→→!</value>
     <comment>Discovered by {0} {1}</comment>
   </data>
+  <data name="GuardianBeacon">
+    <value>* BEACON →→→!</value>
+    <comment>Beacon</comment>
+  </data>
+  <data name="GuardianRuins">
+    <value>* RUINS: {0} →→→!</value>
+    <comment>Ruins: {0}</comment>
+  </data>
+  <data name="GuardianStructures">
+    <value>* STRUCTURES: {0} →→→!</value>
+    <comment>Structures: {0}</comment>
+  </data>
   <data name="JumpCounts">
     <value>* #{0} OF {1} →→→!</value>
     <comment>#{0} of {1}</comment>
@@ -77,6 +89,26 @@
   <data name="NextJump">
     <value>* NEXT JUMP: →→→!</value>
     <comment>Next jump:</comment>
+  </data>
+  <data name="SpecialGuardian">
+    <value>* GUARDIAN →→→!</value>
+    <comment>Guardian</comment>
+  </data>
+  <data name="SpecialHopInfo">
+    <value>* #{0} OF {1} →→→!</value>
+    <comment>#{0} of {1}</comment>
+  </data>
+  <data name="SpecialJoiner">
+    <value>* , →→→!</value>
+    <comment>,</comment>
+  </data>
+  <data name="SpecialNowEntering">
+    <value>* NOW ENTERING →→→!</value>
+    <comment>Now entering</comment>
+  </data>
+  <data name="SpecialRouteHop">
+    <value>* ROUTE HOP →→→!</value>
+    <comment>Route hop</comment>
   </data>
   <data name="StarClass">
     <value>* CLASS: {0} →→→!</value>

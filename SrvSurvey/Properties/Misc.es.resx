@@ -131,11 +131,11 @@
     <value>Género</value>
     <comment>Genus</comment>
   </data>
-  <data name="NetSysData_Guardian">
+  <data name="NetSysData_GuardianBroker">
     <value>(Guardián)</value>
     <comment>(Guardian)</comment>
   </data>
-  <data name="NetSysData_Human">
+  <data name="NetSysData_HumanBroker">
     <value>(Humano)</value>
     <comment>(Human)</comment>
   </data>

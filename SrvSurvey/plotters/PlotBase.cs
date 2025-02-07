@@ -1014,10 +1014,10 @@ namespace SrvSurvey.plotters
             return resourceManagers[name];
         }
 
-        protected string RES(string name)
+        protected string RES(string name, ResourceManager? rm = null)
         {
-            var txt = rm.GetString(name);
-            //if (txt == null) Debugger.Break();
+            var txt = (rm ?? this.rm).GetString(name);
+            if (txt == null) Debugger.Break();
             return txt ?? "";
         }
 

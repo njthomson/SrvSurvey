@@ -297,11 +297,11 @@ Would you like to create it?</value>
     <value>(Encoded)</value>
     <comment>An Encoded Material Trader</comment>
   </data>
-  <data name="NetSysData_Guardian" xml:space="preserve">
+  <data name="NetSysData_GuardianBroker" xml:space="preserve">
     <value>(Guardian)</value>
     <comment>A Guardian Tech Broker</comment>
   </data>
-  <data name="NetSysData_Human" xml:space="preserve">
+  <data name="NetSysData_HumanBroker" xml:space="preserve">
     <value>(Human)</value>
     <comment>A Human Tech Broker</comment>
   </data>
