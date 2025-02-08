@@ -162,10 +162,6 @@
   <data name="NetSysData_Wars" xml:space="preserve">
     <value>Wars</value>
   </data>
-  <data name="PlotFlightWarning_SurfaceGravityWarning" xml:space="preserve">
-    <value>Warning: Surface gravity {0}g</value>
-    <comment>{0} is a floating point number. The trailiing g is for Gravity.</comment>
-  </data>
   <data name="PlotGalMap_CountGenus" xml:space="preserve">
     <value>{0}x Genus</value>
   </data>

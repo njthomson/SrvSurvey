@@ -331,15 +331,6 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Warning: Surface gravity {0}g.
-        /// </summary>
-        internal static string PlotFlightWarning_SurfaceGravityWarning {
-            get {
-                return ResourceManager.GetString("PlotFlightWarning_SurfaceGravityWarning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to {0}x Genus.
         /// </summary>
         internal static string PlotGalMap_CountGenus {

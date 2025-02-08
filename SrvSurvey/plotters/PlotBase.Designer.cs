@@ -54,6 +54,7 @@ namespace SrvSurvey.plotters
         protected static float hundred = scaled(100f);
         protected static float oneOhFour = scaled(104f);
         protected static float oneTwenty = scaled(120f);
+        protected static float oneForty= scaled(140f);
         protected static float oneSeventy = scaled(170f);
         protected static float oneEightFour = scaled(184);
         protected static float oneNinety = scaled(190f);

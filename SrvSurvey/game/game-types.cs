@@ -96,7 +96,7 @@ namespace SrvSurvey.game
         public long SystemAddress { get; set; }
     }
 
-    interface IStarRef: ISystemAddress
+    interface IStarRef : ISystemAddress
     {
         public double[] StarPos { get; set; }
         public string StarSystem { get; set; }
@@ -208,8 +208,10 @@ namespace SrvSurvey.game
 
     internal class BioGenus
     {
-        public string name;   // $Codex_Ent_Tussocks_Genus_Name;
-        public string englishName; // Tussock
+        /// <summary> Eg: "$Codex_Ent_Tussocks_Genus_Name;" </summary>
+        public string name;
+        /// <summary> Eg: "Tussock" </summary>
+        public string englishName;
         public int dist; // how far before next scan
         public bool odyssey; // is new for Odyssey?
 
@@ -268,6 +270,9 @@ namespace SrvSurvey.game
 
             return null;
         }
+
+        [JsonIgnore]
+        public string locName => Properties.Codex.ResourceManager.GetString(this.englishName)!;
     }
 
     internal class BioSpecies
@@ -275,10 +280,13 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public BioGenus genus;
 
-        public string name;   // $Codex_Ent_Stratum_07_Name;
-        public string englishName; // Stratum Tectonicas
+        /// <summary> Eg: "$Codex_Ent_Stratum_07_Name;" </summary>
+        public string name;
+        /// <summary> Eg: "Stratum Tectonicas" </summary>
+        public string englishName;
         public int reward; // 19010800
-        public string entryIdPrefix; // 24207
+        /// <summary> Eg: "24207" </summary>
+        public string entryIdPrefix;
 
         public List<BioVariant> variants;
 
@@ -300,6 +308,12 @@ namespace SrvSurvey.game
                     return englishName;
             }
         }
+
+        /// <summary>
+        /// Species name without the genus part. These are not actually localized, so we can use the English portion as is.
+        /// </summary>
+        [JsonIgnore]
+        public string locName => this.englishName.Replace(genus.englishName, "").Trim();
     }
 
     internal class BioVariant
@@ -307,15 +321,23 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public BioSpecies species;
 
-        public string name;   // $Codex_Ent_Stratum_07_M_Name;
-        public string englishName; // Stratum Tectonicas - Green
-        public string entryIdSuffix; // 03
+        /// <summary> Eg: "$Codex_Ent_Stratum_07_M_Name;" </summary>
+        public string name;
+        /// <summary> Eg: "Stratum Tectonicas - Green" </summary>
+        public string englishName;
+        /// <summary> Eg: "03" </summary>
+        public string entryIdSuffix;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string imageUrl;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string imageCmdr;
+
+        public override string ToString()
+        {
+            return $"'{this.name}' ({this.englishName}";
+        }
 
         [JsonIgnore]
         public string entryId { get => this.species.entryIdPrefix + this.entryIdSuffix; }
@@ -355,10 +377,8 @@ namespace SrvSurvey.game
             }
         }
 
-        public override string ToString()
-        {
-            return $"'{this.name}' ({this.englishName}";
-        }
+        [JsonIgnore]
+        public string locColorName => Properties.Codex.ResourceManager.GetString(this.colorName)!;
     }
 
     internal class GuardianSitePub

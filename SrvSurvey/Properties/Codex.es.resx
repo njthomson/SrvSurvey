@@ -63,43 +63,43 @@
     <comment>Aleoida</comment>
   </data>
   <data name="Amethyst">
-    <value>Amethyst</value>
+    <value>Amatista</value>
     <comment>Amethyst</comment>
   </data>
   <data name="Amphora Plant">
-    <value>Amphoren-Pflanze</value>
+    <value>Planta de ánforas</value>
     <comment>Amphora Plant</comment>
   </data>
   <data name="Aquamarine">
-    <value>Aquamarin</value>
+    <value>Aguamarina</value>
     <comment>Aquamarine</comment>
   </data>
   <data name="Bacterium">
-    <value>Bakterie</value>
+    <value>Bacteria</value>
     <comment>Bacterium</comment>
   </data>
   <data name="Bark Mounds">
-    <value>Rindenhügel</value>
+    <value>Montículos de corteza</value>
     <comment>Bark Mounds</comment>
   </data>
   <data name="Blue">
-    <value>Blau</value>
+    <value>Azul</value>
     <comment>Blue</comment>
   </data>
   <data name="Brain Trees">
-    <value>Hirn-Bäume</value>
+    <value>Árboles cerebrales</value>
     <comment>Brain Trees</comment>
   </data>
   <data name="Cactoida">
-    <value>Kaktoida</value>
+    <value>Cactoida</value>
     <comment>Cactoida</comment>
   </data>
   <data name="Clypeus">
-    <value>Klypeus</value>
+    <value>Clípeo</value>
     <comment>Clypeus</comment>
   </data>
   <data name="Cobalt">
-    <value>Kobalt</value>
+    <value>Cobalto</value>
     <comment>Cobalt</comment>
   </data>
   <data name="Concha">
@@ -107,11 +107,11 @@
     <comment>Concha</comment>
   </data>
   <data name="Crystalline Shards">
-    <value>Kristalline Scherben</value>
+    <value>Fragmentos cristalinos</value>
     <comment>Crystalline Shards</comment>
   </data>
   <data name="Cyan">
-    <value>Zyan</value>
+    <value>Cian</value>
     <comment>Cyan</comment>
   </data>
   <data name="Electricae">
@@ -119,7 +119,7 @@
     <comment>Electricae</comment>
   </data>
   <data name="Emerald">
-    <value>Smaragd</value>
+    <value>Esmeralda</value>
     <comment>Emerald</comment>
   </data>
   <data name="Fonticulua">
@@ -139,27 +139,27 @@
     <comment>Fungoida</comment>
   </data>
   <data name="Gold">
-    <value>Gold</value>
+    <value>Oro</value>
     <comment>Gold</comment>
   </data>
   <data name="Green">
-    <value>Grün</value>
+    <value>Verde</value>
     <comment>Green</comment>
   </data>
   <data name="Grey">
-    <value>Grau</value>
+    <value>Gris</value>
     <comment>Grey</comment>
   </data>
   <data name="Indigo">
-    <value>Indigo</value>
+    <value>Añil</value>
     <comment>Indigo</comment>
   </data>
   <data name="Lime">
-    <value>Limone</value>
+    <value>Lima</value>
     <comment>Lime</comment>
   </data>
   <data name="Luteolum Anemone">
-    <value>Luteolum Anemone</value>
+    <value>Anémona Luteolum</value>
     <comment>Luteolum Anemone</comment>
   </data>
   <data name="Magenta">
@@ -167,55 +167,55 @@
     <comment>Magenta</comment>
   </data>
   <data name="Maroon">
-    <value>Kastanienbraun</value>
+    <value>Marrón</value>
     <comment>Maroon</comment>
   </data>
   <data name="Mauve">
-    <value>Mauve</value>
+    <value>Malva</value>
     <comment>Mauve</comment>
   </data>
   <data name="Mulberry">
-    <value>Maulbeerbaum</value>
+    <value>Mora</value>
     <comment>Mulberry</comment>
   </data>
   <data name="Ocher">
-    <value>Ocker</value>
+    <value>Ocre</value>
     <comment>Ocher</comment>
   </data>
   <data name="Orange">
-    <value>Orange</value>
+    <value>Naranja</value>
     <comment>Orange</comment>
   </data>
   <data name="Osseus">
-    <value>Osseus</value>
+    <value>Óseo</value>
     <comment>Osseus</comment>
   </data>
   <data name="Peach">
-    <value>Pfirsich</value>
+    <value>Melocotón</value>
     <comment>Peach</comment>
   </data>
   <data name="Recepta">
-    <value>Rezepte</value>
+    <value>Recepta</value>
     <comment>Recepta</comment>
   </data>
   <data name="Red">
-    <value>Rot</value>
+    <value>Rojo</value>
     <comment>Red</comment>
   </data>
   <data name="Sage">
-    <value>Salbei</value>
+    <value>Salvia</value>
     <comment>Sage</comment>
   </data>
   <data name="Sinuous Tubers">
-    <value>Gewundene Knollen</value>
+    <value>Tubérculos sinuosos</value>
     <comment>Sinuous Tubers</comment>
   </data>
   <data name="Stratum">
-    <value>Schicht</value>
+    <value>Estrato</value>
     <comment>Stratum</comment>
   </data>
   <data name="Teal">
-    <value>Krickente</value>
+    <value>Cerceta</value>
     <comment>Teal</comment>
   </data>
   <data name="Tubus">
@@ -223,19 +223,19 @@
     <comment>Tubus</comment>
   </data>
   <data name="Turquoise">
-    <value>Türkis</value>
+    <value>Turquesa</value>
     <comment>Turquoise</comment>
   </data>
   <data name="Tussock">
-    <value>Büschel</value>
+    <value>Mata</value>
     <comment>Tussock</comment>
   </data>
   <data name="White">
-    <value>Weiß</value>
+    <value>Blanco</value>
     <comment>White</comment>
   </data>
   <data name="Yellow">
-    <value>Gelb</value>
+    <value>Amarillo</value>
     <comment>Yellow</comment>
   </data>
 </root>

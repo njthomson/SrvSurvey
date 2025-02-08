@@ -1212,7 +1212,7 @@ namespace SrvSurvey.game
                         body.type = SystemBody.typeFrom(null!, entry.subType!, entry.isLandable, entry.name);
                 }
                 if (body.type == SystemBodyType.SolidBody && entry.isLandable == true) body.type = SystemBodyType.LandableBody;
-                
+
                 if (body.distanceFromArrivalLS == 0) body.distanceFromArrivalLS = entry.distanceToArrival;
                 if (body.semiMajorAxis == 0) body.semiMajorAxis = Util.lsToM(entry.semiMajorAxis ?? 0); // convert from LS to M
                 if (body.absoluteMagnitude == 0) body.absoluteMagnitude = entry.absoluteMagnitude;
@@ -2616,6 +2616,21 @@ namespace SrvSurvey.game
                 this.variantLocalized = match.englishName;
             }
         }
+
+        [JsonIgnore]
+        public BioMatch? bioMatch
+        {
+            get
+            {
+                if (_bioMatch == null && this.entryId > 0)
+                    _bioMatch = Game.codexRef.matchFromEntryId(this.entryId, true);
+                else if (_bioMatch == null && this.variant != null)
+                    _bioMatch = Game.codexRef.matchFromVariant(this.variant);
+
+                return _bioMatch;
+            }
+        }
+        private BioMatch? _bioMatch;
     }
 
     internal class SystemGeoSignal

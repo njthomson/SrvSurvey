@@ -117,49 +117,93 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DssRequired" xml:space="preserve">
-    <value>Bio signals detected - DSS Scan required</value>
-    <comment>Warning shown when body has not been DSS'd</comment>
+  <data name="Atmosphere" xml:space="preserve">
+    <value>Atmosphere:</value>
+    <comment>Line prefix for atmosphere</comment>
   </data>
-  <data name="FooterAllScanned" xml:space="preserve">
-    <value>All signals scanned</value>
-    <comment>Footer shown when all bio signals are scanned</comment>
+  <data name="BioSignals" xml:space="preserve">
+    <value>Bio signals: {0} ( value: {1} cr )</value>
+    <comment>Line prefix when bio signals are present
+{0} int, count of bio signals
+{1} string, value of credits</comment>
   </data>
-  <data name="FooterAllScannedFF" xml:space="preserve">
-    <value>All signals scanned with FF bonus applied</value>
-    <comment>Footer shown when all bio signals are scanned and First Footfall bonus is applied</comment>
+  <data name="EarthLike" xml:space="preserve">
+    <value>Earth Like</value>
+    <comment>Atmosphere type is like Earth</comment>
   </data>
-  <data name="FooterApplyFF" xml:space="preserve">
-    <value>Applying first footfall bonus</value>
-    <comment>Footer shown when not scanning anything currently and First Footfall bonus will be applied</comment>
+  <data name="FirstMapped" xml:space="preserve">
+    <value>First mapped</value>
+    <comment>Header tag</comment>
   </data>
-  <data name="FooterUseCompScanner" xml:space="preserve">
-    <value>Use Composition Scanner to set tracker targets</value>
-    <comment>Footer shown to remind people to use the composition scanner</comment>
+  <data name="GeoSignals" xml:space="preserve">
+    <value>Geo signals: {0}</value>
+    <comment>Line prefix when geo signals are present
+{0} int, count of geo signals</comment>
   </data>
-  <data name="GeoN" xml:space="preserve">
-    <value>Geo #{0}</value>
-    <comment>Shown with genus names but represents some unknown numbered geological signal
-{0} int, the index of the geo signal, 1 through 3</comment>
+  <data name="Gravity" xml:space="preserve">
+    <value>Gravity: {0}g</value>
+    <comment>Body gravity
+{0} decimal, 3 places, gravity value</comment>
   </data>
-  <data name="Header" xml:space="preserve">
-    <value>Biological signals: {0} | Analyzed: {1}</value>
-    <comment>Header text
-{0} int, total count of bio signals
-{1} int, count of bio signals analyzed</comment>
+  <data name="Materials" xml:space="preserve">
+    <value>Materials:</value>
+    <comment>Line prefix for materials</comment>
   </data>
-  <data name="SomethingWrong" xml:space="preserve">
-    <value>Something is wrong. Please share logs.</value>
-    <comment>An error message shown when something went wrong.</comment>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+    <comment>Text shown when body pressure value is zero, or there is no volcanism, or no atmoshpere</comment>
   </data>
-  <data name="SuffixFF" xml:space="preserve">
-    <value>(FF bonus)</value>
-    <comment>Shown next to credit value when First Footfall bonus will be applied</comment>
+  <data name="Pressure" xml:space="preserve">
+    <value>Pressure: {0}</value>
+    <comment>
+{0} string, the value of PressureValue or PressureNone</comment>
   </data>
-  <data name="WarningStaleScans" xml:space="preserve">
-    <value>WARNING: Incomplete {0} scans from {1}</value>
-    <comment>Warning line shown if there are incomplete scans from another body
-{0} string, name of bio signal
-{1} name of body</comment>
+  <data name="PressureValue" xml:space="preserve">
+    <value>{0}(atm)</value>
+    <comment>The atmospheric pressure value
+{0} decimal, 4 places</comment>
+  </data>
+  <data name="Rings" xml:space="preserve">
+    <value>Rings:</value>
+    <comment>Line prefix for rings</comment>
+  </data>
+  <data name="ScanRequired" xml:space="preserve">
+    <value>Scan required</value>
+    <comment>Header shown when a scan is required</comment>
+  </data>
+  <data name="ScanValue" xml:space="preserve">
+    <value>Scan value</value>
+    <comment>Line prefix before showing the scan value for a body</comment>
+  </data>
+  <data name="StarClass" xml:space="preserve">
+    <value>Class: {0}</value>
+    <comment>Line prefix with the type of a star, A, O, M, etc
+{0} string, the class of some star</comment>
+  </data>
+  <data name="Temp" xml:space="preserve">
+    <value>Temp: {0}K</value>
+    <comment>Body temperature of a body
+{0} int, temp in Kelvin</comment>
+  </data>
+  <data name="Terraformable" xml:space="preserve">
+    <value>Terraformable</value>
+    <comment>Header tag</comment>
+  </data>
+  <data name="Undiscovered" xml:space="preserve">
+    <value>Undiscovered</value>
+    <comment>Header tag</comment>
+  </data>
+  <data name="Unmapped" xml:space="preserve">
+    <value>Unmapped</value>
+    <comment>Header tag</comment>
+  </data>
+  <data name="Volcanism" xml:space="preserve">
+    <value>Volcanism:</value>
+    <comment>Line prefix for volcanism</comment>
+  </data>
+  <data name="WithDSS" xml:space="preserve">
+    <value>(with DSS: {0})</value>
+    <comment>Suffix shown after scan value for a body
+{0} string, value of credits</comment>
   </data>
 </root>

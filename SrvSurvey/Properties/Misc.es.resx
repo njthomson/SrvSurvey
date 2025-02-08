@@ -179,10 +179,6 @@
     <value>Guerras</value>
     <comment>Wars</comment>
   </data>
-  <data name="PlotFlightWarning_SurfaceGravityWarning">
-    <value>Advertencia: Gravedad superficial {0}g</value>
-    <comment>Warning: Surface gravity {0}g</comment>
-  </data>
   <data name="PlotGalMap_CountGenus">
     <value>Género {0}x</value>
     <comment>{0}x Genus</comment>

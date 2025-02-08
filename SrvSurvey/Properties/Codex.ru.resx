@@ -59,183 +59,183 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Aleoida">
-    <value>Aleoida</value>
+    <value>Алеоида</value>
     <comment>Aleoida</comment>
   </data>
   <data name="Amethyst">
-    <value>Amethyst</value>
+    <value>Аметист</value>
     <comment>Amethyst</comment>
   </data>
   <data name="Amphora Plant">
-    <value>Amphoren-Pflanze</value>
+    <value>Растение амфора</value>
     <comment>Amphora Plant</comment>
   </data>
   <data name="Aquamarine">
-    <value>Aquamarin</value>
+    <value>Аквамарин</value>
     <comment>Aquamarine</comment>
   </data>
   <data name="Bacterium">
-    <value>Bakterie</value>
+    <value>Бактерия</value>
     <comment>Bacterium</comment>
   </data>
   <data name="Bark Mounds">
-    <value>Rindenhügel</value>
+    <value>Насыпи из коры</value>
     <comment>Bark Mounds</comment>
   </data>
   <data name="Blue">
-    <value>Blau</value>
+    <value>Синий</value>
     <comment>Blue</comment>
   </data>
   <data name="Brain Trees">
-    <value>Hirn-Bäume</value>
+    <value>Мозговые деревья</value>
     <comment>Brain Trees</comment>
   </data>
   <data name="Cactoida">
-    <value>Kaktoida</value>
+    <value>Кактоида</value>
     <comment>Cactoida</comment>
   </data>
   <data name="Clypeus">
-    <value>Klypeus</value>
+    <value>Клипеус</value>
     <comment>Clypeus</comment>
   </data>
   <data name="Cobalt">
-    <value>Kobalt</value>
+    <value>Кобальт</value>
     <comment>Cobalt</comment>
   </data>
   <data name="Concha">
-    <value>Concha</value>
+    <value>Ушная раковина</value>
     <comment>Concha</comment>
   </data>
   <data name="Crystalline Shards">
-    <value>Kristalline Scherben</value>
+    <value>Кристаллические осколки</value>
     <comment>Crystalline Shards</comment>
   </data>
   <data name="Cyan">
-    <value>Zyan</value>
+    <value>Голубой</value>
     <comment>Cyan</comment>
   </data>
   <data name="Electricae">
-    <value>Electricae</value>
+    <value>Электрики</value>
     <comment>Electricae</comment>
   </data>
   <data name="Emerald">
-    <value>Smaragd</value>
+    <value>Изумруд</value>
     <comment>Emerald</comment>
   </data>
   <data name="Fonticulua">
-    <value>Fonticulua</value>
+    <value>Фонтикулуа</value>
     <comment>Fonticulua</comment>
   </data>
   <data name="Frutexa">
-    <value>Frutexa</value>
+    <value>Фрутекса</value>
     <comment>Frutexa</comment>
   </data>
   <data name="Fumerola">
-    <value>Fumerola</value>
+    <value>Фумерола</value>
     <comment>Fumerola</comment>
   </data>
   <data name="Fungoida">
-    <value>Fungoida</value>
+    <value>Фунгоида</value>
     <comment>Fungoida</comment>
   </data>
   <data name="Gold">
-    <value>Gold</value>
+    <value>Золото</value>
     <comment>Gold</comment>
   </data>
   <data name="Green">
-    <value>Grün</value>
+    <value>Зеленый</value>
     <comment>Green</comment>
   </data>
   <data name="Grey">
-    <value>Grau</value>
+    <value>Серый</value>
     <comment>Grey</comment>
   </data>
   <data name="Indigo">
-    <value>Indigo</value>
+    <value>Индиго</value>
     <comment>Indigo</comment>
   </data>
   <data name="Lime">
-    <value>Limone</value>
+    <value>Известь</value>
     <comment>Lime</comment>
   </data>
   <data name="Luteolum Anemone">
-    <value>Luteolum Anemone</value>
+    <value>Ветреница лютеолумная</value>
     <comment>Luteolum Anemone</comment>
   </data>
   <data name="Magenta">
-    <value>Magenta</value>
+    <value>Пурпурный</value>
     <comment>Magenta</comment>
   </data>
   <data name="Maroon">
-    <value>Kastanienbraun</value>
+    <value>Каштановый</value>
     <comment>Maroon</comment>
   </data>
   <data name="Mauve">
-    <value>Mauve</value>
+    <value>Розовато-лиловый</value>
     <comment>Mauve</comment>
   </data>
   <data name="Mulberry">
-    <value>Maulbeerbaum</value>
+    <value>Шелковица</value>
     <comment>Mulberry</comment>
   </data>
   <data name="Ocher">
-    <value>Ocker</value>
+    <value>Охра</value>
     <comment>Ocher</comment>
   </data>
   <data name="Orange">
-    <value>Orange</value>
+    <value>Апельсин</value>
     <comment>Orange</comment>
   </data>
   <data name="Osseus">
-    <value>Osseus</value>
+    <value>Оссеус</value>
     <comment>Osseus</comment>
   </data>
   <data name="Peach">
-    <value>Pfirsich</value>
+    <value>Персик</value>
     <comment>Peach</comment>
   </data>
   <data name="Recepta">
-    <value>Rezepte</value>
+    <value>Рецепта</value>
     <comment>Recepta</comment>
   </data>
   <data name="Red">
-    <value>Rot</value>
+    <value>Красный</value>
     <comment>Red</comment>
   </data>
   <data name="Sage">
-    <value>Salbei</value>
+    <value>Мудрец</value>
     <comment>Sage</comment>
   </data>
   <data name="Sinuous Tubers">
-    <value>Gewundene Knollen</value>
+    <value>Извилистые клубни</value>
     <comment>Sinuous Tubers</comment>
   </data>
   <data name="Stratum">
-    <value>Schicht</value>
+    <value>Пласт</value>
     <comment>Stratum</comment>
   </data>
   <data name="Teal">
-    <value>Krickente</value>
+    <value>Чирок</value>
     <comment>Teal</comment>
   </data>
   <data name="Tubus">
-    <value>Tubus</value>
+    <value>Тубус</value>
     <comment>Tubus</comment>
   </data>
   <data name="Turquoise">
-    <value>Türkis</value>
+    <value>Бирюза</value>
     <comment>Turquoise</comment>
   </data>
   <data name="Tussock">
-    <value>Büschel</value>
+    <value>Кочка</value>
     <comment>Tussock</comment>
   </data>
   <data name="White">
-    <value>Weiß</value>
+    <value>Белый</value>
     <comment>White</comment>
   </data>
   <data name="Yellow">
-    <value>Gelb</value>
+    <value>Жёлтый</value>
     <comment>Yellow</comment>
   </data>
 </root>
