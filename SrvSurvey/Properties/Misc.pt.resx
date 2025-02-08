@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="FormBoxelSearch_Activate">
+    <value>Ativar</value>
+    <comment>Activate</comment>
+  </data>
+  <data name="FormBoxelSearch_Disable">
+    <value>Desabilitar</value>
+    <comment>Disable</comment>
+  </data>
+  <data name="FormBoxelSearch_HideList">
+    <value>⏶ Ocultar lista</value>
+    <comment>⏶ Hide list</comment>
+  </data>
+  <data name="FormBoxelSearch_NotViableMessage">
+    <value>Este não é um nome de sistema gerado pelo boxel.</value>
+    <comment>This is not a boxel generated system name.</comment>
+  </data>
+  <data name="FormBoxelSearch_SearchNotActive">
+    <value>A pesquisa do Boxel não está ativa.</value>
+    <comment>Boxel search is not active.</comment>
+  </data>
+  <data name="FormBoxelSearch_ShowList">
+    <value>⏷ Mostrar lista</value>
+    <comment>⏷ Show list</comment>
+  </data>
+  <data name="FormBoxelSearch_SpanshUpdated">
+    <value>Espanhol atualizado: {0}</value>
+    <comment>Spansh updated: {0}</comment>
+  </data>
+  <data name="FormBoxelSearch_SpanshUpdatedBodies">
+    <value>Espanhol atualizado: {0}, corpos: {1}</value>
+    <comment>Spansh updated: {0}, bodies: {1}</comment>
+  </data>
+  <data name="FormBoxelSearch_UndiscoveredSystem">
+    <value>Sistema não descoberto</value>
+    <comment>Undiscovered system</comment>
+  </data>
+  <data name="FormBoxelSearch_Visited">
+    <value>Visitado: {0}</value>
+    <comment>Visited: {0}</comment>
+  </data>
+  <data name="FormBoxelSearch_VisitedCounts">
+    <value>Concluído {2} de {3} boxels, {0} de {1} sistemas no boxel atual</value>
+    <comment>Completed {2} of {3} boxels, {0} of {1} systems in current boxel</comment>
+  </data>
+  <data name="NetSysData_Bodies">
+    <value>Corpos</value>
+    <comment>Bodies</comment>
+  </data>
+  <data name="NetSysData_DiscoveredAll">
+    <value>Descobertos, {0} corpos</value>
+    <comment>Discovered, {0} bodies</comment>
+  </data>
+  <data name="NetSysData_DiscoveredPartial">
+    <value>Descoberto ({0} de {1})</value>
+    <comment>Discovered ({0} of {1})</comment>
+  </data>
+  <data name="NetSysData_Encoded">
+    <value>(Codificado)</value>
+    <comment>(Encoded)</comment>
+  </data>
+  <data name="NetSysData_Engineer">
+    <value>(Engenheiro)</value>
+    <comment>(Engineer)</comment>
+  </data>
+  <data name="NetSysData_FC">
+    <value>FC</value>
+    <comment>FC</comment>
+  </data>
+  <data name="NetSysData_Genus">
+    <value>Gênero</value>
+    <comment>Genus</comment>
+  </data>
+  <data name="NetSysData_GuardianBroker">
+    <value>(Guardião)</value>
+    <comment>(Guardian)</comment>
+  </data>
+  <data name="NetSysData_HumanBroker">
+    <value>(Humano)</value>
+    <comment>(Human)</comment>
+  </data>
+  <data name="NetSysData_Manufactured">
+    <value>(Fabricado)</value>
+    <comment>(Manufactured)</comment>
+  </data>
+  <data name="NetSysData_MaterialTrader">
+    <value>Comerciante de materiais</value>
+    <comment>Material Trader</comment>
+  </data>
+  <data name="NetSysData_Outposts">
+    <value>Postos avançados</value>
+    <comment>Outposts</comment>
+  </data>
+  <data name="NetSysData_Raw">
+    <value>(Cru)</value>
+    <comment>(Raw)</comment>
+  </data>
+  <data name="NetSysData_Settlements">
+    <value>Assentamentos</value>
+    <comment>Settlements</comment>
+  </data>
+  <data name="NetSysData_StarPorts">
+    <value>Portas em estrela</value>
+    <comment>Star ports</comment>
+  </data>
+  <data name="NetSysData_TechBroker">
+    <value>Corretor de tecnologia</value>
+    <comment>Tech Broker</comment>
+  </data>
+  <data name="NetSysData_UndiscoveredSystem">
+    <value>Sistema não descoberto</value>
+    <comment>Undiscovered system</comment>
+  </data>
+  <data name="NetSysData_UnscannedSystem">
+    <value>Sistema não verificado</value>
+    <comment>Unscanned system</comment>
+  </data>
+  <data name="NetSysData_Wars">
+    <value>Guerras</value>
+    <comment>Wars</comment>
+  </data>
+  <data name="PlotGalMap_CountGenus">
+    <value>Gênero {0}x</value>
+    <comment>{0}x Genus</comment>
+  </data>
+  <data name="PlotGalMap_Current">
+    <value>Atual:</value>
+    <comment>Current:</comment>
+  </data>
+  <data name="PlotGalMap_DataFrom">
+    <value>Dados de: EDSM + Spansh + Canonn</value>
+    <comment>Data from: EDSM + Spansh + Canonn</comment>
+  </data>
+  <data name="PlotGalMap_Destination">
+    <value>Destino:</value>
+    <comment>Destination:</comment>
+  </data>
+  <data name="PlotGalMap_DiscoveredBy">
+    <value>Por {0}, {1}</value>
+    <comment>By {0}, {1}</comment>
+  </data>
+  <data name="PlotGalMap_LastUpdated">
+    <value>Última atualização: {0}</value>
+    <comment>Last updated: {0}</comment>
+  </data>
+  <data name="PlotGalMap_NextJump">
+    <value>Próximo salto:</value>
+    <comment>Next jump:</comment>
+  </data>
+  <data name="PlotGalMap_NoRouteSet">
+    <value>Nenhuma rota definida</value>
+    <comment>No route set</comment>
+  </data>
+  <data name="PlotGalMap_RouteFooter">
+    <value>Total: ► {0} saltos ► Distância: {1} ly</value>
+    <comment>Total: ► {0} jumps ► Distance: {1} ly</comment>
+  </data>
+  <data name="PlotGalMap_Selected">
+    <value>Selecionado:</value>
+    <comment>Selected:</comment>
+  </data>
+  <data name="PlotSysStatus_BioSignals">
+    <value>| {0}x Sinais biológicos em: </value>
+    <comment>| {0}x Bio signals on: </comment>
+  </data>
+  <data name="PlotSysStatus_DssRemaining">
+    <value> {0}x corpos: </value>
+    <comment> {0}x bodies: </comment>
+  </data>
+  <data name="PlotSysStatus_FssCompleteLong">
+    <value>FSS {0}% concluído</value>
+    <comment>FSS {0}% complete</comment>
+  </data>
+  <data name="PlotSysStatus_FssCompleteShort">
+    <value>FSS {0}%</value>
+    <comment>FSS {0}%</comment>
+  </data>
+  <data name="PlotSysStatus_FssNotStarted">
+    <value>FSS não iniciado</value>
+    <comment>FSS not started</comment>
+  </data>
+  <data name="PlotSysStatus_Header">
+    <value>Pesquisa DSS: </value>
+    <comment>DSS survey: </comment>
+  </data>
+  <data name="PlotSysStatus_NextSystem">
+    <value>Próximo sistema:</value>
+    <comment>Next system:</comment>
+  </data>
+  <data name="PlotSysStatus_NoDssMeet">
+    <value>Nenhum</value>
+    <comment>None</comment>
+  </data>
+  <data name="PlotSysStatus_NonBodySignals">
+    <value>► {0} sinais não corporais</value>
+    <comment>► {0} non-body signals</comment>
+  </data>
+  <data name="Settings_CreateFolderNotFound">
+    <value>Não é possível encontrar a pasta:
+{0}
+
+Você gostaria de criá-lo?</value>
+    <comment>Cannot find folder:
+{0}
+
+Would you like to create it?</comment>
+  </data>
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+</root>

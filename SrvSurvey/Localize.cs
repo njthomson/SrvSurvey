@@ -18,6 +18,8 @@ namespace SrvSurvey
             { "English", "en" },
             { "Deutsch", "de" },
             { "Español", "es" },
+            { "Français", "fr" },
+            { "Português", "pt" },
             { "Русский", "ru" },
             { "Pseudo",  "ps" },
         };
