@@ -63,23 +63,23 @@
     <comment>Atmosphere:</comment>
   </data>
   <data name="BioSignals">
-    <value>Биосигналы: {0} ( значение: {1} cr )</value>
+    <value>Биосигналов: {0} ( стоимость: {1} cr )</value>
     <comment>Bio signals: {0} ( value: {1} cr )</comment>
   </data>
   <data name="EarthLike">
-    <value>Как на Земле</value>
+    <value>Землеподобная</value>
     <comment>Earth Like</comment>
   </data>
   <data name="FirstMapped">
-    <value>Впервые нанесено на карту</value>
+    <value>Впервые откартографирована</value>
     <comment>First mapped</comment>
   </data>
   <data name="GeoSignals">
-    <value>Геосигналы: {0}</value>
+    <value>Геосигналов: {0}</value>
     <comment>Geo signals: {0}</comment>
   </data>
   <data name="Gravity">
-    <value>Плотность плотности: {0}g</value>
+    <value>Гравитация: {0}g</value>
     <comment>Gravity: {0}g</comment>
   </data>
   <data name="Materials">
@@ -87,7 +87,7 @@
     <comment>Materials:</comment>
   </data>
   <data name="None">
-    <value>Никакой</value>
+    <value>Нет</value>
     <comment>None</comment>
   </data>
   <data name="Pressure">
@@ -95,7 +95,7 @@
     <comment>Pressure: {0}</comment>
   </data>
   <data name="PressureValue">
-    <value>{0}(банкомат)</value>
+    <value>{0}(атм)</value>
     <comment>{0}(atm)</comment>
   </data>
   <data name="Rings">
@@ -107,7 +107,7 @@
     <comment>Scan required</comment>
   </data>
   <data name="ScanValue">
-    <value>Значение сканирования</value>
+    <value>Стоимость сканирования</value>
     <comment>Scan value</comment>
   </data>
   <data name="StarClass">
@@ -119,15 +119,15 @@
     <comment>Temp: {0}K</comment>
   </data>
   <data name="Terraformable">
-    <value>Терраформируемый</value>
+    <value>Терраформируемая</value>
     <comment>Terraformable</comment>
   </data>
   <data name="Undiscovered">
-    <value>Необнаруженный</value>
+    <value>Необнаружена</value>
     <comment>Undiscovered</comment>
   </data>
   <data name="Unmapped">
-    <value>Несопоставленные</value>
+    <value>Неоткартографирована</value>
     <comment>Unmapped</comment>
   </data>
   <data name="Volcanism">
