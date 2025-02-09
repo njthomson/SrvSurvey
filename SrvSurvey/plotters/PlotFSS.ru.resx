@@ -59,7 +59,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CountBioSignals">
-    <value>{0} биосигналы:</value>
+    <value>{0} биосигналов:</value>
     <comment>{0} bio signals:</comment>
   </data>
   <data name="EstimatedValue">
