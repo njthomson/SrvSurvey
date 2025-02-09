@@ -71,7 +71,7 @@
     <comment>Last scan: {0}</comment>
   </data>
   <data name="WithSurfaceScan">
-    <value>Con escaneo de superficie:</value>
+    <value>Con mapeado:</value>
     <comment>With surface scan:</comment>
   </data>
 </root>
