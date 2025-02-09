@@ -6,6 +6,7 @@ using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -2142,10 +2143,14 @@ namespace SrvSurvey.game
 
         public double getRelativeBrightness(SystemBody star)
         {
-            if (star.starType == null) return 0;
+            if (star.starType == null)
+            {
+                Game.log($"Why no starType for: '{star.name}' ?");
+                Debugger.Break();
+                return 0;
+            }
 
             var commonParent = getCommonParent(star);
-            if (commonParent == null) return 0;
 
             var dist = this.euclidianDistance(commonParent);
             dist += star.euclidianDistance(commonParent);
@@ -2161,8 +2166,7 @@ namespace SrvSurvey.game
             return parentBodies.Find(p => p == sibling || sibling.parentBodies.Contains(p));
         }
 
-
-        public double euclidianDistance(SystemBody target)
+        public double euclidianDistance(SystemBody? target)
         {
             if (target == this) return 0;
             // start with our own distance, then sum our parents until we reach (and include) the target
@@ -2170,7 +2174,7 @@ namespace SrvSurvey.game
             foreach (var parent in this.parentBodies)
             {
                 dist += Math.Pow(parent.semiMajorAxis, 2);
-                if (parent.id == target.id) break;
+                if (parent.id == target?.id) break;
             }
 
             return dist;

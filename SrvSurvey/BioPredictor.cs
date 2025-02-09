@@ -650,6 +650,9 @@ namespace BioCriterias
                 //361481876986, //       Greae Flyao UF-D c29-1   - check 1 d
                 //3650755408786, //      Prae Pruae EG-Y c16-13 // ? Why no Fonticular Campestris - Amethyst 
                 //6406178542290, // Guathiti 8 a // No Fumerola Nitris Lime
+
+
+                // 675416645714, // Eolls Ploe YK-L c9-2 - has root barycentre but alas no concrete bio data for comparisons
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");
