@@ -48,7 +48,7 @@
     <comment>Economy type Colony</comment>
   </data>
   <data name="Extraction" xml:space="preserve">
-    <value>Добыча</value>
+    <value>Добыча ископаемых</value>
     <comment>Economy type Extraction</comment>
   </data>
   <data name="HighTech" xml:space="preserve">
@@ -103,5 +103,8 @@
     <value>Частное предприятие</value>
     <comment>Economy Type Carrier</comment>
   </data>
-  
+  <data name="Engineer" xml:space="preserve">
+    <value>Инженер</value>
+    <comment>Economy type Engineer</comment>
+  </data>
 </root>
