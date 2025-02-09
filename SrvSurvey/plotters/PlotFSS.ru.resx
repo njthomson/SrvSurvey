@@ -71,7 +71,7 @@
     <comment>Last scan: {0}</comment>
   </data>
   <data name="WithSurfaceScan">
-    <value>При сканировании поверхности:</value>
+    <value>Со сканированием поверхности:</value>
     <comment>With surface scan:</comment>
   </data>
 </root>
