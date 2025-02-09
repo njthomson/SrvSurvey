@@ -117,17 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Footer" xml:space="preserve">
-    <value>(Locations may not be that close to signals)</value>
-    <comment>Footer message</comment>
+  <data name="NearingShipDistance" xml:space="preserve">
+    <value>Nearing ship departure distance</value>
+    <comment>Warning shown when nearing ship departure distance</comment>
   </data>
-  <data name="Header" xml:space="preserve">
-    <value>Tracking {0} signals from Canonn:</value>
-    <comment>Header line
-{0} int, count of signals known to Canonn</comment>
+  <data name="ScanOneInvalid" xml:space="preserve">
+    <value>Scan one: invalid</value>
+    <comment>Warning shown when scan one is not valid</comment>
   </data>
-  <data name="NoMoreSignals" xml:space="preserve">
-    <value>No un-scanned signals meet criteria</value>
-    <comment>Line shown when no more signals apply</comment>
+  <data name="ScanOne_Long" xml:space="preserve">
+    <value>Scan one:</value>
+    <comment>Prefix to bearing and distance to scan one</comment>
+  </data>
+  <data name="ScanOne_Short" xml:space="preserve">
+    <value>1st:</value>
+    <comment>A shorter prefix to bearing and distance to scan one, when window is too narrow</comment>
+  </data>
+  <data name="ScanTwoInvalid" xml:space="preserve">
+    <value>Scan two: invalid</value>
+    <comment>Warning shown when scan two is not valid</comment>
+  </data>
+  <data name="ScanTwo_Long" xml:space="preserve">
+    <value>Scan two:</value>
+    <comment>Prefix to bearing and distance to scan two</comment>
+  </data>
+  <data name="ScanTwo_Short" xml:space="preserve">
+    <value>2nd:</value>
+    <comment>A shorter prefix to bearing and distance to scan two, when window is too narrow</comment>
+  </data>
+  <data name="Ship" xml:space="preserve">
+    <value>Ship:</value>
+    <comment>Prefix to bearing and distance to the ship</comment>
+  </data>
+  <data name="SRV" xml:space="preserve">
+    <value>SRV:</value>
+    <comment>Prefix to bearing and distance to SRV</comment>
   </data>
 </root>

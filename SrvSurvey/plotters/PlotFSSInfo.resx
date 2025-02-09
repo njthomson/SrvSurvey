@@ -117,17 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Footer" xml:space="preserve">
-    <value>(Locations may not be that close to signals)</value>
-    <comment>Footer message</comment>
+  <data name="CountGenus" xml:space="preserve">
+    <value>{0} Genus</value>
+    <comment>Line prefix showing the count of genus on a body
+{0} int, count of genus</comment>
   </data>
-  <data name="Header" xml:space="preserve">
-    <value>Tracking {0} signals from Canonn:</value>
-    <comment>Header line
-{0} int, count of signals known to Canonn</comment>
+  <data name="CountGeo" xml:space="preserve">
+    <value>{0} Geo</value>
+    <comment>Line suffix showing the count of geo signals on a body
+{0} int, count of geo signals</comment>
   </data>
-  <data name="NoMoreSignals" xml:space="preserve">
-    <value>No un-scanned signals meet criteria</value>
-    <comment>Line shown when no more signals apply</comment>
+  <data name="Footer1" xml:space="preserve">
+    <value>Scan value | DSS value</value>
+    <comment>First footer line with guidance</comment>
+  </data>
+  <data name="Footer2" xml:space="preserve">
+    <value>🌎 Terraformable\n🚀 Landable ⚑ Undiscovered</value>
+    <comment>More footer lines with guidance</comment>
+  </data>
+  <data name="HidingBodies" xml:space="preserve">
+    <value>( Hiding bodies &lt; {0} )</value>
+    <comment>Line showing minimum credit value needed for bodies to be shown in the list that follows
+{0} string, min value of credits</comment>
+  </data>
+  <data name="ScannedAllBodies" xml:space="preserve">
+    <value>Scanned all {0} bodies: {0}</value>
+    <comment>Line showing when all bodies have been scanned and how many credits thats worth
+{0} int, count of bodies
+{1} string, value of credits</comment>
+  </data>
+  <data name="ScannedBodies" xml:space="preserve">
+    <value>Scanned {0} bodies: {0}</value>
+    <comment>Line showing how many bodies are scanned and how many credits thats worth
+{0} int, count of bodies
+{1} string, value of credits</comment>
+  </data>
+  <data name="ScanToPopulate" xml:space="preserve">
+    <value>(scan to populate)</value>
+    <comment>Warning message line shown when a scan is needed</comment>
   </data>
 </root>

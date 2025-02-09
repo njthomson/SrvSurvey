@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Aleoida">
+    <value>Ale</value>
+    <comment>ale</comment>
+  </data>
+  <data name="Amphora Plant">
+    <value>Ampere</value>
+    <comment>amp</comment>
+  </data>
+  <data name="Bacterium">
+    <value>Bac</value>
+    <comment>bac</comment>
+  </data>
+  <data name="Bark Mounds">
+    <value>Stab</value>
+    <comment>bar</comment>
+  </data>
+  <data name="Brain Trees">
+    <value>BH</value>
+    <comment>bra</comment>
+  </data>
+  <data name="Cactoida">
+    <value>Cac</value>
+    <comment>cac</comment>
+  </data>
+  <data name="Clypeus">
+    <value>Cly</value>
+    <comment>cly</comment>
+  </data>
+  <data name="Concha">
+    <value>betrügen</value>
+    <comment>con</comment>
+  </data>
+  <data name="Crystalline Shards">
+    <value>weinen</value>
+    <comment>cry</comment>
+  </data>
+  <data name="Electricae">
+    <value>Ele</value>
+    <comment>ele</comment>
+  </data>
+  <data name="Fonticulua">
+    <value>Fon</value>
+    <comment>fon</comment>
+  </data>
+  <data name="Frutexa">
+    <value>Fru</value>
+    <comment>fru</comment>
+  </data>
+  <data name="Fumerola">
+    <value>Rauch</value>
+    <comment>fum</comment>
+  </data>
+  <data name="Fungoida">
+    <value>Spaß</value>
+    <comment>fun</comment>
+  </data>
+  <data name="Luteolum Anemone">
+    <value>an</value>
+    <comment>ane</comment>
+  </data>
+  <data name="Osseus">
+    <value>Oss</value>
+    <comment>oss</comment>
+  </data>
+  <data name="Recepta">
+    <value>Rec</value>
+    <comment>rec</comment>
+  </data>
+  <data name="Sinuous Tubers">
+    <value>Sünde</value>
+    <comment>sin</comment>
+  </data>
+  <data name="Stratum">
+    <value>Str</value>
+    <comment>str</comment>
+  </data>
+  <data name="Tubus">
+    <value>Wanne</value>
+    <comment>tub</comment>
+  </data>
+  <data name="Tussock">
+    <value>Tus</value>
+    <comment>tus</comment>
+  </data>
+</root>

@@ -107,7 +107,8 @@ namespace SrvSurvey.canonn
 
     internal class SystemBioSignal
     {
-        public string poiName;
+        public long entryId;
+        public string displayName;
         public string genusName;
         public string credits;
         public long reward;

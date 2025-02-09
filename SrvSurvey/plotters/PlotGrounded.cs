@@ -234,32 +234,34 @@ namespace SrvSurvey.plotters
             g.Clip = new Region(new RectangleF(0, four, this.Width, this.Height - eight));
 
             if (this.td != null)
-                this.drawBearingTo(g, four, nine, "Ship:", this.td.Target);
+                this.drawBearingTo(g, four, nine, RES("Ship"), this.td.Target);
 
             if (this.srvLocation != null)
-                this.drawBearingTo(g, four + mw, nine, "SRV:", this.srvLocation.Target);
+                this.drawBearingTo(g, four + mw, nine, RES("SRV"), this.srvLocation.Target);
 
             float y = this.Height - twoFour;
             if (game.cmdr.scanOne != null)
             {
                 if (game.cmdr.scanOne.body != game.systemBody.name && game.cmdr.scanOne.body != null)
-                    g.DrawString("Scan one: invalid", GameColors.fontSmall, GameColors.brushRed, ten, y);
+                    g.DrawString(RES("ScanOneInvalid"), GameColors.fontSmall, GameColors.brushRed, ten, y);
                 else
-                    this.drawBearingTo(g, ten, y, this.Width < 280 ? "1st:" : "Scan one:", game.cmdr.scanOne.location!);
+                    this.drawBearingTo(g, ten, y, this.Width < 280 ? RES("ScanOne_Short") : RES("ScanOne_Long"), game.cmdr.scanOne.location!);
+                // TODO:                               Measure ^^^ based on strings
             }
 
             if (game.cmdr.scanTwo != null)
             {
                 if (game.cmdr.scanTwo.body != game.systemBody.name && game.cmdr.scanTwo.body != null)
-                    g.DrawString("Scan two: invalid", GameColors.fontSmall, GameColors.brushRed, ten + mw, y);
+                    g.DrawString(RES("ScanTwoInvalid"), GameColors.fontSmall, GameColors.brushRed, ten + mw, y);
                 else
-                    this.drawBearingTo(g, ten + mw, y, this.Width < 280 ? "2nd:" : "Scan two:", game.cmdr.scanTwo.location!);
+                    this.drawBearingTo(g, ten + mw, y, this.Width < 280 ? RES("ScanTwo_Short") : RES("ScanTwo_Long"), game.cmdr.scanTwo.location!);
+                // TODO:                                    Measure ^^^ based on strings
             }
 
             // TODO: fix bug where warning shown and ship already departed
             if (!shipDeparted && this.td?.distance > 1800 && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
             {
-                var msg = "Nearing ship departure distance";
+                var msg = RES("NearingShipDistance");
                 var font = GameColors.fontSmall;
                 var sz = g.MeasureString(msg, font);
                 var tx = mw - (sz.Width / 2);
@@ -369,9 +371,7 @@ namespace SrvSurvey.plotters
 
                     if (tt.distance < PlotTrackers.highlightDistance)
                     {
-                        b = isActive ? GameColors.PriorScans.CloseActive.brush : GameColors.PriorScans.CloseInactive.brush; // TODO: confirm
-                                                                                                                            // this.bbClose : this.bbCloseInactive; 
-
+                        b = isActive ? GameColors.PriorScans.CloseActive.brush : GameColors.PriorScans.CloseInactive.brush;
                         p = isActive ? GameColors.PriorScans.CloseActive.penRadar : GameColors.PriorScans.CloseInactive.penRadar;
                         c = isActive ? GameColors.PriorScans.CloseActive.color : GameColors.PriorScans.CloseInactive.color;
                     }

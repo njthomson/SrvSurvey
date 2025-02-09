@@ -113,15 +113,18 @@ namespace SrvSurvey.plotters
 
             // 2nd line body count / values
             var bodyCount = game.systemData.bodies.Count(_ => _.scanned && _.type != SystemBodyType.Asteroid).ToString();
-            if (game.systemData.fssAllBodies) bodyCount = "all " + bodyCount;
-            drawTextAt2(eight, $"Scanned {bodyCount} bodies: {Util.credits(game.systemData.sumRewards())}");
+            if (game.systemData.fssAllBodies)
+                drawTextAt2(eight, RES("ScannedAllBodies", bodyCount, Util.credits(game.systemData.sumRewards())));
+            else
+                drawTextAt2(eight, RES("ScannedBodies", bodyCount, Util.credits(game.systemData.sumRewards())));
+
             newLine(true);
-            drawTextAt2(eight, $"( Hiding bodies < {Util.credits(Game.settings.hideFssLowValueAmount)} )", GameColors.OrangeDim);
+            drawTextAt2(eight, RES("HidingBodies", Util.credits(Game.settings.hideFssLowValueAmount)), GameColors.OrangeDim);
             newLine(+eight, true);
 
             if (scans.Count == 0)
             {
-                drawTextAt2(eight, "(scan to populate)");
+                drawTextAt2(eight, RES("ScanToPopulate"));
                 newLine(true);
             }
 
@@ -159,7 +162,7 @@ namespace SrvSurvey.plotters
 
                 // 2nd line: scan values
                 var reward = (scan.body.dssComplete ? "✔️ " : "") + Util.credits(scan.body.reward, true); // scan.reward ?
-                
+
                 drawTextAt2(thirty, reward, dssWorthy ? GameColors.Cyan : null);
                 if (scan.body.type != SystemBodyType.Star && !scan.body.dssComplete)
                 {
@@ -171,7 +174,7 @@ namespace SrvSurvey.plotters
                 {
                     drawTextAt2(" | ", GameColors.OrangeDim);
                     var analyzed = scan.body.countAnalyzedBioSignals == scan.body.bioSignalCount;
-                    var sz = drawTextAt2($"{scan.body.bioSignalCount} Genus", analyzed ? GameColors.Orange : GameColors.Cyan);
+                    var sz = drawTextAt2(RES("CountGenus", scan.body.bioSignalCount), analyzed ? GameColors.Orange : GameColors.Cyan);
                     if (analyzed)
                         strikeThrough(dtx, dty + two + sz.Height / 2, -sz.Width, false);
                 }
@@ -180,7 +183,7 @@ namespace SrvSurvey.plotters
                 {
                     drawTextAt2(" | ", GameColors.OrangeDim);
                     var analyzed = scan.body.geoSignalNames.Count == scan.body.geoSignalCount;
-                    var sz = drawTextAt2($"{scan.body.geoSignalCount} Geo", analyzed ? GameColors.Orange : GameColors.Cyan);
+                    var sz = drawTextAt2(RES("CountGeo", scan.body.geoSignalCount), analyzed ? GameColors.Orange : GameColors.Cyan);
                     if (analyzed)
                         strikeThrough(dtx, dty + two + sz.Height / 2, -sz.Width, false);
 
@@ -194,9 +197,9 @@ namespace SrvSurvey.plotters
                     break;
             }
 
-            drawTextAt2(eight, "Scan value | DSS value", GameColors.OrangeDim);
+            drawTextAt2(eight, RES("Footer1"), GameColors.OrangeDim);
             newLine(true);
-            drawTextAt2(eight, "🌎 Terraformable\n🚀 Landable ⚑ Undiscovered", GameColors.OrangeDim);
+            drawTextAt2(eight, RES("Footer2"), GameColors.OrangeDim);
             newLine(true);
 
             this.formAdjustSize(+oneEight, +ten);

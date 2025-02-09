@@ -1,4 +1,5 @@
 ﻿Codex.resx
+CodexShort.resx
 Economies.resx
 FactionStates.resx
 FormBoxelSearch.resx
@@ -11,7 +12,12 @@ PlotBioStatus.resx
 PlotBioSystem.resx
 PlotBodyInfo.resx
 PlotFlightWarning.resx
+PlotFSS.resx
+PlotFSSInfo.resx
+PlotGrounded.resx
 PlotHumanSite.resx
 PlotJumpInfo.resx
+PlotPriorScans.resx
 PlotSphericalSearch.resx
+PlotTrackers.resx
 Reputation.resx

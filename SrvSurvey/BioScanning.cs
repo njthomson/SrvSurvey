@@ -70,6 +70,7 @@ namespace SrvSurvey
             { "$Codex_Ent_Thargoid_Tower_Name;",           85 }, // Spire Towers
         };
 
+        // TODO: retire
         public static Dictionary<string, string> prefixes = new Dictionary<string, string>()
         {
             // From Odyssey

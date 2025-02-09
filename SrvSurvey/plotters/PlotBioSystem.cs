@@ -552,7 +552,11 @@ namespace SrvSurvey.plotters
                 b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
                 //if (!highlight && potentialFirstDiscovery) b = (SolidBrush)GameColors.Bio.brushGold;
 
-                var txt = body.getMinMaxBioRewards(false);
+                var foo = game.canonnPoi?.codex.Any(c => body.name.EndsWith(c.body)) ?? false;
+               // here!
+               var txt = body.getMinMaxBioRewards(false);
+                if (foo) txt += "!";
+
                 if (txt == "") txt = " ";
                 drawTextAt(this.ClientSize.Width - ten, txt, b, GameColors.fontMiddle, true);
 

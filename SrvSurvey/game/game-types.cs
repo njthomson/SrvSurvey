@@ -379,6 +379,9 @@ namespace SrvSurvey.game
 
         [JsonIgnore]
         public string locColorName => Properties.Codex.ResourceManager.GetString(this.colorName)!;
+
+        [JsonIgnore]
+        public string locName => $"{species.genus.locName} {species.locName} - {locColorName}";
     }
 
     internal class GuardianSitePub

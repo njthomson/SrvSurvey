@@ -117,17 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Footer" xml:space="preserve">
-    <value>(Locations may not be that close to signals)</value>
-    <comment>Footer message</comment>
+  <data name="CountBioSignals" xml:space="preserve">
+    <value>{0} bio signals:</value>
+    <comment>Footer shown when there are bio signals on the body just scanned
+{0} int, count of bio signals</comment>
   </data>
-  <data name="Header" xml:space="preserve">
-    <value>Tracking {0} signals from Canonn:</value>
-    <comment>Header line
-{0} int, count of signals known to Canonn</comment>
+  <data name="EstimatedValue" xml:space="preserve">
+    <value>Estimated value:</value>
+    <comment>Line header for body estimated value</comment>
   </data>
-  <data name="NoMoreSignals" xml:space="preserve">
-    <value>No un-scanned signals meet criteria</value>
-    <comment>Line shown when no more signals apply</comment>
+  <data name="LastScan" xml:space="preserve">
+    <value>Last scan: {0}</value>
+    <comment>Header showing name of body last scanned
+{0} string, name of last body scanned</comment>
+  </data>
+  <data name="WithSurfaceScan" xml:space="preserve">
+    <value>With surface scan:</value>
+    <comment>Line header for body estimated value with surface scan</comment>
   </data>
 </root>

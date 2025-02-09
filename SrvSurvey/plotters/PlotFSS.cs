@@ -49,7 +49,7 @@ namespace SrvSurvey.plotters
                 lastInitialValue = Util.GetBodyValue(lastFssBody, false, false).ToString("N0");
                 lastMappedValue = Util.GetBodyValue(lastFssBody, true, true).ToString("N0");
                 if (lastFssBody.bioSignalCount > 0)
-                    lastNotes = $"{lastFssBody.bioSignalCount} bio signals:";
+                    lastNotes = RES("CountBioSignals", lastFssBody.bioSignalCount);
                 else
                     lastNotes = "";
             }
@@ -133,7 +133,7 @@ namespace SrvSurvey.plotters
 
                 if (bioSignal != null)
                 {
-                    lastNotes = $"{bioSignal.Count} bio signals:";
+                    lastNotes = RES("CountBioSignals", bioSignal.Count);
 
                     //var hasVulcanism = !string.IsNullOrEmpty(entry.Volcanism);
                     //// TODO: consider check for zero or low atmosphere?
@@ -153,7 +153,7 @@ namespace SrvSurvey.plotters
             var col = lastWasDiscovered ? GameColors.Orange : GameColors.Cyan;
 
             dty = eight;
-            drawTextAt2(four, $"Last scan: {lastBodyName}", col, GameColors.fontSmaller);
+            drawTextAt2(four, RES("LastScan", lastBodyName), col, GameColors.fontSmaller);
 
             if (game?.systemData?.lastFssBody != null)
                 drawTextAt2(ClientSize.Width - eight, game.systemData.lastFssBody.distanceFromArrivalLS.ToString("N0") + " LS", col, GameColors.fontSmaller, true);
@@ -161,10 +161,10 @@ namespace SrvSurvey.plotters
 
             if (string.IsNullOrEmpty(lastBodyName)) return;
 
-            drawTextAt2(oneEight, "► Estimated value:");
+            drawTextAt2(oneEight, "► " + RES("EstimatedValue"));
             drawTextAt2(oneEightFour, $"{lastInitialValue} cr");
             newLine(true);
-            drawTextAt2(oneEight, "► With surface scan:");
+            drawTextAt2(oneEight, "► " + RES("WithSurfaceScan"));
             drawTextAt2(oneEightFour, $"{lastMappedValue} cr");
             newLine(true);
 
