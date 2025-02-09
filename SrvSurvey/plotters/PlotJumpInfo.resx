@@ -95,4 +95,40 @@
     <comment>Total distance of this journey in Light Years.
 {0} float, 1 decimal place</comment>
   </data>
+  <data name="GuardianBeacon" xml:space="preserve">
+    <value>Beacon</value>
+    <comment>Part of a special line shown when the next system has a Guardian Beacon</comment>
+  </data>
+  <data name="GuardianRuins" xml:space="preserve">
+    <value>Ruins: {0}</value>
+    <comment>Part of a special line shown when the next system has guardian Ruins
+{0} int, how many Ruins are in the system</comment>
+  </data>
+  <data name="GuardianStructures" xml:space="preserve">
+    <value>Structures: {0}</value>
+    <comment>Part of a special line shown when the next system has guardian Structures
+{0} int, how many Structures are in the system</comment>
+  </data>
+  <data name="SpecialGuardian" xml:space="preserve">
+    <value>Guardian</value>
+    <comment>A line header when the next system has some Guardian sites</comment>
+  </data>
+  <data name="SpecialHopInfo" xml:space="preserve">
+    <value>#{0} of {1}</value>
+    <comment>Part of a special line shown when the next system is part of a route we are following
+{0} int, the index of the next system in the route
+{1} int, total count of route hops</comment>
+  </data>
+  <data name="SpecialJoiner" xml:space="preserve">
+    <value>,</value>
+    <comment>The character used to join parts of special lines</comment>
+  </data>
+  <data name="SpecialNowEntering" xml:space="preserve">
+    <value>Now entering</value>
+    <comment>A line header when the next system is in a different galactic region</comment>
+  </data>
+  <data name="SpecialRouteHop" xml:space="preserve">
+    <value>Route hop</value>
+    <comment>A line header when the next system is a hop on the route we are following</comment>
+  </data>
 </root>

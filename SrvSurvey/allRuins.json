@@ -8414,14 +8414,14 @@
     ],
     "latitude": 43.018757,
     "longitude": 124.163002,
-    "siteHeading": -1,
-    "relicTowerHeading": -1,
-    "surveyProgress": 0,
+    "siteHeading": 213,
+    "relicTowerHeading": 334,
+    "surveyProgress": 100,
     "legacyLatitude": 9.612836,
     "legacyLongitude": -136.851639,
     "legacySiteHeading": -1,
     "legacyRelicTowerHeading": -1,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 199,
@@ -8440,14 +8440,14 @@
     ],
     "latitude": -25.325195,
     "longitude": 51.852501,
-    "siteHeading": -1,
-    "relicTowerHeading": -1,
-    "surveyProgress": 0,
+    "siteHeading": 7,
+    "relicTowerHeading": 130,
+    "surveyProgress": 100,
     "legacyLatitude": 18.681519,
     "legacyLongitude": 1.679027,
     "legacySiteHeading": -1,
     "legacyRelicTowerHeading": -1,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 198,
@@ -8466,14 +8466,14 @@
     ],
     "latitude": -62.23624,
     "longitude": -83.952904,
-    "siteHeading": -1,
-    "relicTowerHeading": -1,
-    "surveyProgress": 0,
+    "siteHeading": 197,
+    "relicTowerHeading": 320,
+    "surveyProgress": 100,
     "legacyLatitude": -0.804153,
     "legacyLongitude": -54.525051,
     "legacySiteHeading": -1,
     "legacyRelicTowerHeading": -1,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 203,
@@ -8492,14 +8492,14 @@
     ],
     "latitude": 3.818022,
     "longitude": -155.793762,
-    "siteHeading": -1,
-    "relicTowerHeading": -1,
-    "surveyProgress": 0,
+    "siteHeading": 277,
+    "relicTowerHeading": 30,
+    "surveyProgress": 100,
     "legacyLatitude": -17.968382,
     "legacyLongitude": -113.334038,
     "legacySiteHeading": -1,
     "legacyRelicTowerHeading": -1,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 202,
@@ -8518,14 +8518,14 @@
     ],
     "latitude": 40.181839,
     "longitude": -50.630165,
-    "siteHeading": -1,
-    "relicTowerHeading": -1,
-    "surveyProgress": 0,
+    "siteHeading": 24,
+    "relicTowerHeading": 146,
+    "surveyProgress": 100,
     "legacyLatitude": -17.911085,
     "legacyLongitude": -113.403084,
     "legacySiteHeading": -1,
     "legacyRelicTowerHeading": -1,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 204,
@@ -8544,14 +8544,14 @@
     ],
     "latitude": -14.490176,
     "longitude": -26.414272,
-    "siteHeading": -1,
-    "relicTowerHeading": -1,
-    "surveyProgress": 0,
+    "siteHeading": 200,
+    "relicTowerHeading": 230,
+    "surveyProgress": 100,
     "legacyLatitude": 4.60341,
     "legacyLongitude": 27.670252,
     "legacySiteHeading": -1,
     "legacyRelicTowerHeading": -1,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 241,

@@ -4,6 +4,7 @@ using SrvSurvey.widgets;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(380, 100)]
     internal class PlotTrackers : PlotBase, PlotterForm
     {
         public static bool allowPlotter
@@ -15,6 +16,7 @@ namespace SrvSurvey.plotters
                 || (Game.settings.autoShowPlotMiniTrack_TEST && Game.activeGame?.systemBody?.bookmarks?.Keys.Count(k => k[0] != '#') > 0)
                 );
         }
+        private static Dictionary<string, string> shortNames = new();
 
         public const int highlightDistance = 150;
 
@@ -68,6 +70,8 @@ namespace SrvSurvey.plotters
 
         public override void reposition(Rectangle gameRect)
         {
+            // NOT calling base class
+
             // match opacity of PlotGrounded
             this.Opacity = PlotPos.getOpacity(nameof(PlotGrounded));
 
@@ -149,7 +153,7 @@ namespace SrvSurvey.plotters
         {
             if (game?.systemData == null || game.systemBody == null || game.systemBody.bookmarks == null || game.systemBody.bookmarks?.Count == 0) return;
 
-            this.drawTextAt(eight, $"Tracking {game.systemBody.bookmarks?.Count} targets:", GameColors.fontSmall);
+            this.drawTextAt(eight, RES("HeaderLine", game.systemBody.bookmarks?.Count ?? 0), GameColors.fontSmall);
             newLine(+eight, true);
 
             // measure width of all names
@@ -200,11 +204,17 @@ namespace SrvSurvey.plotters
 
         private string getDisplayName(string name)
         {
-            var prefix = BioScan.prefixes.GetValueOrDefault(name);
-            if (prefix != null)
-                return BioScan.genusNames.GetValueOrDefault(prefix) ?? name;
-            else
-                return name;
+            if (shortNames.Count == 0)
+            {
+                foreach (var g in Game.codexRef.genus)
+                {
+                    var shortName = Properties.CodexShort.ResourceManager.GetString(g.englishName);
+                    if (!string.IsNullOrEmpty(shortName))
+                        shortNames.Add(shortName, g.locName);
+                }
+            }
+
+            return shortNames.GetValueOrDefault(name) ?? name;
         }
     }
 }

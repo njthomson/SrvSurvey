@@ -9,6 +9,7 @@ using System.Globalization;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(320, 440)]
     internal class PlotHumanSite : PlotBaseSite, PlotterForm
     {
         /// <summary>

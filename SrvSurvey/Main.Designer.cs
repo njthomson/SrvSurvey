@@ -481,7 +481,7 @@ namespace SrvSurvey
             btnLogs.TabIndex = 14;
             btnLogs.Text = "&Logs";
             btnLogs.UseVisualStyleBackColor = false;
-            btnLogs.Click += btnViewLogs_Click;
+            btnLogs.Click += btnLogs_Click;
             // 
             // btnSettings
             // 

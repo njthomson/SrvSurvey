@@ -3,6 +3,7 @@ using SrvSurvey.widgets;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(320, 280)]
     internal class PlotBodyInfo : PlotBase, PlotterForm
     {
         public static bool allowPlotter
@@ -99,7 +100,7 @@ namespace SrvSurvey.plotters
             if (body.type == SystemBodyType.Unknown)
             {
                 // we don't know enough about this body - exit early
-                drawTextAt2(eight, "Scan required", GameColors.Cyan);
+                drawTextAt2(eight, RES("ScanRequired"), GameColors.Cyan);
                 newLine(+2, true);
                 formAdjustSize(+ten, +oneFour);
                 return;
@@ -108,14 +109,14 @@ namespace SrvSurvey.plotters
             // terraformable, undiscovered?
             var subStatus = new List<string>();
             if (body.terraformable || body.planetClass?.StartsWith("Earth") == true)
-                subStatus.Add("🌎 Terraformable");
+                subStatus.Add("🌎 " + RES("Terraformable"));
             if (!body.wasDiscovered && !body.wasMapped)
-                subStatus.Add("⚑ Undiscovered");
+                subStatus.Add("⚑ " + RES("Undiscovered"));
             else if (!body.wasMapped && body.dssComplete)
-                subStatus.Add("✔️ First mapped");
+                subStatus.Add("✔️ " + RES("FirstMapped"));
             else if (body.scanned && !body.wasMapped && !this.withinHumanBubble)
-                subStatus.Add("Unmapped");
-            
+                subStatus.Add(RES("Unmapped"));
+
             if (subStatus.Count > 0)
             {
                 drawTextAt2(this.ClientSize.Width - ten, $"( {string.Join(", ", subStatus)} )", GameColors.Cyan, null, true);
@@ -123,23 +124,26 @@ namespace SrvSurvey.plotters
             }
 
             // reward
-            var txt = $"Scan value: {(body.dssComplete ? "✔️ " : "") + Util.credits(body.reward)}";
+            var txt = RES("ScanValue") + ": " + (body.dssComplete ? "✔️ " : "") + Util.credits(body.reward);
             var highlight = Game.settings.skipLowValueDSS && body.reward > Game.settings.skipLowValueAmount;
             if (!body.dssComplete && planetish)
             {
                 var dssReward = Util.GetBodyValue(body, true, true);
-                txt += $" (with DSS: {Util.credits(dssReward)})";
+                txt += RES("WithDSS", Util.credits(dssReward));
                 highlight = Game.settings.skipLowValueDSS && dssReward > Game.settings.skipLowValueAmount;
             }
             drawTextAt2(eight, txt, highlight ? GameColors.Cyan : null);
             newLine(true);
 
             // temp | planetClass
+            var tempText = RES("Temp", temp);
+            var gravText = RES("Gravity", gravity);
+            var indent1 = ten + Util.maxWidth(this.Font, tempText, gravText);
             if (body.type != SystemBodyType.Asteroid)
             {
                 dty += four;
-                drawTextAt2(eight, $"Temp: {temp}K");
-                drawTextAt2(oneTwenty, body.type == SystemBodyType.Star ? $"Class: {body.starType}" : body.planetClass!);
+                drawTextAt2(eight, tempText);
+                drawTextAt2(indent1, body.type == SystemBodyType.Star ? RES("StarClass", body.starType) : body.planetClass!);
                 newLine(+one, true);
             }
 
@@ -148,11 +152,11 @@ namespace SrvSurvey.plotters
             {
                 var isHighGravity = body.surfaceGravity >= Game.settings.highGravityWarningLevel * 10;
                 // if (body.surfaceGravity > 2.69) gravity = "🚫 " + gravity; // show a warning icon if body gravity is too high to exit ships/SRV
-                drawTextAt2(eight, $"Gravity: {gravity}g", isHighGravity ? GameColors.red : null);
-                var pressure = (body.surfacePressure / 100_000f).ToString("N4") + "(atm)";
-                if (pressure == "0.0000(atm)") pressure = "None";
-                if (pressure != "None" || body.type == SystemBodyType.LandableBody)
-                    drawTextAt2(oneTwenty, $"Pressure: {pressure}");
+                drawTextAt2(eight, gravText, isHighGravity ? GameColors.red : null);
+                var pressure = RES("PressureValue", (body.surfacePressure / 100_000f).ToString("N4"));
+                if (pressure == RES("PressureValue", 0)) pressure = RES("PressureNone");
+                if (pressure != RES("None") || body.type == SystemBodyType.LandableBody)
+                    drawTextAt2(indent1, RES("Pressure", pressure));
                 newLine(+four, true);
             }
 
@@ -160,8 +164,7 @@ namespace SrvSurvey.plotters
             if (body.bioSignalCount > 0)
             {
                 dty -= three;
-                drawTextAt2(eight, $"Bio signals: {body.bioSignalCount}", GameColors.Cyan);
-                drawTextAt2($"( value: {body.getMinMaxBioRewards(false)} cr )", GameColors.Cyan);
+                drawTextAt2(eight, RES("BioSignals", body.bioSignalCount, body.getMinMaxBioRewards(false)), GameColors.Cyan);
                 newLine(+four, true);
             }
 
@@ -169,30 +172,32 @@ namespace SrvSurvey.plotters
             if (body.geoSignalCount > 0)
             {
                 dty -= three;
-                drawTextAt2(eight, $"Geo signals: {body.geoSignalCount}", GameColors.Cyan);
+                drawTextAt2(eight, RES("GeoSignals", body.geoSignalCount), GameColors.Cyan);
                 newLine(+four, true);
             }
+
+            var indent2 = ten + Util.maxWidth(this.Font, RES("Volcanism"), RES("Atmosphere"), RES("Materials"));
 
             // volcanism
             if (planetish && body.type != SystemBodyType.Giant)
             {
-                drawTextAt2(eight, $"Volcanism:");
+                drawTextAt2(eight, RES("Volcanism"));
 
                 if (string.IsNullOrEmpty(body.volcanism) || body.volcanism == "No volcanism")
-                    drawTextAt2(eightEight, $"None");
+                    drawTextAt2(indent2, RES("None"));
                 else
-                    drawTextAt2(eightEight, Util.pascal(body.volcanism.Replace("volcanism", "")));
+                    drawTextAt2(indent2, Util.pascal(body.volcanism.Replace("volcanism", "")));
                 newLine(+four, true);
             }
 
             // atmosphere
             if (planetish)
             {
-                var atmos = string.IsNullOrEmpty(body.atmosphere) || body.atmosphere == "No atmosphere" ? "None" : Util.pascal(body.atmosphere.Replace(" atmosphere", ""));
-                if (body.atmosphereType == "EarthLike") atmos = "Earth Like";
+                var atmos = string.IsNullOrEmpty(body.atmosphere) || body.atmosphere == "No atmosphere" ? RES("None") : Util.pascal(body.atmosphere.Replace(" atmosphere", ""));
+                if (body.atmosphereType == "EarthLike") atmos = RES("EarthLike");
                 if (atmos == "None" && body.type != SystemBodyType.LandableBody) atmos = " ";
-                drawTextAt2(eight, $"Atmosphere:");
-                drawTextAt2(eightEight, atmos);
+                drawTextAt2(eight, RES("Atmosphere"));
+                drawTextAt2(indent2, atmos);
                 newLine(+two, true);
                 if (body.atmosphereComposition != null)
                 {
@@ -201,7 +206,7 @@ namespace SrvSurvey.plotters
                         var name = char.ToUpperInvariant(atm.Key[0]) + atm.Key.Substring(1);
                         var value = atm.Value.ToString("N2").PadLeft(5);
                         drawTextAt2(fourFour, $"{name}:");
-                        drawTextAt2(twoThirty, $"{value} %", null, null, true);
+                        drawTextAt2(indent2 + oneForty, $"{value} %", null, null, true);
                         newLine(true);
                     }
                 }
@@ -210,15 +215,15 @@ namespace SrvSurvey.plotters
                 // materials
                 if (body.materials != null)
                 {
-                    drawTextAt2(eight, $"Materials:");
+                    drawTextAt2(eight, RES("Materials"));
                     foreach (var mat in body.materials.OrderByDescending(_ => _.Value))
                     {
                         var name = Util.pascal(mat.Key);
                         var value = mat.Value.ToString("N2").PadLeft(5);
 
                         var font = Util.isMatLevelThree(mat.Key) || Util.isMatLevelFour(mat.Key) ? GameColors.fontSmall2Bold : null;
-                        drawTextAt2(eightEight, $"{name}:", font);
-                        drawTextAt2(twoThirty, $"{value} %", null, font, true);
+                        drawTextAt2(indent2, $"{name}:", font);
+                        drawTextAt2(indent2 + oneForty, $"{value} %", null, font, true);
                         //if (Util.isMatLevelThree(mat.Key) || Util.isMatLevelFour(mat.Key)) drawTextAt2($"≡");
                         newLine(true);
                     }
@@ -235,7 +240,7 @@ namespace SrvSurvey.plotters
             // rings
             if (body.hasRings)
             {
-                drawTextAt2(eight, $"Rings:");
+                drawTextAt2(eight, RES("Rings"));
                 foreach (var ring in body.rings)
                 {
                     var ringName = ring.name.Substring(body.name.Length + 1, 1);
@@ -247,7 +252,5 @@ namespace SrvSurvey.plotters
             // resize window as necessary
             formAdjustSize(+ten, +oneFour);
         }
-
     }
-
 }

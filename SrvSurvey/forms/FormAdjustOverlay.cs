@@ -1,6 +1,7 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.plotters;
 using SrvSurvey.Properties;
+using SrvSurvey.widgets;
 using System.ComponentModel;
 
 namespace SrvSurvey.forms
@@ -57,6 +58,8 @@ namespace SrvSurvey.forms
         {
             base.OnClosing(e);
 
+            if (fake != null) fake.Close();
+
             targetName = null;
             PlotPos.restore();
             Program.invalidateActivePlotters();
@@ -73,6 +76,12 @@ namespace SrvSurvey.forms
 
             numX.Value = 0;
             numY.Value = 0;
+
+            if (fake != null)
+            {
+                fake.Close();
+                fake = null;
+            }
         }
 
         private void prepPlotters()
@@ -81,13 +90,29 @@ namespace SrvSurvey.forms
 
             var txt = comboPlotter.Text;
 
-            while (comboPlotter.Items.Count > 1)
-                comboPlotter.Items.RemoveAt(1);
+            // all names, or only those visible?
+            var names = checkShowAll.Checked
+                ? PlotPos.getAllPlotterNames()
+                : Program.getAllPlotterNames();
 
-            comboPlotter.Items.AddRange(Program.getAllPlotterNames());
+            for (var n = 0; n < names.Length; n++)
+            {
+                var item = comboPlotter.Items.Count > n + 1 ? comboPlotter.Items[n + 1]!.ToString() : "";
+                if (item != names[n])
+                    comboPlotter.Items.Insert(n + 1, names[n]);
+            }
 
-            if (comboPlotter.Items.Contains(txt))
+            while (comboPlotter.Items.Count > names.Length + 1)
+                comboPlotter.Items.RemoveAt(names.Length + 1);
+
+            if (comboPlotter.Items.Contains(txt) && comboPlotter.Text != txt)
                 comboPlotter.Text = txt;
+
+            if (comboPlotter.SelectedIndex == -1)
+                comboPlotter.SelectedIndex = 0;
+
+            if (comboPlotter.SelectedIndex == 0)
+                resetForm();
 
             Program.invalidateActivePlotters();
         }
@@ -115,7 +140,16 @@ namespace SrvSurvey.forms
             numY.Maximum = 10_000; // er.Height;
 
             var plotter = Program.getPlotter(targetName);
-            if (plotter == null) return;
+            if (plotter == null)
+            {
+                createFakePlotter(targetName);
+                return;
+            }
+            else if (fake != null)
+            {
+                fake.Close();
+                fake = null;
+            }
 
             var pt = PlotPos.getPlotterLocation(targetName, plotter.Size, er);
 
@@ -131,6 +165,21 @@ namespace SrvSurvey.forms
             numOpacity.Enabled = checkOpacity.Checked;
 
             Program.invalidateActivePlotters();
+        }
+
+        private FakePlotter? fake;
+
+        private void createFakePlotter(string name)
+        {
+            fake ??= new();
+
+            fake.Name = name;
+            fake.Size = PlotPos.getLastSize(name);
+            fake.Location = PlotPos.getPlotterLocation(name, fake.Size, Rectangle.Empty);
+            fake.BackgroundImage = GameGraphics.getBackgroundImage(fake.Size, true);
+
+            fake.Show();
+            Program.defer(() => this.Activate());
         }
 
         private void comboPlotter_DropDown(object sender, EventArgs e)
@@ -283,6 +332,50 @@ namespace SrvSurvey.forms
             pp.opacity = (float)numOpacity.Value / 100f;
 
             Program.repositionPlotters();
+        }
+
+        private void checkShowAll_CheckedChanged(object sender, EventArgs e)
+        {
+            this.prepPlotters();
+        }
+
+        class FakePlotter : Form
+        {
+            public FakePlotter()
+            {
+                this.BackColor = Color.Black;
+                this.ShowIcon = false;
+                this.ShowInTaskbar = false;
+                this.StartPosition = FormStartPosition.Manual;
+                this.FormBorderStyle = FormBorderStyle.None;
+                this.TopMost = true;
+                this.MinimizeBox = false;
+                this.MaximizeBox = false;
+                this.ControlBox = false;
+                this.FormBorderStyle = FormBorderStyle.None;
+                this.Opacity = 0.7f;
+                this.ResizeRedraw = true;
+            }
+
+            protected override void OnPaint(PaintEventArgs e)
+            {
+                base.OnPaint(e);
+
+                var p = GameColors.penYellow4;
+                // draw outer yellow box and the plotter's name
+                e.Graphics.DrawRectangle(p, p.Width / 2, p.Width / 2, this.Width - p.Width, this.Height - p.Width);
+                BaseWidget.renderText(e.Graphics, this.Name, 10, 10, GameColors.Fonts.gothic_10);
+            }
+
+            protected override CreateParams CreateParams
+            {
+                get
+                {
+                    var cp = base.CreateParams;
+                    cp.ExStyle |= 0x00000020 + 0x00080000 + 0x08000000; // WS_EX_TRANSPARENT + WS_EX_LAYERED + WS_EX_NOACTIVATE
+                    return cp;
+                }
+            }
         }
     }
 }

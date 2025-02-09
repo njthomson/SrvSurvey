@@ -62,6 +62,18 @@
     <value>Обнаружено {0} {1}</value>
     <comment>Discovered by {0} {1}</comment>
   </data>
+  <data name="GuardianBeacon">
+    <value>Маяк</value>
+    <comment>Beacon</comment>
+  </data>
+  <data name="GuardianRuins">
+    <value>Руины: {0}</value>
+    <comment>Ruins: {0}</comment>
+  </data>
+  <data name="GuardianStructures">
+    <value>Конструкции: {0}</value>
+    <comment>Structures: {0}</comment>
+  </data>
   <data name="JumpCounts">
     <value>#{0} из {1}</value>
     <comment>#{0} of {1}</comment>
@@ -77,6 +89,26 @@
   <data name="NextJump">
     <value>Следующий прыжок:</value>
     <comment>Next jump:</comment>
+  </data>
+  <data name="SpecialGuardian">
+    <value>Опекун</value>
+    <comment>Guardian</comment>
+  </data>
+  <data name="SpecialHopInfo">
+    <value>#{0} из {1}</value>
+    <comment>#{0} of {1}</comment>
+  </data>
+  <data name="SpecialJoiner">
+    <value>,</value>
+    <comment>,</comment>
+  </data>
+  <data name="SpecialNowEntering">
+    <value>Сейчас входим</value>
+    <comment>Now entering</comment>
+  </data>
+  <data name="SpecialRouteHop">
+    <value>Переход по маршруту</value>
+    <comment>Route hop</comment>
   </data>
   <data name="StarClass">
     <value>Класс: {0}</value>

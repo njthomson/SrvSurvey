@@ -4,6 +4,7 @@ using SrvSurvey.widgets;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(300, 80)]
     internal class PlotFlightWarning : PlotBase, PlotterForm
     {
         public static bool allowPlotter
@@ -44,13 +45,14 @@ namespace SrvSurvey.plotters
             }
 
             var bodyGrav = (game.systemBody!.surfaceGravity / 10).ToString("N2");
-            var txt = Misc.PlotFlightWarning_SurfaceGravityWarning.format(bodyGrav);
+            var txt = RES("SurfaceGravityWarning", bodyGrav);
 
             var sz = g.MeasureString(txt, this.Font);
             sz.Width += two;
             this.Width = (int)(sz.Width + pad * 2);
             this.Height = (int)(sz.Height + pad * 2);
 
+            // TODO: use `this.reposition` + `formAdjustSize`
             PlotPos.reposition(this, Elite.getWindowRect());
 
             var rect = new RectangleF(0, 0, sz.Width + pad * 2, sz.Height + pad * 2);

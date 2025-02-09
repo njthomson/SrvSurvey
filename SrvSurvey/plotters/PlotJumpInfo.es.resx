@@ -62,6 +62,18 @@
     <value>Descubierto por {0} {1}</value>
     <comment>Discovered by {0} {1}</comment>
   </data>
+  <data name="GuardianBeacon">
+    <value>Almenara</value>
+    <comment>Beacon</comment>
+  </data>
+  <data name="GuardianRuins">
+    <value>Ruinas: {0}</value>
+    <comment>Ruins: {0}</comment>
+  </data>
+  <data name="GuardianStructures">
+    <value>Estructuras: {0}</value>
+    <comment>Structures: {0}</comment>
+  </data>
   <data name="JumpCounts">
     <value>#{0} de {1}</value>
     <comment>#{0} of {1}</comment>
@@ -77,6 +89,26 @@
   <data name="NextJump">
     <value>Próximo salto:</value>
     <comment>Next jump:</comment>
+  </data>
+  <data name="SpecialGuardian">
+    <value>Guardián</value>
+    <comment>Guardian</comment>
+  </data>
+  <data name="SpecialHopInfo">
+    <value>#{0} de {1}</value>
+    <comment>#{0} of {1}</comment>
+  </data>
+  <data name="SpecialJoiner">
+    <value>,</value>
+    <comment>,</comment>
+  </data>
+  <data name="SpecialNowEntering">
+    <value>Ahora entrando</value>
+    <comment>Now entering</comment>
+  </data>
+  <data name="SpecialRouteHop">
+    <value>Salto de ruta</value>
+    <comment>Route hop</comment>
   </data>
   <data name="StarClass">
     <value>Clase: {0}</value>

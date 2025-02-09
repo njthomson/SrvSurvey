@@ -322,13 +322,14 @@ namespace SrvSurvey.canonn
             }
         }
 
-        public BioMatch matchFromEntryId(long entryId)
+        public BioMatch matchFromEntryId(long entryId, bool allowNull = false)
         {
-            return matchFromEntryId(entryId.ToString());
+            return matchFromEntryId(entryId.ToString(), allowNull);
         }
 
         public BioMatch matchFromEntryId(string entryId, bool allowNull = false)
         {
+            if (entryId == null) return null!;
             if (this.genus == null || this.genus.Count == 0) throw new Exception($"BioRef is not loaded.");
 
             // search all species for the shorter entryId

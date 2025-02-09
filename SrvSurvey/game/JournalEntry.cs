@@ -1053,6 +1053,21 @@ namespace SrvSurvey
         public List<InventoryItem> Inventory { get; set; }
     }
 
+    class CargoDepot : JournalEntry
+    {
+        // { "timestamp":"2025-02-07T05:56:22Z", "event":"CargoDepot", "MissionID":1002252135, "UpdateType":"Deliver", "CargoType":"Bertrandite", "Count":368, "StartMarketID":0, "EndMarketID":3227103232, "ItemsCollected":0, "ItemsDelivered":736, "TotalItemsToDeliver":912, "Progress":0.000000 }
+        public long MissionID;
+        public string UpdateType;
+        public string CargoType;
+        public int Count;
+        public long StartMarketID;
+        public long EndMarketID;
+        public int ItemsCollected;
+        public int ItemsDelivered;
+        public int TotalItemsToDeliver;
+        public double Progress;
+    }
+
     class InventoryItem
     {
         // { "Name":"ancienttablet", "Name_Localised":"Guardian Tablet", "Count":1, "Stolen":0 }

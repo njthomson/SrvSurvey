@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(200, 200)]
     internal class PlotBioSystem : PlotBase, PlotterForm
     {
         public static bool allowPlotter
@@ -183,7 +184,7 @@ namespace SrvSurvey.plotters
         {
             if (game == null) return;
 
-            drawTextAt(eight, $"Body {body.shortName} bio signals: {body.bioSignalCount}", GameColors.brushGameOrange);
+            drawTextAt(eight, RES("BodyBio_Header", body.shortName, body.bioSignalCount), GameColors.brushGameOrange);
             newLine(+eight, true);
 
             if (this.durationTimer.Enabled && this.durationCount > 0)
@@ -194,7 +195,7 @@ namespace SrvSurvey.plotters
                 if (!body.dssComplete)
                 {
                     dty -= four;
-                    this.drawTextAt(ten, $"► DSS required", GameColors.brushCyan);
+                    this.drawTextAt(ten, "► " + RES("DssRequired"), GameColors.brushCyan);
                     newLine(+four, true);
                 }
 
@@ -237,10 +238,12 @@ namespace SrvSurvey.plotters
                     var yy = dty;
 
                     // displayName is either genus, or species/variant without the genus prefix
-                    var displayName = organism.genusLocalized;
+                    var displayName = organism.bioMatch!.genus.locName;
                     if (!string.IsNullOrEmpty(organism.variantLocalized))
                     {
-                        displayName = organism.variantLocalized.Replace(organism.genusLocalized + " ", "");
+                        // make it <species> - <color>
+                        displayName = organism.bioMatch.species.locName + " - " + organism.bioMatch.variant.locColorName;
+                        // TODO: How to localize these?
                         if (displayName.EndsWith("Anemone")) displayName = displayName.Replace("Anemone", "");
                         if (displayName.EndsWith("Brain Tree")) displayName = displayName.Replace("Brain Tree", "");
                     }
@@ -301,8 +304,8 @@ namespace SrvSurvey.plotters
                     if (discoveryPrefix != null)
                         drawTextAt(discoveryPrefix, shouldBeGold(discoveryPrefix) ? GameColors.Bio.brushGold : brush);
 
-                    var leftText = displayName != organism.genusLocalized || organism.entryId > 0
-                        ? organism.genusLocalized
+                    var leftText = displayName != organism.bioMatch.genus.locName || organism.entryId > 0
+                        ? organism.bioMatch.genus.locName
                         : "?";
                     drawTextAt(leftText, brush);
                     dtx += sz.Width + ten;
@@ -320,14 +323,14 @@ namespace SrvSurvey.plotters
 
             // summary footer
             this.dty += two;
-            var footerTxt = $"Rewards: {body.getMinMaxBioRewards(false)}";
+            var footerTxt = RES("RewardFooter", body.getMinMaxBioRewards(false));
             drawTextAt(eight, footerTxt, GameColors.brushGameOrange);
             newLine(true);
 
             if (body.firstFootFall)
             {
                 this.dty += two;
-                drawTextAt(this.Width - eight, $"(FF bonus: {body.getMinMaxBioRewards(true)})", GameColors.brushCyan, null, true);
+                drawTextAt(this.Width - eight, RES("FFBonus", body.getMinMaxBioRewards(true)), GameColors.brushCyan, null, true);
                 dtx = lastTextSize.Width;
                 newLine(true);
             }
@@ -338,7 +341,7 @@ namespace SrvSurvey.plotters
                 g.DrawLine(GameColors.penGameOrangeDim1, eight, dty - five, this.ClientSize.Width - eight, dty - five);
                 dty += two;
 
-                drawTextAt(eight, $"Geo signals: {body.geoSignalCount}", GameColors.brushGameOrange);
+                drawTextAt(eight, RES("GeoSignals", body.geoSignalCount), GameColors.brushGameOrange);
                 newLine(+four, true);
 
                 // geo signals?
@@ -346,7 +349,7 @@ namespace SrvSurvey.plotters
                 {
                     foreach (var geoName in body.geoSignalNames)
                     {
-                        // TODO: show gold flags if this is a first discovery
+                        // TODO: show gold flags if this is a first discovery?
                         this.drawTextAt(oneTwo, $"► {geoName}");
                         newLine(+four, true);
                     }
@@ -364,16 +367,11 @@ namespace SrvSurvey.plotters
             var x = two;
             var y = this.Height - one;
             var w = (this.Width - x - x);
-            //Game.log($"r: {r}, w: {w}");
+            // slide to the left
             g.DrawLine(GameColors.penGameOrangeDim2, x, y, x + w * r, y);
             g.DrawLine(GameColors.penGameOrangeDim2, x, one, x + w * r, one);
 
-            //var x = four;
-            //var y = ClientSize.Height - oneTwo;
-            //var h = this.Height - twoFour;
-            //g.DrawLine(GameColors.penGameOrangeDim4, x, y, x, y - h * r);
-
-            this.formGrow(false, true);
+            this.formGrow(false, true); // TODO: still needed?
         }
 
         private bool shouldBeGold(string? prefix)
@@ -408,7 +406,7 @@ namespace SrvSurvey.plotters
             dtx = (float)Math.Round(dtx);
             dty = (float)Math.Round(dty);
             var yy = dty;
-            var genusName = prediction.genus.englishName;
+            var genusName = prediction.genus.locName;
             Brush b;
             foreach (var species in prediction.species)
             {
@@ -421,7 +419,7 @@ namespace SrvSurvey.plotters
 
                 var isLegacy = !species.Key.genus.odyssey;
                 if (!isLegacy)
-                    drawTextAt($"{species.Key.displayName}:", b);
+                    drawTextAt($"{species.Key.locName}:", b);
 
                 // TODO: handle legacy species better - put them on the same line as if they were variants
                 foreach (var variant in species.Value)
@@ -437,10 +435,11 @@ namespace SrvSurvey.plotters
                     else if (variant.isCmdrRegionalNew)
                         drawTextAt($"⚐", variant.isGold ? GameColors.Bio.brushGold : b);
 
-                    var displayName = variant.variant.colorName;
+                    var displayName = variant.variant.locColorName;
                     if (isLegacy)
                     {
-                        displayName = species.Key.englishName;
+                        displayName = species.Key.locName;
+                        // TODO: shift this logic within BioSpecies?
                         foreach (var tail in legacyTailTrimList)
                         {
                             if (displayName.EndsWith(tail))
@@ -481,7 +480,7 @@ namespace SrvSurvey.plotters
 
             if (prediction.hasRegionalNew) b = GameColors.Bio.brushWhite;
             else if (!highlight && prediction.isGold) b = GameColors.Bio.brushGold;
-            drawTextAt($"{prediction.genus.englishName}", b, prediction.hasRegionalNew ? GameColors.fontSmallBold : null);
+            drawTextAt($"{prediction.genus.locName}", b, prediction.hasRegionalNew ? GameColors.fontSmallBold : null);
             dtx += sz.Width;
             newLine(+ten, true);
         }
@@ -490,7 +489,7 @@ namespace SrvSurvey.plotters
         {
             if (game.systemData == null) return;
 
-            this.drawTextAt($"Bio signals: {game.systemData.bioSignalsTotal}", GameColors.brushGameOrange, GameColors.fontSmall);
+            this.drawTextAt( RES("SysBio_Header", game.systemData.bioSignalsTotal), GameColors.brushGameOrange, GameColors.fontSmall);
             newLine(+four, true);
 
             //var anyFoo = game.systemData.bodies.Any(b => b.id == game.status.Destination?.Body && b.bioSignalCount > 0);
@@ -553,7 +552,11 @@ namespace SrvSurvey.plotters
                 b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
                 //if (!highlight && potentialFirstDiscovery) b = (SolidBrush)GameColors.Bio.brushGold;
 
-                var txt = body.getMinMaxBioRewards(false);
+                var foo = game.canonnPoi?.codex.Any(c => body.name.EndsWith(c.body)) ?? false;
+               // here!
+               var txt = body.getMinMaxBioRewards(false);
+                if (foo) txt += "!";
+
                 if (txt == "") txt = " ";
                 drawTextAt(this.ClientSize.Width - ten, txt, b, GameColors.fontMiddle, true);
 
@@ -569,18 +572,18 @@ namespace SrvSurvey.plotters
             if (fssNeeded)
             {
                 dty += two;
-                this.drawTextAt(six, "► System FSS required", GameColors.brushCyan, GameColors.fontSmall);
+                this.drawTextAt(six, "► " + RES("FssRequired"), GameColors.brushCyan, GameColors.fontSmall);
                 newLine(true);
             }
 
             this.dty += four;
-            var footerTxt = $"Rewards: {Util.getMinMaxCredits(game.systemData.getMinBioRewards(false), game.systemData.getMaxBioRewards(false))}";
+            var footerTxt = RES("RewardFooter", Util.getMinMaxCredits(game.systemData.getMinBioRewards(false), game.systemData.getMaxBioRewards(false)));
             this.drawTextAt(six, footerTxt, GameColors.brushGameOrange, GameColors.fontSmall);
             newLine(+two, true);
 
             if (anyFF)
             {
-                drawTextAt(this.Width - eight, $"(FF bonus: {Util.getMinMaxCredits(game.systemData.getMinBioRewards(true), game.systemData.getMaxBioRewards(true))})", GameColors.brushCyan, null, true);
+                drawTextAt(this.Width - eight, RES("FFBonus", Util.getMinMaxCredits(game.systemData.getMinBioRewards(true), game.systemData.getMaxBioRewards(true))), GameColors.brushCyan, null, true);
                 dtx = lastTextSize.Width;
                 newLine(+two, true);
             }

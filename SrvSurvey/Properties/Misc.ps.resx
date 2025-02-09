@@ -131,11 +131,11 @@
     <value>* GENUS →→→!</value>
     <comment>Genus</comment>
   </data>
-  <data name="NetSysData_Guardian">
+  <data name="NetSysData_GuardianBroker">
     <value>* (GUARDIAN) →→→!</value>
     <comment>(Guardian)</comment>
   </data>
-  <data name="NetSysData_Human">
+  <data name="NetSysData_HumanBroker">
     <value>* (HUMAN) →→→!</value>
     <comment>(Human)</comment>
   </data>
@@ -178,10 +178,6 @@
   <data name="NetSysData_Wars">
     <value>* WARS →→→!</value>
     <comment>Wars</comment>
-  </data>
-  <data name="PlotFlightWarning_SurfaceGravityWarning">
-    <value>* WARNING: SURFACE GRAVITY {0}G →→→!</value>
-    <comment>Warning: Surface gravity {0}g</comment>
   </data>
   <data name="PlotGalMap_CountGenus">
     <value>* {0}X GENUS →→→!</value>

@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Aleoida">
+    <value>Алеоида</value>
+    <comment>Aleoida</comment>
+  </data>
+  <data name="Amethyst">
+    <value>Аметист</value>
+    <comment>Amethyst</comment>
+  </data>
+  <data name="Amphora Plant">
+    <value>Растение амфора</value>
+    <comment>Amphora Plant</comment>
+  </data>
+  <data name="Aquamarine">
+    <value>Аквамарин</value>
+    <comment>Aquamarine</comment>
+  </data>
+  <data name="Bacterium">
+    <value>Бактерия</value>
+    <comment>Bacterium</comment>
+  </data>
+  <data name="Bark Mounds">
+    <value>Насыпи из коры</value>
+    <comment>Bark Mounds</comment>
+  </data>
+  <data name="Blue">
+    <value>Синий</value>
+    <comment>Blue</comment>
+  </data>
+  <data name="Brain Trees">
+    <value>Мозговые деревья</value>
+    <comment>Brain Trees</comment>
+  </data>
+  <data name="Cactoida">
+    <value>Кактоида</value>
+    <comment>Cactoida</comment>
+  </data>
+  <data name="Clypeus">
+    <value>Клипеус</value>
+    <comment>Clypeus</comment>
+  </data>
+  <data name="Cobalt">
+    <value>Кобальт</value>
+    <comment>Cobalt</comment>
+  </data>
+  <data name="Concha">
+    <value>Ушная раковина</value>
+    <comment>Concha</comment>
+  </data>
+  <data name="Crystalline Shards">
+    <value>Кристаллические осколки</value>
+    <comment>Crystalline Shards</comment>
+  </data>
+  <data name="Cyan">
+    <value>Голубой</value>
+    <comment>Cyan</comment>
+  </data>
+  <data name="Electricae">
+    <value>Электрики</value>
+    <comment>Electricae</comment>
+  </data>
+  <data name="Emerald">
+    <value>Изумруд</value>
+    <comment>Emerald</comment>
+  </data>
+  <data name="Fonticulua">
+    <value>Фонтикулуа</value>
+    <comment>Fonticulua</comment>
+  </data>
+  <data name="Frutexa">
+    <value>Фрутекса</value>
+    <comment>Frutexa</comment>
+  </data>
+  <data name="Fumerola">
+    <value>Фумерола</value>
+    <comment>Fumerola</comment>
+  </data>
+  <data name="Fungoida">
+    <value>Фунгоида</value>
+    <comment>Fungoida</comment>
+  </data>
+  <data name="Gold">
+    <value>Золото</value>
+    <comment>Gold</comment>
+  </data>
+  <data name="Green">
+    <value>Зеленый</value>
+    <comment>Green</comment>
+  </data>
+  <data name="Grey">
+    <value>Серый</value>
+    <comment>Grey</comment>
+  </data>
+  <data name="Indigo">
+    <value>Индиго</value>
+    <comment>Indigo</comment>
+  </data>
+  <data name="Lime">
+    <value>Известь</value>
+    <comment>Lime</comment>
+  </data>
+  <data name="Luteolum Anemone">
+    <value>Ветреница лютеолумная</value>
+    <comment>Luteolum Anemone</comment>
+  </data>
+  <data name="Magenta">
+    <value>Пурпурный</value>
+    <comment>Magenta</comment>
+  </data>
+  <data name="Maroon">
+    <value>Каштановый</value>
+    <comment>Maroon</comment>
+  </data>
+  <data name="Mauve">
+    <value>Розовато-лиловый</value>
+    <comment>Mauve</comment>
+  </data>
+  <data name="Mulberry">
+    <value>Шелковица</value>
+    <comment>Mulberry</comment>
+  </data>
+  <data name="Ocher">
+    <value>Охра</value>
+    <comment>Ocher</comment>
+  </data>
+  <data name="Orange">
+    <value>Апельсин</value>
+    <comment>Orange</comment>
+  </data>
+  <data name="Osseus">
+    <value>Оссеус</value>
+    <comment>Osseus</comment>
+  </data>
+  <data name="Peach">
+    <value>Персик</value>
+    <comment>Peach</comment>
+  </data>
+  <data name="Recepta">
+    <value>Рецепта</value>
+    <comment>Recepta</comment>
+  </data>
+  <data name="Red">
+    <value>Красный</value>
+    <comment>Red</comment>
+  </data>
+  <data name="Sage">
+    <value>Мудрец</value>
+    <comment>Sage</comment>
+  </data>
+  <data name="Sinuous Tubers">
+    <value>Извилистые клубни</value>
+    <comment>Sinuous Tubers</comment>
+  </data>
+  <data name="Stratum">
+    <value>Пласт</value>
+    <comment>Stratum</comment>
+  </data>
+  <data name="Teal">
+    <value>Чирок</value>
+    <comment>Teal</comment>
+  </data>
+  <data name="Tubus">
+    <value>Тубус</value>
+    <comment>Tubus</comment>
+  </data>
+  <data name="Turquoise">
+    <value>Бирюза</value>
+    <comment>Turquoise</comment>
+  </data>
+  <data name="Tussock">
+    <value>Кочка</value>
+    <comment>Tussock</comment>
+  </data>
+  <data name="White">
+    <value>Белый</value>
+    <comment>White</comment>
+  </data>
+  <data name="Yellow">
+    <value>Жёлтый</value>
+    <comment>Yellow</comment>
+  </data>
+</root>

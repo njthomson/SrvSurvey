@@ -6,6 +6,7 @@ using System.Drawing.Drawing2D;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(240, 180)]
     internal class PlotGalMap : PlotBase, PlotterForm
     {
         public static bool allowPlotter

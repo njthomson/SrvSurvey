@@ -7,7 +7,7 @@ foreach ($filepath in $resxFiles) {
     [xml]$xml = New-Object System.Xml.XmlDocument
     $xml.load($filepath)
 
-    $metadata = $xml.SelectSingleNode("descendant::metadata")
+    $metadata = $xml.SelectNodes("descendant::metadata")
     $localizable = $metadata.name -eq '$this.Localizable' -and $metadata.value -eq "True"
     if (!$localizable) { continue }
 

@@ -131,11 +131,11 @@
     <value>Род</value>
     <comment>Genus</comment>
   </data>
-  <data name="NetSysData_Guardian">
+  <data name="NetSysData_GuardianBroker">
     <value>(Страж)</value>
     <comment>(Guardian)</comment>
   </data>
-  <data name="NetSysData_Human">
+  <data name="NetSysData_HumanBroker">
     <value>(Человек)</value>
     <comment>(Human)</comment>
   </data>
@@ -178,10 +178,6 @@
   <data name="NetSysData_Wars">
     <value>Войны</value>
     <comment>Wars</comment>
-  </data>
-  <data name="PlotFlightWarning_SurfaceGravityWarning">
-    <value>Предупреждение: Поверхностная сила тяжести {0}g</value>
-    <comment>Warning: Surface gravity {0}g</comment>
   </data>
   <data name="PlotGalMap_CountGenus">
     <value>Род {0}x</value>

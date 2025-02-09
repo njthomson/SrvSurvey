@@ -608,6 +608,7 @@ namespace SrvSurvey
 
                 form.Opacity = newOpacity;
                 lastTick = DateTime.Now.Ticks;
+                // TODO: animate the location too, just a little?
             }
             else
             {
@@ -676,7 +677,7 @@ namespace SrvSurvey
                 k = 64831;
                 if (isTerraformable) k += 116295;
             }
-            else if (planetClass == "Earthlike body") // ELW
+            else if (planetClass.StartsWith("Earth")) // ELW
             {
                 k = 64831 + 116295;
             }

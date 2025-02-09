@@ -58,7 +58,184 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="x1400102" xml:space="preserve">
-    <value>Schwefeldioxid-Fumarol</value>
+  <data name="Aleoida">
+    <value>Aleoida</value>
+    <comment>Aleoida</comment>
+  </data>
+  <data name="Amethyst">
+    <value>Amethyst</value>
+    <comment>Amethyst</comment>
+  </data>
+  <data name="Amphora Plant">
+    <value>Amphoren-Pflanze</value>
+    <comment>Amphora Plant</comment>
+  </data>
+  <data name="Aquamarine">
+    <value>Aquamarin</value>
+    <comment>Aquamarine</comment>
+  </data>
+  <data name="Bacterium">
+    <value>Bakterie</value>
+    <comment>Bacterium</comment>
+  </data>
+  <data name="Bark Mounds">
+    <value>Rindenhügel</value>
+    <comment>Bark Mounds</comment>
+  </data>
+  <data name="Blue">
+    <value>Blau</value>
+    <comment>Blue</comment>
+  </data>
+  <data name="Brain Trees">
+    <value>Hirn-Bäume</value>
+    <comment>Brain Trees</comment>
+  </data>
+  <data name="Cactoida">
+    <value>Kaktoida</value>
+    <comment>Cactoida</comment>
+  </data>
+  <data name="Clypeus">
+    <value>Klypeus</value>
+    <comment>Clypeus</comment>
+  </data>
+  <data name="Cobalt">
+    <value>Kobalt</value>
+    <comment>Cobalt</comment>
+  </data>
+  <data name="Concha">
+    <value>Concha</value>
+    <comment>Concha</comment>
+  </data>
+  <data name="Crystalline Shards">
+    <value>Kristalline Scherben</value>
+    <comment>Crystalline Shards</comment>
+  </data>
+  <data name="Cyan">
+    <value>Zyan</value>
+    <comment>Cyan</comment>
+  </data>
+  <data name="Electricae">
+    <value>Electricae</value>
+    <comment>Electricae</comment>
+  </data>
+  <data name="Emerald">
+    <value>Smaragd</value>
+    <comment>Emerald</comment>
+  </data>
+  <data name="Fonticulua">
+    <value>Fonticulua</value>
+    <comment>Fonticulua</comment>
+  </data>
+  <data name="Frutexa">
+    <value>Frutexa</value>
+    <comment>Frutexa</comment>
+  </data>
+  <data name="Fumerola">
+    <value>Fumerola</value>
+    <comment>Fumerola</comment>
+  </data>
+  <data name="Fungoida">
+    <value>Fungoida</value>
+    <comment>Fungoida</comment>
+  </data>
+  <data name="Gold">
+    <value>Gold</value>
+    <comment>Gold</comment>
+  </data>
+  <data name="Green">
+    <value>Grün</value>
+    <comment>Green</comment>
+  </data>
+  <data name="Grey">
+    <value>Grau</value>
+    <comment>Grey</comment>
+  </data>
+  <data name="Indigo">
+    <value>Indigo</value>
+    <comment>Indigo</comment>
+  </data>
+  <data name="Lime">
+    <value>Limone</value>
+    <comment>Lime</comment>
+  </data>
+  <data name="Luteolum Anemone">
+    <value>Luteolum Anemone</value>
+    <comment>Luteolum Anemone</comment>
+  </data>
+  <data name="Magenta">
+    <value>Magenta</value>
+    <comment>Magenta</comment>
+  </data>
+  <data name="Maroon">
+    <value>Kastanienbraun</value>
+    <comment>Maroon</comment>
+  </data>
+  <data name="Mauve">
+    <value>Mauve</value>
+    <comment>Mauve</comment>
+  </data>
+  <data name="Mulberry">
+    <value>Maulbeerbaum</value>
+    <comment>Mulberry</comment>
+  </data>
+  <data name="Ocher">
+    <value>Ocker</value>
+    <comment>Ocher</comment>
+  </data>
+  <data name="Orange">
+    <value>Orange</value>
+    <comment>Orange</comment>
+  </data>
+  <data name="Osseus">
+    <value>Osseus</value>
+    <comment>Osseus</comment>
+  </data>
+  <data name="Peach">
+    <value>Pfirsich</value>
+    <comment>Peach</comment>
+  </data>
+  <data name="Recepta">
+    <value>Rezepte</value>
+    <comment>Recepta</comment>
+  </data>
+  <data name="Red">
+    <value>Rot</value>
+    <comment>Red</comment>
+  </data>
+  <data name="Sage">
+    <value>Salbei</value>
+    <comment>Sage</comment>
+  </data>
+  <data name="Sinuous Tubers">
+    <value>Gewundene Knollen</value>
+    <comment>Sinuous Tubers</comment>
+  </data>
+  <data name="Stratum">
+    <value>Schicht</value>
+    <comment>Stratum</comment>
+  </data>
+  <data name="Teal">
+    <value>Krickente</value>
+    <comment>Teal</comment>
+  </data>
+  <data name="Tubus">
+    <value>Tubus</value>
+    <comment>Tubus</comment>
+  </data>
+  <data name="Turquoise">
+    <value>Türkis</value>
+    <comment>Turquoise</comment>
+  </data>
+  <data name="Tussock">
+    <value>Büschel</value>
+    <comment>Tussock</comment>
+  </data>
+  <data name="White">
+    <value>Weiß</value>
+    <comment>White</comment>
+  </data>
+  <data name="Yellow">
+    <value>Gelb</value>
+    <comment>Yellow</comment>
   </data>
 </root>

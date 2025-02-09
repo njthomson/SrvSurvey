@@ -273,7 +273,7 @@ namespace SrvSurvey.units
                 if (star == null) throw new Exception($"Unexpected type: {value?.GetType().Name}");
 
                 // encode as a singular string
-                var json = $"{star.name}|{star.id64}|{star.x}|{star.y}|{star.z}";
+                var json = $"{star.name}|{star.id64.ToString(CultureInfo.InvariantCulture)}|{star.x.ToString(CultureInfo.InvariantCulture)}|{star.y.ToString(CultureInfo.InvariantCulture)}|{star.z.ToString(CultureInfo.InvariantCulture)}";
                 writer.WriteValue(json);
             }
         }

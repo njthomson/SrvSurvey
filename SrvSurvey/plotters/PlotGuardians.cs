@@ -22,6 +22,7 @@ namespace SrvSurvey.plotters
         origin,
     }
 
+    [ApproxSize(320, 440)]
     internal partial class PlotGuardians : PlotBase, IDisposable
     {
         public static bool allowPlotter

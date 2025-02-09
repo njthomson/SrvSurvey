@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Atmosphere">
+    <value>* ATMOSPHERE: →→→!</value>
+    <comment>Atmosphere:</comment>
+  </data>
+  <data name="BioSignals">
+    <value>* BIO SIGNALS: {0} ( VALUE: {1} CR ) →→→!</value>
+    <comment>Bio signals: {0} ( value: {1} cr )</comment>
+  </data>
+  <data name="EarthLike">
+    <value>* EARTH LIKE →→→!</value>
+    <comment>Earth Like</comment>
+  </data>
+  <data name="FirstMapped">
+    <value>* FIRST MAPPED →→→!</value>
+    <comment>First mapped</comment>
+  </data>
+  <data name="GeoSignals">
+    <value>* GEO SIGNALS: {0} →→→!</value>
+    <comment>Geo signals: {0}</comment>
+  </data>
+  <data name="Gravity">
+    <value>* GRAVITY: {0}G →→→!</value>
+    <comment>Gravity: {0}g</comment>
+  </data>
+  <data name="Materials">
+    <value>* MATERIALS: →→→!</value>
+    <comment>Materials:</comment>
+  </data>
+  <data name="None">
+    <value>* NONE →→→!</value>
+    <comment>None</comment>
+  </data>
+  <data name="Pressure">
+    <value>* PRESSURE: {0} →→→!</value>
+    <comment>Pressure: {0}</comment>
+  </data>
+  <data name="PressureValue">
+    <value>* {0}(ATM) →→→!</value>
+    <comment>{0}(atm)</comment>
+  </data>
+  <data name="Rings">
+    <value>* RINGS: →→→!</value>
+    <comment>Rings:</comment>
+  </data>
+  <data name="ScanRequired">
+    <value>* SCAN REQUIRED →→→!</value>
+    <comment>Scan required</comment>
+  </data>
+  <data name="ScanValue">
+    <value>* SCAN VALUE →→→!</value>
+    <comment>Scan value</comment>
+  </data>
+  <data name="StarClass">
+    <value>* CLASS: {0} →→→!</value>
+    <comment>Class: {0}</comment>
+  </data>
+  <data name="Temp">
+    <value>* TEMP: {0}K →→→!</value>
+    <comment>Temp: {0}K</comment>
+  </data>
+  <data name="Terraformable">
+    <value>* TERRAFORMABLE →→→!</value>
+    <comment>Terraformable</comment>
+  </data>
+  <data name="Undiscovered">
+    <value>* UNDISCOVERED →→→!</value>
+    <comment>Undiscovered</comment>
+  </data>
+  <data name="Unmapped">
+    <value>* UNMAPPED →→→!</value>
+    <comment>Unmapped</comment>
+  </data>
+  <data name="Volcanism">
+    <value>* VOLCANISM: →→→!</value>
+    <comment>Volcanism:</comment>
+  </data>
+  <data name="WithDSS">
+    <value>* (WITH DSS: {0}) →→→!</value>
+    <comment>(with DSS: {0})</comment>
+  </data>
+</root>

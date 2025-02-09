@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="copyNextBoxel">
+    <value>Dans gal-map, copiez le système de recherche de boxel suivant dans le presse-papiers.</value>
+    <comment>In gal-map, copy the next boxel search system to clipboard.</comment>
+  </data>
+  <data name="mapBeHuge">
+    <value>Bascule pour que la carte remplisse la moitié de l’écran, uniquement pour les établissements humains.</value>
+    <comment>Toggles making the map fill half the screen, at Human settlements only.</comment>
+  </data>
+  <data name="mapZoomAuto">
+    <value>Réinitialisez le zoom par défaut, sur les sites Humains et Gardiens.</value>
+    <comment>Reset the zoom to default, at Human and Guardian sites.</comment>
+  </data>
+  <data name="mapZoomIn">
+    <value>Zoomez sur les cartes des sites des Humains et des Gardiens.</value>
+    <comment>Zoom in on maps at Human and Guardian sites.</comment>
+  </data>
+  <data name="mapZoomOut">
+    <value>Zoom arrière sur les cartes des sites humains et gardiens.</value>
+    <comment>Zoom out on maps at Human and Guardian sites.</comment>
+  </data>
+  <data name="pasteGalMap">
+    <value>Coller le texte du presse-papiers dans Gal-Map</value>
+    <comment>Paste clipboard text when in Gal-Map</comment>
+  </data>
+  <data name="showBodyInfo">
+    <value>Forcez l’affichage de la superposition d’informations sur le corps.</value>
+    <comment>Force show the Body info overlay.</comment>
+  </data>
+  <data name="showFssInfo">
+    <value>Forcer l’affichage de la superposition d’informations FSS.</value>
+    <comment>Force show the FSS info overlay.</comment>
+  </data>
+  <data name="showJumpInfo">
+    <value>Forcez le basculement de la superposition de saut FSD sans commencer à sauter.</value>
+    <comment>Force toggle the FSD jump overlay without starting to jump.</comment>
+  </data>
+  <data name="showSystemNotes">
+    <value>Rendez la fenêtre des notes système visible.</value>
+    <comment>Make the system notes window visible.</comment>
+  </data>
+  <data name="toggleAllVisibility">
+    <value>Bascule la visibilité de toutes les fenêtres de superposition.</value>
+    <comment>Toggles visibility of all overlay windows.</comment>
+  </data>
+  <data name="track1">
+    <value>Ajouter ou supprimer le tracker #1</value>
+    <comment>Add or remove tracker #1</comment>
+  </data>
+  <data name="track2">
+    <value>Ajouter ou supprimer le tracker #2</value>
+    <comment>Add or remove tracker #2</comment>
+  </data>
+  <data name="track3">
+    <value>Ajouter ou supprimer le tracker #3</value>
+    <comment>Add or remove tracker #3</comment>
+  </data>
+  <data name="track4">
+    <value>Ajouter ou supprimer le tracker #4</value>
+    <comment>Add or remove tracker #4</comment>
+  </data>
+  <data name="track5">
+    <value>Ajouter ou supprimer le tracker #5</value>
+    <comment>Add or remove tracker #5</comment>
+  </data>
+  <data name="track6">
+    <value>Ajouter ou supprimer le tracker #6</value>
+    <comment>Add or remove tracker #6</comment>
+  </data>
+  <data name="track7">
+    <value>Ajouter ou supprimer le tracker #7</value>
+    <comment>Add or remove tracker #7</comment>
+  </data>
+  <data name="track8">
+    <value>Ajouter ou supprimer le tracker #8</value>
+    <comment>Add or remove tracker #8</comment>
+  </data>
+</root>

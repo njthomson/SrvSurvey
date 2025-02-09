@@ -6,6 +6,7 @@ using System.Drawing.Drawing2D;
 namespace SrvSurvey.plotters
 {
     [System.ComponentModel.DesignerCategory("")]
+    [ApproxSize(32, 32)]
     public partial class PlotPulse : Form, PlotterForm
     {
         public static DateTime LastChanged;

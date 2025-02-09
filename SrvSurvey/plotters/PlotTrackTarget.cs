@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(128, 108)]
     partial class PlotTrackTarget : PlotBase, PlotterForm
     {
         public static bool allowPlotter

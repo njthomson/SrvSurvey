@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(200, 300)]
     internal class PlotStationInfo : PlotBase, PlotterForm
     {
         private PenBrush pb = new PenBrush(C.orange, 3, LineCap.Flat);

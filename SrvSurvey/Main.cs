@@ -401,6 +401,11 @@ namespace SrvSurvey
             else
                 Program.closePlotter<PlotMiniTrack>();
 
+            if (gameIsActive && PlotFloatie.allowPlotter)
+                Program.showPlotter<PlotFloatie>();
+            else
+                Program.closePlotter<PlotFloatie>();
+
             if (gameIsActive && PlotStationInfo.allowPlotter)
                 Program.showPlotter<PlotStationInfo>();
             else
@@ -1199,11 +1204,6 @@ namespace SrvSurvey
             }
         }
 
-        private void btnViewLogs_Click(object sender, EventArgs e)
-        {
-            BaseForm.show<ViewLogs>();
-        }
-
         private void setTargetLatLong()
         {
             // update our UX
@@ -1838,6 +1838,33 @@ namespace SrvSurvey
         {
             BaseForm.show<FormCodexBingo>();
         }
+
+        private void btnLogs_Click(object sender, EventArgs e)
+        {
+            BaseForm.show<ViewLogs>();
+
+            /*
+            if (this.mv != null)
+            {
+                this.Controls.Remove(mv);
+                mv = null!;
+            }
+            else
+            {
+                mv = new MainView()
+                {
+                    Left = 5,
+                    Top = 5,
+                    Width = this.ClientSize.Width - 10,
+                    Height = btnLogs.Bottom - 10,
+                    Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom,
+                };
+                this.Controls.Add(mv);
+                mv.BringToFront();
+            }
+            // */
+        }
+        private MainView mv;
     }
 }
 

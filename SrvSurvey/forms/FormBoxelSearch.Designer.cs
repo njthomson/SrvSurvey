@@ -62,6 +62,7 @@
             label3 = new Label();
             flowCommands = new FlowLayoutPanel();
             btnBoxelEmpty = new FlatButton();
+            label7 = new Label();
             checkSkipVisited = new CheckBox();
             checkSpinKnownToSpansh = new CheckBox();
             menuSiblings = new ButtonContextMenuStrip(components);
@@ -81,7 +82,6 @@
             comboLowMassCode = new ComboBox();
             lblBadBoxel = new Label();
             lblBoxelCount = new Label();
-            label7 = new Label();
             contextList.SuspendLayout();
             status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numMax).BeginInit();
@@ -100,6 +100,7 @@
             tableConfig.SetColumnSpan(txtConfigBoxel, 4);
             txtConfigBoxel.ForeColor = SystemColors.WindowText;
             txtConfigBoxel.Name = "txtConfigBoxel";
+            txtConfigBoxel.UseEdgeButton = TextBox2.EdgeButton.None;
             txtConfigBoxel.TextChanged += txtConfigBoxel_TextChanged;
             // 
             // btnConfig
@@ -123,6 +124,7 @@
             txtCurrent.ForeColor = SystemColors.WindowText;
             txtCurrent.Name = "txtCurrent";
             txtCurrent.ReadOnly = true;
+            txtCurrent.UseEdgeButton = TextBox2.EdgeButton.None;
             // 
             // btnCopyNext
             // 
@@ -279,6 +281,7 @@
             txtMainBoxel.ForeColor = SystemColors.WindowText;
             txtMainBoxel.Name = "txtMainBoxel";
             txtMainBoxel.ReadOnly = true;
+            txtMainBoxel.UseEdgeButton = TextBox2.EdgeButton.None;
             // 
             // btnParent
             // 
@@ -310,6 +313,11 @@
             btnBoxelEmpty.Name = "btnBoxelEmpty";
             btnBoxelEmpty.UseVisualStyleBackColor = true;
             btnBoxelEmpty.Click += btnBoxelEmpty_Click;
+            // 
+            // label7
+            // 
+            resources.ApplyResources(label7, "label7");
+            label7.Name = "label7";
             // 
             // checkSkipVisited
             // 
@@ -454,11 +462,6 @@
             resources.ApplyResources(lblBoxelCount, "lblBoxelCount");
             tableConfig.SetColumnSpan(lblBoxelCount, 2);
             lblBoxelCount.Name = "lblBoxelCount";
-            // 
-            // label7
-            // 
-            resources.ApplyResources(label7, "label7");
-            label7.Name = "label7";
             // 
             // FormBoxelSearch
             // 

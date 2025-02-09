@@ -233,7 +233,7 @@ namespace SrvSurvey.plotters
             this.reposition(Elite.getWindowRect());
             this.mid = this.Size / 2;
 
-            this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
+            this.BackgroundImage = GameGraphics.getBackgroundImage(this);
 
             Game.update += Game_modeChanged;
             game.status!.StatusChanged += Status_StatusChanged;
@@ -359,10 +359,6 @@ namespace SrvSurvey.plotters
 
             try
             {
-                // how often does this happen?
-                if (this.g != null) Debugger.Break();
-
-                //this.resetPlotter(e.Graphics);
                 this.g = e.Graphics;
                 this.g.SmoothingMode = SmoothingMode.HighQuality;
                 this.formSize = new SizeF(2, 0);
@@ -381,12 +377,8 @@ namespace SrvSurvey.plotters
 
                 if (forceRepaint)
                 {
-                    // how often does this happen?
-                    if (this.g != e.Graphics)
-                    {
-                        Debugger.Break();
-                        return; // skip? as we already rendered at the larger size
-                    }
+                    // exit early if our `g` reference has changed - it means we painted already async before this one finished
+                    if (this.g != e.Graphics) return;
 
                     g.FillRectangle(C.Brushes.black, 0, 0, this.Width, this.Height);
                     this.formSize = new SizeF(2, 0);
@@ -432,15 +424,12 @@ namespace SrvSurvey.plotters
         /// <summary> Show an obvious border if this plotter is getting adjusted </summary>
         public static void ifAdjustmentTarget(Graphics g, Form f)
         {
-            if (FormAdjustOverlay.targetName == f.Name)
-            {
-                g.ResetClip();
-                g.ResetTransform();
-                g.SmoothingMode = SmoothingMode.None;
+            g.ResetClip();
+            g.ResetTransform();
+            g.SmoothingMode = SmoothingMode.None;
 
-                var p = GameColors.penYellow4;
-                g.DrawRectangle(p, p.Width / 2, p.Width / 2, f.Width - p.Width, f.Height - p.Width);
-            }
+            var p = GameColors.penYellow4;
+            g.DrawRectangle(p, p.Width / 2, p.Width / 2, f.Width - p.Width, f.Height - p.Width);
         }
 
         protected virtual void onPaintPlotter(PaintEventArgs e) { /* TODO: make abstract */ }
@@ -857,7 +846,7 @@ namespace SrvSurvey.plotters
             {
                 //Game.log($"formAdjustSize: {this.Name} - {this.Size} => {this.formSize.ToSize()}");
                 this.Size = this.formSize.ToSize();
-                this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
+                this.BackgroundImage = GameGraphics.getBackgroundImage(this);
                 this.reposition(Elite.getWindowRect());
                 forceRepaint = true;
             }
@@ -1025,10 +1014,10 @@ namespace SrvSurvey.plotters
             return resourceManagers[name];
         }
 
-        protected string RES(string name)
+        protected string RES(string name, ResourceManager? rm = null)
         {
-            var txt = rm.GetString(name);
-            //if (txt == null) Debugger.Break();
+            var txt = (rm ?? this.rm).GetString(name);
+            if (txt == null) Debugger.Break();
             return txt ?? "";
         }
 
@@ -1381,6 +1370,10 @@ namespace SrvSurvey.plotters
 
         private static string customPlotterPositionPath = Path.Combine(Program.dataFolder, "plotters.json");
         private static string defaultPlotterPositionPath = Path.Combine(Application.StartupPath, "plotters.json");
+        /// <summary>
+        /// The "typical" size of this plotter, used when adjusting positions and the plotter itself isn't visible
+        /// </summary>
+        private static readonly Dictionary<string, Size> typicalSize = new();
 
         private static Dictionary<string, PlotPos> plotterPositions = new Dictionary<string, PlotPos>();
         private static Dictionary<string, PlotPos>? backupPositions;
@@ -1411,22 +1404,22 @@ namespace SrvSurvey.plotters
             }
 
             // start by collecting all non-abstract classes derived from PlotBase
-            var allPlotters = Assembly.GetExecutingAssembly()
+            var allPlotterTypes = Assembly.GetExecutingAssembly()
                 .GetTypes()
                 .Where(_ => typeof(PlotBase).IsAssignableFrom(_) && !_.IsAbstract)
-                .Select(_ => _.Name)
                 .ToList();
 
             // include plotters not yet derived from the base class
-            allPlotters.Add("PlotPulse");
+            allPlotterTypes.Add(typeof(PlotPulse));
 
             // These plotters are not movable and are intentionally missing from plotters.json
             // PlotTrackers
 
             var dirty = false;
             Dictionary<string, PlotPos>? defaultPositions = null;
-            foreach (var name in allPlotters)
+            foreach (var type in allPlotterTypes)
             {
+                var name = type.Name;
                 if (!plotterPositions.ContainsKey(name))
                 {
                     if (defaultPositions == null) defaultPositions = readPlotterPositions(defaultPlotterPositionPath);
@@ -1438,12 +1431,26 @@ namespace SrvSurvey.plotters
                     }
                 }
 
+                // use the size from the attribute
+                var approxSize = type.GetCustomAttribute<ApproxSizeAttribute>();
+                typicalSize[name] = approxSize?.size ?? new Size(200, 60);
+
                 if (Game.settings.overlayTombs)
                     Program.createTomb(name);
             }
 
             if (dirty)
                 saveCustomPositions();
+        }
+
+        public static Size getLastSize(string name)
+        {
+            return typicalSize.GetValueOrDefault(name, new Size(140, 80));
+        }
+
+        public static string[] getAllPlotterNames()
+        {
+            return plotterPositions.Keys.ToArray();
         }
 
         public static void resetToDefault(string name)
@@ -1591,6 +1598,12 @@ namespace SrvSurvey.plotters
                 return plotterPositions.GetValueOrDefault(name);
         }
 
+        /// <summary>
+        /// Returns where the named plotter should be
+        /// </summary>
+        /// <param name="formName">The name of the plotter</param>
+        /// <param name="sz">The size of the plotter</param>
+        /// <param name="rect">The rectangle of the game window</param>
         public static Point getPlotterLocation(string formName, Size sz, Rectangle rect)
         {
             // skip plotters that are fixed
@@ -1673,4 +1686,15 @@ namespace SrvSurvey.plotters
         };
     }
 
+    /// <summary>
+    /// An approximate size this plotter would be, used when adjusting plotter locations in settings.
+    /// </summary>
+    internal class ApproxSizeAttribute : Attribute
+    {
+        public Size size;
+        public ApproxSizeAttribute(int x, int y)
+        {
+            this.size = new Size(x, y);
+        }
+    }
 }

@@ -7,6 +7,7 @@ using System.Drawing.Drawing2D;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(308, 300)]
     internal class PlotPriorScans : PlotBase, PlotterForm
     {
         public static bool allowPlotter
@@ -56,7 +57,7 @@ namespace SrvSurvey.plotters
             if (this.Height != formHeight)
             {
                 this.Height = formHeight;
-                this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
+                this.BackgroundImage = GameGraphics.getBackgroundImage(this);
             }
 
             this.mid = this.Size / 2;
@@ -154,8 +155,7 @@ namespace SrvSurvey.plotters
                     // extract genus name 
                     var name = poi.english_name;
                     var nameParts = name.Split(' ', 2);
-                    var genusName = BioScan.genusNames.FirstOrDefault(_ => _.Value.Equals(nameParts[0], StringComparison.OrdinalIgnoreCase)).Key;
-                    var shortName = BioScan.prefixes.FirstOrDefault(_ => _.Value == genusName).Key;
+                    var genusName = match.genus.locName;
 
                     // skip things we've already analyzed
                     //var organism = game.systemBody.organisms?.FirstOrDefault(_ => _.genus == genusName);
@@ -167,8 +167,6 @@ namespace SrvSurvey.plotters
                     // TODO: handle Brain Tree's
                     if (Game.settings.hideMyOwnCanonnSignals && game.systemBody.bioScans?.Any(_ => _.status != BioScan.Status.Died && _.genus == genusName && Util.getDistance(_.location, location, game.systemBody.radius) < PlotTrackers.highlightDistance) == true)
                         continue;
-                    if (game.systemBody.bookmarks?.Any(marks => marks.Key == shortName && marks.Value.Any(_ => Util.getDistance(_, location, game.systemBody.radius) < PlotTrackers.highlightDistance)) == true)
-                        continue;
                     if (Util.isCloseToScan(location, genusName))
                         continue;
                     // TODO: fix this + make it honour the setting
@@ -176,7 +174,7 @@ namespace SrvSurvey.plotters
                     //    continue;
 
                     // create group and TrackingDelta's for each location
-                    var signal = this.signals.FirstOrDefault(_ => _.poiName == poi.english_name);
+                    var signal = this.signals.FirstOrDefault(_ => _.entryId == poi.entryid);
                     if (signal == null)
                     {
                         // for pre-Odyssey bio's
@@ -185,7 +183,8 @@ namespace SrvSurvey.plotters
 
                         signal = new SystemBioSignal
                         {
-                            poiName = poi.english_name,
+                            entryId = poi.entryid.Value,
+                            displayName = match.variant.locName,
                             genusName = genusName,
                             credits = Util.credits(reward),
                             reward = reward,
@@ -251,24 +250,24 @@ namespace SrvSurvey.plotters
 
             this.resetPlotter(g);
 
-            this.drawFooterText("(Locations may not be that close to signals)", GameColors.brushGameOrangeDim, this.Font);
+            this.drawFooterText(RES("Footer"), GameColors.brushGameOrangeDim, this.Font);
 
             this.dtx = four;
             this.dty = eight;
 
-            var txt = $"Tracking {this.signals.Count} signals from Canonn:";
+            var txt = RES("Header", this.signals.Count);
             if (Game.settings.skipPriorScansLowValue)
                 txt += $" (> {Util.credits(Game.settings.skipPriorScansLowValueAmount)})";
             base.drawTextAt(txt, GameColors.brushGameOrange, GameColors.fontSmall);
 
             if (this.signals.Count == 0)
             {
-                g.DrawString("No un-scanned signals meet criteria", this.Font, GameColors.brushGameOrange, 16f, 36f);
+                g.DrawString(RES("NoMoreSignals"), this.Font, GameColors.brushGameOrange, 16f, 36f);
                 return;
             }
 
-            var indent = scaled(70f);
-            var bearingWidth = scaled(75);
+            var indent = sevenTwo;
+            var bearingWidth = sevenFive;
 
             this.dty = scaled(8f);
             var sortedSignals = this.signals.OrderByDescending(_ => _.reward);
@@ -346,7 +345,7 @@ namespace SrvSurvey.plotters
 
                 r.Y = (int)ly;
 
-                TextRenderer.DrawText(g, signal.poiName, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
+                TextRenderer.DrawText(g, signal.displayName, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
                 TextRenderer.DrawText(g, signal.credits, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Right);
 
                 // strike-through if already analyzed

@@ -6,6 +6,7 @@ using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -1212,7 +1213,7 @@ namespace SrvSurvey.game
                         body.type = SystemBody.typeFrom(null!, entry.subType!, entry.isLandable, entry.name);
                 }
                 if (body.type == SystemBodyType.SolidBody && entry.isLandable == true) body.type = SystemBodyType.LandableBody;
-                
+
                 if (body.distanceFromArrivalLS == 0) body.distanceFromArrivalLS = entry.distanceToArrival;
                 if (body.semiMajorAxis == 0) body.semiMajorAxis = Util.lsToM(entry.semiMajorAxis ?? 0); // convert from LS to M
                 if (body.absoluteMagnitude == 0) body.absoluteMagnitude = entry.absoluteMagnitude;
@@ -2142,10 +2143,14 @@ namespace SrvSurvey.game
 
         public double getRelativeBrightness(SystemBody star)
         {
-            if (star.starType == null) return 0;
+            if (star.starType == null)
+            {
+                Game.log($"Why no starType for: '{star.name}' ?");
+                Debugger.Break();
+                return 0;
+            }
 
             var commonParent = getCommonParent(star);
-            if (commonParent == null) return 0;
 
             var dist = this.euclidianDistance(commonParent);
             dist += star.euclidianDistance(commonParent);
@@ -2161,8 +2166,7 @@ namespace SrvSurvey.game
             return parentBodies.Find(p => p == sibling || sibling.parentBodies.Contains(p));
         }
 
-
-        public double euclidianDistance(SystemBody target)
+        public double euclidianDistance(SystemBody? target)
         {
             if (target == this) return 0;
             // start with our own distance, then sum our parents until we reach (and include) the target
@@ -2170,7 +2174,7 @@ namespace SrvSurvey.game
             foreach (var parent in this.parentBodies)
             {
                 dist += Math.Pow(parent.semiMajorAxis, 2);
-                if (parent.id == target.id) break;
+                if (parent.id == target?.id) break;
             }
 
             return dist;
@@ -2616,6 +2620,21 @@ namespace SrvSurvey.game
                 this.variantLocalized = match.englishName;
             }
         }
+
+        [JsonIgnore]
+        public BioMatch? bioMatch
+        {
+            get
+            {
+                if (_bioMatch == null && this.entryId > 0)
+                    _bioMatch = Game.codexRef.matchFromEntryId(this.entryId, true);
+                else if (_bioMatch == null && this.variant != null)
+                    _bioMatch = Game.codexRef.matchFromVariant(this.variant);
+
+                return _bioMatch;
+            }
+        }
+        private BioMatch? _bioMatch;
     }
 
     internal class SystemGeoSignal

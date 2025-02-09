@@ -108,7 +108,7 @@
     <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;btnConfig.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="&gt;&gt;btnConfigCancel.Name" xml:space="preserve">
     <value>btnConfigCancel</value>
@@ -300,7 +300,7 @@
     <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;flowCommands.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
@@ -336,7 +336,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;label4.Name" xml:space="preserve">
     <value>label4</value>
@@ -373,6 +373,18 @@
   </data>
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
     <value>5</value>
+  </data>
+  <data name="&gt;&gt;label7.Name" xml:space="preserve">
+    <value>label7</value>
+  </data>
+  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
+    <value>tableTop</value>
+  </data>
+  <data name="&gt;&gt;label7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
   <data name="&gt;&gt;labelGraphic.Name" xml:space="preserve">
     <value>labelGraphic</value>
@@ -650,7 +662,7 @@
     <value>3, 0, 3, 5</value>
   </data>
   <data name="btnConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 56</value>
+    <value>55, 51</value>
   </data>
   <data name="btnConfig.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -744,7 +756,10 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="btnParent.Location" type="System.Drawing.Point, System.Drawing">
-    <value>69, 31</value>
+    <value>72, 28</value>
+  </data>
+  <data name="btnParent.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="btnParent.Size" type="System.Drawing.Size, System.Drawing">
     <value>28, 27</value>
@@ -911,7 +926,7 @@
     <value>Bottom, Left, Right</value>
   </data>
   <data name="comboFrom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>144, 332</value>
+    <value>144, 337</value>
   </data>
   <data name="comboFrom.Size" type="System.Drawing.Size, System.Drawing">
     <value>432, 23</value>
@@ -974,7 +989,7 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="flowCommands.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 61</value>
+    <value>0, 56</value>
   </data>
   <data name="flowCommands.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -1004,6 +1019,9 @@
     <value>* SURVEYING BOXEL: →→→!</value>
     <comment>Surveying boxel:</comment>
   </data>
+  <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
   <data name="label2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
@@ -1011,7 +1029,7 @@
     <value>True</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 336</value>
+    <value>6, 341</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>136, 15</value>
@@ -1104,6 +1122,28 @@
   <data name="label6.Text">
     <value>* AS OF DATE: →→→!</value>
     <comment>As of date:</comment>
+  </data>
+  <data name="label7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="label7.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 34</value>
+  </data>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 15</value>
+  </data>
+  <data name="label7.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="label7.Text">
+    <value>* CURRENT: →→→!</value>
+    <comment>Current:</comment>
+  </data>
+  <data name="label7.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
   </data>
   <data name="labelGraphic.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -1233,7 +1273,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>0, 0, 0, 0</value>
   </data>
   <data name="list.Size" type="System.Drawing.Size, System.Drawing">
-    <value>576, 329</value>
+    <value>576, 334</value>
   </data>
   <data name="list.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1311,10 +1351,10 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="panelList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 97</value>
+    <value>3, 92</value>
   </data>
   <data name="panelList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>576, 358</value>
+    <value>576, 363</value>
   </data>
   <data name="panelList.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1356,10 +1396,10 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="tableTop.ColumnCount" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="tableTop.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="panelList" Row="3" RowSpan="1" Column="0" ColumnSpan="6" /&gt;&lt;Control Name="txtCurrent" Row="1" RowSpan="1" Column="1" ColumnSpan="4" /&gt;&lt;Control Name="label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="txtMainBoxel" Row="0" RowSpan="1" Column="1" ColumnSpan="4" /&gt;&lt;Control Name="btnParent" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnConfig" Row="0" RowSpan="2" Column="5" ColumnSpan="1" /&gt;&lt;Control Name="label3" Row="4" RowSpan="1" Column="0" ColumnSpan="6" /&gt;&lt;Control Name="flowCommands" Row="2" RowSpan="1" Column="0" ColumnSpan="6" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="panelList" Row="3" RowSpan="1" Column="0" ColumnSpan="7" /&gt;&lt;Control Name="txtCurrent" Row="1" RowSpan="1" Column="2" ColumnSpan="4" /&gt;&lt;Control Name="label1" Row="0" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="txtMainBoxel" Row="0" RowSpan="1" Column="2" ColumnSpan="4" /&gt;&lt;Control Name="btnParent" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label3" Row="4" RowSpan="1" Column="0" ColumnSpan="7" /&gt;&lt;Control Name="flowCommands" Row="2" RowSpan="1" Column="0" ColumnSpan="7" /&gt;&lt;Control Name="btnConfig" Row="0" RowSpan="2" Column="6" ColumnSpan="1" /&gt;&lt;Control Name="label7" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,Percent,100.00001,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="tableTop.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 3</value>
@@ -1414,7 +1454,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>False</value>
   </data>
   <data name="txtCurrent.Location" type="System.Drawing.Point, System.Drawing">
-    <value>103, 30</value>
+    <value>103, 28</value>
   </data>
   <data name="txtCurrent.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 0, 0, 0</value>

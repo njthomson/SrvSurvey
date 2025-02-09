@@ -162,10 +162,6 @@
   <data name="NetSysData_Wars" xml:space="preserve">
     <value>Wars</value>
   </data>
-  <data name="PlotFlightWarning_SurfaceGravityWarning" xml:space="preserve">
-    <value>Warning: Surface gravity {0}g</value>
-    <comment>{0} is a floating point number. The trailiing g is for Gravity.</comment>
-  </data>
   <data name="PlotGalMap_CountGenus" xml:space="preserve">
     <value>{0}x Genus</value>
   </data>
@@ -297,11 +293,11 @@ Would you like to create it?</value>
     <value>(Encoded)</value>
     <comment>An Encoded Material Trader</comment>
   </data>
-  <data name="NetSysData_Guardian" xml:space="preserve">
+  <data name="NetSysData_GuardianBroker" xml:space="preserve">
     <value>(Guardian)</value>
     <comment>A Guardian Tech Broker</comment>
   </data>
-  <data name="NetSysData_Human" xml:space="preserve">
+  <data name="NetSysData_HumanBroker" xml:space="preserve">
     <value>(Human)</value>
     <comment>A Human Tech Broker</comment>
   </data>

@@ -3,6 +3,7 @@ using SrvSurvey.widgets;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(240, 200)]
     internal class PlotSphericalSearch : PlotBase, PlotterForm
     {
         public static bool allowPlotter

@@ -6,6 +6,7 @@ using System.Diagnostics;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(540, 100)]
     internal class PlotJumpInfo : PlotBase, PlotterForm
     {
         public static bool allowPlotter
@@ -157,26 +158,22 @@ namespace SrvSurvey.plotters
                 var list = new HashSet<string>();
 
                 var countRuins = Game.canonn.allRuins.Count(r => r.systemAddress == next.SystemAddress);
-                if (countRuins > 0) list.Add($"Ruins: {countRuins}");
+                if (countRuins > 0) list.Add(RES("GuardianRuins", countRuins));
 
                 var countStructures = Game.canonn.allStructures.Count(r => r.systemAddress == next.SystemAddress);
-                if (countStructures > 0) list.Add($"Structures: {countStructures}");
+                if (countStructures > 0) list.Add(RES("GuardianStructures", countStructures));
 
                 var countBeacons = Game.canonn.allBeacons.Count(r => r.systemAddress == next.SystemAddress);
-                if (countBeacons > 0) list.Add($"Beacon");
+                if (countBeacons > 0) list.Add(RES("GuardianBeacon"));
 
                 if (list.Count > 0)
-                {
-                    netData.special ??= new();
-                    netData.special["Guardian"] = list;
-                }
+                    netData.special[RES("SpecialGuardian")] = list;
             }
 
             if (game.cmdr.route.active && game.cmdr.route.nextHop?.id64 == next.SystemAddress)
             {
-                netData.special ??= new();
-                var set = netData.special.init("Route hop");
-                set.Add($"#{game.cmdr.route.last + 1} of {game.cmdr.route.hops.Count}");
+                var set = netData.special.init(RES("SpecialRouteHop"));
+                set.Add(RES("SpecialHopInfo", game.cmdr.route.last + 1, game.cmdr.route.hops.Count));
                 // and show any notes
                 if (game.cmdr.route.nextHop?.notes != null)
                     set.Add(game.cmdr.route.nextHop.notes!);
@@ -187,10 +184,7 @@ namespace SrvSurvey.plotters
             {
                 var nextRegion = EliteDangerousRegionMap.RegionMap.FindRegion(next.StarPos);
                 if (nextRegion.Name != GalacticRegions.current)
-                {
-                    netData.special ??= new();
-                    netData.special.init("Now entering").Add(nextRegion.Name);
-                }
+                    netData.special.init(RES("SpecialNowEntering")).Add(nextRegion.Name);
             }
             else
                 Debugger.Break();
@@ -247,7 +241,6 @@ namespace SrvSurvey.plotters
                 drawTextAt2(eight, $"▶️ {netData.discoveryStatus}", GameColors.Cyan);
             else if (netData.discoveredDate.HasValue)
                 drawTextAt2(eight, $"▶️ " + RES("DiscoveredBy", netData.discoveredBy, netData.discoveredDate.Value.ToString("d")));
-            //drawTextAt2($"(EDSM)", GameColors.OrangeDim);
 
             var lastUpdated = netData.lastUpdated;// ?? netData.spanshSystem?.updated_at.GetValueOrDefault()?.ToLocalTime();
             if (lastUpdated != null && (lastUpdated > netData.discoveredDate || netData.discoveredDate == null))
@@ -285,7 +278,7 @@ namespace SrvSurvey.plotters
                 foreach (var pair in netData.special)
                 {
                     drawTextAt2(eight, $"▶️ {pair.Key}: ", GameColors.Cyan);
-                    drawTextAt2(string.Join(", ", pair.Value), GameColors.Cyan);
+                    drawTextAt2(string.Join(RES("SpecialJoiner") + " ", pair.Value), GameColors.Cyan);
                     newLine(+two, true);
                 }
             }

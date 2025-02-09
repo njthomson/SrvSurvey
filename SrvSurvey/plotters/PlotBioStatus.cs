@@ -7,6 +7,7 @@ using System.Diagnostics;
 
 namespace SrvSurvey.plotters
 {
+    [ApproxSize(480, 80)]
     internal partial class PlotBioStatus : PlotBase, PlotterForm
     {
         public static bool allowPlotter
@@ -136,7 +137,7 @@ namespace SrvSurvey.plotters
             if (game.systemBody.organisms?.Count > 0)
             {
                 g.DrawString(
-                    $"Biological signals: {game.systemBody.bioSignalCount} | Analyzed: {game.systemBody.countAnalyzedBioSignals}",
+                    RES("Header", game.systemBody.bioSignalCount, game.systemBody.countAnalyzedBioSignals),
                     GameColors.fontSmall, GameColors.brushGameOrange, four, eight);
 
                 var organism = scanOne == null ? null : game.systemBody?.organisms?.FirstOrDefault(_ => _.species == scanOne.species);
@@ -147,8 +148,8 @@ namespace SrvSurvey.plotters
                     // warn if scan is from another body
                     if (scanOne?.body != null && scanOne.body != game.systemBody?.name)
                     {
-                        var match = Game.codexRef.matchFromGenus(scanOne.genus);
-                        var sz = this.drawFooterText(g, $"WARNING: Incomplete {match?.englishName} scans from {scanOne.body}", GameColors.brushRed);
+                        var matchGenus = Game.codexRef.matchFromGenus(scanOne.genus);
+                        var sz = this.drawFooterText(g, RES("WarningStaleScans", matchGenus?.locName, scanOne.body), GameColors.brushRed);
 
                         var y = ClientSize.Height - twenty;
                         var w = (ClientSize.Width - sz.Width - oneSix) / 2;
@@ -164,7 +165,7 @@ namespace SrvSurvey.plotters
             else
             {
                 // show a message if cmdr forgot to DSS the body
-                var msg = $"Bio signals detected - DSS Scan required";
+                var msg = RES("DssRequired");
                 var mid = this.Size / 2;
                 var font = GameColors.fontSmall;
                 var sz = g.MeasureString(msg, GameColors.fontMiddle);
@@ -177,9 +178,9 @@ namespace SrvSurvey.plotters
             {
                 var allScanned = game.systemBody!.countAnalyzedBioSignals == game.systemBody.bioSignalCount;
                 if (allScanned && game.systemBody.firstFootFall)
-                    this.drawFooterText(g, "All signals scanned with FF bonus applied");
+                    this.drawFooterText(g, RES("FooterAllScannedFF"));
                 else if (allScanned)
-                    this.drawFooterText(g, "All signals scanned", GameColors.brushGameOrange);
+                    this.drawFooterText(g, RES("FooterAllScanned"), GameColors.brushGameOrange);
                 else if (this.lastCodexScan != null)
                 {
                     this.drawFooterText(g, this.lastCodexScan, GameColors.brushCyan);
@@ -187,11 +188,11 @@ namespace SrvSurvey.plotters
                         this.drawHasImage(g, this.Width - threeSix, this.Height - threeSix);
                 }
                 else if (game.systemBody.firstFootFall && Random.Shared.NextDouble() > 0.5d)
-                    this.drawFooterText(g, "Applying first footfall bonus", GameColors.brushCyan);
+                    this.drawFooterText(g, RES("FooterApplyFF"), GameColors.brushCyan);
                 //else if (!game.systemBody.wasMapped && game.systemBody.countAnalyzedBioSignals == 0 && Game.settings.useExternalData && Game.settings.autoLoadPriorScans && Program.getPlotter<PlotPriorScans>() == null)
                 //    this.drawFooterText(g, "Potential first footfall - send '.ff' to confirm", GameColors.brushCyan);
                 else
-                    this.drawFooterText(g, "Use Composition Scanner to set tracker targets");
+                    this.drawFooterText(g, RES("FooterUseCompScanner"));
             }
         }
 
@@ -221,7 +222,7 @@ namespace SrvSurvey.plotters
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
             // Species name
-            var txt = $"{organism.variantLocalized}"; // or species?
+            var txt = organism.variantLocalized ?? ""; // or species?
             var x = oneOhFour;
             var rr = new RectangleF(x, y - eight, this.Width - x - eight - ImageResources.picture.Width, forty);
 
@@ -244,7 +245,7 @@ namespace SrvSurvey.plotters
             {
                 var reward = game.systemBody!.firstFootFall ? organism.reward * 5 : organism.reward;
                 var txt2 = Util.credits(reward);
-                if (game.systemBody.firstFootFall) txt2 += " (FF bonus)";
+                if (game.systemBody.firstFootFall) txt2 += " " + RES("SuffixFF");
                 g.DrawString(
                     txt2,
                     GameColors.fontSmall, GameColors.brushCyan,
@@ -308,7 +309,7 @@ namespace SrvSurvey.plotters
 
             // use a simpler percentage
             var percent = 100.0f / (float)game.systemBody!.bioSignalCount * (float)game.systemBody.countAnalyzedBioSignals;
-            var txt = $" {(int)percent}%";
+            var txt = $" {percent:N0}%";
             var txtSz = g.MeasureString(txt, GameColors.fontSmall);
             var x = this.Width - pad - txtSz.Width - ten;
             var y = pad;
@@ -346,7 +347,7 @@ namespace SrvSurvey.plotters
             {
                 Game.log($"Why is game.systemBody!.organisms NULL ??");
                 g.DrawString(
-                    "Something is wrong. Please share logs.",
+                    RES("SomethingWrong"),
                     GameColors.fontSmall,
                     Brushes.OrangeRed,
                     x, y);
@@ -359,8 +360,8 @@ namespace SrvSurvey.plotters
             {
                 // TODO: use a widget
                 allScanned &= organism.analyzed;
-                var txt = organism.genusLocalized;
-                if (txt == null && organism.variantLocalized != null) txt = Util.getGenusDisplayNameFromVariant(organism.variantLocalized);
+                var txt = organism.genusLocalized ?? organism.bioMatch?.genus.locName;
+                if (txt == null && organism.variantLocalized != null) txt = Util.getGenusDisplayNameFromVariant(organism.variantLocalized); // TODO: <-- revisit!
                 if (organism.genus == "$Codex_Ent_Brancae_Name;" && organism.speciesLocalized != null) txt = organism.speciesLocalized;
                 if (organism.range > 0 && !organism.analyzed)
                 {
@@ -411,7 +412,7 @@ namespace SrvSurvey.plotters
                 while (n < body.geoSignalCount)
                 {
                     // TODO: use a widget
-                    var txt = $"Geo #{n + 1}";
+                    var txt = RES("GeoN", n + 1);
 
                     var sz = g.MeasureString(txt, GameColors.fontSmall);
                     if (x + sz.Width > this.Width - oneSix)
