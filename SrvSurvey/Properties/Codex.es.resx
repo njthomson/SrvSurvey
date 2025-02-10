@@ -79,7 +79,7 @@
     <comment>Bacterium</comment>
   </data>
   <data name="Bark Mounds">
-    <value>Montículos de corteza</value>
+    <value>Agrupaciones de corteza</value>
     <comment>Bark Mounds</comment>
   </data>
   <data name="Blue">
@@ -87,7 +87,7 @@
     <comment>Blue</comment>
   </data>
   <data name="Brain Trees">
-    <value>Árboles cerebrales</value>
+    <value>Árboles de cerebros</value>
     <comment>Brain Trees</comment>
   </data>
   <data name="Cactoida">
@@ -95,7 +95,7 @@
     <comment>Cactoida</comment>
   </data>
   <data name="Clypeus">
-    <value>Clípeo</value>
+    <value>Clypeus</value>
     <comment>Clypeus</comment>
   </data>
   <data name="Cobalt">
@@ -187,7 +187,7 @@
     <comment>Orange</comment>
   </data>
   <data name="Osseus">
-    <value>Óseo</value>
+    <value>Osseus</value>
     <comment>Osseus</comment>
   </data>
   <data name="Peach">
@@ -207,11 +207,11 @@
     <comment>Sage</comment>
   </data>
   <data name="Sinuous Tubers">
-    <value>Tubérculos sinuosos</value>
+    <value>Tubiformes sinuosos</value>
     <comment>Sinuous Tubers</comment>
   </data>
   <data name="Stratum">
-    <value>Estrato</value>
+    <value>Stratum</value>
     <comment>Stratum</comment>
   </data>
   <data name="Teal">
@@ -227,7 +227,7 @@
     <comment>Turquoise</comment>
   </data>
   <data name="Tussock">
-    <value>Mata</value>
+    <value>Tusoc</value>
     <comment>Tussock</comment>
   </data>
   <data name="White">

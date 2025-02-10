@@ -375,7 +375,7 @@
     <value>0</value>
   </data>
   <data name="label1.Text">
-    <value>&amp;Entrar en el sistema central:</value>
+    <value>&amp;Introduce el sistema central:</value>
     <comment>&amp;Enter central system:</comment>
   </data>
   <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -397,7 +397,7 @@
     <value>4</value>
   </data>
   <data name="label2.Text">
-    <value>y radio de la esfera:</value>
+    <value>&amp;radio de la esfera:</value>
     <comment>&amp;Sphere radius:</comment>
   </data>
   <data name="label2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -438,7 +438,7 @@
     <value>0</value>
   </data>
   <data name="label4.Text">
-    <value>El límite esférico ayuda a navegar a los sistemas dentro de una distancia dada de un sistema central.</value>
+    <value>Límite esférico ayuda a navegar por los sistemas dentro de la distancia dada a un sistema central.</value>
     <comment>Spherical limit helps navigating to systems within a given distance of a central system.</comment>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
