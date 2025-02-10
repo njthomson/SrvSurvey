@@ -59,11 +59,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ActiveFighter">
-    <value>Боец активен</value>
+    <value>Истребитель активен</value>
     <comment>Fighter is active</comment>
   </data>
   <data name="AGRI">
-    <value>АГРО</value>
+    <value>AGRI</value>
     <comment>AGRI</comment>
   </data>
   <data name="AutoDock1">
@@ -71,7 +71,7 @@
     <comment>Auto dock in progress</comment>
   </data>
   <data name="AutoDock2">
-    <value>Поддерживается автоматическая идентификация расчетов</value>
+    <value>Поддерживается автоматическая идентификация поселения</value>
     <comment>Settlement auto-identification supported</comment>
   </data>
   <data name="AutoDock3">
@@ -79,7 +79,7 @@
     <comment>Do not switch to external camera</comment>
   </data>
   <data name="CMD">
-    <value>СМД</value>
+    <value>CMD</value>
     <comment>CMD</comment>
   </data>
   <data name="Distance">
@@ -91,11 +91,11 @@
     <comment>Docking approved: pad #{0}</comment>
   </data>
   <data name="DockingDenied">
-    <value>Док-станция запрещена</value>
+    <value>Стыковка запрещена</value>
     <comment>Docking denied</comment>
   </data>
   <data name="DockingRequested">
-    <value>Требуется стыковка</value>
+    <value>Запрошена стыковка</value>
     <comment>Docking requested</comment>
   </data>
   <data name="EXT">
@@ -111,15 +111,15 @@
     <comment>Government</comment>
   </data>
   <data name="HAB">
-    <value>ЖИЛ</value>
+    <value>HAB</value>
     <comment>HAB</comment>
   </data>
   <data name="HasInterstellar">
-    <value>Доступны межзвездные фракции</value>
+    <value>Доступен Interstellar Factors</value>
     <comment>Interstellar factions available</comment>
   </data>
   <data name="HelpFoot0">
-    <value>Чтобы определить вручную, выполните следующие действия.</value>
+    <value>Для определения вручную:</value>
     <comment>To manually identify:</comment>
   </data>
   <data name="HelpFoot1">
@@ -131,7 +131,7 @@
     <comment>2. Place your left foot over the the center grooves</comment>
   </data>
   <data name="HelpFoot3">
-    <value>3. Повернитесь лицом к шевронам впереди вас слева от вас</value>
+    <value>3. Повернитесь лицом к шевронам впереди слева</value>
     <comment>3. Face with the chevrons ahead to your left</comment>
   </data>
   <data name="HelpFoot4">
@@ -147,15 +147,15 @@
     <comment>See the wiki for more info</comment>
   </data>
   <data name="HelpShip1">
-    <value>Расчет будет определен после следующих действий</value>
+    <value>Поселение будет определено после следующих действий</value>
     <comment>Settlement will be identified after next action</comment>
   </data>
   <data name="HelpShip2">
-    <value>Ручная идентификация</value>
+    <value>Для ручной идентификации</value>
     <comment>To manually identify</comment>
   </data>
   <data name="HelpShip3">
-    <value>Отправка '{0}' при закреплении</value>
+    <value>Отправьте '{0}' после стыковки</value>
     <comment>Send '{0}' when docked</comment>
   </data>
   <data name="Hostile">
@@ -163,7 +163,7 @@
     <comment>Hostile</comment>
   </data>
   <data name="IND">
-    <value>ИНД</value>
+    <value>IND</value>
     <comment>IND</comment>
   </data>
   <data name="Influence">
@@ -171,23 +171,23 @@
     <comment>Influence</comment>
   </data>
   <data name="KnownSettlement">
-    <value>Известное поселение</value>
+    <value>Известный тип поселения</value>
     <comment>Known settlement</comment>
   </data>
   <data name="LAB">
-    <value>ЛАБОРАТОРИЯ</value>
+    <value>LAB</value>
     <comment>LAB</comment>
   </data>
   <data name="ManualDock1">
-    <value>Выполняется ручная док-станция</value>
+    <value>Выполняется ручная стыковка</value>
     <comment>Manual docking in progress</comment>
   </data>
   <data name="ManualDock2">
-    <value>Идентификация расчетов будет отложена</value>
+    <value>Идентификация поселения будет отложена</value>
     <comment>Settlement identification will be delayed</comment>
   </data>
   <data name="ManualDock3">
-    <value>Рекомендуется автоматическая док-станция</value>
+    <value>Рекомендуется автоматическая стыковка</value>
     <comment>Auto dock recommended</comment>
   </data>
   <data name="MED">
@@ -195,7 +195,7 @@
     <comment>MED</comment>
   </data>
   <data name="NoSpace">
-    <value>Нет прокладок</value>
+    <value>Нет площадок</value>
     <comment>No pads available</comment>
   </data>
   <data name="Offenses">
@@ -207,19 +207,19 @@
     <comment>On approach</comment>
   </data>
   <data name="POW">
-    <value>ВОЕННОПЛЕННЫЙ</value>
+    <value>POW</value>
     <comment>POW</comment>
   </data>
   <data name="PWR">
-    <value>ВЭР</value>
+    <value>PWR</value>
     <comment>PWR</comment>
   </data>
   <data name="RES">
-    <value>ВИЭ</value>
+    <value>RES</value>
     <comment>RES</comment>
   </data>
   <data name="STO">
-    <value>СТО</value>
+    <value>STO</value>
     <comment>STO</comment>
   </data>
   <data name="TooLarge">
@@ -227,15 +227,15 @@
     <comment>Ship too large</comment>
   </data>
   <data name="Unknown">
-    <value>Неизвестный</value>
+    <value>Неизвестно</value>
     <comment>Unknown</comment>
   </data>
   <data name="UnknownTypeHeading">
-    <value>Неизвестный тип населенного пункта и рубрика</value>
+    <value>Неизвестный тип поселения и направление</value>
     <comment>Unknown settlement type and heading</comment>
   </data>
   <data name="UnkownHeading">
-    <value>Рубрика «Неизвестный населенный пункт»</value>
+    <value>Неизвестный тип поселения</value>
     <comment>Unknown settlement heading</comment>
   </data>
   <data name="YourRep">
@@ -247,7 +247,7 @@
     <comment>Zoom: {0}</comment>
   </data>
   <data name="ZoomHeaderAuto">
-    <value>Зум: {0} (Авто)</value>
+    <value>Увеличение: {0} (Авто)</value>
     <comment>Zoom: {0} (Auto)</comment>
   </data>
   <data name="ZoomHeaderMin">
