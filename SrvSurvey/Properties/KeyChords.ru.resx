@@ -87,7 +87,7 @@
     <comment>Force show the Body info overlay.</comment>
   </data>
   <data name="showFssInfo">
-    <value>Принудительно отобразить наложение с информацией об FSS.</value>
+    <value>Принудительно отобразить наложение с информацией о FSS.</value>
     <comment>Force show the FSS info overlay.</comment>
   </data>
   <data name="showJumpInfo">
