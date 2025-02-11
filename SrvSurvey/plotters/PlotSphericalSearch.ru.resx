@@ -62,7 +62,7 @@
     <value>True</value>
   </metadata>
   <data name="Boxel">
-    <value>Боксель:</value>
+    <value>Подсектор:</value>
     <comment>Boxel:</comment>
   </data>
   <data name="Distance">
@@ -70,11 +70,11 @@
     <comment>Distance:</comment>
   </data>
   <data name="DistanceExceeds">
-    <value>{0}лы - превышает {1} ly</value>
+    <value>{0}св. л - превышает {1} св. л</value>
     <comment>{0}ly - exceeds {1} ly</comment>
   </data>
   <data name="DistanceWithin">
-    <value>{0} - в пределах {1} л</value>
+    <value>{0} - в пределах {1} св. л</value>
     <comment>{0} - within {1} ly</comment>
   </data>
   <data name="From">
@@ -82,15 +82,15 @@
     <comment>From:</comment>
   </data>
   <data name="Next">
-    <value>Следующий:</value>
+    <value>Следующая:</value>
     <comment>Next:</comment>
   </data>
   <data name="To">
-    <value>Кому:</value>
+    <value>Куда:</value>
     <comment>To:</comment>
   </data>
   <data name="UnknownDist">
-    <value>Неизвестно (сюжетный маршрут)</value>
+    <value>Неизвестно (постройте маршрут)</value>
     <comment>Unknown (plot route)</comment>
   </data>
   <data name="Visited">
