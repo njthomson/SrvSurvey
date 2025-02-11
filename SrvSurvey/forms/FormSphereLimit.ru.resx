@@ -375,7 +375,7 @@
     <value>0</value>
   </data>
   <data name="label1.Text">
-    <value>&amp;Вход в центральную систему:</value>
+    <value>&amp;Введите центральную систему:</value>
     <comment>&amp;Enter central system:</comment>
   </data>
   <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -419,7 +419,7 @@
     <value>2</value>
   </data>
   <data name="label3.Text">
-    <value>Звездные позы:</value>
+    <value>Координаты звезды:</value>
     <comment>Star pos:</comment>
   </data>
   <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -438,7 +438,7 @@
     <value>0</value>
   </data>
   <data name="label4.Text">
-    <value>Сферический предел помогает осуществлять навигацию к системам, находящимся на заданном расстоянии от центральной системы.</value>
+    <value>Сферический поиск помогает осуществлять навигацию к системам, находящимся на заданном расстоянии от центральной системы.</value>
     <comment>Spherical limit helps navigating to systems within a given distance of a central system.</comment>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
@@ -457,7 +457,7 @@
     <value>6</value>
   </data>
   <data name="label5.Text">
-    <value>Действующая система:</value>
+    <value>Текущая система:</value>
     <comment>Current system:</comment>
   </data>
   <data name="label5.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -540,7 +540,7 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text">
-    <value>Сферический предел</value>
+    <value>Сферический поиск</value>
     <comment>Spherical limit</comment>
   </data>
   <data name="txtCurrentDistance.Location" type="System.Drawing.Point, System.Drawing">
