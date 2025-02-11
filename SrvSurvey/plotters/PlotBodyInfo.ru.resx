@@ -71,7 +71,7 @@
     <comment>Earth Like</comment>
   </data>
   <data name="FirstMapped">
-    <value>Впервые откартографирована</value>
+    <value>Впервые описана</value>
     <comment>First mapped</comment>
   </data>
   <data name="GeoSignals">
@@ -123,11 +123,11 @@
     <comment>Terraformable</comment>
   </data>
   <data name="Undiscovered">
-    <value>Необнаружена</value>
+    <value>Не открыта</value>
     <comment>Undiscovered</comment>
   </data>
   <data name="Unmapped">
-    <value>Неоткартографирована</value>
+    <value>Не описана</value>
     <comment>Unmapped</comment>
   </data>
   <data name="Volcanism">
