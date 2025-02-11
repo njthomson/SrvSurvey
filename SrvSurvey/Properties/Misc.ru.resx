@@ -59,11 +59,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="FormBoxelSearch_Activate"><!--!!!-->
+  <data name="FormBoxelSearch_Activate"><!--unused-->
     <value>Активировать</value>
     <comment>Activate</comment>
   </data>
-  <data name="FormBoxelSearch_Disable"><!--!!!-->
+  <data name="FormBoxelSearch_Disable"><!--unused-->
     <value>Отключить</value>
     <comment>Disable</comment>
   </data>
@@ -71,7 +71,7 @@
     <value>⏶ Скрыть список</value>
     <comment>⏶ Hide list</comment>
   </data>
-  <data name="FormBoxelSearch_NotViableMessage"><!--!!!-->
+  <data name="FormBoxelSearch_NotViableMessage"><!--unused-->
     <value>Системное имя не является именем подсектора.</value>
     <comment>This is not a boxel generated system name.</comment>
   </data>
@@ -83,15 +83,15 @@
     <value>⏷ Показать список</value>
     <comment>⏷ Show list</comment>
   </data>
-  <data name="FormBoxelSearch_SpanshUpdated"><!--!!!-->
+  <data name="FormBoxelSearch_SpanshUpdated"><!--unused-->
     <value>Spansh обновлено: {0}</value>
     <comment>Spansh updated: {0}</comment>
   </data>
-  <data name="FormBoxelSearch_SpanshUpdatedBodies"><!--!!!-->
+  <data name="FormBoxelSearch_SpanshUpdatedBodies"><!--unused-->
     <value>Spansh обновлено: {0}, тела: {1}</value>
     <comment>Spansh updated: {0}, bodies: {1}</comment>
   </data>
-  <data name="FormBoxelSearch_UndiscoveredSystem"><!--!!!-->
+  <data name="FormBoxelSearch_UndiscoveredSystem"><!--unused-->
     <value>Неоткрытая система</value>
     <comment>Undiscovered system</comment>
   </data>
