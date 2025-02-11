@@ -63,11 +63,11 @@
     <comment>Nearing ship departure distance</comment>
   </data>
   <data name="ScanOne_Long">
-    <value>Escanee uno:</value>
+    <value>Escaneo uno:</value>
     <comment>Scan one:</comment>
   </data>
   <data name="ScanOne_Short">
-    <value>primero:</value>
+    <value>1º:</value>
     <comment>1st:</comment>
   </data>
   <data name="ScanOneInvalid">
@@ -79,7 +79,7 @@
     <comment>Scan two:</comment>
   </data>
   <data name="ScanTwo_Short">
-    <value>Segundo:</value>
+    <value>2º:</value>
     <comment>2nd:</comment>
   </data>
   <data name="ScanTwoInvalid">
@@ -87,11 +87,11 @@
     <comment>Scan two: invalid</comment>
   </data>
   <data name="Ship">
-    <value>Navío:</value>
+    <value>Nave:</value>
     <comment>Ship:</comment>
   </data>
   <data name="SRV">
-    <value>SRV:</value>
+    <value>VRS:</value>
     <comment>SRV:</comment>
   </data>
 </root>

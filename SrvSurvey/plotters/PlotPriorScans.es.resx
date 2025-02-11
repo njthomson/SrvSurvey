@@ -63,11 +63,11 @@
     <comment>(Locations may not be that close to signals)</comment>
   </data>
   <data name="Header">
-    <value>Seguimiento de señales de {0} de Canonn:</value>
+    <value>Monitorizando {0} señales de Canonn:</value>
     <comment>Tracking {0} signals from Canonn:</comment>
   </data>
   <data name="NoMoreSignals">
-    <value>Ninguna señal no escaneada cumple con los criterios</value>
+    <value>Ninguna señal sin escanear cumple los criterios</value>
     <comment>No un-scanned signals meet criteria</comment>
   </data>
 </root>
