@@ -67,15 +67,15 @@
     <comment>All signals scanned</comment>
   </data>
   <data name="FooterAllScannedFF">
-    <value>Все сигналы сканируются с примененным бонусом FF</value>
+    <value>Все сигналы отсканированы с примененным бонусом FF</value>
     <comment>All signals scanned with FF bonus applied</comment>
   </data>
   <data name="FooterApplyFF">
-    <value>Применение бонуса за первую посещаемость</value>
+    <value>Применен бонус за первое посещение (FF)</value>
     <comment>Applying first footfall bonus</comment>
   </data>
   <data name="FooterUseCompScanner">
-    <value>Использование сканера композиции для установки целей отслеживания</value>
+    <value>Используйте Сканер состава для установки целей трекеров</value>
     <comment>Use Composition Scanner to set tracker targets</comment>
   </data>
   <data name="GeoN">
@@ -87,7 +87,7 @@
     <comment>Biological signals: {0} | Analyzed: {1}</comment>
   </data>
   <data name="SomethingWrong">
-    <value>Что-то здесь не так. Пожалуйста, поделитесь логами.</value>
+    <value>Что-то пошло не так. Пожалуйста, поделитесь логами.</value>
     <comment>Something is wrong. Please share logs.</comment>
   </data>
   <data name="SuffixFF">
@@ -95,7 +95,7 @@
     <comment>(FF bonus)</comment>
   </data>
   <data name="WarningStaleScans">
-    <value>ПРЕДУПРЕЖДЕНИЕ: Неполные {0} сканирования из {1}</value>
+    <value>ПРЕДУПРЕЖДЕНИЕ: Неполное сканирование {0} на {1}</value>
     <comment>WARNING: Incomplete {0} scans from {1}</comment>
   </data>
 </root>
