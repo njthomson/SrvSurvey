@@ -59,7 +59,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Aleoida">
-    <value>Алеоида</value>
+    <value>Алеоид</value>
     <comment>Aleoida</comment>
   </data>
   <data name="Amethyst">
@@ -67,7 +67,7 @@
     <comment>Amethyst</comment>
   </data>
   <data name="Amphora Plant">
-    <value>Растение амфора</value>
+    <value>Амфоры</value>
     <comment>Amphora Plant</comment>
   </data>
   <data name="Aquamarine">
@@ -75,11 +75,11 @@
     <comment>Aquamarine</comment>
   </data>
   <data name="Bacterium">
-    <value>Бактерия</value>
+    <value>Бактерии</value>
     <comment>Bacterium</comment>
   </data>
   <data name="Bark Mounds">
-    <value>Насыпи из коры</value>
+    <value>Корковые бугры</value>
     <comment>Bark Mounds</comment>
   </data>
   <data name="Blue">
@@ -91,11 +91,11 @@
     <comment>Brain Trees</comment>
   </data>
   <data name="Cactoida">
-    <value>Кактоида</value>
+    <value>Кактусоиды</value>
     <comment>Cactoida</comment>
   </data>
   <data name="Clypeus">
-    <value>Клипеус</value>
+    <value>Клипеусы</value>
     <comment>Clypeus</comment>
   </data>
   <data name="Cobalt">
@@ -103,15 +103,15 @@
     <comment>Cobalt</comment>
   </data>
   <data name="Concha">
-    <value>Ушная раковина</value>
+    <value>Моллюски</value>
     <comment>Concha</comment>
   </data>
   <data name="Crystalline Shards">
-    <value>Кристаллические осколки</value>
+    <value>Осколки кристаллов</value>
     <comment>Crystalline Shards</comment>
   </data>
   <data name="Cyan">
-    <value>Голубой</value>
+    <value>Сине-зелёный</value>
     <comment>Cyan</comment>
   </data>
   <data name="Electricae">
@@ -123,19 +123,19 @@
     <comment>Emerald</comment>
   </data>
   <data name="Fonticulua">
-    <value>Фонтикулуа</value>
+    <value>Фонтикулы</value>
     <comment>Fonticulua</comment>
   </data>
   <data name="Frutexa">
-    <value>Фрутекса</value>
+    <value>Кустарники</value>
     <comment>Frutexa</comment>
   </data>
   <data name="Fumerola">
-    <value>Фумерола</value>
+    <value>Дымники</value>
     <comment>Fumerola</comment>
   </data>
   <data name="Fungoida">
-    <value>Фунгоида</value>
+    <value>Фунгоиды</value>
     <comment>Fungoida</comment>
   </data>
   <data name="Gold">
@@ -143,7 +143,7 @@
     <comment>Gold</comment>
   </data>
   <data name="Green">
-    <value>Зеленый</value>
+    <value>Зелёный</value>
     <comment>Green</comment>
   </data>
   <data name="Grey">
@@ -155,23 +155,23 @@
     <comment>Indigo</comment>
   </data>
   <data name="Lime">
-    <value>Известь</value>
+    <value>Лайм</value>
     <comment>Lime</comment>
   </data>
   <data name="Luteolum Anemone">
-    <value>Ветреница лютеолумная</value>
+    <value>Анемон Luteolum</value>
     <comment>Luteolum Anemone</comment>
   </data>
   <data name="Magenta">
-    <value>Пурпурный</value>
+    <value>Маджента</value>
     <comment>Magenta</comment>
   </data>
   <data name="Maroon">
-    <value>Каштановый</value>
+    <value>Бордо</value>
     <comment>Maroon</comment>
   </data>
   <data name="Mauve">
-    <value>Розовато-лиловый</value>
+    <value>Сирень</value>
     <comment>Mauve</comment>
   </data>
   <data name="Mulberry">
@@ -183,11 +183,11 @@
     <comment>Ocher</comment>
   </data>
   <data name="Orange">
-    <value>Апельсин</value>
+    <value>Оранжевый</value>
     <comment>Orange</comment>
   </data>
   <data name="Osseus">
-    <value>Оссеус</value>
+    <value>Оссии</value>
     <comment>Osseus</comment>
   </data>
   <data name="Peach">
@@ -195,7 +195,7 @@
     <comment>Peach</comment>
   </data>
   <data name="Recepta">
-    <value>Рецепта</value>
+    <value>Рецептоиды</value>
     <comment>Recepta</comment>
   </data>
   <data name="Red">
@@ -203,23 +203,23 @@
     <comment>Red</comment>
   </data>
   <data name="Sage">
-    <value>Мудрец</value>
+    <value>Шалфей</value>
     <comment>Sage</comment>
   </data>
   <data name="Sinuous Tubers">
-    <value>Извилистые клубни</value>
+    <value>Волнистые клубни</value>
     <comment>Sinuous Tubers</comment>
   </data>
   <data name="Stratum">
-    <value>Пласт</value>
+    <value>Стратумы</value>
     <comment>Stratum</comment>
   </data>
   <data name="Teal">
-    <value>Чирок</value>
+    <value>Бирюзовый</value>
     <comment>Teal</comment>
   </data>
   <data name="Tubus">
-    <value>Тубус</value>
+    <value>Тубусы</value>
     <comment>Tubus</comment>
   </data>
   <data name="Turquoise">
@@ -227,7 +227,7 @@
     <comment>Turquoise</comment>
   </data>
   <data name="Tussock">
-    <value>Кочка</value>
+    <value>Дерновина</value>
     <comment>Tussock</comment>
   </data>
   <data name="White">

@@ -59,31 +59,31 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="NearingShipDistance">
-    <value>Приближение к дистанции отхода судна</value>
+    <value>Приближение к дистанции отпускания судна</value>
     <comment>Nearing ship departure distance</comment>
   </data>
   <data name="ScanOne_Long">
-    <value>Отсканируйте первый:</value>
+    <value>Первый скан:</value>
     <comment>Scan one:</comment>
   </data>
   <data name="ScanOne_Short">
-    <value>первый:</value>
+    <value>1-й:</value>
     <comment>1st:</comment>
   </data>
   <data name="ScanOneInvalid">
-    <value>Сканирование одно: неверно</value>
+    <value>Первый скан: недействителен</value>
     <comment>Scan one: invalid</comment>
   </data>
   <data name="ScanTwo_Long">
-    <value>Сканирование второе:</value>
+    <value>Второй скан:</value>
     <comment>Scan two:</comment>
   </data>
   <data name="ScanTwo_Short">
-    <value>Второй:</value>
+    <value>2-й:</value>
     <comment>2nd:</comment>
   </data>
   <data name="ScanTwoInvalid">
-    <value>Сканирование второе: неверно</value>
+    <value>Второй скан: недействителен</value>
     <comment>Scan two: invalid</comment>
   </data>
   <data name="Ship">
@@ -91,7 +91,7 @@
     <comment>Ship:</comment>
   </data>
   <data name="SRV">
-    <value>СРВ:</value>
+    <value>ТРП:</value>
     <comment>SRV:</comment>
   </data>
 </root>

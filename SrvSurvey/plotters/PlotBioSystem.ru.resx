@@ -59,7 +59,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BodyBio_Header">
-    <value>Биологические сигналы организма {0}: {1}</value>
+    <value>Биологические сигналы тела {0}: {1}</value>
     <comment>Body {0} bio signals: {1}</comment>
   </data>
   <data name="DssRequired">
@@ -71,7 +71,7 @@
     <comment>(FF bonus: {0})</comment>
   </data>
   <data name="FssRequired">
-    <value>Требуется системная FSS</value>
+    <value>Требуется FSS системы</value>
     <comment>System FSS required</comment>
   </data>
   <data name="GeoSignals">

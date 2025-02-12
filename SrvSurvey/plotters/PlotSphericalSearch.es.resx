@@ -70,27 +70,27 @@
     <comment>Distance:</comment>
   </data>
   <data name="DistanceExceeds">
-    <value>{0}ly - supera {1} ly</value>
+    <value>{0} al - excede {1} al</value>
     <comment>{0}ly - exceeds {1} ly</comment>
   </data>
   <data name="DistanceWithin">
-    <value>{0} - dentro de {1} ly</value>
+    <value>{0} - dentro de {1} al</value>
     <comment>{0} - within {1} ly</comment>
   </data>
   <data name="From">
-    <value>De:</value>
+    <value>Desde:</value>
     <comment>From:</comment>
   </data>
   <data name="Next">
-    <value>Próximo:</value>
+    <value>Siguiente:</value>
     <comment>Next:</comment>
   </data>
   <data name="To">
-    <value>Para:</value>
+    <value>Hacia:</value>
     <comment>To:</comment>
   </data>
   <data name="UnknownDist">
-    <value>Desconocido (ruta de la trama)</value>
+    <value>Desconocido (trazar ruta)</value>
     <comment>Unknown (plot route)</comment>
   </data>
   <data name="Visited">

@@ -59,11 +59,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="FormBoxelSearch_Activate">
+  <data name="FormBoxelSearch_Activate"><!--unused-->
     <value>Активировать</value>
     <comment>Activate</comment>
   </data>
-  <data name="FormBoxelSearch_Disable">
+  <data name="FormBoxelSearch_Disable"><!--unused-->
     <value>Отключить</value>
     <comment>Disable</comment>
   </data>
@@ -71,27 +71,27 @@
     <value>⏶ Скрыть список</value>
     <comment>⏶ Hide list</comment>
   </data>
-  <data name="FormBoxelSearch_NotViableMessage">
-    <value>Это не системное имя, сгенерированное boxel.</value>
+  <data name="FormBoxelSearch_NotViableMessage"><!--unused-->
+    <value>Системное имя не является именем подсектора.</value>
     <comment>This is not a boxel generated system name.</comment>
   </data>
   <data name="FormBoxelSearch_SearchNotActive">
-    <value>Поиск по коробке не активен.</value>
+    <value>Поиск по подсектору не активен.</value>
     <comment>Boxel search is not active.</comment>
   </data>
   <data name="FormBoxelSearch_ShowList">
     <value>⏷ Показать список</value>
     <comment>⏷ Show list</comment>
   </data>
-  <data name="FormBoxelSearch_SpanshUpdated">
+  <data name="FormBoxelSearch_SpanshUpdated"><!--unused-->
     <value>Spansh обновлено: {0}</value>
     <comment>Spansh updated: {0}</comment>
   </data>
-  <data name="FormBoxelSearch_SpanshUpdatedBodies">
+  <data name="FormBoxelSearch_SpanshUpdatedBodies"><!--unused-->
     <value>Spansh обновлено: {0}, тела: {1}</value>
     <comment>Spansh updated: {0}, bodies: {1}</comment>
   </data>
-  <data name="FormBoxelSearch_UndiscoveredSystem">
+  <data name="FormBoxelSearch_UndiscoveredSystem"><!--unused-->
     <value>Неоткрытая система</value>
     <comment>Undiscovered system</comment>
   </data>
@@ -100,23 +100,23 @@
     <comment>Visited: {0}</comment>
   </data>
   <data name="FormBoxelSearch_VisitedCounts">
-    <value>Завершено {2} {3} коробок, {0} систем {1} в текущих коробках</value>
+    <value>Завершено {2} из {3} подсекторов, {0} систем из {1} в текущем подсекторе</value>
     <comment>Completed {2} of {3} boxels, {0} of {1} systems in current boxel</comment>
   </data>
   <data name="NetSysData_Bodies">
-    <value>Тело</value>
+    <value>Тела</value>
     <comment>Bodies</comment>
   </data>
   <data name="NetSysData_DiscoveredAll">
-    <value>Обнаружено, {0} тела</value>
+    <value>Открыта, {0} тел</value>
     <comment>Discovered, {0} bodies</comment>
   </data>
   <data name="NetSysData_DiscoveredPartial">
-    <value>Обнаружено ({0} из {1})</value>
+    <value>Открыта ({0} из {1})</value>
     <comment>Discovered ({0} of {1})</comment>
   </data>
   <data name="NetSysData_Encoded">
-    <value>(Закодировано)</value>
+    <value>(Данные)</value>
     <comment>(Encoded)</comment>
   </data>
   <data name="NetSysData_Engineer">
@@ -124,7 +124,7 @@
     <comment>(Engineer)</comment>
   </data>
   <data name="NetSysData_FC">
-    <value>ФК</value>
+    <value>FC</value>
     <comment>FC</comment>
   </data>
   <data name="NetSysData_Genus">
@@ -140,7 +140,7 @@
     <comment>(Human)</comment>
   </data>
   <data name="NetSysData_Manufactured">
-    <value>(Изготовлено)</value>
+    <value>(Производственные)</value>
     <comment>(Manufactured)</comment>
   </data>
   <data name="NetSysData_MaterialTrader">
@@ -148,23 +148,23 @@
     <comment>Material Trader</comment>
   </data>
   <data name="NetSysData_Outposts">
-    <value>Форпосты</value>
+    <value>Аванпосты</value>
     <comment>Outposts</comment>
   </data>
   <data name="NetSysData_Raw">
-    <value>(Сырой)</value>
+    <value>(Сырьё)</value>
     <comment>(Raw)</comment>
   </data>
   <data name="NetSysData_Settlements">
-    <value>Поселений</value>
+    <value>Поселения</value>
     <comment>Settlements</comment>
   </data>
   <data name="NetSysData_StarPorts">
-    <value>Звездообразные порты</value>
+    <value>Космопорты</value>
     <comment>Star ports</comment>
   </data>
   <data name="NetSysData_TechBroker">
-    <value>Технический брокер</value>
+    <value>Техноброкер</value>
     <comment>Tech Broker</comment>
   </data>
   <data name="NetSysData_UndiscoveredSystem">
@@ -180,7 +180,7 @@
     <comment>Wars</comment>
   </data>
   <data name="PlotGalMap_CountGenus">
-    <value>Род {0}x</value>
+    <value>{0}x Род</value>
     <comment>{0}x Genus</comment>
   </data>
   <data name="PlotGalMap_Current">
@@ -196,7 +196,7 @@
     <comment>Destination:</comment>
   </data>
   <data name="PlotGalMap_DiscoveredBy">
-    <value>К {0}, {1}</value>
+    <value>{0}, {1}</value>
     <comment>By {0}, {1}</comment>
   </data>
   <data name="PlotGalMap_LastUpdated">
@@ -216,31 +216,31 @@
     <comment>Total: ► {0} jumps ► Distance: {1} ly</comment>
   </data>
   <data name="PlotGalMap_Selected">
-    <value>Выбранный:</value>
+    <value>Выбранная:</value>
     <comment>Selected:</comment>
   </data>
   <data name="PlotSysStatus_BioSignals">
-    <value>| {0}x Bio сигнализирует о: </value>
+    <value>| {0}x биосигналов на: </value>
     <comment>| {0}x Bio signals on: </comment>
   </data>
   <data name="PlotSysStatus_DssRemaining">
-    <value> {0}x кузова: </value>
+    <value> {0}x тел: </value>
     <comment> {0}x bodies: </comment>
   </data>
   <data name="PlotSysStatus_FssCompleteLong">
-    <value>ФСС завершена {0}%</value>
+    <value>FSS завершен на {0}%</value>
     <comment>FSS {0}% complete</comment>
   </data>
   <data name="PlotSysStatus_FssCompleteShort">
-    <value>ФСС {0}%</value>
+    <value>FSS {0}%</value>
     <comment>FSS {0}%</comment>
   </data>
   <data name="PlotSysStatus_FssNotStarted">
-    <value>FSS не запущена</value>
+    <value>FSS не запущен</value>
     <comment>FSS not started</comment>
   </data>
   <data name="PlotSysStatus_Header">
-    <value>Опрос DSS: </value>
+    <value>Исследование DSS: </value>
     <comment>DSS survey: </comment>
   </data>
   <data name="PlotSysStatus_NextSystem">
@@ -248,18 +248,18 @@
     <comment>Next system:</comment>
   </data>
   <data name="PlotSysStatus_NoDssMeet">
-    <value>Никакой</value>
+    <value>Нет</value>
     <comment>None</comment>
   </data>
   <data name="PlotSysStatus_NonBodySignals">
-    <value>► {0} посторонние сигналы</value>
+    <value>► {0} посторонних сигналов</value>
     <comment>► {0} non-body signals</comment>
   </data>
   <data name="Settings_CreateFolderNotFound">
     <value>Не удается найти папку:
 {0}
 
-Хотели бы вы его создать?</value>
+Хотели бы вы её создать?</value>
     <comment>Cannot find folder:
 {0}
 

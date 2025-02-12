@@ -59,87 +59,87 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Aleoida">
-    <value>пиво</value>
+    <value>ale</value>
     <comment>ale</comment>
   </data>
   <data name="Amphora Plant">
-    <value>ампер</value>
+    <value>amp</value>
     <comment>amp</comment>
   </data>
   <data name="Bacterium">
-    <value>БАК</value>
+    <value>bac</value>
     <comment>bac</comment>
   </data>
   <data name="Bark Mounds">
-    <value>бар</value>
+    <value>bar</value>
     <comment>bar</comment>
   </data>
   <data name="Brain Trees">
-    <value>бюстгальтер</value>
+    <value>bra</value>
     <comment>bra</comment>
   </data>
   <data name="Cactoida">
-    <value>САЦ</value>
+    <value>cac</value>
     <comment>cac</comment>
   </data>
   <data name="Clypeus">
-    <value>Кли</value>
+    <value>cly</value>
     <comment>cly</comment>
   </data>
   <data name="Concha">
-    <value>разводить</value>
+    <value>con</value>
     <comment>con</comment>
   </data>
   <data name="Crystalline Shards">
-    <value>плакать</value>
+    <value>cry</value>
     <comment>cry</comment>
   </data>
   <data name="Electricae">
-    <value>Эле</value>
+    <value>ele</value>
     <comment>ele</comment>
   </data>
   <data name="Fonticulua">
-    <value>фон</value>
+    <value>fon</value>
     <comment>fon</comment>
   </data>
   <data name="Frutexa">
-    <value>фру</value>
+    <value>fru</value>
     <comment>fru</comment>
   </data>
   <data name="Fumerola">
-    <value>ФУМ</value>
+    <value>fum</value>
     <comment>fum</comment>
   </data>
   <data name="Fungoida">
-    <value>веселье</value>
+    <value>fun</value>
     <comment>fun</comment>
   </data>
   <data name="Luteolum Anemone">
-    <value>а́н</value>
+    <value>ane</value>
     <comment>ane</comment>
   </data>
   <data name="Osseus">
-    <value>OSS</value>
+    <value>oss</value>
     <comment>oss</comment>
   </data>
   <data name="Recepta">
-    <value>рек</value>
+    <value>rec</value>
     <comment>rec</comment>
   </data>
   <data name="Sinuous Tubers">
-    <value>грех</value>
+    <value>sin</value>
     <comment>sin</comment>
   </data>
   <data name="Stratum">
-    <value>Ул</value>
+    <value>str</value>
     <comment>str</comment>
   </data>
   <data name="Tubus">
-    <value>кадка</value>
+    <value>tub</value>
     <comment>tub</comment>
   </data>
   <data name="Tussock">
-    <value>тус</value>
+    <value>tus</value>
     <comment>tus</comment>
   </data>
 </root>

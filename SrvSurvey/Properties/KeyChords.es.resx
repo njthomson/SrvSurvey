@@ -59,79 +59,79 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="copyNextBoxel">
-    <value>En gal-map, copie el siguiente sistema de búsqueda de boxel en el portapapeles.</value>
+    <value>En el mapa de la galaxia, copia el siguiente sistema de búsqueda de boxel en el portapapeles.</value>
     <comment>In gal-map, copy the next boxel search system to clipboard.</comment>
   </data>
   <data name="mapBeHuge">
-    <value>Alterna para que el mapa ocupe la mitad de la pantalla, solo en Asentamientos humanos.</value>
+    <value>Alterna el tamaño del mapa para que ocupe la mitad de la pantalla, solo en asentamientos Humanos.</value>
     <comment>Toggles making the map fill half the screen, at Human settlements only.</comment>
   </data>
   <data name="mapZoomAuto">
-    <value>Restablezca el zoom a los valores predeterminados, en los sitios Humanos y Guardianes.</value>
+    <value>Restablece el zoom a los valores predeterminados, en los sitios Humanos y Guardián.</value>
     <comment>Reset the zoom to default, at Human and Guardian sites.</comment>
   </data>
   <data name="mapZoomIn">
-    <value>Acércate a los mapas de los sitios de Human y Guardian.</value>
+    <value>Amplia el mapa en los sitios Humanos y Guardián.</value>
     <comment>Zoom in on maps at Human and Guardian sites.</comment>
   </data>
   <data name="mapZoomOut">
-    <value>Aléjate de los mapas en los sitios de Humanos y Guardianes.</value>
+    <value>Aleja el mapa en los sitios Humanos y Guardián.</value>
     <comment>Zoom out on maps at Human and Guardian sites.</comment>
   </data>
   <data name="pasteGalMap">
-    <value>Pegar el texto del portapapeles cuando esté en Gal-Map</value>
+    <value>Pega el texto del portapapeles cuando estás en el mapa de la galaxia.</value>
     <comment>Paste clipboard text when in Gal-Map</comment>
   </data>
   <data name="showBodyInfo">
-    <value>Forzar la visualización de la superposición de información del cuerpo.</value>
+    <value>Fuerza la visualización de la superposición de información del Cuerpo.</value>
     <comment>Force show the Body info overlay.</comment>
   </data>
   <data name="showFssInfo">
-    <value>Forzar la visualización de la superposición de información FSS.</value>
+    <value>Fuerza la visualización de la superposición de información del ECS.</value>
     <comment>Force show the FSS info overlay.</comment>
   </data>
   <data name="showJumpInfo">
-    <value>Forzar la alternancia de la superposición de salto FSD sin comenzar a saltar.</value>
+    <value>Fuerza la alternancia de la superposición del salto de distorsión sin empezar a saltar.</value>
     <comment>Force toggle the FSD jump overlay without starting to jump.</comment>
   </data>
   <data name="showSystemNotes">
-    <value>Hacer visible la ventana de notas del sistema.</value>
+    <value>Hace visible la ventana de notas del sistema.</value>
     <comment>Make the system notes window visible.</comment>
   </data>
   <data name="toggleAllVisibility">
-    <value>Alterna la visibilidad de todas las ventanas superpuestas.</value>
+    <value>Alterna la visibilidad de todos los paneles superpuestos.</value>
     <comment>Toggles visibility of all overlay windows.</comment>
   </data>
   <data name="track1">
-    <value>Agregar o quitar rastreador #1</value>
+    <value>Agrega o quita el marcador #1</value>
     <comment>Add or remove tracker #1</comment>
   </data>
   <data name="track2">
-    <value>Agregar o quitar rastreador #2</value>
+    <value>Agrega o quita el marcador #2</value>
     <comment>Add or remove tracker #2</comment>
   </data>
   <data name="track3">
-    <value>Agregar o quitar rastreador #3</value>
+    <value>Agrega o quita el marcador #3</value>
     <comment>Add or remove tracker #3</comment>
   </data>
   <data name="track4">
-    <value>Agregar o quitar el rastreador #4</value>
+    <value>Agrega o quita el marcador #4</value>
     <comment>Add or remove tracker #4</comment>
   </data>
   <data name="track5">
-    <value>Agregar o quitar el rastreador #5</value>
+    <value>Agrega o quita el marcador #5</value>
     <comment>Add or remove tracker #5</comment>
   </data>
   <data name="track6">
-    <value>Agregar o quitar el rastreador #6</value>
+    <value>Agrega o quita el marcador #6</value>
     <comment>Add or remove tracker #6</comment>
   </data>
   <data name="track7">
-    <value>Agregar o quitar rastreador #7</value>
+    <value>Agrega o quita el marcador #7</value>
     <comment>Add or remove tracker #7</comment>
   </data>
   <data name="track8">
-    <value>Agregar o quitar el rastreador #8</value>
+    <value>Agrega o quita el marcador #8</value>
     <comment>Add or remove tracker #8</comment>
   </data>
 </root>

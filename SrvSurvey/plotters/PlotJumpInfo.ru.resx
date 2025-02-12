@@ -67,11 +67,11 @@
     <comment>Beacon</comment>
   </data>
   <data name="GuardianRuins">
-    <value>Руины: {0}</value>
+    <value>Руин: {0}</value>
     <comment>Ruins: {0}</comment>
   </data>
   <data name="GuardianStructures">
-    <value>Конструкции: {0}</value>
+    <value>Конструкций: {0}</value>
     <comment>Structures: {0}</comment>
   </data>
   <data name="JumpCounts">
@@ -91,7 +91,7 @@
     <comment>Next jump:</comment>
   </data>
   <data name="SpecialGuardian">
-    <value>Опекун</value>
+    <value>Стражи</value>
     <comment>Guardian</comment>
   </data>
   <data name="SpecialHopInfo">
@@ -103,19 +103,19 @@
     <comment>,</comment>
   </data>
   <data name="SpecialNowEntering">
-    <value>Сейчас входим</value>
+    <value>Переход в</value>
     <comment>Now entering</comment>
   </data>
   <data name="SpecialRouteHop">
-    <value>Переход по маршруту</value>
+    <value>Прыжок по маршруту</value>
     <comment>Route hop</comment>
   </data>
   <data name="StarClass">
-    <value>Класс: {0}</value>
+    <value>класс: {0}</value>
     <comment>class: {0}</comment>
   </data>
   <data name="TrafficInfo">
-    <value>Трафик за последние 24 часа: {0}, неделя: {1}, когда-либо: {2}</value>
+    <value>Трафик за последние 24 часа: {0}, неделю: {1}, всё время: {2}</value>
     <comment>Traffic last 24 hours: {0}, week: {1}, ever: {2}</comment>
   </data>
 </root>

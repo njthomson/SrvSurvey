@@ -59,7 +59,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CountGenus">
-    <value>{0} Género</value>
+    <value>{0} Organismos</value>
     <comment>{0} Genus</comment>
   </data>
   <data name="CountGeo">
@@ -67,23 +67,23 @@
     <comment>{0} Geo</comment>
   </data>
   <data name="Footer1">
-    <value>Valor de escaneo | Valor DSS</value>
+    <value>Valor de escaneo | Valor de mapeo</value>
     <comment>Scan value | DSS value</comment>
   </data>
   <data name="Footer2">
-    <value>🌎 Terraformable\n🚀 Aterrizable ⚑ sin descubrir</value>
+    <value>🌎 Terraformable\n🚀 Aterrizable ⚑ Sin descubrir</value>
     <comment>🌎 Terraformable\n🚀 Landable ⚑ Undiscovered</comment>
   </data>
   <data name="HidingBodies">
-    <value>( Ocultando cuerpos &lt; {0} )</value>
+    <value>( Ocultando &lt; {0} cuerpos)</value>
     <comment>( Hiding bodies &lt; {0} )</comment>
   </data>
   <data name="ScannedAllBodies">
-    <value>Escaneó todos los cuerpos {0}: {0}</value>
+    <value>Escaneados todos los {0} cuerpos: {0}</value>
     <comment>Scanned all {0} bodies: {0}</comment>
   </data>
   <data name="ScannedBodies">
-    <value>Cuerpos {0} escaneados: {0}</value>
+    <value>Cuerpos escaneados {0}: {0}</value>
     <comment>Scanned {0} bodies: {0}</comment>
   </data>
   <data name="ScanToPopulate">

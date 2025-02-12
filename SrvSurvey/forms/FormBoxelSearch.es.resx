@@ -624,7 +624,7 @@
     <value>14</value>
   </data>
   <data name="btnBegin.Text">
-    <value>&amp;Comienzo</value>
+    <value>&amp;Iniciar</value>
     <comment>&amp;Begin</comment>
   </data>
   <data name="btnBoxelEmpty.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -643,7 +643,7 @@
     <value>10</value>
   </data>
   <data name="btnBoxelEmpty.Text">
-    <value>&amp;Alternar caja vacía</value>
+    <value>&amp;Alternar vaciar boxel</value>
     <comment>&amp;Toggle boxel empty</comment>
   </data>
   <data name="btnConfig.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -806,7 +806,7 @@
     <value>15</value>
   </data>
   <data name="checkAutoCopy.Text">
-    <value>&amp;Copia automática en el mapa gal</value>
+    <value>&amp;Auto-copiar en mapa galáctico</value>
     <comment>&amp;Auto-copy in gal map</comment>
   </data>
   <data name="checkCompleteOnEnterSystem.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -825,7 +825,7 @@
     <value>16</value>
   </data>
   <data name="checkCompleteOnEnterSystem.Text">
-    <value>Entrar en un sistema</value>
+    <value>Se entra al sistema</value>
     <comment>Entering a system</comment>
   </data>
   <data name="checkCompleteOnFssAllBodies.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -844,7 +844,7 @@
     <value>17</value>
   </data>
   <data name="checkCompleteOnFssAllBodies.Text">
-    <value>FSS en todos los cuerpos</value>
+    <value>Se escanean todos los cuerpos</value>
     <comment>FSS'ing all bodies</comment>
   </data>
   <data name="checkSkipVisited.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -866,7 +866,7 @@
     <value>12</value>
   </data>
   <data name="checkSkipVisited.Text">
-    <value>Saltar sistemas que ya he visitado antes de la fecha</value>
+    <value>Saltar sistemas visitados anteriores a</value>
     <comment>Skip systems I've already visited before date</comment>
   </data>
   <data name="checkSpinKnownToSpansh.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -888,7 +888,7 @@
     <value>13</value>
   </data>
   <data name="checkSpinKnownToSpansh.Text">
-    <value>Saltar sistemas conocidos por Spansh antes de la fecha</value>
+    <value>Saltar sistemas conocidos por Spansh anteriores a</value>
     <comment>Skip systems known to Spansh before date</comment>
   </data>
   <data name="colCompleted.Text">
@@ -909,7 +909,7 @@
     <value>80</value>
   </data>
   <data name="colSpansh.Text">
-    <value>Español Actualizado</value>
+    <value>Actualizado en Spansh</value>
     <comment>Spansh Updated</comment>
   </data>
   <data name="colSpansh.Width" type="System.Int32, mscorlib">
@@ -1016,7 +1016,7 @@
     <value>18</value>
   </data>
   <data name="label1.Text">
-    <value>Boxel topográfico:</value>
+    <value>Analizando boxel:</value>
     <comment>Surveying boxel:</comment>
   </data>
   <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -1038,7 +1038,7 @@
     <value>1</value>
   </data>
   <data name="label2.Text">
-    <value>Mida distancias desde:</value>
+    <value>Medir distancias desde:</value>
     <comment>Measure distances from:</comment>
   </data>
   <data name="label3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -1060,7 +1060,7 @@
     <value>16</value>
   </data>
   <data name="label3.Text">
-    <value>NOTA: La función de búsqueda de Boxel es incompleta y experimental</value>
+    <value>NOTA: La función de búsqueda por Boxels está inacabada y es experimental</value>
     <comment>NOTE: Boxel search feature is incomplete and experimental</comment>
   </data>
   <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -1082,7 +1082,7 @@
     <value>15</value>
   </data>
   <data name="label4.Text">
-    <value>Considere que un sistema está completo cuando:</value>
+    <value>Considerar el sistema completado cuando:</value>
     <comment>Consider a system complete when:</comment>
   </data>
   <data name="label5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -1101,7 +1101,7 @@
     <value>18</value>
   </data>
   <data name="label5.Text">
-    <value>Encuesta hasta el código de masas:</value>
+    <value>Analizar hasta el código de masa:</value>
     <comment>Survey down to mass code:</comment>
   </data>
   <data name="label6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -1120,7 +1120,7 @@
     <value>26</value>
   </data>
   <data name="label6.Text">
-    <value>A la fecha:</value>
+    <value>la fecha:</value>
     <comment>As of date:</comment>
   </data>
   <data name="label7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -1161,9 +1161,9 @@
     <value>28</value>
   </data>
   <data name="labelGraphic.Text">
-    <value>Un boxel es un cubo de espacio que contiene sistemas estelares generados por procedimientos. Los tamaños de los cubos dependen del código de masa: las cajas 'a' tienen 10 años de ancho, las cajas 'h' tienen 1280 años.
+    <value>Un boxel es un cubo de espacio que contiene sistemas estelares generados proceduralmente. Los tamaños de los cubos dependen del código de masa: los boxel 'a' son de 10al de ancho, los boxel 'h' son de  1280al.
 
-Cada caja contiene 8 niños, dispuestos en 2 filas de 4 cuadrantes, cada uno con sus propios sistemas estelares generados.</value>
+Cada boxel contiene 8 nodos, dispuestos en 2 filas de 4 cuadrantes, cada uno con sus propios sistemas estelares generados.</value>
     <comment>A boxel is a cube of space containing procedurally generated star systems. Cube sizes depend on mass code: 'a' boxels are 10 ly across, 'h' boxels are 1280 ly.
 
 Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with their own generated star systems.</comment>
@@ -1209,7 +1209,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>22</value>
   </data>
   <data name="lblBoxelCount.Text">
-    <value>(Contiene X cajas)</value>
+    <value>(Contiene X boxels)</value>
     <comment>(Contains X boxels)</comment>
   </data>
   <data name="lblConfigHeader.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -1231,7 +1231,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>21</value>
   </data>
   <data name="lblConfigHeader.Text">
-    <value>Ingrese al cuadro superior para inspeccionar. Todos los boxels infantiles se incluirán hasta el código de masa inferior:</value>
+    <value>Introduce el boxel superior a analizar. Todos los boxels hijos se incluirán hasta el código de masa más pequeño:</value>
     <comment>Enter the top boxel to survey. All child boxels will be included down to the lower mass code:</comment>
   </data>
   <data name="lblMaxNum.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -1426,7 +1426,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>500, 0</value>
   </data>
   <data name="$this.Text">
-    <value>Búsqueda de Boxel (Experimental)</value>
+    <value>Búsqueda por Boxel (Experimental)</value>
     <comment>Boxel Search (Experimental)</comment>
   </data>
   <data name="txtConfigBoxel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">

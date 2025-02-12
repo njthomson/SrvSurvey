@@ -63,7 +63,7 @@
     <comment>Discovered by {0} {1}</comment>
   </data>
   <data name="GuardianBeacon">
-    <value>Almenara</value>
+    <value>Baliza</value>
     <comment>Beacon</comment>
   </data>
   <data name="GuardianRuins">
@@ -79,7 +79,7 @@
     <comment>#{0} of {1}</comment>
   </data>
   <data name="JumpDistance">
-    <value>{0}ly</value>
+    <value>{0} al</value>
     <comment>{0}ly</comment>
   </data>
   <data name="LastUpdated">
@@ -87,7 +87,7 @@
     <comment>Last updated: {0}</comment>
   </data>
   <data name="NextJump">
-    <value>Próximo salto:</value>
+    <value>Siguiente salto:</value>
     <comment>Next jump:</comment>
   </data>
   <data name="SpecialGuardian">
@@ -103,11 +103,11 @@
     <comment>,</comment>
   </data>
   <data name="SpecialNowEntering">
-    <value>Ahora entrando</value>
+    <value>Llegando a</value>
     <comment>Now entering</comment>
   </data>
   <data name="SpecialRouteHop">
-    <value>Salto de ruta</value>
+    <value>Escala en ruta</value>
     <comment>Route hop</comment>
   </data>
   <data name="StarClass">
@@ -115,7 +115,7 @@
     <comment>class: {0}</comment>
   </data>
   <data name="TrafficInfo">
-    <value>El tráfico dura 24 horas: {0}, semana: {1}, siempre: {2}</value>
+    <value>Tráfico últimas 24 horas: {0}, semana: {1}, siempre: {2}</value>
     <comment>Traffic last 24 hours: {0}, week: {1}, ever: {2}</comment>
   </data>
 </root>
