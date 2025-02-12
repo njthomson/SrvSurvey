@@ -63,134 +63,167 @@
   </resheader>
   <data name="Blight">
     <value>* BLIGHT →→→!</value>
-    <comment>Blight</comment>
+    <comment>Faction state Blight</comment>
+    <source>Blight</source>
   </data>
   <data name="Boom">
     <value>* BOOM →→→!</value>
-    <comment>Boom</comment>
+    <comment>Faction state Boom</comment>
+    <source>Boom</source>
   </data>
   <data name="Bust">
     <value>* BUST →→→!</value>
-    <comment>Bust</comment>
+    <comment>Faction state Bust</comment>
+    <source>Bust</source>
   </data>
   <data name="CivilLiberty">
     <value>* CIVIL LIBERTY →→→!</value>
-    <comment>Civil Liberty</comment>
+    <comment>Faction state CivilLiberty</comment>
+    <source>Civil Liberty</source>
   </data>
   <data name="CivilUnrest">
     <value>* CIVIL UNREST →→→!</value>
-    <comment>Civil Unrest</comment>
+    <comment>Faction state CivilUnrest</comment>
+    <source>Civil Unrest</source>
   </data>
   <data name="CivilWar">
     <value>* CIVIL WAR →→→!</value>
-    <comment>Civil War</comment>
+    <comment>Faction state CivilWar</comment>
+    <source>Civil War</source>
   </data>
   <data name="ColdWar">
     <value>* COLD WAR →→→!</value>
-    <comment>Cold War</comment>
+    <comment>Faction state ColdWar</comment>
+    <source>Cold War</source>
   </data>
   <data name="Colonisation">
     <value>* COLONISATION →→→!</value>
-    <comment>Colonisation</comment>
+    <comment>Faction state Colonisation</comment>
+    <source>Colonisation</source>
   </data>
   <data name="Drought">
     <value>* DROUGHT →→→!</value>
-    <comment>Drought</comment>
+    <comment>Faction state Drought, but translated as Blight</comment>
+    <source>Drought</source>
   </data>
   <data name="Election">
     <value>* ELECTION →→→!</value>
-    <comment>Election</comment>
+    <comment>Faction state Election</comment>
+    <source>Election</source>
   </data>
   <data name="Expansion">
     <value>* EXPANSION →→→!</value>
-    <comment>Expansion</comment>
+    <comment>Faction state Expansion</comment>
+    <source>Expansion</source>
   </data>
   <data name="Famine">
     <value>* FAMINE →→→!</value>
-    <comment>Famine</comment>
+    <comment>Faction state Famine</comment>
+    <source>Famine</source>
   </data>
   <data name="HistoricEvent">
     <value>* HISTORIC EVENT →→→!</value>
-    <comment>Historic Event</comment>
+    <comment>Faction state HistoricEvent</comment>
+    <source>Historic Event</source>
   </data>
   <data name="Incursion">
     <value>* INCURSION →→→!</value>
-    <comment>Incursion</comment>
+    <comment>Faction state Incursion</comment>
+    <source>Incursion</source>
   </data>
   <data name="InfrastructureFailure">
     <value>* INFRASTRUCTURE FAILURE →→→!</value>
-    <comment>Infrastructure Failure</comment>
+    <comment>Faction state InfrastructureFailure</comment>
+    <source>Infrastructure Failure</source>
   </data>
   <data name="Investment">
     <value>* INVESTMENT →→→!</value>
-    <comment>Investment</comment>
+    <comment>Faction state Investment</comment>
+    <source>Investment</source>
   </data>
   <data name="Lockdown">
     <value>* LOCKDOWN →→→!</value>
-    <comment>Lockdown</comment>
+    <comment>Faction state Lockdown</comment>
+    <source>Lockdown</source>
   </data>
   <data name="NaturalDisaster">
     <value>* NATURAL DISASTER →→→!</value>
-    <comment>Natural Disaster</comment>
+    <comment>Faction state NaturalDisaster</comment>
+    <source>Natural Disaster</source>
   </data>
   <data name="None">
     <value>* NONE →→→!</value>
-    <comment>None</comment>
+    <comment>Faction state None</comment>
+    <source>None</source>
   </data>
   <data name="Outbreak">
     <value>* OUTBREAK →→→!</value>
-    <comment>Outbreak</comment>
+    <comment>Faction state Outbreak</comment>
+    <source>Outbreak</source>
   </data>
   <data name="PirateAttack">
     <value>* PIRATE ATTACK →→→!</value>
-    <comment>Pirate Attack</comment>
+    <comment>Faction state PirateAttack</comment>
+    <source>Pirate Attack</source>
   </data>
   <data name="PublicHoliday">
     <value>* PUBLIC HOLIDAY →→→!</value>
-    <comment>Public Holiday</comment>
+    <comment>Faction state PublicHoliday</comment>
+    <source>Public Holiday</source>
   </data>
   <data name="Retreat">
     <value>* RETREAT →→→!</value>
-    <comment>Retreat</comment>
+    <comment>Faction state Retreat</comment>
+    <source>Retreat</source>
   </data>
   <data name="Revolution">
     <value>* REVOLUTION →→→!</value>
-    <comment>Revolution</comment>
+    <comment>Faction state Revolution</comment>
+    <source>Revolution</source>
   </data>
   <data name="TechnologicalLeap">
     <value>* TECHNOLOGICAL LEAP →→→!</value>
-    <comment>Technological Leap</comment>
+    <comment>Faction state TechnologicalLeap</comment>
+    <source>Technological Leap</source>
   </data>
   <data name="Terrorism">
     <value>* TERRORISM →→→!</value>
-    <comment>Terrorism</comment>
+    <comment>Faction state Terrorism</comment>
+    <source>Terrorism</source>
   </data>
   <data name="Thargoid_Controlled">
     <value>* THARGOID CONTROLLED →→→!</value>
-    <comment>Thargoid Controlled</comment>
+    <comment>Faction state Thargoid_Controlled</comment>
+    <source>Thargoid Controlled</source>
   </data>
   <data name="Thargoid_Harvest">
     <value>* THARGOID INVASION →→→!</value>
-    <comment>Thargoid Invasion</comment>
+    <comment>Faction state Thargoid_Harvest</comment>
+    <source>Thargoid Invasion</source>
   </data>
   <data name="Thargoid_Probing">
     <value>* THARGOID ALERT →→→!</value>
-    <comment>Thargoid Alert</comment>
+    <comment>Faction state Thargoid_Probing</comment>
+    <source>Thargoid Alert</source>
   </data>
   <data name="Thargoid_Recovery">
     <value>* POST-THARGOID RECOVERY →→→!</value>
-    <comment>Post-Thargoid Recovery</comment>
+    <comment>Faction state Thargoid_Recovery</comment>
+    <source>Post-Thargoid Recovery</source>
   </data>
   <data name="Thargoid_Stronghold">
     <value>* THARGOID MAELSTROM →→→!</value>
-    <comment>Thargoid Maelstrom</comment>
+    <comment>Faction state Thargoid_Stronghold</comment>
+    <source>Thargoid Maelstrom</source>
   </data>
   <data name="TradeWar">
     <value>* TRADE WAR →→→!</value>
-    <comment>Trade War</comment>
+    <comment>Faction state TradeWar</comment>
+    <source>Trade War</source>
   </data>
   <data name="War">
     <value>* WAR →→→!</value>
-    <comment>War</comment>
+    <comment>Faction state War</comment>
+    <source>War</source>
   </data>
 </root>

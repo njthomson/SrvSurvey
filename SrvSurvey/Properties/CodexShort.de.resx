@@ -1,64 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -117,88 +58,109 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Aleoida" xml:space="preserve">
+  <data name="Aleoida">
     <value>ale</value>
-    <comment>ale</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>ale</source>
   </data>
-  <data name="Amphora Plant" xml:space="preserve">
+  <data name="Amphora Plant">
     <value>amp</value>
-    <comment>amp</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>amp</source>
   </data>
-  <data name="Bacterium" xml:space="preserve">
+  <data name="Bacterium">
     <value>bac</value>
-    <comment>bac</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>bac</source>
   </data>
-  <data name="Bark Mounds" xml:space="preserve">
+  <data name="Bark Mounds">
     <value>var</value>
-    <comment>bar</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>bar</source>
   </data>
-  <data name="Brain Trees" xml:space="preserve">
+  <data name="Brain Trees">
     <value>bra</value>
-    <comment>bra</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>bra</source>
   </data>
-  <data name="Cactoida" xml:space="preserve">
+  <data name="Cactoida">
     <value>cac</value>
-    <comment>cac</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>cac</source>
   </data>
-  <data name="Clypeus" xml:space="preserve">
+  <data name="Clypeus">
     <value>cly</value>
-    <comment>cly</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>cly</source>
   </data>
-  <data name="Concha" xml:space="preserve">
+  <data name="Concha">
     <value>con</value>
-    <comment>con</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>con</source>
   </data>
-  <data name="Crystalline Shards" xml:space="preserve">
+  <data name="Crystalline Shards">
     <value>cry</value>
-    <comment>cry</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>cry</source>
   </data>
-  <data name="Electricae" xml:space="preserve">
+  <data name="Electricae">
     <value>ele</value>
-    <comment>ele</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>ele</source>
   </data>
-  <data name="Fonticulua" xml:space="preserve">
+  <data name="Fonticulua">
     <value>fon</value>
-    <comment>fon</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>fon</source>
   </data>
-  <data name="Frutexa" xml:space="preserve">
+  <data name="Frutexa">
     <value>fru</value>
-    <comment>fru</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>fru</source>
   </data>
-  <data name="Fumerola" xml:space="preserve">
+  <data name="Fumerola">
     <value>fum</value>
-    <comment>fum</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>fum</source>
   </data>
-  <data name="Fungoida" xml:space="preserve">
+  <data name="Fungoida">
     <value>fun</value>
-    <comment>fun</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>fun</source>
   </data>
-  <data name="Luteolum Anemone" xml:space="preserve">
+  <data name="Luteolum Anemone">
     <value>ane</value>
-    <comment>ane</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>ane</source>
   </data>
-  <data name="Osseus" xml:space="preserve">
+  <data name="Osseus">
     <value>oss</value>
-    <comment>oss</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>oss</source>
   </data>
-  <data name="Recepta" xml:space="preserve">
+  <data name="Recepta">
     <value>rec</value>
-    <comment>rec</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>rec</source>
   </data>
-  <data name="Sinuous Tubers" xml:space="preserve">
+  <data name="Sinuous Tubers">
     <value>sin</value>
-    <comment>sin</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>sin</source>
   </data>
-  <data name="Stratum" xml:space="preserve">
+  <data name="Stratum">
     <value>str</value>
-    <comment>str</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>str</source>
   </data>
-  <data name="Tubus" xml:space="preserve">
+  <data name="Tubus">
     <value>tub</value>
-    <comment>tub</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>tub</source>
   </data>
-  <data name="Tussock" xml:space="preserve">
+  <data name="Tussock">
     <value>tus</value>
-    <comment>tus</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>tus</source>
   </data>
 </root>

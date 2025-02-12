@@ -142,13 +142,13 @@
 {0} string, min value of credits</comment>
   </data>
   <data name="ScannedAllBodies" xml:space="preserve">
-    <value>Scanned all {0} bodies: {0}</value>
+    <value>Scanned all {0} bodies: {1}</value>
     <comment>Line showing when all bodies have been scanned and how many credits thats worth
 {0} int, count of bodies
 {1} string, value of credits</comment>
   </data>
   <data name="ScannedBodies" xml:space="preserve">
-    <value>Scanned {0} bodies: {0}</value>
+    <value>Scanned {0} bodies: {1}</value>
     <comment>Line showing how many bodies are scanned and how many credits thats worth
 {0} int, count of bodies
 {1} string, value of credits</comment>

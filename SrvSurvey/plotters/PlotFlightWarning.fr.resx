@@ -60,6 +60,8 @@
   </resheader>
   <data name="SurfaceGravityWarning">
     <value>Avertissement : Densité de surface {0}g</value>
-    <comment>Warning: Surface gravity {0}g</comment>
+    <comment>Warning shown when gravity is above warning value
+{0} decimal, 2 places, gravity value for the body</comment>
+    <source>Warning: Surface gravity {0}g</source>
   </data>
 </root>

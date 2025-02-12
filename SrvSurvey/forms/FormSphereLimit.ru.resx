@@ -283,7 +283,7 @@
   </data>
   <data name="btnAccept.Text">
     <value>&amp;Активировать</value>
-    <comment>&amp;Activate</comment>
+    <source>&amp;Activate</source>
   </data>
   <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -305,7 +305,7 @@
   </data>
   <data name="btnCancel.Text">
     <value>&amp;Отмена</value>
-    <comment>&amp;Cancel</comment>
+    <source>&amp;Cancel</source>
   </data>
   <data name="btnDisable.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -327,7 +327,7 @@
   </data>
   <data name="btnDisable.Text">
     <value>&amp;Отключить</value>
-    <comment>&amp;Disable</comment>
+    <source>&amp;Disable</source>
   </data>
   <data name="comboSystemName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -376,7 +376,7 @@
   </data>
   <data name="label1.Text">
     <value>&amp;Введите центральную систему:</value>
-    <comment>&amp;Enter central system:</comment>
+    <source>&amp;Enter central system:</source>
   </data>
   <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -398,7 +398,7 @@
   </data>
   <data name="label2.Text">
     <value>&amp;Радиус сферы:</value>
-    <comment>&amp;Sphere radius:</comment>
+    <source>&amp;Sphere radius:</source>
   </data>
   <data name="label2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -420,7 +420,7 @@
   </data>
   <data name="label3.Text">
     <value>Координаты звезды:</value>
-    <comment>Star pos:</comment>
+    <source>Star pos:</source>
   </data>
   <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -439,7 +439,7 @@
   </data>
   <data name="label4.Text">
     <value>Сферический поиск помогает осуществлять навигацию к системам, находящимся на заданном расстоянии от центральной системы.</value>
-    <comment>Spherical limit helps navigating to systems within a given distance of a central system.</comment>
+    <source>Spherical limit helps navigating to systems within a given distance of a central system.</source>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -458,7 +458,7 @@
   </data>
   <data name="label5.Text">
     <value>Текущая система:</value>
-    <comment>Current system:</comment>
+    <source>Current system:</source>
   </data>
   <data name="label5.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -480,7 +480,7 @@
   </data>
   <data name="label6.Text">
     <value>Расстояние:</value>
-    <comment>Distance:</comment>
+    <source>Distance:</source>
   </data>
   <data name="label6.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -541,7 +541,7 @@
   </data>
   <data name="$this.Text">
     <value>Сферический поиск</value>
-    <comment>Spherical limit</comment>
+    <source>Spherical limit</source>
   </data>
   <data name="txtCurrentDistance.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 121</value>

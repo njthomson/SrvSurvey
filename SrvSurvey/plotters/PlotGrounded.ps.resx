@@ -60,38 +60,47 @@
   </resheader>
   <data name="NearingShipDistance">
     <value>* NEARING SHIP DEPARTURE DISTANCE →→→!</value>
-    <comment>Nearing ship departure distance</comment>
+    <comment>Warning shown when nearing ship departure distance</comment>
+    <source>Nearing ship departure distance</source>
   </data>
   <data name="ScanOne_Long">
     <value>* SCAN ONE: →→→!</value>
-    <comment>Scan one:</comment>
+    <comment>Prefix to bearing and distance to scan one</comment>
+    <source>Scan one:</source>
   </data>
   <data name="ScanOne_Short">
     <value>* 1ST: →→→!</value>
-    <comment>1st:</comment>
+    <comment>A shorter prefix to bearing and distance to scan one, when window is too narrow</comment>
+    <source>1st:</source>
   </data>
   <data name="ScanOneInvalid">
     <value>* SCAN ONE: INVALID →→→!</value>
-    <comment>Scan one: invalid</comment>
+    <comment>Warning shown when scan one is not valid</comment>
+    <source>Scan one: invalid</source>
   </data>
   <data name="ScanTwo_Long">
     <value>* SCAN TWO: →→→!</value>
-    <comment>Scan two:</comment>
+    <comment>Prefix to bearing and distance to scan two</comment>
+    <source>Scan two:</source>
   </data>
   <data name="ScanTwo_Short">
     <value>* 2ND: →→→!</value>
-    <comment>2nd:</comment>
+    <comment>A shorter prefix to bearing and distance to scan two, when window is too narrow</comment>
+    <source>2nd:</source>
   </data>
   <data name="ScanTwoInvalid">
     <value>* SCAN TWO: INVALID →→→!</value>
-    <comment>Scan two: invalid</comment>
+    <comment>Warning shown when scan two is not valid</comment>
+    <source>Scan two: invalid</source>
   </data>
   <data name="Ship">
     <value>* SHIP: →→→!</value>
-    <comment>Ship:</comment>
+    <comment>Prefix to bearing and distance to the ship</comment>
+    <source>Ship:</source>
   </data>
   <data name="SRV">
     <value>* SRV: →→→!</value>
-    <comment>SRV:</comment>
+    <comment>Prefix to bearing and distance to SRV</comment>
+    <source>SRV:</source>
   </data>
 </root>

@@ -63,42 +63,58 @@
   </metadata>
   <data name="Boxel">
     <value>Подсектор:</value>
-    <comment>Boxel:</comment>
+    <comment>Header before name of boxel we are searching</comment>
+    <source>Boxel:</source>
   </data>
   <data name="Distance">
     <value>Расстояние:</value>
-    <comment>Distance:</comment>
+    <comment>Header before distance between systems</comment>
+    <source>Distance:</source>
   </data>
   <data name="DistanceExceeds">
     <value>{0}св. л - превышает {1} св. л</value>
-    <comment>{0}ly - exceeds {1} ly</comment>
+    <comment>Shown when measured distance exceeds some limit.
+{0} float, 2 decimal places, measured distance between 2 star systems
+{1} float, 2 decimal places, the maximum distance allowed</comment>
+    <source>{0}ly - exceeds {1} ly</source>
   </data>
   <data name="DistanceWithin">
     <value>{0} - в пределах {1} св. л</value>
-    <comment>{0} - within {1} ly</comment>
+    <comment>Shown when measured distance is within some limit.
+{0} float, 2 decimal places, measured distance between 2 star systems
+{1} float, 2 decimal places, the maximum distance allowed</comment>
+    <source>{0} - within {1} ly</source>
   </data>
   <data name="From">
     <value>От:</value>
-    <comment>From:</comment>
+    <comment>Header before name of central star system</comment>
+    <source>From:</source>
   </data>
   <data name="Next">
     <value>Следующая:</value>
-    <comment>Next:</comment>
+    <comment>Header before name of next boxel system to visit</comment>
+    <source>Next:</source>
   </data>
   <data name="To">
     <value>Куда:</value>
-    <comment>To:</comment>
+    <comment>Header before name of target star system</comment>
+    <source>To:</source>
   </data>
   <data name="UnknownDist">
     <value>Неизвестно (постройте маршрут)</value>
-    <comment>Unknown (plot route)</comment>
+    <comment>Message shown when we do not know the distance, but would if the cmdr plots a route</comment>
+    <source>Unknown (plot route)</source>
   </data>
   <data name="Visited">
     <value>Посетили:</value>
-    <comment>Visited:</comment>
+    <comment>Header before count of systems visited</comment>
+    <source>Visited:</source>
   </data>
   <data name="VisitedOf">
     <value>{0} ({1} из {2})</value>
-    <comment>{0} ({1} of {2})</comment>
+    <comment>{0} int, percentage of systems visited
+{1} int, how many systems we have visited
+{2} int, how many systems total to visit</comment>
+    <source>{0} ({1} of {2})</source>
   </data>
 </root>

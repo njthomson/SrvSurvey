@@ -41,26 +41,32 @@
   </resheader>
   <data name="Allied">
     <value>Verbündet</value>
-    <comment>Allied</comment>
+    <comment>Your reputation with some faction</comment>
+    <source>Allied</source>
   </data>
   <data name="Cordial">
     <value>Wohlgesinnt</value>
-    <comment>Cordial</comment>
+    <comment>Your reputation with some faction</comment>
+    <source>Cordial</source>
   </data>
   <data name="Friendly">
     <value>Freundlich</value>
-    <comment>Friendly</comment>
+    <comment>Your reputation with some faction</comment>
+    <source>Friendly</source>
   </data>
   <data name="Hostile">
     <value>Feindlich</value>
-    <comment>Hostile</comment>
+    <comment>Your reputation with some faction</comment>
+    <source>Hostile</source>
   </data>
   <data name="Neutral">
     <value>Neutral</value>
-    <comment>Neutral</comment>
+    <comment>Your reputation with some faction</comment>
+    <source>Neutral</source>
   </data>
   <data name="Unfriendly">
     <value>Unfreundlich</value>
-    <comment>Unfriendly</comment>
+    <comment>Your reputation with some faction</comment>
+    <source>Unfriendly</source>
   </data>
 </root>

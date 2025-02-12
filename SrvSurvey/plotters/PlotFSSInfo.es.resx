@@ -60,36 +60,51 @@
   </resheader>
   <data name="CountGenus">
     <value>{0} Organismos</value>
-    <comment>{0} Genus</comment>
+    <comment>Line prefix showing the count of genus on a body
+{0} int, count of genus</comment>
+    <source>{0} Genus</source>
   </data>
   <data name="CountGeo">
     <value>{0} Geo</value>
-    <comment>{0} Geo</comment>
+    <comment>Line suffix showing the count of geo signals on a body
+{0} int, count of geo signals</comment>
+    <source>{0} Geo</source>
   </data>
   <data name="Footer1">
     <value>Valor de escaneo | Valor de mapeo</value>
-    <comment>Scan value | DSS value</comment>
+    <comment>First footer line with guidance</comment>
+    <source>Scan value | DSS value</source>
   </data>
   <data name="Footer2">
     <value>🌎 Terraformable
 🚀 Aterrizable ⚑ Sin descubrir</value>
-    <comment>🌎 Terraformable
-🚀 Landable ⚑ Undiscovered</comment>
+    <comment>More footer lines with guidance</comment>
+    <source>🌎 Terraformable
+🚀 Landable ⚑ Undiscovered</source>
   </data>
   <data name="HidingBodies">
     <value>( Ocultando &lt; {0} cuerpos)</value>
-    <comment>( Hiding bodies &lt; {0} )</comment>
+    <comment>Line showing minimum credit value needed for bodies to be shown in the list that follows
+{0} string, min value of credits</comment>
+    <source>( Hiding bodies &lt; {0} )</source>
   </data>
   <data name="ScannedAllBodies">
-    <value>Escaneados todos los {0} cuerpos: {0}</value>
-    <comment>Scanned all {0} bodies: {0}</comment>
+    <value>Escaneados todos los {0} cuerpos: {1}</value>
+    <comment>Line showing when all bodies have been scanned and how many credits thats worth
+{0} int, count of bodies
+{1} string, value of credits</comment>
+    <source>Scanned all {0} bodies: {1}</source>
   </data>
   <data name="ScannedBodies">
-    <value>Cuerpos escaneados {0}: {0}</value>
-    <comment>Scanned {0} bodies: {0}</comment>
+    <value>Cuerpos escaneados {0}: {1}</value>
+    <comment>Line showing how many bodies are scanned and how many credits thats worth
+{0} int, count of bodies
+{1} string, value of credits</comment>
+    <source>Scanned {0} bodies: {1}</source>
   </data>
   <data name="ScanToPopulate">
     <value>(escanear para rellenar)</value>
-    <comment>(scan to populate)</comment>
+    <comment>Warning message line shown when a scan is needed</comment>
+    <source>(scan to populate)</source>
   </data>
 </root>

@@ -60,86 +60,107 @@
   </resheader>
   <data name="Aleoida">
     <value>ale</value>
-    <comment>ale</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>ale</source>
   </data>
   <data name="Amphora Plant">
     <value>amp</value>
-    <comment>amp</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>amp</source>
   </data>
   <data name="Bacterium">
     <value>bac</value>
-    <comment>bac</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>bac</source>
   </data>
   <data name="Bark Mounds">
     <value>bar</value>
-    <comment>bar</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>bar</source>
   </data>
   <data name="Brain Trees">
     <value>bra</value>
-    <comment>bra</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>bra</source>
   </data>
   <data name="Cactoida">
     <value>cac</value>
-    <comment>cac</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>cac</source>
   </data>
   <data name="Clypeus">
     <value>cly</value>
-    <comment>cly</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>cly</source>
   </data>
   <data name="Concha">
     <value>con</value>
-    <comment>con</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>con</source>
   </data>
   <data name="Crystalline Shards">
     <value>cry</value>
-    <comment>cry</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>cry</source>
   </data>
   <data name="Electricae">
     <value>ele</value>
-    <comment>ele</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>ele</source>
   </data>
   <data name="Fonticulua">
     <value>fon</value>
-    <comment>fon</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>fon</source>
   </data>
   <data name="Frutexa">
     <value>fru</value>
-    <comment>fru</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>fru</source>
   </data>
   <data name="Fumerola">
     <value>fum</value>
-    <comment>fum</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>fum</source>
   </data>
   <data name="Fungoida">
     <value>fun</value>
-    <comment>fun</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>fun</source>
   </data>
   <data name="Luteolum Anemone">
     <value>ane</value>
-    <comment>ane</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>ane</source>
   </data>
   <data name="Osseus">
     <value>oss</value>
-    <comment>oss</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>oss</source>
   </data>
   <data name="Recepta">
     <value>rec</value>
-    <comment>rec</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>rec</source>
   </data>
   <data name="Sinuous Tubers">
     <value>sin</value>
-    <comment>sin</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>sin</source>
   </data>
   <data name="Stratum">
     <value>str</value>
-    <comment>str</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>str</source>
   </data>
   <data name="Tubus">
     <value>tub</value>
-    <comment>tub</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>tub</source>
   </data>
   <data name="Tussock">
     <value>tus</value>
-    <comment>tus</comment>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>tus</source>
   </data>
 </root>

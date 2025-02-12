@@ -61,209 +61,248 @@
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="FormBoxelSearch_Activate">
     <value>* ACTIVATE →→→!</value>
-    <comment>Activate</comment>
+    <comment>Used on a button in FormBoxelSearch</comment>
+    <source>Activate</source>
   </data>
   <data name="FormBoxelSearch_Disable">
     <value>* DISABLE →→→!</value>
-    <comment>Disable</comment>
+    <comment>Used on a button in FormBoxelSearch</comment>
+    <source>Disable</source>
   </data>
   <data name="FormBoxelSearch_HideList">
     <value>* ⏶ HIDE LIST →→→!</value>
-    <comment>⏶ Hide list</comment>
+    <comment>Used on a button in FormBoxelSearch</comment>
+    <source>⏶ Hide list</source>
   </data>
   <data name="FormBoxelSearch_NotViableMessage">
     <value>* THIS IS NOT A BOXEL GENERATED SYSTEM NAME. →→→!</value>
-    <comment>This is not a boxel generated system name.</comment>
+    <comment>Shown in FormBoxelSearch when attempting to boxel search a non generated system name</comment>
+    <source>This is not a boxel generated system name.</source>
   </data>
   <data name="FormBoxelSearch_SearchNotActive">
     <value>* BOXEL SEARCH IS NOT ACTIVE. →→→!</value>
-    <comment>Boxel search is not active.</comment>
+    <comment>Shown in FormBoxelSearch status var when the feature is not active</comment>
+    <source>Boxel search is not active.</source>
   </data>
   <data name="FormBoxelSearch_ShowList">
     <value>* ⏷ SHOW LIST →→→!</value>
-    <comment>⏷ Show list</comment>
+    <comment>Used on a button in FormBoxelSearch</comment>
+    <source>⏷ Show list</source>
   </data>
   <data name="FormBoxelSearch_SpanshUpdated">
     <value>* SPANSH UPDATED: {0} →→→!</value>
-    <comment>Spansh updated: {0}</comment>
+    <comment>Shown in FormBoxelSearch as notes for a system.
+{0} DateTime, a short formatted date</comment>
+    <source>Spansh updated: {0}</source>
   </data>
   <data name="FormBoxelSearch_SpanshUpdatedBodies">
     <value>* SPANSH UPDATED: {0}, BODIES: {1} →→→!</value>
-    <comment>Spansh updated: {0}, bodies: {1}</comment>
+    <comment>Shown in FormBoxelSearch as notes for a system.
+{0} DateTime, a short formatted date
+{1} int, a count of bodies in that system</comment>
+    <source>Spansh updated: {0}, bodies: {1}</source>
   </data>
   <data name="FormBoxelSearch_UndiscoveredSystem">
     <value>* UNDISCOVERED SYSTEM →→→!</value>
-    <comment>Undiscovered system</comment>
+    <comment>Shown in FormBoxelSearch as notes for a system that has not been discovered</comment>
+    <source>Undiscovered system</source>
   </data>
   <data name="FormBoxelSearch_Visited">
     <value>* VISITED: {0} →→→!</value>
-    <comment>Visited: {0}</comment>
+    <comment>Shown in FormBoxelSearch as notes for a system that was just visited
+{0} DateTime, the date and time the system was visited, usually now</comment>
+    <source>Visited: {0}</source>
   </data>
   <data name="FormBoxelSearch_VisitedCounts">
     <value>* COMPLETED {2} OF {3} BOXELS, {0} OF {1} SYSTEMS IN CURRENT BOXEL →→→!</value>
-    <comment>Completed {2} of {3} boxels, {0} of {1} systems in current boxel</comment>
+    <comment>Shown in FormBoxelSearch status bar, summarizing how many systems have been visited
+{0} int, count of systems visited
+{1} int, total count of systems to be visited
+{2} int, count of boxels searched
+{3} int, total count of boxels to be searched</comment>
+    <source>Completed {2} of {3} boxels, {0} of {1} systems in current boxel</source>
   </data>
   <data name="NetSysData_Bodies">
     <value>* BODIES →→→!</value>
-    <comment>Bodies</comment>
+    <source>Bodies</source>
   </data>
   <data name="NetSysData_DiscoveredAll">
     <value>* DISCOVERED, {0} BODIES →→→!</value>
-    <comment>Discovered, {0} bodies</comment>
+    <comment>{0} int, count of bodies</comment>
+    <source>Discovered, {0} bodies</source>
   </data>
   <data name="NetSysData_DiscoveredPartial">
     <value>* DISCOVERED ({0} OF {1}) →→→!</value>
-    <comment>Discovered ({0} of {1})</comment>
+    <comment>{0} int, count of bodies, {1} int, total count of bodies</comment>
+    <source>Discovered ({0} of {1})</source>
   </data>
   <data name="NetSysData_Encoded">
     <value>* (ENCODED) →→→!</value>
-    <comment>(Encoded)</comment>
+    <comment>An Encoded Material Trader</comment>
+    <source>(Encoded)</source>
   </data>
   <data name="NetSysData_Engineer">
     <value>* (ENGINEER) →→→!</value>
-    <comment>(Engineer)</comment>
+    <comment>Suffix after an Engineer's name</comment>
+    <source>(Engineer)</source>
   </data>
   <data name="NetSysData_FC">
     <value>* FC →→→!</value>
-    <comment>FC</comment>
+    <source>FC</source>
   </data>
   <data name="NetSysData_Genus">
     <value>* GENUS →→→!</value>
-    <comment>Genus</comment>
+    <source>Genus</source>
   </data>
   <data name="NetSysData_GuardianBroker">
     <value>* (GUARDIAN) →→→!</value>
-    <comment>(Guardian)</comment>
+    <comment>A Guardian Tech Broker</comment>
+    <source>(Guardian)</source>
   </data>
   <data name="NetSysData_HumanBroker">
     <value>* (HUMAN) →→→!</value>
-    <comment>(Human)</comment>
+    <comment>A Human Tech Broker</comment>
+    <source>(Human)</source>
   </data>
   <data name="NetSysData_Manufactured">
     <value>* (MANUFACTURED) →→→!</value>
-    <comment>(Manufactured)</comment>
+    <comment>A Manufactured Material Trader</comment>
+    <source>(Manufactured)</source>
   </data>
   <data name="NetSysData_MaterialTrader">
     <value>* MATERIAL TRADER →→→!</value>
-    <comment>Material Trader</comment>
+    <source>Material Trader</source>
   </data>
   <data name="NetSysData_Outposts">
     <value>* OUTPOSTS →→→!</value>
-    <comment>Outposts</comment>
+    <source>Outposts</source>
   </data>
   <data name="NetSysData_Raw">
     <value>* (RAW) →→→!</value>
-    <comment>(Raw)</comment>
+    <comment>A Raw Material Trader</comment>
+    <source>(Raw)</source>
   </data>
   <data name="NetSysData_Settlements">
     <value>* SETTLEMENTS →→→!</value>
-    <comment>Settlements</comment>
+    <source>Settlements</source>
   </data>
   <data name="NetSysData_StarPorts">
     <value>* STAR PORTS →→→!</value>
-    <comment>Star ports</comment>
+    <source>Star ports</source>
   </data>
   <data name="NetSysData_TechBroker">
     <value>* TECH BROKER →→→!</value>
-    <comment>Tech Broker</comment>
+    <source>Tech Broker</source>
   </data>
   <data name="NetSysData_UndiscoveredSystem">
     <value>* UNDISCOVERED SYSTEM →→→!</value>
-    <comment>Undiscovered system</comment>
+    <source>Undiscovered system</source>
   </data>
   <data name="NetSysData_UnscannedSystem">
     <value>* UNSCANNED SYSTEM →→→!</value>
-    <comment>Unscanned system</comment>
+    <source>Unscanned system</source>
   </data>
   <data name="NetSysData_Wars">
     <value>* WARS →→→!</value>
-    <comment>Wars</comment>
+    <source>Wars</source>
   </data>
   <data name="PlotGalMap_CountGenus">
     <value>* {0}X GENUS →→→!</value>
-    <comment>{0}x Genus</comment>
+    <source>{0}x Genus</source>
   </data>
   <data name="PlotGalMap_Current">
     <value>* CURRENT: →→→!</value>
-    <comment>Current:</comment>
+    <source>Current:</source>
   </data>
   <data name="PlotGalMap_DataFrom">
     <value>* DATA FROM: EDSM + SPANSH + CANONN →→→!</value>
-    <comment>Data from: EDSM + Spansh + Canonn</comment>
+    <comment>Dim footer text</comment>
+    <source>Data from: EDSM + Spansh + Canonn</source>
   </data>
   <data name="PlotGalMap_Destination">
     <value>* DESTINATION: →→→!</value>
-    <comment>Destination:</comment>
+    <source>Destination:</source>
   </data>
   <data name="PlotGalMap_DiscoveredBy">
     <value>* BY {0}, {1} →→→!</value>
-    <comment>By {0}, {1}</comment>
+    <comment>{0} string, name of cmdr, {1} short date</comment>
+    <source>By {0}, {1}</source>
   </data>
   <data name="PlotGalMap_LastUpdated">
     <value>* LAST UPDATED: {0} →→→!</value>
-    <comment>Last updated: {0}</comment>
+    <comment>{0} short date</comment>
+    <source>Last updated: {0}</source>
   </data>
   <data name="PlotGalMap_NextJump">
     <value>* NEXT JUMP: →→→!</value>
-    <comment>Next jump:</comment>
+    <source>Next jump:</source>
   </data>
   <data name="PlotGalMap_NoRouteSet">
     <value>* NO ROUTE SET →→→!</value>
-    <comment>No route set</comment>
+    <comment>When no route is set.</comment>
+    <source>No route set</source>
   </data>
   <data name="PlotGalMap_RouteFooter">
     <value>* TOTAL: ► {0} JUMPS ► DISTANCE: {1} LY →→→!</value>
-    <comment>Total: ► {0} jumps ► Distance: {1} ly</comment>
+    <comment>Footer shown summarizing the route. {0} int, count of jumps. {1} float, 1 decimal place, distance travelled.</comment>
+    <source>Total: ► {0} jumps ► Distance: {1} ly</source>
   </data>
   <data name="PlotGalMap_Selected">
     <value>* SELECTED: →→→!</value>
-    <comment>Selected:</comment>
+    <source>Selected:</source>
   </data>
   <data name="PlotSysStatus_BioSignals">
     <value>* | {0}X BIO SIGNALS ON:  →→→!</value>
-    <comment>| {0}x Bio signals on: </comment>
+    <comment>Appended to prior text. {0} int, count of bodies with bio signals</comment>
+    <source>| {0}x Bio signals on: </source>
   </data>
   <data name="PlotSysStatus_DssRemaining">
     <value>*  {0}X BODIES:  →→→!</value>
-    <comment> {0}x bodies: </comment>
+    <comment>May be appended to FssCompleteShort. {0} int, count of bodies worth of scanning.</comment>
+    <source> {0}x bodies: </source>
   </data>
   <data name="PlotSysStatus_FssCompleteLong">
     <value>* FSS {0}% COMPLETE →→→!</value>
-    <comment>FSS {0}% complete</comment>
+    <comment>Short version, joined with more text. {0} int, percentage number</comment>
+    <source>FSS {0}% complete</source>
   </data>
   <data name="PlotSysStatus_FssCompleteShort">
     <value>* FSS {0}% →→→!</value>
-    <comment>FSS {0}%</comment>
+    <comment>Long version, shown alone. {0} int, percentage number</comment>
+    <source>FSS {0}%</source>
   </data>
   <data name="PlotSysStatus_FssNotStarted">
     <value>* FSS NOT STARTED →→→!</value>
-    <comment>FSS not started</comment>
+    <source>FSS not started</source>
   </data>
   <data name="PlotSysStatus_Header">
     <value>* DSS SURVEY:  →→→!</value>
-    <comment>DSS survey: </comment>
+    <comment>Header line</comment>
+    <source>DSS survey: </source>
   </data>
   <data name="PlotSysStatus_NextSystem">
     <value>* NEXT SYSTEM: →→→!</value>
-    <comment>Next system:</comment>
+    <source>Next system:</source>
   </data>
   <data name="PlotSysStatus_NoDssMeet">
     <value>* NONE →→→!</value>
-    <comment>None</comment>
+    <source>None</source>
   </data>
   <data name="PlotSysStatus_NonBodySignals">
     <value>* ► {0} NON-BODY SIGNALS →→→!</value>
-    <comment>► {0} non-body signals</comment>
+    <comment>{0} int, count of non body signals</comment>
+    <source>► {0} non-body signals</source>
   </data>
   <data name="Settings_CreateFolderNotFound">
     <value>* CANNOT FIND FOLDER:
 {0}
 
 WOULD YOU LIKE TO CREATE IT? →→→!</value>
-    <comment>Cannot find folder:
+    <comment>Used in a message box when attempting to open a folder that does not exist.</comment>
+    <source>Cannot find folder:
 {0}
 
-Would you like to create it?</comment>
+Would you like to create it?</source>
   </data>
   <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>

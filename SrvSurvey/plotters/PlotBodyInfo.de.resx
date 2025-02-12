@@ -60,82 +60,111 @@
   </resheader>
   <data name="Atmosphere">
     <value>Atmosphäre:</value>
-    <comment>Atmosphere:</comment>
+    <comment>Line prefix for atmosphere</comment>
+    <source>Atmosphere:</source>
   </data>
   <data name="BioSignals">
     <value>Biosignale: {0} ( Wert: {1} cr )</value>
-    <comment>Bio signals: {0} ( value: {1} cr )</comment>
+    <comment>Line prefix when bio signals are present
+{0} int, count of bio signals
+{1} string, value of credits</comment>
+    <source>Bio signals: {0} ( value: {1} cr )</source>
   </data>
   <data name="EarthLike">
     <value>Erde wie</value>
-    <comment>Earth Like</comment>
+    <comment>Atmosphere type is like Earth</comment>
+    <source>Earth Like</source>
   </data>
   <data name="FirstMapped">
     <value>Zuerst kartiert</value>
-    <comment>First mapped</comment>
+    <comment>Header tag</comment>
+    <source>First mapped</source>
   </data>
   <data name="GeoSignals">
     <value>Geosignale: {0}</value>
-    <comment>Geo signals: {0}</comment>
+    <comment>Line prefix when geo signals are present
+{0} int, count of geo signals</comment>
+    <source>Geo signals: {0}</source>
   </data>
   <data name="Gravity">
     <value>Schwerkraft: {0} g</value>
-    <comment>Gravity: {0}g</comment>
+    <comment>Body gravity
+{0} decimal, 3 places, gravity value</comment>
+    <source>Gravity: {0}g</source>
   </data>
   <data name="Materials">
     <value>Materialien:</value>
-    <comment>Materials:</comment>
+    <comment>Line prefix for materials</comment>
+    <source>Materials:</source>
   </data>
   <data name="None">
     <value>Nichts</value>
-    <comment>None</comment>
+    <comment>Text shown when body pressure value is zero, or there is no volcanism, or no atmoshpere</comment>
+    <source>None</source>
   </data>
   <data name="Pressure">
     <value>Druck: {0}</value>
-    <comment>Pressure: {0}</comment>
+    <comment>
+{0} string, the value of PressureValue or PressureNone</comment>
+    <source>Pressure: {0}</source>
   </data>
   <data name="PressureValue">
     <value>{0}(Geldautomat)</value>
-    <comment>{0}(atm)</comment>
+    <comment>The atmospheric pressure value
+{0} decimal, 4 places</comment>
+    <source>{0}(atm)</source>
   </data>
   <data name="Rings">
     <value>Jonglieren:</value>
-    <comment>Rings:</comment>
+    <comment>Line prefix for rings</comment>
+    <source>Rings:</source>
   </data>
   <data name="ScanRequired">
     <value>Scan erforderlich</value>
-    <comment>Scan required</comment>
+    <comment>Header shown when a scan is required</comment>
+    <source>Scan required</source>
   </data>
   <data name="ScanValue">
     <value>Scan-Wert</value>
-    <comment>Scan value</comment>
+    <comment>Line prefix before showing the scan value for a body</comment>
+    <source>Scan value</source>
   </data>
   <data name="StarClass">
     <value>Klasse: {0}</value>
-    <comment>Class: {0}</comment>
+    <comment>Line prefix with the type of a star, A, O, M, etc
+{0} string, the class of some star</comment>
+    <source>Class: {0}</source>
   </data>
   <data name="Temp">
     <value>Temperatur: {0}K</value>
-    <comment>Temp: {0}K</comment>
+    <comment>Body temperature of a body
+{0} int, temp in Kelvin</comment>
+    <source>Temp: {0}K</source>
   </data>
   <data name="Terraformable">
     <value>Terraformbar</value>
-    <comment>Terraformable</comment>
+    <comment>Header tag</comment>
+    <source>Terraformable</source>
   </data>
   <data name="Undiscovered">
     <value>Unentdeckt</value>
-    <comment>Undiscovered</comment>
+    <comment>Header tag</comment>
+    <source>Undiscovered</source>
   </data>
   <data name="Unmapped">
     <value>Nicht zugeordnet</value>
-    <comment>Unmapped</comment>
+    <comment>Header tag</comment>
+    <source>Unmapped</source>
   </data>
   <data name="Volcanism">
     <value>Vulkanismus:</value>
-    <comment>Volcanism:</comment>
+    <comment>Line prefix for volcanism</comment>
+    <source>Volcanism:</source>
   </data>
   <data name="WithDSS">
     <value>(mit DSS: {0})</value>
-    <comment>(with DSS: {0})</comment>
+    <comment>Suffix shown after scan value for a body
+{0} string, value of credits</comment>
+    <source>(with DSS: {0})</source>
   </data>
 </root>

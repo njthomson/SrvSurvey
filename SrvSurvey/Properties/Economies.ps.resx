@@ -44,70 +44,87 @@
   </resheader>
   <data name="Agri">
     <value>* AGRICULTURE →→→!</value>
-    <comment>Agriculture</comment>
+    <comment>Economy type Agri</comment>
+    <source>Agriculture</source>
   </data>
   <data name="Carrier">
     <value>* PRIVATE ENTERPRISE →→→!</value>
-    <comment>Private Enterprise</comment>
+    <comment>Economy Type Carrier</comment>
+    <source>Private Enterprise</source>
   </data>
   <data name="Colony">
     <value>* COLONY →→→!</value>
-    <comment>Colony</comment>
+    <comment>Economy type Colony</comment>
+    <source>Colony</source>
   </data>
   <data name="Damaged">
     <value>* DAMAGED →→→!</value>
-    <comment>Damaged</comment>
+    <comment>Economy type Damaged</comment>
+    <source>Damaged</source>
   </data>
   <data name="Engineer">
     <value>* ENGINEERING →→→!</value>
-    <comment>Engineering</comment>
+    <comment>Economy type Engineer</comment>
+    <source>Engineering</source>
   </data>
   <data name="Extraction">
     <value>* EXTRACTION →→→!</value>
-    <comment>Extraction</comment>
+    <comment>Economy type Extraction</comment>
+    <source>Extraction</source>
   </data>
   <data name="HighTech">
     <value>* HIGH TECH →→→!</value>
-    <comment>High Tech</comment>
+    <comment>Economy type HighTech</comment>
+    <source>High Tech</source>
   </data>
   <data name="Industrial">
     <value>* INDUSTRIAL →→→!</value>
-    <comment>Industrial</comment>
+    <comment>Economy type Industrial</comment>
+    <source>Industrial</source>
   </data>
   <data name="Military">
     <value>* MILITARY →→→!</value>
-    <comment>Military</comment>
+    <comment>Economy type Military</comment>
+    <source>Military</source>
   </data>
   <data name="None">
     <value>* NONE →→→!</value>
-    <comment>None</comment>
+    <comment>Economy type None</comment>
+    <source>None</source>
   </data>
   <data name="Prison">
     <value>* PRISON →→→!</value>
-    <comment>Prison</comment>
+    <comment>Economy type Prison</comment>
+    <source>Prison</source>
   </data>
   <data name="Refinery">
     <value>* REFINERY →→→!</value>
-    <comment>Refinery</comment>
+    <comment>Economy type Refinery</comment>
+    <source>Refinery</source>
   </data>
   <data name="Repair">
     <value>* REPAIR →→→!</value>
-    <comment>Repair</comment>
+    <comment>Economy type Repair</comment>
+    <source>Repair</source>
   </data>
   <data name="Rescue">
     <value>* RESCUE →→→!</value>
-    <comment>Rescue</comment>
+    <comment>Economy type Rescue</comment>
+    <source>Rescue</source>
   </data>
   <data name="Service">
     <value>* SERVICE →→→!</value>
-    <comment>Service</comment>
+    <comment>Economy type Service</comment>
+    <source>Service</source>
   </data>
   <data name="Terraforming">
     <value>* TERRAFORMING →→→!</value>
-    <comment>Terraforming</comment>
+    <comment>Economy type Terraforming</comment>
+    <source>Terraforming</source>
   </data>
   <data name="Tourism">
     <value>* TOURISM →→→!</value>
-    <comment>Tourism</comment>
+    <comment>Economy type Tourism</comment>
+    <source>Tourism</source>
   </data>
 </root>

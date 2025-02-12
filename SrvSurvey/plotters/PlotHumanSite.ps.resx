@@ -60,198 +60,255 @@
   </resheader>
   <data name="ActiveFighter">
     <value>* FIGHTER IS ACTIVE →→→!</value>
-    <comment>Fighter is active</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Fighter is active</source>
   </data>
   <data name="AGRI">
     <value>* AGRI →→→!</value>
-    <comment>AGRI</comment>
+    <comment>A contraction of Agriculture, ideally 3 letters</comment>
+    <source>AGRI</source>
   </data>
   <data name="AutoDock1">
     <value>* AUTO DOCK IN PROGRESS →→→!</value>
-    <comment>Auto dock in progress</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Auto dock in progress</source>
   </data>
   <data name="AutoDock2">
     <value>* SETTLEMENT AUTO-IDENTIFICATION SUPPORTED →→→!</value>
-    <comment>Settlement auto-identification supported</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Settlement auto-identification supported</source>
   </data>
   <data name="AutoDock3">
     <value>* DO NOT SWITCH TO EXTERNAL CAMERA →→→!</value>
-    <comment>Do not switch to external camera</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Do not switch to external camera</source>
   </data>
   <data name="CMD">
     <value>* CMD →→→!</value>
-    <comment>CMD</comment>
+    <comment>A contraction of Command, ideally 3 letters</comment>
+    <source>CMD</source>
   </data>
   <data name="Distance">
     <value>* TOO FAR AWAY →→→!</value>
-    <comment>Too far away</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Too far away</source>
   </data>
   <data name="DockingApproved">
     <value>* DOCKING APPROVED: PAD #{0} →→→!</value>
-    <comment>Docking approved: pad #{0}</comment>
+    <comment>Shown when approaching a settlement
+{0} int, the pad number assigned</comment>
+    <source>Docking approved: pad #{0}</source>
   </data>
   <data name="DockingDenied">
     <value>* DOCKING DENIED →→→!</value>
-    <comment>Docking denied</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Docking denied</source>
   </data>
   <data name="DockingRequested">
     <value>* DOCKING REQUESTED →→→!</value>
-    <comment>Docking requested</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Docking requested</source>
   </data>
   <data name="EXT">
     <value>* EXT →→→!</value>
-    <comment>EXT</comment>
+    <comment>A contraction of External, ideally 3 letters</comment>
+    <source>EXT</source>
   </data>
   <data name="Faction">
     <value>* FACTION →→→!</value>
-    <comment>Faction</comment>
+    <comment>Prefix shown when approaching a settlement</comment>
+    <source>Faction</source>
   </data>
   <data name="Government">
     <value>* GOVERNMENT →→→!</value>
-    <comment>Government</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Government</source>
   </data>
   <data name="HAB">
     <value>* HAB →→→!</value>
-    <comment>HAB</comment>
+    <comment>A contraction of Habitat, ideally 3 letters</comment>
+    <source>HAB</source>
   </data>
   <data name="HasInterstellar">
     <value>* INTERSTELLAR FACTIONS AVAILABLE →→→!</value>
-    <comment>Interstellar factions available</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Interstellar factions available</source>
   </data>
   <data name="HelpFoot0">
     <value>* TO MANUALLY IDENTIFY: →→→!</value>
-    <comment>To manually identify:</comment>
+    <comment>Shown when landed and help is needed on foot</comment>
+    <source>To manually identify:</source>
   </data>
   <data name="HelpFoot1">
     <value>* 1. WALK TO THE CENTER OF ANY LANDING PAD AND CROUCH →→→!</value>
-    <comment>1. Walk to the center of any landing pad and crouch</comment>
+    <comment>Shown when landed and help is needed on foot</comment>
+    <source>1. Walk to the center of any landing pad and crouch</source>
   </data>
   <data name="HelpFoot2">
     <value>* 2. PLACE YOUR LEFT FOOT OVER THE THE CENTER GROOVES →→→!</value>
-    <comment>2. Place your left foot over the the center grooves</comment>
+    <comment>Shown when landed and help is needed on foot</comment>
+    <source>2. Place your left foot over the the center grooves</source>
   </data>
   <data name="HelpFoot3">
     <value>* 3. FACE WITH THE CHEVRONS AHEAD TO YOUR LEFT →→→!</value>
-    <comment>3. Face with the chevrons ahead to your left</comment>
+    <comment>Shown when landed and help is needed on foot</comment>
+    <source>3. Face with the chevrons ahead to your left</source>
   </data>
   <data name="HelpFoot4">
     <value>* 4. AIM AT THE END OF THE GROOVE AHEAD OF YOU →→→!</value>
-    <comment>4. Aim at the end of the groove ahead of you</comment>
+    <comment>Shown when landed and help is needed on foot</comment>
+    <source>4. Aim at the end of the groove ahead of you</source>
   </data>
   <data name="HelpFoot5">
     <value>* 5. SEND MESSAGE '{0}' →→→!</value>
-    <comment>5. Send message '{0}'</comment>
+    <comment>
+      Shown when landed and help is needed on foot
+{0} string, the non-localized command to type</comment>
+    <source>5. Send message '{0}'</source>
   </data>
   <data name="HelpFoot6">
     <value>* SEE THE WIKI FOR MORE INFO →→→!</value>
-    <comment>See the wiki for more info</comment>
+    <comment>Shown when landed and help is needed on foot</comment>
+    <source>See the wiki for more info</source>
   </data>
   <data name="HelpShip1">
     <value>* SETTLEMENT WILL BE IDENTIFIED AFTER NEXT ACTION →→→!</value>
-    <comment>Settlement will be identified after next action</comment>
+    <comment>Shown when landed and help is needed in a ship</comment>
+    <source>Settlement will be identified after next action</source>
   </data>
   <data name="HelpShip2">
     <value>* TO MANUALLY IDENTIFY →→→!</value>
-    <comment>To manually identify</comment>
+    <comment>Shown when landed and help is needed in a ship</comment>
+    <source>To manually identify</source>
   </data>
   <data name="HelpShip3">
     <value>* SEND '{0}' WHEN DOCKED →→→!</value>
-    <comment>Send '{0}' when docked</comment>
+    <comment>Shown when landed and help is needed in a ship
+{0} string, the non-localized command to type</comment>
+    <source>Send '{0}' when docked</source>
   </data>
   <data name="Hostile">
     <value>* HOSTILE →→→!</value>
-    <comment>Hostile</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Hostile</source>
   </data>
   <data name="IND">
     <value>* IND →→→!</value>
-    <comment>IND</comment>
+    <comment>A contraction of Industrial Processing, ideally 3 letters</comment>
+    <source>IND</source>
   </data>
   <data name="Influence">
     <value>* INFLUENCE →→→!</value>
-    <comment>Influence</comment>
+    <comment>Prefix shown when approaching a settlement</comment>
+    <source>Influence</source>
   </data>
   <data name="KnownSettlement">
     <value>* KNOWN SETTLEMENT →→→!</value>
-    <comment>Known settlement</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Known settlement</source>
   </data>
   <data name="LAB">
     <value>* LAB →→→!</value>
-    <comment>LAB</comment>
+    <comment>A contraction of Laboratory, ideally 3 letters</comment>
+    <source>LAB</source>
   </data>
   <data name="ManualDock1">
     <value>* MANUAL DOCKING IN PROGRESS →→→!</value>
-    <comment>Manual docking in progress</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Manual docking in progress</source>
   </data>
   <data name="ManualDock2">
     <value>* SETTLEMENT IDENTIFICATION WILL BE DELAYED →→→!</value>
-    <comment>Settlement identification will be delayed</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Settlement identification will be delayed</source>
   </data>
   <data name="ManualDock3">
     <value>* AUTO DOCK RECOMMENDED →→→!</value>
-    <comment>Auto dock recommended</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Auto dock recommended</source>
   </data>
   <data name="MED">
     <value>* MED →→→!</value>
-    <comment>MED</comment>
+    <comment>A contraction of Medical, ideally 3 letters</comment>
+    <source>MED</source>
   </data>
   <data name="NoSpace">
     <value>* NO PADS AVAILABLE →→→!</value>
-    <comment>No pads available</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>No pads available</source>
   </data>
   <data name="Offenses">
     <value>* OFFENSES →→→!</value>
-    <comment>Offenses</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Offenses</source>
   </data>
   <data name="OnApproach">
     <value>* ON APPROACH →→→!</value>
-    <comment>On approach</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>On approach</source>
   </data>
   <data name="POW">
     <value>* POW →→→!</value>
-    <comment>POW</comment>
+    <comment>A contraction of Power Center, ideally 3 letters</comment>
+    <source>POW</source>
   </data>
   <data name="PWR">
     <value>* PWR →→→!</value>
-    <comment>PWR</comment>
+    <comment>A contraction of Power Center, ideally 3 letters</comment>
+    <source>PWR</source>
   </data>
   <data name="RES">
     <value>* RES →→→!</value>
-    <comment>RES</comment>
+    <comment>A contraction of Resources, ideally 3 letters</comment>
+    <source>RES</source>
   </data>
   <data name="STO">
     <value>* STO →→→!</value>
-    <comment>STO</comment>
+    <comment>A contraction of Storage, ideally 3 letters</comment>
+    <source>STO</source>
   </data>
   <data name="TooLarge">
     <value>* SHIP TOO LARGE →→→!</value>
-    <comment>Ship too large</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Ship too large</source>
   </data>
   <data name="Unknown">
     <value>* UNKNOWN →→→!</value>
-    <comment>Unknown</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Unknown</source>
   </data>
   <data name="UnknownTypeHeading">
     <value>* UNKNOWN SETTLEMENT TYPE AND HEADING →→→!</value>
-    <comment>Unknown settlement type and heading</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Unknown settlement type and heading</source>
   </data>
   <data name="UnkownHeading">
     <value>* UNKNOWN SETTLEMENT HEADING →→→!</value>
-    <comment>Unknown settlement heading</comment>
+    <comment>Shown when approaching a settlement</comment>
+    <source>Unknown settlement heading</source>
   </data>
   <data name="YourRep">
     <value>* YOUR REPUTATION: {0} →→→!</value>
-    <comment>Your reputation: {0}</comment>
+    <comment>Shown when approaching a settlement
+{0} string, your reputation with a faction</comment>
+    <source>Your reputation: {0}</source>
   </data>
   <data name="ZoomHeader">
     <value>* ZOOM: {0} →→→!</value>
-    <comment>Zoom: {0}</comment>
+    <comment>Map zoom level, shown in top right corner
+{0} float, 1 decimal place, the map zoom level</comment>
+    <source>Zoom: {0}</source>
   </data>
   <data name="ZoomHeaderAuto">
     <value>* ZOOM: {0} (AUTO) →→→!</value>
-    <comment>Zoom: {0} (Auto)</comment>
+    <comment>Map zoom level when auto zooming, shown in top right corner
+{0} float, 1 decimal place, the map zoom level</comment>
+    <source>Zoom: {0} (Auto)</source>
   </data>
   <data name="ZoomHeaderMin">
     <value>* Z: {0} →→→!</value>
-    <comment>Z: {0}</comment>
+    <comment>A minimal map zoom level, shown in top right corner when there's not much space
+{0} float, 1 decimal place, the map zoom level</comment>
+    <source>Z: {0}</source>
   </data>
 </root>

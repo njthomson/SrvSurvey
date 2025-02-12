@@ -60,62 +60,90 @@
   </resheader>
   <data name="DiscoveredBy">
     <value>Entdeckt von {0} {1}</value>
-    <comment>Discovered by {0} {1}</comment>
+    <comment>Who discovered the star system and when.
+{0} string, name of a cmdr
+{1} date, short format</comment>
+    <source>Discovered by {0} {1}</source>
   </data>
   <data name="GuardianBeacon">
     <value>Bake</value>
-    <comment>Beacon</comment>
+    <comment>Part of a special line shown when the next system has a Guardian Beacon</comment>
+    <source>Beacon</source>
   </data>
   <data name="GuardianRuins">
     <value>Ruinen: {0}</value>
-    <comment>Ruins: {0}</comment>
+    <comment>Part of a special line shown when the next system has guardian Ruins
+{0} int, how many Ruins are in the system</comment>
+    <source>Ruins: {0}</source>
   </data>
   <data name="GuardianStructures">
     <value>Strukturen: {0}</value>
-    <comment>Structures: {0}</comment>
+    <comment>Part of a special line shown when the next system has guardian Structures
+{0} int, how many Structures are in the system</comment>
+    <source>Structures: {0}</source>
   </data>
   <data name="JumpCounts">
     <value>#{0} von {1}</value>
-    <comment>#{0} of {1}</comment>
+    <comment>Shown right of lines of jumps.
+{0} how many jumps already completed on this journey.
+{1} total count of jumps in this journey.</comment>
+    <source>#{0} of {1}</source>
   </data>
   <data name="JumpDistance">
     <value>{0}ly</value>
-    <comment>{0}ly</comment>
+    <comment>Total distance of this journey in Light Years.
+{0} float, 1 decimal place</comment>
+    <source>{0}ly</source>
   </data>
   <data name="LastUpdated">
     <value>Letzte Aktualisierung: {0}</value>
-    <comment>Last updated: {0}</comment>
+    <comment>Appended to DiscoveredBy, shows date system data was last updated
+{0} date, short format</comment>
+    <source>Last updated: {0}</source>
   </data>
   <data name="NextJump">
     <value>Nächster Sprung:</value>
-    <comment>Next jump:</comment>
+    <comment>Header text</comment>
+    <source>Next jump:</source>
   </data>
   <data name="SpecialGuardian">
     <value>Wächter</value>
-    <comment>Guardian</comment>
+    <comment>A line header when the next system has some Guardian sites</comment>
+    <source>Guardian</source>
   </data>
   <data name="SpecialHopInfo">
     <value>#{0} von {1}</value>
-    <comment>#{0} of {1}</comment>
+    <comment>Part of a special line shown when the next system is part of a route we are following
+{0} int, the index of the next system in the route
+{1} int, total count of route hops</comment>
+    <source>#{0} of {1}</source>
   </data>
   <data name="SpecialJoiner">
     <value>,</value>
-    <comment>,</comment>
+    <comment>The character used to join parts of special lines</comment>
+    <source>,</source>
   </data>
   <data name="SpecialNowEntering">
     <value>Geben Sie nun</value>
-    <comment>Now entering</comment>
+    <comment>A line header when the next system is in a different galactic region</comment>
+    <source>Now entering</source>
   </data>
   <data name="SpecialRouteHop">
     <value>Routen-Hopping</value>
-    <comment>Route hop</comment>
+    <comment>A line header when the next system is a hop on the route we are following</comment>
+    <source>Route hop</source>
   </data>
   <data name="StarClass">
     <value>Klasse: {0}</value>
-    <comment>class: {0}</comment>
+    <comment>Top right info showing class of star we're jumping towards</comment>
+    <source>class: {0}</source>
   </data>
   <data name="TrafficInfo">
     <value>Verkehr in 24 Stunden: {0}, Woche: {1}, immer: {2}</value>
-    <comment>Traffic last 24 hours: {0}, week: {1}, ever: {2}</comment>
+    <comment>Traffic info from EDSM.
+{0}, int, count of cmdr's visiting in past 24 hours
+{1}, int, count of cmdr's visiting in past week
+{2}, int, count of cmdr's visiting ever</comment>
+    <source>Traffic last 24 hours: {0}, week: {1}, ever: {2}</source>
   </data>
 </root>

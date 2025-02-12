@@ -60,182 +60,227 @@
   </resheader>
   <data name="Aleoida">
     <value>Aleoida</value>
-    <comment>Aleoida</comment>
+    <comment>An Odyssey genus name</comment>
+    <source>Aleoida</source>
   </data>
   <data name="Amethyst">
     <value>Ametista</value>
-    <comment>Amethyst</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Amethyst</source>
   </data>
   <data name="Amphora Plant">
     <value>Planta de ânfora</value>
-    <comment>Amphora Plant</comment>
+    <comment>A Horizons genus/species name</comment>
+    <source>Amphora Plant</source>
   </data>
   <data name="Aquamarine">
     <value>Água-marinha</value>
-    <comment>Aquamarine</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Aquamarine</source>
   </data>
   <data name="Bacterium">
     <value>Bactéria</value>
-    <comment>Bacterium</comment>
+    <comment>An Odyssey genus name</comment>
+    <source>Bacterium</source>
   </data>
   <data name="Bark Mounds">
     <value>Montes de casca</value>
-    <comment>Bark Mounds</comment>
+    <comment>A Horizons genus/species name</comment>
+    <source>Bark Mounds</source>
   </data>
   <data name="Blue">
     <value>Azul</value>
-    <comment>Blue</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Blue</source>
   </data>
   <data name="Brain Trees">
     <value>Árvores cerebrais</value>
-    <comment>Brain Trees</comment>
+    <comment>A Horizons genus/species name</comment>
+    <source>Brain Trees</source>
   </data>
   <data name="Cactoida">
     <value>Cactoida</value>
-    <comment>Cactoida</comment>
+    <comment>An Odyssey genus name</comment>
+    <source>Cactoida</source>
   </data>
   <data name="Clypeus">
     <value>Clípeo</value>
-    <comment>Clypeus</comment>
+    <comment>An Odyssey genus name</comment>
+    <source>Clypeus</source>
   </data>
   <data name="Cobalt">
     <value>Cobalto</value>
-    <comment>Cobalt</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Cobalt</source>
   </data>
   <data name="Concha">
     <value>Concha</value>
-    <comment>Concha</comment>
+    <comment>An Odyssey genus name</comment>
+    <source>Concha</source>
   </data>
   <data name="Crystalline Shards">
     <value>Fragmentos Cristalinos</value>
-    <comment>Crystalline Shards</comment>
+    <comment>A Horizons genus/species name</comment>
+    <source>Crystalline Shards</source>
   </data>
   <data name="Cyan">
     <value>Ciano</value>
-    <comment>Cyan</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Cyan</source>
   </data>
   <data name="Electricae">
     <value>Electricae</value>
-    <comment>Electricae</comment>
+    <comment>An Odyssey genus name</comment>
+    <source>Electricae</source>
   </data>
   <data name="Emerald">
     <value>Esmeralda</value>
-    <comment>Emerald</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Emerald</source>
   </data>
   <data name="Fonticulua">
     <value>Fonticulua</value>
-    <comment>Fonticulua</comment>
+    <comment>An Odyssey genus name</comment>
+    <source>Fonticulua</source>
   </data>
   <data name="Frutexa">
     <value>Frutexa</value>
-    <comment>Frutexa</comment>
+    <comment>An Odyssey genus name</comment>
+    <source>Frutexa</source>
   </data>
   <data name="Fumerola">
     <value>Fumerola</value>
-    <comment>Fumerola</comment>
+    <comment>An Odyssey genus name</comment>
+    <source>Fumerola</source>
   </data>
   <data name="Fungoida">
     <value>Fungoida</value>
-    <comment>Fungoida</comment>
+    <comment>An Odyssey genus name</comment>
+    <source>Fungoida</source>
   </data>
   <data name="Gold">
     <value>Ouro</value>
-    <comment>Gold</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Gold</source>
   </data>
   <data name="Green">
     <value>Verde</value>
-    <comment>Green</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Green</source>
   </data>
   <data name="Grey">
     <value>Cinza</value>
-    <comment>Grey</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Grey</source>
   </data>
   <data name="Indigo">
     <value>Anil</value>
-    <comment>Indigo</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Indigo</source>
   </data>
   <data name="Lime">
     <value>Lima</value>
-    <comment>Lime</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Lime</source>
   </data>
   <data name="Luteolum Anemone">
     <value>Luteolum Anêmona</value>
-    <comment>Luteolum Anemone</comment>
+    <comment>A Horizons genus/species name</comment>
+    <source>Luteolum Anemone</source>
   </data>
   <data name="Magenta">
     <value>Magenta</value>
-    <comment>Magenta</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Magenta</source>
   </data>
   <data name="Maroon">
     <value>Marrom</value>
-    <comment>Maroon</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Maroon</source>
   </data>
   <data name="Mauve">
     <value>Malva</value>
-    <comment>Mauve</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Mauve</source>
   </data>
   <data name="Mulberry">
     <value>Amoreira</value>
-    <comment>Mulberry</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Mulberry</source>
   </data>
   <data name="Ocher">
     <value>Ocre</value>
-    <comment>Ocher</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Ocher</source>
   </data>
   <data name="Orange">
     <value>Laranja</value>
-    <comment>Orange</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Orange</source>
   </data>
   <data name="Osseus">
     <value>Osseu</value>
-    <comment>Osseus</comment>
+    <comment>An Odyssey genus name</comment>
+    <source>Osseus</source>
   </data>
   <data name="Peach">
     <value>Pêssego</value>
-    <comment>Peach</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Peach</source>
   </data>
   <data name="Recepta">
     <value>Recepta</value>
-    <comment>Recepta</comment>
+    <comment>An Odyssey genus name</comment>
+    <source>Recepta</source>
   </data>
   <data name="Red">
     <value>Vermelho</value>
-    <comment>Red</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Red</source>
   </data>
   <data name="Sage">
     <value>Sálvia</value>
-    <comment>Sage</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Sage</source>
   </data>
   <data name="Sinuous Tubers">
     <value>Tubérculos sinuosos</value>
-    <comment>Sinuous Tubers</comment>
+    <comment>A Horizons genus/species name</comment>
+    <source>Sinuous Tubers</source>
   </data>
   <data name="Stratum">
     <value>Estrato</value>
-    <comment>Stratum</comment>
+    <comment>An Odyssey genus name</comment>
+    <source>Stratum</source>
   </data>
   <data name="Teal">
     <value>Azul-petróleo</value>
-    <comment>Teal</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Teal</source>
   </data>
   <data name="Tubus">
     <value>Tubus</value>
-    <comment>Tubus</comment>
+    <comment>An Odyssey genus name</comment>
+    <source>Tubus</source>
   </data>
   <data name="Turquoise">
     <value>Turquesa</value>
-    <comment>Turquoise</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Turquoise</source>
   </data>
   <data name="Tussock">
     <value>Tussock</value>
-    <comment>Tussock</comment>
+    <comment>An Odyssey genus name</comment>
+    <source>Tussock</source>
   </data>
   <data name="White">
     <value>Branco</value>
-    <comment>White</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>White</source>
   </data>
   <data name="Yellow">
     <value>Amarelo</value>
-    <comment>Yellow</comment>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Yellow</source>
   </data>
 </root>

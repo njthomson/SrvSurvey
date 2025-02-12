@@ -60,14 +60,18 @@
   </resheader>
   <data name="Footer">
     <value>* (LOCATIONS MAY NOT BE THAT CLOSE TO SIGNALS) →→→!</value>
-    <comment>(Locations may not be that close to signals)</comment>
+    <comment>Footer message</comment>
+    <source>(Locations may not be that close to signals)</source>
   </data>
   <data name="Header">
     <value>* TRACKING {0} SIGNALS FROM CANONN: →→→!</value>
-    <comment>Tracking {0} signals from Canonn:</comment>
+    <comment>Header line
+{0} int, count of signals known to Canonn</comment>
+    <source>Tracking {0} signals from Canonn:</source>
   </data>
   <data name="NoMoreSignals">
     <value>* NO UN-SCANNED SIGNALS MEET CRITERIA →→→!</value>
-    <comment>No un-scanned signals meet criteria</comment>
+    <comment>Line shown when no more signals apply</comment>
+    <source>No un-scanned signals meet criteria</source>
   </data>
 </root>

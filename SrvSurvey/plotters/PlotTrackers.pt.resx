@@ -60,6 +60,8 @@
   </resheader>
   <data name="HeaderLine">
     <value>Rastreamento {0} alvos:</value>
-    <comment>Tracking {0} targets:</comment>
+    <comment>Header line
+{0} int, count of bookmarks tracked</comment>
+    <source>Tracking {0} targets:</source>
   </data>
 </root>

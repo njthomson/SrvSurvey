@@ -60,18 +60,24 @@
   </resheader>
   <data name="CountBioSignals">
     <value>{0} sinais biológicos:</value>
-    <comment>{0} bio signals:</comment>
+    <comment>Footer shown when there are bio signals on the body just scanned
+{0} int, count of bio signals</comment>
+    <source>{0} bio signals:</source>
   </data>
   <data name="EstimatedValue">
     <value>Valor estimado:</value>
-    <comment>Estimated value:</comment>
+    <comment>Line header for body estimated value</comment>
+    <source>Estimated value:</source>
   </data>
   <data name="LastScan">
     <value>Última varredura: {0}</value>
-    <comment>Last scan: {0}</comment>
+    <comment>Header showing name of body last scanned
+{0} string, name of last body scanned</comment>
+    <source>Last scan: {0}</source>
   </data>
   <data name="WithSurfaceScan">
     <value>Com varredura de superfície:</value>
-    <comment>With surface scan:</comment>
+    <comment>Line header for body estimated value with surface scan</comment>
+    <source>With surface scan:</source>
   </data>
 </root>

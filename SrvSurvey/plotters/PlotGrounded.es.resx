@@ -60,38 +60,47 @@
   </resheader>
   <data name="NearingShipDistance">
     <value>Proximidad a la distancia de salida del barco</value>
-    <comment>Nearing ship departure distance</comment>
+    <comment>Warning shown when nearing ship departure distance</comment>
+    <source>Nearing ship departure distance</source>
   </data>
   <data name="ScanOne_Long">
     <value>Escaneo uno:</value>
-    <comment>Scan one:</comment>
+    <comment>Prefix to bearing and distance to scan one</comment>
+    <source>Scan one:</source>
   </data>
   <data name="ScanOne_Short">
     <value>1º:</value>
-    <comment>1st:</comment>
+    <comment>A shorter prefix to bearing and distance to scan one, when window is too narrow</comment>
+    <source>1st:</source>
   </data>
   <data name="ScanOneInvalid">
     <value>Escaneo uno: no válido</value>
-    <comment>Scan one: invalid</comment>
+    <comment>Warning shown when scan one is not valid</comment>
+    <source>Scan one: invalid</source>
   </data>
   <data name="ScanTwo_Long">
     <value>Escaneo dos:</value>
-    <comment>Scan two:</comment>
+    <comment>Prefix to bearing and distance to scan two</comment>
+    <source>Scan two:</source>
   </data>
   <data name="ScanTwo_Short">
     <value>2º:</value>
-    <comment>2nd:</comment>
+    <comment>A shorter prefix to bearing and distance to scan two, when window is too narrow</comment>
+    <source>2nd:</source>
   </data>
   <data name="ScanTwoInvalid">
     <value>Escaneo dos: no válido</value>
-    <comment>Scan two: invalid</comment>
+    <comment>Warning shown when scan two is not valid</comment>
+    <source>Scan two: invalid</source>
   </data>
   <data name="Ship">
     <value>Nave:</value>
-    <comment>Ship:</comment>
+    <comment>Prefix to bearing and distance to the ship</comment>
+    <source>Ship:</source>
   </data>
   <data name="SRV">
     <value>VRS:</value>
-    <comment>SRV:</comment>
+    <comment>Prefix to bearing and distance to SRV</comment>
+    <source>SRV:</source>
   </data>
 </root>

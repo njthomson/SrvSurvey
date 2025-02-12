@@ -15,13 +15,13 @@ namespace SrvSurvey
 
         public static Dictionary<string, string> supportedLanguages = new()
         {
-            { "English", "en" },
-            { "Deutsch", "de" },
-            { "Español", "es" },
-            { "Français", "fr" },
+            { "English",   "en" },
+            { "Deutsch",   "de" },
+            { "Español",   "es" },
+            { "Français",  "fr" },
             { "Português", "pt" },
-            { "Русский", "ru" },
-            { "Pseudo",  "ps" },
+            { "Русский",   "ru" },
+            { "Pseudo",    "ps" },
         };
 
         public static string? nameFromCode(string? code)
@@ -122,12 +122,17 @@ namespace SrvSurvey
             var sourceNodes = sourceDoc.Root?.Elements().Where(_ => _.Name.LocalName == "data")!;
             if (sourceNodes == null) return;
 
+            // TODO: inject element into xsd:schema to make `source` be deemed valid
+            //var foo = newTargetDoc.Root!.Descendants().Where(_ => _.Name.LocalName == "element" && _.FirstAttribute?.Value == "comment").First();
+            //foo.Parent.Add();
+
             var count = 0;
             foreach (var element in sourceNodes)
             {
                 // extract resource
                 var resourceName = element.Attribute("name")?.Value;
                 var sourceText = element.Element("value")?.Value;
+                var commentText = element.Element("comment")?.Value;
                 //Game.log($">{resourceName}: '{sourceText}'");
 
                 // skip any empty strings or non string resources
@@ -141,13 +146,18 @@ namespace SrvSurvey
                 var newNode = new XElement("data");
                 newNode.SetAttributeValue("name", resourceName);
                 newNode.Add(new XElement("value", ""));
-                newNode.Add(new XElement("comment", sourceText));
+                if (commentText!= null)
+                    newNode.Add(new XElement("comment", commentText));
+                newNode.Add(new XElement("source", sourceText));
                 targetNode.ReplaceWith(newNode);
                 targetNode = newNode;
 
                 // default to prior translation
                 var oldTargetNode = oldTargetDoc?.Root?.Elements().Where(_ => _.Name.LocalName == "data" && _.FirstAttribute?.Value == resourceName).FirstOrDefault();
                 var oldTranslation = oldTargetNode?.Element("value")?.Value;
+                var oldSource = oldTargetNode?.Element("source")?.Value ?? oldTargetNode?.Element("comment")?.Value;
+
+                //if (resourceName == "Tussock") Debugger.Break();
 
                 // replace elements when we're first creating the .resx file (and always pseudo-localize)
                 if (!string.IsNullOrEmpty(oldTranslation))
@@ -157,7 +167,7 @@ namespace SrvSurvey
 
                 // skip anything that hasn't changed (unless we're doing PS)
                 var oldComment = oldTargetNode?.Element("comment")?.Value;
-                if (oldComment == sourceText && !string.IsNullOrEmpty(oldTranslation)) continue;
+                if (oldSource == sourceText && !string.IsNullOrEmpty(oldTranslation)) continue;
 
                 // presume pseudo translate it
                 var translation = $"* {sourceText.ToUpperInvariant()} →→→!";

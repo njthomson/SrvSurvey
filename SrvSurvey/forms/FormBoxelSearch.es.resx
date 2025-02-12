@@ -625,7 +625,7 @@
   </data>
   <data name="btnBegin.Text">
     <value>&amp;Iniciar</value>
-    <comment>&amp;Begin</comment>
+    <source>&amp;Begin</source>
   </data>
   <data name="btnBoxelEmpty.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -644,7 +644,7 @@
   </data>
   <data name="btnBoxelEmpty.Text">
     <value>&amp;Alternar vaciar boxel</value>
-    <comment>&amp;Toggle boxel empty</comment>
+    <source>&amp;Toggle boxel empty</source>
   </data>
   <data name="btnConfig.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -669,7 +669,7 @@
   </data>
   <data name="btnConfig.Text">
     <value>Configuración</value>
-    <comment>Config</comment>
+    <source>Config</source>
   </data>
   <data name="btnConfigCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -697,7 +697,7 @@
   </data>
   <data name="btnConfigCancel.Text">
     <value>&amp;Cancelar</value>
-    <comment>&amp;Cancel</comment>
+    <source>&amp;Cancel</source>
   </data>
   <data name="btnConfigNav.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -716,7 +716,7 @@
   </data>
   <data name="btnConfigNav.Text">
     <value>...</value>
-    <comment>...</comment>
+    <source>...</source>
   </data>
   <data name="btnCopyNext.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -744,7 +744,7 @@
   </data>
   <data name="btnCopyNext.Text">
     <value>&amp;Copiar siguiente sistema</value>
-    <comment>&amp;Copy next system</comment>
+    <source>&amp;Copy next system</source>
   </data>
   <data name="btnParent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -769,7 +769,7 @@
   </data>
   <data name="btnParent.Text">
     <value>...</value>
-    <comment>...</comment>
+    <source>...</source>
   </data>
   <data name="btnToggleList.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -788,7 +788,7 @@
   </data>
   <data name="btnToggleList.Text">
     <value>⏶ Ocultar lista</value>
-    <comment>⏶ Hide list</comment>
+    <source>⏶ Hide list</source>
   </data>
   <data name="checkAutoCopy.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -807,7 +807,7 @@
   </data>
   <data name="checkAutoCopy.Text">
     <value>&amp;Auto-copiar en mapa galáctico</value>
-    <comment>&amp;Auto-copy in gal map</comment>
+    <source>&amp;Auto-copy in gal map</source>
   </data>
   <data name="checkCompleteOnEnterSystem.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -826,7 +826,7 @@
   </data>
   <data name="checkCompleteOnEnterSystem.Text">
     <value>Se entra al sistema</value>
-    <comment>Entering a system</comment>
+    <source>Entering a system</source>
   </data>
   <data name="checkCompleteOnFssAllBodies.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -845,7 +845,7 @@
   </data>
   <data name="checkCompleteOnFssAllBodies.Text">
     <value>Se escanean todos los cuerpos</value>
-    <comment>FSS'ing all bodies</comment>
+    <source>FSS'ing all bodies</source>
   </data>
   <data name="checkSkipVisited.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -867,7 +867,7 @@
   </data>
   <data name="checkSkipVisited.Text">
     <value>Saltar sistemas visitados anteriores a</value>
-    <comment>Skip systems I've already visited before date</comment>
+    <source>Skip systems I've already visited before date</source>
   </data>
   <data name="checkSpinKnownToSpansh.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -889,18 +889,18 @@
   </data>
   <data name="checkSpinKnownToSpansh.Text">
     <value>Saltar sistemas conocidos por Spansh anteriores a</value>
-    <comment>Skip systems known to Spansh before date</comment>
+    <source>Skip systems known to Spansh before date</source>
   </data>
   <data name="colCompleted.Text">
     <value>Fecha de visita</value>
-    <comment>Visited Date</comment>
+    <source>Visited Date</source>
   </data>
   <data name="colCompleted.Width" type="System.Int32, mscorlib">
     <value>150</value>
   </data>
   <data name="colDistance.Text">
     <value>Distancia</value>
-    <comment>Distance</comment>
+    <source>Distance</source>
   </data>
   <data name="colDistance.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Right</value>
@@ -910,14 +910,14 @@
   </data>
   <data name="colSpansh.Text">
     <value>Actualizado en Spansh</value>
-    <comment>Spansh Updated</comment>
+    <source>Spansh Updated</source>
   </data>
   <data name="colSpansh.Width" type="System.Int32, mscorlib">
     <value>150</value>
   </data>
   <data name="colSystem.Text">
     <value>Nombre del sistema</value>
-    <comment>System Name</comment>
+    <source>System Name</source>
   </data>
   <data name="colSystem.Width" type="System.Int32, mscorlib">
     <value>160</value>
@@ -1017,7 +1017,7 @@
   </data>
   <data name="label1.Text">
     <value>Analizando boxel:</value>
-    <comment>Surveying boxel:</comment>
+    <source>Surveying boxel:</source>
   </data>
   <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -1039,7 +1039,7 @@
   </data>
   <data name="label2.Text">
     <value>Medir distancias desde:</value>
-    <comment>Measure distances from:</comment>
+    <source>Measure distances from:</source>
   </data>
   <data name="label3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -1061,7 +1061,7 @@
   </data>
   <data name="label3.Text">
     <value>NOTA: La función de búsqueda por Boxels está inacabada y es experimental</value>
-    <comment>NOTE: Boxel search feature is incomplete and experimental</comment>
+    <source>NOTE: Boxel search feature is incomplete and experimental</source>
   </data>
   <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -1083,7 +1083,7 @@
   </data>
   <data name="label4.Text">
     <value>Considerar el sistema completado cuando:</value>
-    <comment>Consider a system complete when:</comment>
+    <source>Consider a system complete when:</source>
   </data>
   <data name="label5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -1102,7 +1102,7 @@
   </data>
   <data name="label5.Text">
     <value>Analizar hasta el código de masa:</value>
-    <comment>Survey down to mass code:</comment>
+    <source>Survey down to mass code:</source>
   </data>
   <data name="label6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -1121,7 +1121,7 @@
   </data>
   <data name="label6.Text">
     <value>la fecha:</value>
-    <comment>As of date:</comment>
+    <source>As of date:</source>
   </data>
   <data name="label7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -1140,7 +1140,7 @@
   </data>
   <data name="label7.Text">
     <value>Actual:</value>
-    <comment>Current:</comment>
+    <source>Current:</source>
   </data>
   <data name="label7.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -1164,9 +1164,9 @@
     <value>Un boxel es un cubo de espacio que contiene sistemas estelares generados proceduralmente. Los tamaños de los cubos dependen del código de masa: los boxel 'a' son de 10al de ancho, los boxel 'h' son de  1280al.
 
 Cada boxel contiene 8 nodos, dispuestos en 2 filas de 4 cuadrantes, cada uno con sus propios sistemas estelares generados.</value>
-    <comment>A boxel is a cube of space containing procedurally generated star systems. Cube sizes depend on mass code: 'a' boxels are 10 ly across, 'h' boxels are 1280 ly.
+    <source>A boxel is a cube of space containing procedurally generated star systems. Cube sizes depend on mass code: 'a' boxels are 10 ly across, 'h' boxels are 1280 ly.
 
-Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with their own generated star systems.</comment>
+Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with their own generated star systems.</source>
   </data>
   <data name="lblBadBoxel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -1185,7 +1185,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
   </data>
   <data name="lblBadBoxel.Text">
     <value>El nombre del sistema no es un nombre de boxel válido</value>
-    <comment>System name is not a valid boxel name</comment>
+    <source>System name is not a valid boxel name</source>
   </data>
   <data name="lblBadBoxel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -1210,7 +1210,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
   </data>
   <data name="lblBoxelCount.Text">
     <value>(Contiene X boxels)</value>
-    <comment>(Contains X boxels)</comment>
+    <source>(Contains X boxels)</source>
   </data>
   <data name="lblConfigHeader.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -1232,7 +1232,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
   </data>
   <data name="lblConfigHeader.Text">
     <value>Introduce el boxel superior a analizar. Todos los boxels hijos se incluirán hasta el código de masa más pequeño:</value>
-    <comment>Enter the top boxel to survey. All child boxels will be included down to the lower mass code:</comment>
+    <source>Enter the top boxel to survey. All child boxels will be included down to the lower mass code:</source>
   </data>
   <data name="lblMaxNum.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -1251,14 +1251,14 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
   </data>
   <data name="lblMaxNum.Text">
     <value>&amp;Sistemas en boxel:</value>
-    <comment>&amp;Systems in boxel:</comment>
+    <source>&amp;Systems in boxel:</source>
   </data>
   <data name="lblStatus.Size" type="System.Drawing.Size, System.Drawing">
     <value>437, 19</value>
   </data>
   <data name="lblStatus.Text">
     <value>-</value>
-    <comment>-</comment>
+    <source>-</source>
   </data>
   <data name="lblStatus.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -1283,14 +1283,14 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
   </data>
   <data name="menuHelpLink.Text">
     <value>Ayuda sobre esta herramienta</value>
-    <comment>Help about this tool</comment>
+    <source>Help about this tool</source>
   </data>
   <data name="menuListCopySystemName.Size" type="System.Drawing.Size, System.Drawing">
     <value>175, 22</value>
   </data>
   <data name="menuListCopySystemName.Text">
     <value>&amp;Copiar el nombre del sistema</value>
-    <comment>&amp;Copy system name</comment>
+    <source>&amp;Copy system name</source>
   </data>
   <data name="menuMore.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1309,7 +1309,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
   </data>
   <data name="menuMore.Text">
     <value>Más...</value>
-    <comment>More ...</comment>
+    <source>More ...</source>
   </data>
   <data name="menuSiblings.Size" type="System.Drawing.Size, System.Drawing">
     <value>61, 4</value>
@@ -1427,7 +1427,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
   </data>
   <data name="$this.Text">
     <value>Búsqueda por Boxel (Experimental)</value>
-    <comment>Boxel Search (Experimental)</comment>
+    <source>Boxel Search (Experimental)</source>
   </data>
   <data name="txtConfigBoxel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>

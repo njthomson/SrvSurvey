@@ -60,36 +60,51 @@
   </resheader>
   <data name="CountGenus">
     <value>Родов: {0}</value>
-    <comment>{0} Genus</comment>
+    <comment>Line prefix showing the count of genus on a body
+{0} int, count of genus</comment>
+    <source>{0} Genus</source>
   </data>
   <data name="CountGeo">
     <value>Гео: {0}</value>
-    <comment>{0} Geo</comment>
+    <comment>Line suffix showing the count of geo signals on a body
+{0} int, count of geo signals</comment>
+    <source>{0} Geo</source>
   </data>
   <data name="Footer1">
     <value>Стоимость сканирования | Стоимость DSS</value>
-    <comment>Scan value | DSS value</comment>
+    <comment>First footer line with guidance</comment>
+    <source>Scan value | DSS value</source>
   </data>
   <data name="Footer2">
     <value>🌎 Терраформируемая
 🚀 Пригодная для посадки ⚑ Неизведанная</value>
-    <comment>🌎 Terraformable
-🚀 Landable ⚑ Undiscovered</comment>
+    <comment>More footer lines with guidance</comment>
+    <source>🌎 Terraformable
+🚀 Landable ⚑ Undiscovered</source>
   </data>
   <data name="HidingBodies">
     <value>( Скрыты тела &lt; {0} )</value>
-    <comment>( Hiding bodies &lt; {0} )</comment>
+    <comment>Line showing minimum credit value needed for bodies to be shown in the list that follows
+{0} string, min value of credits</comment>
+    <source>( Hiding bodies &lt; {0} )</source>
   </data>
   <data name="ScannedAllBodies">
-    <value>Отсканированы все {0} тел: {0}</value>
-    <comment>Scanned all {0} bodies: {0}</comment>
+    <value>Отсканированы все {0} тел: {1}</value>
+    <comment>Line showing when all bodies have been scanned and how many credits thats worth
+{0} int, count of bodies
+{1} string, value of credits</comment>
+    <source>Scanned all {0} bodies: {1}</source>
   </data>
   <data name="ScannedBodies">
-    <value>Отсканированы {0} тел: {0}</value>
-    <comment>Scanned {0} bodies: {0}</comment>
+    <value>Отсканированы {0} тел: {1}</value>
+    <comment>Line showing how many bodies are scanned and how many credits thats worth
+{0} int, count of bodies
+{1} string, value of credits</comment>
+    <source>Scanned {0} bodies: {1}</source>
   </data>
   <data name="ScanToPopulate">
     <value>(отсканируйте для заполнения)</value>
-    <comment>(scan to populate)</comment>
+    <comment>Warning message line shown when a scan is needed</comment>
+    <source>(scan to populate)</source>
   </data>
 </root>

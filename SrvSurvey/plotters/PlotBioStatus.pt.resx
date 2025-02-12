@@ -60,42 +60,57 @@
   </resheader>
   <data name="DssRequired">
     <value>Sinais biológicos detectados - DSS Scan necessário</value>
-    <comment>Bio signals detected - DSS Scan required</comment>
+    <comment>Warning shown when body has not been DSS'd</comment>
+    <source>Bio signals detected - DSS Scan required</source>
   </data>
   <data name="FooterAllScanned">
     <value>Todos os sinais verificados</value>
-    <comment>All signals scanned</comment>
+    <comment>Footer shown when all bio signals are scanned</comment>
+    <source>All signals scanned</source>
   </data>
   <data name="FooterAllScannedFF">
     <value>Todos os sinais verificados com bônus FF aplicado</value>
-    <comment>All signals scanned with FF bonus applied</comment>
+    <comment>Footer shown when all bio signals are scanned and First Footfall bonus is applied</comment>
+    <source>All signals scanned with FF bonus applied</source>
   </data>
   <data name="FooterApplyFF">
     <value>Aplicando o bônus de primeiros passos</value>
-    <comment>Applying first footfall bonus</comment>
+    <comment>Footer shown when not scanning anything currently and First Footfall bonus will be applied</comment>
+    <source>Applying first footfall bonus</source>
   </data>
   <data name="FooterUseCompScanner">
     <value>Usar o Scanner de composição para definir destinos de rastreador</value>
-    <comment>Use Composition Scanner to set tracker targets</comment>
+    <comment>Footer shown to remind people to use the composition scanner</comment>
+    <source>Use Composition Scanner to set tracker targets</source>
   </data>
   <data name="GeoN">
     <value>Geo #{0}</value>
-    <comment>Geo #{0}</comment>
+    <comment>Shown with genus names but represents some unknown numbered geological signal
+{0} int, the index of the geo signal, 1 through 3</comment>
+    <source>Geo #{0}</source>
   </data>
   <data name="Header">
     <value>Sinais biológicos: {0} | Analisado: {1}</value>
-    <comment>Biological signals: {0} | Analyzed: {1}</comment>
+    <comment>Header text
+{0} int, total count of bio signals
+{1} int, count of bio signals analyzed</comment>
+    <source>Biological signals: {0} | Analyzed: {1}</source>
   </data>
   <data name="SomethingWrong">
     <value>Algo está errado. Por favor, compartilhe logs.</value>
-    <comment>Something is wrong. Please share logs.</comment>
+    <comment>An error message shown when something went wrong.</comment>
+    <source>Something is wrong. Please share logs.</source>
   </data>
   <data name="SuffixFF">
     <value>(Bônus FF)</value>
-    <comment>(FF bonus)</comment>
+    <comment>Shown next to credit value when First Footfall bonus will be applied</comment>
+    <source>(FF bonus)</source>
   </data>
   <data name="WarningStaleScans">
     <value>AVISO: Digitalizações {0} incompletas do {1}</value>
-    <comment>WARNING: Incomplete {0} scans from {1}</comment>
+    <comment>Warning line shown if there are incomplete scans from another body
+{0} string, name of bio signal
+{1} name of body</comment>
+    <source>WARNING: Incomplete {0} scans from {1}</source>
   </data>
 </root>

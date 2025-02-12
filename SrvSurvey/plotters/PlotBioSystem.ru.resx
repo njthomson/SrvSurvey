@@ -60,30 +60,43 @@
   </resheader>
   <data name="BodyBio_Header">
     <value>Биологические сигналы тела {0}: {1}</value>
-    <comment>Body {0} bio signals: {1}</comment>
+    <comment>Header shown when showing bio signals for a body
+{0} string, the short name of a body
+{1} int, total count of bio signals on this body</comment>
+    <source>Body {0} bio signals: {1}</source>
   </data>
   <data name="DssRequired">
     <value>Требуется DSS</value>
-    <comment>DSS required</comment>
+    <comment>Message shown if the body needs to be DSS scanned</comment>
+    <source>DSS required</source>
   </data>
   <data name="FFBonus">
     <value>(Бонус FF: {0})</value>
-    <comment>(FF bonus: {0})</comment>
+    <comment>Extra footer line showing rewards if body has FF bonus applied
+{0} string, either a single number of credits or &lt;min&gt; ~ &lt;max&gt; credits</comment>
+    <source>(FF bonus: {0})</source>
   </data>
   <data name="FssRequired">
     <value>Требуется FSS системы</value>
-    <comment>System FSS required</comment>
+    <comment>Message shown if the system needs to be FSS scanned</comment>
+    <source>System FSS required</source>
   </data>
   <data name="GeoSignals">
     <value>Геосигналы: {0}</value>
-    <comment>Geo signals: {0}</comment>
+    <comment>Header shown when body has geo signals
+{0} int, total count of geo signals on the body</comment>
+    <source>Geo signals: {0}</source>
   </data>
   <data name="RewardFooter">
     <value>Награды: {0}</value>
-    <comment>Rewards: {0}</comment>
+    <comment>Footer showing estimated credits
+{0} string, either a single number of credits or &lt;min&gt; ~ &lt;max&gt; credits</comment>
+    <source>Rewards: {0}</source>
   </data>
   <data name="SysBio_Header">
     <value>Биосигналы: {0}</value>
-    <comment>Bio signals: {0}</comment>
+    <comment>Header shown when showing bio signals forthe whole system
+{0} int, count of bio signals in this system</comment>
+    <source>Bio signals: {0}</source>
   </data>
 </root>

@@ -60,14 +60,18 @@
   </resheader>
   <data name="Footer">
     <value>(Местоположения могут быть не так близки к сигналам)</value>
-    <comment>(Locations may not be that close to signals)</comment>
+    <comment>Footer message</comment>
+    <source>(Locations may not be that close to signals)</source>
   </data>
   <data name="Header">
     <value>Отслеживание {0} сигналов от Canonn:</value>
-    <comment>Tracking {0} signals from Canonn:</comment>
+    <comment>Header line
+{0} int, count of signals known to Canonn</comment>
+    <source>Tracking {0} signals from Canonn:</source>
   </data>
   <data name="NoMoreSignals">
     <value>Ни один неотсканированный сигнал не соответствует критериям</value>
-    <comment>No un-scanned signals meet criteria</comment>
+    <comment>Line shown when no more signals apply</comment>
+    <source>No un-scanned signals meet criteria</source>
   </data>
 </root>

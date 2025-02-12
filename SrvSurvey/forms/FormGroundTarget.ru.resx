@@ -238,7 +238,7 @@
   </data>
   <data name="btnBegin.Text">
     <value>&amp;Установить цель</value>
-    <comment>&amp;Set target</comment>
+    <source>&amp;Set target</source>
   </data>
   <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -263,7 +263,7 @@
   </data>
   <data name="btnCancel.Text">
     <value>Отмена</value>
-    <comment>Cancel</comment>
+    <source>Cancel</source>
   </data>
   <data name="btnPaste.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -299,7 +299,7 @@
   </data>
   <data name="btnPaste.Text">
     <value>&amp;Вставить</value>
-    <comment>&amp;Paste</comment>
+    <source>&amp;Paste</source>
   </data>
   <data name="btnPaste.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
@@ -327,7 +327,7 @@
   </data>
   <data name="btnTargetCurrent.Text">
     <value>&amp;Назначить текущее место целью</value>
-    <comment>&amp;Target current location</comment>
+    <source>&amp;Target current location</source>
   </data>
   <data name="button1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -352,7 +352,7 @@
   </data>
   <data name="button1.Text">
     <value>&amp;Очистить цель</value>
-    <comment>&amp;Clear target</comment>
+    <source>&amp;Clear target</source>
   </data>
   <data name="flowLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -392,7 +392,7 @@
   </data>
   <data name="label2.Text">
     <value>Широта:</value>
-    <comment>Latitute:</comment>
+    <source>Latitute:</source>
   </data>
   <data name="label3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -414,7 +414,7 @@
   </data>
   <data name="label3.Text">
     <value>Долгота:</value>
-    <comment>Longitude:</comment>
+    <source>Longitude:</source>
   </data>
   <data name="label6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -435,9 +435,9 @@
     <value>Получили совет от таинственного незнакомца отправиться на какую-нибудь шир/дол на какой-нибудь планете или луне?
 
 Введите некоторые координаты, и при приближении появится ориентир.</value>
-    <comment>Got a tip from a mysterious stranger to go to some Lat/Long on some planet or moon?
+    <source>Got a tip from a mysterious stranger to go to some Lat/Long on some planet or moon?
 
-Enter some Lat/Long position and guidance will appear when you approach.</comment>
+Enter some Lat/Long position and guidance will appear when you approach.</source>
   </data>
   <data name="tableLayoutPanel1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -480,7 +480,7 @@ Enter some Lat/Long position and guidance will appear when you approach.</commen
   </data>
   <data name="$this.Text">
     <value>Установка координат широты/долготы</value>
-    <comment>Set lat/long co-ordinates</comment>
+    <source>Set lat/long co-ordinates</source>
   </data>
   <data name="txtLat.Location" type="System.Drawing.Point, System.Drawing">
     <value>92, 3</value>
@@ -496,7 +496,7 @@ Enter some Lat/Long position and guidance will appear when you approach.</commen
   </data>
   <data name="txtLat.Text">
     <value>+12.34</value>
-    <comment>+12.34</comment>
+    <source>+12.34</source>
   </data>
   <data name="txtLong.Location" type="System.Drawing.Point, System.Drawing">
     <value>92, 32</value>
@@ -512,6 +512,6 @@ Enter some Lat/Long position and guidance will appear when you approach.</commen
   </data>
   <data name="txtLong.Text">
     <value>-10.0</value>
-    <comment>-10.0</comment>
+    <source>-10.0</source>
   </data>
 </root>

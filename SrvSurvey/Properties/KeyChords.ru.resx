@@ -60,78 +60,97 @@
   </resheader>
   <data name="copyNextBoxel">
     <value>На экране галактической карты, копирует в буфер обмена следующую систему поиска в подсекторе.</value>
-    <comment>In gal-map, copy the next boxel search system to clipboard.</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>In gal-map, copy the next boxel search system to clipboard.</source>
   </data>
   <data name="mapBeHuge">
     <value>Переключает полноразмерную карту, в человеческих поселениях.</value>
-    <comment>Toggles making the map fill half the screen, at Human settlements only.</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>Toggles making the map fill half the screen, at Human settlements only.</source>
   </data>
   <data name="mapZoomAuto">
     <value>Сбрасывает масштаб до значений по умолчанию, в человеческих поселениях и конструкциях Стражей.</value>
-    <comment>Reset the zoom to default, at Human and Guardian sites.</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>Reset the zoom to default, at Human and Guardian sites.</source>
   </data>
   <data name="mapZoomIn">
     <value>Увеличивает масштаб карт, в человеческих поселениях и конструкциях Стражей.</value>
-    <comment>Zoom in on maps at Human and Guardian sites.</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>Zoom in on maps at Human and Guardian sites.</source>
   </data>
   <data name="mapZoomOut">
     <value>Уменьшает масштаб карт, в человеческих поселениях и конструкциях Стражей.</value>
-    <comment>Zoom out on maps at Human and Guardian sites.</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>Zoom out on maps at Human and Guardian sites.</source>
   </data>
   <data name="pasteGalMap">
     <value>На экране галактической карты, вставляет текста из буфера обмена</value>
-    <comment>Paste clipboard text when in Gal-Map</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>Paste clipboard text when in Gal-Map</source>
   </data>
   <data name="showBodyInfo">
     <value>Принудительно отображает наложение с информацией о теле.</value>
-    <comment>Force show the Body info overlay.</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>Force show the Body info overlay.</source>
   </data>
   <data name="showFssInfo">
     <value>Принудительно отображает наложение с информацией о FSS.</value>
-    <comment>Force show the FSS info overlay.</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>Force show the FSS info overlay.</source>
   </data>
   <data name="showJumpInfo">
     <value>Принудительно переключает наложение прыжка FSD, не начиная прыжок.</value>
-    <comment>Force toggle the FSD jump overlay without starting to jump.</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>Force toggle the FSD jump overlay without starting to jump.</source>
   </data>
   <data name="showSystemNotes">
     <value>Делает окно системных заметок видимым.</value>
-    <comment>Make the system notes window visible.</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>Make the system notes window visible.</source>
   </data>
   <data name="toggleAllVisibility">
     <value>Переключает видимость всех окон наложения.</value>
-    <comment>Toggles visibility of all overlay windows.</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>Toggles visibility of all overlay windows.</source>
   </data>
   <data name="track1">
     <value>Добавляет или удаляет трекер #1</value>
-    <comment>Add or remove tracker #1</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #1</source>
   </data>
   <data name="track2">
     <value>Добавляет или удаляет трекер #2</value>
-    <comment>Add or remove tracker #2</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #2</source>
   </data>
   <data name="track3">
     <value>Добавляет или удаляет трекер #3</value>
-    <comment>Add or remove tracker #3</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #3</source>
   </data>
   <data name="track4">
     <value>Добавляет или удаляет трекер #4</value>
-    <comment>Add or remove tracker #4</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #4</source>
   </data>
   <data name="track5">
     <value>Добавляет или удаляет трекер #5</value>
-    <comment>Add or remove tracker #5</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #5</source>
   </data>
   <data name="track6">
     <value>Добавляет или удаляет трекер #6</value>
-    <comment>Add or remove tracker #6</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #6</source>
   </data>
   <data name="track7">
     <value>Добавляет или удаляет трекер #7</value>
-    <comment>Add or remove tracker #7</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #7</source>
   </data>
   <data name="track8">
     <value>Добавляет или удаляет трекер #8</value>
-    <comment>Add or remove tracker #8</comment>
+    <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #8</source>
   </data>
 </root>
