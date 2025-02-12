@@ -161,11 +161,13 @@ namespace SrvSurvey.plotters
 
             if (string.IsNullOrEmpty(lastBodyName)) return;
 
+            var ww = oneEight + eight + Util.maxWidth(this.Font, "► " + RES("EstimatedValue"), "► " + RES("WithSurfaceScan"));
+
             drawTextAt2(oneEight, "► " + RES("EstimatedValue"));
-            drawTextAt2(oneEightFour, $"{lastInitialValue} cr");
+            drawTextAt2(ww, $"{lastInitialValue} cr");
             newLine(true);
             drawTextAt2(oneEight, "► " + RES("WithSurfaceScan"));
-            drawTextAt2(oneEightFour, $"{lastMappedValue} cr");
+            drawTextAt2(ww, $"{lastMappedValue} cr");
             newLine(true);
 
             if (!string.IsNullOrEmpty(lastNotes))

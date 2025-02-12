@@ -49,7 +49,6 @@ namespace BioCriterias
                 .ToDictionary(_ => _.Key, _ => _.Value);
             Game.log($"Radiant stars for '{body.name}': \r\n" + string.Join("\r\n", parentsByBrightness.Select(_ => $"> {_.Key.shortName} ({_.Key.starType}) : {_.Value}")));
 
-
             if (parentsByBrightness.Count == 0)
             {
                 Game.log($"Why no parent stars? For {body.name}");
@@ -72,7 +71,7 @@ namespace BioCriterias
                     var delta = nextBrightest.Value / brightest.Value;
                     Game.log($"{brightest.Key.name} ({brightest.Key.starType}): {brightest.Value:N10} vs {nextBrightest.Key.name} ({nextBrightest.Key.starType}): {nextBrightest.Value:N10} => {delta}");
 
-                    if (delta < 0.01d) // allow a 2nd if they're really close
+                    if (false && delta < 0.01d) // DO NOT allow a 2nd if they're really close
                         parentStarTypes.Add(Util.flattenStarType(nextBrightest.Key.starType));
                 }
             }
@@ -83,9 +82,6 @@ namespace BioCriterias
                 Debugger.Break();
                 return null;
             }
-
-            //var sumSemiMajorAxis = body.sumSemiMajorAxis(0);
-            //var sumSemiMajorAxisLs = Util.mToLS(sumSemiMajorAxis);
 
             // calc distance to nearest Guardian bubble
             var withinGuardianBubble = Game.codexRef.isWithinGuardianBubble(body.system.starPos);
@@ -653,6 +649,7 @@ namespace BioCriterias
 
 
                 // 675416645714, // Eolls Ploe YK-L c9-2 - has root barycentre but alas no concrete bio data for comparisons
+                84431081539 // Eolls Ploe OX-L d7-2
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");

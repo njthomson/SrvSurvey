@@ -238,20 +238,22 @@ namespace SrvSurvey.plotters
                     var yy = dty;
 
                     // displayName is either genus, or species/variant without the genus prefix
-                    var displayName = organism.bioMatch!.genus.locName;
-                    if (!string.IsNullOrEmpty(organism.variantLocalized))
+                    var displayName = organism.bioMatch?.genus.locName;
+                    if (organism.bioMatch?.genus.odyssey == true)
                     {
-                        // make it <species> - <color>
-                        displayName = organism.bioMatch.species.locName + " - " + organism.bioMatch.variant.locColorName;
-                        // TODO: How to localize these?
-                        if (displayName.EndsWith("Anemone")) displayName = displayName.Replace("Anemone", "");
-                        if (displayName.EndsWith("Brain Tree")) displayName = displayName.Replace("Brain Tree", "");
+                        // make it <species>: <color>
+                        displayName = organism.bioMatch.species.locName + ": " + organism.bioMatch.variant.locColorName;
                     }
                     else if (!string.IsNullOrEmpty(organism.speciesLocalized))
                     {
                         displayName = organism.speciesLocalized.Replace(organism.genusLocalized + " ", "");
                         foreach (var tail in legacyTailTrimList)
                             if (displayName.EndsWith(tail)) displayName = displayName.Replace(tail, "");
+                    }
+                    else
+                    {
+                        // does this ever happen?
+                        Debugger.Break();
                     }
 
                     var minReward = body.getBioRewardForGenus(organism, true);
@@ -276,7 +278,7 @@ namespace SrvSurvey.plotters
 
                     // line 1
                     if (volCol == VolColor.Gold) brush = GameColors.Bio.brushGold;
-                    if (displayName.Length > 0)
+                    if (displayName?.Length > 0)
                         this.drawTextAt(twoEight, displayName, brush);
                     if (organism.analyzed)
                     {
@@ -489,7 +491,7 @@ namespace SrvSurvey.plotters
         {
             if (game.systemData == null) return;
 
-            this.drawTextAt( RES("SysBio_Header", game.systemData.bioSignalsTotal), GameColors.brushGameOrange, GameColors.fontSmall);
+            this.drawTextAt(RES("SysBio_Header", game.systemData.bioSignalsTotal), GameColors.brushGameOrange, GameColors.fontSmall);
             newLine(+four, true);
 
             //var anyFoo = game.systemData.bodies.Any(b => b.id == game.status.Destination?.Body && b.bioSignalCount > 0);
@@ -547,15 +549,19 @@ namespace SrvSurvey.plotters
                 if (dtx > boxRight)
                     boxRight = dtx;
 
-
                 // credits
                 b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
                 //if (!highlight && potentialFirstDiscovery) b = (SolidBrush)GameColors.Bio.brushGold;
 
-                var foo = game.canonnPoi?.codex.Any(c => body.name.EndsWith(c.body)) ?? false;
-               // here!
-               var txt = body.getMinMaxBioRewards(false);
-                if (foo) txt += "!";
+                var txt = body.getMinMaxBioRewards(false);
+
+                // show some icon if we know we have signals from Canonn
+                if (Game.settings.useExternalData && Game.settings.autoLoadPriorScans)
+                {
+                    var bodyHasKnownSignals = game.canonnPoi?.codex?.Any(c => c.body != null && body.name.EndsWith(c.body)) ?? false;
+                    if (bodyHasKnownSignals)
+                        g.DrawImage(Properties.ImageResources.canonn_16x16, dtx, dty + two, 16, 16);
+                }
 
                 if (txt == "") txt = " ";
                 drawTextAt(this.ClientSize.Width - ten, txt, b, GameColors.fontMiddle, true);

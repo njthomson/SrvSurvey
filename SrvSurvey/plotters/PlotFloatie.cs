@@ -24,9 +24,12 @@ namespace SrvSurvey.plotters
             closeTime = DateTime.Now.AddSeconds(durationVisible);
             messages.Add(new(msg, closeTime));
 
-            var form = Program.showPlotter<PlotFloatie>()!;
-            form.timer.Start();
-            Game.log($"PlotFloatie.showMessage: total messages: {messages.Count}\n\t► " + string.Join("\n\t► ", messages.Select(m => m.msg)));
+            var form = Program.showPlotter<PlotFloatie>();
+            if (form != null)
+            {
+                form.timer.Start();
+                Game.log($"PlotFloatie.showMessage: total messages: {messages.Count}\n\t► " + string.Join("\n\t► ", messages.Select(m => m.msg)));
+            }
         }
 
         private static int durationVisible = 6; // seconds

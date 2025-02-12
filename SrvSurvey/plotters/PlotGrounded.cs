@@ -356,7 +356,7 @@ namespace SrvSurvey.plotters
                 var isActive = (game.cmdr.scanOne?.genus == null && !analyzed) || game.cmdr.scanOne?.genus == signal.genusName;
 
                 // default range to 50m unless name matches a Genus
-                var radius = BioScan.getRange(signal.genusName);
+                var radius = BioGenus.getRange(signal.genusName);
 
                 // draw radar circles for this group, and lines
                 foreach (var tt in signal.trackers)
@@ -410,12 +410,10 @@ namespace SrvSurvey.plotters
 
             foreach (var name in form.trackers.Keys)
             {
-                BioScan.prefixes.TryGetValue(name, out var genusName);
-                var isActive = /* game.cmdr.scanOne?.genus == null || */ game.cmdr.scanOne?.genus == genusName;
+                var isActive = /* game.cmdr.scanOne?.genus == null || */ game.cmdr.scanOne?.genus == name;
 
                 // default range to 50m unless name matches a Genus
-                BioScan.prefixes.TryGetValue(name, out var fullName);
-                var radius = BioScan.getRange(fullName);
+                var radius = BioGenus.getRange(name);
 
                 // draw radar circles for this group, and lines
                 foreach (var tt in form.trackers[name])

@@ -16,7 +16,6 @@ namespace SrvSurvey.plotters
                 || (Game.settings.autoShowPlotMiniTrack_TEST && Game.activeGame?.systemBody?.bookmarks?.Keys.Count(k => k[0] != '#') > 0)
                 );
         }
-        private static Dictionary<string, string> shortNames = new();
 
         public const int highlightDistance = 150;
 
@@ -130,10 +129,9 @@ namespace SrvSurvey.plotters
             if (this.IsDisposed || game.systemBody == null) return;
 
             // if we are close enough to a tracker ... auto remove it
-            var prefix = BioScan.prefixes.First(_ => _.Value.Contains(entry.Genus)).Key;
-            if (this.trackers.ContainsKey(prefix))
+            if (this.trackers.ContainsKey(entry.Genus))
             {
-                var td = this.trackers[prefix].FirstOrDefault();
+                var td = this.trackers[entry.Genus].FirstOrDefault();
                 if (td != null)
                 {
                     Game.log($"Distance to nearest '{entry.Genus}' tracker: {Util.metersToString(td.distance)}");
@@ -142,7 +140,7 @@ namespace SrvSurvey.plotters
                     if (td.distance < highlightDistance && Game.settings.autoRemoveTrackerOnSampling)
                     {
                         Game.log($"Auto removing tracker for: '{entry.Species_Localised}'/'{entry.Genus}'");
-                        game.removeBookmark(prefix, Status.here.clone(), true);
+                        game.removeBookmark(entry.Genus, Status.here.clone(), true);
                         this.prepTrackers();
                     }
                 }
@@ -170,8 +168,7 @@ namespace SrvSurvey.plotters
                 if (name[0] == '#' && Program.isPlotter<PlotMiniTrack>()) continue;
 
                 var x = indent;
-                var fullName = BioScan.prefixes.GetValueOrDefault(name);
-                var isActive = game.cmdr.scanOne?.genus == null || game.cmdr.scanOne?.genus == fullName;
+                var isActive = game.cmdr.scanOne?.genus == null || game.cmdr.scanOne?.genus == name;
                 var isClose = false;
                 Brush brush;
                 foreach (var dd in this.trackers[name])
@@ -204,17 +201,8 @@ namespace SrvSurvey.plotters
 
         private string getDisplayName(string name)
         {
-            if (shortNames.Count == 0)
-            {
-                foreach (var g in Game.codexRef.genus)
-                {
-                    var shortName = Properties.CodexShort.ResourceManager.GetString(g.englishName);
-                    if (!string.IsNullOrEmpty(shortName))
-                        shortNames.Add(shortName, g.locName);
-                }
-            }
-
-            return shortNames.GetValueOrDefault(name) ?? name;
+            var genus = Game.codexRef.genus.Find(g => g.name == name);
+            return genus?.locName ?? name;
         }
     }
 }

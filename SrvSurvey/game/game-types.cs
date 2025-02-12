@@ -212,7 +212,6 @@ namespace SrvSurvey.game
         public string name;
         /// <summary> Eg: "Tussock" </summary>
         public string englishName;
-        public int dist; // how far before next scan
         public bool odyssey; // is new for Odyssey?
 
         public List<BioSpecies> species;
@@ -222,9 +221,13 @@ namespace SrvSurvey.game
             return $"'{this.name}' ({this.englishName}";
         }
 
+        [JsonIgnore]
+        public int dist => BioGenus.getRange(this.name);
+
+        [JsonIgnore]
         public string shortName
         {
-            get => this.englishName.Substring(0, 3).ToLowerInvariant(); // tus
+            get => Properties.CodexShort.ResourceManager.GetString(this.englishName)!;
         }
 
         private void calcMinMax()
@@ -273,6 +276,98 @@ namespace SrvSurvey.game
 
         [JsonIgnore]
         public string locName => Properties.Codex.ResourceManager.GetString(this.englishName)!;
+
+        public static int getRange(string? name)
+        {
+            switch (name)
+            {
+                // From Odyssey
+                case "$Codex_Ent_Fumerolas_Genus_Name;":
+                    return 100;
+
+                case "$Codex_Ent_Aleoids_Genus_Name;":
+                case "$Codex_Ent_Clypeus_Genus_Name;":
+                case "$Codex_Ent_Conchas_Genus_Name;":
+                case "$Codex_Ent_Shrubs_Genus_Name;":
+                case "$Codex_Ent_Recepta_Genus_Name;":
+                    return 150;
+
+                case "$Codex_Ent_Tussocks_Genus_Name;":
+                    return 200;
+
+                case "$Codex_Ent_Cactoid_Genus_Name;":
+                case "$Codex_Ent_Fungoids_Genus_Name;":
+                    return 300;
+
+                case "$Codex_Ent_Bacterial_Genus_Name;":
+                case "$Codex_Ent_Fonticulus_Genus_Name;":
+                case "$Codex_Ent_Stratum_Genus_Name;":
+                    return 500;
+
+                case "$Codex_Ent_Osseus_Genus_Name;":
+                case "$Codex_Ent_Tubus_Genus_Name;":
+                    return 800;
+
+                case "$Codex_Ent_Electricae_Genus_Name;":
+                    return 1000;
+
+                // From Horizons
+                case "$Codex_Ent_Vents_Name;":             // Amphora Plant
+                case "$Codex_Ent_Sphere_Name;":            // Anemone
+                case "$Codex_Ent_Cone_Name;":              // Bark Mounds
+                case "$Codex_Ent_Brancae_Name;":           // Brain Tree
+                case "$Codex_Ent_Ground_Struct_Ice_Name;": // Crystalline Shards
+                case "$Codex_Ent_Tube_Name;":              // Sinuous Tubers
+                    return 100;
+
+                // Odyssey Thargoid
+                case "$Codex_Ent_Barnacles_Name;":      // Mega Barnacles
+                case "$Codex_Ent_Thargoid_Coral_Name;": // Coral Roots
+                case "$Codex_Ent_Thargoid_Tower_Name;": // Spire Towers
+                    return 85;
+
+                default:
+                    return 50;
+            }
+        }
+
+        public static string? mapOldShortNames(string name)
+        {
+            switch (name.ToLowerInvariant())
+            {
+                // From Odyssey
+                case "ale": return "$Codex_Ent_Aleoids_Genus_Name;";     // Aleoida
+                case "bac": return "$Codex_Ent_Bacterial_Genus_Name;";   // Bacterium
+                case "cac": return "$Codex_Ent_Cactoid_Genus_Name;";     // Cactoida
+                case "cly": return "$Codex_Ent_Clypeus_Genus_Name;";     // Clypeus
+                case "con": return "$Codex_Ent_Conchas_Genus_Name;";     // Concha
+                case "ele": return "$Codex_Ent_Electricae_Genus_Name;";  // Electricae
+                case "fon": return "$Codex_Ent_Fonticulus_Genus_Name;";  // Fonticulua
+                case "fru": return "$Codex_Ent_Shrubs_Genus_Name;";      // Frutexa
+                case "fum": return "$Codex_Ent_Fumerolas_Genus_Name;";   // Fumerola
+                case "fun": return "$Codex_Ent_Fungoids_Genus_Name;";    // Fungoida
+                case "oss": return "$Codex_Ent_Osseus_Genus_Name;";      // Osseus
+                case "rec": return "$Codex_Ent_Recepta_Genus_Name;";     // Recepta
+                case "str": return "$Codex_Ent_Stratum_Genus_Name;";     // Stratum
+                case "tub": return "$Codex_Ent_Tubus_Genus_Name;";       // Tubus
+                case "tus": return "$Codex_Ent_Tussocks_Genus_Name;";    // Tussock
+
+                // From Horizons
+                case "amp": return "$Codex_Ent_Vents_Name;";             // Amphora Plant
+                case "lut": return "$Codex_Ent_Sphere_Name;";            // Anemone
+                case "bar": return "$Codex_Ent_Cone_Name;";              // Bark Mounds
+                case "bra": return "$Codex_Ent_Brancae_Name;";           // Brain Tree
+                case "cry": return "$Codex_Ent_Ground_Struct_Ice_Name;"; // Crystalline Shards
+                case "sin": return "$Codex_Ent_Tube_Name;";              // Sinuous Tubers
+
+                // Odyssey Thargoid
+                case "mat": return "$Codex_Ent_Barnacles_Name;";         // Mega Barnacles
+                case "root": return "$Codex_Ent_Thargoid_Coral_Name;";   // Coral Roots
+                case "tow": return "$Codex_Ent_Thargoid_Tower_Name;";    // Spire Towers
+
+                default: return null;
+            }
+        }
     }
 
     internal class BioSpecies
@@ -313,7 +408,9 @@ namespace SrvSurvey.game
         /// Species name without the genus part. These are not actually localized, so we can use the English portion as is.
         /// </summary>
         [JsonIgnore]
-        public string locName => this.englishName.Replace(genus.englishName, "").Trim();
+        public string locName => genus.odyssey
+            ? this.englishName.Replace(genus.englishName, "").Trim()
+            : this.englishName; // TODO: <-- not sure this is right
     }
 
     internal class BioVariant
@@ -373,12 +470,14 @@ namespace SrvSurvey.game
             get
             {
                 var parts = this.englishName.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-                return parts.Last();
+                return species.genus.odyssey ? parts.Last() : parts.First();
             }
         }
 
         [JsonIgnore]
-        public string locColorName => Properties.Codex.ResourceManager.GetString(this.colorName)!;
+        public string locColorName => species.genus.odyssey
+            ? Properties.Codex.ResourceManager.GetString(this.colorName)!
+            : this.colorName; // Horizons bio colors are not localized
 
         [JsonIgnore]
         public string locName => $"{species.genus.locName} {species.locName} - {locColorName}";

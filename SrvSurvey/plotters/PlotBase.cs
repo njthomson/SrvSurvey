@@ -1009,7 +1009,7 @@ namespace SrvSurvey.plotters
         public ResourceManager prepResources(string name)
         {
             if (!resourceManagers.ContainsKey(name))
-                resourceManagers[name] = new ResourceManager(name, typeof(Misc).Assembly);
+                resourceManagers[name] = new ResourceManager(name, typeof(PlotBase).Assembly);
 
             return resourceManagers[name];
         }

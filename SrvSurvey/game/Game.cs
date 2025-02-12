@@ -1429,7 +1429,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(CargoDepot entry)
         {
             // if we just handed in some required cargo but have some remainder, show a message for what remains
-            if (entry.UpdateType == "Deliver" && entry.ItemsDelivered < entry.TotalItemsToDeliver)
+            if (Game.settings.autoShowFloatie_TEST && entry.UpdateType == "Deliver" && entry.ItemsDelivered < entry.TotalItemsToDeliver)
             {
                 var remaining = entry.TotalItemsToDeliver - entry.ItemsDelivered;
                 PlotFloatie.showMessage($"Deliver {entry.CargoType}: {remaining} units remaining");
@@ -2514,7 +2514,7 @@ namespace SrvSurvey.game
                         }
                         else
                         {
-                            this.addBookmark(match.genus.shortName, entry);
+                            this.addBookmark(match.genus.name, entry);
                             Program.showPlotter<PlotTrackers>()?.prepTrackers();
                             Game.log($"Auto-adding tracker from CodexEntry: {entry.Name_Localised} ({entry.EntryID})");
                             this.fireUpdate(true);
@@ -2550,12 +2550,12 @@ namespace SrvSurvey.game
                 if (this.cmdr.scanOne != null && cmdr.scanOne.body == systemBody.name)
                 {
                     var genusMatch = Game.codexRef.matchFromGenus(cmdr.scanOne.genus)!;
-                    this.addBookmark(genusMatch.shortName, cmdr.scanOne.location);
+                    this.addBookmark(genusMatch.name, cmdr.scanOne.location);
                 }
                 if (this.cmdr.scanTwo != null && cmdr.scanTwo.body == systemBody.name)
                 {
                     var genusMatch = Game.codexRef.matchFromGenus(cmdr.scanTwo.genus)!;
-                    this.addBookmark(genusMatch.shortName, cmdr.scanTwo.location);
+                    this.addBookmark(genusMatch.name, cmdr.scanTwo.location);
                 }
 
                 this.cmdr.scanOne = null;
@@ -2571,7 +2571,7 @@ namespace SrvSurvey.game
                 location = Status.here.clone(),
                 genus = entry.Genus,
                 species = entry.Species,
-                radius = BioScan.getRange(entry.Genus),
+                radius = match.genus.dist,
                 status = BioScan.Status.Active,
                 entryId = match.entryId,
                 body = systemBody.name,
@@ -2633,8 +2633,7 @@ namespace SrvSurvey.game
                 if (Game.settings.autoRemoveTrackerOnFinalSample)
                 {
                     Game.log($"Auto removing trackers for: '{entry.Species_Localised}'/'{entry.Genus}'");
-                    var prefix = BioScan.prefixes.FirstOrDefault(_ => _.Value.Contains(entry.Genus)).Key;
-                    this.removeBookmarkName(prefix);
+                    this.removeBookmarkName(entry.Genus);
 
                     // force a re-render
                     Program.getPlotter<PlotTrackers>()?.prepTrackers();
@@ -2753,6 +2752,10 @@ namespace SrvSurvey.game
         {
             if (this.systemData == null || this.systemBody == null) return;
 
+            // use full genus name if we are given a short name
+            var genus = Game.codexRef.genus.Find(g => g.shortName == name);
+            if (genus != null) name = genus.name;
+
             this.systemBody.bookmarks ??= new();
             if (!this.systemBody.bookmarks.ContainsKey(name)) this.systemBody.bookmarks[name] = new List<LatLong2>();
 
@@ -2791,7 +2794,16 @@ namespace SrvSurvey.game
         {
             if (name == null || this.systemData == null || this.systemBody?.bookmarks == null) return;
             Game.log($"Clearing all bookmarks for '{name}' on '{this.systemBody.name}' ({this.systemBody.id}");
-            if (!this.systemBody.bookmarks.ContainsKey(name)) return;
+
+            if (!this.systemBody.bookmarks.ContainsKey(name))
+            {
+                // use full genus name if we are given a short name
+                var genus = Game.codexRef.genus.Find(g => g.shortName == name);
+                if (genus != null) name = genus.name;
+
+                // exit if still no match
+                if (!this.systemBody.bookmarks.ContainsKey(name)) return;
+            }
 
             this.systemBody.bookmarks.Remove(name);
             if (this.systemBody.bookmarks.Count == 0) this.systemBody.bookmarks = null;
@@ -2803,11 +2815,18 @@ namespace SrvSurvey.game
 
         public void removeBookmark(string name, LatLong2 location, bool nearest)
         {
-            if (this.systemData == null || this.systemBody == null)
-                throw new Exception($"Why no systemData or systemBody?");
+            if (this.systemData == null || this.systemBody == null) throw new Exception($"Why no systemData or systemBody?");
             if (this.systemBody.bookmarks == null || this.systemBody.bookmarks.Count == 0) return;
 
-            if (!this.systemBody.bookmarks.ContainsKey(name)) return;
+            if (!this.systemBody.bookmarks.ContainsKey(name))
+            {
+                // use full genus name if we are given a short name
+                var genus = Game.codexRef.genus.Find(g => g.shortName == name);
+                if (genus != null) name = genus.name;
+
+                // exit if still no match
+                if (!this.systemBody.bookmarks.ContainsKey(name)) return;
+            }
 
             var list = this.systemBody.bookmarks[name]
                 .Select(_ => new TrackingDelta(this.systemBody.radius, _, location))

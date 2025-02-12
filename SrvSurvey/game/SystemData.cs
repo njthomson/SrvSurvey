@@ -76,6 +76,19 @@ namespace SrvSurvey.game
                     // make all entries aware of their parent body
                     body.organisms?.ForEach(org => org.body = body);
                 }
+
+                // migrate bookmarks from 3 letter short names to the full genus name
+                if (body.bookmarks?.Count > 0)
+                {
+                    foreach(var key in body.bookmarks.Keys.ToArray())
+                    {
+                        if (key.Length != 3) continue;
+                        var genusName = BioGenus.mapOldShortNames(key);
+                        if (genusName == null || body.bookmarks.ContainsKey(genusName)) continue;
+                        body.bookmarks.Add(genusName, body.bookmarks[key]);
+                        body.bookmarks.Remove(key);
+                    }
+                }
             }
 
             // make predictions based on what we know - after everything else
@@ -955,6 +968,7 @@ namespace SrvSurvey.game
                 {
                     body = body,
                     genus = match.genus.name,
+                    entryId = entry.EntryID,
                 };
                 Game.log($"add organism '{match.variant.name}' ({match.entryId}) to '{body.name}' ({body.id})");
                 body.organisms.Add(organism);
@@ -2271,6 +2285,13 @@ namespace SrvSurvey.game
 
         public SystemOrganism? findOrganism(string? variant, long entryId, string genus)
         {
+            if (this.organisms == null) return null;
+
+            foreach(var org in this.organisms)
+                if (org.variant == variant || org.entryId == entryId)
+                    return org;
+
+            // TODO: revisit this
             var organism = this.organisms?.FirstOrDefault(_ => _.variant == variant || _.entryId == entryId);
             if (organism == null) organism = this.organisms?.FirstOrDefault(_ => _.genus == genus);
 
@@ -2596,7 +2617,7 @@ namespace SrvSurvey.game
         }
 
         [JsonIgnore]
-        public int range { get => BioScan.getRange(this.genus); }
+        public int range { get => BioGenus.getRange(this.genus); }
 
         public void lookupMissingNamesIfNeeded()
         {
@@ -2631,6 +2652,7 @@ namespace SrvSurvey.game
                 else if (_bioMatch == null && this.variant != null)
                     _bioMatch = Game.codexRef.matchFromVariant(this.variant);
 
+                if (_bioMatch == null) Debugger.Break(); // does this ever happen?
                 return _bioMatch;
             }
         }

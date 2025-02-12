@@ -255,7 +255,6 @@ namespace SrvSurvey.canonn
                         {
                             name = genusName,
                             englishName = genusEnglishName,
-                            dist = BioScan.getRange(genusName),
                             odyssey = thing.platform == "odyssey",
                             species = new List<BioSpecies>(),
                         };
