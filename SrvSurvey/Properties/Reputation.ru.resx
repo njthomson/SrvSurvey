@@ -40,15 +40,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Allied">
-    <value>Союзный</value>
+    <value>Союзник</value>
     <comment>Allied</comment>
   </data>
   <data name="Cordial">
-    <value>Сердечный</value>
+    <value>Приветливый</value>
     <comment>Cordial</comment>
   </data>
   <data name="Friendly">
-    <value>Дружеский</value>
+    <value>Дружественный</value>
     <comment>Friendly</comment>
   </data>
   <data name="Hostile">
@@ -60,7 +60,7 @@
     <comment>Neutral</comment>
   </data>
   <data name="Unfriendly">
-    <value>Недружелюбный</value>
+    <value>Недружественный</value>
     <comment>Unfriendly</comment>
   </data>
 </root>
