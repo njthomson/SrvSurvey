@@ -71,8 +71,10 @@
     <comment>Scan value | DSS value</comment>
   </data>
   <data name="Footer2">
-    <value>🌎 Терраформируемая\n🚀 Пригодная для посадки ⚑ Неизведанная</value>
-    <comment>🌎 Terraformable\n🚀 Landable ⚑ Undiscovered</comment>
+    <value>🌎 Терраформируемая
+🚀 Пригодная для посадки ⚑ Неизведанная</value>
+    <comment>🌎 Terraformable
+🚀 Landable ⚑ Undiscovered</comment>
   </data>
   <data name="HidingBodies">
     <value>( Скрыты тела &lt; {0} )</value>

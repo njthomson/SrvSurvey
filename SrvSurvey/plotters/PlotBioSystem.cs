@@ -306,8 +306,8 @@ namespace SrvSurvey.plotters
                     if (discoveryPrefix != null)
                         drawTextAt(discoveryPrefix, shouldBeGold(discoveryPrefix) ? GameColors.Bio.brushGold : brush);
 
-                    var leftText = displayName != organism.bioMatch.genus.locName || organism.entryId > 0
-                        ? organism.bioMatch.genus.locName
+                    var leftText = displayName != organism.bioMatch?.genus.locName || organism.entryId > 0
+                        ? organism.bioMatch?.genus.locName
                         : "?";
                     drawTextAt(leftText, brush);
                     dtx += sz.Width + ten;

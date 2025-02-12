@@ -132,7 +132,8 @@
     <comment>First footer line with guidance</comment>
   </data>
   <data name="Footer2" xml:space="preserve">
-    <value>🌎 Terraformable\n🚀 Landable ⚑ Undiscovered</value>
+    <value>🌎 Terraformable
+🚀 Landable ⚑ Undiscovered</value>
     <comment>More footer lines with guidance</comment>
   </data>
   <data name="HidingBodies" xml:space="preserve">

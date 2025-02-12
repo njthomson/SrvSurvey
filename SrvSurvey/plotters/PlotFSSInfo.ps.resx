@@ -71,8 +71,10 @@
     <comment>Scan value | DSS value</comment>
   </data>
   <data name="Footer2">
-    <value>* 🌎 TERRAFORMABLE\N🚀 LANDABLE ⚑ UNDISCOVERED →→→!</value>
-    <comment>🌎 Terraformable\n🚀 Landable ⚑ Undiscovered</comment>
+    <value>* 🌎 TERRAFORMABLE
+🚀 LANDABLE ⚑ UNDISCOVERED →→→!</value>
+    <comment>🌎 Terraformable
+🚀 Landable ⚑ Undiscovered</comment>
   </data>
   <data name="HidingBodies">
     <value>* ( HIDING BODIES &lt; {0} ) →→→!</value>
