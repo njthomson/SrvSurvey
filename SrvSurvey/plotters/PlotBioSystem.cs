@@ -215,8 +215,8 @@ namespace SrvSurvey.plotters
 
                     // do we already know if this is a first discovery?
                     string? discoveryPrefix = null;
-                    if (organism.isCmdrFirst) discoveryPrefix = "⚑";
-                    else if (organism.isNewEntry) discoveryPrefix = "⚐";
+                    //if (organism.isCmdrFirst) discoveryPrefix = "⚑";
+                    //else if (organism.isNewEntry) discoveryPrefix = "⚐";
 
                     dty = (int)dty;
 
@@ -623,8 +623,7 @@ namespace SrvSurvey.plotters
                     // genus was scanned
                     if (org.entryId > 0)
                     {
-                        if (org.isFirst) volCol = VolColor.Gold;
-                        else if (!org.analyzed && Game.activeGame?.cmdrCodex.isDiscovered(org.entryId) == false) volCol = VolColor.Gold;
+                        if (!org.analyzed && Game.activeGame?.cmdrCodex.isDiscovered(org.entryId) == false) volCol = VolColor.Gold;
                         var min = body.getBioRewardForGenus(org, true);
                         var max = body.getBioRewardForGenus(org, false);
                         VolumeBar.render(g, x, y, volCol, min, max, false);
