@@ -387,6 +387,12 @@ namespace SrvSurvey.plotters
                 newLine(true);
             }
 
+            var alerts = route.nextHop?.alerts;
+            if (alerts != null && alerts.Count > 0) {
+                this.drawTextAt2(eight, "► " + string.Join(" • ", alerts), GameColors.Cyan, ff);
+                newLine(true);
+            }
+
             if (this.nextRouteSystemCopied)
             {
                 this.drawTextAt2b(eight, this.Width - 4, "► Next system copied", GameColors.Cyan, ff);
