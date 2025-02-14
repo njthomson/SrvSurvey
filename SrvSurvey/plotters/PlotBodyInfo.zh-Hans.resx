@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Atmosphere" xml:space="preserve">
+    <value>Atmosphere:</value>
+    <comment>Line prefix for atmosphere</comment>
+  </data>
+  <data name="BioSignals" xml:space="preserve">
+    <value>Bio signals: {0} ( value: {1} cr )</value>
+    <comment>Line prefix when bio signals are present
+{0} int, count of bio signals
+{1} string, value of credits</comment>
+  </data>
+  <data name="EarthLike" xml:space="preserve">
+    <value>Earth Like</value>
+    <comment>Atmosphere type is like Earth</comment>
+  </data>
+  <data name="FirstMapped" xml:space="preserve">
+    <value>First mapped</value>
+    <comment>Header tag</comment>
+  </data>
+  <data name="GeoSignals" xml:space="preserve">
+    <value>Geo signals: {0}</value>
+    <comment>Line prefix when geo signals are present
+{0} int, count of geo signals</comment>
+  </data>
+  <data name="Gravity" xml:space="preserve">
+    <value>Gravity: {0}g</value>
+    <comment>Body gravity
+{0} decimal, 3 places, gravity value</comment>
+  </data>
+  <data name="Materials" xml:space="preserve">
+    <value>Materials:</value>
+    <comment>Line prefix for materials</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+    <comment>Text shown when body pressure value is zero, or there is no volcanism, or no atmoshpere</comment>
+  </data>
+  <data name="Pressure" xml:space="preserve">
+    <value>Pressure: {0}</value>
+    <comment>
+{0} string, the value of PressureValue or PressureNone</comment>
+  </data>
+  <data name="PressureValue" xml:space="preserve">
+    <value>{0}(atm)</value>
+    <comment>The atmospheric pressure value
+{0} decimal, 4 places</comment>
+  </data>
+  <data name="Rings" xml:space="preserve">
+    <value>Rings:</value>
+    <comment>Line prefix for rings</comment>
+  </data>
+  <data name="ScanRequired" xml:space="preserve">
+    <value>Scan required</value>
+    <comment>Header shown when a scan is required</comment>
+  </data>
+  <data name="ScanValue" xml:space="preserve">
+    <value>Scan value</value>
+    <comment>Line prefix before showing the scan value for a body</comment>
+  </data>
+  <data name="StarClass" xml:space="preserve">
+    <value>Class: {0}</value>
+    <comment>Line prefix with the type of a star, A, O, M, etc
+{0} string, the class of some star</comment>
+  </data>
+  <data name="Temp" xml:space="preserve">
+    <value>Temp: {0}K</value>
+    <comment>Body temperature of a body
+{0} int, temp in Kelvin</comment>
+  </data>
+  <data name="Terraformable" xml:space="preserve">
+    <value>Terraformable</value>
+    <comment>Header tag</comment>
+  </data>
+  <data name="Undiscovered" xml:space="preserve">
+    <value>Undiscovered</value>
+    <comment>Header tag</comment>
+  </data>
+  <data name="Unmapped" xml:space="preserve">
+    <value>Unmapped</value>
+    <comment>Header tag</comment>
+  </data>
+  <data name="Volcanism" xml:space="preserve">
+    <value>Volcanism:</value>
+    <comment>Line prefix for volcanism</comment>
+  </data>
+  <data name="WithDSS" xml:space="preserve">
+    <value>(with DSS: {0})</value>
+    <comment>Suffix shown after scan value for a body
+{0} string, value of credits</comment>
+  </data>
+</root>

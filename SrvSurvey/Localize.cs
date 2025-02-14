@@ -22,6 +22,7 @@ namespace SrvSurvey
             { "Português", "pt" },
             { "Русский",   "ru" },
             { "Pseudo",    "ps" },
+            { "简体中文",    "zh-Hans" },
         };
 
         public static string? nameFromCode(string? code)

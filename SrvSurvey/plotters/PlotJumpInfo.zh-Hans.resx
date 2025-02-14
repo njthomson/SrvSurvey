@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NextJump" xml:space="preserve">
+    <value>Next jump:</value>
+    <comment>Header text</comment>
+  </data>
+  <data name="StarClass" xml:space="preserve">
+    <value>class: {0}</value>
+    <comment>Top right info showing class of star we're jumping towards</comment>
+  </data>
+  <data name="DiscoveredBy" xml:space="preserve">
+    <value>Discovered by {0} {1}</value>
+    <comment>Who discovered the star system and when.
+{0} string, name of a cmdr
+{1} date, short format</comment>
+  </data>
+  <data name="LastUpdated" xml:space="preserve">
+    <value>Last updated: {0}</value>
+    <comment>Appended to DiscoveredBy, shows date system data was last updated
+{0} date, short format</comment>
+  </data>
+  <data name="TrafficInfo" xml:space="preserve">
+    <value>Traffic last 24 hours: {0}, week: {1}, ever: {2}</value>
+    <comment>Traffic info from EDSM.
+{0}, int, count of cmdr's visiting in past 24 hours
+{1}, int, count of cmdr's visiting in past week
+{2}, int, count of cmdr's visiting ever</comment>
+  </data>
+  <data name="JumpCounts" xml:space="preserve">
+    <value>#{0} of {1}</value>
+    <comment>Shown right of lines of jumps.
+{0} how many jumps already completed on this journey.
+{1} total count of jumps in this journey.</comment>
+  </data>
+  <data name="JumpDistance" xml:space="preserve">
+    <value>{0}ly</value>
+    <comment>Total distance of this journey in Light Years.
+{0} float, 1 decimal place</comment>
+  </data>
+  <data name="GuardianBeacon" xml:space="preserve">
+    <value>Beacon</value>
+    <comment>Part of a special line shown when the next system has a Guardian Beacon</comment>
+  </data>
+  <data name="GuardianRuins" xml:space="preserve">
+    <value>Ruins: {0}</value>
+    <comment>Part of a special line shown when the next system has guardian Ruins
+{0} int, how many Ruins are in the system</comment>
+  </data>
+  <data name="GuardianStructures" xml:space="preserve">
+    <value>Structures: {0}</value>
+    <comment>Part of a special line shown when the next system has guardian Structures
+{0} int, how many Structures are in the system</comment>
+  </data>
+  <data name="SpecialGuardian" xml:space="preserve">
+    <value>Guardian</value>
+    <comment>A line header when the next system has some Guardian sites</comment>
+  </data>
+  <data name="SpecialHopInfo" xml:space="preserve">
+    <value>#{0} of {1}</value>
+    <comment>Part of a special line shown when the next system is part of a route we are following
+{0} int, the index of the next system in the route
+{1} int, total count of route hops</comment>
+  </data>
+  <data name="SpecialJoiner" xml:space="preserve">
+    <value>,</value>
+    <comment>The character used to join parts of special lines</comment>
+  </data>
+  <data name="SpecialNowEntering" xml:space="preserve">
+    <value>Now entering</value>
+    <comment>A line header when the next system is in a different galactic region</comment>
+  </data>
+  <data name="SpecialRouteHop" xml:space="preserve">
+    <value>Route hop</value>
+    <comment>A line header when the next system is a hop on the route we are following</comment>
+  </data>
+</root>

@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="Boxel" xml:space="preserve">
+    <value>Boxel:</value>
+    <comment>Header before name of boxel we are searching</comment>
+  </data>
+  <data name="Distance" xml:space="preserve">
+    <value>Distance:</value>
+    <comment>Header before distance between systems</comment>
+  </data>
+  <data name="DistanceExceeds" xml:space="preserve">
+    <value>{0}ly - exceeds {1} ly</value>
+    <comment>Shown when measured distance exceeds some limit.
+{0} float, 2 decimal places, measured distance between 2 star systems
+{1} float, 2 decimal places, the maximum distance allowed</comment>
+  </data>
+  <data name="DistanceWithin" xml:space="preserve">
+    <value>{0} - within {1} ly</value>
+    <comment>Shown when measured distance is within some limit.
+{0} float, 2 decimal places, measured distance between 2 star systems
+{1} float, 2 decimal places, the maximum distance allowed</comment>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>From:</value>
+    <comment>Header before name of central star system</comment>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next:</value>
+    <comment>Header before name of next boxel system to visit</comment>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>To:</value>
+    <comment>Header before name of target star system</comment>
+  </data>
+  <data name="UnknownDist" xml:space="preserve">
+    <value>Unknown (plot route)</value>
+    <comment>Message shown when we do not know the distance, but would if the cmdr plots a route</comment>
+  </data>
+  <data name="Visited" xml:space="preserve">
+    <value>Visited:</value>
+    <comment>Header before count of systems visited</comment>
+  </data>
+  <data name="VisitedOf" xml:space="preserve">
+    <value>{0} ({1} of {2})</value>
+    <comment>{0} int, percentage of systems visited
+{1} int, how many systems we have visited
+{2} int, how many systems total to visit</comment>
+  </data>
+</root>

@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ZoomHeader">
+    <value>Zoom: {0}</value>
+    <comment>Map zoom level, shown in top right corner
+{0} float, 1 decimal place, the map zoom level</comment>
+  </data>
+  <data name="ZoomHeaderAuto">
+    <value>Zoom: {0} (Auto)</value>
+    <comment>Map zoom level when auto zooming, shown in top right corner
+{0} float, 1 decimal place, the map zoom level</comment>
+  </data>
+  <data name="ZoomHeaderMin">
+    <value>Z: {0}</value>
+    <comment>A minimal map zoom level, shown in top right corner when there's not much space
+{0} float, 1 decimal place, the map zoom level</comment>
+  </data>
+  <data name="AGRI">
+    <value>AGRI</value>
+    <comment>A contraction of Agriculture, ideally 3 letters</comment>
+  </data>
+  <data name="HAB">
+    <value>HAB</value>
+    <comment>A contraction of Habitat, ideally 3 letters</comment>
+  </data>
+  <data name="CMD">
+    <value>CMD</value>
+    <comment>A contraction of Command, ideally 3 letters</comment>
+  </data>
+  <data name="POW">
+    <value>POW</value>
+    <comment>A contraction of Power Center, ideally 3 letters</comment>
+  </data>
+  <data name="PWR">
+    <value>PWR</value>
+    <comment>A contraction of Power Center, ideally 3 letters</comment>
+  </data>
+  <data name="EXT">
+    <value>EXT</value>
+    <comment>A contraction of External, ideally 3 letters</comment>
+  </data>
+  <data name="STO">
+    <value>STO</value>
+    <comment>A contraction of Storage, ideally 3 letters</comment>
+  </data>
+  <data name="RES">
+    <value>RES</value>
+    <comment>A contraction of Resources, ideally 3 letters</comment>
+  </data>
+  <data name="IND">
+    <value>IND</value>
+    <comment>A contraction of Industrial Processing, ideally 3 letters</comment>
+  </data>
+  <data name="MED">
+    <value>MED</value>
+    <comment>A contraction of Medical, ideally 3 letters</comment>
+  </data>
+  <data name="LAB">
+    <value>LAB</value>
+    <comment>A contraction of Laboratory, ideally 3 letters</comment>
+  </data>
+  <data name="UnknownTypeHeading">
+    <value>Unknown settlement type and heading</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+  <data name="UnkownHeading">
+    <value>Unknown settlement heading</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+  <data name="KnownSettlement">
+    <value>Known settlement</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+  <data name="OnApproach">
+    <value>On approach</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+  <data name="Faction">
+    <value>Faction</value>
+    <comment>Prefix shown when approaching a settlement</comment>
+  </data>
+  <data name="Influence">
+    <value>Influence</value>
+    <comment>Prefix shown when approaching a settlement</comment>
+  </data>
+  <data name="YourRep">
+    <value>Your reputation: {0}</value>
+    <comment>Shown when approaching a settlement
+{0} string, your reputation with a faction</comment>
+  </data>
+
+  <data name="Government">
+    <value>Government</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+  <data name="HasInterstellar">
+    <value>Interstellar factions available</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+  
+  <data name="DockingRequested">
+    <value>Docking requested</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+  <data name="DockingApproved">
+    <value>Docking approved: pad #{0}</value>
+    <comment>Shown when approaching a settlement
+{0} int, the pad number assigned</comment>
+  </data>
+  <data name="DockingDenied">
+    <value>Docking denied</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+  <data name="Distance">
+    <value>Too far away</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+  <data name="Hostile">
+    <value>Hostile</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+  <data name="TooLarge">
+    <value>Ship too large</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+  <data name="NoSpace">
+    <value>No pads available</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+  <data name="Offenses">
+    <value>Offenses</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+  <data name="ActiveFighter">
+    <value>Fighter is active</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+  <data name="Unknown">
+    <value>Unknown</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+
+  <data name="AutoDock1">
+    <value>Auto dock in progress</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+  <data name="AutoDock2">
+    <value>Settlement auto-identification supported</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+  <data name="AutoDock3">
+    <value>Do not switch to external camera</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+
+  <data name="ManualDock1">
+    <value>Manual docking in progress</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+  <data name="ManualDock2">
+    <value>Settlement identification will be delayed</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+  <data name="ManualDock3">
+    <value>Auto dock recommended</value>
+    <comment>Shown when approaching a settlement</comment>
+  </data>
+
+  <data name="HelpShip1">
+    <value>Settlement will be identified after next action</value>
+    <comment>Shown when landed and help is needed in a ship</comment>
+  </data>
+  <data name="HelpShip2">
+    <value>To manually identify</value>
+    <comment>Shown when landed and help is needed in a ship</comment>
+  </data>
+  <data name="HelpShip3">
+    <value>Send '{0}' when docked</value>
+    <comment>Shown when landed and help is needed in a ship
+{0} string, the non-localized command to type</comment>
+  </data>
+
+  <data name="HelpFoot0">
+    <value>To manually identify:</value>
+    <comment>Shown when landed and help is needed on foot</comment>
+  </data>
+  <data name="HelpFoot1">
+    <value>1. Walk to the center of any landing pad and crouch</value>
+    <comment>Shown when landed and help is needed on foot</comment>
+  </data>
+  <data name="HelpFoot2">
+    <value>2. Place your left foot over the the center grooves</value>
+    <comment>Shown when landed and help is needed on foot</comment>
+  </data>
+  <data name="HelpFoot3">
+    <value>3. Face with the chevrons ahead to your left</value>
+    <comment>Shown when landed and help is needed on foot</comment>
+  </data>
+  <data name="HelpFoot4">
+    <value>4. Aim at the end of the groove ahead of you</value>
+    <comment>Shown when landed and help is needed on foot</comment>
+  </data>
+  <data name="HelpFoot5">
+    <value>5. Send message '{0}'</value>
+    <comment>
+      Shown when landed and help is needed on foot
+{0} string, the non-localized command to type</comment>
+  </data>
+  <data name="HelpFoot6">
+    <value>See the wiki for more info</value>
+    <comment>Shown when landed and help is needed on foot</comment>
+  </data>
+</root>
