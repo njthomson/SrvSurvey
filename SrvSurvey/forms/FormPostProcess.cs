@@ -148,7 +148,7 @@ namespace SrvSurvey
             try
             {
                 // get list of files to process, date filtered and ordered oldest first
-                var files = Directory.GetFiles(JournalFile.journalFolder, "Journal.*.log")
+                var files = Directory.GetFiles(Game.settings.watchedJournalFolder, "Journal.*.log")
                     .Where(filepath => getTimeFromFilepath(filepath) > this.targetStartTime)
                     .OrderBy(filepath => getTimeFromFilepath(filepath))
                     .ToArray();

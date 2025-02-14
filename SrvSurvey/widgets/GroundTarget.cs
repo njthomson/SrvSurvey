@@ -47,7 +47,7 @@ namespace SrvSurvey.widgets
             var angle2d = Util.getBearing(cmdr, target);
             var dist2d = Util.getDistance(cmdr, target, radius);
             // calculate angle of decline
-            var angle3d = DecimalEx.ToDeg(DecimalEx.ATan(game.status.Altitude / dist2d));
+            var angle3d = dist2d == 0 ? 0 : DecimalEx.ToDeg(DecimalEx.ATan(game.status.Altitude / dist2d));
 
             var deg = angle2d - game.status.Heading;
             if (deg < 0) deg += 360;

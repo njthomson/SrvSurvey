@@ -7972,14 +7972,14 @@
     ],
     "latitude": 1.216057,
     "longitude": 50.751694,
-    "siteHeading": -1,
-    "relicTowerHeading": -1,
-    "surveyProgress": 0,
+    "siteHeading": 234,
+    "relicTowerHeading": 260,
+    "surveyProgress": 100,
     "legacyLatitude": 1.216057,
     "legacyLongitude": 50.751694,
     "legacySiteHeading": -1,
     "legacyRelicTowerHeading": -1,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 147,
@@ -7998,14 +7998,14 @@
     ],
     "latitude": 3.924921,
     "longitude": -20.103666,
-    "siteHeading": -1,
-    "relicTowerHeading": -1,
-    "surveyProgress": 0,
+    "siteHeading": 140,
+    "relicTowerHeading": 170,
+    "surveyProgress": 100,
     "legacyLatitude": 11.84016,
     "legacyLongitude": -56.050152,
     "legacySiteHeading": -1,
     "legacyRelicTowerHeading": -1,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 145,
@@ -8024,14 +8024,14 @@
     ],
     "latitude": 41.437531,
     "longitude": 83.861938,
-    "siteHeading": -1,
-    "relicTowerHeading": -1,
-    "surveyProgress": 0,
+    "siteHeading": 88,
+    "relicTowerHeading": 212,
+    "surveyProgress": 100,
     "legacyLatitude": 25.654636,
     "legacyLongitude": 76.089035,
     "legacySiteHeading": -1,
     "legacyRelicTowerHeading": -1,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 158,
@@ -8050,14 +8050,14 @@
     ],
     "latitude": -41.678974,
     "longitude": -122.354286,
-    "siteHeading": -1,
-    "relicTowerHeading": -1,
-    "surveyProgress": 0,
+    "siteHeading": 245,
+    "relicTowerHeading": 10,
+    "surveyProgress": 100,
     "legacyLatitude": -28.498575,
     "legacyLongitude": -156.722244,
     "legacySiteHeading": -1,
     "legacyRelicTowerHeading": -1,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 157,
@@ -8076,14 +8076,14 @@
     ],
     "latitude": -73.765099,
     "longitude": -30.819651,
-    "siteHeading": -1,
-    "relicTowerHeading": -1,
-    "surveyProgress": 0,
+    "siteHeading": 190,
+    "relicTowerHeading": 230,
+    "surveyProgress": 100,
     "legacyLatitude": 23.941648,
     "legacyLongitude": -82.109322,
     "legacySiteHeading": -1,
     "legacyRelicTowerHeading": -1,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 156,

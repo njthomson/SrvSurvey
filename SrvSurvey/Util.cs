@@ -677,7 +677,7 @@ namespace SrvSurvey
                 k = 64831;
                 if (isTerraformable) k += 116295;
             }
-            else if (planetClass.StartsWith("Earth")) // ELW
+            else if (planetClass?.StartsWith("Earth") == true) // ELW
             {
                 k = 64831 + 116295;
             }
