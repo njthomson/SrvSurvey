@@ -1,64 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -117,93 +58,113 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Atmosphere" xml:space="preserve">
-    <value>Atmosphere:</value>
+  <data name="Atmosphere">
+    <value>大气:</value>
     <comment>Line prefix for atmosphere</comment>
+    <source>Atmosphere:</source>
   </data>
-  <data name="BioSignals" xml:space="preserve">
-    <value>Bio signals: {0} ( value: {1} cr )</value>
+  <data name="BioSignals">
+    <value>生物信号: {0} ( 价值: {1} cr )</value>
     <comment>Line prefix when bio signals are present
 {0} int, count of bio signals
 {1} string, value of credits</comment>
+    <source>Bio signals: {0} ( value: {1} cr )</source>
   </data>
-  <data name="EarthLike" xml:space="preserve">
-    <value>Earth Like</value>
+  <data name="EarthLike">
+    <value>类地球</value>
     <comment>Atmosphere type is like Earth</comment>
+    <source>Earth Like</source>
   </data>
-  <data name="FirstMapped" xml:space="preserve">
-    <value>First mapped</value>
+  <data name="FirstMapped">
+    <value>首次测绘</value>
     <comment>Header tag</comment>
+    <source>First mapped</source>
   </data>
-  <data name="GeoSignals" xml:space="preserve">
-    <value>Geo signals: {0}</value>
+  <data name="GeoSignals">
+    <value>地质信号: {0}</value>
     <comment>Line prefix when geo signals are present
 {0} int, count of geo signals</comment>
+    <source>Geo signals: {0}</source>
   </data>
-  <data name="Gravity" xml:space="preserve">
-    <value>Gravity: {0}g</value>
+  <data name="Gravity">
+    <value>重力: {0}g</value>
     <comment>Body gravity
 {0} decimal, 3 places, gravity value</comment>
+    <source>Gravity: {0}g</source>
   </data>
-  <data name="Materials" xml:space="preserve">
-    <value>Materials:</value>
+  <data name="Materials">
+    <value>材料:</value>
     <comment>Line prefix for materials</comment>
+    <source>Materials:</source>
   </data>
-  <data name="None" xml:space="preserve">
-    <value>None</value>
+  <data name="None">
+    <value>无</value>
     <comment>Text shown when body pressure value is zero, or there is no volcanism, or no atmoshpere</comment>
+    <source>None</source>
   </data>
-  <data name="Pressure" xml:space="preserve">
-    <value>Pressure: {0}</value>
+  <data name="Pressure">
+    <value>气压: {0}</value>
     <comment>
 {0} string, the value of PressureValue or PressureNone</comment>
+    <source>Pressure: {0}</source>
   </data>
-  <data name="PressureValue" xml:space="preserve">
-    <value>{0}(atm)</value>
+  <data name="PressureValue">
+    <value>{0}(标准大气压)</value>
     <comment>The atmospheric pressure value
 {0} decimal, 4 places</comment>
+    <source>{0}(atm)</source>
   </data>
-  <data name="Rings" xml:space="preserve">
-    <value>Rings:</value>
+  <data name="Rings">
+    <value>环带:</value>
     <comment>Line prefix for rings</comment>
+    <source>Rings:</source>
   </data>
-  <data name="ScanRequired" xml:space="preserve">
-    <value>Scan required</value>
+  <data name="ScanRequired">
+    <value>需要扫描</value>
     <comment>Header shown when a scan is required</comment>
+    <source>Scan required</source>
   </data>
-  <data name="ScanValue" xml:space="preserve">
-    <value>Scan value</value>
+  <data name="ScanValue">
+    <value>扫描价值</value>
     <comment>Line prefix before showing the scan value for a body</comment>
+    <source>Scan value</source>
   </data>
-  <data name="StarClass" xml:space="preserve">
+  <data name="StarClass">
     <value>Class: {0}</value>
     <comment>Line prefix with the type of a star, A, O, M, etc
 {0} string, the class of some star</comment>
+    <source>Class: {0}</source>
   </data>
-  <data name="Temp" xml:space="preserve">
-    <value>Temp: {0}K</value>
+  <data name="Temp">
+    <value>开尔文温度: {0}K</value>
     <comment>Body temperature of a body
 {0} int, temp in Kelvin</comment>
+    <source>Temp: {0}K</source>
   </data>
-  <data name="Terraformable" xml:space="preserve">
-    <value>Terraformable</value>
+  <data name="Terraformable">
+    <value>可改造的</value>
     <comment>Header tag</comment>
+    <source>Terraformable</source>
   </data>
-  <data name="Undiscovered" xml:space="preserve">
-    <value>Undiscovered</value>
+  <data name="Undiscovered">
+    <value>未被发现</value>
     <comment>Header tag</comment>
+    <source>Undiscovered</source>
   </data>
-  <data name="Unmapped" xml:space="preserve">
-    <value>Unmapped</value>
+  <data name="Unmapped">
+    <value>未测绘</value>
     <comment>Header tag</comment>
+    <source>Unmapped</source>
   </data>
-  <data name="Volcanism" xml:space="preserve">
-    <value>Volcanism:</value>
+  <data name="Volcanism">
+    <value>火山活动:</value>
     <comment>Line prefix for volcanism</comment>
+    <source>Volcanism:</source>
   </data>
-  <data name="WithDSS" xml:space="preserve">
-    <value>(with DSS: {0})</value>
+  <data name="WithDSS">
+    <value>(含DSS: {0})</value>
     <comment>Suffix shown after scan value for a body
 {0} string, value of credits</comment>
+    <source>(with DSS: {0})</source>
   </data>
 </root>
