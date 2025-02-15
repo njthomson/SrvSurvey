@@ -1,64 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
-    Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
-    associated with the data types.
-
-    Example:
-
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-
-    There are any number of "resheader" rows that contain simple
-    name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
-    mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
-    extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
-    read any of the formats listed below.
-
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -295,8 +236,9 @@
   <data name="btnBegin.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="btnBegin.Text" xml:space="preserve">
-    <value>&amp;Set target</value>
+  <data name="btnBegin.Text">
+    <value>设定目标</value>
+    <source>&amp;Set target</source>
   </data>
   <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -319,8 +261,9 @@
   <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="btnCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
+  <data name="btnCancel.Text">
+    <value>取消</value>
+    <source>Cancel</source>
   </data>
   <data name="btnPaste.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -354,8 +297,9 @@
   <data name="btnPaste.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="btnPaste.Text" xml:space="preserve">
-    <value>&amp;Paste</value>
+  <data name="btnPaste.Text">
+    <value>粘贴</value>
+    <source>&amp;Paste</source>
   </data>
   <data name="btnPaste.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
@@ -381,8 +325,9 @@
   <data name="btnTargetCurrent.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="btnTargetCurrent.Text" xml:space="preserve">
-    <value>&amp;Target current location</value>
+  <data name="btnTargetCurrent.Text">
+    <value>以当前位置为目标</value>
+    <source>&amp;Target current location</source>
   </data>
   <data name="button1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -405,8 +350,9 @@
   <data name="button1.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="button1.Text" xml:space="preserve">
-    <value>&amp;Clear target</value>
+  <data name="button1.Text">
+    <value>清除目标设定</value>
+    <source>&amp;Clear target</source>
   </data>
   <data name="flowLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -444,8 +390,9 @@
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Latitute:</value>
+  <data name="label2.Text">
+    <value>纬度:</value>
+    <source>Latitute:</source>
   </data>
   <data name="label3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -465,8 +412,9 @@
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>Longitude:</value>
+  <data name="label3.Text">
+    <value>经度:</value>
+    <source>Longitude:</source>
   </data>
   <data name="label6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -483,8 +431,11 @@
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="label6.Text" xml:space="preserve">
-    <value>Got a tip from a mysterious stranger to go to some Lat/Long on some planet or moon?
+  <data name="label6.Text">
+    <value>从一个神秘的陌生人那里得到了去某个行星或月球上某个经纬度的提示？
+
+输入一些经纬度位置，当你接近时，目标指示就会出现。</value>
+    <source>Got a tip from a mysterious stranger to go to some Lat/Long on some planet or moon?
 
 Enter some Lat/Long position and guidance will appear when you approach.</value>
   </data>
@@ -527,8 +478,9 @@ Enter some Lat/Long position and guidance will appear when you approach.</value>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Set lat/long co-ordinates</value>
+  <data name="$this.Text">
+    <value>设置纬度/经度坐标</value>
+    <source>Set lat/long co-ordinates</source>
   </data>
   <data name="txtLat.Location" type="System.Drawing.Point, System.Drawing">
     <value>92, 3</value>
@@ -542,8 +494,9 @@ Enter some Lat/Long position and guidance will appear when you approach.</value>
   <data name="txtLat.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="txtLat.Text" xml:space="preserve">
+  <data name="txtLat.Text">
     <value>+12.34</value>
+    <source>+12.34</source>
   </data>
   <data name="txtLong.Location" type="System.Drawing.Point, System.Drawing">
     <value>92, 32</value>
@@ -557,7 +510,8 @@ Enter some Lat/Long position and guidance will appear when you approach.</value>
   <data name="txtLong.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="txtLong.Text" xml:space="preserve">
+  <data name="txtLong.Text">
     <value>-10.0</value>
+    <source>-10.0</source>
   </data>
 </root>
