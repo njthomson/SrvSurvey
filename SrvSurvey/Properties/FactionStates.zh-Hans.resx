@@ -58,139 +58,169 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <resheader name="loc-level">
-    <value>pseudo-only</value>
-  </resheader>
-  <data name="None" xml:space="preserve">
-    <value>None</value>
+  <data name="None">
+    <value>无</value>
     <comment>Faction state None</comment>
+    <source>None</source>
   </data>
-  <data name="Retreat" xml:space="preserve">
-    <value>Retreat</value>
+  <data name="Retreat">
+    <value>撤退</value>
     <comment>Faction state Retreat</comment>
+    <source>Retreat</source>
   </data>
-  <data name="War" xml:space="preserve">
-    <value>War</value>
+  <data name="War">
+    <value>战争</value>
     <comment>Faction state War</comment>
+    <source>War</source>
   </data>
-  <data name="Lockdown" xml:space="preserve">
-    <value>Lockdown</value>
+  <data name="Lockdown">
+    <value>封锁</value>
     <comment>Faction state Lockdown</comment>
+    <source>Lockdown</source>
   </data>
-  <data name="CivilUnrest" xml:space="preserve">
-    <value>Civil Unrest</value>
+  <data name="CivilUnrest">
+    <value>民间动荡</value>
     <comment>Faction state CivilUnrest</comment>
+    <source>Civil Unrest/source>
   </data>
-  <data name="CivilWar" xml:space="preserve">
-    <value>Civil War</value>
+  <data name="CivilWar">
+    <value>内战</value>
     <comment>Faction state CivilWar</comment>
+    <source>Civil War</source>
   </data>
-  <data name="Boom" xml:space="preserve">
-    <value>Boom</value>
+  <data name="Boom">
+    <value>繁荣</value>
     <comment>Faction state Boom</comment>
+    <source>Boom</source>
   </data>
-  <data name="Expansion" xml:space="preserve">
-    <value>Expansion</value>
+  <data name="Expansion">
+    <value>扩张</value>
     <comment>Faction state Expansion</comment>
+    <source>Expansion</source>
   </data>
-  <data name="Bust" xml:space="preserve">
-    <value>Bust</value>
+  <data name="Bust">
+    <value>萧条</value>
     <comment>Faction state Bust</comment>
+    <source>Bust</source>
   </data>
-  <data name="Outbreak" xml:space="preserve">
-    <value>Outbreak</value>
+  <data name="Outbreak">
+    <value>疫情爆发</value>
     <comment>Faction state Outbreak</comment>
+    <source>Outbreak</source>
   </data>
-  <data name="Famine" xml:space="preserve">
-    <value>Famine</value>
+  <data name="Famine">
+    <value>饥荒</value>
     <comment>Faction state Famine</comment>
+    <source>Famine</source>
   </data>
-  <data name="Election" xml:space="preserve">
-    <value>Election</value>
+  <data name="Election">
+    <value>选举</value>
     <comment>Faction state Election</comment>
+    <source>Election</source>
   </data>
-  <data name="Investment" xml:space="preserve">
-    <value>Investment</value>
+  <data name="Investment">
+    <value>投资热潮</value>
     <comment>Faction state Investment</comment>
+    <source>Investment</source>
   </data>
-  <data name="CivilLiberty" xml:space="preserve">
-    <value>Civil Liberty</value>
+  <data name="CivilLiberty">
+    <value>公民自由</value>
     <comment>Faction state CivilLiberty</comment>
+    <source>Civil Liberty</source>
   </data>
-  <data name="Incursion" xml:space="preserve">
-    <value>Incursion</value>
+  <data name="Incursion">
+    <value>渗透入侵</value>
     <comment>Faction state Incursion</comment>
+    <source>Incursion</source>
   </data>
-  <data name="PirateAttack" xml:space="preserve">
-    <value>Pirate Attack</value>
+  <data name="PirateAttack">
+    <value>海盗袭击</value>
     <comment>Faction state PirateAttack</comment>
+    <source>Pirate Attack</source>
   </data>
-  <data name="Drought" xml:space="preserve">
-    <value>Drought</value>
+  <data name="Drought">
+    <value>干旱</value>
     <comment>Faction state Drought, but translated as Blight</comment>
+    <source>Drought</source>
   </data>
-  <data name="Blight" xml:space="preserve">
-    <value>Blight</value>
+  <data name="Blight">
+    <value>枯萎病</value>
     <comment>Faction state Blight</comment>
+    <source>Blight</source>
   </data>
-  <data name="ColdWar" xml:space="preserve">
-    <value>Cold War</value>
+  <data name="ColdWar">
+    <value>冷战</value>
     <comment>Faction state ColdWar</comment>
+    <source>Cold War</source>
   </data>
-  <data name="Colonisation" xml:space="preserve">
-    <value>Colonisation</value>
+  <data name="Colonisation">
+    <value>殖民</value>
     <comment>Faction state Colonisation</comment>
+    <source>Colonisation</source>
   </data>
-  <data name="HistoricEvent" xml:space="preserve">
-    <value>Historic Event</value>
+  <data name="HistoricEvent">
+    <value>历史性事件</value>
     <comment>Faction state HistoricEvent</comment>
+    <source>Historic Event</source>
   </data>
-  <data name="InfrastructureFailure" xml:space="preserve">
-    <value>Infrastructure Failure</value>
+  <data name="InfrastructureFailure">
+    <value>基础设施故障</value>
     <comment>Faction state InfrastructureFailure</comment>
+    <source>Infrastructure Failure</source>
   </data>
-  <data name="NaturalDisaster" xml:space="preserve">
-    <value>Natural Disaster</value>
+  <data name="NaturalDisaster">
+    <value>自然灾害</value>
     <comment>Faction state NaturalDisaster</comment>
+    <source>Natural Disaster</source>
   </data>
-  <data name="PublicHoliday" xml:space="preserve">
-    <value>Public Holiday</value>
+  <data name="PublicHoliday">
+    <value>公共假日</value>
     <comment>Faction state PublicHoliday</comment>
+    <source>Public Holiday</source>
   </data>
-  <data name="Revolution" xml:space="preserve">
-    <value>Revolution</value>
+  <data name="Revolution">
+    <value>革命</value>
     <comment>Faction state Revolution</comment>
+    <source>Revolution</source>
   </data>
-  <data name="TechnologicalLeap" xml:space="preserve">
-    <value>Technological Leap</value>
+  <data name="TechnologicalLeap">
+    <value>技术飞跃</value>
     <comment>Faction state TechnologicalLeap</comment>
+    <source>Technological Leap</source>
   </data>
-  <data name="Terrorism" xml:space="preserve">
-    <value>Terrorism</value>
+  <data name="Terrorism">
+    <value>恐怖活动</value>
     <comment>Faction state Terrorism</comment>
+    <source>Terrorism</source>
   </data>
-  <data name="TradeWar" xml:space="preserve">
-    <value>Trade War</value>
+  <data name="TradeWar">
+    <value>贸易战</value>
     <comment>Faction state TradeWar</comment>
+    <source>Trade War</source>
   </data>
-  <data name="Thargoid_Probing" xml:space="preserve">
-    <value>Thargoid Alert</value>
+  <data name="Thargoid_Probing">
+    <value>Thargoid萨格族警报</value>
     <comment>Faction state Thargoid_Probing</comment>
+    <source>Thargoid Alert</source>
   </data>
-  <data name="Thargoid_Harvest" xml:space="preserve">
-    <value>Thargoid Invasion</value>
+  <data name="Thargoid_Harvest">
+    <value>Thargoid萨格族入侵</value>
     <comment>Faction state Thargoid_Harvest</comment>
+    <source>Thargoid Invasion</source>
   </data>
-  <data name="Thargoid_Controlled" xml:space="preserve">
-    <value>Thargoid Controlled</value>
+  <data name="Thargoid_Controlled">
+    <value>Thargoid萨格族控制区</value>
     <comment>Faction state Thargoid_Controlled</comment>
+    <source>Thargoid Controlled</source>
   </data>
-  <data name="Thargoid_Stronghold" xml:space="preserve">
-    <value>Thargoid Maelstrom</value>
+  <data name="Thargoid_Stronghold">
+    <value>Thargoid萨格族漩涡</value>
     <comment>Faction state Thargoid_Stronghold</comment>
+    <source>Thargoid Maelstrom</source>
   </data>
-  <data name="Thargoid_Recovery" xml:space="preserve">
-    <value>Post-Thargoid Recovery</value>
+  <data name="Thargoid_Recovery">
+    <value>后萨格族复苏期</value>
     <comment>Faction state Thargoid_Recovery</comment>
+    <source>Post-Thargoid Recovery</source>
   </data>
 </root>
