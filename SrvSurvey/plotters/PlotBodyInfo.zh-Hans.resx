@@ -76,7 +76,7 @@
     <source>Earth Like</source>
   </data>
   <data name="FirstMapped">
-    <value>首次测绘</value>
+    <value>首次测绘（FM）</value>
     <comment>Header tag</comment>
     <source>First mapped</source>
   </data>
