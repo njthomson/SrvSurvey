@@ -1,64 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
-    Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
-    associated with the data types.
-
-    Example:
-
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-
-    There are any number of "resheader" rows that contain simple
-    name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
-    mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
-    extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
-    read any of the formats listed below.
-
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -682,8 +623,9 @@
   <data name="btnBegin.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
   </data>
-  <data name="btnBegin.Text" xml:space="preserve">
-    <value>&amp;Begin</value>
+  <data name="btnBegin.Text">
+    <value>开始</value>
+    <source>&amp;Begin</source>
   </data>
   <data name="btnBoxelEmpty.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -700,8 +642,9 @@
   <data name="btnBoxelEmpty.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
-  <data name="btnBoxelEmpty.Text" xml:space="preserve">
-    <value>&amp;Toggle boxel empty</value>
+  <data name="btnBoxelEmpty.Text">
+    <value>切换空Boxel</value>
+    <source>&amp;Toggle boxel empty</source>
   </data>
   <data name="btnConfig.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -724,8 +667,9 @@
   <data name="btnConfig.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
   </data>
-  <data name="btnConfig.Text" xml:space="preserve">
-    <value>Config</value>
+  <data name="btnConfig.Text">
+    <value>配置</value>
+    <source>Config</source>
   </data>
   <data name="btnConfigCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -751,8 +695,9 @@
   <data name="btnConfigCancel.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
   </data>
-  <data name="btnConfigCancel.Text" xml:space="preserve">
-    <value>&amp;Cancel</value>
+  <data name="btnConfigCancel.Text">
+    <value>取消</value>
+    <source>&amp;Cancel</source>
   </data>
   <data name="btnConfigNav.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -769,8 +714,9 @@
   <data name="btnConfigNav.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
   </data>
-  <data name="btnConfigNav.Text" xml:space="preserve">
+  <data name="btnConfigNav.Text">
     <value>...</value>
+    <source>...</source>
   </data>
   <data name="btnCopyNext.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -796,8 +742,9 @@
   <data name="btnCopyNext.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="btnCopyNext.Text" xml:space="preserve">
-    <value>&amp;Copy next system</value>
+  <data name="btnCopyNext.Text">
+    <value>复制下个星系名</value>
+    <source>&amp;Copy next system</source>
   </data>
   <data name="btnParent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -820,8 +767,9 @@
   <data name="btnParent.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="btnParent.Text" xml:space="preserve">
+  <data name="btnParent.Text">
     <value>...</value>
+    <source>...</source>
   </data>
   <data name="btnToggleList.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -838,8 +786,9 @@
   <data name="btnToggleList.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 20</value>
   </data>
-  <data name="btnToggleList.Text" xml:space="preserve">
-    <value>⏶ Hide list</value>
+  <data name="btnToggleList.Text">
+    <value>⏶ 隐藏列表</value>
+    <source>⏶ Hide list</source>
   </data>
   <data name="checkAutoCopy.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -856,8 +805,9 @@
   <data name="checkAutoCopy.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
   </data>
-  <data name="checkAutoCopy.Text" xml:space="preserve">
+  <data name="checkAutoCopy.Text">
     <value>&amp;Auto-copy in gal map</value>
+    <source>&amp;Auto-copy in gal map</source>
   </data>
   <data name="checkCompleteOnEnterSystem.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -874,8 +824,9 @@
   <data name="checkCompleteOnEnterSystem.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
-  <data name="checkCompleteOnEnterSystem.Text" xml:space="preserve">
-    <value>Entering a system</value>
+  <data name="checkCompleteOnEnterSystem.Text">
+    <value>进入星系</value>
+    <source>Entering a system</source>
   </data>
   <data name="checkCompleteOnFssAllBodies.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -892,8 +843,9 @@
   <data name="checkCompleteOnFssAllBodies.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
   </data>
-  <data name="checkCompleteOnFssAllBodies.Text" xml:space="preserve">
-    <value>FSS'ing all bodies</value>
+  <data name="checkCompleteOnFssAllBodies.Text">
+    <value>FSS扫描 所有天体</value>
+    <source>FSS'ing all bodies</source>
   </data>
   <data name="checkSkipVisited.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -913,8 +865,9 @@
   <data name="checkSkipVisited.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
-  <data name="checkSkipVisited.Text" xml:space="preserve">
-    <value>Skip systems I've already visited before date</value>
+  <data name="checkSkipVisited.Text">
+    <value>跳过指定日期之前我已访问过的星系</value>
+    <source>Skip systems I've already visited before date</source>
   </data>
   <data name="checkSpinKnownToSpansh.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -934,17 +887,20 @@
   <data name="checkSpinKnownToSpansh.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
-  <data name="checkSpinKnownToSpansh.Text" xml:space="preserve">
-    <value>Skip systems known to Spansh before date</value>
+  <data name="checkSpinKnownToSpansh.Text">
+    <value>跳过Spansh上指定日期之前的已知星系</value>
+    <source>Skip systems known to Spansh before date</source>
   </data>
-  <data name="colCompleted.Text" xml:space="preserve">
-    <value>Visited Date</value>
+  <data name="colCompleted.Text">
+    <value>访问日期</value>
+    <source>Visited Date</source>
   </data>
   <data name="colCompleted.Width" type="System.Int32, mscorlib">
     <value>150</value>
   </data>
-  <data name="colDistance.Text" xml:space="preserve">
-    <value>Distance</value>
+  <data name="colDistance.Text">
+    <value>距离</value>
+    <source>Distance</source>
   </data>
   <data name="colDistance.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Right</value>
@@ -952,14 +908,16 @@
   <data name="colDistance.Width" type="System.Int32, mscorlib">
     <value>80</value>
   </data>
-  <data name="colSpansh.Text" xml:space="preserve">
-    <value>Spansh Updated</value>
+  <data name="colSpansh.Text">
+    <value>Spansh 更新日期</value>
+    <source>Spansh Updated</source>
   </data>
   <data name="colSpansh.Width" type="System.Int32, mscorlib">
     <value>150</value>
   </data>
-  <data name="colSystem.Text" xml:space="preserve">
-    <value>System Name</value>
+  <data name="colSystem.Text">
+    <value>星系名</value>
+    <source>System Name</source>
   </data>
   <data name="colSystem.Width" type="System.Int32, mscorlib">
     <value>160</value>
@@ -1057,8 +1015,9 @@
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
   </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Surveying boxel:</value>
+  <data name="label1.Text">
+    <value>扫描的Boxel星系:</value>
+    <source>Surveying boxel:</source>
   </data>
   <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -1078,8 +1037,9 @@
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Measure distances from:</value>
+  <data name="label2.Text">
+    <value>以该星系测量距离:</value>
+    <source>Measure distances from:</source>
   </data>
   <data name="label3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -1099,8 +1059,9 @@
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>NOTE: Boxel search feature is incomplete and experimental</value>
+  <data name="label3.Text">
+    <value>注意: Boxel搜索功能尚不完整且处于实验阶段</value>
+    <source>NOTE: Boxel search feature is incomplete and experimental</source>
   </data>
   <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -1120,8 +1081,9 @@
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
   </data>
-  <data name="label4.Text" xml:space="preserve">
-    <value>Consider a system complete when:</value>
+  <data name="label4.Text">
+    <value>当以下条件满足时认为该星系完成:</value>
+    <source>Consider a system complete when:</source>
   </data>
   <data name="label5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -1138,8 +1100,9 @@
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
   </data>
-  <data name="label5.Text" xml:space="preserve">
-    <value>Survey down to mass code:</value>
+  <data name="label5.Text">
+    <value>搜索至该质量代码:</value>
+    <source>Survey down to mass code:</source>
   </data>
   <data name="label6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -1156,8 +1119,9 @@
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
   </data>
-  <data name="label6.Text" xml:space="preserve">
-    <value>As of date:</value>
+  <data name="label6.Text">
+    <value>日期:</value>
+    <source>As of date:</source>
   </data>
   <data name="label7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -1174,8 +1138,9 @@
   <data name="label7.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
   </data>
-  <data name="label7.Text" xml:space="preserve">
-    <value>Current:</value>
+  <data name="label7.Text">
+    <value>当前:</value>
+    <source>Current:</source>
   </data>
   <data name="label7.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -1195,8 +1160,14 @@
   <data name="labelGraphic.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
   </data>
-  <data name="labelGraphic.Text" xml:space="preserve">
-    <value>A boxel is a cube of space containing procedurally generated star systems. Cube sizes depend on mass code: 'a' boxels are 10 ly across, 'h' boxels are 1280 ly.
+  <data name="labelGraphic.Text">
+    <value>Boxel 是一个包含程序生成恒星系统的空间立方体。
+立方体的大小取决于质量代码：'a' boxels 边长 10 光年，
+    下一级以2倍递增，'h' boxels 边长 1280 光年
+
+每个Boxel包含8个子节点，排列为2行、每行4个象限，
+每个象限都有自己生成的恒星系统</value>
+    <source>A boxel is a cube of space containing procedurally generated star systems. Cube sizes depend on mass code: 'a' boxels are 10 ly across, 'h' boxels are 1280 ly.
 
 Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with their own generated star systems.</value>
   </data>
@@ -1215,8 +1186,9 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
   <data name="lblBadBoxel.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
   </data>
-  <data name="lblBadBoxel.Text" xml:space="preserve">
-    <value>System name is not a valid boxel name</value>
+  <data name="lblBadBoxel.Text">
+    <value>该星系名不是一个有效的boxel名</value>
+    <source>System name is not a valid boxel name</source>
   </data>
   <data name="lblBadBoxel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -1239,8 +1211,9 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
   <data name="lblBoxelCount.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
   </data>
-  <data name="lblBoxelCount.Text" xml:space="preserve">
-    <value>(Contains X boxels)</value>
+  <data name="lblBoxelCount.Text">
+    <value>(包含 X 矩形)</value>
+    <source>(Contains X boxels)</source>
   </data>
   <data name="lblConfigHeader.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -1260,8 +1233,9 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
   <data name="lblConfigHeader.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
   </data>
-  <data name="lblConfigHeader.Text" xml:space="preserve">
-    <value>Enter the top boxel to survey. All child boxels will be included down to the lower mass code:</value>
+  <data name="lblConfigHeader.Text">
+    <value>输入顶级Boxel星系名进行搜索. 所有子节点Boxel都将包括在内，直到较低的质量代码:</value>
+    <source>Enter the top boxel to survey. All child boxels will be included down to the lower mass code:</source>
   </data>
   <data name="lblMaxNum.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -1278,14 +1252,16 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
   <data name="lblMaxNum.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="lblMaxNum.Text" xml:space="preserve">
-    <value>&amp;Systems in boxel:</value>
+  <data name="lblMaxNum.Text">
+    <value>Boxel中的星系:</value>
+    <source>&amp;Systems in boxel:</source>
   </data>
   <data name="lblStatus.Size" type="System.Drawing.Size, System.Drawing">
     <value>437, 19</value>
   </data>
-  <data name="lblStatus.Text" xml:space="preserve">
+  <data name="lblStatus.Text">
     <value>-</value>
+    <source>-</source>
   </data>
   <data name="lblStatus.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -1308,14 +1284,16 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
   <data name="menuHelpLink.Size" type="System.Drawing.Size, System.Drawing">
     <value>179, 22</value>
   </data>
-  <data name="menuHelpLink.Text" xml:space="preserve">
-    <value>Help about this tool</value>
+  <data name="menuHelpLink.Text">
+    <value>获取该工具的帮助</value>
+    <source>Help about this tool</source>
   </data>
   <data name="menuListCopySystemName.Size" type="System.Drawing.Size, System.Drawing">
     <value>175, 22</value>
   </data>
-  <data name="menuListCopySystemName.Text" xml:space="preserve">
-    <value>&amp;Copy system name</value>
+  <data name="menuListCopySystemName.Text">
+    <value>复制星系名</value>
+    <source>&amp;Copy system name</source>
   </data>
   <data name="menuMore.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1332,8 +1310,9 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
   <data name="menuMore.Size" type="System.Drawing.Size, System.Drawing">
     <value>60, 20</value>
   </data>
-  <data name="menuMore.Text" xml:space="preserve">
-    <value>More ...</value>
+  <data name="menuMore.Text">
+    <value>其他...</value>
+    <source>More ...</source>
   </data>
   <data name="menuSiblings.Size" type="System.Drawing.Size, System.Drawing">
     <value>61, 4</value>
@@ -1449,8 +1428,9 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>500, 0</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Boxel Search (Experimental)</value>
+  <data name="$this.Text">
+    <value>Boxel Search (实验)</value>
+    <source>Boxel Search (Experimental)</source>
   </data>
   <data name="txtConfigBoxel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
