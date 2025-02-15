@@ -439,8 +439,7 @@
     <value>0</value>
   </data>
   <data name="label4.Text">
-    <!--Update needed: ES-->
-    <value>Límite esférico ayuda a navegar por los sistemas dentro de la distancia dada a un sistema central.</value>
+    <value>Búsqueda esférica ayuda a navegar por los sistemas que hay dentro del espacio entre un sistema central y una distancia máxima.</value>
     <source>Spherical searches help navigating around within a given distance of a central system.</source>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
@@ -542,8 +541,7 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text">
-    <!--Update needed: ES-->
-    <value>Límite esférico</value>
+    <value>Búsqueda Esférica</value>
     <source>Spherical Search</source>
   </data>
   <data name="txtCurrentDistance.Location" type="System.Drawing.Point, System.Drawing">

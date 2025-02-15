@@ -238,7 +238,6 @@
     <value>95, 22</value>
   </data>
   <data name="btnActive.Text">
-    <!--Machine translated-->
     <value>Ruta activa</value>
     <source>Route active</source>
   </data>
@@ -249,32 +248,28 @@
     <value>151, 22</value>
   </data>
   <data name="btnAutoCopy.Text">
-    <!--Machine translated-->
-    <value>Copia automática en Gal-Map</value>
+    <value>Auto-copiar en mapa de la galaxia</value>
     <source>Auto copy in Gal-Map</source>
   </data>
   <data name="btnImportSpanshUrl.Size" type="System.Drawing.Size, System.Drawing">
     <value>291, 22</value>
   </data>
   <data name="btnImportSpanshUrl.Text">
-    <!--Machine translated-->
-    <value>URL de la ruta en español desde el portapapeles</value>
+    <value>URL con la ruta de Spansh desde el portapapeles</value>
     <source>Spansh route URL from clipboard</source>
   </data>
   <data name="btnNamesFromClipboard.Size" type="System.Drawing.Size, System.Drawing">
     <value>291, 22</value>
   </data>
   <data name="btnNamesFromClipboard.Text">
-    <!--Machine translated-->
-    <value>Nombres del sistema desde el portapapeles</value>
+    <value>Listado de sistemas desde el portapapeles</value>
     <source>System names from clipboard</source>
   </data>
   <data name="btnNamesFromFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>291, 22</value>
   </data>
   <data name="btnNamesFromFile.Text">
-    <!--Machine translated-->
-    <value>Nombres del sistema del archivo</value>
+    <value>Listado de sistemas desde un archivo</value>
     <source>System names from file</source>
   </data>
   <data name="btnSave.Font" type="System.Drawing.Font, System.Drawing">
@@ -296,12 +291,10 @@
     <value>95, 22</value>
   </data>
   <data name="btnSave.Text">
-    <!--Machine translated-->
     <value>Guardar cambios</value>
     <source>Save changes</source>
   </data>
   <data name="colDistance.Text">
-    <!--Machine translated-->
     <value>Distancia</value>
     <source>Distance</source>
   </data>
@@ -309,7 +302,6 @@
     <value>80</value>
   </data>
   <data name="colNotes.Text">
-    <!--Machine translated-->
     <value>Notas</value>
     <source>Notes</source>
   </data>
@@ -317,7 +309,6 @@
     <value>160</value>
   </data>
   <data name="colSystem.Text">
-    <!--Machine translated-->
     <value>Sistema</value>
     <source>System</source>
   </data>
@@ -343,8 +334,7 @@
     <value>9</value>
   </data>
   <data name="lblIntro.Text">
-    <!--Machine translated-->
-    <value>Usa rutas para trazar manualmente tu camino a través de la galaxia. Comience importando una ruta, luego busque orientación en la esquina superior derecha del mapa Gal.</value>
+    <value>Usa rutas para trazar manualmente tu camino a través de la galaxia. Comienza importando una ruta, luego sigue las indicaciones del panel de la esquina superior derecha en el Mapa de la Galaxia.</value>
     <source>Use routes to manually plot your way across the galaxy. Begin by importing a route, then look for guidance in the top-right corner in the Gal-Map.</source>
   </data>
   <data name="lblStatus.AutoSize" type="System.Boolean, mscorlib">
@@ -387,7 +377,6 @@
     <value>3</value>
   </data>
   <data name="status.Text">
-    <!--Machine translated-->
     <value>statusStrip1</value>
     <source>statusStrip1</source>
   </data>
@@ -422,7 +411,6 @@
     <value>Consolas, 9pt</value>
   </data>
   <data name="$this.Text">
-    <!--Machine translated-->
     <value>Seguir una ruta</value>
     <source>Follow a route</source>
   </data>
@@ -451,7 +439,6 @@
     <value>8</value>
   </data>
   <data name="toolStrip1.Text">
-    <!--Machine translated-->
     <value>toolStrip1</value>
     <source>toolStrip1</source>
   </data>
@@ -471,8 +458,7 @@
     <value>83, 22</value>
   </data>
   <data name="toolStripDropDownButton1.Text">
-    <!--Machine translated-->
-    <value>Importación...</value>
+    <value>Importar...</value>
     <source>Import...</source>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
