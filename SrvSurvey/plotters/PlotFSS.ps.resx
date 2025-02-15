@@ -61,6 +61,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CountBioSignals">
+    <!--Machine translated-->
     <value>* {0} BIO SIGNALS: →→→!</value>
     <comment>Footer shown when there are bio signals on the body just scanned
 {0} int, count of bio signals</comment>
@@ -68,12 +69,14 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="EstimatedValue">
+    <!--Machine translated-->
     <value>* ESTIMATED VALUE: →→→!</value>
     <comment>Line header for body estimated value</comment>
     <source>Estimated value:</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="LastScan">
+    <!--Machine translated-->
     <value>* LAST SCAN: {0} →→→!</value>
     <comment>Header showing name of body last scanned
 {0} string, name of last body scanned</comment>
@@ -81,6 +84,7 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="WithSurfaceScan">
+    <!--Machine translated-->
     <value>* WITH SURFACE SCAN: →→→!</value>
     <comment>Line header for body estimated value with surface scan</comment>
     <source>With surface scan:</source>

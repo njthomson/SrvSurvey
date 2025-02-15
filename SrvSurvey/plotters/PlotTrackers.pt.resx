@@ -61,6 +61,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="HeaderLine">
+    <!--Machine translated-->
     <value>Rastreamento {0} alvos:</value>
     <comment>Header line
 {0} int, count of bookmarks tracked</comment>

@@ -64,18 +64,21 @@
     <value>True</value>
   </metadata>
   <data name="Boxel">
+    <!--Machine translated-->
     <value>Boxel :</value>
     <comment>Header before name of boxel we are searching</comment>
     <source>Boxel:</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Distance">
+    <!--Machine translated-->
     <value>Distance:</value>
     <comment>Header before distance between systems</comment>
     <source>Distance:</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="DistanceExceeds">
+    <!--Machine translated-->
     <value>{0}ly - dépasse {1} ly</value>
     <comment>Shown when measured distance exceeds some limit.
 {0} float, 2 decimal places, measured distance between 2 star systems
@@ -84,6 +87,7 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="DistanceWithin">
+    <!--Machine translated-->
     <value>{0} - dans {1} ly</value>
     <comment>Shown when measured distance is within some limit.
 {0} float, 2 decimal places, measured distance between 2 star systems
@@ -92,36 +96,42 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="From">
+    <!--Machine translated-->
     <value>De:</value>
     <comment>Header before name of central star system</comment>
     <source>From:</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Next">
+    <!--Machine translated-->
     <value>Prochain:</value>
     <comment>Header before name of next boxel system to visit</comment>
     <source>Next:</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="To">
+    <!--Machine translated-->
     <value>À:</value>
     <comment>Header before name of target star system</comment>
     <source>To:</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="UnknownDist">
+    <!--Machine translated-->
     <value>Inconnu (tracé de l’intrigue)</value>
     <comment>Message shown when we do not know the distance, but would if the cmdr plots a route</comment>
     <source>Unknown (plot route)</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Visited">
+    <!--Machine translated-->
     <value>Visité:</value>
     <comment>Header before count of systems visited</comment>
     <source>Visited:</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="VisitedOf">
+    <!--Machine translated-->
     <value>{0} ({1} de {2})</value>
     <comment>{0} int, percentage of systems visited
 {1} int, how many systems we have visited

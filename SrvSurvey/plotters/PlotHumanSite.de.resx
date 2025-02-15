@@ -61,48 +61,56 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ActiveFighter">
+    <!--Machine translated-->
     <value>Der Kämpfer ist aktiv</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Fighter is active</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="AGRI">
+    <!--Machine translated-->
     <value>AGRI</value>
     <comment>A contraction of Agriculture, ideally 3 letters</comment>
     <source>AGRI</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="AutoDock1">
+    <!--Machine translated-->
     <value>Automatisches Andocken wird ausgeführt</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Auto dock in progress</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="AutoDock2">
+    <!--Machine translated-->
     <value>Unterstützung der automatischen Identifizierung von Abrechnungen</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Settlement auto-identification supported</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="AutoDock3">
+    <!--Machine translated-->
     <value>Wechseln Sie nicht zu einer externen Kamera</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Do not switch to external camera</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="CMD">
+    <!--Machine translated-->
     <value>CMD</value>
     <comment>A contraction of Command, ideally 3 letters</comment>
     <source>CMD</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Distance">
+    <!--Machine translated-->
     <value>Zu weit weg</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Too far away</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="DockingApproved">
+    <!--Machine translated-->
     <value>Andocken zugelassen: Pad #{0}</value>
     <comment>Shown when approaching a settlement
 {0} int, the pad number assigned</comment>
@@ -110,78 +118,91 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="DockingDenied">
+    <!--Machine translated-->
     <value>Andocken verweigert</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Docking denied</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="DockingRequested">
+    <!--Machine translated-->
     <value>Andocken angefordert</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Docking requested</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="EXT">
+    <!--Machine translated-->
     <value>EXTERN</value>
     <comment>A contraction of External, ideally 3 letters</comment>
     <source>EXT</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Faction">
+    <!--Machine translated-->
     <value>Fraktion</value>
     <comment>Prefix shown when approaching a settlement</comment>
     <source>Faction</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Government">
+    <!--Machine translated-->
     <value>Regierung</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Government</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HAB">
+    <!--Machine translated-->
     <value>HAB</value>
     <comment>A contraction of Habitat, ideally 3 letters</comment>
     <source>HAB</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HasInterstellar">
+    <!--Machine translated-->
     <value>Interstellare Fraktionen verfügbar</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Interstellar factions available</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpFoot0">
+    <!--Machine translated-->
     <value>So identifizieren Sie manuell:</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>To manually identify:</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpFoot1">
+    <!--Machine translated-->
     <value>1. Gehen Sie zur Mitte eines Landeplatzes und gehen Sie in die Hocke</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>1. Walk to the center of any landing pad and crouch</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpFoot2">
+    <!--Machine translated-->
     <value>2. Lege deinen linken Fuß über die mittleren Rillen</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>2. Place your left foot over the the center grooves</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpFoot3">
+    <!--Machine translated-->
     <value>3. Zeigen Sie mit den Chevrons zu Ihrer Linken</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>3. Face with the chevrons ahead to your left</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpFoot4">
+    <!--Machine translated-->
     <value>4. Zielen Sie auf das Ende des Grooves vor Ihnen</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>4. Aim at the end of the groove ahead of you</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpFoot5">
+    <!--Machine translated-->
     <value>5. Senden Sie die Nachricht '{0}'</value>
     <comment>
       Shown when landed and help is needed on foot
@@ -190,24 +211,28 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpFoot6">
+    <!--Machine translated-->
     <value>Weitere Informationen finden Sie im Wiki</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>See the wiki for more info</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpShip1">
+    <!--Machine translated-->
     <value>Die Abrechnung wird nach der nächsten Aktion identifiziert</value>
     <comment>Shown when landed and help is needed in a ship</comment>
     <source>Settlement will be identified after next action</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpShip2">
+    <!--Machine translated-->
     <value>So identifizieren Sie manuell</value>
     <comment>Shown when landed and help is needed in a ship</comment>
     <source>To manually identify</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpShip3">
+    <!--Machine translated-->
     <value>Senden Sie '{0}', wenn angedockt</value>
     <comment>Shown when landed and help is needed in a ship
 {0} string, the non-localized command to type</comment>
@@ -215,126 +240,147 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Hostile">
+    <!--Machine translated-->
     <value>Feindlich</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Hostile</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="IND">
+    <!--Machine translated-->
     <value>IND</value>
     <comment>A contraction of Industrial Processing, ideally 3 letters</comment>
     <source>IND</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Influence">
+    <!--Machine translated-->
     <value>Beeinflussen</value>
     <comment>Prefix shown when approaching a settlement</comment>
     <source>Influence</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="KnownSettlement">
+    <!--Machine translated-->
     <value>Bekannte Siedlung</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Known settlement</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="LAB">
+    <!--Machine translated-->
     <value>LABOR</value>
     <comment>A contraction of Laboratory, ideally 3 letters</comment>
     <source>LAB</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ManualDock1">
+    <!--Machine translated-->
     <value>Manuelles Andocken läuft</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Manual docking in progress</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ManualDock2">
+    <!--Machine translated-->
     <value>Die Identifizierung der Abrechnung wird sich verzögern</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Settlement identification will be delayed</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ManualDock3">
+    <!--Machine translated-->
     <value>Automatisches Andocken empfohlen</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Auto dock recommended</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="MED">
+    <!--Machine translated-->
     <value>MEDIZINISCH</value>
     <comment>A contraction of Medical, ideally 3 letters</comment>
     <source>MED</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NoSpace">
+    <!--Machine translated-->
     <value>Keine Beläge verfügbar</value>
     <comment>Shown when approaching a settlement</comment>
     <source>No pads available</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Offenses">
+    <!--Machine translated-->
     <value>Angriffe</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Offenses</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="OnApproach">
+    <!--Machine translated-->
     <value>Bei der Annäherung</value>
     <comment>Shown when approaching a settlement</comment>
     <source>On approach</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="POW">
+    <!--Machine translated-->
     <value>KRIEGSGEFANGENER</value>
     <comment>A contraction of Power Center, ideally 3 letters</comment>
     <source>POW</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PWR">
+    <!--Machine translated-->
     <value>PWR</value>
     <comment>A contraction of Power Center, ideally 3 letters</comment>
     <source>PWR</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="RES">
+    <!--Machine translated-->
     <value>RES</value>
     <comment>A contraction of Resources, ideally 3 letters</comment>
     <source>RES</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="STO">
+    <!--Machine translated-->
     <value>STO</value>
     <comment>A contraction of Storage, ideally 3 letters</comment>
     <source>STO</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="TooLarge">
+    <!--Machine translated-->
     <value>Zu großes Schiff versenden</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Ship too large</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Unknown">
+    <!--Machine translated-->
     <value>Unbekannt</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Unknown</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="UnknownTypeHeading">
+    <!--Machine translated-->
     <value>Unbekannte Siedlungsart und -richtung</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Unknown settlement type and heading</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="UnkownHeading">
+    <!--Machine translated-->
     <value>Unbekannte Siedlungsrichtung</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Unknown settlement heading</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="YourRep">
+    <!--Machine translated-->
     <value>Ihr Ruf: {0}</value>
     <comment>Shown when approaching a settlement
 {0} string, your reputation with a faction</comment>
@@ -342,6 +388,7 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ZoomHeader">
+    <!--Machine translated-->
     <value>Zoom: {0}</value>
     <comment>Map zoom level, shown in top right corner
 {0} float, 1 decimal place, the map zoom level</comment>
@@ -349,6 +396,7 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ZoomHeaderAuto">
+    <!--Machine translated-->
     <value>Zoom: {0} (Auto)</value>
     <comment>Map zoom level when auto zooming, shown in top right corner
 {0} float, 1 decimal place, the map zoom level</comment>
@@ -356,6 +404,7 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ZoomHeaderMin">
+    <!--Machine translated-->
     <value>Z: {0}</value>
     <comment>A minimal map zoom level, shown in top right corner when there's not much space
 {0} float, 1 decimal place, the map zoom level</comment>

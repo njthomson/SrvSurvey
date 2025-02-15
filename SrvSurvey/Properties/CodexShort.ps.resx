@@ -61,126 +61,147 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Aleoida">
+    <!--Machine translated-->
     <value>* ALE →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>ale</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Amphora Plant">
+    <!--Machine translated-->
     <value>* AMP →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>amp</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Bacterium">
+    <!--Machine translated-->
     <value>* BAC →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>bac</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Bark Mounds">
+    <!--Machine translated-->
     <value>* BAR →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>bar</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Brain Trees">
+    <!--Machine translated-->
     <value>* BRA →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>bra</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Cactoida">
+    <!--Machine translated-->
     <value>* CAC →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>cac</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Clypeus">
+    <!--Machine translated-->
     <value>* CLY →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>cly</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Concha">
+    <!--Machine translated-->
     <value>* CON →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>con</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Crystalline Shards">
+    <!--Machine translated-->
     <value>* CRY →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>cry</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Electricae">
+    <!--Machine translated-->
     <value>* ELE →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>ele</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Fonticulua">
+    <!--Machine translated-->
     <value>* FON →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>fon</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Frutexa">
+    <!--Machine translated-->
     <value>* FRU →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>fru</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Fumerola">
+    <!--Machine translated-->
     <value>* FUM →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>fum</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Fungoida">
+    <!--Machine translated-->
     <value>* FUN →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>fun</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Luteolum Anemone">
+    <!--Machine translated-->
     <value>* ANE →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>ane</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Osseus">
+    <!--Machine translated-->
     <value>* OSS →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>oss</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Recepta">
+    <!--Machine translated-->
     <value>* REC →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>rec</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Sinuous Tubers">
+    <!--Machine translated-->
     <value>* SIN →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>sin</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Stratum">
+    <!--Machine translated-->
     <value>* STR →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>str</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Tubus">
+    <!--Machine translated-->
     <value>* TUB →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>tub</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Tussock">
+    <!--Machine translated-->
     <value>* TUS →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>tus</source>

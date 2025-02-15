@@ -626,6 +626,7 @@
     <value>14</value>
   </data>
   <data name="btnBegin.Text">
+    <!--Machine translated-->
     <value>&amp; Beginnen</value>
     <source>&amp;Begin</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -646,6 +647,7 @@
     <value>10</value>
   </data>
   <data name="btnBoxelEmpty.Text">
+    <!--Machine translated-->
     <value>&amp;Toggle boxel empty</value>
     <source>&amp;Toggle boxel empty</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -672,6 +674,7 @@
     <value>20</value>
   </data>
   <data name="btnConfig.Text">
+    <!--Machine translated-->
     <value>Konfiguration</value>
     <source>Config</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -701,6 +704,7 @@
     <value>23</value>
   </data>
   <data name="btnConfigCancel.Text">
+    <!--Machine translated-->
     <value>&amp; Abbrechen</value>
     <source>&amp;Cancel</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -721,6 +725,7 @@
     <value>25</value>
   </data>
   <data name="btnConfigNav.Text">
+    <!--Machine translated-->
     <value>...</value>
     <source>...</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -750,6 +755,7 @@
     <value>5</value>
   </data>
   <data name="btnCopyNext.Text">
+    <!--Machine translated-->
     <value>&amp;Nächstes System kopieren</value>
     <source>&amp;Copy next system</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -776,6 +782,7 @@
     <value>9</value>
   </data>
   <data name="btnParent.Text">
+    <!--Machine translated-->
     <value>...</value>
     <source>...</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -796,6 +803,7 @@
     <value>70, 20</value>
   </data>
   <data name="btnToggleList.Text">
+    <!--Machine translated-->
     <value>⏶ Liste ausblenden</value>
     <source>⏶ Hide list</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -816,6 +824,7 @@
     <value>15</value>
   </data>
   <data name="checkAutoCopy.Text">
+    <!--Machine translated-->
     <value>&amp;Automatisches Kopieren in der Gal-Map</value>
     <source>&amp;Auto-copy in gal map</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -836,6 +845,7 @@
     <value>16</value>
   </data>
   <data name="checkCompleteOnEnterSystem.Text">
+    <!--Machine translated-->
     <value>Eingeben eines Systems</value>
     <source>Entering a system</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -856,6 +866,7 @@
     <value>17</value>
   </data>
   <data name="checkCompleteOnFssAllBodies.Text">
+    <!--Machine translated-->
     <value>FSS'ing aller Körper</value>
     <source>FSS'ing all bodies</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -879,6 +890,7 @@
     <value>12</value>
   </data>
   <data name="checkSkipVisited.Text">
+    <!--Machine translated-->
     <value>Skip-Systeme, die ich schon einmal besucht habe</value>
     <source>Skip systems I've already visited before date</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -902,11 +914,13 @@
     <value>13</value>
   </data>
   <data name="checkSpinKnownToSpansh.Text">
+    <!--Machine translated-->
     <value>Skip-Systeme, die Spansh vor dem Datum bekannt waren</value>
     <source>Skip systems known to Spansh before date</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="colCompleted.Text">
+    <!--Machine translated-->
     <value>Datum des Besuchs</value>
     <source>Visited Date</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -915,6 +929,7 @@
     <value>150</value>
   </data>
   <data name="colDistance.Text">
+    <!--Machine translated-->
     <value>Abstand</value>
     <source>Distance</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -926,6 +941,7 @@
     <value>80</value>
   </data>
   <data name="colSpansh.Text">
+    <!--Machine translated-->
     <value>Spanisch Aktualisiert</value>
     <source>Spansh Updated</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -934,6 +950,7 @@
     <value>150</value>
   </data>
   <data name="colSystem.Text">
+    <!--Machine translated-->
     <value>Systemname</value>
     <source>System Name</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -1035,6 +1052,7 @@
     <value>18</value>
   </data>
   <data name="label1.Text">
+    <!--Machine translated-->
     <value>Vermessungsboxel:</value>
     <source>Surveying boxel:</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -1058,6 +1076,7 @@
     <value>1</value>
   </data>
   <data name="label2.Text">
+    <!--Machine translated-->
     <value>Messen Sie Entfernungen von:</value>
     <source>Measure distances from:</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -1081,6 +1100,7 @@
     <value>16</value>
   </data>
   <data name="label3.Text">
+    <!--Machine translated-->
     <value>HINWEIS: Die Boxel-Suchfunktion ist unvollständig und experimentell</value>
     <source>NOTE: Boxel search feature is incomplete and experimental</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -1104,6 +1124,7 @@
     <value>15</value>
   </data>
   <data name="label4.Text">
+    <!--Machine translated-->
     <value>Betrachten Sie ein System als abgeschlossen, wenn:</value>
     <source>Consider a system complete when:</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -1124,6 +1145,7 @@
     <value>18</value>
   </data>
   <data name="label5.Text">
+    <!--Machine translated-->
     <value>Befragung bis hin zum Massencode:</value>
     <source>Survey down to mass code:</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -1144,6 +1166,7 @@
     <value>26</value>
   </data>
   <data name="label6.Text">
+    <!--Machine translated-->
     <value>Stand:</value>
     <source>As of date:</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -1164,6 +1187,7 @@
     <value>22</value>
   </data>
   <data name="label7.Text">
+    <!--Machine translated-->
     <value>Strömung:</value>
     <source>Current:</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -1187,6 +1211,7 @@
     <value>28</value>
   </data>
   <data name="labelGraphic.Text">
+    <!--Machine translated-->
     <value>Ein Boxel ist ein Würfel aus dem Raum, der prozedural generierte Sternensysteme enthält. Die Würfelgrößen hängen vom Massencode ab: "a"-Boxel haben einen Durchmesser von 10 ly, "h"-Boxels haben einen Durchmesser von 1280 ly.
 
 Jeder Boxel enthält 8 Kinder, die als 2 Reihen mit 4 Quadranten angeordnet sind, jeder mit seinem eigenen generierten Sternsystem.</value>
@@ -1211,6 +1236,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>28</value>
   </data>
   <data name="lblBadBoxel.Text">
+    <!--Machine translated-->
     <value>Der Systemname ist kein gültiger Boxel-Name</value>
     <source>System name is not a valid boxel name</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -1237,6 +1263,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>22</value>
   </data>
   <data name="lblBoxelCount.Text">
+    <!--Machine translated-->
     <value>(Enthält X Boxels)</value>
     <source>(Contains X boxels)</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -1260,6 +1287,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>21</value>
   </data>
   <data name="lblConfigHeader.Text">
+    <!--Machine translated-->
     <value>Geben Sie den oberen Boxel ein, um ihn zu begutachten. Alle untergeordneten Boxels werden bis zum unteren Massencode eingeschlossen:</value>
     <source>Enter the top boxel to survey. All child boxels will be included down to the lower mass code:</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -1280,6 +1308,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>3</value>
   </data>
   <data name="lblMaxNum.Text">
+    <!--Machine translated-->
     <value>&amp;Systeme im Boxel:</value>
     <source>&amp;Systems in boxel:</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -1288,6 +1317,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>437, 19</value>
   </data>
   <data name="lblStatus.Text">
+    <!--Machine translated-->
     <value>-</value>
     <source>-</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -1314,6 +1344,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>179, 22</value>
   </data>
   <data name="menuHelpLink.Text">
+    <!--Machine translated-->
     <value>Hilfe zu diesem Tool</value>
     <source>Help about this tool</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -1322,6 +1353,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>175, 22</value>
   </data>
   <data name="menuListCopySystemName.Text">
+    <!--Machine translated-->
     <value>&amp;Systemname kopieren</value>
     <source>&amp;Copy system name</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -1342,6 +1374,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>60, 20</value>
   </data>
   <data name="menuMore.Text">
+    <!--Machine translated-->
     <value>Mehr...</value>
     <source>More ...</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -1461,6 +1494,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>500, 0</value>
   </data>
   <data name="$this.Text">
+    <!--Machine translated-->
     <value>Boxel-Suche (experimentell)</value>
     <source>Boxel Search (Experimental)</source>
     <updated>2025-02-14T16:00:00Z</updated>

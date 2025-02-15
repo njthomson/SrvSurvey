@@ -61,6 +61,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CountGenus">
+    <!--Machine translated-->
     <value>{0} Gênero</value>
     <comment>Line prefix showing the count of genus on a body
 {0} int, count of genus</comment>
@@ -68,6 +69,7 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="CountGeo">
+    <!--Machine translated-->
     <value>{0} Geo</value>
     <comment>Line suffix showing the count of geo signals on a body
 {0} int, count of geo signals</comment>
@@ -75,12 +77,14 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Footer1">
+    <!--Machine translated-->
     <value>Valor de digitalização | Valor DSS</value>
     <comment>First footer line with guidance</comment>
     <source>Scan value | DSS value</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Footer2">
+    <!--Machine translated-->
     <value>🌎 Terraformable
 🚀 Landable ⚑ Undiscovered</value>
     <comment>More footer lines with guidance</comment>
@@ -89,6 +93,7 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HidingBodies">
+    <!--Machine translated-->
     <value>( Escondendo corpos &lt; {0} )</value>
     <comment>Line showing minimum credit value needed for bodies to be shown in the list that follows
 {0} string, min value of credits</comment>
@@ -96,6 +101,7 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScannedAllBodies">
+    <!--Machine translated-->
     <value>Escaneou todos os {0} corpos: {1}</value>
     <comment>Line showing when all bodies have been scanned and how many credits thats worth
 {0} int, count of bodies
@@ -104,6 +110,7 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScannedBodies">
+    <!--Machine translated-->
     <value>Corpos {0} digitalizados: {1}</value>
     <comment>Line showing how many bodies are scanned and how many credits thats worth
 {0} int, count of bodies
@@ -112,6 +119,7 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScanToPopulate">
+    <!--Machine translated-->
     <value>(digitalizar para preencher)</value>
     <comment>Warning message line shown when a scan is needed</comment>
     <source>(scan to populate)</source>

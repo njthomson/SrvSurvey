@@ -61,6 +61,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="SurfaceGravityWarning">
+    <!--Machine translated-->
     <value>* WARNING: SURFACE GRAVITY {0}G →→→!</value>
     <comment>Warning shown when gravity is above warning value
 {0} decimal, 2 places, gravity value for the body</comment>

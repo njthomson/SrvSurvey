@@ -1,0 +1,502 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <metadata name="status.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>138, 17</value>
+  </metadata>
+  <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>223, 17</value>
+  </metadata>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="&gt;&gt;btnActive.Name" xml:space="preserve">
+    <value>btnActive</value>
+  </data>
+  <data name="&gt;&gt;btnActive.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnAutoCopy.Name" xml:space="preserve">
+    <value>btnAutoCopy</value>
+  </data>
+  <data name="&gt;&gt;btnAutoCopy.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnImportSpanshUrl.Name" xml:space="preserve">
+    <value>btnImportSpanshUrl</value>
+  </data>
+  <data name="&gt;&gt;btnImportSpanshUrl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnNamesFromClipboard.Name" xml:space="preserve">
+    <value>btnNamesFromClipboard</value>
+  </data>
+  <data name="&gt;&gt;btnNamesFromClipboard.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnNamesFromFile.Name" xml:space="preserve">
+    <value>btnNamesFromFile</value>
+  </data>
+  <data name="&gt;&gt;btnNamesFromFile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnSave.Name" xml:space="preserve">
+    <value>btnSave</value>
+  </data>
+  <data name="&gt;&gt;btnSave.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;colDistance.Name" xml:space="preserve">
+    <value>colDistance</value>
+  </data>
+  <data name="&gt;&gt;colDistance.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;colNotes.Name" xml:space="preserve">
+    <value>colNotes</value>
+  </data>
+  <data name="&gt;&gt;colNotes.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;colSystem.Name" xml:space="preserve">
+    <value>colSystem</value>
+  </data>
+  <data name="&gt;&gt;colSystem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblIntro.Name" xml:space="preserve">
+    <value>lblIntro</value>
+  </data>
+  <data name="&gt;&gt;lblIntro.Parent" xml:space="preserve">
+    <value>table</value>
+  </data>
+  <data name="&gt;&gt;lblIntro.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblIntro.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;lblStatus.Name" xml:space="preserve">
+    <value>lblStatus</value>
+  </data>
+  <data name="&gt;&gt;lblStatus.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;list.Name" xml:space="preserve">
+    <value>list</value>
+  </data>
+  <data name="&gt;&gt;list.Parent" xml:space="preserve">
+    <value>table</value>
+  </data>
+  <data name="&gt;&gt;list.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;list.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;status.Name" xml:space="preserve">
+    <value>status</value>
+  </data>
+  <data name="&gt;&gt;status.Parent" xml:space="preserve">
+    <value>table</value>
+  </data>
+  <data name="&gt;&gt;status.Type" xml:space="preserve">
+    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;status.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;table.Name" xml:space="preserve">
+    <value>table</value>
+  </data>
+  <data name="&gt;&gt;table.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;table.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;table.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>FormRoute</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>SrvSurvey.forms.SizableForm, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.Name" xml:space="preserve">
+    <value>toolStrip1</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.Parent" xml:space="preserve">
+    <value>table</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;toolStripDropDownButton1.Name" xml:space="preserve">
+    <value>toolStripDropDownButton1</value>
+  </data>
+  <data name="&gt;&gt;toolStripDropDownButton1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
+    <value>toolStripSeparator1</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
+    <value>toolStripSeparator2</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator3.Name" xml:space="preserve">
+    <value>toolStripSeparator3</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="btnActive.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACRSURBVDhPY/j27dt/SjDYACcnJ7IwigEf3n8kCZNswPNb
+        J/+f6DYF0yA+yQac6Db5f6hWCmwIiE+mC0wIu2DS2Vf/F1x6DefjwlgNyNr34r/0wkdgTMgQDAOQNRNj
+        CIoBOg0rMTTDMLIhIHbriZeYBmDTiIxBGkEYxge5liQDsGGQqykyAISpZwAlmIEywMAAAAc1/Jwvt6sN
+        AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="btnActive.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="btnActive.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 22</value>
+  </data>
+  <data name="btnActive.Text">
+    <!--Machine translated-->
+    <value>Rota ativa</value>
+    <source>Route active</source>
+    <updated>2025-02-14T17:00:00Z</updated>
+  </data>
+  <data name="btnAutoCopy.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="btnAutoCopy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>151, 22</value>
+  </data>
+  <data name="btnAutoCopy.Text">
+    <!--Machine translated-->
+    <value>Cópia automática no Gal-Map</value>
+    <source>Auto copy in Gal-Map</source>
+    <updated>2025-02-14T17:00:00Z</updated>
+  </data>
+  <data name="btnImportSpanshUrl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>291, 22</value>
+  </data>
+  <data name="btnImportSpanshUrl.Text">
+    <!--Machine translated-->
+    <value>URL da rota em espanhol da área de transferência</value>
+    <source>Spansh route URL from clipboard</source>
+    <updated>2025-02-14T17:00:00Z</updated>
+  </data>
+  <data name="btnNamesFromClipboard.Size" type="System.Drawing.Size, System.Drawing">
+    <value>291, 22</value>
+  </data>
+  <data name="btnNamesFromClipboard.Text">
+    <!--Machine translated-->
+    <value>Nomes de sistema da área de transferência</value>
+    <source>System names from clipboard</source>
+    <updated>2025-02-14T17:00:00Z</updated>
+  </data>
+  <data name="btnNamesFromFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>291, 22</value>
+  </data>
+  <data name="btnNamesFromFile.Text">
+    <!--Machine translated-->
+    <value>Nomes do sistema do arquivo</value>
+    <source>System names from file</source>
+    <updated>2025-02-14T17:00:00Z</updated>
+  </data>
+  <data name="btnSave.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Consolas, 9.75pt, style=Bold</value>
+  </data>
+  <data name="btnSave.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACRSURBVDhPY/j27dt/SjDYACcnJ7IwigEf3n8kCZNswPNb
+        J/+f6DYF0yA+yQac6Db5f6hWCmwIiE+mC0wIu2DS2Vf/F1x6DefjwlgNyNr34r/0wkdgTMgQDAOQNRNj
+        CIoBOg0rMTTDMLIhIHbriZeYBmDTiIxBGkEYxge5liQDsGGQqykyAISpZwAlmIEywMAAAAc1/Jwvt6sN
+        AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="btnSave.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="btnSave.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 22</value>
+  </data>
+  <data name="btnSave.Text">
+    <!--Machine translated-->
+    <value>Salvar alterações</value>
+    <source>Save changes</source>
+    <updated>2025-02-14T17:00:00Z</updated>
+  </data>
+  <data name="colDistance.Text">
+    <!--Machine translated-->
+    <value>Distância</value>
+    <source>Distance</source>
+    <updated>2025-02-14T17:00:00Z</updated>
+  </data>
+  <data name="colDistance.Width" type="System.Int32, mscorlib">
+    <value>80</value>
+  </data>
+  <data name="colNotes.Text">
+    <!--Machine translated-->
+    <value>Anotações</value>
+    <source>Notes</source>
+    <updated>2025-02-14T17:00:00Z</updated>
+  </data>
+  <data name="colNotes.Width" type="System.Int32, mscorlib">
+    <value>160</value>
+  </data>
+  <data name="colSystem.Text">
+    <!--Machine translated-->
+    <value>Sistema</value>
+    <source>System</source>
+    <updated>2025-02-14T17:00:00Z</updated>
+  </data>
+  <data name="colSystem.Width" type="System.Int32, mscorlib">
+    <value>200</value>
+  </data>
+  <data name="lblIntro.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
+  </data>
+  <data name="lblIntro.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblIntro.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="lblIntro.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="lblIntro.Size" type="System.Drawing.Size, System.Drawing">
+    <value>572, 28</value>
+  </data>
+  <data name="lblIntro.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="lblIntro.Text">
+    <!--Machine translated-->
+    <value>Use rotas para traçar manualmente seu caminho pela galáxia. Comece importando uma rota e, em seguida, procure orientação no canto superior direito do Gal-Map.</value>
+    <source>Use routes to manually plot your way across the galaxy. Begin by importing a route, then look for guidance in the top-right corner in the Gal-Map.</source>
+    <updated>2025-02-14T17:00:00Z</updated>
+  </data>
+  <data name="lblStatus.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="lblStatus.Size" type="System.Drawing.Size, System.Drawing">
+    <value>569, 17</value>
+  </data>
+  <data name="list.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="list.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 65</value>
+  </data>
+  <data name="list.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="list.Size" type="System.Drawing.Size, System.Drawing">
+    <value>584, 274</value>
+  </data>
+  <data name="list.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="status.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
+  </data>
+  <data name="status.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="status.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Consolas, 9pt</value>
+  </data>
+  <data name="status.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 339</value>
+  </data>
+  <data name="status.Size" type="System.Drawing.Size, System.Drawing">
+    <value>584, 22</value>
+  </data>
+  <data name="status.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="status.Text">
+    <!--Machine translated-->
+    <value>statusStrip1</value>
+    <source>statusStrip1</source>
+    <updated>2025-02-14T17:00:00Z</updated>
+  </data>
+  <data name="table.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="table.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="table.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="list" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="status" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="toolStrip1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblIntro" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="table.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="table.RowCount" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="table.Size" type="System.Drawing.Size, System.Drawing">
+    <value>584, 361</value>
+  </data>
+  <data name="table.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>7, 14</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>584, 361</value>
+  </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Consolas, 9pt</value>
+  </data>
+  <data name="$this.Text">
+    <!--Machine translated-->
+    <value>Siga uma rota</value>
+    <source>Follow a route</source>
+    <updated>2025-02-14T17:00:00Z</updated>
+  </data>
+  <data name="toolStrip1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
+  </data>
+  <data name="toolStrip1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="toolStrip1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Consolas, 9pt</value>
+  </data>
+  <data name="toolStrip1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 40</value>
+  </data>
+  <data name="toolStrip1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 0, 1, 0</value>
+  </data>
+  <data name="toolStrip1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="toolStrip1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>582, 25</value>
+  </data>
+  <data name="toolStrip1.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="toolStrip1.Text">
+    <!--Machine translated-->
+    <value>toolStrip1</value>
+    <source>toolStrip1</source>
+    <updated>2025-02-14T17:00:00Z</updated>
+  </data>
+  <data name="toolStripDropDownButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACRSURBVDhPY/j27dt/SjDYACcnJ7IwigEf3n8kCZNswPNb
+        J/+f6DYF0yA+yQac6Db5f6hWCmwIiE+mC0wIu2DS2Vf/F1x6DefjwlgNyNr34r/0wkdgTMgQDAOQNRNj
+        CIoBOg0rMTTDMLIhIHbriZeYBmDTiIxBGkEYxge5liQDsGGQqykyAISpZwAlmIEywMAAAAc1/Jwvt6sN
+        AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="toolStripDropDownButton1.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="toolStripDropDownButton1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 22</value>
+  </data>
+  <data name="toolStripDropDownButton1.Text">
+    <!--Machine translated-->
+    <value>Importação...</value>
+    <source>Import...</source>
+    <updated>2025-02-14T17:00:00Z</updated>
+  </data>
+  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>288, 6</value>
+  </data>
+  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+</root>

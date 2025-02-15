@@ -181,6 +181,7 @@
     <value>0</value>
   </data>
   <data name="btnAccept.Text">
+    <!--Machine translated-->
     <value>Annehmen</value>
     <source>Accept</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -207,6 +208,7 @@
     <value>2</value>
   </data>
   <data name="btnCancel.Text">
+    <!--Machine translated-->
     <value>Abbrechen</value>
     <source>Cancel</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -236,6 +238,7 @@
     <value>1</value>
   </data>
   <data name="btnDisable.Text">
+    <!--Machine translated-->
     <value>Abschalten</value>
     <source>Disable</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -271,6 +274,7 @@
     <value>0</value>
   </data>
   <data name="label1.Text">
+    <!--Machine translated-->
     <value>Drücken Sie den gewünschten Tastenakkord:</value>
     <source>Press desired key-chord:</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -288,6 +292,7 @@
     <value>2</value>
   </data>
   <data name="lblInvalid.Text">
+    <!--Machine translated-->
     <value>Ungültiger Tastenakkord!</value>
     <source>Invalid key chord!</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -323,6 +328,7 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text">
+    <!--Machine translated-->
     <value>Schlüsselakkord festlegen</value>
     <source>Set Key Chord</source>
     <updated>2025-02-14T16:00:00Z</updated>

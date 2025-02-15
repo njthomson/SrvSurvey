@@ -61,12 +61,14 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Atmosphere">
+    <!--Machine translated-->
     <value>Atmosfera:</value>
     <comment>Line prefix for atmosphere</comment>
     <source>Atmosphere:</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="BioSignals">
+    <!--Machine translated-->
     <value>Bio sinais: {0} (valor: {1} cr)</value>
     <comment>Line prefix when bio signals are present
 {0} int, count of bio signals
@@ -75,18 +77,21 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="EarthLike">
+    <!--Machine translated-->
     <value>Terra como</value>
     <comment>Atmosphere type is like Earth</comment>
     <source>Earth Like</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FirstMapped">
+    <!--Machine translated-->
     <value>Primeiro mapeado</value>
     <comment>Header tag</comment>
     <source>First mapped</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="GeoSignals">
+    <!--Machine translated-->
     <value>Sinais geográficos: {0}</value>
     <comment>Line prefix when geo signals are present
 {0} int, count of geo signals</comment>
@@ -94,6 +99,7 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Gravity">
+    <!--Machine translated-->
     <value>Gravidade: {0}g</value>
     <comment>Body gravity
 {0} decimal, 3 places, gravity value</comment>
@@ -101,18 +107,21 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Materials">
+    <!--Machine translated-->
     <value>Materiais:</value>
     <comment>Line prefix for materials</comment>
     <source>Materials:</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="None">
+    <!--Machine translated-->
     <value>Nenhum</value>
     <comment>Text shown when body pressure value is zero, or there is no volcanism, or no atmoshpere</comment>
     <source>None</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Pressure">
+    <!--Machine translated-->
     <value>Pressão: {0}</value>
     <comment>
 {0} string, the value of PressureValue or PressureNone</comment>
@@ -120,6 +129,7 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PressureValue">
+    <!--Machine translated-->
     <value>{0}(caixa eletrônico)</value>
     <comment>The atmospheric pressure value
 {0} decimal, 4 places</comment>
@@ -127,24 +137,28 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Rings">
+    <!--Machine translated-->
     <value>Anéis:</value>
     <comment>Line prefix for rings</comment>
     <source>Rings:</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScanRequired">
+    <!--Machine translated-->
     <value>Verificação necessária</value>
     <comment>Header shown when a scan is required</comment>
     <source>Scan required</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScanValue">
+    <!--Machine translated-->
     <value>Valor de verificação</value>
     <comment>Line prefix before showing the scan value for a body</comment>
     <source>Scan value</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="StarClass">
+    <!--Machine translated-->
     <value>Classe: {0}</value>
     <comment>Line prefix with the type of a star, A, O, M, etc
 {0} string, the class of some star</comment>
@@ -152,6 +166,7 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Temp">
+    <!--Machine translated-->
     <value>Temperatura: {0}K</value>
     <comment>Body temperature of a body
 {0} int, temp in Kelvin</comment>
@@ -159,30 +174,35 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Terraformable">
+    <!--Machine translated-->
     <value>Terraformável</value>
     <comment>Header tag</comment>
     <source>Terraformable</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Undiscovered">
+    <!--Machine translated-->
     <value>Desconhecida</value>
     <comment>Header tag</comment>
     <source>Undiscovered</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Unmapped">
+    <!--Machine translated-->
     <value>Desmapeado</value>
     <comment>Header tag</comment>
     <source>Unmapped</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Volcanism">
+    <!--Machine translated-->
     <value>Vulcanismo:</value>
     <comment>Line prefix for volcanism</comment>
     <source>Volcanism:</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="WithDSS">
+    <!--Machine translated-->
     <value>(com DSS: {0})</value>
     <comment>Suffix shown after scan value for a body
 {0} string, value of credits</comment>

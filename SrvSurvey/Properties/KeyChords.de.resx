@@ -61,114 +61,133 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="copyNextBoxel">
+    <!--Machine translated-->
     <value>In GalMap, kopiere das nächste Boxel-Suchsystem in die Zwischenablage.</value>
     <comment>A description of a key-chord setting</comment>
     <source>In gal-map, copy the next boxel search system to clipboard.</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="mapBeHuge">
+    <!--Machine translated-->
     <value>Schaltet um, sodass die Karte bei menschlichen Siedlungen nur den halben Bildschirm ausfüllt.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Toggles making the map fill half the screen, at Human settlements only.</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="mapZoomAuto">
+    <!--Machine translated-->
     <value>Setze den Zoom bei menschlichen und Guardian-Stätten auf die Standard-Einstellung zurück.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Reset the zoom to default, at Human and Guardian sites.</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="mapZoomIn">
+    <!--Machine translated-->
     <value>Zoome auf den Karten bei menschlichen und Guardian-Stätten heran.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Zoom in on maps at Human and Guardian sites.</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="mapZoomOut">
+    <!--Machine translated-->
     <value>Zoome auf den Karten bei menschlichen und Guardian-Stätten heraus.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Zoom out on maps at Human and Guardian sites.</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="pasteGalMap">
+    <!--Machine translated-->
     <value>Text aus der Zwischenablage einfügen, wenn er sich in Gal-Map befindet</value>
     <comment>A description of a key-chord setting</comment>
     <source>Paste clipboard text when in Gal-Map</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="showBodyInfo">
+    <!--Machine translated-->
     <value>Blende die Anzeige des Körperinfo-Overlay erzwingend ein.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force show the Body info overlay.</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="showFssInfo">
+    <!--Machine translated-->
     <value>Blende die Anzeige des FSS-Info-Overlay erzwingend ein.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force show the FSS info overlay.</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="showJumpInfo">
+    <!--Machine translated-->
     <value>Erzwingen Sie das Umschalten des FSD-Sprung-Overlays, ohne mit dem Springen zu beginnen.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force toggle the FSD jump overlay without starting to jump.</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="showSystemNotes">
+    <!--Machine translated-->
     <value>Machen Sie das Fenster mit den Systemnotizen sichtbar.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Make the system notes window visible.</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="toggleAllVisibility">
+    <!--Machine translated-->
     <value>Schaltet die Sichtbarkeit aller Overlay-Fenster um.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Toggles visibility of all overlay windows.</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track1">
+    <!--Machine translated-->
     <value>Tracker #1 hinzufügen oder entfernen</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #1</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track2">
+    <!--Machine translated-->
     <value>Tracker #2 hinzufügen oder entfernen</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #2</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track3">
+    <!--Machine translated-->
     <value>Tracker #3 hinzufügen oder entfernen</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #3</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track4">
+    <!--Machine translated-->
     <value>Tracker #4 hinzufügen oder entfernen</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #4</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track5">
+    <!--Machine translated-->
     <value>Tracker #5 hinzufügen oder entfernen</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #5</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track6">
+    <!--Machine translated-->
     <value>Tracker #6 hinzufügen oder entfernen</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #6</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track7">
+    <!--Machine translated-->
     <value>Tracker #7 hinzufügen oder entfernen</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #7</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track8">
+    <!--Machine translated-->
     <value>Tracker #8 hinzufügen oder entfernen</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #8</source>

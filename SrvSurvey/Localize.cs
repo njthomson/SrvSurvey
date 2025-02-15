@@ -159,6 +159,7 @@ namespace SrvSurvey
                 var oldUpdated = oldTargetNode?.Element("updated")?.Value;
 
                 var shouldTranslate = oldTargetNode == null || (oldTargetNode.FirstNode as XComment)?.Value == "Machine translated";
+                //if ((targetLang == "ru" || targetLang == "es") && oldTargetNode != null) shouldTranslate = false;
 
                 //if (resourceName == "RouteProgress") Debugger.Break();
 

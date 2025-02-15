@@ -239,6 +239,7 @@
     <value>0</value>
   </data>
   <data name="btnBegin.Text">
+    <!--Machine translated-->
     <value>&amp;Ziel setzen</value>
     <source>&amp;Set target</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -265,6 +266,7 @@
     <value>1</value>
   </data>
   <data name="btnCancel.Text">
+    <!--Machine translated-->
     <value>Abbrechen</value>
     <source>Cancel</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -302,6 +304,7 @@
     <value>6</value>
   </data>
   <data name="btnPaste.Text">
+    <!--Machine translated-->
     <value>&amp; Einfügen</value>
     <source>&amp;Paste</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -331,6 +334,7 @@
     <value>5</value>
   </data>
   <data name="btnTargetCurrent.Text">
+    <!--Machine translated-->
     <value>&amp;Aktueller Standort anvisieren</value>
     <source>&amp;Target current location</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -357,6 +361,7 @@
     <value>4</value>
   </data>
   <data name="button1.Text">
+    <!--Machine translated-->
     <value>&amp;Klares Ziel</value>
     <source>&amp;Clear target</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -398,6 +403,7 @@
     <value>0</value>
   </data>
   <data name="label2.Text">
+    <!--Machine translated-->
     <value>Breitengrad:</value>
     <source>Latitute:</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -421,6 +427,7 @@
     <value>2</value>
   </data>
   <data name="label3.Text">
+    <!--Machine translated-->
     <value>Länge:</value>
     <source>Longitude:</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -441,6 +448,7 @@
     <value>0</value>
   </data>
   <data name="label6.Text">
+    <!--Machine translated-->
     <value>Hast du den Tipp von einem mysteriösen Fremden, zu einem Lat/Long auf einem Planeten oder Mond zu gehen?
 
 Geben Sie eine Breiten-/Längengradposition ein und die Anleitung wird angezeigt, wenn Sie sich nähern.</value>
@@ -489,6 +497,7 @@ Enter some Lat/Long position and guidance will appear when you approach.</source
     <value>CenterParent</value>
   </data>
   <data name="$this.Text">
+    <!--Machine translated-->
     <value>Festlegen von Breiten-/Längengradkoordinaten</value>
     <source>Set lat/long co-ordinates</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -506,6 +515,7 @@ Enter some Lat/Long position and guidance will appear when you approach.</source
     <value>1</value>
   </data>
   <data name="txtLat.Text">
+    <!--Machine translated-->
     <value>+12.34</value>
     <source>+12.34</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -523,6 +533,7 @@ Enter some Lat/Long position and guidance will appear when you approach.</source
     <value>3</value>
   </data>
   <data name="txtLong.Text">
+    <!--Machine translated-->
     <value>-10.0</value>
     <source>-10.0</source>
     <updated>2025-02-14T16:00:00Z</updated>

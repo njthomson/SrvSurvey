@@ -45,102 +45,119 @@
     <value>pseudo-only</value>
   </resheader>
   <data name="Agri">
+    <!--Machine translated-->
     <value>* AGRICULTURE →→→!</value>
     <comment>Economy type Agri</comment>
     <source>Agriculture</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Carrier">
+    <!--Machine translated-->
     <value>* PRIVATE ENTERPRISE →→→!</value>
     <comment>Economy Type Carrier</comment>
     <source>Private Enterprise</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Colony">
+    <!--Machine translated-->
     <value>* COLONY →→→!</value>
     <comment>Economy type Colony</comment>
     <source>Colony</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Damaged">
+    <!--Machine translated-->
     <value>* DAMAGED →→→!</value>
     <comment>Economy type Damaged</comment>
     <source>Damaged</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Engineer">
+    <!--Machine translated-->
     <value>* ENGINEERING →→→!</value>
     <comment>Economy type Engineer</comment>
     <source>Engineering</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Extraction">
+    <!--Machine translated-->
     <value>* EXTRACTION →→→!</value>
     <comment>Economy type Extraction</comment>
     <source>Extraction</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HighTech">
+    <!--Machine translated-->
     <value>* HIGH TECH →→→!</value>
     <comment>Economy type HighTech</comment>
     <source>High Tech</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Industrial">
+    <!--Machine translated-->
     <value>* INDUSTRIAL →→→!</value>
     <comment>Economy type Industrial</comment>
     <source>Industrial</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Military">
+    <!--Machine translated-->
     <value>* MILITARY →→→!</value>
     <comment>Economy type Military</comment>
     <source>Military</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="None">
+    <!--Machine translated-->
     <value>* NONE →→→!</value>
     <comment>Economy type None</comment>
     <source>None</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Prison">
+    <!--Machine translated-->
     <value>* PRISON →→→!</value>
     <comment>Economy type Prison</comment>
     <source>Prison</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Refinery">
+    <!--Machine translated-->
     <value>* REFINERY →→→!</value>
     <comment>Economy type Refinery</comment>
     <source>Refinery</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Repair">
+    <!--Machine translated-->
     <value>* REPAIR →→→!</value>
     <comment>Economy type Repair</comment>
     <source>Repair</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Rescue">
+    <!--Machine translated-->
     <value>* RESCUE →→→!</value>
     <comment>Economy type Rescue</comment>
     <source>Rescue</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Service">
+    <!--Machine translated-->
     <value>* SERVICE →→→!</value>
     <comment>Economy type Service</comment>
     <source>Service</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Terraforming">
+    <!--Machine translated-->
     <value>* TERRAFORMING →→→!</value>
     <comment>Economy type Terraforming</comment>
     <source>Terraforming</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Tourism">
+    <!--Machine translated-->
     <value>* TOURISM →→→!</value>
     <comment>Economy type Tourism</comment>
     <source>Tourism</source>

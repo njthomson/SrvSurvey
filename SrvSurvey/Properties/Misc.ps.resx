@@ -62,42 +62,49 @@
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="FormBoxelSearch_Activate">
+    <!--Machine translated-->
     <value>* ACTIVATE →→→!</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>Activate</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_Disable">
+    <!--Machine translated-->
     <value>* DISABLE →→→!</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>Disable</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_HideList">
+    <!--Machine translated-->
     <value>* ⏶ HIDE LIST →→→!</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>⏶ Hide list</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_NotViableMessage">
+    <!--Machine translated-->
     <value>* THIS IS NOT A BOXEL GENERATED SYSTEM NAME. →→→!</value>
     <comment>Shown in FormBoxelSearch when attempting to boxel search a non generated system name</comment>
     <source>This is not a boxel generated system name.</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_SearchNotActive">
+    <!--Machine translated-->
     <value>* BOXEL SEARCH IS NOT ACTIVE. →→→!</value>
     <comment>Shown in FormBoxelSearch status var when the feature is not active</comment>
     <source>Boxel search is not active.</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_ShowList">
+    <!--Machine translated-->
     <value>* ⏷ SHOW LIST →→→!</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>⏷ Show list</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_SpanshUpdated">
+    <!--Machine translated-->
     <value>* SPANSH UPDATED: {0} →→→!</value>
     <comment>Shown in FormBoxelSearch as notes for a system.
 {0} DateTime, a short formatted date</comment>
@@ -105,6 +112,7 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_SpanshUpdatedBodies">
+    <!--Machine translated-->
     <value>* SPANSH UPDATED: {0}, BODIES: {1} →→→!</value>
     <comment>Shown in FormBoxelSearch as notes for a system.
 {0} DateTime, a short formatted date
@@ -113,12 +121,14 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_UndiscoveredSystem">
+    <!--Machine translated-->
     <value>* UNDISCOVERED SYSTEM →→→!</value>
     <comment>Shown in FormBoxelSearch as notes for a system that has not been discovered</comment>
     <source>Undiscovered system</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_Visited">
+    <!--Machine translated-->
     <value>* VISITED: {0} →→→!</value>
     <comment>Shown in FormBoxelSearch as notes for a system that was just visited
 {0} DateTime, the date and time the system was visited, usually now</comment>
@@ -126,6 +136,7 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_VisitedCounts">
+    <!--Machine translated-->
     <value>* COMPLETED {2} OF {3} BOXELS, {0} OF {1} SYSTEMS IN CURRENT BOXEL →→→!</value>
     <comment>Shown in FormBoxelSearch status bar, summarizing how many systems have been visited
 {0} int, count of systems visited
@@ -136,215 +147,254 @@
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_Bodies">
+    <!--Machine translated-->
     <value>* BODIES →→→!</value>
     <source>Bodies</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_DiscoveredAll">
+    <!--Machine translated-->
     <value>* DISCOVERED, {0} BODIES →→→!</value>
     <comment>{0} int, count of bodies</comment>
     <source>Discovered, {0} bodies</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_DiscoveredPartial">
+    <!--Machine translated-->
     <value>* DISCOVERED ({0} OF {1}) →→→!</value>
     <comment>{0} int, count of bodies, {1} int, total count of bodies</comment>
     <source>Discovered ({0} of {1})</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_Encoded">
+    <!--Machine translated-->
     <value>* (ENCODED) →→→!</value>
     <comment>An Encoded Material Trader</comment>
     <source>(Encoded)</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_Engineer">
+    <!--Machine translated-->
     <value>* (ENGINEER) →→→!</value>
     <comment>Suffix after an Engineer's name</comment>
     <source>(Engineer)</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_FC">
+    <!--Machine translated-->
     <value>* FC →→→!</value>
     <source>FC</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_Genus">
+    <!--Machine translated-->
     <value>* GENUS →→→!</value>
     <source>Genus</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_GuardianBroker">
+    <!--Machine translated-->
     <value>* (GUARDIAN) →→→!</value>
     <comment>A Guardian Tech Broker</comment>
     <source>(Guardian)</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_HumanBroker">
+    <!--Machine translated-->
     <value>* (HUMAN) →→→!</value>
     <comment>A Human Tech Broker</comment>
     <source>(Human)</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_Manufactured">
+    <!--Machine translated-->
     <value>* (MANUFACTURED) →→→!</value>
     <comment>A Manufactured Material Trader</comment>
     <source>(Manufactured)</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_MaterialTrader">
+    <!--Machine translated-->
     <value>* MATERIAL TRADER →→→!</value>
     <source>Material Trader</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_Outposts">
+    <!--Machine translated-->
     <value>* OUTPOSTS →→→!</value>
     <source>Outposts</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_Raw">
+    <!--Machine translated-->
     <value>* (RAW) →→→!</value>
     <comment>A Raw Material Trader</comment>
     <source>(Raw)</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_Settlements">
+    <!--Machine translated-->
     <value>* SETTLEMENTS →→→!</value>
     <source>Settlements</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_StarPorts">
+    <!--Machine translated-->
     <value>* STAR PORTS →→→!</value>
     <source>Star ports</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_TechBroker">
+    <!--Machine translated-->
     <value>* TECH BROKER →→→!</value>
     <source>Tech Broker</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_UndiscoveredSystem">
+    <!--Machine translated-->
     <value>* UNDISCOVERED SYSTEM →→→!</value>
     <source>Undiscovered system</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_UnscannedSystem">
+    <!--Machine translated-->
     <value>* UNSCANNED SYSTEM →→→!</value>
     <source>Unscanned system</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_Wars">
+    <!--Machine translated-->
     <value>* WARS →→→!</value>
     <source>Wars</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_CountGenus">
+    <!--Machine translated-->
     <value>* {0}X GENUS →→→!</value>
     <source>{0}x Genus</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_Current">
+    <!--Machine translated-->
     <value>* CURRENT: →→→!</value>
     <source>Current:</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_DataFrom">
+    <!--Machine translated-->
     <value>* DATA FROM: EDSM + SPANSH + CANONN →→→!</value>
     <comment>Dim footer text</comment>
     <source>Data from: EDSM + Spansh + Canonn</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_Destination">
+    <!--Machine translated-->
     <value>* DESTINATION: →→→!</value>
     <source>Destination:</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_DiscoveredBy">
+    <!--Machine translated-->
     <value>* BY {0}, {1} →→→!</value>
     <comment>{0} string, name of cmdr, {1} short date</comment>
     <source>By {0}, {1}</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_LastUpdated">
+    <!--Machine translated-->
     <value>* LAST UPDATED: {0} →→→!</value>
     <comment>{0} short date</comment>
     <source>Last updated: {0}</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_NextJump">
+    <!--Machine translated-->
     <value>* NEXT JUMP: →→→!</value>
     <source>Next jump:</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_NoRouteSet">
+    <!--Machine translated-->
     <value>* NO ROUTE SET →→→!</value>
     <comment>When no route is set.</comment>
     <source>No route set</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_RouteFooter">
+    <!--Machine translated-->
     <value>* TOTAL: ► {0} JUMPS ► DISTANCE: {1} LY →→→!</value>
     <comment>Footer shown summarizing the route. {0} int, count of jumps. {1} float, 1 decimal place, distance travelled.</comment>
     <source>Total: ► {0} jumps ► Distance: {1} ly</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_Selected">
+    <!--Machine translated-->
     <value>* SELECTED: →→→!</value>
     <source>Selected:</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotSysStatus_BioSignals">
+    <!--Machine translated-->
     <value>* | {0}X BIO SIGNALS ON:  →→→!</value>
     <comment>Appended to prior text. {0} int, count of bodies with bio signals</comment>
     <source>| {0}x Bio signals on: </source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotSysStatus_DssRemaining">
+    <!--Machine translated-->
     <value>*  {0}X BODIES:  →→→!</value>
     <comment>May be appended to FssCompleteShort. {0} int, count of bodies worth of scanning.</comment>
     <source> {0}x bodies: </source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotSysStatus_FssCompleteLong">
+    <!--Machine translated-->
     <value>* FSS {0}% COMPLETE →→→!</value>
     <comment>Short version, joined with more text. {0} int, percentage number</comment>
     <source>FSS {0}% complete</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotSysStatus_FssCompleteShort">
+    <!--Machine translated-->
     <value>* FSS {0}% →→→!</value>
     <comment>Long version, shown alone. {0} int, percentage number</comment>
     <source>FSS {0}%</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotSysStatus_FssNotStarted">
+    <!--Machine translated-->
     <value>* FSS NOT STARTED →→→!</value>
     <source>FSS not started</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotSysStatus_Header">
+    <!--Machine translated-->
     <value>* DSS SURVEY:  →→→!</value>
     <comment>Header line</comment>
     <source>DSS survey: </source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotSysStatus_NextSystem">
+    <!--Machine translated-->
     <value>* NEXT SYSTEM: →→→!</value>
     <source>Next system:</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotSysStatus_NoDssMeet">
+    <!--Machine translated-->
     <value>* NONE →→→!</value>
     <source>None</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotSysStatus_NonBodySignals">
+    <!--Machine translated-->
     <value>* ► {0} NON-BODY SIGNALS →→→!</value>
     <comment>{0} int, count of non body signals</comment>
     <source>► {0} non-body signals</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Settings_CreateFolderNotFound">
+    <!--Machine translated-->
     <value>* CANNOT FIND FOLDER:
 {0}
 

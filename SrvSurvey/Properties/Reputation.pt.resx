@@ -42,36 +42,42 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Allied">
+    <!--Machine translated-->
     <value>Aliado</value>
     <comment>Your reputation with some faction</comment>
     <source>Allied</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Cordial">
+    <!--Machine translated-->
     <value>Cordial</value>
     <comment>Your reputation with some faction</comment>
     <source>Cordial</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Friendly">
+    <!--Machine translated-->
     <value>Amigável</value>
     <comment>Your reputation with some faction</comment>
     <source>Friendly</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Hostile">
+    <!--Machine translated-->
     <value>Hostil</value>
     <comment>Your reputation with some faction</comment>
     <source>Hostile</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Neutral">
+    <!--Machine translated-->
     <value>Neutro</value>
     <comment>Your reputation with some faction</comment>
     <source>Neutral</source>
     <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Unfriendly">
+    <!--Machine translated-->
     <value>Hostil</value>
     <comment>Your reputation with some faction</comment>
     <source>Unfriendly</source>

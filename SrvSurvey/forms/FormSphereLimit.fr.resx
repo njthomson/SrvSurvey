@@ -284,6 +284,7 @@
     <value>2</value>
   </data>
   <data name="btnAccept.Text">
+    <!--Machine translated-->
     <value>&amp; Activer</value>
     <source>&amp;Activate</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -307,6 +308,7 @@
     <value>4</value>
   </data>
   <data name="btnCancel.Text">
+    <!--Machine translated-->
     <value>&amp;Annuler</value>
     <source>&amp;Cancel</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -330,6 +332,7 @@
     <value>3</value>
   </data>
   <data name="btnDisable.Text">
+    <!--Machine translated-->
     <value>&amp;Désactiver</value>
     <source>&amp;Disable</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -380,6 +383,7 @@
     <value>0</value>
   </data>
   <data name="label1.Text">
+    <!--Machine translated-->
     <value>&amp; Entrez dans le système central :</value>
     <source>&amp;Enter central system:</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -403,6 +407,7 @@
     <value>4</value>
   </data>
   <data name="label2.Text">
+    <!--Machine translated-->
     <value>&amp;Rayon de la sphère :</value>
     <source>&amp;Sphere radius:</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -426,6 +431,7 @@
     <value>2</value>
   </data>
   <data name="label3.Text">
+    <!--Machine translated-->
     <value>Pos étoile :</value>
     <source>Star pos:</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -446,6 +452,7 @@
     <value>0</value>
   </data>
   <data name="label4.Text">
+    <!--Machine translated-->
     <value>La limite sphérique permet de naviguer vers les systèmes situés à une distance donnée d’un système central.</value>
     <source>Spherical limit helps navigating to systems within a given distance of a central system.</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -466,6 +473,7 @@
     <value>6</value>
   </data>
   <data name="label5.Text">
+    <!--Machine translated-->
     <value>Système actuel :</value>
     <source>Current system:</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -489,6 +497,7 @@
     <value>8</value>
   </data>
   <data name="label6.Text">
+    <!--Machine translated-->
     <value>Distance:</value>
     <source>Distance:</source>
     <updated>2025-02-14T16:00:00Z</updated>
@@ -551,6 +560,7 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text">
+    <!--Machine translated-->
     <value>Limite sphérique</value>
     <source>Spherical limit</source>
     <updated>2025-02-14T16:00:00Z</updated>
