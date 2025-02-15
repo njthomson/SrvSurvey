@@ -27,6 +27,8 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -59,108 +61,129 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Aleoida">
-    <value>ALE</value>
+    <value>* ALE →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>ale</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Amphora Plant">
-    <value>AMP</value>
+    <value>* AMP →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>amp</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Bacterium">
-    <value>BAC</value>
+    <value>* BAC →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>bac</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Bark Mounds">
-    <value>BAR</value>
+    <value>* BAR →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>bar</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Brain Trees">
-    <value>BRA</value>
+    <value>* BRA →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>bra</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Cactoida">
-    <value>CAC</value>
+    <value>* CAC →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>cac</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Clypeus">
-    <value>CLY</value>
+    <value>* CLY →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>cly</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Concha">
-    <value>CON</value>
+    <value>* CON →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>con</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Crystalline Shards">
-    <value>CRY</value>
+    <value>* CRY →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>cry</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Electricae">
-    <value>ELE</value>
+    <value>* ELE →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>ele</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Fonticulua">
-    <value>FON</value>
+    <value>* FON →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>fon</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Frutexa">
-    <value>FRU</value>
+    <value>* FRU →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>fru</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Fumerola">
-    <value>FUM</value>
+    <value>* FUM →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>fum</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Fungoida">
-    <value>FUN</value>
+    <value>* FUN →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>fun</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Luteolum Anemone">
-    <value>ANE</value>
+    <value>* ANE →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>ane</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Osseus">
-    <value>OSS</value>
+    <value>* OSS →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>oss</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Recepta">
-    <value>REC</value>
+    <value>* REC →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>rec</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Sinuous Tubers">
-    <value>SIN</value>
+    <value>* SIN →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>sin</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Stratum">
-    <value>STR</value>
+    <value>* STR →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>str</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Tubus">
-    <value>TUB</value>
+    <value>* TUB →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>tub</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Tussock">
-    <value>TUS</value>
+    <value>* TUS →→→!</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>tus</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

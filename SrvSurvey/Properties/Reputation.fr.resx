@@ -9,6 +9,8 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -43,30 +45,36 @@
     <value>Allié</value>
     <comment>Your reputation with some faction</comment>
     <source>Allied</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Cordial">
     <value>Cordial</value>
     <comment>Your reputation with some faction</comment>
     <source>Cordial</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Friendly">
     <value>Amical</value>
     <comment>Your reputation with some faction</comment>
     <source>Friendly</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Hostile">
     <value>Hostile</value>
     <comment>Your reputation with some faction</comment>
     <source>Hostile</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Neutral">
     <value>Neutre</value>
     <comment>Your reputation with some faction</comment>
     <source>Neutral</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Unfriendly">
     <value>Inamical</value>
     <comment>Your reputation with some faction</comment>
     <source>Unfriendly</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

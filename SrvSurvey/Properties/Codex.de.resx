@@ -27,6 +27,8 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -62,225 +64,270 @@
     <value>Aleoida</value>
     <comment>An Odyssey genus name</comment>
     <source>Aleoida</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Amethyst">
     <value>Amethyst</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Amethyst</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Amphora Plant">
     <value>Amphoren-Pflanze</value>
     <comment>A Horizons genus/species name</comment>
     <source>Amphora Plant</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Aquamarine">
     <value>Aquamarin</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Aquamarine</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Bacterium">
     <value>Bakterie</value>
     <comment>An Odyssey genus name</comment>
     <source>Bacterium</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Bark Mounds">
     <value>Rindenhügel</value>
     <comment>A Horizons genus/species name</comment>
     <source>Bark Mounds</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Blue">
     <value>Blau</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Blue</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Brain Trees">
     <value>Hirn-Bäume</value>
     <comment>A Horizons genus/species name</comment>
     <source>Brain Trees</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Cactoida">
     <value>Kaktoida</value>
     <comment>An Odyssey genus name</comment>
     <source>Cactoida</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Clypeus">
     <value>Klypeus</value>
     <comment>An Odyssey genus name</comment>
     <source>Clypeus</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Cobalt">
     <value>Kobalt</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Cobalt</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Concha">
     <value>Concha</value>
     <comment>An Odyssey genus name</comment>
     <source>Concha</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Crystalline Shards">
     <value>Kristalline Scherben</value>
     <comment>A Horizons genus/species name</comment>
     <source>Crystalline Shards</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Cyan">
     <value>Zyan</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Cyan</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Electricae">
     <value>Electricae</value>
     <comment>An Odyssey genus name</comment>
     <source>Electricae</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Emerald">
     <value>Smaragd</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Emerald</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Fonticulua">
     <value>Fonticulua</value>
     <comment>An Odyssey genus name</comment>
     <source>Fonticulua</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Frutexa">
     <value>Frutexa</value>
     <comment>An Odyssey genus name</comment>
     <source>Frutexa</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Fumerola">
     <value>Fumerola</value>
     <comment>An Odyssey genus name</comment>
     <source>Fumerola</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Fungoida">
     <value>Fungoida</value>
     <comment>An Odyssey genus name</comment>
     <source>Fungoida</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Gold">
     <value>Gold</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Gold</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Green">
     <value>Grün</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Green</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Grey">
     <value>Grau</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Grey</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Indigo">
     <value>Indigo</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Indigo</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Lime">
     <value>Limone</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Lime</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Luteolum Anemone">
     <value>Luteolum Anemone</value>
     <comment>A Horizons genus/species name</comment>
     <source>Luteolum Anemone</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Magenta">
     <value>Magenta</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Magenta</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Maroon">
     <value>Kastanienbraun</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Maroon</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Mauve">
     <value>Mauve</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Mauve</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Mulberry">
     <value>Maulbeerbaum</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Mulberry</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Ocher">
     <value>Ocker</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Ocher</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Orange">
     <value>Orange</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Orange</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Osseus">
     <value>Osseus</value>
     <comment>An Odyssey genus name</comment>
     <source>Osseus</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Peach">
     <value>Pfirsich</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Peach</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Recepta">
     <value>Rezepte</value>
     <comment>An Odyssey genus name</comment>
     <source>Recepta</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Red">
     <value>Rot</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Red</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Sage">
     <value>Salbei</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Sage</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Sinuous Tubers">
     <value>Gewundene Knollen</value>
     <comment>A Horizons genus/species name</comment>
     <source>Sinuous Tubers</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Stratum">
     <value>Schicht</value>
     <comment>An Odyssey genus name</comment>
     <source>Stratum</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Teal">
     <value>Krickente</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Teal</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Tubus">
     <value>Tubus</value>
     <comment>An Odyssey genus name</comment>
     <source>Tubus</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Turquoise">
     <value>Türkis</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Turquoise</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Tussock">
     <value>Büschel</value>
     <comment>An Odyssey genus name</comment>
     <source>Tussock</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="White">
     <value>Weiß</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>White</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Yellow">
     <value>Gelb</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Yellow</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

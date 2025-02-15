@@ -9,6 +9,8 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -46,85 +48,102 @@
     <value>* AGRICULTURE →→→!</value>
     <comment>Economy type Agri</comment>
     <source>Agriculture</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Carrier">
     <value>* PRIVATE ENTERPRISE →→→!</value>
     <comment>Economy Type Carrier</comment>
     <source>Private Enterprise</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Colony">
     <value>* COLONY →→→!</value>
     <comment>Economy type Colony</comment>
     <source>Colony</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Damaged">
     <value>* DAMAGED →→→!</value>
     <comment>Economy type Damaged</comment>
     <source>Damaged</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Engineer">
     <value>* ENGINEERING →→→!</value>
     <comment>Economy type Engineer</comment>
     <source>Engineering</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Extraction">
     <value>* EXTRACTION →→→!</value>
     <comment>Economy type Extraction</comment>
     <source>Extraction</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HighTech">
     <value>* HIGH TECH →→→!</value>
     <comment>Economy type HighTech</comment>
     <source>High Tech</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Industrial">
     <value>* INDUSTRIAL →→→!</value>
     <comment>Economy type Industrial</comment>
     <source>Industrial</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Military">
     <value>* MILITARY →→→!</value>
     <comment>Economy type Military</comment>
     <source>Military</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="None">
     <value>* NONE →→→!</value>
     <comment>Economy type None</comment>
     <source>None</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Prison">
     <value>* PRISON →→→!</value>
     <comment>Economy type Prison</comment>
     <source>Prison</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Refinery">
     <value>* REFINERY →→→!</value>
     <comment>Economy type Refinery</comment>
     <source>Refinery</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Repair">
     <value>* REPAIR →→→!</value>
     <comment>Economy type Repair</comment>
     <source>Repair</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Rescue">
     <value>* RESCUE →→→!</value>
     <comment>Economy type Rescue</comment>
     <source>Rescue</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Service">
     <value>* SERVICE →→→!</value>
     <comment>Economy type Service</comment>
     <source>Service</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Terraforming">
     <value>* TERRAFORMING →→→!</value>
     <comment>Economy type Terraforming</comment>
     <source>Terraforming</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Tourism">
     <value>* TOURISM →→→!</value>
     <comment>Economy type Tourism</comment>
     <source>Tourism</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

@@ -27,6 +27,8 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -239,6 +241,7 @@
   <data name="btnBegin.Text">
     <value>&amp;Establecer objetivo</value>
     <source>&amp;Set target</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -264,6 +267,7 @@
   <data name="btnCancel.Text">
     <value>Cancelar</value>
     <source>Cancel</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="btnPaste.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -300,6 +304,7 @@
   <data name="btnPaste.Text">
     <value>&amp;Pegar</value>
     <source>&amp;Paste</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="btnPaste.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
@@ -328,6 +333,7 @@
   <data name="btnTargetCurrent.Text">
     <value>&amp;Usar coordenadas actuales</value>
     <source>&amp;Target current location</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="button1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -353,6 +359,7 @@
   <data name="button1.Text">
     <value>&amp;Borrar coordenadas</value>
     <source>&amp;Clear target</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="flowLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -393,6 +400,7 @@
   <data name="label2.Text">
     <value>Latitud:</value>
     <source>Latitute:</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="label3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -415,6 +423,7 @@
   <data name="label3.Text">
     <value>Longitud:</value>
     <source>Longitude:</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="label6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -438,6 +447,7 @@ Introduce la posición en latitud/longitud y aparecerá una guía cuando te acer
     <source>Got a tip from a mysterious stranger to go to some Lat/Long on some planet or moon?
 
 Enter some Lat/Long position and guidance will appear when you approach.</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="tableLayoutPanel1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -481,6 +491,7 @@ Enter some Lat/Long position and guidance will appear when you approach.</source
   <data name="$this.Text">
     <value>Establecer coordenadas</value>
     <source>Set lat/long co-ordinates</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="txtLat.Location" type="System.Drawing.Point, System.Drawing">
     <value>92, 3</value>
@@ -497,6 +508,7 @@ Enter some Lat/Long position and guidance will appear when you approach.</source
   <data name="txtLat.Text">
     <value>+12.34</value>
     <source>+12.34</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="txtLong.Location" type="System.Drawing.Point, System.Drawing">
     <value>92, 32</value>
@@ -513,5 +525,6 @@ Enter some Lat/Long position and guidance will appear when you approach.</source
   <data name="txtLong.Text">
     <value>-10.0</value>
     <source>-10.0</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

@@ -97,6 +97,10 @@ namespace SrvSurvey
             }
         }
 
+        /// <summary> The time, granular to the hour the process was started, for a more approximate timestemp </summary>
+        private static readonly string approxNow = DateTimeOffset.Now.ToString("yyyy-MM-ddTHH:00:00Z");
+        private static readonly XName ordinal = XName.Get("{urn:schemas-microsoft-com:xml-msdata}Ordinal");
+
         private static async Task translateResx(string sourceFilepath, string targetLang)
         {
             if (!File.Exists(sourceFilepath)) throw new FileNotFoundException($"File not found: {sourceFilepath}");
@@ -122,9 +126,16 @@ namespace SrvSurvey
             var sourceNodes = sourceDoc.Root?.Elements().Where(_ => _.Name.LocalName == "data")!;
             if (sourceNodes == null) return;
 
-            // TODO: inject element into xsd:schema to make `source` be deemed valid
-            //var foo = newTargetDoc.Root!.Descendants().Where(_ => _.Name.LocalName == "element" && _.FirstAttribute?.Value == "comment").First();
-            //foo.Parent.Add();
+            // inject 2 entries into the XSD so that our new elements are deemed valid
+            var commentElement = newTargetDoc.Root!.Descendants().Where(_ => _.Name.LocalName == "element" && _.FirstAttribute?.Value == "comment").First();
+            var sourceElement = new XElement(commentElement);
+            sourceElement.SetAttributeValue("name", "source");
+            sourceElement.SetAttributeValue(ordinal, "3");
+            commentElement.Parent?.Add(sourceElement);
+            var updatedElement = new XElement(commentElement);
+            updatedElement.SetAttributeValue("name", "updated");
+            updatedElement.SetAttributeValue(ordinal, "4");
+            commentElement.Parent?.Add(updatedElement);
 
             var count = 0;
             foreach (var element in sourceNodes)
@@ -133,7 +144,6 @@ namespace SrvSurvey
                 var resourceName = element.Attribute("name")?.Value;
                 var sourceText = element.Element("value")?.Value;
                 var commentText = element.Element("comment")?.Value;
-                //Game.log($">{resourceName}: '{sourceText}'");
 
                 // skip any empty strings or non string resources
                 if (string.IsNullOrEmpty(resourceName) || string.IsNullOrEmpty(sourceText)) continue;
@@ -146,7 +156,7 @@ namespace SrvSurvey
                 var newNode = new XElement("data");
                 newNode.SetAttributeValue("name", resourceName);
                 newNode.Add(new XElement("value", ""));
-                if (commentText!= null)
+                if (commentText != null)
                     newNode.Add(new XElement("comment", commentText));
                 newNode.Add(new XElement("source", sourceText));
                 targetNode.ReplaceWith(newNode);
@@ -159,17 +169,17 @@ namespace SrvSurvey
 
                 //if (resourceName == "Tussock") Debugger.Break();
 
-                // replace elements when we're first creating the .resx file (and always pseudo-localize)
+                // replace elements when we're first creating the .resx file
                 if (!string.IsNullOrEmpty(oldTranslation))
                     targetNode.SetElementValue("value", oldTranslation);
-                //else if (oldTargetDoc == null && targetLang != "ps") // seed new .resx files untranslated, so we can see the diff's
-                //    targetNode.SetElementValue("comment", "-");
 
-                // skip anything that hasn't changed (unless we're doing PS)
-                var oldComment = oldTargetNode?.Element("comment")?.Value;
+                // ensure everything has an updated value at least once
+                if (targetNode.Element("updated") == null) targetNode.SetElementValue("updated", Localize.approxNow);
+
+                // skip anything that hasn't changed
                 if (oldSource == sourceText && !string.IsNullOrEmpty(oldTranslation)) continue;
 
-                // presume pseudo translate it
+                // presume translate to pseudo
                 var translation = $"* {sourceText.ToUpperInvariant()} →→→!";
 
                 // or translate into a real language
@@ -183,9 +193,8 @@ namespace SrvSurvey
                     }
                 }
 
-                var valueNode = targetNode.Element("value")!;
-                //valueNode.SetAttributeValue(XNamespace.Xml.GetName("space"), "preserve");
-                valueNode.Value = translation;
+                targetNode.SetElementValue("value", translation);
+                targetNode.SetElementValue("updated", Localize.approxNow);
 
                 count++;
             }

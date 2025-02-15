@@ -27,6 +27,8 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -181,6 +183,7 @@
   <data name="btnAccept.Text">
     <value>Accepter</value>
     <source>Accept</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="btnCancel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -206,6 +209,7 @@
   <data name="btnCancel.Text">
     <value>Annuler</value>
     <source>Cancel</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="btnDisable.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -234,6 +238,7 @@
   <data name="btnDisable.Text">
     <value>Désactiver</value>
     <source>Disable</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="flowButtons.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -268,6 +273,7 @@
   <data name="label1.Text">
     <value>Appuyez sur l’accord de touche souhaité :</value>
     <source>Press desired key-chord:</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="lblInvalid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -284,6 +290,7 @@
   <data name="lblInvalid.Text">
     <value>Accord de tonalité invalide !</value>
     <source>Invalid key chord!</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="lblInvalid.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -318,5 +325,6 @@
   <data name="$this.Text">
     <value>Définir l’accord de clé</value>
     <source>Set Key Chord</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

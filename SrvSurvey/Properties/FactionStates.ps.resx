@@ -27,6 +27,8 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -65,165 +67,198 @@
     <value>* BLIGHT →→→!</value>
     <comment>Faction state Blight</comment>
     <source>Blight</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Boom">
     <value>* BOOM →→→!</value>
     <comment>Faction state Boom</comment>
     <source>Boom</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Bust">
     <value>* BUST →→→!</value>
     <comment>Faction state Bust</comment>
     <source>Bust</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="CivilLiberty">
     <value>* CIVIL LIBERTY →→→!</value>
     <comment>Faction state CivilLiberty</comment>
     <source>Civil Liberty</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="CivilUnrest">
     <value>* CIVIL UNREST →→→!</value>
     <comment>Faction state CivilUnrest</comment>
     <source>Civil Unrest</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="CivilWar">
     <value>* CIVIL WAR →→→!</value>
     <comment>Faction state CivilWar</comment>
     <source>Civil War</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ColdWar">
     <value>* COLD WAR →→→!</value>
     <comment>Faction state ColdWar</comment>
     <source>Cold War</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Colonisation">
     <value>* COLONISATION →→→!</value>
     <comment>Faction state Colonisation</comment>
     <source>Colonisation</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Drought">
     <value>* DROUGHT →→→!</value>
     <comment>Faction state Drought, but translated as Blight</comment>
     <source>Drought</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Election">
     <value>* ELECTION →→→!</value>
     <comment>Faction state Election</comment>
     <source>Election</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Expansion">
     <value>* EXPANSION →→→!</value>
     <comment>Faction state Expansion</comment>
     <source>Expansion</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Famine">
     <value>* FAMINE →→→!</value>
     <comment>Faction state Famine</comment>
     <source>Famine</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HistoricEvent">
     <value>* HISTORIC EVENT →→→!</value>
     <comment>Faction state HistoricEvent</comment>
     <source>Historic Event</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Incursion">
     <value>* INCURSION →→→!</value>
     <comment>Faction state Incursion</comment>
     <source>Incursion</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="InfrastructureFailure">
     <value>* INFRASTRUCTURE FAILURE →→→!</value>
     <comment>Faction state InfrastructureFailure</comment>
     <source>Infrastructure Failure</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Investment">
     <value>* INVESTMENT →→→!</value>
     <comment>Faction state Investment</comment>
     <source>Investment</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Lockdown">
     <value>* LOCKDOWN →→→!</value>
     <comment>Faction state Lockdown</comment>
     <source>Lockdown</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NaturalDisaster">
     <value>* NATURAL DISASTER →→→!</value>
     <comment>Faction state NaturalDisaster</comment>
     <source>Natural Disaster</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="None">
     <value>* NONE →→→!</value>
     <comment>Faction state None</comment>
     <source>None</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Outbreak">
     <value>* OUTBREAK →→→!</value>
     <comment>Faction state Outbreak</comment>
     <source>Outbreak</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PirateAttack">
     <value>* PIRATE ATTACK →→→!</value>
     <comment>Faction state PirateAttack</comment>
     <source>Pirate Attack</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PublicHoliday">
     <value>* PUBLIC HOLIDAY →→→!</value>
     <comment>Faction state PublicHoliday</comment>
     <source>Public Holiday</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Retreat">
     <value>* RETREAT →→→!</value>
     <comment>Faction state Retreat</comment>
     <source>Retreat</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Revolution">
     <value>* REVOLUTION →→→!</value>
     <comment>Faction state Revolution</comment>
     <source>Revolution</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="TechnologicalLeap">
     <value>* TECHNOLOGICAL LEAP →→→!</value>
     <comment>Faction state TechnologicalLeap</comment>
     <source>Technological Leap</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Terrorism">
     <value>* TERRORISM →→→!</value>
     <comment>Faction state Terrorism</comment>
     <source>Terrorism</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Thargoid_Controlled">
     <value>* THARGOID CONTROLLED →→→!</value>
     <comment>Faction state Thargoid_Controlled</comment>
     <source>Thargoid Controlled</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Thargoid_Harvest">
     <value>* THARGOID INVASION →→→!</value>
     <comment>Faction state Thargoid_Harvest</comment>
     <source>Thargoid Invasion</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Thargoid_Probing">
     <value>* THARGOID ALERT →→→!</value>
     <comment>Faction state Thargoid_Probing</comment>
     <source>Thargoid Alert</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Thargoid_Recovery">
     <value>* POST-THARGOID RECOVERY →→→!</value>
     <comment>Faction state Thargoid_Recovery</comment>
     <source>Post-Thargoid Recovery</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Thargoid_Stronghold">
     <value>* THARGOID MAELSTROM →→→!</value>
     <comment>Faction state Thargoid_Stronghold</comment>
     <source>Thargoid Maelstrom</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="TradeWar">
     <value>* TRADE WAR →→→!</value>
     <comment>Faction state TradeWar</comment>
     <source>Trade War</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="War">
     <value>* WAR →→→!</value>
     <comment>Faction state War</comment>
     <source>War</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

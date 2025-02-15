@@ -27,6 +27,8 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -65,11 +67,13 @@
     <value>Подсектор:</value>
     <comment>Header before name of boxel we are searching</comment>
     <source>Boxel:</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Distance">
     <value>Расстояние:</value>
     <comment>Header before distance between systems</comment>
     <source>Distance:</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="DistanceExceeds">
     <value>{0}св. л - превышает {1} св. л</value>
@@ -77,6 +81,7 @@
 {0} float, 2 decimal places, measured distance between 2 star systems
 {1} float, 2 decimal places, the maximum distance allowed</comment>
     <source>{0}ly - exceeds {1} ly</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="DistanceWithin">
     <value>{0} - в пределах {1} св. л</value>
@@ -84,31 +89,37 @@
 {0} float, 2 decimal places, measured distance between 2 star systems
 {1} float, 2 decimal places, the maximum distance allowed</comment>
     <source>{0} - within {1} ly</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="From">
     <value>От:</value>
     <comment>Header before name of central star system</comment>
     <source>From:</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Next">
     <value>Следующая:</value>
     <comment>Header before name of next boxel system to visit</comment>
     <source>Next:</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="To">
     <value>Куда:</value>
     <comment>Header before name of target star system</comment>
     <source>To:</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="UnknownDist">
     <value>Неизвестно (постройте маршрут)</value>
     <comment>Message shown when we do not know the distance, but would if the cmdr plots a route</comment>
     <source>Unknown (plot route)</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Visited">
     <value>Посетили:</value>
     <comment>Header before count of systems visited</comment>
     <source>Visited:</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="VisitedOf">
     <value>{0} ({1} из {2})</value>
@@ -116,5 +127,6 @@
 {1} int, how many systems we have visited
 {2} int, how many systems total to visit</comment>
     <source>{0} ({1} of {2})</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

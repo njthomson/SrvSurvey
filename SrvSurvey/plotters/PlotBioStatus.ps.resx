@@ -27,6 +27,8 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -62,32 +64,38 @@
     <value>* BIO SIGNALS DETECTED - DSS SCAN REQUIRED →→→!</value>
     <comment>Warning shown when body has not been DSS'd</comment>
     <source>Bio signals detected - DSS Scan required</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FooterAllScanned">
     <value>* ALL SIGNALS SCANNED →→→!</value>
     <comment>Footer shown when all bio signals are scanned</comment>
     <source>All signals scanned</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FooterAllScannedFF">
     <value>* ALL SIGNALS SCANNED WITH FF BONUS APPLIED →→→!</value>
     <comment>Footer shown when all bio signals are scanned and First Footfall bonus is applied</comment>
     <source>All signals scanned with FF bonus applied</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FooterApplyFF">
     <value>* APPLYING FIRST FOOTFALL BONUS →→→!</value>
     <comment>Footer shown when not scanning anything currently and First Footfall bonus will be applied</comment>
     <source>Applying first footfall bonus</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FooterUseCompScanner">
     <value>* USE COMPOSITION SCANNER TO SET TRACKER TARGETS →→→!</value>
     <comment>Footer shown to remind people to use the composition scanner</comment>
     <source>Use Composition Scanner to set tracker targets</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="GeoN">
     <value>* GEO #{0} →→→!</value>
     <comment>Shown with genus names but represents some unknown numbered geological signal
 {0} int, the index of the geo signal, 1 through 3</comment>
     <source>Geo #{0}</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Header">
     <value>* BIOLOGICAL SIGNALS: {0} | ANALYZED: {1} →→→!</value>
@@ -95,16 +103,19 @@
 {0} int, total count of bio signals
 {1} int, count of bio signals analyzed</comment>
     <source>Biological signals: {0} | Analyzed: {1}</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="SomethingWrong">
     <value>* SOMETHING IS WRONG. PLEASE SHARE LOGS. →→→!</value>
     <comment>An error message shown when something went wrong.</comment>
     <source>Something is wrong. Please share logs.</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="SuffixFF">
     <value>* (FF BONUS) →→→!</value>
     <comment>Shown next to credit value when First Footfall bonus will be applied</comment>
     <source>(FF bonus)</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="WarningStaleScans">
     <value>* WARNING: INCOMPLETE {0} SCANS FROM {1} →→→!</value>
@@ -112,5 +123,6 @@
 {0} string, name of bio signal
 {1} name of body</comment>
     <source>WARNING: Incomplete {0} scans from {1}</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

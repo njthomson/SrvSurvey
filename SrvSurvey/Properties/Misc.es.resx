@@ -27,6 +27,8 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -63,37 +65,44 @@
     <value>Activar</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>Activate</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_Disable">
     <value>Desactivar</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>Disable</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_HideList">
     <value>⏶ Ocultar lista</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>⏶ Hide list</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_NotViableMessage">
     <value>Este no es un nombre de sistema generado por boxel.</value>
     <comment>Shown in FormBoxelSearch when attempting to boxel search a non generated system name</comment>
     <source>This is not a boxel generated system name.</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_SearchNotActive">
     <value>La búsqueda por boxel no está activa.</value>
     <comment>Shown in FormBoxelSearch status var when the feature is not active</comment>
     <source>Boxel search is not active.</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_ShowList">
     <value>⏷ Mostrar lista</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>⏷ Show list</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_SpanshUpdated">
     <value>Actualización de Spansh: {0}</value>
     <comment>Shown in FormBoxelSearch as notes for a system.
 {0} DateTime, a short formatted date</comment>
     <source>Spansh updated: {0}</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_SpanshUpdatedBodies">
     <value>Actualización de Spansh: {0}, cuerpos: {1}</value>
@@ -101,17 +110,20 @@
 {0} DateTime, a short formatted date
 {1} int, a count of bodies in that system</comment>
     <source>Spansh updated: {0}, bodies: {1}</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_UndiscoveredSystem">
     <value>Sistema no descubierto</value>
     <comment>Shown in FormBoxelSearch as notes for a system that has not been discovered</comment>
     <source>Undiscovered system</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_Visited">
     <value>Visitado: {0}</value>
     <comment>Shown in FormBoxelSearch as notes for a system that was just visited
 {0} DateTime, the date and time the system was visited, usually now</comment>
     <source>Visited: {0}</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FormBoxelSearch_VisitedCounts">
     <value>Completado {2} de {3} boxels, {0} de {1} sistemas en el boxel actual</value>
@@ -121,177 +133,216 @@
 {2} int, count of boxels searched
 {3} int, total count of boxels to be searched</comment>
     <source>Completed {2} of {3} boxels, {0} of {1} systems in current boxel</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_Bodies">
     <value>Cuerpos</value>
     <source>Bodies</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_DiscoveredAll">
     <value>Descubierto, {0} cuerpos</value>
     <comment>{0} int, count of bodies</comment>
     <source>Discovered, {0} bodies</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_DiscoveredPartial">
     <value>Descubierto ({0} de {1})</value>
     <comment>{0} int, count of bodies, {1} int, total count of bodies</comment>
     <source>Discovered ({0} of {1})</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_Encoded">
     <value>(Codificado)</value>
     <comment>An Encoded Material Trader</comment>
     <source>(Encoded)</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_Engineer">
     <value>(Ingeniero)</value>
     <comment>Suffix after an Engineer's name</comment>
     <source>(Engineer)</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_FC">
     <value>FC</value>
     <source>FC</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_Genus">
     <value>Genomas</value>
     <source>Genus</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_GuardianBroker">
     <value>(Guardián)</value>
     <comment>A Guardian Tech Broker</comment>
     <source>(Guardian)</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_HumanBroker">
     <value>(Humano)</value>
     <comment>A Human Tech Broker</comment>
     <source>(Human)</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_Manufactured">
     <value>(Manufacturado)</value>
     <comment>A Manufactured Material Trader</comment>
     <source>(Manufactured)</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_MaterialTrader">
     <value>Comerciante de materiales</value>
     <source>Material Trader</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_Outposts">
     <value>Puestos avanzados</value>
     <source>Outposts</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_Raw">
     <value>(En bruto)</value>
     <comment>A Raw Material Trader</comment>
     <source>(Raw)</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_Settlements">
     <value>Asentamientos</value>
     <source>Settlements</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_StarPorts">
     <value>Puertos estelares</value>
     <source>Star ports</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_TechBroker">
     <value>Bróker de tecnología</value>
     <source>Tech Broker</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_UndiscoveredSystem">
     <value>Sistema no descubierto</value>
     <source>Undiscovered system</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_UnscannedSystem">
     <value>Sistema sin escanear</value>
     <source>Unscanned system</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NetSysData_Wars">
     <value>Guerras</value>
     <source>Wars</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_CountGenus">
     <value>{0}x Genomas</value>
     <source>{0}x Genus</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_Current">
     <value>Actual:</value>
     <source>Current:</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_DataFrom">
     <value>Datos de: EDSM + Spansh + Canonn</value>
     <comment>Dim footer text</comment>
     <source>Data from: EDSM + Spansh + Canonn</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_Destination">
     <value>Destino:</value>
     <source>Destination:</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_DiscoveredBy">
     <value>Por {0}, {1}</value>
     <comment>{0} string, name of cmdr, {1} short date</comment>
     <source>By {0}, {1}</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_LastUpdated">
     <value>Última actualización: {0}</value>
     <comment>{0} short date</comment>
     <source>Last updated: {0}</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_NextJump">
     <value>Próximo salto:</value>
     <source>Next jump:</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_NoRouteSet">
     <value>No hay ruta establecida</value>
     <comment>When no route is set.</comment>
     <source>No route set</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_RouteFooter">
     <value>Total: ► {0} saltos ► Distancia: {1} al</value>
     <comment>Footer shown summarizing the route. {0} int, count of jumps. {1} float, 1 decimal place, distance travelled.</comment>
     <source>Total: ► {0} jumps ► Distance: {1} ly</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotGalMap_Selected">
     <value>Seleccionado:</value>
     <source>Selected:</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotSysStatus_BioSignals">
     <value>| {0}x Señales bio en: </value>
     <comment>Appended to prior text. {0} int, count of bodies with bio signals</comment>
     <source>| {0}x Bio signals on: </source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotSysStatus_DssRemaining">
     <value> {0}x cuerpos: </value>
     <comment>May be appended to FssCompleteShort. {0} int, count of bodies worth of scanning.</comment>
     <source> {0}x bodies: </source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotSysStatus_FssCompleteLong">
     <value>ECS completado al {0}%</value>
     <comment>Short version, joined with more text. {0} int, percentage number</comment>
     <source>FSS {0}% complete</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotSysStatus_FssCompleteShort">
     <value>ECS {0}%</value>
     <comment>Long version, shown alone. {0} int, percentage number</comment>
     <source>FSS {0}%</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotSysStatus_FssNotStarted">
     <value>ECS no iniciado</value>
     <source>FSS not started</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotSysStatus_Header">
     <value>Análisis ECS: </value>
     <comment>Header line</comment>
     <source>DSS survey: </source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotSysStatus_NextSystem">
     <value>Próximo sistema:</value>
     <source>Next system:</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotSysStatus_NoDssMeet">
     <value>Ninguno</value>
     <source>None</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PlotSysStatus_NonBodySignals">
     <value>► {0} señales no planetarias</value>
     <comment>{0} int, count of non body signals</comment>
     <source>► {0} non-body signals</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Settings_CreateFolderNotFound">
     <value>No se encontra la carpeta:
@@ -303,6 +354,7 @@
 {0}
 
 Would you like to create it?</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>

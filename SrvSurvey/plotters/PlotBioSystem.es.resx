@@ -27,6 +27,8 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -64,39 +66,46 @@
 {0} string, the short name of a body
 {1} int, total count of bio signals on this body</comment>
     <source>Body {0} bio signals: {1}</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="DssRequired">
     <value>Se requiere DSS</value>
     <comment>Message shown if the body needs to be DSS scanned</comment>
     <source>DSS required</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FFBonus">
     <value>(Bono FF: {0})</value>
     <comment>Extra footer line showing rewards if body has FF bonus applied
 {0} string, either a single number of credits or &lt;min&gt; ~ &lt;max&gt; credits</comment>
     <source>(FF bonus: {0})</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FssRequired">
     <value>Se requiere el FSS del sistema</value>
     <comment>Message shown if the system needs to be FSS scanned</comment>
     <source>System FSS required</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="GeoSignals">
     <value>Señales geográficas: {0}</value>
     <comment>Header shown when body has geo signals
 {0} int, total count of geo signals on the body</comment>
     <source>Geo signals: {0}</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="RewardFooter">
     <value>Recompensas: {0}</value>
     <comment>Footer showing estimated credits
 {0} string, either a single number of credits or &lt;min&gt; ~ &lt;max&gt; credits</comment>
     <source>Rewards: {0}</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="SysBio_Header">
     <value>Bioseñales: {0}</value>
     <comment>Header shown when showing bio signals forthe whole system
 {0} int, count of bio signals in this system</comment>
     <source>Bio signals: {0}</source>
+    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>
