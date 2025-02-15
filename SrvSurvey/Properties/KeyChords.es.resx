@@ -28,7 +28,6 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
                 <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
-                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -64,114 +63,95 @@
     <value>En el mapa de la galaxia, copia el siguiente sistema de búsqueda de boxel en el portapapeles.</value>
     <comment>A description of a key-chord setting</comment>
     <source>In gal-map, copy the next boxel search system to clipboard.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="mapBeHuge">
     <value>Alterna el tamaño del mapa para que ocupe la mitad de la pantalla, solo en asentamientos Humanos.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Toggles making the map fill half the screen, at Human settlements only.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="mapZoomAuto">
     <value>Restablece el zoom a los valores predeterminados, en los sitios Humanos y Guardián.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Reset the zoom to default, at Human and Guardian sites.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="mapZoomIn">
     <value>Amplia el mapa en los sitios Humanos y Guardián.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Zoom in on maps at Human and Guardian sites.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="mapZoomOut">
     <value>Aleja el mapa en los sitios Humanos y Guardián.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Zoom out on maps at Human and Guardian sites.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="pasteGalMap">
     <value>Pega el texto del portapapeles cuando estás en el mapa de la galaxia.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Paste clipboard text when in Gal-Map</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="showBodyInfo">
     <value>Fuerza la visualización de la superposición de información del Cuerpo.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force show the Body info overlay.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="showFssInfo">
     <value>Fuerza la visualización de la superposición de información del ECS.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force show the FSS info overlay.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="showJumpInfo">
     <value>Fuerza la alternancia de la superposición del salto de distorsión sin empezar a saltar.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force toggle the FSD jump overlay without starting to jump.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="showSystemNotes">
     <value>Hace visible la ventana de notas del sistema.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Make the system notes window visible.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="toggleAllVisibility">
     <value>Alterna la visibilidad de todos los paneles superpuestos.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Toggles visibility of all overlay windows.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track1">
     <value>Agrega o quita el marcador #1</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #1</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track2">
     <value>Agrega o quita el marcador #2</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #2</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track3">
     <value>Agrega o quita el marcador #3</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #3</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track4">
     <value>Agrega o quita el marcador #4</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #4</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track5">
     <value>Agrega o quita el marcador #5</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #5</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track6">
     <value>Agrega o quita el marcador #6</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #6</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track7">
     <value>Agrega o quita el marcador #7</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #7</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track8">
     <value>Agrega o quita el marcador #8</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #8</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

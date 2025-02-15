@@ -1,0 +1,469 @@
+/forms/FormBoxelSearch.fr.resx
+	btnBegin.Text
+	btnBoxelEmpty.Text
+	btnConfig.Text
+	btnConfigCancel.Text
+	btnConfigNav.Text
+	btnCopyNext.Text
+	btnParent.Text
+	btnToggleList.Text
+	checkAutoCopy.Text
+	checkCompleteOnEnterSystem.Text
+	checkCompleteOnFssAllBodies.Text
+	checkSkipVisited.Text
+	checkSpinKnownToSpansh.Text
+	colCompleted.Text
+	colDistance.Text
+	colSpansh.Text
+	colSystem.Text
+	label1.Text
+	label2.Text
+	label3.Text
+	label4.Text
+	label5.Text
+	label6.Text
+	label7.Text
+	labelGraphic.Text
+	lblBadBoxel.Text
+	lblBoxelCount.Text
+	lblConfigHeader.Text
+	lblMaxNum.Text
+	lblStatus.Text
+	menuHelpLink.Text
+	menuListCopySystemName.Text
+	menuMore.Text
+	$this.Text
+
+/forms/FormGroundTarget.fr.resx
+	btnBegin.Text
+	btnCancel.Text
+	btnPaste.Text
+	btnTargetCurrent.Text
+	button1.Text
+	label2.Text
+	label3.Text
+	label6.Text
+	$this.Text
+	txtLat.Text
+	txtLong.Text
+
+/forms/FormRoute.fr.resx
+	btnActive.Text
+	btnAutoCopy.Text
+	btnImportSpanshUrl.Text
+	btnNamesFromClipboard.Text
+	btnNamesFromFile.Text
+	btnSave.Text
+	colDistance.Text
+	colNotes.Text
+	colSystem.Text
+	lblIntro.Text
+	status.Text
+	$this.Text
+	toolStrip1.Text
+	toolStripDropDownButton1.Text
+
+/forms/FormSetKeyChord.fr.resx
+	btnAccept.Text
+	btnCancel.Text
+	btnDisable.Text
+	label1.Text
+	lblInvalid.Text
+	$this.Text
+
+/forms/FormSphereLimit.fr.resx
+	btnAccept.Text
+	btnCancel.Text
+	btnDisable.Text
+	label1.Text
+	label2.Text
+	label3.Text
+	label4.Text
+	label5.Text
+	label6.Text
+	$this.Text
+
+/plotters/PlotBioStatus.fr.resx
+	DssRequired
+	FooterAllScanned
+	FooterAllScannedFF
+	FooterApplyFF
+	FooterUseCompScanner
+	GeoN
+	Header
+	SomethingWrong
+	SuffixFF
+	WarningStaleScans
+
+/plotters/PlotBioSystem.fr.resx
+	BodyBio_Header
+	DssRequired
+	FFBonus
+	FssRequired
+	GeoSignals
+	RewardFooter
+	SysBio_Header
+
+/plotters/PlotBodyInfo.fr.resx
+	Atmosphere
+	BioSignals
+	EarthLike
+	FirstMapped
+	GeoSignals
+	Gravity
+	Materials
+	None
+	Pressure
+	PressureValue
+	Rings
+	ScanRequired
+	ScanValue
+	StarClass
+	Temp
+	Terraformable
+	Undiscovered
+	Unmapped
+	Volcanism
+	WithDSS
+
+/plotters/PlotFlightWarning.fr.resx
+	SurfaceGravityWarning
+
+/plotters/PlotFSS.fr.resx
+	CountBioSignals
+	EstimatedValue
+	LastScan
+	WithSurfaceScan
+
+/plotters/PlotFSSInfo.fr.resx
+	CountGenus
+	CountGeo
+	Footer1
+	Footer2
+	HidingBodies
+	ScannedAllBodies
+	ScannedBodies
+	ScanToPopulate
+
+/plotters/PlotGrounded.fr.resx
+	NearingShipDistance
+	ScanOneInvalid
+	ScanOne_Long
+	ScanOne_Short
+	ScanTwoInvalid
+	ScanTwo_Long
+	ScanTwo_Short
+	Ship
+	SRV
+
+/plotters/PlotHumanSite.fr.resx
+	ZoomHeader
+	ZoomHeaderAuto
+	ZoomHeaderMin
+	AGRI
+	HAB
+	CMD
+	POW
+	PWR
+	EXT
+	STO
+	RES
+	IND
+	MED
+	LAB
+	UnknownTypeHeading
+	UnkownHeading
+	KnownSettlement
+	OnApproach
+	Faction
+	Influence
+	YourRep
+	Government
+	HasInterstellar
+	DockingRequested
+	DockingApproved
+	DockingDenied
+	Distance
+	Hostile
+	TooLarge
+	NoSpace
+	Offenses
+	ActiveFighter
+	Unknown
+	AutoDock1
+	AutoDock2
+	AutoDock3
+	ManualDock1
+	ManualDock2
+	ManualDock3
+	HelpShip1
+	HelpShip2
+	HelpShip3
+	HelpFoot0
+	HelpFoot1
+	HelpFoot2
+	HelpFoot3
+	HelpFoot4
+	HelpFoot5
+	HelpFoot6
+
+/plotters/PlotJumpInfo.fr.resx
+	NextJump
+	StarClass
+	DiscoveredBy
+	LastUpdated
+	TrafficInfo
+	JumpCounts
+	JumpDistance
+	GuardianBeacon
+	GuardianRuins
+	GuardianStructures
+	SpecialGuardian
+	SpecialHopInfo
+	SpecialJoiner
+	SpecialNowEntering
+	SpecialRouteHop
+
+/plotters/PlotPriorScans.fr.resx
+	Footer
+	Header
+	NoMoreSignals
+
+/plotters/PlotSphericalSearch.fr.resx
+	Boxel
+	Distance
+	DistanceExceeds
+	DistanceWithin
+	From
+	Next
+	To
+	UnknownDist
+	Visited
+	VisitedOf
+
+/plotters/PlotTrackers.fr.resx
+	HeaderLine
+
+/Properties/Codex.fr.resx
+	Aleoida
+	Amethyst
+	Amphora Plant
+	Aquamarine
+	Bacterium
+	Bark Mounds
+	Blue
+	Brain Trees
+	Cactoida
+	Clypeus
+	Cobalt
+	Concha
+	Crystalline Shards
+	Cyan
+	Electricae
+	Emerald
+	Fonticulua
+	Frutexa
+	Fumerola
+	Fungoida
+	Gold
+	Green
+	Grey
+	Indigo
+	Lime
+	Luteolum Anemone
+	Magenta
+	Maroon
+	Mauve
+	Mulberry
+	Ocher
+	Orange
+	Osseus
+	Peach
+	Recepta
+	Red
+	Sage
+	Sinuous Tubers
+	Stratum
+	Teal
+	Tubus
+	Turquoise
+	Tussock
+	White
+	Yellow
+
+/Properties/CodexShort.fr.resx
+	Aleoida
+	Amphora Plant
+	Bacterium
+	Bark Mounds
+	Brain Trees
+	Cactoida
+	Clypeus
+	Concha
+	Crystalline Shards
+	Electricae
+	Fonticulua
+	Frutexa
+	Fumerola
+	Fungoida
+	Luteolum Anemone
+	Osseus
+	Recepta
+	Sinuous Tubers
+	Stratum
+	Tubus
+	Tussock
+
+/Properties/Economies.fr.resx
+	Agri
+	Colony
+	Extraction
+	HighTech
+	Industrial
+	Military
+	None
+	Refinery
+	Service
+	Terraforming
+	Tourism
+	Rescue
+	Prison
+	Repair
+	Damaged
+	Carrier
+	Engineer
+
+/Properties/FactionStates.fr.resx
+	None
+	Retreat
+	War
+	Lockdown
+	CivilUnrest
+	CivilWar
+	Boom
+	Expansion
+	Bust
+	Outbreak
+	Famine
+	Election
+	Investment
+	CivilLiberty
+	Incursion
+	PirateAttack
+	Drought
+	Blight
+	ColdWar
+	Colonisation
+	HistoricEvent
+	InfrastructureFailure
+	NaturalDisaster
+	PublicHoliday
+	Revolution
+	TechnologicalLeap
+	Terrorism
+	TradeWar
+	Thargoid_Probing
+	Thargoid_Harvest
+	Thargoid_Controlled
+	Thargoid_Stronghold
+	Thargoid_Recovery
+
+/Properties/FormRouteExtras.fr.resx
+	ArrivedAt
+	AutoCopyButton
+	ImportedSystems
+	ImportingSpansh
+	ImportNames
+	MsgNamesClipboard
+	MsgSpanshClipboard
+	Neutron
+	OpenTextFileDialogTitle
+	Refuel
+	RouteActiveButton
+	RouteComplete
+	RouteNotFound
+	RouteNotStarted
+	RouteProgress
+	SpanshImportSuccess
+	TextFiles
+
+/Properties/KeyChords.fr.resx
+	toggleAllVisibility
+	mapZoomIn
+	mapZoomOut
+	mapZoomAuto
+	mapBeHuge
+	showJumpInfo
+	copyNextBoxel
+	showFssInfo
+	showBodyInfo
+	showSystemNotes
+	track1
+	track2
+	track3
+	track4
+	track5
+	track6
+	track7
+	track8
+	pasteGalMap
+
+/Properties/Misc.fr.resx
+	NetSysData_Bodies
+	NetSysData_DiscoveredAll
+	NetSysData_DiscoveredPartial
+	NetSysData_FC
+	NetSysData_Genus
+	NetSysData_MaterialTrader
+	NetSysData_Outposts
+	NetSysData_Settlements
+	NetSysData_StarPorts
+	NetSysData_TechBroker
+	NetSysData_UndiscoveredSystem
+	NetSysData_UnscannedSystem
+	NetSysData_Wars
+	PlotGalMap_CountGenus
+	PlotGalMap_Current
+	PlotGalMap_DataFrom
+	PlotGalMap_Destination
+	PlotGalMap_DiscoveredBy
+	PlotGalMap_LastUpdated
+	PlotGalMap_NextJump
+	PlotGalMap_NoRouteSet
+	PlotGalMap_RouteFooter
+	PlotGalMap_Selected
+	PlotSysStatus_BioSignals
+	PlotSysStatus_DssRemaining
+	PlotSysStatus_FssCompleteLong
+	PlotSysStatus_FssCompleteShort
+	PlotSysStatus_FssNotStarted
+	PlotSysStatus_Header
+	PlotSysStatus_NextSystem
+	PlotSysStatus_NoDssMeet
+	PlotSysStatus_NonBodySignals
+	Settings_CreateFolderNotFound
+	FormBoxelSearch_Disable
+	FormBoxelSearch_Activate
+	FormBoxelSearch_HideList
+	FormBoxelSearch_ShowList
+	FormBoxelSearch_NotViableMessage
+	FormBoxelSearch_SpanshUpdated
+	FormBoxelSearch_SpanshUpdatedBodies
+	FormBoxelSearch_UndiscoveredSystem
+	FormBoxelSearch_Visited
+	FormBoxelSearch_SearchNotActive
+	FormBoxelSearch_VisitedCounts
+	NetSysData_Encoded
+	NetSysData_GuardianBroker
+	NetSysData_HumanBroker
+	NetSysData_Manufactured
+	NetSysData_Raw
+	NetSysData_Engineer
+
+/Properties/Reputation.fr.resx
+	Hostile
+	Unfriendly
+	Neutral
+	Cordial
+	Friendly
+	Allied

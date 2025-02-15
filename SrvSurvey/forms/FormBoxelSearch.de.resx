@@ -28,7 +28,6 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
                 <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
-                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -629,7 +628,6 @@
     <!--Machine translated-->
     <value>&amp; Beginnen</value>
     <source>&amp;Begin</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="btnBoxelEmpty.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -650,7 +648,6 @@
     <!--Machine translated-->
     <value>&amp;Toggle boxel empty</value>
     <source>&amp;Toggle boxel empty</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="btnConfig.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -677,7 +674,6 @@
     <!--Machine translated-->
     <value>Konfiguration</value>
     <source>Config</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="btnConfigCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -707,7 +703,6 @@
     <!--Machine translated-->
     <value>&amp; Abbrechen</value>
     <source>&amp;Cancel</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="btnConfigNav.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -728,7 +723,6 @@
     <!--Machine translated-->
     <value>...</value>
     <source>...</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="btnCopyNext.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -758,7 +752,6 @@
     <!--Machine translated-->
     <value>&amp;Nächstes System kopieren</value>
     <source>&amp;Copy next system</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="btnParent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -785,7 +778,6 @@
     <!--Machine translated-->
     <value>...</value>
     <source>...</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="btnToggleList.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -806,7 +798,6 @@
     <!--Machine translated-->
     <value>⏶ Liste ausblenden</value>
     <source>⏶ Hide list</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="checkAutoCopy.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -827,7 +818,6 @@
     <!--Machine translated-->
     <value>&amp;Automatisches Kopieren in der Gal-Map</value>
     <source>&amp;Auto-copy in gal map</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="checkCompleteOnEnterSystem.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -848,7 +838,6 @@
     <!--Machine translated-->
     <value>Eingeben eines Systems</value>
     <source>Entering a system</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="checkCompleteOnFssAllBodies.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -869,7 +858,6 @@
     <!--Machine translated-->
     <value>FSS'ing aller Körper</value>
     <source>FSS'ing all bodies</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="checkSkipVisited.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -893,7 +881,6 @@
     <!--Machine translated-->
     <value>Skip-Systeme, die ich schon einmal besucht habe</value>
     <source>Skip systems I've already visited before date</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="checkSpinKnownToSpansh.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -917,13 +904,11 @@
     <!--Machine translated-->
     <value>Skip-Systeme, die Spansh vor dem Datum bekannt waren</value>
     <source>Skip systems known to Spansh before date</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="colCompleted.Text">
     <!--Machine translated-->
     <value>Datum des Besuchs</value>
     <source>Visited Date</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="colCompleted.Width" type="System.Int32, mscorlib">
     <value>150</value>
@@ -932,7 +917,6 @@
     <!--Machine translated-->
     <value>Abstand</value>
     <source>Distance</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="colDistance.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Right</value>
@@ -944,7 +928,6 @@
     <!--Machine translated-->
     <value>Spanisch Aktualisiert</value>
     <source>Spansh Updated</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="colSpansh.Width" type="System.Int32, mscorlib">
     <value>150</value>
@@ -953,7 +936,6 @@
     <!--Machine translated-->
     <value>Systemname</value>
     <source>System Name</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="colSystem.Width" type="System.Int32, mscorlib">
     <value>160</value>
@@ -1055,7 +1037,6 @@
     <!--Machine translated-->
     <value>Vermessungsboxel:</value>
     <source>Surveying boxel:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -1079,7 +1060,6 @@
     <!--Machine translated-->
     <value>Messen Sie Entfernungen von:</value>
     <source>Measure distances from:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="label3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -1103,7 +1083,6 @@
     <!--Machine translated-->
     <value>HINWEIS: Die Boxel-Suchfunktion ist unvollständig und experimentell</value>
     <source>NOTE: Boxel search feature is incomplete and experimental</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -1127,7 +1106,6 @@
     <!--Machine translated-->
     <value>Betrachten Sie ein System als abgeschlossen, wenn:</value>
     <source>Consider a system complete when:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="label5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -1148,7 +1126,6 @@
     <!--Machine translated-->
     <value>Befragung bis hin zum Massencode:</value>
     <source>Survey down to mass code:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="label6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -1169,7 +1146,6 @@
     <!--Machine translated-->
     <value>Stand:</value>
     <source>As of date:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="label7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -1190,7 +1166,6 @@
     <!--Machine translated-->
     <value>Strömung:</value>
     <source>Current:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="label7.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -1218,7 +1193,6 @@ Jeder Boxel enthält 8 Kinder, die als 2 Reihen mit 4 Quadranten angeordnet sind
     <source>A boxel is a cube of space containing procedurally generated star systems. Cube sizes depend on mass code: 'a' boxels are 10 ly across, 'h' boxels are 1280 ly.
 
 Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with their own generated star systems.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="lblBadBoxel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -1239,7 +1213,6 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <!--Machine translated-->
     <value>Der Systemname ist kein gültiger Boxel-Name</value>
     <source>System name is not a valid boxel name</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="lblBadBoxel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -1266,7 +1239,6 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <!--Machine translated-->
     <value>(Enthält X Boxels)</value>
     <source>(Contains X boxels)</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="lblConfigHeader.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -1290,7 +1262,6 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <!--Machine translated-->
     <value>Geben Sie den oberen Boxel ein, um ihn zu begutachten. Alle untergeordneten Boxels werden bis zum unteren Massencode eingeschlossen:</value>
     <source>Enter the top boxel to survey. All child boxels will be included down to the lower mass code:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="lblMaxNum.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -1311,7 +1282,6 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <!--Machine translated-->
     <value>&amp;Systeme im Boxel:</value>
     <source>&amp;Systems in boxel:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="lblStatus.Size" type="System.Drawing.Size, System.Drawing">
     <value>437, 19</value>
@@ -1320,7 +1290,6 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <!--Machine translated-->
     <value>-</value>
     <source>-</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="lblStatus.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -1347,7 +1316,6 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <!--Machine translated-->
     <value>Hilfe zu diesem Tool</value>
     <source>Help about this tool</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="menuListCopySystemName.Size" type="System.Drawing.Size, System.Drawing">
     <value>175, 22</value>
@@ -1356,7 +1324,6 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <!--Machine translated-->
     <value>&amp;Systemname kopieren</value>
     <source>&amp;Copy system name</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="menuMore.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1377,7 +1344,6 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <!--Machine translated-->
     <value>Mehr...</value>
     <source>More ...</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="menuSiblings.Size" type="System.Drawing.Size, System.Drawing">
     <value>61, 4</value>
@@ -1497,7 +1463,6 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <!--Machine translated-->
     <value>Boxel-Suche (experimentell)</value>
     <source>Boxel Search (Experimental)</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="txtConfigBoxel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>

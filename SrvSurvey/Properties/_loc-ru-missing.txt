@@ -1,0 +1,41 @@
+/forms/FormRoute.ru.resx
+	btnActive.Text
+	btnAutoCopy.Text
+	btnImportSpanshUrl.Text
+	btnNamesFromClipboard.Text
+	btnNamesFromFile.Text
+	btnSave.Text
+	colDistance.Text
+	colNotes.Text
+	colSystem.Text
+	lblIntro.Text
+	status.Text
+	$this.Text
+	toolStrip1.Text
+	toolStripDropDownButton1.Text
+
+/Properties/FactionStates.ru.resx
+	Thargoid_Probing
+	Thargoid_Harvest
+	Thargoid_Controlled
+	Thargoid_Stronghold
+	Thargoid_Recovery
+
+/Properties/FormRouteExtras.ru.resx
+	ArrivedAt
+	AutoCopyButton
+	ImportedSystems
+	ImportingSpansh
+	ImportNames
+	MsgNamesClipboard
+	MsgSpanshClipboard
+	Neutron
+	OpenTextFileDialogTitle
+	Refuel
+	RouteActiveButton
+	RouteComplete
+	RouteNotFound
+	RouteNotStarted
+	RouteProgress
+	SpanshImportSuccess
+	TextFiles

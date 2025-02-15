@@ -28,7 +28,6 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
                 <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
-                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -65,146 +64,125 @@
     <value>ale</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>ale</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Amphora Plant">
     <!--Machine translated-->
     <value>amp</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>amp</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Bacterium">
     <!--Machine translated-->
     <value>bac</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>bac</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Bark Mounds">
     <!--Machine translated-->
     <value>bar</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>bar</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Brain Trees">
     <!--Machine translated-->
     <value>bra</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>bra</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Cactoida">
     <!--Machine translated-->
     <value>cac</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>cac</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Clypeus">
     <!--Machine translated-->
     <value>cly</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>cly</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Concha">
     <!--Machine translated-->
     <value>con</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>con</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Crystalline Shards">
     <!--Machine translated-->
     <value>cry</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>cry</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Electricae">
     <!--Machine translated-->
     <value>ele</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>ele</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Fonticulua">
     <!--Machine translated-->
     <value>fon</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>fon</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Frutexa">
     <!--Machine translated-->
     <value>fru</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>fru</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Fumerola">
     <!--Machine translated-->
     <value>fum</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>fum</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Fungoida">
     <!--Machine translated-->
     <value>fun</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>fun</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Luteolum Anemone">
     <!--Machine translated-->
     <value>ane</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>ane</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Osseus">
     <!--Machine translated-->
     <value>oss</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>oss</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Recepta">
     <!--Machine translated-->
     <value>rec</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>rec</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Sinuous Tubers">
     <!--Machine translated-->
     <value>sin</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>sin</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Stratum">
     <!--Machine translated-->
     <value>str</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>str</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Tubus">
     <!--Machine translated-->
     <value>tub</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>tub</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Tussock">
     <!--Machine translated-->
     <value>tus</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>tus</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

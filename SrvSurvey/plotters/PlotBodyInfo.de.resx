@@ -28,7 +28,6 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
                 <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
-                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -65,7 +64,6 @@
     <value>Atmosphäre:</value>
     <comment>Line prefix for atmosphere</comment>
     <source>Atmosphere:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="BioSignals">
     <!--Machine translated-->
@@ -74,21 +72,18 @@
 {0} int, count of bio signals
 {1} string, value of credits</comment>
     <source>Bio signals: {0} ( value: {1} cr )</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="EarthLike">
     <!--Machine translated-->
     <value>Erde wie</value>
     <comment>Atmosphere type is like Earth</comment>
     <source>Earth Like</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="FirstMapped">
     <!--Machine translated-->
     <value>Zuerst kartiert</value>
     <comment>Header tag</comment>
     <source>First mapped</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="GeoSignals">
     <!--Machine translated-->
@@ -96,7 +91,6 @@
     <comment>Line prefix when geo signals are present
 {0} int, count of geo signals</comment>
     <source>Geo signals: {0}</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Gravity">
     <!--Machine translated-->
@@ -104,21 +98,18 @@
     <comment>Body gravity
 {0} decimal, 3 places, gravity value</comment>
     <source>Gravity: {0}g</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Materials">
     <!--Machine translated-->
     <value>Materialien:</value>
     <comment>Line prefix for materials</comment>
     <source>Materials:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="None">
     <!--Machine translated-->
     <value>Nichts</value>
     <comment>Text shown when body pressure value is zero, or there is no volcanism, or no atmoshpere</comment>
     <source>None</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Pressure">
     <!--Machine translated-->
@@ -126,7 +117,6 @@
     <comment>
 {0} string, the value of PressureValue or PressureNone</comment>
     <source>Pressure: {0}</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PressureValue">
     <!--Machine translated-->
@@ -134,28 +124,24 @@
     <comment>The atmospheric pressure value
 {0} decimal, 4 places</comment>
     <source>{0}(atm)</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Rings">
     <!--Machine translated-->
     <value>Jonglieren:</value>
     <comment>Line prefix for rings</comment>
     <source>Rings:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScanRequired">
     <!--Machine translated-->
     <value>Scan erforderlich</value>
     <comment>Header shown when a scan is required</comment>
     <source>Scan required</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScanValue">
     <!--Machine translated-->
     <value>Scan-Wert</value>
     <comment>Line prefix before showing the scan value for a body</comment>
     <source>Scan value</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="StarClass">
     <!--Machine translated-->
@@ -163,7 +149,6 @@
     <comment>Line prefix with the type of a star, A, O, M, etc
 {0} string, the class of some star</comment>
     <source>Class: {0}</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Temp">
     <!--Machine translated-->
@@ -171,35 +156,30 @@
     <comment>Body temperature of a body
 {0} int, temp in Kelvin</comment>
     <source>Temp: {0}K</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Terraformable">
     <!--Machine translated-->
     <value>Terraformbar</value>
     <comment>Header tag</comment>
     <source>Terraformable</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Undiscovered">
     <!--Machine translated-->
     <value>Unentdeckt</value>
     <comment>Header tag</comment>
     <source>Undiscovered</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Unmapped">
     <!--Machine translated-->
     <value>Nicht zugeordnet</value>
     <comment>Header tag</comment>
     <source>Unmapped</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Volcanism">
     <!--Machine translated-->
     <value>Vulkanismus:</value>
     <comment>Line prefix for volcanism</comment>
     <source>Volcanism:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="WithDSS">
     <!--Machine translated-->
@@ -207,6 +187,5 @@
     <comment>Suffix shown after scan value for a body
 {0} string, value of credits</comment>
     <source>(with DSS: {0})</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

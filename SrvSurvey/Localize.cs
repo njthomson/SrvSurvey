@@ -16,6 +16,8 @@ namespace SrvSurvey
         private static string endpoint = "https://api.cognitive.microsofttranslator.com";
         private static string location = "westus";
         private static XName ordinal = XName.Get("{urn:schemas-microsoft-com:xml-msdata}Ordinal");
+        private static Dictionary<string, Dictionary<string, HashSet<string>>> locUpdate = new();
+        private static Dictionary<string, Dictionary<string, HashSet<string>>> locMissing = new();
 
         public static Dictionary<string, string> supportedLanguages = new()
         {
@@ -58,10 +60,27 @@ namespace SrvSurvey
                 .Where(p => locReadyResx.Any(r => p.EndsWith(r)))
                 .ToList();
 
+            locUpdate.Clear();
+            locMissing.Clear();
+
+            // translate each of the .resx files in each language
             Game.log($"> Localizing {resxFiles.Count} resx files across {targetLangs.Count} languages:\r\n - " + string.Join("\r\n - ", targetLangs));
             foreach (var filepath in resxFiles)
                 foreach (var targetLang in targetLangs)
                     await Localize.translateResx(filepath, targetLang);
+
+            // generate reports, per language, of translations that are missing or need updating
+            locUpdate.Remove("ps");
+            foreach (var (lang, files) in locUpdate)
+                File.WriteAllText(
+                    Path.Combine(Git.srcRootFolder, "SrvSurvey", "Properties", $"_loc-{lang}-needed.txt"),
+                    string.Join("\n\n", files.Select(_ => _.Value.formatWithHeader(_.Key.Replace(".resx", $".{lang}.resx"), "\n\t"))));
+
+            locMissing.Remove("ps");
+            foreach (var (lang, files) in locMissing)
+                File.WriteAllText(
+                    Path.Combine(Git.srcRootFolder, "SrvSurvey", "Properties", $"_loc-{lang}-missing.txt"),
+                    string.Join("\n\n", files.Select(_ => _.Value.formatWithHeader(_.Key.Replace(".resx", $".{lang}.resx"), "\n\t"))));
         }
 
         private static async Task<string?> translateString(string textToTranslate, string targetLang)
@@ -106,16 +125,14 @@ namespace SrvSurvey
             if (!File.Exists(sourceFilepath)) throw new FileNotFoundException($"File not found: {sourceFilepath}");
 
             // prep target .resx file
+            var relativeSourceFilePath = sourceFilepath
+                .Replace(Path.GetFullPath(Git.srcRootFolder) + "\\SrvSurvey", "")
+                .Replace("\\", "/");
             var targetFilename = Path.GetFileNameWithoutExtension(sourceFilepath) + $".{targetLang}.resx";
             var targetFilepath = Path.Combine(Path.GetDirectoryName(sourceFilepath)!, targetFilename);
 
             var oldTargetDoc = File.Exists(targetFilepath) ? XDocument.Load(targetFilepath) : null;
             var sourceDoc = XDocument.Load(sourceFilepath);
-
-            // skip certain files that were pre-translated
-            var locLevel = sourceDoc.Root?.Elements().FirstOrDefault(e => e.Name == "resheader" && e.Attribute("name")?.Value == "loc-level");
-            if (locLevel?.Value == "pseudo-only" && targetLang != "ps")
-                return;
 
             //var newTargetDoc = XDocument.Load(File.Exists(targetFilepath) ? targetFilepath : sourceFilepath) // or ... start from the current localized .resx
             var newTargetDoc = XDocument.Load(sourceFilepath);
@@ -126,8 +143,15 @@ namespace SrvSurvey
             var sourceNodes = sourceDoc.Root?.Elements().Where(_ => _.Name.LocalName == "data")!;
             if (sourceNodes == null) return;
 
-            injectNewSchemaElements(newTargetDoc);
+            // add to the file's schema otherwise new elements are deemed invalid
+            var commentElement = newTargetDoc.Root!.Descendants().Where(_ => _.Name.LocalName == "element" && _.FirstAttribute?.Value == "comment").First();
+            var sourceElement = new XElement(commentElement);
+            sourceElement.SetAttributeValue("name", "source");
+            sourceElement.SetAttributeValue(ordinal, "3");
+            commentElement.Parent?.Add(sourceElement);
 
+            var machineTranslated = "Machine translated";
+            var translateNeeded = "Update needed: " + targetLang.ToUpperInvariant();
             var count = 0;
             foreach (var element in sourceNodes)
             {
@@ -155,21 +179,29 @@ namespace SrvSurvey
                 // default to prior translation
                 var oldTargetNode = oldTargetDoc?.Root?.Elements().Where(_ => _.Name.LocalName == "data" && _.FirstAttribute?.Value == resourceName).FirstOrDefault();
                 var oldTranslation = oldTargetNode?.Element("value")?.Value;
-                var oldSource = oldTargetNode?.Element("source")?.Value ?? oldTargetNode?.Element("comment")?.Value;
-                var oldUpdated = oldTargetNode?.Element("updated")?.Value;
+                var oldSource = oldTargetNode?.Element("source")?.Value;
+                var sourceChanged = oldSource != null && oldSource != sourceText;
 
-                var shouldTranslate = oldTargetNode == null || (oldTargetNode.FirstNode as XComment)?.Value == "Machine translated";
-                //if ((targetLang == "ru" || targetLang == "es") && oldTargetNode != null) shouldTranslate = false;
+                var shouldTranslate = oldTargetNode == null || (oldTargetNode.FirstNode as XComment)?.Value == machineTranslated;
+                var needsUpdating = (oldTargetNode?.FirstNode as XComment)?.Value == translateNeeded;
 
-                //if (resourceName == "RouteProgress") Debugger.Break();
+                //if (resourceName == "Rescue" && preLoc) Debugger.Break();
+
+                if (!shouldTranslate && (sourceChanged || needsUpdating))
+                {
+                    locUpdate.init(targetLang).init(relativeSourceFilePath).Add(resourceName);
+                    targetNode.AddFirst(new XComment(translateNeeded));
+                }
 
                 // initialize with the old values
                 if (oldTranslation != null) targetNode.SetElementValue("value", oldTranslation);
-                targetNode.SetElementValue("updated", oldUpdated ?? Localize.approxNow);
 
                 // skip anything we should not translate
                 if (!shouldTranslate) continue;
-                targetNode.AddFirst(new XComment("Machine translated"));
+
+                // stamp resource as "Machine translated" and track
+                targetNode.AddFirst(new XComment(machineTranslated));
+                locMissing.init(targetLang).init(relativeSourceFilePath).Add(resourceName);
 
                 // skip anything where source has not changed
                 if (oldSource == sourceText && !string.IsNullOrEmpty(oldTranslation)) continue;
@@ -197,22 +229,6 @@ namespace SrvSurvey
             // Save and sort it
             Game.log($"Updated {count,3} of {sourceNodes.Count(),3} '{targetLang}' resources in " + Path.GetFileNameWithoutExtension(sourceFilepath));
             alphaSortResx(newTargetDoc, targetFilepath);
-        }
-
-        /// <summary> Inject into the XSD so that our new elements are deemed valid </summary>
-        private static void injectNewSchemaElements(XDocument newTargetDoc)
-        {
-            // new elements: source and updated
-            var commentElement = newTargetDoc.Root!.Descendants().Where(_ => _.Name.LocalName == "element" && _.FirstAttribute?.Value == "comment").First();
-            var sourceElement = new XElement(commentElement);
-            sourceElement.SetAttributeValue("name", "source");
-            sourceElement.SetAttributeValue(ordinal, "3");
-            commentElement.Parent?.Add(sourceElement);
-
-            var updatedElement = new XElement(commentElement);
-            updatedElement.SetAttributeValue("name", "updated");
-            updatedElement.SetAttributeValue(ordinal, "4");
-            commentElement.Parent?.Add(updatedElement);
         }
 
         private static void alphaSortResx(string filepath)

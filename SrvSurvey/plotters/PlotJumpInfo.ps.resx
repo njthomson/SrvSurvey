@@ -28,7 +28,6 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
                 <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
-                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -67,14 +66,12 @@
 {0} string, name of a cmdr
 {1} date, short format</comment>
     <source>Discovered by {0} {1}</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="GuardianBeacon">
     <!--Machine translated-->
     <value>* BEACON →→→!</value>
     <comment>Part of a special line shown when the next system has a Guardian Beacon</comment>
     <source>Beacon</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="GuardianRuins">
     <!--Machine translated-->
@@ -82,7 +79,6 @@
     <comment>Part of a special line shown when the next system has guardian Ruins
 {0} int, how many Ruins are in the system</comment>
     <source>Ruins: {0}</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="GuardianStructures">
     <!--Machine translated-->
@@ -90,7 +86,6 @@
     <comment>Part of a special line shown when the next system has guardian Structures
 {0} int, how many Structures are in the system</comment>
     <source>Structures: {0}</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="JumpCounts">
     <!--Machine translated-->
@@ -99,7 +94,6 @@
 {0} how many jumps already completed on this journey.
 {1} total count of jumps in this journey.</comment>
     <source>#{0} of {1}</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="JumpDistance">
     <!--Machine translated-->
@@ -107,7 +101,6 @@
     <comment>Total distance of this journey in Light Years.
 {0} float, 1 decimal place</comment>
     <source>{0}ly</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="LastUpdated">
     <!--Machine translated-->
@@ -115,21 +108,18 @@
     <comment>Appended to DiscoveredBy, shows date system data was last updated
 {0} date, short format</comment>
     <source>Last updated: {0}</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NextJump">
     <!--Machine translated-->
     <value>* NEXT JUMP: →→→!</value>
     <comment>Header text</comment>
     <source>Next jump:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="SpecialGuardian">
     <!--Machine translated-->
     <value>* GUARDIAN →→→!</value>
     <comment>A line header when the next system has some Guardian sites</comment>
     <source>Guardian</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="SpecialHopInfo">
     <!--Machine translated-->
@@ -138,35 +128,30 @@
 {0} int, the index of the next system in the route
 {1} int, total count of route hops</comment>
     <source>#{0} of {1}</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="SpecialJoiner">
     <!--Machine translated-->
     <value>* , →→→!</value>
     <comment>The character used to join parts of special lines</comment>
     <source>,</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="SpecialNowEntering">
     <!--Machine translated-->
     <value>* NOW ENTERING →→→!</value>
     <comment>A line header when the next system is in a different galactic region</comment>
     <source>Now entering</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="SpecialRouteHop">
     <!--Machine translated-->
     <value>* ROUTE HOP →→→!</value>
     <comment>A line header when the next system is a hop on the route we are following</comment>
     <source>Route hop</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="StarClass">
     <!--Machine translated-->
     <value>* CLASS: {0} →→→!</value>
     <comment>Top right info showing class of star we're jumping towards</comment>
     <source>class: {0}</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="TrafficInfo">
     <!--Machine translated-->
@@ -176,6 +161,5 @@
 {1}, int, count of cmdr's visiting in past week
 {2}, int, count of cmdr's visiting ever</comment>
     <source>Traffic last 24 hours: {0}, week: {1}, ever: {2}</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

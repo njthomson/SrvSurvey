@@ -28,7 +28,6 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
                 <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
-                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -242,7 +241,6 @@
     <!--Machine translated-->
     <value>Itinéraire actif</value>
     <source>Route active</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="btnAutoCopy.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
@@ -254,7 +252,6 @@
     <!--Machine translated-->
     <value>Copie automatique dans Gal-Map</value>
     <source>Auto copy in Gal-Map</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="btnImportSpanshUrl.Size" type="System.Drawing.Size, System.Drawing">
     <value>291, 22</value>
@@ -263,7 +260,6 @@
     <!--Machine translated-->
     <value>URL de l’itinéraire spansh à partir du presse-papiers</value>
     <source>Spansh route URL from clipboard</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="btnNamesFromClipboard.Size" type="System.Drawing.Size, System.Drawing">
     <value>291, 22</value>
@@ -272,7 +268,6 @@
     <!--Machine translated-->
     <value>Noms de système à partir du presse-papiers</value>
     <source>System names from clipboard</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="btnNamesFromFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>291, 22</value>
@@ -281,7 +276,6 @@
     <!--Machine translated-->
     <value>Noms système à partir du fichier</value>
     <source>System names from file</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="btnSave.Font" type="System.Drawing.Font, System.Drawing">
     <value>Consolas, 9.75pt, style=Bold</value>
@@ -305,13 +299,11 @@
     <!--Machine translated-->
     <value>Enregistrer les modifications</value>
     <source>Save changes</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="colDistance.Text">
     <!--Machine translated-->
     <value>Distance</value>
     <source>Distance</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="colDistance.Width" type="System.Int32, mscorlib">
     <value>80</value>
@@ -320,7 +312,6 @@
     <!--Machine translated-->
     <value>Notes</value>
     <source>Notes</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="colNotes.Width" type="System.Int32, mscorlib">
     <value>160</value>
@@ -329,7 +320,6 @@
     <!--Machine translated-->
     <value>Système</value>
     <source>System</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="colSystem.Width" type="System.Int32, mscorlib">
     <value>200</value>
@@ -356,7 +346,6 @@
     <!--Machine translated-->
     <value>Utilisez des itinéraires pour tracer manuellement votre chemin à travers la galaxie. Commencez par importer un itinéraire, puis recherchez des conseils dans le coin supérieur droit de la Gal-Map.</value>
     <source>Use routes to manually plot your way across the galaxy. Begin by importing a route, then look for guidance in the top-right corner in the Gal-Map.</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="lblStatus.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -401,7 +390,6 @@
     <!--Machine translated-->
     <value>statusStrip1</value>
     <source>statusStrip1</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="table.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
@@ -437,7 +425,6 @@
     <!--Machine translated-->
     <value>Suivre un itinéraire</value>
     <source>Follow a route</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="toolStrip1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -467,7 +454,6 @@
     <!--Machine translated-->
     <value>toolStrip1</value>
     <source>toolStrip1</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="toolStripDropDownButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -488,7 +474,6 @@
     <!--Machine translated-->
     <value>Importation...</value>
     <source>Import...</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>288, 6</value>

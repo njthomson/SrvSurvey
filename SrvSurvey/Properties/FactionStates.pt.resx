@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Blight">
+    <!--Machine translated-->
+    <value>Ferrugem</value>
+    <comment>Faction state Blight</comment>
+    <source>Blight</source>
+  </data>
+  <data name="Boom">
+    <!--Machine translated-->
+    <value>Bum</value>
+    <comment>Faction state Boom</comment>
+    <source>Boom</source>
+  </data>
+  <data name="Bust">
+    <!--Machine translated-->
+    <value>Busto</value>
+    <comment>Faction state Bust</comment>
+    <source>Bust</source>
+  </data>
+  <data name="CivilLiberty">
+    <!--Machine translated-->
+    <value>Liberdade Civil</value>
+    <comment>Faction state CivilLiberty</comment>
+    <source>Civil Liberty</source>
+  </data>
+  <data name="CivilUnrest">
+    <!--Machine translated-->
+    <value>Agitação civil</value>
+    <comment>Faction state CivilUnrest</comment>
+    <source>Civil Unrest</source>
+  </data>
+  <data name="CivilWar">
+    <!--Machine translated-->
+    <value>Guerra civil</value>
+    <comment>Faction state CivilWar</comment>
+    <source>Civil War</source>
+  </data>
+  <data name="ColdWar">
+    <!--Machine translated-->
+    <value>Guerra fria</value>
+    <comment>Faction state ColdWar</comment>
+    <source>Cold War</source>
+  </data>
+  <data name="Colonisation">
+    <!--Machine translated-->
+    <value>Colonização</value>
+    <comment>Faction state Colonisation</comment>
+    <source>Colonisation</source>
+  </data>
+  <data name="Drought">
+    <!--Machine translated-->
+    <value>Seca</value>
+    <comment>Faction state Drought, but translated as Blight</comment>
+    <source>Drought</source>
+  </data>
+  <data name="Election">
+    <!--Machine translated-->
+    <value>Eleição</value>
+    <comment>Faction state Election</comment>
+    <source>Election</source>
+  </data>
+  <data name="Expansion">
+    <!--Machine translated-->
+    <value>Expansão</value>
+    <comment>Faction state Expansion</comment>
+    <source>Expansion</source>
+  </data>
+  <data name="Famine">
+    <!--Machine translated-->
+    <value>Fome</value>
+    <comment>Faction state Famine</comment>
+    <source>Famine</source>
+  </data>
+  <data name="HistoricEvent">
+    <!--Machine translated-->
+    <value>Evento histórico</value>
+    <comment>Faction state HistoricEvent</comment>
+    <source>Historic Event</source>
+  </data>
+  <data name="Incursion">
+    <!--Machine translated-->
+    <value>Incursão</value>
+    <comment>Faction state Incursion</comment>
+    <source>Incursion</source>
+  </data>
+  <data name="InfrastructureFailure">
+    <!--Machine translated-->
+    <value>Falha de infraestrutura</value>
+    <comment>Faction state InfrastructureFailure</comment>
+    <source>Infrastructure Failure</source>
+  </data>
+  <data name="Investment">
+    <!--Machine translated-->
+    <value>Investimento</value>
+    <comment>Faction state Investment</comment>
+    <source>Investment</source>
+  </data>
+  <data name="Lockdown">
+    <!--Machine translated-->
+    <value>Isolamento</value>
+    <comment>Faction state Lockdown</comment>
+    <source>Lockdown</source>
+  </data>
+  <data name="NaturalDisaster">
+    <!--Machine translated-->
+    <value>Desastre natural</value>
+    <comment>Faction state NaturalDisaster</comment>
+    <source>Natural Disaster</source>
+  </data>
+  <data name="None">
+    <!--Machine translated-->
+    <value>Nenhum</value>
+    <comment>Faction state None</comment>
+    <source>None</source>
+  </data>
+  <data name="Outbreak">
+    <!--Machine translated-->
+    <value>Surto</value>
+    <comment>Faction state Outbreak</comment>
+    <source>Outbreak</source>
+  </data>
+  <data name="PirateAttack">
+    <!--Machine translated-->
+    <value>Ataque Pirata</value>
+    <comment>Faction state PirateAttack</comment>
+    <source>Pirate Attack</source>
+  </data>
+  <data name="PublicHoliday">
+    <!--Machine translated-->
+    <value>Feriado</value>
+    <comment>Faction state PublicHoliday</comment>
+    <source>Public Holiday</source>
+  </data>
+  <data name="Retreat">
+    <!--Machine translated-->
+    <value>Retirar-se</value>
+    <comment>Faction state Retreat</comment>
+    <source>Retreat</source>
+  </data>
+  <data name="Revolution">
+    <!--Machine translated-->
+    <value>Revolução</value>
+    <comment>Faction state Revolution</comment>
+    <source>Revolution</source>
+  </data>
+  <data name="TechnologicalLeap">
+    <!--Machine translated-->
+    <value>Salto Tecnológico</value>
+    <comment>Faction state TechnologicalLeap</comment>
+    <source>Technological Leap</source>
+  </data>
+  <data name="Terrorism">
+    <!--Machine translated-->
+    <value>Terrorismo</value>
+    <comment>Faction state Terrorism</comment>
+    <source>Terrorism</source>
+  </data>
+  <data name="Thargoid_Controlled">
+    <!--Machine translated-->
+    <value>Controlado por Thargoid</value>
+    <comment>Faction state Thargoid_Controlled</comment>
+    <source>Thargoid Controlled</source>
+  </data>
+  <data name="Thargoid_Harvest">
+    <!--Machine translated-->
+    <value>Invasão Thargoid</value>
+    <comment>Faction state Thargoid_Harvest</comment>
+    <source>Thargoid Invasion</source>
+  </data>
+  <data name="Thargoid_Probing">
+    <!--Machine translated-->
+    <value>Alerta Thargoid</value>
+    <comment>Faction state Thargoid_Probing</comment>
+    <source>Thargoid Alert</source>
+  </data>
+  <data name="Thargoid_Recovery">
+    <!--Machine translated-->
+    <value>Recuperação pós-thargoid</value>
+    <comment>Faction state Thargoid_Recovery</comment>
+    <source>Post-Thargoid Recovery</source>
+  </data>
+  <data name="Thargoid_Stronghold">
+    <!--Machine translated-->
+    <value>Turbilhão Thargoid</value>
+    <comment>Faction state Thargoid_Stronghold</comment>
+    <source>Thargoid Maelstrom</source>
+  </data>
+  <data name="TradeWar">
+    <!--Machine translated-->
+    <value>Guerra comercial</value>
+    <comment>Faction state TradeWar</comment>
+    <source>Trade War</source>
+  </data>
+  <data name="War">
+    <!--Machine translated-->
+    <value>Guerra</value>
+    <comment>Faction state War</comment>
+    <source>War</source>
+  </data>
+</root>

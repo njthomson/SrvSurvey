@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Agri">
+    <!--Machine translated-->
+    <value>Agricultura</value>
+    <comment>Economy type Agri</comment>
+    <source>Agriculture</source>
+  </data>
+  <data name="Carrier">
+    <!--Machine translated-->
+    <value>Empresa privada</value>
+    <comment>Economy Type Carrier</comment>
+    <source>Private Enterprise</source>
+  </data>
+  <data name="Colony">
+    <!--Machine translated-->
+    <value>Colônia</value>
+    <comment>Economy type Colony</comment>
+    <source>Colony</source>
+  </data>
+  <data name="Damaged">
+    <!--Machine translated-->
+    <value>Avariado</value>
+    <comment>Economy type Damaged</comment>
+    <source>Damaged</source>
+  </data>
+  <data name="Engineer">
+    <!--Machine translated-->
+    <value>Engenharia</value>
+    <comment>Economy type Engineer</comment>
+    <source>Engineering</source>
+  </data>
+  <data name="Extraction">
+    <!--Machine translated-->
+    <value>Extração</value>
+    <comment>Economy type Extraction</comment>
+    <source>Extraction</source>
+  </data>
+  <data name="HighTech">
+    <!--Machine translated-->
+    <value>Alta tecnologia</value>
+    <comment>Economy type HighTech</comment>
+    <source>High Tech</source>
+  </data>
+  <data name="Industrial">
+    <!--Machine translated-->
+    <value>Industrial</value>
+    <comment>Economy type Industrial</comment>
+    <source>Industrial</source>
+  </data>
+  <data name="Military">
+    <!--Machine translated-->
+    <value>Militar</value>
+    <comment>Economy type Military</comment>
+    <source>Military</source>
+  </data>
+  <data name="None">
+    <!--Machine translated-->
+    <value>Nenhum</value>
+    <comment>Economy type None</comment>
+    <source>None</source>
+  </data>
+  <data name="Prison">
+    <!--Machine translated-->
+    <value>Prisão</value>
+    <comment>Economy type Prison</comment>
+    <source>Prison</source>
+  </data>
+  <data name="Refinery">
+    <!--Machine translated-->
+    <value>Refinaria</value>
+    <comment>Economy type Refinery</comment>
+    <source>Refinery</source>
+  </data>
+  <data name="Repair">
+    <!--Machine translated-->
+    <value>Reparar</value>
+    <comment>Economy type Repair</comment>
+    <source>Repair</source>
+  </data>
+  <data name="Rescue">
+    <!--Machine translated-->
+    <value>Salvar</value>
+    <comment>Economy type Rescue</comment>
+    <source>Rescue</source>
+  </data>
+  <data name="Service">
+    <!--Machine translated-->
+    <value>Serviço</value>
+    <comment>Economy type Service</comment>
+    <source>Service</source>
+  </data>
+  <data name="Terraforming">
+    <!--Machine translated-->
+    <value>Terraformação</value>
+    <comment>Economy type Terraforming</comment>
+    <source>Terraforming</source>
+  </data>
+  <data name="Tourism">
+    <!--Machine translated-->
+    <value>Turismo</value>
+    <comment>Economy type Tourism</comment>
+    <source>Tourism</source>
+  </data>
+</root>

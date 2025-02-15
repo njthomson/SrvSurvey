@@ -28,7 +28,6 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
                 <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
-                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -64,114 +63,95 @@
     <value>На экране галактической карты, копирует в буфер обмена следующую систему поиска в подсекторе.</value>
     <comment>A description of a key-chord setting</comment>
     <source>In gal-map, copy the next boxel search system to clipboard.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="mapBeHuge">
     <value>Переключает полноразмерную карту, в человеческих поселениях.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Toggles making the map fill half the screen, at Human settlements only.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="mapZoomAuto">
     <value>Сбрасывает масштаб до значений по умолчанию, в человеческих поселениях и конструкциях Стражей.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Reset the zoom to default, at Human and Guardian sites.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="mapZoomIn">
     <value>Увеличивает масштаб карт, в человеческих поселениях и конструкциях Стражей.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Zoom in on maps at Human and Guardian sites.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="mapZoomOut">
     <value>Уменьшает масштаб карт, в человеческих поселениях и конструкциях Стражей.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Zoom out on maps at Human and Guardian sites.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="pasteGalMap">
     <value>На экране галактической карты, вставляет текста из буфера обмена</value>
     <comment>A description of a key-chord setting</comment>
     <source>Paste clipboard text when in Gal-Map</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="showBodyInfo">
     <value>Принудительно отображает наложение с информацией о теле.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force show the Body info overlay.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="showFssInfo">
     <value>Принудительно отображает наложение с информацией о FSS.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force show the FSS info overlay.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="showJumpInfo">
     <value>Принудительно переключает наложение прыжка FSD, не начиная прыжок.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force toggle the FSD jump overlay without starting to jump.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="showSystemNotes">
     <value>Делает окно системных заметок видимым.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Make the system notes window visible.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="toggleAllVisibility">
     <value>Переключает видимость всех окон наложения.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Toggles visibility of all overlay windows.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track1">
     <value>Добавляет или удаляет трекер #1</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #1</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track2">
     <value>Добавляет или удаляет трекер #2</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #2</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track3">
     <value>Добавляет или удаляет трекер #3</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #3</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track4">
     <value>Добавляет или удаляет трекер #4</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #4</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track5">
     <value>Добавляет или удаляет трекер #5</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #5</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track6">
     <value>Добавляет или удаляет трекер #6</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #6</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track7">
     <value>Добавляет или удаляет трекер #7</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #7</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track8">
     <value>Добавляет или удаляет трекер #8</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #8</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

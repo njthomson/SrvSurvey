@@ -1,0 +1,12 @@
+/Properties/Economies.de.resx
+	Agri
+	Colony
+	Extraction
+	HighTech
+	Industrial
+	Military
+	None
+	Refinery
+	Service
+	Terraforming
+	Tourism

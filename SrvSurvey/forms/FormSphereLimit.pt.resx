@@ -28,7 +28,6 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
                 <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
-                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -287,7 +286,6 @@
     <!--Machine translated-->
     <value>&amp;Ativar</value>
     <source>&amp;Activate</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -311,7 +309,6 @@
     <!--Machine translated-->
     <value>&amp;Cancelar</value>
     <source>&amp;Cancel</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="btnDisable.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -335,7 +332,6 @@
     <!--Machine translated-->
     <value>&amp;Desativar</value>
     <source>&amp;Disable</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="comboSystemName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -386,7 +382,6 @@
     <!--Machine translated-->
     <value>&amp;Entre no sistema central:</value>
     <source>&amp;Enter central system:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -410,7 +405,6 @@
     <!--Machine translated-->
     <value>&amp;Raio da esfera:</value>
     <source>&amp;Sphere radius:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="label2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -434,7 +428,6 @@
     <!--Machine translated-->
     <value>Estrela pos:</value>
     <source>Star pos:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -453,9 +446,8 @@
   </data>
   <data name="label4.Text">
     <!--Machine translated-->
-    <value>O limite esférico ajuda a navegar para sistemas dentro de uma determinada distância de um sistema central.</value>
-    <source>Spherical limit helps navigating to systems within a given distance of a central system.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
+    <value>As pesquisas esféricas ajudam a navegar dentro de uma determinada distância de um sistema central.</value>
+    <source>Spherical searches help navigating around within a given distance of a central system.</source>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -476,7 +468,6 @@
     <!--Machine translated-->
     <value>Sistema atual:</value>
     <source>Current system:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="label5.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -500,7 +491,6 @@
     <!--Machine translated-->
     <value>Distância:</value>
     <source>Distance:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="label6.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -561,9 +551,8 @@
   </data>
   <data name="$this.Text">
     <!--Machine translated-->
-    <value>Limite esférico</value>
-    <source>Spherical limit</source>
-    <updated>2025-02-14T16:00:00Z</updated>
+    <value>Pesquisa esférica</value>
+    <source>Spherical Search</source>
   </data>
   <data name="txtCurrentDistance.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 121</value>

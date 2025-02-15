@@ -28,7 +28,6 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
                 <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
-                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -67,14 +66,12 @@
 {0} int, the index of this system in the route
 {1} string, the name of this system</comment>
     <source>Arrived at hop #{0} {1}</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="AutoCopyButton">
     <!--Machine translated-->
     <value>Copia automática en Gal-Map</value>
     <comment>Button text to toggle if we should auto copy to the clipboard when entering the gal-map</comment>
     <source>Auto copy in Gal-Map</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="ImportedSystems">
     <!--Machine translated-->
@@ -82,7 +79,6 @@
     <comment>Footer message shown when importing system names has completed successfully
 {0} int, count of systems imported</comment>
     <source>Imported {0} systems</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="ImportingSpansh">
     <!--Machine translated-->
@@ -90,7 +86,6 @@
     <comment>Shown in window footer when importing a Spansh route from a URL
 {0} string, the id (guid) of the route to import</comment>
     <source>Importing Spansh route: '{0}' ...</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="ImportNames">
     <!--Machine translated-->
@@ -98,56 +93,48 @@
     <comment>Shown in window footer when importing names from clipboard
 {0} int, count of names to import</comment>
     <source>Importing ~{0} names...</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="MsgNamesClipboard">
     <!--Machine translated-->
     <value>Para continuar: copie un número de nombres de sistemas en el portapapeles, un sistema por línea.</value>
     <comment>Shown in a message box popup, instructing users how to proceed when importing system names from clipboard</comment>
     <source>To proceed: copy a number of system names to the clipboard, one system per line.</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="MsgSpanshClipboard">
     <!--Machine translated-->
     <value>Para continuar: copie la URL de cualquier ruta en español en el portapapeles</value>
     <comment>Shown in a message box popup, instructing users how to proceed when importing from a Spansh URL</comment>
     <source>To proceed: copy the URL of any Spansh route to the clipboard</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="Neutron">
     <!--Machine translated-->
     <value>Neutrón</value>
     <comment>Route tag/reminder that this is a neutron system</comment>
     <source>Neutron</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="OpenTextFileDialogTitle">
     <!--Machine translated-->
     <value>Elija importar archivo</value>
     <comment>Title used on open file dialog when importing a text file</comment>
     <source>Choose import file</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="Refuel">
     <!--Machine translated-->
     <value>Repostar</value>
     <comment>Route tag/reminder to refuel</comment>
     <source>Refuel</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="RouteActiveButton">
     <!--Machine translated-->
     <value>Ruta activa</value>
     <comment>Button text to toggle if route is active</comment>
     <source>Route active</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="RouteComplete">
     <!--Machine translated-->
     <value>Ruta completa</value>
     <comment>Footer label when route has been complete</comment>
     <source>Route complete</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="RouteNotFound">
     <!--Machine translated-->
@@ -155,14 +142,12 @@
     <comment>Footer warning when importing a route from Spansh did not succeed
 {0} string, the id (guid) of the route</comment>
     <source>Route not found: {0}</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="RouteNotStarted">
     <!--Machine translated-->
     <value>Ruta no iniciada</value>
     <comment>Footer label when route has not been started</comment>
     <source>Route not started</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="RouteProgress">
     <!--Machine translated-->
@@ -171,7 +156,6 @@
 {0} int, the current hop
 {1} int, total count of hops</comment>
     <source>Route progress: #{0} of {1}</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="SpanshImportSuccess">
     <!--Machine translated-->
@@ -179,13 +163,11 @@
     <comment>Footer message shown when importing a Spansh route succeeds
 {0} int, count of route hops</comment>
     <source>Successfully imported {0} hops</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
   <data name="TextFiles">
     <!--Machine translated-->
     <value>Archivos de texto</value>
     <comment>Description of file type in lower right corner of file open dialog</comment>
     <source>Text files</source>
-    <updated>2025-02-14T17:00:00Z</updated>
   </data>
 </root>

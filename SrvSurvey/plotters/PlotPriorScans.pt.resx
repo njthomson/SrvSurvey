@@ -28,7 +28,6 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
                 <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
-                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -65,7 +64,6 @@
     <value>(Os locais podem não estar tão próximos dos sinais)</value>
     <comment>Footer message</comment>
     <source>(Locations may not be that close to signals)</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Header">
     <!--Machine translated-->
@@ -73,13 +71,11 @@
     <comment>Header line
 {0} int, count of signals known to Canonn</comment>
     <source>Tracking {0} signals from Canonn:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NoMoreSignals">
     <!--Machine translated-->
     <value>Nenhum sinal não verificado atende aos critérios</value>
     <comment>Line shown when no more signals apply</comment>
     <source>No un-scanned signals meet criteria</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

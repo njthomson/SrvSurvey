@@ -1,26 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -39,72 +40,100 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Agri" xml:space="preserve">
+  <data name="Agri">
+    <!--Update needed: DE-->
     <value>Landwirtschaft</value>
     <comment>Economy type Agri</comment>
+    <source>Agriculture</source>
   </data>
-  <data name="Colony" xml:space="preserve">
-    <value>Kolonie</value>
-    <comment>Economy type Colony</comment>
-  </data>
-  <data name="Extraction" xml:space="preserve">
-    <value>Abbau</value>
-    <comment>Economy type Extraction</comment>
-  </data>
-  <data name="HighTech" xml:space="preserve">
-    <value>High-Tech</value>
-    <comment>Economy type HighTech</comment>
-  </data>
-  <data name="Industrial" xml:space="preserve">
-    <value>Industrie</value>
-    <comment>Economy type Industrial</comment>
-  </data>
-  <data name="Military" xml:space="preserve">
-    <value>Militär</value>
-    <comment>Economy type Military</comment>
-  </data>
-  <data name="None" xml:space="preserve">
-    <value>Keine</value>
-    <comment>Economy type None</comment>
-  </data>
-  <data name="Refinery" xml:space="preserve">
-    <value>Raffinerie</value>
-    <comment>Economy type Refinery</comment>
-  </data>
-  <data name="Service" xml:space="preserve">
-    <value>Dienst</value>
-    <comment>Economy type Service</comment>
-  </data>
-  <data name="Terraforming" xml:space="preserve">
-    <value>Terraformierung</value>
-    <comment>Economy type Terraforming</comment>
-  </data>
-  <data name="Tourism" xml:space="preserve">
-    <value>Tourismus</value>
-    <comment>Economy type Tourism</comment>
-  </data>
-  <data name="Rescue" xml:space="preserve">
-    <value>Rettung</value>
-    <comment>Economy type Rescue</comment>
-  </data>
-  <data name="Prison" xml:space="preserve">
-    <value>Gefängnis</value>
-    <comment>Economy type Prison</comment>
-  </data>
-  <data name="Repair" xml:space="preserve">
-    <value>Reparatur</value>
-    <comment>Economy type Repair</comment>
-  </data>
-  <data name="Damaged" xml:space="preserve">
-    <value>Beschädigt</value>
-    <comment>Economy type Damaged</comment>
-  </data>
-  <data name="Carrier" xml:space="preserve">
+  <data name="Carrier">
     <value>Privates Unternehmen</value>
     <comment>Economy Type Carrier</comment>
+    <source>Private Enterprise</source>
   </data>
-  <data name="Engineer" xml:space="preserve">
+  <data name="Colony">
+    <!--Update needed: DE-->
+    <value>Kolonie</value>
+    <comment>Economy type Colony</comment>
+    <source>Colony</source>
+  </data>
+  <data name="Damaged">
+    <value>Beschädigt</value>
+    <comment>Economy type Damaged</comment>
+    <source>Damaged</source>
+  </data>
+  <data name="Engineer">
     <value>Ingenieur</value>
     <comment>Economy type Engineer</comment>
+    <source>Engineering</source>
+  </data>
+  <data name="Extraction">
+    <!--Update needed: DE-->
+    <value>Abbau</value>
+    <comment>Economy type Extraction</comment>
+    <source>Extraction</source>
+  </data>
+  <data name="HighTech">
+    <!--Update needed: DE-->
+    <value>High-Tech</value>
+    <comment>Economy type HighTech</comment>
+    <source>High Tech</source>
+  </data>
+  <data name="Industrial">
+    <!--Update needed: DE-->
+    <value>Industrie</value>
+    <comment>Economy type Industrial</comment>
+    <source>Industrial</source>
+  </data>
+  <data name="Military">
+    <!--Update needed: DE-->
+    <value>Militär</value>
+    <comment>Economy type Military</comment>
+    <source>Military</source>
+  </data>
+  <data name="None">
+    <!--Update needed: DE-->
+    <value>Keine</value>
+    <comment>Economy type None</comment>
+    <source>None</source>
+  </data>
+  <data name="Prison">
+    <value>Gefängnis</value>
+    <comment>Economy type Prison</comment>
+    <source>Prison</source>
+  </data>
+  <data name="Refinery">
+    <!--Update needed: DE-->
+    <value>Raffinerie</value>
+    <comment>Economy type Refinery</comment>
+    <source>Refinery</source>
+  </data>
+  <data name="Repair">
+    <value>Reparatur</value>
+    <comment>Economy type Repair</comment>
+    <source>Repair</source>
+  </data>
+  <data name="Rescue">
+    <value>Rettung</value>
+    <comment>Economy type Rescue</comment>
+    <source>Rescue</source>
+  </data>
+  <data name="Service">
+    <!--Update needed: DE-->
+    <value>Dienst</value>
+    <comment>Economy type Service</comment>
+    <source>Service</source>
+  </data>
+  <data name="Terraforming">
+    <!--Update needed: DE-->
+    <value>Terraformierung</value>
+    <comment>Economy type Terraforming</comment>
+    <source>Terraforming</source>
+  </data>
+  <data name="Tourism">
+    <!--Update needed: DE-->
+    <value>Tourismus</value>
+    <comment>Economy type Tourism</comment>
+    <source>Tourism</source>
   </data>
 </root>

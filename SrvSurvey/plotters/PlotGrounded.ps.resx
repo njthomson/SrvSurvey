@@ -28,7 +28,6 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
                 <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
-                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -65,62 +64,53 @@
     <value>* NEARING SHIP DEPARTURE DISTANCE →→→!</value>
     <comment>Warning shown when nearing ship departure distance</comment>
     <source>Nearing ship departure distance</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScanOne_Long">
     <!--Machine translated-->
     <value>* SCAN ONE: →→→!</value>
     <comment>Prefix to bearing and distance to scan one</comment>
     <source>Scan one:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScanOne_Short">
     <!--Machine translated-->
     <value>* 1ST: →→→!</value>
     <comment>A shorter prefix to bearing and distance to scan one, when window is too narrow</comment>
     <source>1st:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScanOneInvalid">
     <!--Machine translated-->
     <value>* SCAN ONE: INVALID →→→!</value>
     <comment>Warning shown when scan one is not valid</comment>
     <source>Scan one: invalid</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScanTwo_Long">
     <!--Machine translated-->
     <value>* SCAN TWO: →→→!</value>
     <comment>Prefix to bearing and distance to scan two</comment>
     <source>Scan two:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScanTwo_Short">
     <!--Machine translated-->
     <value>* 2ND: →→→!</value>
     <comment>A shorter prefix to bearing and distance to scan two, when window is too narrow</comment>
     <source>2nd:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScanTwoInvalid">
     <!--Machine translated-->
     <value>* SCAN TWO: INVALID →→→!</value>
     <comment>Warning shown when scan two is not valid</comment>
     <source>Scan two: invalid</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Ship">
     <!--Machine translated-->
     <value>* SHIP: →→→!</value>
     <comment>Prefix to bearing and distance to the ship</comment>
     <source>Ship:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="SRV">
     <!--Machine translated-->
     <value>* SRV: →→→!</value>
     <comment>Prefix to bearing and distance to SRV</comment>
     <source>SRV:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

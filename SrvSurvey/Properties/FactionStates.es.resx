@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -58,139 +59,169 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <resheader name="loc-level">
-    <value>pseudo-only</value>
-  </resheader>
-  <data name="None" xml:space="preserve">
-    <value>Ninguno</value>
-    <comment>Faction state None</comment>
-  </data>
-  <data name="Retreat" xml:space="preserve">
-    <value>Retirada</value>
-    <comment>Faction state Retreat</comment>
-  </data>
-  <data name="War" xml:space="preserve">
-    <value>Guerra</value>
-    <comment>Faction state War</comment>
-  </data>
-  <data name="Lockdown" xml:space="preserve">
-    <value>Bloqueo</value>
-    <comment>Faction state Lockdown</comment>
-  </data>
-  <data name="CivilUnrest" xml:space="preserve">
-    <value>Desórdenes públicos</value>
-    <comment>Faction state CivilUnrest</comment>
-  </data>
-  <data name="CivilWar" xml:space="preserve">
-    <value>Guerra civil</value>
-    <comment>Faction state CivilWar</comment>
-  </data>
-  <data name="Boom" xml:space="preserve">
-    <value>Auge</value>
-    <comment>Faction state Boom</comment>
-  </data>
-  <data name="Expansion" xml:space="preserve">
-    <value>Expansión</value>
-    <comment>Faction state Expansion</comment>
-  </data>
-  <data name="Bust" xml:space="preserve">
-    <value>Quiebra</value>
-    <comment>Faction state Bust</comment>
-  </data>
-  <data name="Outbreak" xml:space="preserve">
-    <value>Epidemia</value>
-    <comment>Faction state Outbreak</comment>
-  </data>
-  <data name="Famine" xml:space="preserve">
-    <value>Hambruna</value>
-    <comment>Faction state Famine</comment>
-  </data>
-  <data name="Election" xml:space="preserve">
-    <value>Elecciones</value>
-    <comment>Faction state Election</comment>
-  </data>
-  <data name="Investment" xml:space="preserve">
-    <value>Inversión</value>
-    <comment>Faction state Investment</comment>
-  </data>
-  <data name="CivilLiberty" xml:space="preserve">
-    <value>Libertad Civil</value>
-    <comment>Faction state CivilLiberty</comment>
-  </data>
-  <data name="Incursion" xml:space="preserve">
-    <value>Incursión</value>
-    <comment>Faction state Incursion</comment>
-  </data>
-  <data name="PirateAttack" xml:space="preserve">
-    <value>Ataque Pirata</value>
-    <comment>Faction state PirateAttack</comment>
-  </data>
-  <data name="Drought" xml:space="preserve">
-    <value>Sequía</value>
-    <comment>Faction state Drought, but translated as Blight</comment>
-  </data>
-  <data name="Blight" xml:space="preserve">
+  <data name="Blight">
     <value>Plaga</value>
     <comment>Faction state Blight</comment>
+    <source>Blight</source>
   </data>
-  <data name="ColdWar" xml:space="preserve">
+  <data name="Boom">
+    <value>Auge</value>
+    <comment>Faction state Boom</comment>
+    <source>Boom</source>
+  </data>
+  <data name="Bust">
+    <value>Quiebra</value>
+    <comment>Faction state Bust</comment>
+    <source>Bust</source>
+  </data>
+  <data name="CivilLiberty">
+    <value>Libertad Civil</value>
+    <comment>Faction state CivilLiberty</comment>
+    <source>Civil Liberty</source>
+  </data>
+  <data name="CivilUnrest">
+    <value>Desórdenes públicos</value>
+    <comment>Faction state CivilUnrest</comment>
+    <source>Civil Unrest</source>
+  </data>
+  <data name="CivilWar">
+    <value>Guerra civil</value>
+    <comment>Faction state CivilWar</comment>
+    <source>Civil War</source>
+  </data>
+  <data name="ColdWar">
     <value>Guerra Fría</value>
     <comment>Faction state ColdWar</comment>
+    <source>Cold War</source>
   </data>
-  <data name="Colonisation" xml:space="preserve">
+  <data name="Colonisation">
     <value>Colonización</value>
     <comment>Faction state Colonisation</comment>
+    <source>Colonisation</source>
   </data>
-  <data name="HistoricEvent" xml:space="preserve">
+  <data name="Drought">
+    <value>Sequía</value>
+    <comment>Faction state Drought, but translated as Blight</comment>
+    <source>Drought</source>
+  </data>
+  <data name="Election">
+    <value>Elecciones</value>
+    <comment>Faction state Election</comment>
+    <source>Election</source>
+  </data>
+  <data name="Expansion">
+    <value>Expansión</value>
+    <comment>Faction state Expansion</comment>
+    <source>Expansion</source>
+  </data>
+  <data name="Famine">
+    <value>Hambruna</value>
+    <comment>Faction state Famine</comment>
+    <source>Famine</source>
+  </data>
+  <data name="HistoricEvent">
     <value>Evento Histórico</value>
     <comment>Faction state HistoricEvent</comment>
+    <source>Historic Event</source>
   </data>
-  <data name="InfrastructureFailure" xml:space="preserve">
+  <data name="Incursion">
+    <value>Incursión</value>
+    <comment>Faction state Incursion</comment>
+    <source>Incursion</source>
+  </data>
+  <data name="InfrastructureFailure">
     <value>Fallo de Infraestructura</value>
     <comment>Faction state InfrastructureFailure</comment>
+    <source>Infrastructure Failure</source>
   </data>
-  <data name="NaturalDisaster" xml:space="preserve">
+  <data name="Investment">
+    <value>Inversión</value>
+    <comment>Faction state Investment</comment>
+    <source>Investment</source>
+  </data>
+  <data name="Lockdown">
+    <value>Bloqueo</value>
+    <comment>Faction state Lockdown</comment>
+    <source>Lockdown</source>
+  </data>
+  <data name="NaturalDisaster">
     <value>Desastre Natural</value>
     <comment>Faction state NaturalDisaster</comment>
+    <source>Natural Disaster</source>
   </data>
-  <data name="PublicHoliday" xml:space="preserve">
+  <data name="None">
+    <value>Ninguno</value>
+    <comment>Faction state None</comment>
+    <source>None</source>
+  </data>
+  <data name="Outbreak">
+    <value>Epidemia</value>
+    <comment>Faction state Outbreak</comment>
+    <source>Outbreak</source>
+  </data>
+  <data name="PirateAttack">
+    <value>Ataque Pirata</value>
+    <comment>Faction state PirateAttack</comment>
+    <source>Pirate Attack</source>
+  </data>
+  <data name="PublicHoliday">
     <value>Fiesta Popular</value>
     <comment>Faction state PublicHoliday</comment>
+    <source>Public Holiday</source>
   </data>
-  <data name="Revolution" xml:space="preserve">
+  <data name="Retreat">
+    <value>Retirada</value>
+    <comment>Faction state Retreat</comment>
+    <source>Retreat</source>
+  </data>
+  <data name="Revolution">
     <value>Revolución</value>
     <comment>Faction state Revolution</comment>
+    <source>Revolution</source>
   </data>
-  <data name="TechnologicalLeap" xml:space="preserve">
+  <data name="TechnologicalLeap">
     <value>Salto Tecnológico</value>
     <comment>Faction state TechnologicalLeap</comment>
+    <source>Technological Leap</source>
   </data>
-  <data name="Terrorism" xml:space="preserve">
+  <data name="Terrorism">
     <value>Terrorismo</value>
     <comment>Faction state Terrorism</comment>
+    <source>Terrorism</source>
   </data>
-  <data name="TradeWar" xml:space="preserve">
-    <value>Guerra Comercial</value>
-    <comment>Faction state TradeWar</comment>
-  </data>
-  <data name="Thargoid_Probing" xml:space="preserve">
-    <value>Alerta Targoide</value>
-    <comment>Faction state Thargoid_Probing</comment>
-  </data>
-  <data name="Thargoid_Harvest" xml:space="preserve">
-    <value>Invasión Targoide</value>
-    <comment>Faction state Thargoid_Harvest</comment>
-  </data>
-  <data name="Thargoid_Controlled" xml:space="preserve">
+  <data name="Thargoid_Controlled">
     <value>Control Targoide</value>
     <comment>Faction state Thargoid_Controlled</comment>
+    <source>Thargoid Controlled</source>
   </data>
-  <data name="Thargoid_Stronghold" xml:space="preserve">
-    <value>Vorágine Targoide</value>
-    <comment>Faction state Thargoid_Stronghold</comment>
+  <data name="Thargoid_Harvest">
+    <value>Invasión Targoide</value>
+    <comment>Faction state Thargoid_Harvest</comment>
+    <source>Thargoid Invasion</source>
   </data>
-  <data name="Thargoid_Recovery" xml:space="preserve">
+  <data name="Thargoid_Probing">
+    <value>Alerta Targoide</value>
+    <comment>Faction state Thargoid_Probing</comment>
+    <source>Thargoid Alert</source>
+  </data>
+  <data name="Thargoid_Recovery">
     <value>Recuperación Post-Targoide</value>
     <comment>Faction state Thargoid_Recovery</comment>
+    <source>Post-Thargoid Recovery</source>
+  </data>
+  <data name="Thargoid_Stronghold">
+    <value>Vorágine Targoide</value>
+    <comment>Faction state Thargoid_Stronghold</comment>
+    <source>Thargoid Maelstrom</source>
+  </data>
+  <data name="TradeWar">
+    <value>Guerra Comercial</value>
+    <comment>Faction state TradeWar</comment>
+    <source>Trade War</source>
+  </data>
+  <data name="War">
+    <value>Guerra</value>
+    <comment>Faction state War</comment>
+    <source>War</source>
   </data>
 </root>

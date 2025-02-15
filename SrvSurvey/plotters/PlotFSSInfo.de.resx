@@ -28,7 +28,6 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
                 <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
-                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -66,7 +65,6 @@
     <comment>Line prefix showing the count of genus on a body
 {0} int, count of genus</comment>
     <source>{0} Genus</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="CountGeo">
     <!--Machine translated-->
@@ -74,14 +72,12 @@
     <comment>Line suffix showing the count of geo signals on a body
 {0} int, count of geo signals</comment>
     <source>{0} Geo</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Footer1">
     <!--Machine translated-->
     <value>Scan-Wert | DSS-Wert</value>
     <comment>First footer line with guidance</comment>
     <source>Scan value | DSS value</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Footer2">
     <!--Machine translated-->
@@ -90,7 +86,6 @@
     <comment>More footer lines with guidance</comment>
     <source>🌎 Terraformable
 🚀 Landable ⚑ Undiscovered</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HidingBodies">
     <!--Machine translated-->
@@ -98,7 +93,6 @@
     <comment>Line showing minimum credit value needed for bodies to be shown in the list that follows
 {0} string, min value of credits</comment>
     <source>( Hiding bodies &lt; {0} )</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScannedAllBodies">
     <!--Machine translated-->
@@ -107,7 +101,6 @@
 {0} int, count of bodies
 {1} string, value of credits</comment>
     <source>Scanned all {0} bodies: {1}</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScannedBodies">
     <!--Machine translated-->
@@ -116,13 +109,11 @@
 {0} int, count of bodies
 {1} string, value of credits</comment>
     <source>Scanned {0} bodies: {1}</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScanToPopulate">
     <!--Machine translated-->
     <value>(zum Befüllen scannen)</value>
     <comment>Warning message line shown when a scan is needed</comment>
     <source>(scan to populate)</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

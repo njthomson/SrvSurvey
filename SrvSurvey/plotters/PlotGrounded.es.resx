@@ -28,7 +28,6 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
                 <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
-                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -64,54 +63,45 @@
     <value>Proximidad a la distancia de salida del barco</value>
     <comment>Warning shown when nearing ship departure distance</comment>
     <source>Nearing ship departure distance</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScanOne_Long">
     <value>Escaneo uno:</value>
     <comment>Prefix to bearing and distance to scan one</comment>
     <source>Scan one:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScanOne_Short">
     <value>1º:</value>
     <comment>A shorter prefix to bearing and distance to scan one, when window is too narrow</comment>
     <source>1st:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScanOneInvalid">
     <value>Escaneo uno: no válido</value>
     <comment>Warning shown when scan one is not valid</comment>
     <source>Scan one: invalid</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScanTwo_Long">
     <value>Escaneo dos:</value>
     <comment>Prefix to bearing and distance to scan two</comment>
     <source>Scan two:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScanTwo_Short">
     <value>2º:</value>
     <comment>A shorter prefix to bearing and distance to scan two, when window is too narrow</comment>
     <source>2nd:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ScanTwoInvalid">
     <value>Escaneo dos: no válido</value>
     <comment>Warning shown when scan two is not valid</comment>
     <source>Scan two: invalid</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Ship">
     <value>Nave:</value>
     <comment>Prefix to bearing and distance to the ship</comment>
     <source>Ship:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="SRV">
     <value>VRS:</value>
     <comment>Prefix to bearing and distance to SRV</comment>
     <source>SRV:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

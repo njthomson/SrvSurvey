@@ -28,7 +28,6 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
                 <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
-                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -65,132 +64,113 @@
     <value>Dans gal-map, copiez le système de recherche de boxel suivant dans le presse-papiers.</value>
     <comment>A description of a key-chord setting</comment>
     <source>In gal-map, copy the next boxel search system to clipboard.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="mapBeHuge">
     <!--Machine translated-->
     <value>Bascule pour que la carte remplisse la moitié de l’écran, uniquement pour les établissements humains.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Toggles making the map fill half the screen, at Human settlements only.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="mapZoomAuto">
     <!--Machine translated-->
     <value>Réinitialisez le zoom par défaut, sur les sites Humains et Gardiens.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Reset the zoom to default, at Human and Guardian sites.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="mapZoomIn">
     <!--Machine translated-->
     <value>Zoomez sur les cartes des sites des Humains et des Gardiens.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Zoom in on maps at Human and Guardian sites.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="mapZoomOut">
     <!--Machine translated-->
     <value>Zoom arrière sur les cartes des sites humains et gardiens.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Zoom out on maps at Human and Guardian sites.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="pasteGalMap">
     <!--Machine translated-->
     <value>Coller le texte du presse-papiers dans Gal-Map</value>
     <comment>A description of a key-chord setting</comment>
     <source>Paste clipboard text when in Gal-Map</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="showBodyInfo">
     <!--Machine translated-->
     <value>Forcez l’affichage de la superposition d’informations sur le corps.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force show the Body info overlay.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="showFssInfo">
     <!--Machine translated-->
     <value>Forcer l’affichage de la superposition d’informations FSS.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force show the FSS info overlay.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="showJumpInfo">
     <!--Machine translated-->
     <value>Forcez le basculement de la superposition de saut FSD sans commencer à sauter.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force toggle the FSD jump overlay without starting to jump.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="showSystemNotes">
     <!--Machine translated-->
     <value>Rendez la fenêtre des notes système visible.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Make the system notes window visible.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="toggleAllVisibility">
     <!--Machine translated-->
     <value>Bascule la visibilité de toutes les fenêtres de superposition.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Toggles visibility of all overlay windows.</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track1">
     <!--Machine translated-->
     <value>Ajouter ou supprimer le tracker #1</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #1</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track2">
     <!--Machine translated-->
     <value>Ajouter ou supprimer le tracker #2</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #2</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track3">
     <!--Machine translated-->
     <value>Ajouter ou supprimer le tracker #3</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #3</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track4">
     <!--Machine translated-->
     <value>Ajouter ou supprimer le tracker #4</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #4</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track5">
     <!--Machine translated-->
     <value>Ajouter ou supprimer le tracker #5</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #5</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track6">
     <!--Machine translated-->
     <value>Ajouter ou supprimer le tracker #6</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #6</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track7">
     <!--Machine translated-->
     <value>Ajouter ou supprimer le tracker #7</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #7</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="track8">
     <!--Machine translated-->
     <value>Ajouter ou supprimer le tracker #8</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #8</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

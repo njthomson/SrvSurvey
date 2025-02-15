@@ -1,0 +1,3 @@
+/forms/FormSphereLimit.ru.resx
+	label4.Text
+	$this.Text

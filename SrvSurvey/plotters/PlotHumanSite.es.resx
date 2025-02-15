@@ -28,7 +28,6 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
                 <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
-                <xsd:element name="updated" type="xsd:string" minOccurs="0" msdata:Ordinal="4" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -64,122 +63,102 @@
     <value>Caza desplegado</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Fighter is active</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="AGRI">
     <value>AGRI</value>
     <comment>A contraction of Agriculture, ideally 3 letters</comment>
     <source>AGRI</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="AutoDock1">
     <value>Aterrizaje automático en curso</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Auto dock in progress</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="AutoDock2">
     <value>Compatible con la auto-identificación de asentamiento</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Settlement auto-identification supported</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="AutoDock3">
     <value>No cambie a una cámara externa</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Do not switch to external camera</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="CMD">
     <value>CMD</value>
     <comment>A contraction of Command, ideally 3 letters</comment>
     <source>CMD</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Distance">
     <value>Demasiado lejos</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Too far away</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="DockingApproved">
     <value>Aterrizaje aceptado: plataforma #{0}</value>
     <comment>Shown when approaching a settlement
 {0} int, the pad number assigned</comment>
     <source>Docking approved: pad #{0}</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="DockingDenied">
     <value>Aterrizaje denegado</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Docking denied</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="DockingRequested">
     <value>Aterrizaje solicitado</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Docking requested</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="EXT">
     <value>EXT</value>
     <comment>A contraction of External, ideally 3 letters</comment>
     <source>EXT</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Faction">
     <value>Facción</value>
     <comment>Prefix shown when approaching a settlement</comment>
     <source>Faction</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Government">
     <value>Gobierno</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Government</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HAB">
     <value>HAB</value>
     <comment>A contraction of Habitat, ideally 3 letters</comment>
     <source>HAB</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HasInterstellar">
     <value>Facciones interestelares disponibles</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Interstellar factions available</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpFoot0">
     <value>Para identificar manualmente:</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>To manually identify:</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpFoot1">
     <value>1. Camina hasta el centro de cualquier plataforma de aterrizaje y agáchate</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>1. Walk to the center of any landing pad and crouch</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpFoot2">
     <value>2. Coloca el pie izquierdo sobre las ranuras centrales</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>2. Place your left foot over the the center grooves</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpFoot3">
     <value>3. Gira a la izquierda y mira las marcas en forma de V que tienes delante</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>3. Face with the chevrons ahead to your left</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpFoot4">
     <value>4. Apunta al final de la ranura que está delante de ti</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>4. Aim at the end of the groove ahead of you</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpFoot5">
     <value>5. Envía el mensaje '{0}'</value>
@@ -187,179 +166,150 @@
       Shown when landed and help is needed on foot
 {0} string, the non-localized command to type</comment>
     <source>5. Send message '{0}'</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpFoot6">
     <value>Consulta la wiki para más información</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>See the wiki for more info</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpShip1">
     <value>El asentamiento será identificado tras la próxima acción</value>
     <comment>Shown when landed and help is needed in a ship</comment>
     <source>Settlement will be identified after next action</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpShip2">
     <value>Para identificar manualmente</value>
     <comment>Shown when landed and help is needed in a ship</comment>
     <source>To manually identify</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="HelpShip3">
     <value>Envía '{0}' cuando estés aterrizado</value>
     <comment>Shown when landed and help is needed in a ship
 {0} string, the non-localized command to type</comment>
     <source>Send '{0}' when docked</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Hostile">
     <value>Hostil</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Hostile</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="IND">
     <value>IND</value>
     <comment>A contraction of Industrial Processing, ideally 3 letters</comment>
     <source>IND</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Influence">
     <value>Influencia</value>
     <comment>Prefix shown when approaching a settlement</comment>
     <source>Influence</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="KnownSettlement">
     <value>Asentamiento conocido</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Known settlement</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="LAB">
     <value>LAB</value>
     <comment>A contraction of Laboratory, ideally 3 letters</comment>
     <source>LAB</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ManualDock1">
     <value>Aterrizaje manual en curso</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Manual docking in progress</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ManualDock2">
     <value>La identificación del asentamiento se retrasará</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Settlement identification will be delayed</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ManualDock3">
     <value>Se recomienda el aterrizaje automático</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Auto dock recommended</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="MED">
     <value>MED</value>
     <comment>A contraction of Medical, ideally 3 letters</comment>
     <source>MED</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="NoSpace">
     <value>No hay plataformas disponibles</value>
     <comment>Shown when approaching a settlement</comment>
     <source>No pads available</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Offenses">
     <value>Ofensas</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Offenses</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="OnApproach">
     <value>Aproximándose</value>
     <comment>Shown when approaching a settlement</comment>
     <source>On approach</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="POW">
     <value>POW</value>
     <comment>A contraction of Power Center, ideally 3 letters</comment>
     <source>POW</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="PWR">
     <value>PWR</value>
     <comment>A contraction of Power Center, ideally 3 letters</comment>
     <source>PWR</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="RES">
     <value>RES</value>
     <comment>A contraction of Resources, ideally 3 letters</comment>
     <source>RES</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="STO">
     <value>STO</value>
     <comment>A contraction of Storage, ideally 3 letters</comment>
     <source>STO</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="TooLarge">
     <value>Nave demasiado grande</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Ship too large</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="Unknown">
     <value>Desconocido</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Unknown</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="UnknownTypeHeading">
     <value>Tipo de asentamiento y orientación desconocidos</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Unknown settlement type and heading</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="UnkownHeading">
     <value>Orientación del asentamiento desconocida</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Unknown settlement heading</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="YourRep">
     <value>Tu reputación: {0}</value>
     <comment>Shown when approaching a settlement
 {0} string, your reputation with a faction</comment>
     <source>Your reputation: {0}</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ZoomHeader">
     <value>Zoom: {0}</value>
     <comment>Map zoom level, shown in top right corner
 {0} float, 1 decimal place, the map zoom level</comment>
     <source>Zoom: {0}</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ZoomHeaderAuto">
     <value>Zoom: {0} (automático)</value>
     <comment>Map zoom level when auto zooming, shown in top right corner
 {0} float, 1 decimal place, the map zoom level</comment>
     <source>Zoom: {0} (Auto)</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
   <data name="ZoomHeaderMin">
     <value>Z: {0}</value>
     <comment>A minimal map zoom level, shown in top right corner when there's not much space
 {0} float, 1 decimal place, the map zoom level</comment>
     <source>Z: {0}</source>
-    <updated>2025-02-14T16:00:00Z</updated>
   </data>
 </root>

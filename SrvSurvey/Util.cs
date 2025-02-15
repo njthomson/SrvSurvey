@@ -1267,8 +1267,16 @@ namespace SrvSurvey
         }
 
         /// <summary>
+        /// string.Join's the enumeration using separator prefixed by the header+separator
+        /// </summary>
+        public static string formatWithHeader<T>(this IEnumerable<T> values, string header, string separator)
+        {
+            return header + separator + string.Join(separator, values);
+        }
+
+        /// <summary>
         /// Supports basic string matching using wild-cards in the form of: "*foo", "foo*", "*foo*" or just "foo"
-        /// </summary>        
+        /// </summary>
         public static bool matches(this string txt, string query)
         {
             if (query.StartsWith('*') && query.EndsWith('*'))
