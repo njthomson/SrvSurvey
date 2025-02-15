@@ -153,7 +153,7 @@ namespace SrvSurvey.plotters
                 if (scan.body.terraformable || scan.body.planetClass?.StartsWith("Earth") == true) suffixes.Add("🌎");
                 if (scan.body.type == SystemBodyType.LandableBody) suffixes.Add("🚀");
                 if (scan.body.firstFootFall) suffixes.Add("🦶");
-                if (suffixes.Count > 0) txt += $" {string.Join(',', suffixes)}";
+                if (suffixes.Count > 0) txt += $" {string.Join(' ', suffixes)}";
                 if (scan.body.type == SystemBodyType.Star)
                     txt = $"{prefix}{scan.body.shortName} - {scan.body.starType} Star";
 

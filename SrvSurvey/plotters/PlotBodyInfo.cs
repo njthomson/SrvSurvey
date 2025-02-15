@@ -138,7 +138,7 @@ namespace SrvSurvey.plotters
             // temp | planetClass
             var tempText = RES("Temp", temp);
             var gravText = RES("Gravity", gravity);
-            var indent1 = ten + Util.maxWidth(this.Font, tempText, gravText);
+            var indent1 = twenty + Util.maxWidth(this.Font, tempText, gravText);
             if (body.type != SystemBodyType.Asteroid)
             {
                 dty += four;
@@ -154,7 +154,7 @@ namespace SrvSurvey.plotters
                 // if (body.surfaceGravity > 2.69) gravity = "🚫 " + gravity; // show a warning icon if body gravity is too high to exit ships/SRV
                 drawTextAt2(eight, gravText, isHighGravity ? GameColors.red : null);
                 var pressure = RES("PressureValue", (body.surfacePressure / 100_000f).ToString("N4"));
-                if (pressure == RES("PressureValue", 0)) pressure = RES("PressureNone");
+                if (pressure == RES("PressureValue", 0.ToString("N4"))) pressure = RES("None");
                 if (pressure != RES("None") || body.type == SystemBodyType.LandableBody)
                     drawTextAt2(indent1, RES("Pressure", pressure));
                 newLine(+four, true);

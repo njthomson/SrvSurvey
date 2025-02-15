@@ -48,7 +48,7 @@ Both files are formatted as:
     <resource name 20>
 ```
 
-See files [_loc-de-needed.txt](_loc-de-needed.txt) or [_loc-es-needed.txt](_loc-fr-missing.txt).
+See files [_loc-de-needed.txt](_loc-de-needed.txt) or [_loc-es-needed.txt](_loc-fr-missing.txt). These files will be auto updated and do not need to be hand edited.
  
 ## Pseudo language
 The language `ps` is for pseudo, being non-translations of English that are excessively long, obviously different but still readable. All `*.ps.resx` files are fully generated and should be ignored.
