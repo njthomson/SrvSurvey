@@ -107,6 +107,8 @@
             resources.ApplyResources(comboSystemName, "comboSystemName");
             comboSystemName.FormattingEnabled = true;
             comboSystemName.Name = "comboSystemName";
+            comboSystemName.SelectedSystem = null;
+            comboSystemName.updateOnJump = false;
             comboSystemName.SelectedIndexChanged += comboSystemName_SelectedIndexChanged;
             // 
             // btnDisable

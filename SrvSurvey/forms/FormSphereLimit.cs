@@ -1,6 +1,5 @@
 ﻿using SrvSurvey.forms;
 using SrvSurvey.game;
-using SrvSurvey.net;
 using SrvSurvey.Properties;
 using SrvSurvey.units;
 

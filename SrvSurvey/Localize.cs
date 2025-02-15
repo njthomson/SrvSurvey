@@ -9,9 +9,13 @@ namespace SrvSurvey
 {
     internal static class Localize
     {
+        /// <summary> The time, granular to the hour the process was started, for a more approximate timestamp </summary>
+        private static string approxNow = DateTimeOffset.Now.ToString("yyyy-MM-ddTHH:00:00Z");
+
         private static string? key = Environment.GetEnvironmentVariable("trans-srv");
         private static string endpoint = "https://api.cognitive.microsofttranslator.com";
         private static string location = "westus";
+        private static XName ordinal = XName.Get("{urn:schemas-microsoft-com:xml-msdata}Ordinal");
 
         public static Dictionary<string, string> supportedLanguages = new()
         {
@@ -97,10 +101,6 @@ namespace SrvSurvey
             }
         }
 
-        /// <summary> The time, granular to the hour the process was started, for a more approximate timestemp </summary>
-        private static readonly string approxNow = DateTimeOffset.Now.ToString("yyyy-MM-ddTHH:00:00Z");
-        private static readonly XName ordinal = XName.Get("{urn:schemas-microsoft-com:xml-msdata}Ordinal");
-
         private static async Task translateResx(string sourceFilepath, string targetLang)
         {
             if (!File.Exists(sourceFilepath)) throw new FileNotFoundException($"File not found: {sourceFilepath}");
@@ -126,16 +126,7 @@ namespace SrvSurvey
             var sourceNodes = sourceDoc.Root?.Elements().Where(_ => _.Name.LocalName == "data")!;
             if (sourceNodes == null) return;
 
-            // inject 2 entries into the XSD so that our new elements are deemed valid
-            var commentElement = newTargetDoc.Root!.Descendants().Where(_ => _.Name.LocalName == "element" && _.FirstAttribute?.Value == "comment").First();
-            var sourceElement = new XElement(commentElement);
-            sourceElement.SetAttributeValue("name", "source");
-            sourceElement.SetAttributeValue(ordinal, "3");
-            commentElement.Parent?.Add(sourceElement);
-            var updatedElement = new XElement(commentElement);
-            updatedElement.SetAttributeValue("name", "updated");
-            updatedElement.SetAttributeValue(ordinal, "4");
-            commentElement.Parent?.Add(updatedElement);
+            injectNewSchemaElements(newTargetDoc);
 
             var count = 0;
             foreach (var element in sourceNodes)
@@ -155,10 +146,9 @@ namespace SrvSurvey
                 // build a replacement node
                 var newNode = new XElement("data");
                 newNode.SetAttributeValue("name", resourceName);
-                newNode.Add(new XElement("value", ""));
-                if (commentText != null)
-                    newNode.Add(new XElement("comment", commentText));
-                newNode.Add(new XElement("source", sourceText));
+                newNode.SetElementValue("value", "");
+                if (commentText != null) newNode.SetElementValue("comment", commentText);
+                newNode.SetElementValue("source", sourceText);
                 targetNode.ReplaceWith(newNode);
                 targetNode = newNode;
 
@@ -166,24 +156,28 @@ namespace SrvSurvey
                 var oldTargetNode = oldTargetDoc?.Root?.Elements().Where(_ => _.Name.LocalName == "data" && _.FirstAttribute?.Value == resourceName).FirstOrDefault();
                 var oldTranslation = oldTargetNode?.Element("value")?.Value;
                 var oldSource = oldTargetNode?.Element("source")?.Value ?? oldTargetNode?.Element("comment")?.Value;
+                var oldUpdated = oldTargetNode?.Element("updated")?.Value;
 
-                //if (resourceName == "Tussock") Debugger.Break();
+                var shouldTranslate = oldTargetNode == null || (oldTargetNode.FirstNode as XComment)?.Value == "Machine translated";
 
-                // replace elements when we're first creating the .resx file
-                if (!string.IsNullOrEmpty(oldTranslation))
-                    targetNode.SetElementValue("value", oldTranslation);
+                //if (resourceName == "RouteProgress") Debugger.Break();
 
-                // ensure everything has an updated value at least once
-                if (targetNode.Element("updated") == null) targetNode.SetElementValue("updated", Localize.approxNow);
+                // initialize with the old values
+                if (oldTranslation != null) targetNode.SetElementValue("value", oldTranslation);
+                targetNode.SetElementValue("updated", oldUpdated ?? Localize.approxNow);
 
-                // skip anything that hasn't changed
+                // skip anything we should not translate
+                if (!shouldTranslate) continue;
+                targetNode.AddFirst(new XComment("Machine translated"));
+
+                // skip anything where source has not changed
                 if (oldSource == sourceText && !string.IsNullOrEmpty(oldTranslation)) continue;
 
                 // presume translate to pseudo
                 var translation = $"* {sourceText.ToUpperInvariant()} →→→!";
 
                 // or translate into a real language
-                if (targetLang != "ps") // && oldTargetDoc != null)
+                if (targetLang != "ps")
                 {
                     translation = await translateString(sourceText, targetLang);
                     if (string.IsNullOrEmpty(translation))
@@ -202,6 +196,22 @@ namespace SrvSurvey
             // Save and sort it
             Game.log($"Updated {count,3} of {sourceNodes.Count(),3} '{targetLang}' resources in " + Path.GetFileNameWithoutExtension(sourceFilepath));
             alphaSortResx(newTargetDoc, targetFilepath);
+        }
+
+        /// <summary> Inject into the XSD so that our new elements are deemed valid </summary>
+        private static void injectNewSchemaElements(XDocument newTargetDoc)
+        {
+            // new elements: source and updated
+            var commentElement = newTargetDoc.Root!.Descendants().Where(_ => _.Name.LocalName == "element" && _.FirstAttribute?.Value == "comment").First();
+            var sourceElement = new XElement(commentElement);
+            sourceElement.SetAttributeValue("name", "source");
+            sourceElement.SetAttributeValue(ordinal, "3");
+            commentElement.Parent?.Add(sourceElement);
+
+            var updatedElement = new XElement(commentElement);
+            updatedElement.SetAttributeValue("name", "updated");
+            updatedElement.SetAttributeValue(ordinal, "4");
+            commentElement.Parent?.Add(updatedElement);
         }
 
         private static void alphaSortResx(string filepath)

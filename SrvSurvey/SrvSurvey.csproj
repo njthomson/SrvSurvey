@@ -128,6 +128,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>FactionStates.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\FormRouteExtras.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>FormRouteExtras.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Icons.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -171,6 +176,10 @@
     <EmbeddedResource Update="Properties\FactionStates.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>FactionStates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\FormRouteExtras.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>FormRouteExtras.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Icons.resx">
       <Generator>ResXFileCodeGenerator</Generator>

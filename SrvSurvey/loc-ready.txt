@@ -4,6 +4,8 @@ Economies.resx
 FactionStates.resx
 FormBoxelSearch.resx
 FormGroundTarget.resx
+FormRoute.resx
+FormRouteExtras.resx
 FormSetKeyChord.resx
 FormSphereLimit.resx
 KeyChords.resx
