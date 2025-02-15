@@ -1,64 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -117,184 +58,229 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Aleoida" xml:space="preserve">
-    <value>Aleoida</value>
+  <data name="Aleoida">
+    <value>Aleoida{阿莱奥伊达}</value>
     <comment>An Odyssey genus name</comment>
+    <source>Aleoida</source>
   </data>
-  <data name="Amethyst" xml:space="preserve">
-    <value>Amethyst</value>
+  <data name="Amethyst">
+    <value>Amethyst(紫晶)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Amethyst</source>
   </data>
-  <data name="Amphora Plant" xml:space="preserve">
-    <value>Amphora Plant</value>
+  <data name="Amphora Plant">
+    <value>Amphora Plant{安福拉植物}</value>
     <comment>A Horizons genus/species name</comment>
+    <source>Amphora Plant</source>
   </data>
-  <data name="Aquamarine" xml:space="preserve">
-    <value>Aquamarine</value>
+  <data name="Aquamarine">
+    <value>Aquamarine(蓝晶)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Aquamarine</source>
   </data>
-  <data name="Bacterium" xml:space="preserve">
-    <value>Bacterium</value>
+  <data name="Bacterium">
+    <value>Bacterium(细菌)</value>
     <comment>An Odyssey genus name</comment>
+    <source>Bacterium</source>
   </data>
-  <data name="Bark Mounds" xml:space="preserve">
-    <value>Bark Mounds</value>
+  <data name="Bark Mounds">
+    <value>Bark Mounds(树皮丘)</value>
     <comment>A Horizons genus/species name</comment>
+    <source>Bark Mounds</source>
   </data>
-  <data name="Blue" xml:space="preserve">
-    <value>Blue</value>
+  <data name="Blue">
+    <value>Blue(蓝色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Blue</source>
   </data>
-  <data name="Brain Trees" xml:space="preserve">
-    <value>Brain Trees</value>
+  <data name="Brain Trees">
+    <value>Brain Trees(脑树)</value>
     <comment>A Horizons genus/species name</comment>
+    <source>Brain Trees</source>
   </data>
-  <data name="Cactoida" xml:space="preserve">
-    <value>Cactoida</value>
+  <data name="Cactoida">
+    <value>Cactoida{卡克托伊达}</value>
     <comment>An Odyssey genus name</comment>
+    <source>Cactoida</source>
   </data>
-  <data name="Clypeus" xml:space="preserve">
-    <value>Clypeus</value>
+  <data name="Clypeus">
+    <value>Clypeus{克莱佩斯}</value>
     <comment>An Odyssey genus name</comment>
+    <source>Clypeus</source>
   </data>
-  <data name="Cobalt" xml:space="preserve">
-    <value>Cobalt</value>
+  <data name="Cobalt">
+    <value>Cobalt(钴蓝色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Cobalt</source>
   </data>
-  <data name="Concha" xml:space="preserve">
-    <value>Concha</value>
+  <data name="Concha">
+    <value>Concha{康查}</value>
     <comment>An Odyssey genus name</comment>
+    <source>Concha</source>
   </data>
-  <data name="Crystalline Shards" xml:space="preserve">
-    <value>Crystalline Shards</value>
+  <data name="Crystalline Shards">
+    <value>Crystalline Shards(结晶碎片)</value>
     <comment>A Horizons genus/species name</comment>
+    <source>Crystalline Shards</source>
   </data>
-  <data name="Cyan" xml:space="preserve">
-    <value>Cyan</value>
+  <data name="Cyan">
+    <value>Cyan(青色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Cyan</source>
   </data>
-  <data name="Electricae" xml:space="preserve">
-    <value>Electricae</value>
+  <data name="Electricae">
+    <value>Electricae{伊莱克特里克}</value>
     <comment>An Odyssey genus name</comment>
+    <source>Electricae</source>
   </data>
-  <data name="Emerald" xml:space="preserve">
-    <value>Emerald</value>
+  <data name="Emerald">
+    <value>Emerald(翡翠绿)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Emerald</source>
   </data>
-  <data name="Fonticulua" xml:space="preserve">
-    <value>Fonticulua</value>
+  <data name="Fonticulua">
+    <value>Fonticulua{枫蒂库鲁亚}</value>
     <comment>An Odyssey genus name</comment>
+    <source>Fonticulua</source>
   </data>
-  <data name="Frutexa" xml:space="preserve">
-    <value>Frutexa</value>
+  <data name="Frutexa">
+    <value>Frutexa{弗鲁特克萨}</value>
     <comment>An Odyssey genus name</comment>
+    <source>Frutexa</source>
   </data>
-  <data name="Fumerola" xml:space="preserve">
-    <value>Fumerola</value>
+  <data name="Fumerola">
+    <value>Fumerola{富梅洛拉}</value>
     <comment>An Odyssey genus name</comment>
+    <source>Fumerola</source>
   </data>
-  <data name="Fungoida" xml:space="preserve">
-    <value>Fungoida</value>
+  <data name="Fungoida">
+    <value>Fungoida(真菌)</value>
     <comment>An Odyssey genus name</comment>
+    <source>Fungoida</source>
   </data>
-  <data name="Gold" xml:space="preserve">
-    <value>Gold</value>
+  <data name="Gold">
+    <value>Gold(金色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Gold</source>
   </data>
-  <data name="Green" xml:space="preserve">
-    <value>Green</value>
+  <data name="Green">
+    <value>Green(绿色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Green</source>
   </data>
-  <data name="Grey" xml:space="preserve">
-    <value>Grey</value>
+  <data name="Grey">
+    <value>Grey(灰色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Grey</source>
   </data>
-  <data name="Indigo" xml:space="preserve">
-    <value>Indigo</value>
+  <data name="Indigo">
+    <value>Indigo(靛蓝色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Indigo</source>
   </data>
-  <data name="Lime" xml:space="preserve">
-    <value>Lime</value>
+  <data name="Lime">
+    <value>Lime(青柠色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Lime</source>
   </data>
-  <data name="Luteolum Anemone" xml:space="preserve">
-    <value>Luteolum Anemone</value>
+  <data name="Luteolum Anemone">
+    <value>Luteolum Anemone(黄海葵)</value>
     <comment>A Horizons genus/species name</comment>
+    <source>Luteolum Anemone</source>
   </data>
-  <data name="Magenta" xml:space="preserve">
-    <value>Magenta</value>
+  <data name="Magenta">
+    <value>Magenta(洋红色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Magenta</source>
   </data>
-  <data name="Maroon" xml:space="preserve">
-    <value>Maroon</value>
+  <data name="Maroon">
+    <value>Maroon(栗色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Maroon</source>
   </data>
-  <data name="Mauve" xml:space="preserve">
-    <value>Mauve</value>
+  <data name="Mauve">
+    <value>Mauve(淡紫色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Mauve</source>
   </data>
-  <data name="Mulberry" xml:space="preserve">
-    <value>Mulberry</value>
+  <data name="Mulberry">
+    <value>Mulberry(桑葚色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Mulberry</source>
   </data>
-  <data name="Ocher" xml:space="preserve">
-    <value>Ocher</value>
+  <data name="Ocher">
+    <value>Ocher(赭石色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Ocher</source>
   </data>
-  <data name="Orange" xml:space="preserve">
-    <value>Orange</value>
+  <data name="Orange">
+    <value>Orange(橙色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Orange</source>
   </data>
-  <data name="Osseus" xml:space="preserve">
-    <value>Osseus</value>
+  <data name="Osseus">
+    <value>Osseus(骨质)</value>
     <comment>An Odyssey genus name</comment>
+    <source>Osseus</source>
   </data>
-  <data name="Peach" xml:space="preserve">
-    <value>Peach</value>
+  <data name="Peach">
+    <value>Peach(桃色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Peach</source>
   </data>
-  <data name="Recepta" xml:space="preserve">
-    <value>Recepta</value>
+  <data name="Recepta">
+    <value>Recepta{雷塞普塔}</value>
     <comment>An Odyssey genus name</comment>
+    <source>Recepta</source>
   </data>
-  <data name="Red" xml:space="preserve">
-    <value>Red</value>
+  <data name="Red">
+    <value>Red(红色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Red</source>
   </data>
-  <data name="Sage" xml:space="preserve">
-    <value>Sage</value>
+  <data name="Sage">
+    <value>Sage(鼠尾草色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Sage</source>
   </data>
-  <data name="Sinuous Tubers" xml:space="preserve">
-    <value>Sinuous Tubers</value>
+  <data name="Sinuous Tubers">
+    <value>Sinuous Tubers(蜿蜒块茎)</value>
     <comment>A Horizons genus/species name</comment>
+    <source>Sinuous Tubers</source>
   </data>
-  <data name="Stratum" xml:space="preserve">
-    <value>Stratum</value>
+  <data name="Stratum">
+    <value>Stratum(地层)</value>
     <comment>An Odyssey genus name</comment>
+    <source>Stratum</source>
   </data>
-  <data name="Teal" xml:space="preserve">
-    <value>Teal</value>
+  <data name="Teal">
+    <value>Teal(水鸭色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Teal</source>
   </data>
-  <data name="Tubus" xml:space="preserve">
-    <value>Tubus</value>
+  <data name="Tubus">
+    <value>Tubus{图布斯}</value>
     <comment>An Odyssey genus name</comment>
+    <source>Tubus</source>
   </data>
-  <data name="Turquoise" xml:space="preserve">
-    <value>Turquoise</value>
+  <data name="Turquoise">
+    <value>Turquoise(绿松石色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Turquoise</source>
   </data>
-  <data name="Tussock" xml:space="preserve">
-    <value>Tussock</value>
+  <data name="Tussock">
+    <value>Tussock(草丛)</value>
     <comment>An Odyssey genus name</comment>
+    <source>Tussock</source>
   </data>
-  <data name="White" xml:space="preserve">
-    <value>White</value>
+  <data name="White">
+    <value>White(白色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>White</source>
   </data>
-  <data name="Yellow" xml:space="preserve">
-    <value>Yellow</value>
+  <data name="Yellow">
+    <value>Yellow(黄色)</value>
     <comment>An Odyssey bio signal colour</comment>
+    <source>Yellow</source>
   </data>
 </root>
