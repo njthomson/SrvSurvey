@@ -61,50 +61,60 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="Boxel" xml:space="preserve">
+  <data name="Boxel">
     <value>Boxel:</value>
     <comment>Header before name of boxel we are searching</comment>
+    <source>Boxel:</source>
   </data>
-  <data name="Distance" xml:space="preserve">
-    <value>Distance:</value>
+  <data name="Distance">
+    <value>距离:</value>
     <comment>Header before distance between systems</comment>
+    <source>Distance:</source>
   </data>
-  <data name="DistanceExceeds" xml:space="preserve">
-    <value>{0}ly - exceeds {1} ly</value>
+  <data name="DistanceExceeds">
+    <value>{0}ly - 超限 {1} ly</value>
     <comment>Shown when measured distance exceeds some limit.
 {0} float, 2 decimal places, measured distance between 2 star systems
 {1} float, 2 decimal places, the maximum distance allowed</comment>
+    <source>{0}ly - exceeds {1} ly</source>
   </data>
-  <data name="DistanceWithin" xml:space="preserve">
-    <value>{0} - within {1} ly</value>
+  <data name="DistanceWithin">
+    <value>{0} - 符合 {1} ly</value>
     <comment>Shown when measured distance is within some limit.
 {0} float, 2 decimal places, measured distance between 2 star systems
 {1} float, 2 decimal places, the maximum distance allowed</comment>
+    <source>{0} - within {1} ly</source>
   </data>
-  <data name="From" xml:space="preserve">
-    <value>From:</value>
+  <data name="From">
+    <value>从:</value>
     <comment>Header before name of central star system</comment>
+    <source>From:</source>
   </data>
-  <data name="Next" xml:space="preserve">
-    <value>Next:</value>
+  <data name="Next">
+    <value>下一个:</value>
     <comment>Header before name of next boxel system to visit</comment>
+    <source>Next:</source>
   </data>
-  <data name="To" xml:space="preserve">
-    <value>To:</value>
+  <data name="To">
+    <value>到:</value>
     <comment>Header before name of target star system</comment>
+    <source>To:</source>
   </data>
-  <data name="UnknownDist" xml:space="preserve">
-    <value>Unknown (plot route)</value>
+  <data name="UnknownDist">
+    <value>未知 (规划航线)</value>
     <comment>Message shown when we do not know the distance, but would if the cmdr plots a route</comment>
+    <source>Unknown (plot route)</source>
   </data>
-  <data name="Visited" xml:space="preserve">
-    <value>Visited:</value>
+  <data name="Visited">
+    <value>已访问:</value>
     <comment>Header before count of systems visited</comment>
+    <source>Visited:</source>
   </data>
-  <data name="VisitedOf" xml:space="preserve">
-    <value>{0} ({1} of {2})</value>
+  <data name="VisitedOf">
+    <value>{0} ({1} / {2})</value>
     <comment>{0} int, percentage of systems visited
 {1} int, how many systems we have visited
 {2} int, how many systems total to visit</comment>
+    <source>{0} ({1} of {2})</source>
   </data>
 </root>
