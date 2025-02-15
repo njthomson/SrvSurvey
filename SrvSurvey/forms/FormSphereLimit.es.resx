@@ -439,8 +439,7 @@
     <value>0</value>
   </data>
   <data name="label4.Text">
-    <!--Update needed: ES-->
-    <value>Límite esférico ayuda a navegar por los sistemas dentro de la distancia dada a un sistema central.</value>
+    <value>Límite esférico ayuda a navegar por los sistemas que hay dentro del espacio delimitado por una distancia máxima a un sistema central.</value>
     <source>Spherical searches help navigating around within a given distance of a central system.</source>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
