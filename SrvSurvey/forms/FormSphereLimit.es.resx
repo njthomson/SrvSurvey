@@ -541,8 +541,7 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text">
-    <!--Update needed: ES-->
-    <value>Límite esférico</value>
+    <value>Búsqueda Esférica</value>
     <source>Spherical Search</source>
   </data>
   <data name="txtCurrentDistance.Location" type="System.Drawing.Point, System.Drawing">
