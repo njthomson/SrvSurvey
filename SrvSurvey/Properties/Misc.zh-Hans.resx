@@ -1,64 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -121,196 +62,249 @@
   <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="NetSysData_Bodies" xml:space="preserve">
-    <value>Bodies</value>
+  <data name="NetSysData_Bodies">
+    <value>天体</value>
+    <source>Bodies</source>
   </data>
-  <data name="NetSysData_DiscoveredAll" xml:space="preserve">
-    <value>Discovered, {0} bodies</value>
+  <data name="NetSysData_DiscoveredAll">
+    <value>已发现, {0} 天体</value>
     <comment>{0} int, count of bodies</comment>
+    <source>Discovered, {0} bodies</source>
   </data>
-  <data name="NetSysData_DiscoveredPartial" xml:space="preserve">
-    <value>Discovered ({0} of {1})</value>
+  <data name="NetSysData_DiscoveredPartial">
+    <value>已发现 ({0} / {1})</value>
     <comment>{0} int, count of bodies, {1} int, total count of bodies</comment>
+    <source>Discovered ({0} of {1})</source>
   </data>
-  <data name="NetSysData_FC" xml:space="preserve">
+  <data name="NetSysData_FC">
     <value>FC</value>
+    <source>FC</source>
   </data>
-  <data name="NetSysData_Genus" xml:space="preserve">
-    <value>Genus</value>
+  <data name="NetSysData_Genus">
+    <value>地质</value>
+    <source>Genus</source>
   </data>
-  <data name="NetSysData_MaterialTrader" xml:space="preserve">
-    <value>Material Trader</value>
+  <data name="NetSysData_MaterialTrader">
+    <value>材料交易商</value>
+    <source>Material Trader</source>
   </data>
-  <data name="NetSysData_Outposts" xml:space="preserve">
-    <value>Outposts</value>
+  <data name="NetSysData_Outposts">
+    <value>前哨站</value>
+    <source>Outposts</source>
   </data>
-  <data name="NetSysData_Settlements" xml:space="preserve">
-    <value>Settlements</value>
+  <data name="NetSysData_Settlements">
+    <value>聚居点</value>
+    <source>Settlements</source>
   </data>
-  <data name="NetSysData_StarPorts" xml:space="preserve">
-    <value>Star ports</value>
+  <data name="NetSysData_StarPorts">
+    <value>星港</value>
+    <source>Star ports</source>
   </data>
-  <data name="NetSysData_TechBroker" xml:space="preserve">
-    <value>Tech Broker</value>
+  <data name="NetSysData_TechBroker">
+    <value>科技中介</value>
+    <source>Tech Broker</source>
   </data>
-  <data name="NetSysData_UndiscoveredSystem" xml:space="preserve">
-    <value>Undiscovered system</value>
+  <data name="NetSysData_UndiscoveredSystem">
+    <value>未发现的星系</value>
+    <source>Undiscovered system</source>
   </data>
-  <data name="NetSysData_UnscannedSystem" xml:space="preserve">
-    <value>Unscanned system</value>
+  <data name="NetSysData_UnscannedSystem">
+    <value>未扫描的星系</value>
+    <source>Unscanned system</source>
   </data>
-  <data name="NetSysData_Wars" xml:space="preserve">
-    <value>Wars</value>
+  <data name="NetSysData_Wars">
+    <value>战争</value>
+    <source>Wars</source>
   </data>
-  <data name="PlotGalMap_CountGenus" xml:space="preserve">
-    <value>{0}x Genus</value>
+  <data name="PlotGalMap_CountGenus">
+    <value>{0}x 地质</value>
+    <source>{0}x Genus</source>
   </data>
-  <data name="PlotGalMap_Current" xml:space="preserve">
-    <value>Current:</value>
+  <data name="PlotGalMap_Current">
+    <value>当前:</value>
+    <source>Current:</source>
   </data>
-  <data name="PlotGalMap_DataFrom" xml:space="preserve">
-    <value>Data from: EDSM + Spansh + Canonn</value>
+  <data name="PlotGalMap_DataFrom">
+    <value>数据来源: EDSM + Spansh + Canonn</value>
     <comment>Dim footer text</comment>
+    <source>Data from: EDSM + Spansh + Canonn</source>
   </data>
-  <data name="PlotGalMap_Destination" xml:space="preserve">
-    <value>Destination:</value>
+  <data name="PlotGalMap_Destination">
+    <value>目的地:</value>
+    <source>Destination:</source>
   </data>
-  <data name="PlotGalMap_DiscoveredBy" xml:space="preserve">
-    <value>By {0}, {1}</value>
+  <data name="PlotGalMap_DiscoveredBy">
+    <value>由{0}于 {1} 发现</value>
     <comment>{0} string, name of cmdr, {1} short date</comment>
+    <source>By {0}, {1}</source>
   </data>
-  <data name="PlotGalMap_LastUpdated" xml:space="preserve">
-    <value>Last updated: {0}</value>
+  <data name="PlotGalMap_LastUpdated">
+    <value>最后更新: {0}</value>
     <comment>{0} short date</comment>
+    <source>Last updated: {0}</source>
   </data>
-  <data name="PlotGalMap_NextJump" xml:space="preserve">
-    <value>Next jump:</value>
+  <data name="PlotGalMap_NextJump">
+    <value>下一跳:</value>
+    <source>Next jump:</source>
   </data>
-  <data name="PlotGalMap_NoRouteSet" xml:space="preserve">
-    <value>No route set</value>
+  <data name="PlotGalMap_NoRouteSet">
+    <value>未设定路线</value>
     <comment>When no route is set.</comment>
+    <source>No route set</source>
   </data>
-  <data name="PlotGalMap_RouteFooter" xml:space="preserve">
-    <value>Total: ► {0} jumps ► Distance: {1} ly</value>
+  <data name="PlotGalMap_RouteFooter">
+    <value>总计: ► {0} 跳 ► 距离: {1} ly</value>
     <comment>Footer shown summarizing the route. {0} int, count of jumps. {1} float, 1 decimal place, distance travelled.</comment>
+    <source>Total: ► {0} jumps ► Distance: {1} ly</source>
   </data>
-  <data name="PlotGalMap_Selected" xml:space="preserve">
-    <value>Selected:</value>
+  <data name="PlotGalMap_Selected">
+    <value>当前选择:</value>
+    <source>Selected:</source>
   </data>
-  <data name="PlotSysStatus_BioSignals" xml:space="preserve">
-    <value>| {0}x Bio signals on: </value>
+  <data name="PlotSysStatus_BioSignals">
+    <value>| {0}x 生物信号: </value>
     <comment>Appended to prior text. {0} int, count of bodies with bio signals</comment>
+    <source>| {0}x Bio signals on: </source>
   </data>
-  <data name="PlotSysStatus_DssRemaining" xml:space="preserve">
-    <value> {0}x bodies: </value>
+  <data name="PlotSysStatus_DssRemaining">
+    <value> {0}x 天体: </value>
     <comment>May be appended to FssCompleteShort. {0} int, count of bodies worth of scanning.</comment>
+    <source> {0}x bodies: </source>
   </data>
-  <data name="PlotSysStatus_FssCompleteLong" xml:space="preserve">
-    <value>FSS {0}% complete</value>
+  <data name="PlotSysStatus_FssCompleteLong">
+    <value>FSS {0}% 完成</value>
     <comment>Short version, joined with more text. {0} int, percentage number</comment>
+    <source>FSS {0}% complete</source>
   </data>
-  <data name="PlotSysStatus_FssCompleteShort" xml:space="preserve">
+  <data name="PlotSysStatus_FssCompleteShort">
     <value>FSS {0}%</value>
     <comment>Long version, shown alone. {0} int, percentage number</comment>
+    <source>FSS {0}%</source>
   </data>
-  <data name="PlotSysStatus_FssNotStarted" xml:space="preserve">
-    <value>FSS not started</value>
+  <data name="PlotSysStatus_FssNotStarted">
+    <value>FSS 未扫描</value>
+    <source>FSS not started</source>
   </data>
-  <data name="PlotSysStatus_Header" xml:space="preserve">
-    <value>DSS survey: </value>
+  <data name="PlotSysStatus_Header">
+    <value>DSS 扫描: </value>
     <comment>Header line</comment>
+    <source>DSS survey: </source>
   </data>
-  <data name="PlotSysStatus_NextSystem" xml:space="preserve">
-    <value>Next system:</value>
+  <data name="PlotSysStatus_NextSystem">
+    <value>下一星系:</value>
+    <source>Next system:</source>
   </data>
-  <data name="PlotSysStatus_NoDssMeet" xml:space="preserve">
-    <value>None</value>
+  <data name="PlotSysStatus_NoDssMeet">
+    <value>无</value>
+    <source>None</source>
   </data>
-  <data name="PlotSysStatus_NonBodySignals" xml:space="preserve">
-    <value>► {0} non-body signals</value>
+  <data name="PlotSysStatus_NonBodySignals">
+    <value>► {0} 非天体信号</value>
     <comment>{0} int, count of non body signals</comment>
+    <source>► {0} non-body signals</source>
   </data>
-  <data name="Settings_CreateFolderNotFound" xml:space="preserve">
-    <value>Cannot find folder:
+  <data name="Settings_CreateFolderNotFound">
+    <value>无法找到目录:
 {0}
 
-Would you like to create it?</value>
+你确定目录无误?</value>
     <comment>Used in a message box when attempting to open a folder that does not exist.</comment>
+    <source>Cannot find folder:
+{0}
+
+Would you like to create it?</source>
   </data>
-  <data name="FormBoxelSearch_Disable" xml:space="preserve">
-    <value>Disable</value>
+  <data name="FormBoxelSearch_Disable">
+    <value>禁用</value>
     <comment>Used on a button in FormBoxelSearch</comment>
+    <source>Disable</source>
   </data>
-  <data name="FormBoxelSearch_Activate" xml:space="preserve">
-    <value>Activate</value>
+  <data name="FormBoxelSearch_Activate">
+    <value>启用</value>
     <comment>Used on a button in FormBoxelSearch</comment>
+    <source>Activate</source>
   </data>
-  <data name="FormBoxelSearch_HideList" xml:space="preserve">
-    <value>⏶ Hide list</value>
+  <data name="FormBoxelSearch_HideList">
+    <value>⏶ 隐藏列表</value>
     <comment>Used on a button in FormBoxelSearch</comment>
+    <source>⏶ Hide list</source>
   </data>
-  <data name="FormBoxelSearch_ShowList" xml:space="preserve">
-    <value>⏷ Show list</value>
+  <data name="FormBoxelSearch_ShowList">
+    <value>⏷ 显示列表</value>
     <comment>Used on a button in FormBoxelSearch</comment>
+    <source>⏷ Show list</source>
   </data>
-  <data name="FormBoxelSearch_NotViableMessage" xml:space="preserve">
-    <value>This is not a boxel generated system name.</value>
+  <data name="FormBoxelSearch_NotViableMessage">
+    <value>这不是一个由boxel生成的星系名称</value>
     <comment>Shown in FormBoxelSearch when attempting to boxel search a non generated system name</comment>
+    <source>This is not a boxel generated system name.</source>
   </data>
-  <data name="FormBoxelSearch_SpanshUpdated" xml:space="preserve">
-    <value>Spansh updated: {0}</value>
+  <data name="FormBoxelSearch_SpanshUpdated">
+    <value>Spansh更新于: {0}</value>
     <comment>Shown in FormBoxelSearch as notes for a system.
 {0} DateTime, a short formatted date</comment>
+    <source>Spansh updated: {0}</source>
   </data>
-  <data name="FormBoxelSearch_SpanshUpdatedBodies" xml:space="preserve">
-    <value>Spansh updated: {0}, bodies: {1}</value>
+  <data name="FormBoxelSearch_SpanshUpdatedBodies">
+    <value>Spansh更新于: {0}, 天体数: {1}</value>
     <comment>Shown in FormBoxelSearch as notes for a system.
 {0} DateTime, a short formatted date
 {1} int, a count of bodies in that system</comment>
+    <source>Spansh updated: {0}, bodies: {1}</source>
   </data>
-  <data name="FormBoxelSearch_UndiscoveredSystem" xml:space="preserve">
-    <value>Undiscovered system</value>
+  <data name="FormBoxelSearch_UndiscoveredSystem">
+    <value>未被发现的星系</value>
     <comment>Shown in FormBoxelSearch as notes for a system that has not been discovered</comment>
+    <source>Undiscovered system</source>
   </data>
-  <data name="FormBoxelSearch_Visited" xml:space="preserve">
-    <value>Visited: {0}</value>
+  <data name="FormBoxelSearch_Visited">
+    <value>访问于: {0}</value>
     <comment>Shown in FormBoxelSearch as notes for a system that was just visited
 {0} DateTime, the date and time the system was visited, usually now</comment>
+    <source>Visited: {0}</source>
   </data>
-  <data name="FormBoxelSearch_SearchNotActive" xml:space="preserve">
-    <value>Boxel search is not active.</value>
+  <data name="FormBoxelSearch_SearchNotActive">
+    <value>Boxel搜索未激活.</value>
     <comment>Shown in FormBoxelSearch status var when the feature is not active</comment>
+    <source>Boxel search is not active.</source>
   </data>
-  <data name="FormBoxelSearch_VisitedCounts" xml:space="preserve">
-    <value>Completed {2} of {3} boxels, {0} of {1} systems in current boxel</value>
+  <data name="FormBoxelSearch_VisitedCounts">
+    <value>已搜索完成 {2} / {3} boxels,当前boxel中已访问星系数 {0} / {1} </value>
     <comment>Shown in FormBoxelSearch status bar, summarizing how many systems have been visited
 {0} int, count of systems visited
 {1} int, total count of systems to be visited
 {2} int, count of boxels searched
 {3} int, total count of boxels to be searched</comment>
+    <source>Completed {2} of {3} boxels, {0} of {1} systems in current boxel</source>
   </data>
-  <data name="NetSysData_Encoded" xml:space="preserve">
-    <value>(Encoded)</value>
+  <data name="NetSysData_Encoded">
+    <value>(编码材料)</value>
     <comment>An Encoded Material Trader</comment>
+    <source>(Encoded)</source>
   </data>
-  <data name="NetSysData_GuardianBroker" xml:space="preserve">
-    <value>(Guardian)</value>
+  <data name="NetSysData_GuardianBroker">
+    <value>(守护者)</value>
     <comment>A Guardian Tech Broker</comment>
+    <source>(Guardian)</source>
   </data>
-  <data name="NetSysData_HumanBroker" xml:space="preserve">
-    <value>(Human)</value>
+  <data name="NetSysData_HumanBroker">
+    <value>(人类)</value>
     <comment>A Human Tech Broker</comment>
+    <source>(Human)</source>
   </data>
-  <data name="NetSysData_Manufactured" xml:space="preserve">
-    <value>(Manufactured)</value>
+  <data name="NetSysData_Manufactured">
+    <value>(制造)</value>
     <comment>A Manufactured Material Trader</comment>
+    <source>(Manufactured)</source>
   </data>
-  <data name="NetSysData_Raw" xml:space="preserve">
-    <value>(Raw)</value>
+  <data name="NetSysData_Raw">
+    <value>(元素材料)</value>
     <comment>A Raw Material Trader</comment>
+    <source>(Raw)</source>
   </data>
-  <data name="NetSysData_Engineer" xml:space="preserve">
-    <value>(Engineer)</value>
+  <data name="NetSysData_Engineer">
+    <value>(工程师)</value>
     <comment>Suffix after an Engineer's name</comment>
+    <source>(Engineer)</source>
   </data>
 </root>
