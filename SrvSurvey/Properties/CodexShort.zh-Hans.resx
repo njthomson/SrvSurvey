@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Aleoida">
+    <!--Machine translated-->
+    <value>啤酒</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>ale</source>
+  </data>
+  <data name="Amphora Plant">
+    <!--Machine translated-->
+    <value>放大 器</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>amp</source>
+  </data>
+  <data name="Bacterium">
+    <!--Machine translated-->
+    <value>BAC</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>bac</source>
+  </data>
+  <data name="Bark Mounds">
+    <!--Machine translated-->
+    <value>酒吧</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>bar</source>
+  </data>
+  <data name="Brain Trees">
+    <!--Machine translated-->
+    <value>胸罩</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>bra</source>
+  </data>
+  <data name="Cactoida">
+    <!--Machine translated-->
+    <value>CAC</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>cac</source>
+  </data>
+  <data name="Clypeus">
+    <!--Machine translated-->
+    <value>克莱</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>cly</source>
+  </data>
+  <data name="Concha">
+    <!--Machine translated-->
+    <value>CON系列</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>con</source>
+  </data>
+  <data name="Crystalline Shards">
+    <!--Machine translated-->
+    <value>哭</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>cry</source>
+  </data>
+  <data name="Electricae">
+    <!--Machine translated-->
+    <value>电子</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>ele</source>
+  </data>
+  <data name="Fonticulua">
+    <!--Machine translated-->
+    <value>丰</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>fon</source>
+  </data>
+  <data name="Frutexa">
+    <!--Machine translated-->
+    <value>FRU</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>fru</source>
+  </data>
+  <data name="Fumerola">
+    <!--Machine translated-->
+    <value>fum （fum）</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>fum</source>
+  </data>
+  <data name="Fungoida">
+    <!--Machine translated-->
+    <value>乐趣</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>fun</source>
+  </data>
+  <data name="Luteolum Anemone">
+    <!--Machine translated-->
+    <value>安</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>ane</source>
+  </data>
+  <data name="Osseus">
+    <!--Machine translated-->
+    <value>开源软件</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>oss</source>
+  </data>
+  <data name="Recepta">
+    <!--Machine translated-->
+    <value>娱乐</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>rec</source>
+  </data>
+  <data name="Sinuous Tubers">
+    <!--Machine translated-->
+    <value>罪</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>sin</source>
+  </data>
+  <data name="Stratum">
+    <!--Machine translated-->
+    <value>str</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>str</source>
+  </data>
+  <data name="Tubus">
+    <!--Machine translated-->
+    <value>桶</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>tub</source>
+  </data>
+  <data name="Tussock">
+    <!--Machine translated-->
+    <value>TUS （英语）</value>
+    <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
+    <source>tus</source>
+  </data>
+</root>

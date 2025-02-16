@@ -1,0 +1,332 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Aleoida">
+    <!--Machine translated-->
+    <value>阿莱奥达</value>
+    <comment>An Odyssey genus name</comment>
+    <source>Aleoida</source>
+  </data>
+  <data name="Amethyst">
+    <!--Machine translated-->
+    <value>紫水晶</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Amethyst</source>
+  </data>
+  <data name="Amphora Plant">
+    <!--Machine translated-->
+    <value>双耳瓶厂</value>
+    <comment>A Horizons genus/species name</comment>
+    <source>Amphora Plant</source>
+  </data>
+  <data name="Aquamarine">
+    <!--Machine translated-->
+    <value>海蓝宝石</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Aquamarine</source>
+  </data>
+  <data name="Bacterium">
+    <!--Machine translated-->
+    <value>细菌</value>
+    <comment>An Odyssey genus name</comment>
+    <source>Bacterium</source>
+  </data>
+  <data name="Bark Mounds">
+    <!--Machine translated-->
+    <value>树皮丘</value>
+    <comment>A Horizons genus/species name</comment>
+    <source>Bark Mounds</source>
+  </data>
+  <data name="Blue">
+    <!--Machine translated-->
+    <value>蓝</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Blue</source>
+  </data>
+  <data name="Brain Trees">
+    <!--Machine translated-->
+    <value>脑树</value>
+    <comment>A Horizons genus/species name</comment>
+    <source>Brain Trees</source>
+  </data>
+  <data name="Cactoida">
+    <!--Machine translated-->
+    <value>仙人掌</value>
+    <comment>An Odyssey genus name</comment>
+    <source>Cactoida</source>
+  </data>
+  <data name="Clypeus">
+    <!--Machine translated-->
+    <value>唇基</value>
+    <comment>An Odyssey genus name</comment>
+    <source>Clypeus</source>
+  </data>
+  <data name="Cobalt">
+    <!--Machine translated-->
+    <value>钴</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Cobalt</source>
+  </data>
+  <data name="Concha">
+    <!--Machine translated-->
+    <value>贝壳</value>
+    <comment>An Odyssey genus name</comment>
+    <source>Concha</source>
+  </data>
+  <data name="Crystalline Shards">
+    <!--Machine translated-->
+    <value>结晶碎片</value>
+    <comment>A Horizons genus/species name</comment>
+    <source>Crystalline Shards</source>
+  </data>
+  <data name="Cyan">
+    <!--Machine translated-->
+    <value>青色</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Cyan</source>
+  </data>
+  <data name="Electricae">
+    <!--Machine translated-->
+    <value>电工</value>
+    <comment>An Odyssey genus name</comment>
+    <source>Electricae</source>
+  </data>
+  <data name="Emerald">
+    <!--Machine translated-->
+    <value>绿宝石</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Emerald</source>
+  </data>
+  <data name="Fonticulua">
+    <!--Machine translated-->
+    <value>枫树</value>
+    <comment>An Odyssey genus name</comment>
+    <source>Fonticulua</source>
+  </data>
+  <data name="Frutexa">
+    <!--Machine translated-->
+    <value>Frutexa</value>
+    <comment>An Odyssey genus name</comment>
+    <source>Frutexa</source>
+  </data>
+  <data name="Fumerola">
+    <!--Machine translated-->
+    <value>富美罗拉</value>
+    <comment>An Odyssey genus name</comment>
+    <source>Fumerola</source>
+  </data>
+  <data name="Fungoida">
+    <!--Machine translated-->
+    <value>真菌</value>
+    <comment>An Odyssey genus name</comment>
+    <source>Fungoida</source>
+  </data>
+  <data name="Gold">
+    <!--Machine translated-->
+    <value>金</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Gold</source>
+  </data>
+  <data name="Green">
+    <!--Machine translated-->
+    <value>绿</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Green</source>
+  </data>
+  <data name="Grey">
+    <!--Machine translated-->
+    <value>灰色</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Grey</source>
+  </data>
+  <data name="Indigo">
+    <!--Machine translated-->
+    <value>靛</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Indigo</source>
+  </data>
+  <data name="Lime">
+    <!--Machine translated-->
+    <value>石灰</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Lime</source>
+  </data>
+  <data name="Luteolum Anemone">
+    <!--Machine translated-->
+    <value>木犀草 （Luteolum Anemone）</value>
+    <comment>A Horizons genus/species name</comment>
+    <source>Luteolum Anemone</source>
+  </data>
+  <data name="Magenta">
+    <!--Machine translated-->
+    <value>品红</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Magenta</source>
+  </data>
+  <data name="Maroon">
+    <!--Machine translated-->
+    <value>栗色</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Maroon</source>
+  </data>
+  <data name="Mauve">
+    <!--Machine translated-->
+    <value>紫 红色</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Mauve</source>
+  </data>
+  <data name="Mulberry">
+    <!--Machine translated-->
+    <value>桑树</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Mulberry</source>
+  </data>
+  <data name="Ocher">
+    <!--Machine translated-->
+    <value>赭石</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Ocher</source>
+  </data>
+  <data name="Orange">
+    <!--Machine translated-->
+    <value>橙</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Orange</source>
+  </data>
+  <data name="Osseus">
+    <!--Machine translated-->
+    <value>奥修斯</value>
+    <comment>An Odyssey genus name</comment>
+    <source>Osseus</source>
+  </data>
+  <data name="Peach">
+    <!--Machine translated-->
+    <value>桃</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Peach</source>
+  </data>
+  <data name="Recepta">
+    <!--Machine translated-->
+    <value>容器</value>
+    <comment>An Odyssey genus name</comment>
+    <source>Recepta</source>
+  </data>
+  <data name="Red">
+    <!--Machine translated-->
+    <value>红</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Red</source>
+  </data>
+  <data name="Sage">
+    <!--Machine translated-->
+    <value>圣人</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Sage</source>
+  </data>
+  <data name="Sinuous Tubers">
+    <!--Machine translated-->
+    <value>蜿蜒的块茎</value>
+    <comment>A Horizons genus/species name</comment>
+    <source>Sinuous Tubers</source>
+  </data>
+  <data name="Stratum">
+    <!--Machine translated-->
+    <value>地层</value>
+    <comment>An Odyssey genus name</comment>
+    <source>Stratum</source>
+  </data>
+  <data name="Teal">
+    <!--Machine translated-->
+    <value>水鸭</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Teal</source>
+  </data>
+  <data name="Tubus">
+    <!--Machine translated-->
+    <value>图布斯</value>
+    <comment>An Odyssey genus name</comment>
+    <source>Tubus</source>
+  </data>
+  <data name="Turquoise">
+    <!--Machine translated-->
+    <value>绿松石</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Turquoise</source>
+  </data>
+  <data name="Tussock">
+    <!--Machine translated-->
+    <value>草丛</value>
+    <comment>An Odyssey genus name</comment>
+    <source>Tussock</source>
+  </data>
+  <data name="White">
+    <!--Machine translated-->
+    <value>白</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>White</source>
+  </data>
+  <data name="Yellow">
+    <!--Machine translated-->
+    <value>黄色</value>
+    <comment>An Odyssey bio signal colour</comment>
+    <source>Yellow</source>
+  </data>
+</root>

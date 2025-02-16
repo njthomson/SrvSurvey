@@ -30,6 +30,10 @@ There are some customizations in localized .resx files to make it easier to iden
 - Machine translations will be commented with `<!--Machine translated-->` which should be removed when translating by hand, 
 - When the English source text changes, localized translations will be commented with `<!--Update needed: <lang>-->` which should be removed once the translation is updated.
 
+## Want to add a new language?
+
+Let me know which language you wish to add first, let me use machine translation to create initial files - this guarantees .resx files have the necessary comments for tracking which resources are machine vs human translated.
+
 ## Translations missing and needed
 
 To identify where translating is needed, files are generated per language. 

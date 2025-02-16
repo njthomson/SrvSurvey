@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ArrivedAt">
+    <!--Machine translated-->
+    <value>到达跳跃 #{0} {1}</value>
+    <comment>Footer label shown when arriving at a route hop system
+{0} int, the index of this system in the route
+{1} string, the name of this system</comment>
+    <source>Arrived at hop #{0} {1}</source>
+  </data>
+  <data name="AutoCopyButton">
+    <!--Machine translated-->
+    <value>在 Gal-Map 中自动复制</value>
+    <comment>Button text to toggle if we should auto copy to the clipboard when entering the gal-map</comment>
+    <source>Auto copy in Gal-Map</source>
+  </data>
+  <data name="ImportedSystems">
+    <!--Machine translated-->
+    <value>进口{0}系统</value>
+    <comment>Footer message shown when importing system names has completed successfully
+{0} int, count of systems imported</comment>
+    <source>Imported {0} systems</source>
+  </data>
+  <data name="ImportingSpansh">
+    <!--Machine translated-->
+    <value>导入 Spansh 路由：'{0}' ...</value>
+    <comment>Shown in window footer when importing a Spansh route from a URL
+{0} string, the id (guid) of the route to import</comment>
+    <source>Importing Spansh route: '{0}' ...</source>
+  </data>
+  <data name="ImportNames">
+    <!--Machine translated-->
+    <value>正在导入 ~{0} 个名称...</value>
+    <comment>Shown in window footer when importing names from clipboard
+{0} int, count of names to import</comment>
+    <source>Importing ~{0} names...</source>
+  </data>
+  <data name="MsgNamesClipboard">
+    <!--Machine translated-->
+    <value>继续：将多个系统名称复制到剪贴板，每行一个系统。</value>
+    <comment>Shown in a message box popup, instructing users how to proceed when importing system names from clipboard</comment>
+    <source>To proceed: copy a number of system names to the clipboard, one system per line.</source>
+  </data>
+  <data name="MsgSpanshClipboard">
+    <!--Machine translated-->
+    <value>要继续：将任何 Spansh 路由的 URL 复制到剪贴板</value>
+    <comment>Shown in a message box popup, instructing users how to proceed when importing from a Spansh URL</comment>
+    <source>To proceed: copy the URL of any Spansh route to the clipboard</source>
+  </data>
+  <data name="Neutron">
+    <!--Machine translated-->
+    <value>中子</value>
+    <comment>Route tag/reminder that this is a neutron system</comment>
+    <source>Neutron</source>
+  </data>
+  <data name="OpenTextFileDialogTitle">
+    <!--Machine translated-->
+    <value>选择 import file</value>
+    <comment>Title used on open file dialog when importing a text file</comment>
+    <source>Choose import file</source>
+  </data>
+  <data name="Refuel">
+    <!--Machine translated-->
+    <value>加油</value>
+    <comment>Route tag/reminder to refuel</comment>
+    <source>Refuel</source>
+  </data>
+  <data name="RouteActiveButton">
+    <!--Machine translated-->
+    <value>路由活动</value>
+    <comment>Button text to toggle if route is active</comment>
+    <source>Route active</source>
+  </data>
+  <data name="RouteComplete">
+    <!--Machine translated-->
+    <value>路线完成</value>
+    <comment>Footer label when route has been complete</comment>
+    <source>Route complete</source>
+  </data>
+  <data name="RouteNotFound">
+    <!--Machine translated-->
+    <value>未找到路由：{0}</value>
+    <comment>Footer warning when importing a route from Spansh did not succeed
+{0} string, the id (guid) of the route</comment>
+    <source>Route not found: {0}</source>
+  </data>
+  <data name="RouteNotStarted">
+    <!--Machine translated-->
+    <value>路由未启动</value>
+    <comment>Footer label when route has not been started</comment>
+    <source>Route not started</source>
+  </data>
+  <data name="RouteProgress">
+    <!--Machine translated-->
+    <value>路线进度： #{0} of {1}</value>
+    <comment>Footer label when route is in progress
+{0} int, the current hop
+{1} int, total count of hops</comment>
+    <source>Route progress: #{0} of {1}</source>
+  </data>
+  <data name="SpanshImportSuccess">
+    <!--Machine translated-->
+    <value>已成功导入 {0} 跃点</value>
+    <comment>Footer message shown when importing a Spansh route succeeds
+{0} int, count of route hops</comment>
+    <source>Successfully imported {0} hops</source>
+  </data>
+  <data name="TextFiles">
+    <!--Machine translated-->
+    <value>文本文件</value>
+    <comment>Description of file type in lower right corner of file open dialog</comment>
+    <source>Text files</source>
+  </data>
+</root>

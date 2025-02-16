@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NearingShipDistance">
+    <!--Machine translated-->
+    <value>接近船舶离港距离</value>
+    <comment>Warning shown when nearing ship departure distance</comment>
+    <source>Nearing ship departure distance</source>
+  </data>
+  <data name="ScanOne_Long">
+    <!--Machine translated-->
+    <value>扫一：</value>
+    <comment>Prefix to bearing and distance to scan one</comment>
+    <source>Scan one:</source>
+  </data>
+  <data name="ScanOne_Short">
+    <!--Machine translated-->
+    <value>第一：</value>
+    <comment>A shorter prefix to bearing and distance to scan one, when window is too narrow</comment>
+    <source>1st:</source>
+  </data>
+  <data name="ScanOneInvalid">
+    <!--Machine translated-->
+    <value>扫描一：无效</value>
+    <comment>Warning shown when scan one is not valid</comment>
+    <source>Scan one: invalid</source>
+  </data>
+  <data name="ScanTwo_Long">
+    <!--Machine translated-->
+    <value>扫描二：</value>
+    <comment>Prefix to bearing and distance to scan two</comment>
+    <source>Scan two:</source>
+  </data>
+  <data name="ScanTwo_Short">
+    <!--Machine translated-->
+    <value>第二：</value>
+    <comment>A shorter prefix to bearing and distance to scan two, when window is too narrow</comment>
+    <source>2nd:</source>
+  </data>
+  <data name="ScanTwoInvalid">
+    <!--Machine translated-->
+    <value>扫描二：无效</value>
+    <comment>Warning shown when scan two is not valid</comment>
+    <source>Scan two: invalid</source>
+  </data>
+  <data name="Ship">
+    <!--Machine translated-->
+    <value>船：</value>
+    <comment>Prefix to bearing and distance to the ship</comment>
+    <source>Ship:</source>
+  </data>
+  <data name="SRV">
+    <!--Machine translated-->
+    <value>SRV：</value>
+    <comment>Prefix to bearing and distance to SRV</comment>
+    <source>SRV:</source>
+  </data>
+</root>

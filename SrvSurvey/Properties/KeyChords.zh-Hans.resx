@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="copyNextBoxel">
+    <!--Machine translated-->
+    <value>在 gal-map 中，将下一个 boxel 搜索系统复制到剪贴板。</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>In gal-map, copy the next boxel search system to clipboard.</source>
+  </data>
+  <data name="mapBeHuge">
+    <!--Machine translated-->
+    <value>切换使地图填满屏幕的一半，仅限人类定居点。</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Toggles making the map fill half the screen, at Human settlements only.</source>
+  </data>
+  <data name="mapZoomAuto">
+    <!--Machine translated-->
+    <value>在 Human 和 Guardian 站点将缩放重置为默认值。</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Reset the zoom to default, at Human and Guardian sites.</source>
+  </data>
+  <data name="mapZoomIn">
+    <!--Machine translated-->
+    <value>放大 Human 和 Guardian 站点的地图。</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Zoom in on maps at Human and Guardian sites.</source>
+  </data>
+  <data name="mapZoomOut">
+    <!--Machine translated-->
+    <value>缩小 Human 和 Guardian 站点的地图。</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Zoom out on maps at Human and Guardian sites.</source>
+  </data>
+  <data name="pasteGalMap">
+    <!--Machine translated-->
+    <value>在 Gal-Map 中粘贴剪贴板文本</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Paste clipboard text when in Gal-Map</source>
+  </data>
+  <data name="showBodyInfo">
+    <!--Machine translated-->
+    <value>强制显示 Body info 叠加层。</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Force show the Body info overlay.</source>
+  </data>
+  <data name="showFssInfo">
+    <!--Machine translated-->
+    <value>强制显示 FSS 信息叠加。</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Force show the FSS info overlay.</source>
+  </data>
+  <data name="showJumpInfo">
+    <!--Machine translated-->
+    <value>强制切换 FSD 跳跃叠加层，而不开始跳跃。</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Force toggle the FSD jump overlay without starting to jump.</source>
+  </data>
+  <data name="showSystemNotes">
+    <!--Machine translated-->
+    <value>使 system notes 窗口可见。</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Make the system notes window visible.</source>
+  </data>
+  <data name="toggleAllVisibility">
+    <!--Machine translated-->
+    <value>切换所有叠加窗口的可见性。</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Toggles visibility of all overlay windows.</source>
+  </data>
+  <data name="track1">
+    <!--Machine translated-->
+    <value>添加或删除跟踪链接 #1</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #1</source>
+  </data>
+  <data name="track2">
+    <!--Machine translated-->
+    <value>添加或删除跟踪链接 #2</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #2</source>
+  </data>
+  <data name="track3">
+    <!--Machine translated-->
+    <value>添加或删除跟踪链接 #3</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #3</source>
+  </data>
+  <data name="track4">
+    <!--Machine translated-->
+    <value>添加或删除跟踪链接 #4</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #4</source>
+  </data>
+  <data name="track5">
+    <!--Machine translated-->
+    <value>添加或删除跟踪链接 #5</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #5</source>
+  </data>
+  <data name="track6">
+    <!--Machine translated-->
+    <value>添加或删除跟踪链接 #6</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #6</source>
+  </data>
+  <data name="track7">
+    <!--Machine translated-->
+    <value>添加或删除跟踪链接 #7</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #7</source>
+  </data>
+  <data name="track8">
+    <!--Machine translated-->
+    <value>添加或删除跟踪链接 #8</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #8</source>
+  </data>
+</root>

@@ -1,0 +1,361 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="FormBoxelSearch_Activate">
+    <!--Machine translated-->
+    <value>激活</value>
+    <comment>Used on a button in FormBoxelSearch</comment>
+    <source>Activate</source>
+  </data>
+  <data name="FormBoxelSearch_Disable">
+    <!--Machine translated-->
+    <value>禁用</value>
+    <comment>Used on a button in FormBoxelSearch</comment>
+    <source>Disable</source>
+  </data>
+  <data name="FormBoxelSearch_HideList">
+    <!--Machine translated-->
+    <value>⏶ 隐藏列表</value>
+    <comment>Used on a button in FormBoxelSearch</comment>
+    <source>⏶ Hide list</source>
+  </data>
+  <data name="FormBoxelSearch_NotViableMessage">
+    <!--Machine translated-->
+    <value>这不是 boxel 生成的系统名称。</value>
+    <comment>Shown in FormBoxelSearch when attempting to boxel search a non generated system name</comment>
+    <source>This is not a boxel generated system name.</source>
+  </data>
+  <data name="FormBoxelSearch_SearchNotActive">
+    <!--Machine translated-->
+    <value>Boxel 搜索未处于活动状态。</value>
+    <comment>Shown in FormBoxelSearch status var when the feature is not active</comment>
+    <source>Boxel search is not active.</source>
+  </data>
+  <data name="FormBoxelSearch_ShowList">
+    <!--Machine translated-->
+    <value>⏷ 显示列表</value>
+    <comment>Used on a button in FormBoxelSearch</comment>
+    <source>⏷ Show list</source>
+  </data>
+  <data name="FormBoxelSearch_SpanshUpdated">
+    <!--Machine translated-->
+    <value>Spansh 更新时间：{0}</value>
+    <comment>Shown in FormBoxelSearch as notes for a system.
+{0} DateTime, a short formatted date</comment>
+    <source>Spansh updated: {0}</source>
+  </data>
+  <data name="FormBoxelSearch_SpanshUpdatedBodies">
+    <!--Machine translated-->
+    <value>Spansh 更新： {0}， bodies： {1}</value>
+    <comment>Shown in FormBoxelSearch as notes for a system.
+{0} DateTime, a short formatted date
+{1} int, a count of bodies in that system</comment>
+    <source>Spansh updated: {0}, bodies: {1}</source>
+  </data>
+  <data name="FormBoxelSearch_UndiscoveredSystem">
+    <!--Machine translated-->
+    <value>未被发现的系统</value>
+    <comment>Shown in FormBoxelSearch as notes for a system that has not been discovered</comment>
+    <source>Undiscovered system</source>
+  </data>
+  <data name="FormBoxelSearch_Visited">
+    <!--Machine translated-->
+    <value>访问量： {0}</value>
+    <comment>Shown in FormBoxelSearch as notes for a system that was just visited
+{0} DateTime, the date and time the system was visited, usually now</comment>
+    <source>Visited: {0}</source>
+  </data>
+  <data name="FormBoxelSearch_VisitedCounts">
+    <!--Machine translated-->
+    <value>完成了 {3} 个 Boxel 的 {2}，当前 Boxel 的 {1} 个系统的{0}</value>
+    <comment>Shown in FormBoxelSearch status bar, summarizing how many systems have been visited
+{0} int, count of systems visited
+{1} int, total count of systems to be visited
+{2} int, count of boxels searched
+{3} int, total count of boxels to be searched</comment>
+    <source>Completed {2} of {3} boxels, {0} of {1} systems in current boxel</source>
+  </data>
+  <data name="NetSysData_Bodies">
+    <!--Machine translated-->
+    <value>机构</value>
+    <source>Bodies</source>
+  </data>
+  <data name="NetSysData_DiscoveredAll">
+    <!--Machine translated-->
+    <value>发现的 {0} 具尸体</value>
+    <comment>{0} int, count of bodies</comment>
+    <source>Discovered, {0} bodies</source>
+  </data>
+  <data name="NetSysData_DiscoveredPartial">
+    <!--Machine translated-->
+    <value>已发现 （{0} 的 {1}）</value>
+    <comment>{0} int, count of bodies, {1} int, total count of bodies</comment>
+    <source>Discovered ({0} of {1})</source>
+  </data>
+  <data name="NetSysData_Encoded">
+    <!--Machine translated-->
+    <value>（编码）</value>
+    <comment>An Encoded Material Trader</comment>
+    <source>(Encoded)</source>
+  </data>
+  <data name="NetSysData_Engineer">
+    <!--Machine translated-->
+    <value>（工程师）</value>
+    <comment>Suffix after an Engineer's name</comment>
+    <source>(Engineer)</source>
+  </data>
+  <data name="NetSysData_FC">
+    <!--Machine translated-->
+    <value>燃料电池</value>
+    <source>FC</source>
+  </data>
+  <data name="NetSysData_Genus">
+    <!--Machine translated-->
+    <value>属</value>
+    <source>Genus</source>
+  </data>
+  <data name="NetSysData_GuardianBroker">
+    <!--Machine translated-->
+    <value>（卫报）</value>
+    <comment>A Guardian Tech Broker</comment>
+    <source>(Guardian)</source>
+  </data>
+  <data name="NetSysData_HumanBroker">
+    <!--Machine translated-->
+    <value>（人类）</value>
+    <comment>A Human Tech Broker</comment>
+    <source>(Human)</source>
+  </data>
+  <data name="NetSysData_Manufactured">
+    <!--Machine translated-->
+    <value>（制造）</value>
+    <comment>A Manufactured Material Trader</comment>
+    <source>(Manufactured)</source>
+  </data>
+  <data name="NetSysData_MaterialTrader">
+    <!--Machine translated-->
+    <value>材料交易商</value>
+    <source>Material Trader</source>
+  </data>
+  <data name="NetSysData_Outposts">
+    <!--Machine translated-->
+    <value>前哨</value>
+    <source>Outposts</source>
+  </data>
+  <data name="NetSysData_Raw">
+    <!--Machine translated-->
+    <value>（原始）</value>
+    <comment>A Raw Material Trader</comment>
+    <source>(Raw)</source>
+  </data>
+  <data name="NetSysData_Settlements">
+    <!--Machine translated-->
+    <value>定居点</value>
+    <source>Settlements</source>
+  </data>
+  <data name="NetSysData_StarPorts">
+    <!--Machine translated-->
+    <value>星形端口</value>
+    <source>Star ports</source>
+  </data>
+  <data name="NetSysData_TechBroker">
+    <!--Machine translated-->
+    <value>技术经纪人</value>
+    <source>Tech Broker</source>
+  </data>
+  <data name="NetSysData_UndiscoveredSystem">
+    <!--Machine translated-->
+    <value>未被发现的系统</value>
+    <source>Undiscovered system</source>
+  </data>
+  <data name="NetSysData_UnscannedSystem">
+    <!--Machine translated-->
+    <value>未扫描的系统</value>
+    <source>Unscanned system</source>
+  </data>
+  <data name="NetSysData_Wars">
+    <!--Machine translated-->
+    <value>战争</value>
+    <source>Wars</source>
+  </data>
+  <data name="PlotGalMap_CountGenus">
+    <!--Machine translated-->
+    <value>{0}x 属</value>
+    <source>{0}x Genus</source>
+  </data>
+  <data name="PlotGalMap_Current">
+    <!--Machine translated-->
+    <value>当前：</value>
+    <source>Current:</source>
+  </data>
+  <data name="PlotGalMap_DataFrom">
+    <!--Machine translated-->
+    <value>数据来源：EDSM + Spansh + Canonn</value>
+    <comment>Dim footer text</comment>
+    <source>Data from: EDSM + Spansh + Canonn</source>
+  </data>
+  <data name="PlotGalMap_Destination">
+    <!--Machine translated-->
+    <value>目的地：</value>
+    <source>Destination:</source>
+  </data>
+  <data name="PlotGalMap_DiscoveredBy">
+    <!--Machine translated-->
+    <value>作者：{0}， {1}</value>
+    <comment>{0} string, name of cmdr, {1} short date</comment>
+    <source>By {0}, {1}</source>
+  </data>
+  <data name="PlotGalMap_LastUpdated">
+    <!--Machine translated-->
+    <value>上次更新时间：{0}</value>
+    <comment>{0} short date</comment>
+    <source>Last updated: {0}</source>
+  </data>
+  <data name="PlotGalMap_NextJump">
+    <!--Machine translated-->
+    <value>下一次跳跃：</value>
+    <source>Next jump:</source>
+  </data>
+  <data name="PlotGalMap_NoRouteSet">
+    <!--Machine translated-->
+    <value>未设置路由</value>
+    <comment>When no route is set.</comment>
+    <source>No route set</source>
+  </data>
+  <data name="PlotGalMap_RouteFooter">
+    <!--Machine translated-->
+    <value>总计： ► {0} 次跳跃 ► 距离： {1} ly</value>
+    <comment>Footer shown summarizing the route. {0} int, count of jumps. {1} float, 1 decimal place, distance travelled.</comment>
+    <source>Total: ► {0} jumps ► Distance: {1} ly</source>
+  </data>
+  <data name="PlotGalMap_Selected">
+    <!--Machine translated-->
+    <value>选择：</value>
+    <source>Selected:</source>
+  </data>
+  <data name="PlotSysStatus_BioSignals">
+    <!--Machine translated-->
+    <value>|{0}x 生物信号开启：</value>
+    <comment>Appended to prior text. {0} int, count of bodies with bio signals</comment>
+    <source>| {0}x Bio signals on: </source>
+  </data>
+  <data name="PlotSysStatus_DssRemaining">
+    <!--Machine translated-->
+    <value>{0}x 体：</value>
+    <comment>May be appended to FssCompleteShort. {0} int, count of bodies worth of scanning.</comment>
+    <source> {0}x bodies: </source>
+  </data>
+  <data name="PlotSysStatus_FssCompleteLong">
+    <!--Machine translated-->
+    <value>FSS {0}% 完成</value>
+    <comment>Short version, joined with more text. {0} int, percentage number</comment>
+    <source>FSS {0}% complete</source>
+  </data>
+  <data name="PlotSysStatus_FssCompleteShort">
+    <!--Machine translated-->
+    <value>FSS {0}%</value>
+    <comment>Long version, shown alone. {0} int, percentage number</comment>
+    <source>FSS {0}%</source>
+  </data>
+  <data name="PlotSysStatus_FssNotStarted">
+    <!--Machine translated-->
+    <value>FSS 未启动</value>
+    <source>FSS not started</source>
+  </data>
+  <data name="PlotSysStatus_Header">
+    <!--Machine translated-->
+    <value>DSS 调查：</value>
+    <comment>Header line</comment>
+    <source>DSS survey: </source>
+  </data>
+  <data name="PlotSysStatus_NextSystem">
+    <!--Machine translated-->
+    <value>下一个系统：</value>
+    <source>Next system:</source>
+  </data>
+  <data name="PlotSysStatus_NoDssMeet">
+    <!--Machine translated-->
+    <value>没有</value>
+    <source>None</source>
+  </data>
+  <data name="PlotSysStatus_NonBodySignals">
+    <!--Machine translated-->
+    <value>►{0}非体信号</value>
+    <comment>{0} int, count of non body signals</comment>
+    <source>► {0} non-body signals</source>
+  </data>
+  <data name="Settings_CreateFolderNotFound">
+    <!--Machine translated-->
+    <value>找不到文件夹
+{0}
+
+您想创建它吗？</value>
+    <comment>Used in a message box when attempting to open a folder that does not exist.</comment>
+    <source>Cannot find folder:
+{0}
+
+Would you like to create it?</source>
+  </data>
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+</root>
