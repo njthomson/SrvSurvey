@@ -1,64 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -117,80 +58,99 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="toggleAllVisibility" xml:space="preserve">
-    <value>Toggles visibility of all overlay windows.</value>
+  <data name="toggleAllVisibility">
+    <value>切换所有覆盖窗口的可见性</value>
     <comment>A description of a key-chord setting</comment>
+    <source>Toggles visibility of all overlay windows.</source>
   </data>
-  <data name="mapZoomIn" xml:space="preserve">
-    <value>Zoom in on maps at Human and Guardian sites.</value>
+  <data name="mapZoomIn">
+    <value>放大人类聚居地和守护者地点的地图</value>
     <comment>A description of a key-chord setting</comment>
+    <source>Zoom in on maps at Human and Guardian sites.</source>
   </data>
-  <data name="mapZoomOut" xml:space="preserve">
-    <value>Zoom out on maps at Human and Guardian sites.</value>
+  <data name="mapZoomOut">
+    <value>缩小人类聚居地和守护者地点的地图</value>
     <comment>A description of a key-chord setting</comment>
+    <source>Zoom out on maps at Human and Guardian sites.</source>
   </data>
-  <data name="mapZoomAuto" xml:space="preserve">
-    <value>Reset the zoom to default, at Human and Guardian sites.</value>
+  <data name="mapZoomAuto">
+    <value>重置人类聚居地和守护者地点地图的默认大小</value>
     <comment>A description of a key-chord setting</comment>
+    <source>Reset the zoom to default, at Human and Guardian sites.</source>
   </data>
-  <data name="mapBeHuge" xml:space="preserve">
-    <value>Toggles making the map fill half the screen, at Human settlements only.</value>
+  <data name="mapBeHuge">
+    <value>切换使地图仅填充屏幕的一半，仅限于人类聚居地</value>
     <comment>A description of a key-chord setting</comment>
+    <source>Toggles making the map fill half the screen, at Human settlements only.</source>
   </data>
-  <data name="showJumpInfo" xml:space="preserve">
-    <value>Force toggle the FSD jump overlay without starting to jump.</value>
+  <data name="showJumpInfo">
+    <value>强制切换显示FSD跳跃信息而不用等跳跃时才显示</value>
     <comment>A description of a key-chord setting</comment>
+    <source>Force toggle the FSD jump overlay without starting to jump.</source>
   </data>
-  <data name="copyNextBoxel" xml:space="preserve">
-    <value>In gal-map, copy the next boxel search system to clipboard.</value>
+  <data name="copyNextBoxel">
+    <value>在银河地图时，将下一个boxel搜索星系名复制到剪贴板</value>
     <comment>A description of a key-chord setting</comment>
+    <source>In gal-map, copy the next boxel search system to clipboard.</source>
   </data>
-  <data name="showFssInfo" xml:space="preserve">
-    <value>Force show the FSS info overlay.</value>
+  <data name="showFssInfo">
+    <value>强制切换显示FSS信息覆盖层</value>
     <comment>A description of a key-chord setting</comment>
+    <source>Force show the FSS info overlay.</source>
   </data>
-  <data name="showBodyInfo" xml:space="preserve">
-    <value>Force show the Body info overlay.</value>
+  <data name="showBodyInfo">
+    <value>强制切换显示Body(天体)信息覆盖层.</value>
     <comment>A description of a key-chord setting</comment>
+    <source>Force show the Body info overlay.</source>
   </data>
-  <data name="showSystemNotes" xml:space="preserve">
-    <value>Make the system notes window visible.</value>
+  <data name="showSystemNotes">
+    <value>打开星系笔记窗口</value>
     <comment>A description of a key-chord setting</comment>
+    <source>Make the system notes window visible.</source>
   </data>
-  <data name="track1" xml:space="preserve">
-    <value>Add or remove tracker #1</value>
+  <data name="track1">
+    <value>添加或移除 #1 追踪</value>
     <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #1</source>
   </data>
-  <data name="track2" xml:space="preserve">
-    <value>Add or remove tracker #2</value>
+  <data name="track2">
+    <value>添加或移除 #2 追踪</value>
     <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #2</source>
   </data>
-  <data name="track3" xml:space="preserve">
-    <value>Add or remove tracker #3</value>
+  <data name="track3">
+    <value>添加或移除 #3 追踪</value>
     <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #3</source>
   </data>
-  <data name="track4" xml:space="preserve">
-    <value>Add or remove tracker #4</value>
+  <data name="track4">
+    <value>添加或移除 #4 追踪</value>
     <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #4</source>
   </data>
-  <data name="track5" xml:space="preserve">
-    <value>Add or remove tracker #5</value>
+  <data name="track5">
+    <value>添加或移除 #5 追踪</value>
     <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #5</source>
   </data>
-  <data name="track6" xml:space="preserve">
-    <value>Add or remove tracker #6</value>
+  <data name="track6">
+    <value>添加或移除 #6 追踪</value>
     <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #6</source>
   </data>
-  <data name="track7" xml:space="preserve">
-    <value>Add or remove tracker #7</value>
+  <data name="track7">
+    <value>添加或移除 #7 追踪</value>
     <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #7</source>
   </data>
-  <data name="track8" xml:space="preserve">
-    <value>Add or remove tracker #8</value>
+  <data name="track8">
+    <value>添加或移除 #8 追踪</value>
     <comment>A description of a key-chord setting</comment>
+    <source>Add or remove tracker #8</source>
   </data>
-  <data name="pasteGalMap" xml:space="preserve">
-    <value>Paste clipboard text when in Gal-Map</value>
+  <data name="pasteGalMap">
+    <value>在银河地图画面时粘贴剪贴板文字</value>
     <comment>A description of a key-chord setting</comment>
+    <source>Paste clipboard text when in Gal-Map</source>
   </data>
 </root>
