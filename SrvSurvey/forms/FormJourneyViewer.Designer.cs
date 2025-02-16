@@ -73,13 +73,13 @@
             listQuickStats.FullRowSelect = true;
             listQuickStats.GridLines = true;
             listQuickStats.HeaderStyle = ColumnHeaderStyle.Nonclickable;
-            listQuickStats.Location = new Point(577, 0);
+            listQuickStats.Location = new Point(456, 0);
             listQuickStats.Margin = new Padding(3, 0, 0, 0);
             listQuickStats.MultiSelect = false;
             listQuickStats.Name = "listQuickStats";
             listQuickStats.ShowGroups = false;
             listQuickStats.ShowItemToolTips = true;
-            listQuickStats.Size = new Size(241, 538);
+            listQuickStats.Size = new Size(362, 538);
             listQuickStats.TabIndex = 3;
             listQuickStats.UseCompatibleStateImageBehavior = false;
             listQuickStats.View = View.Details;
@@ -103,7 +103,7 @@
             listSystems.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2 });
             listSystems.Location = new Point(0, 0);
             listSystems.Name = "listSystems";
-            listSystems.Size = new Size(203, 532);
+            listSystems.Size = new Size(203, 534);
             listSystems.TabIndex = 0;
             listSystems.UseCompatibleStateImageBehavior = false;
             listSystems.View = View.Details;
@@ -156,7 +156,7 @@
             txtByline.Name = "txtByline";
             txtByline.Padding = new Padding(3, 0, 3, 0);
             txtByline.ReadOnly = true;
-            txtByline.Size = new Size(571, 34);
+            txtByline.Size = new Size(453, 34);
             txtByline.TabIndex = 1;
             txtByline.Text = "cmdr Stuff | Jan 2nd 2025 ~ Dec 31st 3304";
             txtByline.UseEdgeButton = TextBox2.EdgeButton.None;
@@ -172,7 +172,7 @@
             txtJourneyName.Margin = new Padding(0);
             txtJourneyName.Name = "txtJourneyName";
             txtJourneyName.Padding = new Padding(3, 0, 3, 0);
-            txtJourneyName.Size = new Size(571, 34);
+            txtJourneyName.Size = new Size(453, 34);
             txtJourneyName.TabIndex = 0;
             txtJourneyName.Text = "journey name";
             txtJourneyName.UseEdgeButton = TextBox2.EdgeButton.None;
@@ -186,7 +186,7 @@
             txtDescription.Multiline = true;
             txtDescription.Name = "txtDescription";
             txtDescription.ScrollBars = ScrollBars.Vertical;
-            txtDescription.Size = new Size(571, 463);
+            txtDescription.Size = new Size(453, 463);
             txtDescription.TabIndex = 2;
             txtDescription.Text = "journey description";
             txtDescription.TextChanged += journey_TextChanged;
@@ -194,10 +194,10 @@
             // tabPage2
             // 
             tabPage2.Controls.Add(splitContainer1);
-            tabPage2.Location = new Point(4, 29);
+            tabPage2.Location = new Point(4, 27);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(818, 538);
+            tabPage2.Size = new Size(818, 540);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Visited Systems";
             tabPage2.UseVisualStyleBackColor = true;
@@ -217,7 +217,7 @@
             // 
             splitContainer1.Panel2.BackColor = SystemColors.WindowFrame;
             splitContainer1.Panel2.Controls.Add(panelSystem);
-            splitContainer1.Size = new Size(812, 532);
+            splitContainer1.Size = new Size(812, 534);
             splitContainer1.SplitterDistance = 203;
             splitContainer1.TabIndex = 4;
             // 
@@ -228,7 +228,7 @@
             panelSystem.Location = new Point(0, 0);
             panelSystem.Margin = new Padding(0);
             panelSystem.Name = "panelSystem";
-            panelSystem.Size = new Size(605, 532);
+            panelSystem.Size = new Size(605, 534);
             panelSystem.TabIndex = 0;
             // 
             // status

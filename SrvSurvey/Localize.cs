@@ -74,13 +74,13 @@ namespace SrvSurvey
             foreach (var (lang, files) in locUpdate)
                 File.WriteAllText(
                     Path.Combine(Git.srcRootFolder, "SrvSurvey", "Properties", $"_loc-{lang}-needed.txt"),
-                    string.Join("\n\n", files.Select(_ => _.Value.formatWithHeader(_.Key.Replace(".resx", $".{lang}.resx"), "\n\t"))));
+                    string.Join("\n\n", files.Select(_ => _.Value.formatWithHeader(_.Key.Replace(".resx", $".{lang}.resx"), "\r\n\t"))) + "\r\n");
 
             locMissing.Remove("ps");
             foreach (var (lang, files) in locMissing)
                 File.WriteAllText(
                     Path.Combine(Git.srcRootFolder, "SrvSurvey", "Properties", $"_loc-{lang}-missing.txt"),
-                    string.Join("\n\n", files.Select(_ => _.Value.formatWithHeader(_.Key.Replace(".resx", $".{lang}.resx"), "\n\t"))));
+                    string.Join("\n\n", files.Select(_ => _.Value.formatWithHeader(_.Key.Replace(".resx", $".{lang}.resx"), "\r\n\t"))) + "\r\n");
         }
 
         private static async Task<string?> translateString(string textToTranslate, string targetLang)
@@ -221,7 +221,6 @@ namespace SrvSurvey
                 }
 
                 targetNode.SetElementValue("value", translation);
-                targetNode.SetElementValue("updated", Localize.approxNow);
 
                 count++;
             }

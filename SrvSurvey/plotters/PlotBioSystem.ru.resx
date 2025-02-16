@@ -88,6 +88,12 @@
 {0} int, total count of geo signals on the body</comment>
     <source>Geo signals: {0}</source>
   </data>
+  <data name="NotPredicted">
+    <!--Machine translated-->
+    <value>Не прогнозировалось!</value>
+    <comment>Message shown when some bio signal is present and it was not predicted.</comment>
+    <source>Not predicted!</source>
+  </data>
   <data name="RewardFooter">
     <value>Награды: {0}</value>
     <comment>Footer showing estimated credits

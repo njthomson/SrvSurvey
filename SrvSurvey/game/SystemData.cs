@@ -80,7 +80,7 @@ namespace SrvSurvey.game
                 // migrate bookmarks from 3 letter short names to the full genus name
                 if (body.bookmarks?.Count > 0)
                 {
-                    foreach(var key in body.bookmarks.Keys.ToArray())
+                    foreach (var key in body.bookmarks.Keys.ToArray())
                     {
                         if (key.Length != 3) continue;
                         var genusName = BioGenus.mapOldShortNames(key);
@@ -2188,7 +2188,7 @@ namespace SrvSurvey.game
             foreach (var parent in this.parentBodies)
             {
                 dist += Math.Pow(parent.semiMajorAxis, 2);
-                if (parent.id == target?.id) break;
+                if (parent.id == target?.id) return dist;
             }
 
             return dist;
@@ -2287,7 +2287,7 @@ namespace SrvSurvey.game
         {
             if (this.organisms == null) return null;
 
-            foreach(var org in this.organisms)
+            foreach (var org in this.organisms)
                 if (org.variant == variant || org.entryId == entryId)
                     return org;
 
@@ -2652,7 +2652,7 @@ namespace SrvSurvey.game
                 else if (_bioMatch == null && this.variant != null)
                     _bioMatch = Game.codexRef.matchFromVariant(this.variant);
 
-                if (_bioMatch == null) Debugger.Break(); // does this ever happen?
+                //if (_bioMatch == null) Debugger.Break(); // does this ever happen?
                 return _bioMatch;
             }
         }

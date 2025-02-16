@@ -131,7 +131,7 @@ namespace BioCriterias
             }
 
             // log extra diagnostics?
-            //logOrganism = "Informem";
+            //logOrganism = "Cornibus Indigo";
 
             // predict each criteria recursively from the master list
             foreach (var criteria in BioCriteria.allCriteria)
@@ -167,7 +167,7 @@ namespace BioCriterias
             species = criteria.species ?? species;
             variant = criteria.variant ?? variant;
 
-            //if (species?.Contains("Bullaris") == true) Debugger.Break();
+            //if (species?.Contains("Divisa") == true) Debugger.Break();
 
             if (targetVariant == null)
             {
@@ -186,7 +186,7 @@ namespace BioCriterias
             var targetMatch = false;
 
             //if (this.bodyName.Contains(" 6") && currentName?.Contains("Stabitis") == true) Debugger.Break();
-            //if (currentName?.Contains("Brain") == true) Debugger.Break();
+            //if (currentName.Contains("Cornibus -") == true) Debugger.Break();
 
             //if (genus != null && species != null && variant != null) Debugger.Break();
 
@@ -649,7 +649,10 @@ namespace BioCriterias
 
 
                 // 675416645714, // Eolls Ploe YK-L c9-2 - has root barycentre but alas no concrete bio data for comparisons
-                84431081539 // Eolls Ploe OX-L d7-2
+                //84431081539, // Eolls Ploe OX-L d7-2
+
+                //353504315603, // Oochody YF-L d9-10 // consistently wrong star choice?
+                49786130467, // Eock Flyao XY-S d3-1 // single star system
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");
@@ -690,7 +693,7 @@ namespace BioCriterias
 
         public override string ToString()
         {
-            return $"{bodyName}: {reason} from '{clause}' in: {bodyValue}";
+            return $"{bodyName}: {reason} from '{clause}' with '{bodyValue}'";
         }
     }
 }

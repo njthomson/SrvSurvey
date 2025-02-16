@@ -20,6 +20,9 @@ namespace SrvSurvey.plotters
         /// </summary>
         public static void showMessage(string msg)
         {
+            // exit early if this plotter is disabled
+            if (!Game.settings.autoShowFloatie_TEST) return;
+
             // reset close time, add message and show the window
             closeTime = DateTime.Now.AddSeconds(durationVisible);
             messages.Add(new(msg, closeTime));

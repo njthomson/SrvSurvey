@@ -101,6 +101,7 @@
 	FFBonus
 	FssRequired
 	GeoSignals
+	NotPredicted
 	RewardFooter
 	SysBio_Header
 
