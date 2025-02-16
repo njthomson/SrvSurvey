@@ -81,7 +81,7 @@
   <data name="CivilUnrest">
     <value>民间动荡</value>
     <comment>Faction state CivilUnrest</comment>
-    <source>Civil Unrest/source>
+    <source>Civil Unrest</source>
   </data>
   <data name="CivilWar">
     <value>内战</value>

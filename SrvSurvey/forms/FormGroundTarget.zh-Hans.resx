@@ -437,7 +437,7 @@
 输入一些经纬度位置，当你接近时，目标指示就会出现。</value>
     <source>Got a tip from a mysterious stranger to go to some Lat/Long on some planet or moon?
 
-Enter some Lat/Long position and guidance will appear when you approach.</value>
+Enter some Lat/Long position and guidance will appear when you approach.</source>
   </data>
   <data name="tableLayoutPanel1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>

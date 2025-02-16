@@ -1169,7 +1169,7 @@
 每个象限都有自己生成的恒星系统</value>
     <source>A boxel is a cube of space containing procedurally generated star systems. Cube sizes depend on mass code: 'a' boxels are 10 ly across, 'h' boxels are 1280 ly.
 
-Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with their own generated star systems.</value>
+Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with their own generated star systems.</source>
   </data>
   <data name="lblBadBoxel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
