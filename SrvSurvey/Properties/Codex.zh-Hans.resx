@@ -60,272 +60,228 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Aleoida">
-    <!--Machine translated-->
-    <value>阿莱奥达</value>
+    <!--以下尝试使用双语表述,使用“()”表示直译，使用“{}”表示音译,“[]”为译者结合描述重新取名-->
+    <value>Aleoida{阿莱奥达}</value>
     <comment>An Odyssey genus name</comment>
     <source>Aleoida</source>
   </data>
   <data name="Amethyst">
-    <!--Machine translated-->
-    <value>紫水晶</value>
+    <value>Amethyst(紫晶)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Amethyst</source>
   </data>
   <data name="Amphora Plant">
-    <!--Machine translated-->
-    <value>双耳瓶厂</value>
+    <value>Amphora Plant{安福拉植物}</value>
     <comment>A Horizons genus/species name</comment>
     <source>Amphora Plant</source>
   </data>
   <data name="Aquamarine">
-    <!--Machine translated-->
-    <value>海蓝宝石</value>
+    <value>Aquamarine(蓝晶)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Aquamarine</source>
   </data>
   <data name="Bacterium">
-    <!--Machine translated-->
-    <value>细菌</value>
+    <value>Bacterium(细菌)</value>
     <comment>An Odyssey genus name</comment>
     <source>Bacterium</source>
   </data>
   <data name="Bark Mounds">
-    <!--Machine translated-->
-    <value>树皮丘</value>
+    <value>Bark Mounds(树皮丘)</value>
     <comment>A Horizons genus/species name</comment>
     <source>Bark Mounds</source>
   </data>
   <data name="Blue">
-    <!--Machine translated-->
-    <value>蓝</value>
+    <value>Blue(蓝色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Blue</source>
   </data>
   <data name="Brain Trees">
-    <!--Machine translated-->
-    <value>脑树</value>
+    <value>Brain Trees(脑树)</value>
     <comment>A Horizons genus/species name</comment>
     <source>Brain Trees</source>
   </data>
   <data name="Cactoida">
-    <!--Machine translated-->
-    <value>仙人掌</value>
+    <value>Cactoida(类仙人掌)</value>
     <comment>An Odyssey genus name</comment>
     <source>Cactoida</source>
   </data>
   <data name="Clypeus">
-    <!--Machine translated-->
-    <value>唇基</value>
+    <value>Clypeus{克莱佩斯}</value>
     <comment>An Odyssey genus name</comment>
     <source>Clypeus</source>
   </data>
   <data name="Cobalt">
-    <!--Machine translated-->
-    <value>钴</value>
+    <value>Cobalt(钴蓝色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Cobalt</source>
   </data>
   <data name="Concha">
-    <!--Machine translated-->
-    <value>贝壳</value>
+    <value>Concha(贝壳属)</value>
     <comment>An Odyssey genus name</comment>
     <source>Concha</source>
   </data>
   <data name="Crystalline Shards">
-    <!--Machine translated-->
-    <value>结晶碎片</value>
+    <value>Crystalline Shards(结晶碎片)</value>
     <comment>A Horizons genus/species name</comment>
     <source>Crystalline Shards</source>
   </data>
   <data name="Cyan">
-    <!--Machine translated-->
-    <value>青色</value>
+    <value>Cyan(青色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Cyan</source>
   </data>
   <data name="Electricae">
-    <!--Machine translated-->
-    <value>电工</value>
+    <value>Electricae{伊莱克特里科}</value>
     <comment>An Odyssey genus name</comment>
     <source>Electricae</source>
   </data>
   <data name="Emerald">
-    <!--Machine translated-->
-    <value>绿宝石</value>
+    <value>Emerald(翡翠绿)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Emerald</source>
   </data>
   <data name="Fonticulua">
-    <!--Machine translated-->
-    <value>枫树</value>
+    <value>Fonticulua{枫蒂库鲁亚}</value>
     <comment>An Odyssey genus name</comment>
     <source>Fonticulua</source>
   </data>
   <data name="Frutexa">
-    <!--Machine translated-->
-    <value>Frutexa</value>
+    <value>Frutexa{弗鲁特克萨}</value>
     <comment>An Odyssey genus name</comment>
     <source>Frutexa</source>
   </data>
   <data name="Fumerola">
-    <!--Machine translated-->
-    <value>富美罗拉</value>
+    <value>Fumerola{富梅洛拉}</value>
     <comment>An Odyssey genus name</comment>
     <source>Fumerola</source>
   </data>
   <data name="Fungoida">
-    <!--Machine translated-->
-    <value>真菌</value>
+    <value>Fungoida(真菌)</value>
     <comment>An Odyssey genus name</comment>
     <source>Fungoida</source>
   </data>
   <data name="Gold">
-    <!--Machine translated-->
-    <value>金</value>
+    <value>Gold(金色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Gold</source>
   </data>
   <data name="Green">
-    <!--Machine translated-->
-    <value>绿</value>
+    <value>Green(绿色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Green</source>
   </data>
   <data name="Grey">
-    <!--Machine translated-->
-    <value>灰色</value>
+    <value>Grey(灰色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Grey</source>
   </data>
   <data name="Indigo">
-    <!--Machine translated-->
-    <value>靛</value>
+    <value>Indigo(靛蓝色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Indigo</source>
   </data>
   <data name="Lime">
-    <!--Machine translated-->
-    <value>石灰</value>
+    <value>Lime(青柠色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Lime</source>
   </data>
   <data name="Luteolum Anemone">
-    <!--Machine translated-->
-    <value>木犀草 （Luteolum Anemone）</value>
+    <value>Luteolum Anemone(黄海葵)</value>
     <comment>A Horizons genus/species name</comment>
     <source>Luteolum Anemone</source>
   </data>
   <data name="Magenta">
-    <!--Machine translated-->
-    <value>品红</value>
+    <value>Magenta(洋红色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Magenta</source>
   </data>
   <data name="Maroon">
-    <!--Machine translated-->
-    <value>栗色</value>
+    <value>Maroon(褐红色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Maroon</source>
   </data>
   <data name="Mauve">
-    <!--Machine translated-->
-    <value>紫 红色</value>
+    <value>Mauve(淡紫色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Mauve</source>
   </data>
   <data name="Mulberry">
-    <!--Machine translated-->
-    <value>桑树</value>
+    <value>Mulberry(深紫红色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Mulberry</source>
   </data>
   <data name="Ocher">
-    <!--Machine translated-->
-    <value>赭石</value>
+    <value>Ocher(赭石色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Ocher</source>
   </data>
   <data name="Orange">
-    <!--Machine translated-->
-    <value>橙</value>
+    <value>Orange(橙色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Orange</source>
   </data>
   <data name="Osseus">
-    <!--Machine translated-->
-    <value>奥修斯</value>
+    <value>Osseus[骨质菇]</value>
     <comment>An Odyssey genus name</comment>
     <source>Osseus</source>
   </data>
   <data name="Peach">
-    <!--Machine translated-->
-    <value>桃</value>
+    <value>Peach(桃色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Peach</source>
   </data>
   <data name="Recepta">
-    <!--Machine translated-->
-    <value>容器</value>
+    <value>Recepta{雷塞普塔}</value>
     <comment>An Odyssey genus name</comment>
     <source>Recepta</source>
   </data>
   <data name="Red">
-    <!--Machine translated-->
-    <value>红</value>
+    <value>Red(红色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Red</source>
   </data>
   <data name="Sage">
-    <!--Machine translated-->
-    <value>圣人</value>
+    <value>Sage(灰绿色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Sage</source>
   </data>
   <data name="Sinuous Tubers">
-    <!--Machine translated-->
-    <value>蜿蜒的块茎</value>
+    <value>Sinuous Tubers(蜿蜒块茎)</value>
     <comment>A Horizons genus/species name</comment>
     <source>Sinuous Tubers</source>
   </data>
   <data name="Stratum">
-    <!--Machine translated-->
-    <value>地层</value>
+    <value>Stratum[岩叠藓]</value>
     <comment>An Odyssey genus name</comment>
     <source>Stratum</source>
   </data>
   <data name="Teal">
-    <!--Machine translated-->
-    <value>水鸭</value>
+    <value>Teal(青绿色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Teal</source>
   </data>
   <data name="Tubus">
-    <!--Machine translated-->
-    <value>图布斯</value>
+    <value>Tubus[叠囊塔]</value>
     <comment>An Odyssey genus name</comment>
     <source>Tubus</source>
   </data>
   <data name="Turquoise">
-    <!--Machine translated-->
-    <value>绿松石</value>
+    <value>Turquoise(绿松石色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Turquoise</source>
   </data>
   <data name="Tussock">
-    <!--Machine translated-->
-    <value>草丛</value>
+    <value>Tussock(草丛)</value>
     <comment>An Odyssey genus name</comment>
     <source>Tussock</source>
   </data>
   <data name="White">
-    <!--Machine translated-->
-    <value>白</value>
+    <value>White(白色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>White</source>
   </data>
   <data name="Yellow">
-    <!--Machine translated-->
-    <value>黄色</value>
+    <value>Yellow(黄色)</value>
     <comment>An Odyssey bio signal colour</comment>
     <source>Yellow</source>
   </data>

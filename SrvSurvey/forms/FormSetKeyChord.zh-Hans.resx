@@ -180,8 +180,7 @@
     <value>0</value>
   </data>
   <data name="btnAccept.Text">
-    <!--Machine translated-->
-    <value>接受</value>
+    <value>应用</value>
     <source>Accept</source>
   </data>
   <data name="btnCancel.AutoSize" type="System.Boolean, mscorlib">
@@ -206,7 +205,6 @@
     <value>2</value>
   </data>
   <data name="btnCancel.Text">
-    <!--Machine translated-->
     <value>取消</value>
     <source>Cancel</source>
   </data>
@@ -235,8 +233,7 @@
     <value>1</value>
   </data>
   <data name="btnDisable.Text">
-    <!--Machine translated-->
-    <value>禁用</value>
+    <value>清除</value>
     <source>Disable</source>
   </data>
   <data name="flowButtons.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -270,8 +267,7 @@
     <value>0</value>
   </data>
   <data name="label1.Text">
-    <!--Machine translated-->
-    <value>按下所需的键和弦：</value>
+    <value>按下所需设定的热键组合:</value>
     <source>Press desired key-chord:</source>
   </data>
   <data name="lblInvalid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -287,8 +283,7 @@
     <value>2</value>
   </data>
   <data name="lblInvalid.Text">
-    <!--Machine translated-->
-    <value>无效的键和弦！</value>
+    <value>无效的组合键！</value>
     <source>Invalid key chord!</source>
   </data>
   <data name="lblInvalid.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -322,8 +317,7 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text">
-    <!--Machine translated-->
-    <value>设置键和弦</value>
+    <value>设置键盘快捷键</value>
     <source>Set Key Chord</source>
   </data>
 </root>

@@ -60,21 +60,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Footer">
-    <!--Machine translated-->
-    <value>（位置可能离信号灯不太近）</value>
+    <value>(地点可能没太靠近信号)</value>
     <comment>Footer message</comment>
     <source>(Locations may not be that close to signals)</source>
   </data>
   <data name="Header">
-    <!--Machine translated-->
-    <value>跟踪来自 Canonn 的 {0} 信号：</value>
+    <value>正在追踪 {0} 个来自Canonn的信号:</value>
     <comment>Header line
 {0} int, count of signals known to Canonn</comment>
     <source>Tracking {0} signals from Canonn:</source>
   </data>
   <data name="NoMoreSignals">
-    <!--Machine translated-->
-    <value>没有未扫描的信号满足标准</value>
+    <value>没有符合标准的未扫描信号</value>
     <comment>Line shown when no more signals apply</comment>
     <source>No un-scanned signals meet criteria</source>
   </data>

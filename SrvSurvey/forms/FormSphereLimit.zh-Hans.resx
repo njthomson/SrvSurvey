@@ -283,8 +283,7 @@
     <value>2</value>
   </data>
   <data name="btnAccept.Text">
-    <!--Machine translated-->
-    <value>&amp; 激活</value>
+    <value>激活</value>
     <source>&amp;Activate</source>
   </data>
   <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -306,8 +305,7 @@
     <value>4</value>
   </data>
   <data name="btnCancel.Text">
-    <!--Machine translated-->
-    <value>&amp; 取消</value>
+    <value>取消</value>
     <source>&amp;Cancel</source>
   </data>
   <data name="btnDisable.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -329,8 +327,7 @@
     <value>3</value>
   </data>
   <data name="btnDisable.Text">
-    <!--Machine translated-->
-    <value>&amp; 禁用</value>
+    <value>禁用</value>
     <source>&amp;Disable</source>
   </data>
   <data name="comboSystemName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -379,8 +376,7 @@
     <value>0</value>
   </data>
   <data name="label1.Text">
-    <!--Machine translated-->
-    <value>&amp;进入中央系统：</value>
+    <value>输入中心星系:</value>
     <source>&amp;Enter central system:</source>
   </data>
   <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -402,8 +398,7 @@
     <value>4</value>
   </data>
   <data name="label2.Text">
-    <!--Machine translated-->
-    <value>球体半径（&amp;Sphere radius）：</value>
+    <value>球体半径:</value>
     <source>&amp;Sphere radius:</source>
   </data>
   <data name="label2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -425,8 +420,7 @@
     <value>2</value>
   </data>
   <data name="label3.Text">
-    <!--Machine translated-->
-    <value>星星位置：</value>
+    <value>星体坐标:</value>
     <source>Star pos:</source>
   </data>
   <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -445,9 +439,8 @@
     <value>0</value>
   </data>
   <data name="label4.Text">
-    <!--Machine translated-->
-    <value>球形搜索有助于在中央系统的给定距离内导航。</value>
-    <source>Spherical searches help navigating around within a given distance of a central system.</source>
+    <value>球形搜索有助于导航到距中央星系一定距离内的星系</value>
+    <source>Spherical limit helps navigating to systems within a given distance of a central system.</source>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -465,8 +458,7 @@
     <value>6</value>
   </data>
   <data name="label5.Text">
-    <!--Machine translated-->
-    <value>当前系统：</value>
+    <value>当前星系:</value>
     <source>Current system:</source>
   </data>
   <data name="label5.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -488,8 +480,7 @@
     <value>8</value>
   </data>
   <data name="label6.Text">
-    <!--Machine translated-->
-    <value>距离：</value>
+    <value>距离:</value>
     <source>Distance:</source>
   </data>
   <data name="label6.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -550,9 +541,8 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text">
-    <!--Machine translated-->
     <value>球形搜索</value>
-    <source>Spherical Search</source>
+    <source>Spherical limit</source>
   </data>
   <data name="txtCurrentDistance.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 121</value>

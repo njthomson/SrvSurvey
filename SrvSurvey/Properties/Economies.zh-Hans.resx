@@ -41,104 +41,87 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Agri">
-    <!--Machine translated-->
     <value>农业</value>
     <comment>Economy type Agri</comment>
     <source>Agriculture</source>
   </data>
   <data name="Carrier">
-    <!--Machine translated-->
     <value>私营企业</value>
     <comment>Economy Type Carrier</comment>
     <source>Private Enterprise</source>
   </data>
   <data name="Colony">
-    <!--Machine translated-->
-    <value>殖民地</value>
+    <value>殖民</value>
     <comment>Economy type Colony</comment>
     <source>Colony</source>
   </data>
   <data name="Damaged">
-    <!--Machine translated-->
-    <value>破</value>
+    <value>受损</value>
     <comment>Economy type Damaged</comment>
     <source>Damaged</source>
   </data>
   <data name="Engineer">
-    <!--Machine translated-->
     <value>工程</value>
     <comment>Economy type Engineer</comment>
     <source>Engineering</source>
   </data>
   <data name="Extraction">
-    <!--Machine translated-->
-    <value>萃取</value>
+    <value>采掘业</value>
     <comment>Economy type Extraction</comment>
     <source>Extraction</source>
   </data>
   <data name="HighTech">
-    <!--Machine translated-->
     <value>高科技</value>
     <comment>Economy type HighTech</comment>
     <source>High Tech</source>
   </data>
   <data name="Industrial">
-    <!--Machine translated-->
     <value>工业</value>
     <comment>Economy type Industrial</comment>
     <source>Industrial</source>
   </data>
   <data name="Military">
-    <!--Machine translated-->
     <value>军事</value>
     <comment>Economy type Military</comment>
     <source>Military</source>
   </data>
   <data name="None">
-    <!--Machine translated-->
-    <value>没有</value>
+    <value>无</value>
     <comment>Economy type None</comment>
     <source>None</source>
   </data>
   <data name="Prison">
-    <!--Machine translated-->
     <value>监狱</value>
     <comment>Economy type Prison</comment>
     <source>Prison</source>
   </data>
   <data name="Refinery">
-    <!--Machine translated-->
-    <value>精炼厂</value>
+    <value>精炼</value>
     <comment>Economy type Refinery</comment>
     <source>Refinery</source>
   </data>
   <data name="Repair">
-    <!--Machine translated-->
-    <value>修</value>
+    <value>维修</value>
     <comment>Economy type Repair</comment>
     <source>Repair</source>
   </data>
   <data name="Rescue">
-    <!--Machine translated-->
-    <value>救</value>
+    <value>救援</value>
     <comment>Economy type Rescue</comment>
     <source>Rescue</source>
   </data>
   <data name="Service">
-    <!--Machine translated-->
-    <value>服务</value>
+    <value>服务业</value>
     <comment>Economy type Service</comment>
     <source>Service</source>
   </data>
   <data name="Terraforming">
-    <!--Machine translated-->
-    <value>地球化改造</value>
+    <value>类地改造</value>
     <comment>Economy type Terraforming</comment>
     <source>Terraforming</source>
   </data>
   <data name="Tourism">
-    <!--Machine translated-->
-    <value>旅游</value>
+    <value>旅游业</value>
     <comment>Economy type Tourism</comment>
     <source>Tourism</source>
   </data>

@@ -60,28 +60,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CountBioSignals">
-    <!--Machine translated-->
-    <value>{0}生物信号：</value>
+    <value>{0} 生物信号:</value>
     <comment>Footer shown when there are bio signals on the body just scanned
 {0} int, count of bio signals</comment>
     <source>{0} bio signals:</source>
   </data>
   <data name="EstimatedValue">
-    <!--Machine translated-->
-    <value>估计值：</value>
+    <value>预估:</value>
     <comment>Line header for body estimated value</comment>
     <source>Estimated value:</source>
   </data>
   <data name="LastScan">
-    <!--Machine translated-->
-    <value>上次扫描时间：{0}</value>
+    <value>上次扫描: {0}</value>
     <comment>Header showing name of body last scanned
 {0} string, name of last body scanned</comment>
     <source>Last scan: {0}</source>
   </data>
   <data name="WithSurfaceScan">
-    <!--Machine translated-->
-    <value>使用表面扫描：</value>
+    <value>含地表扫描:</value>
     <comment>Line header for body estimated value with surface scan</comment>
     <source>With surface scan:</source>
   </data>
