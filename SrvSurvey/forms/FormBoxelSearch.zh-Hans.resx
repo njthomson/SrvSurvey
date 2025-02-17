@@ -625,7 +625,7 @@
     <value>14</value>
   </data>
   <data name="btnBegin.Text">
-    <value>开始</value>
+    <value>开始(&amp;B)</value>
     <source>&amp;Begin</source>
   </data>
   <data name="btnBoxelEmpty.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -644,7 +644,7 @@
     <value>10</value>
   </data>
   <data name="btnBoxelEmpty.Text">
-    <value>切换空Boxel</value>
+    <value>切换空Boxel(&amp;T)</value>
     <source>&amp;Toggle boxel empty</source>
   </data>
   <data name="btnConfig.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -697,7 +697,7 @@
     <value>23</value>
   </data>
   <data name="btnConfigCancel.Text">
-    <value>取消</value>
+    <value>取消(&amp;C)</value>
     <source>&amp;Cancel</source>
   </data>
   <data name="btnConfigNav.AutoSize" type="System.Boolean, mscorlib">
@@ -744,7 +744,7 @@
     <value>5</value>
   </data>
   <data name="btnCopyNext.Text">
-    <value>复制下个星系名</value>
+    <value>复制下个星系名(&amp;C)</value>
     <source>&amp;Copy next system</source>
   </data>
   <data name="btnParent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -807,7 +807,7 @@
     <value>15</value>
   </data>
   <data name="checkAutoCopy.Text">
-    <value>在银河地图中自动复制</value>
+    <value>在银河地图中自动复制(&amp;A)</value>
     <source>&amp;Auto-copy in gal map</source>
   </data>
   <data name="checkCompleteOnEnterSystem.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -1163,7 +1163,8 @@
   </data>
   <data name="labelGraphic.Text">
     <value>Boxel 是一个包含程序生成恒星系统的空间立方体。
-立方体的大小取决于质量代码：'a' boxels 边长 10 光年，
+  立方体的大小取决于质量代码：
+    'a' boxels 边长 10 光年，
     下一级以2倍递增，'h' boxels 边长 1280 光年
 
 每个Boxel包含8个子节点，排列2行、每行4个节点，
@@ -1254,7 +1255,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>3</value>
   </data>
   <data name="lblMaxNum.Text">
-    <value>Boxel中的星系:</value>
+    <value>Boxel中的星系(&amp;S):</value>
     <source>&amp;Systems in boxel:</source>
   </data>
   <data name="lblStatus.Size" type="System.Drawing.Size, System.Drawing">
@@ -1293,7 +1294,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>175, 22</value>
   </data>
   <data name="menuListCopySystemName.Text">
-    <value>复制星系名</value>
+    <value>复制星系名(&amp;C)</value>
     <source>&amp;Copy system name</source>
   </data>
   <data name="menuMore.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

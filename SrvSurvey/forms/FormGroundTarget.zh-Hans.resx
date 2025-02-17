@@ -238,7 +238,7 @@
     <value>0</value>
   </data>
   <data name="btnBegin.Text">
-    <value>设定目标</value>
+    <value>设定目标(&amp;S)</value>
     <source>&amp;Set target</source>
   </data>
   <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -299,7 +299,7 @@
     <value>6</value>
   </data>
   <data name="btnPaste.Text">
-    <value>粘贴</value>
+    <value>粘贴(&amp;P)</value>
     <source>&amp;Paste</source>
   </data>
   <data name="btnPaste.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
@@ -327,7 +327,7 @@
     <value>5</value>
   </data>
   <data name="btnTargetCurrent.Text">
-    <value>以当前位置为目标</value>
+    <value>以当前位置为目标(&amp;T)</value>
     <source>&amp;Target current location</source>
   </data>
   <data name="button1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -352,7 +352,7 @@
     <value>4</value>
   </data>
   <data name="button1.Text">
-    <value>清除目标设定</value>
+    <value>清除目标设定(&amp;C)</value>
     <source>&amp;Clear target</source>
   </data>
   <data name="flowLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">

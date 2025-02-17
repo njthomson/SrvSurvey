@@ -283,7 +283,7 @@
     <value>2</value>
   </data>
   <data name="btnAccept.Text">
-    <value>激活</value>
+    <value>激活(&amp;A)</value>
     <source>&amp;Activate</source>
   </data>
   <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -305,7 +305,7 @@
     <value>4</value>
   </data>
   <data name="btnCancel.Text">
-    <value>取消</value>
+    <value>取消(&amp;C)</value>
     <source>&amp;Cancel</source>
   </data>
   <data name="btnDisable.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -327,7 +327,7 @@
     <value>3</value>
   </data>
   <data name="btnDisable.Text">
-    <value>禁用</value>
+    <value>禁用(&amp;D)</value>
     <source>&amp;Disable</source>
   </data>
   <data name="comboSystemName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -376,7 +376,7 @@
     <value>0</value>
   </data>
   <data name="label1.Text">
-    <value>输入中心星系:</value>
+    <value>输入中心星系(&amp;E):</value>
     <source>&amp;Enter central system:</source>
   </data>
   <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -398,7 +398,7 @@
     <value>4</value>
   </data>
   <data name="label2.Text">
-    <value>球体半径:</value>
+    <value>球体半径(&amp;S):</value>
     <source>&amp;Sphere radius:</source>
   </data>
   <data name="label2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
