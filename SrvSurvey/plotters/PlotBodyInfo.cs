@@ -74,7 +74,7 @@ namespace SrvSurvey.plotters
             if (this.IsDisposed || game == null) return;
 
             // use current body, or targetBody if in SystemMap
-            var body = Game.activeGame?.isMode(GameMode.SystemMap, GameMode.Orrery) == true
+            var body = Game.activeGame?.isMode(GameMode.SystemMap, GameMode.Orrery) == true || PlotBodyInfo.forceShow
                 ? game.targetBody
                 : game.systemBody;
             if (body == null || !PlotBodyInfo.allowPlotter)

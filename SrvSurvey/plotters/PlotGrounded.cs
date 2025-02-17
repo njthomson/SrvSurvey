@@ -437,7 +437,7 @@ namespace SrvSurvey.plotters
                     // draw an inner circle if really close
                     if (tt.distance < PlotTrackers.highlightDistance)
                     {
-                        if (game.cmdr.scanOne != null)
+                        if (game.cmdr.scanOne == null || game.cmdr.scanOne.genus == name)
                             p = GameColors.penExclusionActive;
 
                         var innerRadius = 50;

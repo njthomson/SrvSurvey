@@ -423,7 +423,7 @@ namespace SrvSurvey.plotters
                     drawTextAt($"{species.Key.locName}:", b);
 
                 // TODO: handle legacy species better - put them on the same line as if they were variants
-                foreach (var variant in species.Value)
+                foreach (var variant in species.Value.OrderBy(v => v.variant.locName))
                 {
                     //  🎂 🧁 🍥 ‡† ⁑ ⁂ ※ ⁜‼•🟎 🟂🟎🟒🟈⚑⚐⛿🏁🎌⛳🏴🏳🟎✩✭✪𓇽𓇼 🚕🛺🚐🚗🚜🚛🛬🚀🛩️☀️🌀☄️🔥⚡🌩️🌠☀️
                     // 💫 🧭🧭🌍🌐🌏🌎🗽♨️🌅

@@ -230,8 +230,8 @@ namespace SrvSurvey
 
         private static bool toggleFSSInfo()
         {
-            var jumpInfo = Program.getPlotter<PlotFSSInfo>();
-            if (jumpInfo == null)
+            var fssInfo = Program.getPlotter<PlotFSSInfo>();
+            if (fssInfo == null)
             {
                 PlotFSSInfo.forceShow = true;
                 Program.showPlotter<PlotFSSInfo>();
@@ -247,8 +247,9 @@ namespace SrvSurvey
 
         private static bool toggleBodyInfo()
         {
-            var jumpInfo = Program.getPlotter<PlotBodyInfo>();
-            if (jumpInfo == null && Game.activeGame?.systemBody != null)
+            var bodyInfo = Program.getPlotter<PlotBodyInfo>();
+            var targetBody = Game.activeGame?.systemBody ?? Game.activeGame?.targetBody;
+            if (bodyInfo == null && targetBody != null)
             {
                 PlotBodyInfo.forceShow = true;
                 Program.showPlotter<PlotBodyInfo>();

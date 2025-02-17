@@ -94,7 +94,8 @@ namespace SrvSurvey.plotters
             // render each message their own line
             foreach (var msg in messages.ToList())
             {
-                drawTextAt(ten, "► " + msg.msg);
+                drawTextAt2(ten, "► " + msg.msg, C.cyan);
+                dtx += twenty;
                 newLine(+four, true);
             }
 
