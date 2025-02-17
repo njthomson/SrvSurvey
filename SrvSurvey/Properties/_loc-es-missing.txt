@@ -1,2 +1,16 @@
 /plotters/PlotBioSystem.es.resx
 	NotPredicted
+
+/Properties/Materials.es.resx
+	tg_biomechanicalconduits
+	tg_shipflightdata
+	tg_shipsystemsdata
+	tg_interdictiondata
+	tg_causticcrystal
+	tg_causticshard
+	tg_causticgeneratorparts
+	tg_abrasion01
+	tg_abrasion02
+	tg_abrasion03
+	unknowncorechip
+	searchrescuevoucher

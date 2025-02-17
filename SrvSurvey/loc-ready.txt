@@ -9,6 +9,7 @@ FormRouteExtras.resx
 FormSetKeyChord.resx
 FormSphereLimit.resx
 KeyChords.resx
+Materials.resx
 Misc.resx
 PlotBioStatus.resx
 PlotBioSystem.resx

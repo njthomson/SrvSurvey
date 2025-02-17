@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
+  <!-- Pre-loc from: https://github.com/EDCD/EDDI/blob/develop/DataDefinitions/Properties/FactionStates.ru.resx -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -70,7 +71,7 @@
     <source>Boom</source>
   </data>
   <data name="Bust">
-    <value>Спад</value>
+    <value>Провал</value>
     <comment>Faction state Bust</comment>
     <source>Bust</source>
   </data>
@@ -130,7 +131,7 @@
     <source>Incursion</source>
   </data>
   <data name="InfrastructureFailure">
-    <value>Отказ инфраструктуры</value>
+    <value>Нарушение инфраструктуры</value>
     <comment>Faction state InfrastructureFailure</comment>
     <source>Infrastructure Failure</source>
   </data>
@@ -140,7 +141,7 @@
     <source>Investment</source>
   </data>
   <data name="Lockdown">
-    <value>Изоляция</value>
+    <value>Карантин</value>
     <comment>Faction state Lockdown</comment>
     <source>Lockdown</source>
   </data>
@@ -165,7 +166,7 @@
     <source>Pirate Attack</source>
   </data>
   <data name="PublicHoliday">
-    <value>Официальный праздник</value>
+    <value>Праздники</value>
     <comment>Faction state PublicHoliday</comment>
     <source>Public Holiday</source>
   </data>
@@ -185,7 +186,7 @@
     <source>Technological Leap</source>
   </data>
   <data name="Terrorism">
-    <value>Атака террористов</value>
+    <value>Терроризм</value>
     <comment>Faction state Terrorism</comment>
     <source>Terrorism</source>
   </data>

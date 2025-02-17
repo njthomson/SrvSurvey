@@ -81,7 +81,7 @@
   </data>
   <data name="Footer2">
     <!--Machine translated-->
-    <value>🌎 Terraformable
+    <value>🌎 Terraformável
 🚀 Landable ⚑ Undiscovered</value>
     <comment>More footer lines with guidance</comment>
     <source>🌎 Terraformable
@@ -96,7 +96,7 @@
   </data>
   <data name="ScannedAllBodies">
     <!--Machine translated-->
-    <value>Escaneou todos os {0} corpos: {1}</value>
+    <value>Escaneado todos os {0} corpos: {1}</value>
     <comment>Line showing when all bodies have been scanned and how many credits thats worth
 {0} int, count of bodies
 {1} string, value of credits</comment>

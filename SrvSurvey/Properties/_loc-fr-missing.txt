@@ -316,53 +316,9 @@
 	Tussock
 
 /Properties/Economies.fr.resx
-	Agri
-	Colony
-	Extraction
-	HighTech
-	Industrial
-	Military
-	None
-	Refinery
-	Service
-	Terraforming
-	Tourism
-	Rescue
-	Prison
-	Repair
-	Damaged
-	Carrier
 	Engineer
 
 /Properties/FactionStates.fr.resx
-	None
-	Retreat
-	War
-	Lockdown
-	CivilUnrest
-	CivilWar
-	Boom
-	Expansion
-	Bust
-	Outbreak
-	Famine
-	Election
-	Investment
-	CivilLiberty
-	Incursion
-	PirateAttack
-	Drought
-	Blight
-	ColdWar
-	Colonisation
-	HistoricEvent
-	InfrastructureFailure
-	NaturalDisaster
-	PublicHoliday
-	Revolution
-	TechnologicalLeap
-	Terrorism
-	TradeWar
 	Thargoid_Probing
 	Thargoid_Harvest
 	Thargoid_Controlled
@@ -408,6 +364,20 @@
 	track7
 	track8
 	pasteGalMap
+
+/Properties/Materials.fr.resx
+	tg_biomechanicalconduits
+	tg_shipflightdata
+	tg_shipsystemsdata
+	tg_interdictiondata
+	tg_causticcrystal
+	tg_causticshard
+	tg_causticgeneratorparts
+	tg_abrasion01
+	tg_abrasion02
+	tg_abrasion03
+	unknowncorechip
+	searchrescuevoucher
 
 /Properties/Misc.fr.resx
 	NetSysData_Bodies

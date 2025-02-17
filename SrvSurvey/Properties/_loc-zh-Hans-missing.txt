@@ -315,25 +315,6 @@
 	Tubus
 	Tussock
 
-/Properties/Economies.zh-Hans.resx
-	Agri
-	Colony
-	Extraction
-	HighTech
-	Industrial
-	Military
-	None
-	Refinery
-	Service
-	Terraforming
-	Tourism
-	Rescue
-	Prison
-	Repair
-	Damaged
-	Carrier
-	Engineer
-
 /Properties/FactionStates.zh-Hans.resx
 	None
 	Retreat

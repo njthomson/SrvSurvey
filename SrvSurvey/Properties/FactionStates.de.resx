@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
+  <!-- Pre-loc from: https://github.com/EDCD/EDDI/blob/develop/DataDefinitions/Properties/FactionStates.de.resx -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -95,7 +96,7 @@
     <source>Cold War</source>
   </data>
   <data name="Colonisation">
-    <value>Kolonialisierung</value>
+    <value>Kolonisation</value>
     <comment>Faction state Colonisation</comment>
     <source>Colonisation</source>
   </data>
@@ -125,12 +126,12 @@
     <source>Historic Event</source>
   </data>
   <data name="Incursion">
-    <value>Einmarsch</value>
+    <value>Eindringen</value>
     <comment>Faction state Incursion</comment>
     <source>Incursion</source>
   </data>
   <data name="InfrastructureFailure">
-    <value>Versagen der Infrastruktur</value>
+    <value>Ausfall der Infrastruktur</value>
     <comment>Faction state InfrastructureFailure</comment>
     <source>Infrastructure Failure</source>
   </data>
@@ -165,7 +166,7 @@
     <source>Pirate Attack</source>
   </data>
   <data name="PublicHoliday">
-    <value>Gesetzlicher Feiertag</value>
+    <value>Feiertag</value>
     <comment>Faction state PublicHoliday</comment>
     <source>Public Holiday</source>
   </data>
@@ -180,7 +181,7 @@
     <source>Revolution</source>
   </data>
   <data name="TechnologicalLeap">
-    <value>Technologischer Vorsprung</value>
+    <value>Technologiesprung</value>
     <comment>Faction state TechnologicalLeap</comment>
     <source>Technological Leap</source>
   </data>
@@ -190,12 +191,12 @@
     <source>Terrorism</source>
   </data>
   <data name="Thargoid_Controlled">
-    <value>Unter Thargoiden-Kontrolle</value>
+    <value>Thargoiden kontrolliert</value>
     <comment>Faction state Thargoid_Controlled</comment>
     <source>Thargoid Controlled</source>
   </data>
   <data name="Thargoid_Harvest">
-    <value>Thargoiden-Invasion</value>
+    <value>Thargoideninvasion</value>
     <comment>Faction state Thargoid_Harvest</comment>
     <source>Thargoid Invasion</source>
   </data>
@@ -205,12 +206,12 @@
     <source>Thargoid Alert</source>
   </data>
   <data name="Thargoid_Recovery">
-    <value>Post-Thargoiden-Wiederherstellung</value>
+    <value>Nach Thargoid-Wiederherstellung</value>
     <comment>Faction state Thargoid_Recovery</comment>
     <source>Post-Thargoid Recovery</source>
   </data>
   <data name="Thargoid_Stronghold">
-    <value>Thargoid-Mahlstrom</value>
+    <value>Thargoid-Maelstrom</value>
     <comment>Faction state Thargoid_Stronghold</comment>
     <source>Thargoid Maelstrom</source>
   </data>
