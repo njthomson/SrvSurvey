@@ -60,13 +60,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CountGenus">
-    <value>地质: {0}</value>
+    <value>生物 {0}</value>
     <comment>Line prefix showing the count of genus on a body
 {0} int, count of genus</comment>
     <source>{0} Genus</source>
   </data>
   <data name="CountGeo">
-    <value>地质信号: {0}</value>
+    <value>地质: {0}</value>
     <comment>Line suffix showing the count of geo signals on a body
 {0} int, count of geo signals</comment>
     <source>{0} Geo</source>
