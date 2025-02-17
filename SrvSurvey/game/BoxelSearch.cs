@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SrvSurvey.net;
+using SrvSurvey.plotters;
 using SrvSurvey.units;
 using System.Diagnostics;
 
@@ -509,6 +510,12 @@ namespace SrvSurvey.game
             {
                 this.setNextToVisit();
                 this.fireChanged();
+
+                if (this.completeOnFssAllBodies)
+                    PlotFloatie.showMessage($"Current boxel {(double)this.systems.Count(sys => sys.complete) / (double)this.systems.Count:P0} searched.");
+
+                if (this.systemsComplete)
+                    Task.Delay(2000).continueOnMain(null, () => PlotFloatie.showMessage($"Next boxel to search: {this.nextSystem}0"));
             }
         }
 

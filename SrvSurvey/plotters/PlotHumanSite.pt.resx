@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -59,107 +60,128 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ActiveFighter">
+    <!--Machine translated-->
     <value>O lutador está ativo</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Fighter is active</source>
   </data>
   <data name="AGRI">
+    <!--Machine translated-->
     <value>AGRO</value>
     <comment>A contraction of Agriculture, ideally 3 letters</comment>
     <source>AGRI</source>
   </data>
   <data name="AutoDock1">
+    <!--Machine translated-->
     <value>Encaixe automático em andamento</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Auto dock in progress</source>
   </data>
   <data name="AutoDock2">
+    <!--Machine translated-->
     <value>Identificação automática de liquidação suportada</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Settlement auto-identification supported</source>
   </data>
   <data name="AutoDock3">
+    <!--Machine translated-->
     <value>Não mude para a câmera externa</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Do not switch to external camera</source>
   </data>
   <data name="CMD">
+    <!--Machine translated-->
     <value>CMD</value>
     <comment>A contraction of Command, ideally 3 letters</comment>
     <source>CMD</source>
   </data>
   <data name="Distance">
+    <!--Machine translated-->
     <value>Muito longe</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Too far away</source>
   </data>
   <data name="DockingApproved">
+    <!--Machine translated-->
     <value>Docking aprovado: pad #{0}</value>
     <comment>Shown when approaching a settlement
 {0} int, the pad number assigned</comment>
     <source>Docking approved: pad #{0}</source>
   </data>
   <data name="DockingDenied">
+    <!--Machine translated-->
     <value>Encaixe negado</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Docking denied</source>
   </data>
   <data name="DockingRequested">
+    <!--Machine translated-->
     <value>Acoplamento solicitado</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Docking requested</source>
   </data>
   <data name="EXT">
+    <!--Machine translated-->
     <value>EXT</value>
     <comment>A contraction of External, ideally 3 letters</comment>
     <source>EXT</source>
   </data>
   <data name="Faction">
+    <!--Machine translated-->
     <value>Facção</value>
     <comment>Prefix shown when approaching a settlement</comment>
     <source>Faction</source>
   </data>
   <data name="Government">
+    <!--Machine translated-->
     <value>Governo</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Government</source>
   </data>
   <data name="HAB">
+    <!--Machine translated-->
     <value>HAB</value>
     <comment>A contraction of Habitat, ideally 3 letters</comment>
     <source>HAB</source>
   </data>
   <data name="HasInterstellar">
+    <!--Machine translated-->
     <value>Facções interestelares disponíveis</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Interstellar factions available</source>
   </data>
   <data name="HelpFoot0">
+    <!--Machine translated-->
     <value>Para identificar manualmente:</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>To manually identify:</source>
   </data>
   <data name="HelpFoot1">
+    <!--Machine translated-->
     <value>1. Caminhe até o centro de qualquer plataforma de pouso e agache-se</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>1. Walk to the center of any landing pad and crouch</source>
   </data>
   <data name="HelpFoot2">
+    <!--Machine translated-->
     <value>2. Coloque o pé esquerdo sobre as ranhuras centrais</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>2. Place your left foot over the the center grooves</source>
   </data>
   <data name="HelpFoot3">
+    <!--Machine translated-->
     <value>3. Rosto com as divisas à sua frente à sua esquerda</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>3. Face with the chevrons ahead to your left</source>
   </data>
   <data name="HelpFoot4">
+    <!--Machine translated-->
     <value>4. Mire no final do sulco à sua frente</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>4. Aim at the end of the groove ahead of you</source>
   </data>
   <data name="HelpFoot5">
+    <!--Machine translated-->
     <value>5. Envie a mensagem '{0}'</value>
     <comment>
       Shown when landed and help is needed on foot
@@ -167,145 +189,173 @@
     <source>5. Send message '{0}'</source>
   </data>
   <data name="HelpFoot6">
+    <!--Machine translated-->
     <value>Veja o wiki para mais informações</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>See the wiki for more info</source>
   </data>
   <data name="HelpShip1">
+    <!--Machine translated-->
     <value>A liquidação será identificada após a próxima ação</value>
     <comment>Shown when landed and help is needed in a ship</comment>
     <source>Settlement will be identified after next action</source>
   </data>
   <data name="HelpShip2">
+    <!--Machine translated-->
     <value>Para identificar manualmente</value>
     <comment>Shown when landed and help is needed in a ship</comment>
     <source>To manually identify</source>
   </data>
   <data name="HelpShip3">
+    <!--Machine translated-->
     <value>Enviar '{0}' quando encaixado</value>
     <comment>Shown when landed and help is needed in a ship
 {0} string, the non-localized command to type</comment>
     <source>Send '{0}' when docked</source>
   </data>
   <data name="Hostile">
+    <!--Machine translated-->
     <value>Hostil</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Hostile</source>
   </data>
   <data name="IND">
+    <!--Machine translated-->
     <value>IND</value>
     <comment>A contraction of Industrial Processing, ideally 3 letters</comment>
     <source>IND</source>
   </data>
   <data name="Influence">
+    <!--Machine translated-->
     <value>Influência</value>
     <comment>Prefix shown when approaching a settlement</comment>
     <source>Influence</source>
   </data>
   <data name="KnownSettlement">
+    <!--Machine translated-->
     <value>Assentamento conhecido</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Known settlement</source>
   </data>
   <data name="LAB">
+    <!--Machine translated-->
     <value>LABRADOR</value>
     <comment>A contraction of Laboratory, ideally 3 letters</comment>
     <source>LAB</source>
   </data>
   <data name="ManualDock1">
+    <!--Machine translated-->
     <value>Acoplamento manual em andamento</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Manual docking in progress</source>
   </data>
   <data name="ManualDock2">
+    <!--Machine translated-->
     <value>A identificação do assentamento será atrasada</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Settlement identification will be delayed</source>
   </data>
   <data name="ManualDock3">
+    <!--Machine translated-->
     <value>Recomenda-se a doca automática</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Auto dock recommended</source>
   </data>
   <data name="MED">
+    <!--Machine translated-->
     <value>MED</value>
     <comment>A contraction of Medical, ideally 3 letters</comment>
     <source>MED</source>
   </data>
   <data name="NoSpace">
+    <!--Machine translated-->
     <value>Não há almofadas disponíveis</value>
     <comment>Shown when approaching a settlement</comment>
     <source>No pads available</source>
   </data>
   <data name="Offenses">
+    <!--Machine translated-->
     <value>Ofensas</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Offenses</source>
   </data>
   <data name="OnApproach">
+    <!--Machine translated-->
     <value>Na aproximação</value>
     <comment>Shown when approaching a settlement</comment>
     <source>On approach</source>
   </data>
   <data name="POW">
+    <!--Machine translated-->
     <value>Prisioneiro de guerra</value>
     <comment>A contraction of Power Center, ideally 3 letters</comment>
     <source>POW</source>
   </data>
   <data name="PWR">
+    <!--Machine translated-->
     <value>PWR</value>
     <comment>A contraction of Power Center, ideally 3 letters</comment>
     <source>PWR</source>
   </data>
   <data name="RES">
+    <!--Machine translated-->
     <value>RES</value>
     <comment>A contraction of Resources, ideally 3 letters</comment>
     <source>RES</source>
   </data>
   <data name="STO">
+    <!--Machine translated-->
     <value>STO</value>
     <comment>A contraction of Storage, ideally 3 letters</comment>
     <source>STO</source>
   </data>
   <data name="TooLarge">
+    <!--Machine translated-->
     <value>Navio muito grande</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Ship too large</source>
   </data>
   <data name="Unknown">
+    <!--Machine translated-->
     <value>Desconhecido</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Unknown</source>
   </data>
   <data name="UnknownTypeHeading">
+    <!--Machine translated-->
     <value>Tipo e posição de liquidação desconhecidos</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Unknown settlement type and heading</source>
   </data>
   <data name="UnkownHeading">
+    <!--Machine translated-->
     <value>Título de assentamento desconhecido</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Unknown settlement heading</source>
   </data>
   <data name="YourRep">
+    <!--Machine translated-->
     <value>Sua reputação: {0}</value>
     <comment>Shown when approaching a settlement
 {0} string, your reputation with a faction</comment>
     <source>Your reputation: {0}</source>
   </data>
   <data name="ZoomHeader">
+    <!--Machine translated-->
     <value>Zoom: {0}</value>
     <comment>Map zoom level, shown in top right corner
 {0} float, 1 decimal place, the map zoom level</comment>
     <source>Zoom: {0}</source>
   </data>
   <data name="ZoomHeaderAuto">
+    <!--Machine translated-->
     <value>Zoom: {0} (automático)</value>
     <comment>Map zoom level when auto zooming, shown in top right corner
 {0} float, 1 decimal place, the map zoom level</comment>
     <source>Zoom: {0} (Auto)</source>
   </data>
   <data name="ZoomHeaderMin">
+    <!--Machine translated-->
     <value>Z: {0}</value>
     <comment>A minimal map zoom level, shown in top right corner when there's not much space
 {0} float, 1 decimal place, the map zoom level</comment>

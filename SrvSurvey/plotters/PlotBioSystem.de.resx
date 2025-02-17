@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -59,6 +60,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BodyBio_Header">
+    <!--Machine translated-->
     <value>Körper- {0} Biosignale: {1}</value>
     <comment>Header shown when showing bio signals for a body
 {0} string, the short name of a body
@@ -66,34 +68,46 @@
     <source>Body {0} bio signals: {1}</source>
   </data>
   <data name="DssRequired">
+    <!--Machine translated-->
     <value>DSS erforderlich</value>
     <comment>Message shown if the body needs to be DSS scanned</comment>
     <source>DSS required</source>
   </data>
   <data name="FFBonus">
+    <!--Machine translated-->
     <value>(FF-Bonus: {0})</value>
     <comment>Extra footer line showing rewards if body has FF bonus applied
 {0} string, either a single number of credits or &lt;min&gt; ~ &lt;max&gt; credits</comment>
     <source>(FF bonus: {0})</source>
   </data>
   <data name="FssRequired">
+    <!--Machine translated-->
     <value>System FSS erforderlich</value>
     <comment>Message shown if the system needs to be FSS scanned</comment>
     <source>System FSS required</source>
   </data>
   <data name="GeoSignals">
+    <!--Machine translated-->
     <value>Geosignale: {0}</value>
     <comment>Header shown when body has geo signals
 {0} int, total count of geo signals on the body</comment>
     <source>Geo signals: {0}</source>
   </data>
+  <data name="NotPredicted">
+    <!--Machine translated-->
+    <value>Nicht vorhergesagt!</value>
+    <comment>Message shown when some bio signal is present and it was not predicted.</comment>
+    <source>Not predicted!</source>
+  </data>
   <data name="RewardFooter">
+    <!--Machine translated-->
     <value>Belohnungen: {0}</value>
     <comment>Footer showing estimated credits
 {0} string, either a single number of credits or &lt;min&gt; ~ &lt;max&gt; credits</comment>
     <source>Rewards: {0}</source>
   </data>
   <data name="SysBio_Header">
+    <!--Machine translated-->
     <value>Biologische Signale: {0}</value>
     <comment>Header shown when showing bio signals forthe whole system
 {0} int, count of bio signals in this system</comment>

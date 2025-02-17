@@ -491,7 +491,7 @@
     <value>0</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
-    <value>Spherical limit helps navigating to systems within a given distance of a central system.</value>
+    <value>Spherical searches help navigating around within a given distance of a central system.</value>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -590,7 +590,7 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Spherical limit</value>
+    <value>Spherical Search</value>
   </data>
   <data name="txtCurrentDistance.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 121</value>

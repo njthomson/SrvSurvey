@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -438,8 +439,8 @@
     <value>0</value>
   </data>
   <data name="label4.Text">
-    <value>Límite esférico ayuda a navegar por los sistemas dentro de la distancia dada a un sistema central.</value>
-    <source>Spherical limit helps navigating to systems within a given distance of a central system.</source>
+    <value>Búsqueda esférica ayuda a navegar por los sistemas que hay dentro del espacio entre un sistema central y una distancia máxima.</value>
+    <source>Spherical searches help navigating around within a given distance of a central system.</source>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -540,8 +541,8 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text">
-    <value>Límite esférico</value>
-    <source>Spherical limit</source>
+    <value>Búsqueda Esférica</value>
+    <source>Spherical Search</source>
   </data>
   <data name="txtCurrentDistance.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 121</value>

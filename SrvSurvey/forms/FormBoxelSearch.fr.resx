@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -624,6 +625,7 @@
     <value>14</value>
   </data>
   <data name="btnBegin.Text">
+    <!--Machine translated-->
     <value>&amp; Commencer</value>
     <source>&amp;Begin</source>
   </data>
@@ -643,6 +645,7 @@
     <value>10</value>
   </data>
   <data name="btnBoxelEmpty.Text">
+    <!--Machine translated-->
     <value>&amp;Basculer boxel vide</value>
     <source>&amp;Toggle boxel empty</source>
   </data>
@@ -668,6 +671,7 @@
     <value>20</value>
   </data>
   <data name="btnConfig.Text">
+    <!--Machine translated-->
     <value>Configurer</value>
     <source>Config</source>
   </data>
@@ -696,6 +700,7 @@
     <value>23</value>
   </data>
   <data name="btnConfigCancel.Text">
+    <!--Machine translated-->
     <value>&amp;Annuler</value>
     <source>&amp;Cancel</source>
   </data>
@@ -715,6 +720,7 @@
     <value>25</value>
   </data>
   <data name="btnConfigNav.Text">
+    <!--Machine translated-->
     <value>...</value>
     <source>...</source>
   </data>
@@ -743,6 +749,7 @@
     <value>5</value>
   </data>
   <data name="btnCopyNext.Text">
+    <!--Machine translated-->
     <value>&amp;Copier le système suivant</value>
     <source>&amp;Copy next system</source>
   </data>
@@ -768,6 +775,7 @@
     <value>9</value>
   </data>
   <data name="btnParent.Text">
+    <!--Machine translated-->
     <value>...</value>
     <source>...</source>
   </data>
@@ -787,6 +795,7 @@
     <value>70, 20</value>
   </data>
   <data name="btnToggleList.Text">
+    <!--Machine translated-->
     <value>⏶ Masquer la liste</value>
     <source>⏶ Hide list</source>
   </data>
@@ -806,6 +815,7 @@
     <value>15</value>
   </data>
   <data name="checkAutoCopy.Text">
+    <!--Machine translated-->
     <value>&amp; Copie automatique dans la carte gal</value>
     <source>&amp;Auto-copy in gal map</source>
   </data>
@@ -825,6 +835,7 @@
     <value>16</value>
   </data>
   <data name="checkCompleteOnEnterSystem.Text">
+    <!--Machine translated-->
     <value>Entrer dans un système</value>
     <source>Entering a system</source>
   </data>
@@ -844,6 +855,7 @@
     <value>17</value>
   </data>
   <data name="checkCompleteOnFssAllBodies.Text">
+    <!--Machine translated-->
     <value>FSS de tous les organismes</value>
     <source>FSS'ing all bodies</source>
   </data>
@@ -866,6 +878,7 @@
     <value>12</value>
   </data>
   <data name="checkSkipVisited.Text">
+    <!--Machine translated-->
     <value>Ignorer les systèmes que j’ai déjà visités avant la date</value>
     <source>Skip systems I've already visited before date</source>
   </data>
@@ -888,10 +901,12 @@
     <value>13</value>
   </data>
   <data name="checkSpinKnownToSpansh.Text">
+    <!--Machine translated-->
     <value>Ignorer les systèmes connus de Spansh avant la date</value>
     <source>Skip systems known to Spansh before date</source>
   </data>
   <data name="colCompleted.Text">
+    <!--Machine translated-->
     <value>Date de la visite</value>
     <source>Visited Date</source>
   </data>
@@ -899,6 +914,7 @@
     <value>150</value>
   </data>
   <data name="colDistance.Text">
+    <!--Machine translated-->
     <value>Distance</value>
     <source>Distance</source>
   </data>
@@ -909,6 +925,7 @@
     <value>80</value>
   </data>
   <data name="colSpansh.Text">
+    <!--Machine translated-->
     <value>Spansh mis à jour</value>
     <source>Spansh Updated</source>
   </data>
@@ -916,6 +933,7 @@
     <value>150</value>
   </data>
   <data name="colSystem.Text">
+    <!--Machine translated-->
     <value>Nom du système</value>
     <source>System Name</source>
   </data>
@@ -1016,6 +1034,7 @@
     <value>18</value>
   </data>
   <data name="label1.Text">
+    <!--Machine translated-->
     <value>Boxel d’arpentage :</value>
     <source>Surveying boxel:</source>
   </data>
@@ -1038,6 +1057,7 @@
     <value>1</value>
   </data>
   <data name="label2.Text">
+    <!--Machine translated-->
     <value>Mesurez les distances à partir de :</value>
     <source>Measure distances from:</source>
   </data>
@@ -1060,6 +1080,7 @@
     <value>16</value>
   </data>
   <data name="label3.Text">
+    <!--Machine translated-->
     <value>REMARQUE : la fonction de recherche Boxel est incomplète et expérimentale</value>
     <source>NOTE: Boxel search feature is incomplete and experimental</source>
   </data>
@@ -1082,6 +1103,7 @@
     <value>15</value>
   </data>
   <data name="label4.Text">
+    <!--Machine translated-->
     <value>Considérez qu’un système est terminé lorsque :</value>
     <source>Consider a system complete when:</source>
   </data>
@@ -1101,6 +1123,7 @@
     <value>18</value>
   </data>
   <data name="label5.Text">
+    <!--Machine translated-->
     <value>Enquête jusqu’au code de masse :</value>
     <source>Survey down to mass code:</source>
   </data>
@@ -1120,6 +1143,7 @@
     <value>26</value>
   </data>
   <data name="label6.Text">
+    <!--Machine translated-->
     <value>À ce jour :</value>
     <source>As of date:</source>
   </data>
@@ -1139,6 +1163,7 @@
     <value>22</value>
   </data>
   <data name="label7.Text">
+    <!--Machine translated-->
     <value>Courant:</value>
     <source>Current:</source>
   </data>
@@ -1161,6 +1186,7 @@
     <value>28</value>
   </data>
   <data name="labelGraphic.Text">
+    <!--Machine translated-->
     <value>Un boxel est un cube de l’espace contenant des systèmes stellaires générés de manière procédurale. La taille des cubes dépend du code de masse : les boxels 'a' ont 10 ly de diamètre, les boxels 'h' ont 1280 ly.
 
 Chaque boxel contient 8 enfants, disposés en 2 rangées de 4 quadrants, chacun avec ses propres systèmes stellaires générés.</value>
@@ -1184,6 +1210,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>28</value>
   </data>
   <data name="lblBadBoxel.Text">
+    <!--Machine translated-->
     <value>Le nom du système n’est pas un nom de boxel valide</value>
     <source>System name is not a valid boxel name</source>
   </data>
@@ -1209,6 +1236,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>22</value>
   </data>
   <data name="lblBoxelCount.Text">
+    <!--Machine translated-->
     <value>(Contient X boxels)</value>
     <source>(Contains X boxels)</source>
   </data>
@@ -1231,6 +1259,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>21</value>
   </data>
   <data name="lblConfigHeader.Text">
+    <!--Machine translated-->
     <value>Entrez dans le boxel supérieur à arpenter. Tous les boxels enfants seront inclus jusqu’au code de masse inférieur :</value>
     <source>Enter the top boxel to survey. All child boxels will be included down to the lower mass code:</source>
   </data>
@@ -1250,6 +1279,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>3</value>
   </data>
   <data name="lblMaxNum.Text">
+    <!--Machine translated-->
     <value>&amp; Systèmes en boxel :</value>
     <source>&amp;Systems in boxel:</source>
   </data>
@@ -1257,6 +1287,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>437, 19</value>
   </data>
   <data name="lblStatus.Text">
+    <!--Machine translated-->
     <value>-</value>
     <source>-</source>
   </data>
@@ -1282,6 +1313,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>179, 22</value>
   </data>
   <data name="menuHelpLink.Text">
+    <!--Machine translated-->
     <value>Aide sur cet outil</value>
     <source>Help about this tool</source>
   </data>
@@ -1289,6 +1321,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>175, 22</value>
   </data>
   <data name="menuListCopySystemName.Text">
+    <!--Machine translated-->
     <value>&amp;Copier le nom du système</value>
     <source>&amp;Copy system name</source>
   </data>
@@ -1308,6 +1341,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>60, 20</value>
   </data>
   <data name="menuMore.Text">
+    <!--Machine translated-->
     <value>Plus...</value>
     <source>More ...</source>
   </data>
@@ -1426,6 +1460,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>500, 0</value>
   </data>
   <data name="$this.Text">
+    <!--Machine translated-->
     <value>Recherche Boxel (Expérimental)</value>
     <source>Boxel Search (Experimental)</source>
   </data>

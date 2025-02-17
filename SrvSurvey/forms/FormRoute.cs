@@ -1,6 +1,7 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.plotters;
 using SrvSurvey.units;
+using SrvSurvey.widgets;
 using System.Data;
 using static SrvSurvey.net.Spansh;
 
@@ -27,7 +28,7 @@ namespace SrvSurvey.forms
             toolStrip1.PerformLayout();
             var sz = toolStrip1.GetPreferredSize(Size.Empty);
             Game.log(sz);
-            this.MinimumSize = new Size(sz.Width + 32, 200);
+            this.MinimumSize = new Size(sz.Width + N.s(32), N.s(200));
             this.btnSave.Visible = false;
 
             // update UX from route
@@ -35,25 +36,26 @@ namespace SrvSurvey.forms
             this.hops = route.hops.ToList(); // make a copy of the List
             this.lastIdx = route.last;
             this.btnActive.Checked = route.active;
+            btnActive_CheckedChanged(null!, EventArgs.Empty);
             this.btnAutoCopy.Checked = route.autoCopy;
+            btnAutoCopy_CheckedChanged(null!, EventArgs.Empty);
 
             prepList();
 
-            Util.applyTheme(this);
+            Util.applyTheme(this, true);
         }
 
         #region import data
 
         private void btnNamesFromClipboard_Click(object sender, EventArgs e)
         {
-            var rslt = MessageBox.Show(this, "To proceed: copy a number of system names to the clipboard, one system per line.", "SrvSurvey", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            var rslt = MessageBox.Show(this, Properties.FormRouteExtras.MsgNamesClipboard, "SrvSurvey", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (rslt != DialogResult.OK || !Clipboard.ContainsText(TextDataFormat.Text)) return;
 
             var text = Clipboard.GetText();
             var names = text.Split("\n", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-            var msg = $"Importing ~{names.Length} names...";
-            Game.log(msg);
-            lblStatus.Text = msg;
+            Game.log($"Importing ~{names.Length} names...");
+            lblStatus.Text = Properties.FormRouteExtras.ImportNames.format(names.Length);
             this.setChildrenEnabled(false);
             Task.Run(() => doImportNames(names));
         }
@@ -62,9 +64,9 @@ namespace SrvSurvey.forms
         {
             var dialog = new OpenFileDialog()
             {
-                Title = "Choose import file",
+                Title = Properties.FormRouteExtras.OpenTextFileDialogTitle,
                 DefaultExt = "txt",
-                Filter = "Text files|*.txt",
+                Filter = Properties.FormRouteExtras.TextFiles + "|*.txt",
                 Multiselect = false,
             };
 
@@ -74,7 +76,7 @@ namespace SrvSurvey.forms
 
             var lines = File.ReadAllLines(dialog.FileName);
 
-            var msg = $"Importing ~{lines.Length} names...";
+            var msg = Properties.FormRouteExtras.ImportNames.format(lines.Length);
             Game.log(msg);
             lblStatus.Text = msg;
             this.setChildrenEnabled(false);
@@ -82,6 +84,7 @@ namespace SrvSurvey.forms
             Task.Run(() => doImportNames(lines));
         }
 
+        /*
         private void menuSpanshTouristFile_Click(object sender, EventArgs e)
         {
             var dialog = new OpenFileDialog()
@@ -108,6 +111,7 @@ namespace SrvSurvey.forms
 
             Task.Run(() => doImportNames(lines));
         }
+        */
 
         private async Task doImportNames(string[] names)
         {
@@ -140,7 +144,7 @@ namespace SrvSurvey.forms
                 Program.defer(() =>
                 {
                     Game.log($"doImportNames: imported {count} systems");
-                    lblStatus.Text = $"Imported {count} systems";
+                    lblStatus.Text = Properties.FormRouteExtras.ImportedSystems.format(count);
                     this.setChildrenEnabled(true);
                     btnSave.Visible = true;
                 });
@@ -149,19 +153,13 @@ namespace SrvSurvey.forms
 
         private void btnImportSpanshUrl_Click(object sender, EventArgs e)
         {
-            var rslt = MessageBox.Show(this, "To proceed: copy the URL of any Spansh route to the clipboard", "SrvSurvey", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            var rslt = MessageBox.Show(this, Properties.FormRouteExtras.MsgSpanshClipboard, "SrvSurvey", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (rslt != DialogResult.OK || !Clipboard.ContainsText(TextDataFormat.Text)) return;
 
             var text = Clipboard.GetText();
             var parts = text.Split(new char[] { '/', '?' }, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
             Guid routeId = Guid.Empty;
             parts.FirstOrDefault(p => Guid.TryParse(p, out routeId));
-
-            if (routeId == Guid.Empty && false)
-            {
-                lblStatus.Text = "Failed to find a tourist route ID";
-                return;
-            }
 
             var routeType = "route";
             if (parts.Contains("tourist"))
@@ -171,9 +169,8 @@ namespace SrvSurvey.forms
             else if (parts.Contains("exact-plotter"))
                 routeType = "galaxy";
 
-            var msg = $"Importing {routeType} route: '{routeId}' ...";
-            Game.log(msg);
-            lblStatus.Text = msg;
+            Game.log($"Importing {routeType} route: '{routeId}' ...");
+            lblStatus.Text = Properties.FormRouteExtras.ImportingSpansh.format(routeId);
             this.setChildrenEnabled(false);
             Task.Run(() => doImportSpanshRoute(routeId, routeType));
         }
@@ -207,15 +204,16 @@ namespace SrvSurvey.forms
 
                 if (parsedHops == null)
                 {
-                    status = $"Route not found: {routeId}";
-                    return;
+                    status = Properties.FormRouteExtras.RouteNotFound.format(routeId);
                 }
-
-                this.imported = true;
-                this.lastIdx = -1;
-                this.hops.Clear();
-                this.hops.AddRange(parsedHops);
-                status = $"Successfully imported {this.hops.Count} hops";
+                else
+                {
+                    this.imported = true;
+                    this.lastIdx = -1;
+                    this.hops.Clear();
+                    this.hops.AddRange(parsedHops);
+                    status = Properties.FormRouteExtras.SpanshImportSuccess.format(this.hops.Count);
+                }
             }
             catch (Exception ex)
             {
@@ -266,8 +264,8 @@ namespace SrvSurvey.forms
                     subDist.Tag = dist;
 
                     var subNotes = item.SubItems.Add("");
-                    if (star.refuel) subNotes.Text += "⛽ Refuel ";
-                    if (star.neutron) subNotes.Text += "⚠️ Neutron ";
+                    if (star.refuel) subNotes.Text += "⛽ " + Properties.FormRouteExtras.Refuel + " ";
+                    if (star.neutron) subNotes.Text += "⚠️ " + Properties.FormRouteExtras.Neutron + " ";
                     if (star.notes != null) subNotes.Text += star.notes;
                     if (!string.IsNullOrEmpty(subNotes.Text)) hasNotes = true;
 
@@ -290,11 +288,11 @@ namespace SrvSurvey.forms
         private void setStatusLabel()
         {
             if (lastIdx == -1)
-                this.lblStatus.Text = $"Route not started";
+                this.lblStatus.Text = Properties.FormRouteExtras.RouteNotStarted;
             else if (lastIdx + 1 == hops.Count)
-                this.lblStatus.Text = $"Route complete";
+                this.lblStatus.Text = Properties.FormRouteExtras.RouteComplete;
             else
-                this.lblStatus.Text = $"Route progress: {lastIdx + 1} of {hops.Count}";
+                this.lblStatus.Text = Properties.FormRouteExtras.RouteProgress.format(lastIdx + 1, hops.Count);
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -358,7 +356,7 @@ namespace SrvSurvey.forms
             {
                 // update checks if we just arrived in a route hop
                 list.Items[idx].Checked = true;
-                lblStatus.Text = $"Arrived at hop #{idx} {star.name}";
+                lblStatus.Text = Properties.FormRouteExtras.ArrivedAt.format(idx, star.name);
             }
             else if (cmdr.route.nextHop != null)
             {
@@ -375,14 +373,14 @@ namespace SrvSurvey.forms
 
         private void btnActive_CheckedChanged(object sender, EventArgs e)
         {
-            btnActive.Text = (btnActive.Checked ? "✔️ " : "   ") + "Route active";
+            btnActive.Text = (btnActive.Checked ? "✔️ " : "  ") + Properties.FormRouteExtras.RouteActiveButton;
             btnActive.Enabled = hops.Count > 0 && lastIdx < hops.Count;
             btnSave.Visible = this.isDirty;
         }
 
         private void btnAutoCopy_CheckedChanged(object sender, EventArgs e)
         {
-            btnAutoCopy.Text = (btnAutoCopy.Checked ? "✔️ " : "   ") + "Auto copy in Gal-Map";
+            btnAutoCopy.Text = (btnAutoCopy.Checked ? "✔️ " : "  ") + Properties.FormRouteExtras.AutoCopyButton;
             btnSave.Visible = this.isDirty;
         }
 

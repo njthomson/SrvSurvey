@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -62,16 +63,19 @@
     <value>True</value>
   </metadata>
   <data name="Boxel">
+    <!--Machine translated-->
     <value>* BOXEL: →→→!</value>
     <comment>Header before name of boxel we are searching</comment>
     <source>Boxel:</source>
   </data>
   <data name="Distance">
+    <!--Machine translated-->
     <value>* DISTANCE: →→→!</value>
     <comment>Header before distance between systems</comment>
     <source>Distance:</source>
   </data>
   <data name="DistanceExceeds">
+    <!--Machine translated-->
     <value>* {0}LY - EXCEEDS {1} LY →→→!</value>
     <comment>Shown when measured distance exceeds some limit.
 {0} float, 2 decimal places, measured distance between 2 star systems
@@ -79,6 +83,7 @@
     <source>{0}ly - exceeds {1} ly</source>
   </data>
   <data name="DistanceWithin">
+    <!--Machine translated-->
     <value>* {0} - WITHIN {1} LY →→→!</value>
     <comment>Shown when measured distance is within some limit.
 {0} float, 2 decimal places, measured distance between 2 star systems
@@ -86,31 +91,37 @@
     <source>{0} - within {1} ly</source>
   </data>
   <data name="From">
+    <!--Machine translated-->
     <value>* FROM: →→→!</value>
     <comment>Header before name of central star system</comment>
     <source>From:</source>
   </data>
   <data name="Next">
+    <!--Machine translated-->
     <value>* NEXT: →→→!</value>
     <comment>Header before name of next boxel system to visit</comment>
     <source>Next:</source>
   </data>
   <data name="To">
+    <!--Machine translated-->
     <value>* TO: →→→!</value>
     <comment>Header before name of target star system</comment>
     <source>To:</source>
   </data>
   <data name="UnknownDist">
+    <!--Machine translated-->
     <value>* UNKNOWN (PLOT ROUTE) →→→!</value>
     <comment>Message shown when we do not know the distance, but would if the cmdr plots a route</comment>
     <source>Unknown (plot route)</source>
   </data>
   <data name="Visited">
+    <!--Machine translated-->
     <value>* VISITED: →→→!</value>
     <comment>Header before count of systems visited</comment>
     <source>Visited:</source>
   </data>
   <data name="VisitedOf">
+    <!--Machine translated-->
     <value>* {0} ({1} OF {2}) →→→!</value>
     <comment>{0} int, percentage of systems visited
 {1} int, how many systems we have visited

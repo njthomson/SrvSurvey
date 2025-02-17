@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -60,42 +61,50 @@
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="FormBoxelSearch_Activate">
+    <!--Machine translated-->
     <value>Activer</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>Activate</source>
   </data>
   <data name="FormBoxelSearch_Disable">
+    <!--Machine translated-->
     <value>Désactiver</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>Disable</source>
   </data>
   <data name="FormBoxelSearch_HideList">
+    <!--Machine translated-->
     <value>⏶ Masquer la liste</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>⏶ Hide list</source>
   </data>
   <data name="FormBoxelSearch_NotViableMessage">
+    <!--Machine translated-->
     <value>Il ne s’agit pas d’un nom de système généré par boxel.</value>
     <comment>Shown in FormBoxelSearch when attempting to boxel search a non generated system name</comment>
     <source>This is not a boxel generated system name.</source>
   </data>
   <data name="FormBoxelSearch_SearchNotActive">
+    <!--Machine translated-->
     <value>La recherche Boxel n’est pas active.</value>
     <comment>Shown in FormBoxelSearch status var when the feature is not active</comment>
     <source>Boxel search is not active.</source>
   </data>
   <data name="FormBoxelSearch_ShowList">
+    <!--Machine translated-->
     <value>⏷ Afficher la liste</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>⏷ Show list</source>
   </data>
   <data name="FormBoxelSearch_SpanshUpdated">
+    <!--Machine translated-->
     <value>Spansh mis à jour : {0}</value>
     <comment>Shown in FormBoxelSearch as notes for a system.
 {0} DateTime, a short formatted date</comment>
     <source>Spansh updated: {0}</source>
   </data>
   <data name="FormBoxelSearch_SpanshUpdatedBodies">
+    <!--Machine translated-->
     <value>Spansh mis à jour : {0}, corps : {1}</value>
     <comment>Shown in FormBoxelSearch as notes for a system.
 {0} DateTime, a short formatted date
@@ -103,17 +112,20 @@
     <source>Spansh updated: {0}, bodies: {1}</source>
   </data>
   <data name="FormBoxelSearch_UndiscoveredSystem">
+    <!--Machine translated-->
     <value>Système non découvert</value>
     <comment>Shown in FormBoxelSearch as notes for a system that has not been discovered</comment>
     <source>Undiscovered system</source>
   </data>
   <data name="FormBoxelSearch_Visited">
+    <!--Machine translated-->
     <value>Visité : {0}</value>
     <comment>Shown in FormBoxelSearch as notes for a system that was just visited
 {0} DateTime, the date and time the system was visited, usually now</comment>
     <source>Visited: {0}</source>
   </data>
   <data name="FormBoxelSearch_VisitedCounts">
+    <!--Machine translated-->
     <value>Achèvement de {2} de {3} boxels, {0} de {1} systèmes dans les boxels actuels</value>
     <comment>Shown in FormBoxelSearch status bar, summarizing how many systems have been visited
 {0} int, count of systems visited
@@ -123,177 +135,216 @@
     <source>Completed {2} of {3} boxels, {0} of {1} systems in current boxel</source>
   </data>
   <data name="NetSysData_Bodies">
+    <!--Machine translated-->
     <value>Corps</value>
     <source>Bodies</source>
   </data>
   <data name="NetSysData_DiscoveredAll">
+    <!--Machine translated-->
     <value>Découvertes, {0} corps</value>
     <comment>{0} int, count of bodies</comment>
     <source>Discovered, {0} bodies</source>
   </data>
   <data name="NetSysData_DiscoveredPartial">
+    <!--Machine translated-->
     <value>Découverte ({0} de {1})</value>
     <comment>{0} int, count of bodies, {1} int, total count of bodies</comment>
     <source>Discovered ({0} of {1})</source>
   </data>
   <data name="NetSysData_Encoded">
+    <!--Machine translated-->
     <value>(Encodé)</value>
     <comment>An Encoded Material Trader</comment>
     <source>(Encoded)</source>
   </data>
   <data name="NetSysData_Engineer">
+    <!--Machine translated-->
     <value>(Ingénieur)</value>
     <comment>Suffix after an Engineer's name</comment>
     <source>(Engineer)</source>
   </data>
   <data name="NetSysData_FC">
+    <!--Machine translated-->
     <value>FC</value>
     <source>FC</source>
   </data>
   <data name="NetSysData_Genus">
+    <!--Machine translated-->
     <value>Genre</value>
     <source>Genus</source>
   </data>
   <data name="NetSysData_GuardianBroker">
+    <!--Machine translated-->
     <value>(Gardien)</value>
     <comment>A Guardian Tech Broker</comment>
     <source>(Guardian)</source>
   </data>
   <data name="NetSysData_HumanBroker">
+    <!--Machine translated-->
     <value>(Humain)</value>
     <comment>A Human Tech Broker</comment>
     <source>(Human)</source>
   </data>
   <data name="NetSysData_Manufactured">
+    <!--Machine translated-->
     <value>(Fabriqué)</value>
     <comment>A Manufactured Material Trader</comment>
     <source>(Manufactured)</source>
   </data>
   <data name="NetSysData_MaterialTrader">
+    <!--Machine translated-->
     <value>Négociant en matériaux</value>
     <source>Material Trader</source>
   </data>
   <data name="NetSysData_Outposts">
+    <!--Machine translated-->
     <value>Avant-postes</value>
     <source>Outposts</source>
   </data>
   <data name="NetSysData_Raw">
+    <!--Machine translated-->
     <value>(Brut)</value>
     <comment>A Raw Material Trader</comment>
     <source>(Raw)</source>
   </data>
   <data name="NetSysData_Settlements">
+    <!--Machine translated-->
     <value>Colonies</value>
     <source>Settlements</source>
   </data>
   <data name="NetSysData_StarPorts">
+    <!--Machine translated-->
     <value>Ports en étoile</value>
     <source>Star ports</source>
   </data>
   <data name="NetSysData_TechBroker">
+    <!--Machine translated-->
     <value>Courtier en technologie</value>
     <source>Tech Broker</source>
   </data>
   <data name="NetSysData_UndiscoveredSystem">
+    <!--Machine translated-->
     <value>Système non découvert</value>
     <source>Undiscovered system</source>
   </data>
   <data name="NetSysData_UnscannedSystem">
+    <!--Machine translated-->
     <value>Système non analysé</value>
     <source>Unscanned system</source>
   </data>
   <data name="NetSysData_Wars">
+    <!--Machine translated-->
     <value>Guerres</value>
     <source>Wars</source>
   </data>
   <data name="PlotGalMap_CountGenus">
+    <!--Machine translated-->
     <value>{0}x Genre</value>
     <source>{0}x Genus</source>
   </data>
   <data name="PlotGalMap_Current">
+    <!--Machine translated-->
     <value>Courant:</value>
     <source>Current:</source>
   </data>
   <data name="PlotGalMap_DataFrom">
+    <!--Machine translated-->
     <value>Données provenant de : EDSM + Spansh + Canonn</value>
     <comment>Dim footer text</comment>
     <source>Data from: EDSM + Spansh + Canonn</source>
   </data>
   <data name="PlotGalMap_Destination">
+    <!--Machine translated-->
     <value>Destination:</value>
     <source>Destination:</source>
   </data>
   <data name="PlotGalMap_DiscoveredBy">
+    <!--Machine translated-->
     <value>Par {0}, {1}</value>
     <comment>{0} string, name of cmdr, {1} short date</comment>
     <source>By {0}, {1}</source>
   </data>
   <data name="PlotGalMap_LastUpdated">
+    <!--Machine translated-->
     <value>Dernière mise à jour : {0}</value>
     <comment>{0} short date</comment>
     <source>Last updated: {0}</source>
   </data>
   <data name="PlotGalMap_NextJump">
+    <!--Machine translated-->
     <value>Prochain saut :</value>
     <source>Next jump:</source>
   </data>
   <data name="PlotGalMap_NoRouteSet">
+    <!--Machine translated-->
     <value>Aucun itinéraire défini</value>
     <comment>When no route is set.</comment>
     <source>No route set</source>
   </data>
   <data name="PlotGalMap_RouteFooter">
+    <!--Machine translated-->
     <value>Total : ► {0} sauts ► Distance : {1} al</value>
     <comment>Footer shown summarizing the route. {0} int, count of jumps. {1} float, 1 decimal place, distance travelled.</comment>
     <source>Total: ► {0} jumps ► Distance: {1} ly</source>
   </data>
   <data name="PlotGalMap_Selected">
+    <!--Machine translated-->
     <value>Sélectionné:</value>
     <source>Selected:</source>
   </data>
   <data name="PlotSysStatus_BioSignals">
+    <!--Machine translated-->
     <value>| {0}x Bio signale sur : </value>
     <comment>Appended to prior text. {0} int, count of bodies with bio signals</comment>
     <source>| {0}x Bio signals on: </source>
   </data>
   <data name="PlotSysStatus_DssRemaining">
+    <!--Machine translated-->
     <value> {0}x corps : </value>
     <comment>May be appended to FssCompleteShort. {0} int, count of bodies worth of scanning.</comment>
     <source> {0}x bodies: </source>
   </data>
   <data name="PlotSysStatus_FssCompleteLong">
+    <!--Machine translated-->
     <value>FSS {0} % achevé</value>
     <comment>Short version, joined with more text. {0} int, percentage number</comment>
     <source>FSS {0}% complete</source>
   </data>
   <data name="PlotSysStatus_FssCompleteShort">
+    <!--Machine translated-->
     <value>FSS {0}%</value>
     <comment>Long version, shown alone. {0} int, percentage number</comment>
     <source>FSS {0}%</source>
   </data>
   <data name="PlotSysStatus_FssNotStarted">
+    <!--Machine translated-->
     <value>FSS non démarré</value>
     <source>FSS not started</source>
   </data>
   <data name="PlotSysStatus_Header">
+    <!--Machine translated-->
     <value>Enquête du MAS : </value>
     <comment>Header line</comment>
     <source>DSS survey: </source>
   </data>
   <data name="PlotSysStatus_NextSystem">
+    <!--Machine translated-->
     <value>Système suivant :</value>
     <source>Next system:</source>
   </data>
   <data name="PlotSysStatus_NoDssMeet">
+    <!--Machine translated-->
     <value>Aucun</value>
     <source>None</source>
   </data>
   <data name="PlotSysStatus_NonBodySignals">
+    <!--Machine translated-->
     <value>► {0} signaux non corporels</value>
     <comment>{0} int, count of non body signals</comment>
     <source>► {0} non-body signals</source>
   </data>
   <data name="Settings_CreateFolderNotFound">
+    <!--Machine translated-->
     <value>Dossier introuvable :
 {0}
 

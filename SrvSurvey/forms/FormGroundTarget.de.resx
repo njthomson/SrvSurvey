@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -237,6 +238,7 @@
     <value>0</value>
   </data>
   <data name="btnBegin.Text">
+    <!--Machine translated-->
     <value>&amp;Ziel setzen</value>
     <source>&amp;Set target</source>
   </data>
@@ -262,6 +264,7 @@
     <value>1</value>
   </data>
   <data name="btnCancel.Text">
+    <!--Machine translated-->
     <value>Abbrechen</value>
     <source>Cancel</source>
   </data>
@@ -298,6 +301,7 @@
     <value>6</value>
   </data>
   <data name="btnPaste.Text">
+    <!--Machine translated-->
     <value>&amp; Einfügen</value>
     <source>&amp;Paste</source>
   </data>
@@ -326,6 +330,7 @@
     <value>5</value>
   </data>
   <data name="btnTargetCurrent.Text">
+    <!--Machine translated-->
     <value>&amp;Aktueller Standort anvisieren</value>
     <source>&amp;Target current location</source>
   </data>
@@ -351,6 +356,7 @@
     <value>4</value>
   </data>
   <data name="button1.Text">
+    <!--Machine translated-->
     <value>&amp;Klares Ziel</value>
     <source>&amp;Clear target</source>
   </data>
@@ -391,6 +397,7 @@
     <value>0</value>
   </data>
   <data name="label2.Text">
+    <!--Machine translated-->
     <value>Breitengrad:</value>
     <source>Latitute:</source>
   </data>
@@ -413,6 +420,7 @@
     <value>2</value>
   </data>
   <data name="label3.Text">
+    <!--Machine translated-->
     <value>Länge:</value>
     <source>Longitude:</source>
   </data>
@@ -432,6 +440,7 @@
     <value>0</value>
   </data>
   <data name="label6.Text">
+    <!--Machine translated-->
     <value>Hast du den Tipp von einem mysteriösen Fremden, zu einem Lat/Long auf einem Planeten oder Mond zu gehen?
 
 Geben Sie eine Breiten-/Längengradposition ein und die Anleitung wird angezeigt, wenn Sie sich nähern.</value>
@@ -479,6 +488,7 @@ Enter some Lat/Long position and guidance will appear when you approach.</source
     <value>CenterParent</value>
   </data>
   <data name="$this.Text">
+    <!--Machine translated-->
     <value>Festlegen von Breiten-/Längengradkoordinaten</value>
     <source>Set lat/long co-ordinates</source>
   </data>
@@ -495,6 +505,7 @@ Enter some Lat/Long position and guidance will appear when you approach.</source
     <value>1</value>
   </data>
   <data name="txtLat.Text">
+    <!--Machine translated-->
     <value>+12.34</value>
     <source>+12.34</source>
   </data>
@@ -511,6 +522,7 @@ Enter some Lat/Long position and guidance will appear when you approach.</source
     <value>3</value>
   </data>
   <data name="txtLong.Text">
+    <!--Machine translated-->
     <value>-10.0</value>
     <source>-10.0</source>
   </data>

@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -179,6 +180,7 @@
     <value>0</value>
   </data>
   <data name="btnAccept.Text">
+    <!--Machine translated-->
     <value>Annehmen</value>
     <source>Accept</source>
   </data>
@@ -204,6 +206,7 @@
     <value>2</value>
   </data>
   <data name="btnCancel.Text">
+    <!--Machine translated-->
     <value>Abbrechen</value>
     <source>Cancel</source>
   </data>
@@ -232,6 +235,7 @@
     <value>1</value>
   </data>
   <data name="btnDisable.Text">
+    <!--Machine translated-->
     <value>Abschalten</value>
     <source>Disable</source>
   </data>
@@ -266,6 +270,7 @@
     <value>0</value>
   </data>
   <data name="label1.Text">
+    <!--Machine translated-->
     <value>Drücken Sie den gewünschten Tastenakkord:</value>
     <source>Press desired key-chord:</source>
   </data>
@@ -282,6 +287,7 @@
     <value>2</value>
   </data>
   <data name="lblInvalid.Text">
+    <!--Machine translated-->
     <value>Ungültiger Tastenakkord!</value>
     <source>Invalid key chord!</source>
   </data>
@@ -316,6 +322,7 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text">
+    <!--Machine translated-->
     <value>Schlüsselakkord festlegen</value>
     <source>Set Key Chord</source>
   </data>

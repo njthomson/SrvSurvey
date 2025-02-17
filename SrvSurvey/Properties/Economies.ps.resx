@@ -9,6 +9,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -39,90 +40,104 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <resheader name="loc-level">
-    <value>pseudo-only</value>
-  </resheader>
   <data name="Agri">
+    <!--Machine translated-->
     <value>* AGRICULTURE →→→!</value>
     <comment>Economy type Agri</comment>
     <source>Agriculture</source>
   </data>
   <data name="Carrier">
+    <!--Machine translated-->
     <value>* PRIVATE ENTERPRISE →→→!</value>
     <comment>Economy Type Carrier</comment>
     <source>Private Enterprise</source>
   </data>
   <data name="Colony">
+    <!--Machine translated-->
     <value>* COLONY →→→!</value>
     <comment>Economy type Colony</comment>
     <source>Colony</source>
   </data>
   <data name="Damaged">
+    <!--Machine translated-->
     <value>* DAMAGED →→→!</value>
     <comment>Economy type Damaged</comment>
     <source>Damaged</source>
   </data>
   <data name="Engineer">
+    <!--Machine translated-->
     <value>* ENGINEERING →→→!</value>
     <comment>Economy type Engineer</comment>
     <source>Engineering</source>
   </data>
   <data name="Extraction">
+    <!--Machine translated-->
     <value>* EXTRACTION →→→!</value>
     <comment>Economy type Extraction</comment>
     <source>Extraction</source>
   </data>
   <data name="HighTech">
+    <!--Machine translated-->
     <value>* HIGH TECH →→→!</value>
     <comment>Economy type HighTech</comment>
     <source>High Tech</source>
   </data>
   <data name="Industrial">
+    <!--Machine translated-->
     <value>* INDUSTRIAL →→→!</value>
     <comment>Economy type Industrial</comment>
     <source>Industrial</source>
   </data>
   <data name="Military">
+    <!--Machine translated-->
     <value>* MILITARY →→→!</value>
     <comment>Economy type Military</comment>
     <source>Military</source>
   </data>
   <data name="None">
+    <!--Machine translated-->
     <value>* NONE →→→!</value>
     <comment>Economy type None</comment>
     <source>None</source>
   </data>
   <data name="Prison">
+    <!--Machine translated-->
     <value>* PRISON →→→!</value>
     <comment>Economy type Prison</comment>
     <source>Prison</source>
   </data>
   <data name="Refinery">
+    <!--Machine translated-->
     <value>* REFINERY →→→!</value>
     <comment>Economy type Refinery</comment>
     <source>Refinery</source>
   </data>
   <data name="Repair">
+    <!--Machine translated-->
     <value>* REPAIR →→→!</value>
     <comment>Economy type Repair</comment>
     <source>Repair</source>
   </data>
   <data name="Rescue">
+    <!--Machine translated-->
     <value>* RESCUE →→→!</value>
     <comment>Economy type Rescue</comment>
     <source>Rescue</source>
   </data>
   <data name="Service">
+    <!--Machine translated-->
     <value>* SERVICE →→→!</value>
     <comment>Economy type Service</comment>
     <source>Service</source>
   </data>
   <data name="Terraforming">
+    <!--Machine translated-->
     <value>* TERRAFORMING →→→!</value>
     <comment>Economy type Terraforming</comment>
     <source>Terraforming</source>
   </data>
   <data name="Tourism">
+    <!--Machine translated-->
     <value>* TOURISM →→→!</value>
     <comment>Economy type Tourism</comment>
     <source>Tourism</source>

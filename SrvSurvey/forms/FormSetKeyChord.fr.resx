@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -179,6 +180,7 @@
     <value>0</value>
   </data>
   <data name="btnAccept.Text">
+    <!--Machine translated-->
     <value>Accepter</value>
     <source>Accept</source>
   </data>
@@ -204,6 +206,7 @@
     <value>2</value>
   </data>
   <data name="btnCancel.Text">
+    <!--Machine translated-->
     <value>Annuler</value>
     <source>Cancel</source>
   </data>
@@ -232,6 +235,7 @@
     <value>1</value>
   </data>
   <data name="btnDisable.Text">
+    <!--Machine translated-->
     <value>Désactiver</value>
     <source>Disable</source>
   </data>
@@ -266,6 +270,7 @@
     <value>0</value>
   </data>
   <data name="label1.Text">
+    <!--Machine translated-->
     <value>Appuyez sur l’accord de touche souhaité :</value>
     <source>Press desired key-chord:</source>
   </data>
@@ -282,6 +287,7 @@
     <value>2</value>
   </data>
   <data name="lblInvalid.Text">
+    <!--Machine translated-->
     <value>Accord de tonalité invalide !</value>
     <source>Invalid key chord!</source>
   </data>
@@ -316,6 +322,7 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text">
+    <!--Machine translated-->
     <value>Définir l’accord de clé</value>
     <source>Set Key Chord</source>
   </data>

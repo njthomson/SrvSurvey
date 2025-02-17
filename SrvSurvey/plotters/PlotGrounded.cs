@@ -186,7 +186,6 @@ namespace SrvSurvey.plotters
                 g.ScaleTransform(scale, scale);
                 g.RotateTransform(360 - game.status!.Heading);
 
-
                 var rect = PlotBase.scaled(new RectangleF((float)td.dx - 64, (float)-td.dy - 64, 128, 128));
                 var b = shipDeparted ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
                 g.FillEllipse(b, rect);
@@ -230,6 +229,12 @@ namespace SrvSurvey.plotters
             g.DrawLine(GameColors.penLime2, 0, 0, +dx, -dy);
 
             g.ResetTransform();
+
+            // draw fade bars top and bottom
+            var tp = new Pen(Color.FromArgb(128, 0, 0, 0), 4);
+            g.DrawLine(tp, 0, twoFour + 1, this.Width, twoFour + 1);
+            g.DrawLine(tp, 0, this.Height - 2 - bottomClip + twoFour, this.Width, this.Height - 2 - bottomClip + twoFour);
+
             // remove clip to preserving top/bottom text area
             g.Clip = new Region(new RectangleF(0, four, this.Width, this.Height - eight));
 

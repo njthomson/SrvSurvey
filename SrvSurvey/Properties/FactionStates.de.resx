@@ -1,104 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,136 +59,169 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="None" xml:space="preserve">
-    <value>Keiner</value>
-    <comment>Faction state None</comment>
-  </data>
-  <data name="Retreat" xml:space="preserve">
-    <value>Rückzug</value>
-    <comment>Faction state Retreat</comment>
-  </data>
-  <data name="War" xml:space="preserve">
-    <value>Krieg</value>
-    <comment>Faction state War</comment>
-  </data>
-  <data name="Lockdown" xml:space="preserve">
-    <value>Abriegelung</value>
-    <comment>Faction state Lockdown</comment>
-  </data>
-  <data name="CivilUnrest" xml:space="preserve">
-    <value>Unruhen</value>
-    <comment>Faction state CivilUnrest</comment>
-  </data>
-  <data name="CivilWar" xml:space="preserve">
-    <value>Bürgerkrieg</value>
-    <comment>Faction state CivilWar</comment>
-  </data>
-  <data name="Boom" xml:space="preserve">
-    <value>Aufschwung</value>
-    <comment>Faction state Boom</comment>
-  </data>
-  <data name="Expansion" xml:space="preserve">
-    <value>Expansion</value>
-    <comment>Faction state Expansion</comment>
-  </data>
-  <data name="Bust" xml:space="preserve">
-    <value>Pleite</value>
-    <comment>Faction state Bust</comment>
-  </data>
-  <data name="Outbreak" xml:space="preserve">
-    <value>Ausbruch</value>
-    <comment>Faction state Outbreak</comment>
-  </data>
-  <data name="Famine" xml:space="preserve">
-    <value>Hungersnot</value>
-    <comment>Faction state Famine</comment>
-  </data>
-  <data name="Election" xml:space="preserve">
-    <value>Wahlen</value>
-    <comment>Faction state Election</comment>
-  </data>
-  <data name="Investment" xml:space="preserve">
-    <value>Investition</value>
-    <comment>Faction state Investment</comment>
-  </data>
-  <data name="CivilLiberty" xml:space="preserve">
-    <value>Bürgerliche Freiheit</value>
-    <comment>Faction state CivilLiberty</comment>
-  </data>
-  <data name="Incursion" xml:space="preserve">
-    <value>Einmarsch</value>
-    <comment>Faction state Incursion</comment>
-  </data>
-  <data name="PirateAttack" xml:space="preserve">
-    <value>Piratenangriff</value>
-    <comment>Faction state PirateAttack</comment>
-  </data>
-  <data name="Drought" xml:space="preserve">
-    <value>Dürre</value>
-    <comment>Faction state Drought, but translated as Blight</comment>
-  </data>
-  <data name="Blight" xml:space="preserve">
+  <data name="Blight">
     <value>Seuche</value>
     <comment>Faction state Blight</comment>
+    <source>Blight</source>
   </data>
-  <data name="ColdWar" xml:space="preserve">
+  <data name="Boom">
+    <value>Aufschwung</value>
+    <comment>Faction state Boom</comment>
+    <source>Boom</source>
+  </data>
+  <data name="Bust">
+    <value>Pleite</value>
+    <comment>Faction state Bust</comment>
+    <source>Bust</source>
+  </data>
+  <data name="CivilLiberty">
+    <value>Bürgerliche Freiheit</value>
+    <comment>Faction state CivilLiberty</comment>
+    <source>Civil Liberty</source>
+  </data>
+  <data name="CivilUnrest">
+    <value>Unruhen</value>
+    <comment>Faction state CivilUnrest</comment>
+    <source>Civil Unrest</source>
+  </data>
+  <data name="CivilWar">
+    <value>Bürgerkrieg</value>
+    <comment>Faction state CivilWar</comment>
+    <source>Civil War</source>
+  </data>
+  <data name="ColdWar">
     <value>Kalter Krieg</value>
     <comment>Faction state ColdWar</comment>
+    <source>Cold War</source>
   </data>
-  <data name="Colonisation" xml:space="preserve">
+  <data name="Colonisation">
     <value>Kolonialisierung</value>
     <comment>Faction state Colonisation</comment>
+    <source>Colonisation</source>
   </data>
-  <data name="HistoricEvent" xml:space="preserve">
+  <data name="Drought">
+    <value>Dürre</value>
+    <comment>Faction state Drought, but translated as Blight</comment>
+    <source>Drought</source>
+  </data>
+  <data name="Election">
+    <value>Wahlen</value>
+    <comment>Faction state Election</comment>
+    <source>Election</source>
+  </data>
+  <data name="Expansion">
+    <value>Expansion</value>
+    <comment>Faction state Expansion</comment>
+    <source>Expansion</source>
+  </data>
+  <data name="Famine">
+    <value>Hungersnot</value>
+    <comment>Faction state Famine</comment>
+    <source>Famine</source>
+  </data>
+  <data name="HistoricEvent">
     <value>Historisches Ereignis</value>
     <comment>Faction state HistoricEvent</comment>
+    <source>Historic Event</source>
   </data>
-  <data name="InfrastructureFailure" xml:space="preserve">
+  <data name="Incursion">
+    <value>Einmarsch</value>
+    <comment>Faction state Incursion</comment>
+    <source>Incursion</source>
+  </data>
+  <data name="InfrastructureFailure">
     <value>Versagen der Infrastruktur</value>
     <comment>Faction state InfrastructureFailure</comment>
+    <source>Infrastructure Failure</source>
   </data>
-  <data name="NaturalDisaster" xml:space="preserve">
+  <data name="Investment">
+    <value>Investition</value>
+    <comment>Faction state Investment</comment>
+    <source>Investment</source>
+  </data>
+  <data name="Lockdown">
+    <value>Abriegelung</value>
+    <comment>Faction state Lockdown</comment>
+    <source>Lockdown</source>
+  </data>
+  <data name="NaturalDisaster">
     <value>Naturkatastrophe</value>
     <comment>Faction state NaturalDisaster</comment>
+    <source>Natural Disaster</source>
   </data>
-  <data name="PublicHoliday" xml:space="preserve">
+  <data name="None">
+    <value>Keiner</value>
+    <comment>Faction state None</comment>
+    <source>None</source>
+  </data>
+  <data name="Outbreak">
+    <value>Ausbruch</value>
+    <comment>Faction state Outbreak</comment>
+    <source>Outbreak</source>
+  </data>
+  <data name="PirateAttack">
+    <value>Piratenangriff</value>
+    <comment>Faction state PirateAttack</comment>
+    <source>Pirate Attack</source>
+  </data>
+  <data name="PublicHoliday">
     <value>Gesetzlicher Feiertag</value>
     <comment>Faction state PublicHoliday</comment>
+    <source>Public Holiday</source>
   </data>
-  <data name="Revolution" xml:space="preserve">
+  <data name="Retreat">
+    <value>Rückzug</value>
+    <comment>Faction state Retreat</comment>
+    <source>Retreat</source>
+  </data>
+  <data name="Revolution">
     <value>Revolution</value>
     <comment>Faction state Revolution</comment>
+    <source>Revolution</source>
   </data>
-  <data name="TechnologicalLeap" xml:space="preserve">
+  <data name="TechnologicalLeap">
     <value>Technologischer Vorsprung</value>
     <comment>Faction state TechnologicalLeap</comment>
+    <source>Technological Leap</source>
   </data>
-  <data name="Terrorism" xml:space="preserve">
+  <data name="Terrorism">
     <value>Terroranschlag</value>
     <comment>Faction state Terrorism</comment>
+    <source>Terrorism</source>
   </data>
-  <data name="TradeWar" xml:space="preserve">
-    <value>Handelskrieg</value>
-    <comment>Faction state TradeWar</comment>
-  </data>
-  <data name="Thargoid_Probing" xml:space="preserve">
-    <value>Thargoiden-Alarm</value>
-    <comment>Faction state Thargoid_Probing</comment>
-  </data>
-  <data name="Thargoid_Harvest" xml:space="preserve">
-    <value>Thargoiden-Invasion</value>
-    <comment>Faction state Thargoid_Harvest</comment>
-  </data>
-  <data name="Thargoid_Controlled" xml:space="preserve">
+  <data name="Thargoid_Controlled">
     <value>Unter Thargoiden-Kontrolle</value>
     <comment>Faction state Thargoid_Controlled</comment>
+    <source>Thargoid Controlled</source>
   </data>
-  <data name="Thargoid_Stronghold" xml:space="preserve">
-    <value>Thargoid-Mahlstrom</value>
-    <comment>Faction state Thargoid_Stronghold</comment>
+  <data name="Thargoid_Harvest">
+    <value>Thargoiden-Invasion</value>
+    <comment>Faction state Thargoid_Harvest</comment>
+    <source>Thargoid Invasion</source>
   </data>
-  <data name="Thargoid_Recovery" xml:space="preserve">
+  <data name="Thargoid_Probing">
+    <value>Thargoiden-Alarm</value>
+    <comment>Faction state Thargoid_Probing</comment>
+    <source>Thargoid Alert</source>
+  </data>
+  <data name="Thargoid_Recovery">
     <value>Post-Thargoiden-Wiederherstellung</value>
     <comment>Faction state Thargoid_Recovery</comment>
+    <source>Post-Thargoid Recovery</source>
+  </data>
+  <data name="Thargoid_Stronghold">
+    <value>Thargoid-Mahlstrom</value>
+    <comment>Faction state Thargoid_Stronghold</comment>
+    <source>Thargoid Maelstrom</source>
+  </data>
+  <data name="TradeWar">
+    <value>Handelskrieg</value>
+    <comment>Faction state TradeWar</comment>
+    <source>Trade War</source>
+  </data>
+  <data name="War">
+    <value>Krieg</value>
+    <comment>Faction state War</comment>
+    <source>War</source>
   </data>
 </root>

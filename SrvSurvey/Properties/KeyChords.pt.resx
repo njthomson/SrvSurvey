@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -59,96 +60,115 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="copyNextBoxel">
+    <!--Machine translated-->
     <value>No gal-map, copie o próximo sistema de pesquisa boxel para a área de transferência.</value>
     <comment>A description of a key-chord setting</comment>
     <source>In gal-map, copy the next boxel search system to clipboard.</source>
   </data>
   <data name="mapBeHuge">
+    <!--Machine translated-->
     <value>Alterna fazendo o mapa preencher metade da tela, apenas em assentamentos humanos.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Toggles making the map fill half the screen, at Human settlements only.</source>
   </data>
   <data name="mapZoomAuto">
+    <!--Machine translated-->
     <value>Redefina o zoom para o padrão, em sites Humanos e Guardiões.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Reset the zoom to default, at Human and Guardian sites.</source>
   </data>
   <data name="mapZoomIn">
+    <!--Machine translated-->
     <value>Amplie os mapas nos locais de Humanos e Guardiões.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Zoom in on maps at Human and Guardian sites.</source>
   </data>
   <data name="mapZoomOut">
+    <!--Machine translated-->
     <value>Diminua o zoom nos mapas em locais de Humanos e Guardiões.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Zoom out on maps at Human and Guardian sites.</source>
   </data>
   <data name="pasteGalMap">
+    <!--Machine translated-->
     <value>Colar o texto da área de transferência quando estiver no Gal-Map</value>
     <comment>A description of a key-chord setting</comment>
     <source>Paste clipboard text when in Gal-Map</source>
   </data>
   <data name="showBodyInfo">
+    <!--Machine translated-->
     <value>Force a exibição da sobreposição de informações do corpo.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force show the Body info overlay.</source>
   </data>
   <data name="showFssInfo">
+    <!--Machine translated-->
     <value>Force a exibição da sobreposição de informações do FSS.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force show the FSS info overlay.</source>
   </data>
   <data name="showJumpInfo">
+    <!--Machine translated-->
     <value>Force a alternância da sobreposição de salto do FSD sem começar a pular.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force toggle the FSD jump overlay without starting to jump.</source>
   </data>
   <data name="showSystemNotes">
+    <!--Machine translated-->
     <value>Torne visível a janela de notas do sistema.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Make the system notes window visible.</source>
   </data>
   <data name="toggleAllVisibility">
+    <!--Machine translated-->
     <value>Alterna a visibilidade de todas as janelas de sobreposição.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Toggles visibility of all overlay windows.</source>
   </data>
   <data name="track1">
+    <!--Machine translated-->
     <value>Adicionar ou remover rastreador #1</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #1</source>
   </data>
   <data name="track2">
+    <!--Machine translated-->
     <value>Adicionar ou remover rastreador #2</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #2</source>
   </data>
   <data name="track3">
+    <!--Machine translated-->
     <value>Adicionar ou remover rastreador #3</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #3</source>
   </data>
   <data name="track4">
+    <!--Machine translated-->
     <value>Adicionar ou remover rastreador #4</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #4</source>
   </data>
   <data name="track5">
+    <!--Machine translated-->
     <value>Adicionar ou remover rastreador #5</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #5</source>
   </data>
   <data name="track6">
+    <!--Machine translated-->
     <value>Adicionar ou remover rastreador #6</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #6</source>
   </data>
   <data name="track7">
+    <!--Machine translated-->
     <value>Adicionar ou remover rastreador #7</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #7</source>
   </data>
   <data name="track8">
+    <!--Machine translated-->
     <value>Adicionar ou remover rastreador #8</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #8</source>

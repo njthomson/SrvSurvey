@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -282,6 +283,7 @@
     <value>2</value>
   </data>
   <data name="btnAccept.Text">
+    <!--Machine translated-->
     <value>&amp; Aktivieren</value>
     <source>&amp;Activate</source>
   </data>
@@ -304,6 +306,7 @@
     <value>4</value>
   </data>
   <data name="btnCancel.Text">
+    <!--Machine translated-->
     <value>&amp; Abbrechen</value>
     <source>&amp;Cancel</source>
   </data>
@@ -326,6 +329,7 @@
     <value>3</value>
   </data>
   <data name="btnDisable.Text">
+    <!--Machine translated-->
     <value>&amp; Deaktivieren</value>
     <source>&amp;Disable</source>
   </data>
@@ -375,6 +379,7 @@
     <value>0</value>
   </data>
   <data name="label1.Text">
+    <!--Machine translated-->
     <value>&amp;Enter zentrales System:</value>
     <source>&amp;Enter central system:</source>
   </data>
@@ -397,6 +402,7 @@
     <value>4</value>
   </data>
   <data name="label2.Text">
+    <!--Machine translated-->
     <value>&amp;Kugel-Radius:</value>
     <source>&amp;Sphere radius:</source>
   </data>
@@ -419,6 +425,7 @@
     <value>2</value>
   </data>
   <data name="label3.Text">
+    <!--Machine translated-->
     <value>Stern pos:</value>
     <source>Star pos:</source>
   </data>
@@ -438,8 +445,9 @@
     <value>0</value>
   </data>
   <data name="label4.Text">
-    <value>Die sphärische Begrenzung hilft bei der Navigation zu Systemen, die sich in einer bestimmten Entfernung von einem zentralen System befinden.</value>
-    <source>Spherical limit helps navigating to systems within a given distance of a central system.</source>
+    <!--Machine translated-->
+    <value>Sphärische Suchen helfen bei der Navigation in einer bestimmten Entfernung zu einem zentralen System.</value>
+    <source>Spherical searches help navigating around within a given distance of a central system.</source>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -457,6 +465,7 @@
     <value>6</value>
   </data>
   <data name="label5.Text">
+    <!--Machine translated-->
     <value>Aktuelles System:</value>
     <source>Current system:</source>
   </data>
@@ -479,6 +488,7 @@
     <value>8</value>
   </data>
   <data name="label6.Text">
+    <!--Machine translated-->
     <value>Abstand:</value>
     <source>Distance:</source>
   </data>
@@ -540,8 +550,9 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text">
-    <value>Sphärische Begrenzung</value>
-    <source>Spherical limit</source>
+    <!--Machine translated-->
+    <value>Sphärische Suche</value>
+    <source>Spherical Search</source>
   </data>
   <data name="txtCurrentDistance.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 121</value>

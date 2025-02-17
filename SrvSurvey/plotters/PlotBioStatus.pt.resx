@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -59,37 +60,44 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DssRequired">
+    <!--Machine translated-->
     <value>Sinais biológicos detectados - DSS Scan necessário</value>
     <comment>Warning shown when body has not been DSS'd</comment>
     <source>Bio signals detected - DSS Scan required</source>
   </data>
   <data name="FooterAllScanned">
+    <!--Machine translated-->
     <value>Todos os sinais verificados</value>
     <comment>Footer shown when all bio signals are scanned</comment>
     <source>All signals scanned</source>
   </data>
   <data name="FooterAllScannedFF">
+    <!--Machine translated-->
     <value>Todos os sinais verificados com bônus FF aplicado</value>
     <comment>Footer shown when all bio signals are scanned and First Footfall bonus is applied</comment>
     <source>All signals scanned with FF bonus applied</source>
   </data>
   <data name="FooterApplyFF">
+    <!--Machine translated-->
     <value>Aplicando o bônus de primeiros passos</value>
     <comment>Footer shown when not scanning anything currently and First Footfall bonus will be applied</comment>
     <source>Applying first footfall bonus</source>
   </data>
   <data name="FooterUseCompScanner">
+    <!--Machine translated-->
     <value>Usar o Scanner de composição para definir destinos de rastreador</value>
     <comment>Footer shown to remind people to use the composition scanner</comment>
     <source>Use Composition Scanner to set tracker targets</source>
   </data>
   <data name="GeoN">
+    <!--Machine translated-->
     <value>Geo #{0}</value>
     <comment>Shown with genus names but represents some unknown numbered geological signal
 {0} int, the index of the geo signal, 1 through 3</comment>
     <source>Geo #{0}</source>
   </data>
   <data name="Header">
+    <!--Machine translated-->
     <value>Sinais biológicos: {0} | Analisado: {1}</value>
     <comment>Header text
 {0} int, total count of bio signals
@@ -97,16 +105,19 @@
     <source>Biological signals: {0} | Analyzed: {1}</source>
   </data>
   <data name="SomethingWrong">
+    <!--Machine translated-->
     <value>Algo está errado. Por favor, compartilhe logs.</value>
     <comment>An error message shown when something went wrong.</comment>
     <source>Something is wrong. Please share logs.</source>
   </data>
   <data name="SuffixFF">
+    <!--Machine translated-->
     <value>(Bônus FF)</value>
     <comment>Shown next to credit value when First Footfall bonus will be applied</comment>
     <source>(FF bonus)</source>
   </data>
   <data name="WarningStaleScans">
+    <!--Machine translated-->
     <value>AVISO: Digitalizações {0} incompletas do {1}</value>
     <comment>Warning line shown if there are incomplete scans from another body
 {0} string, name of bio signal

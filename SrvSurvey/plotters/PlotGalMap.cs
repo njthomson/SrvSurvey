@@ -95,8 +95,8 @@ namespace SrvSurvey.plotters
             this.finalNetData = NetSysData.get(lastHop.StarSystem, lastHop.SystemAddress, (source, netData) => this.Invalidate());
 
             // load data for first jump
-            var firstHop = game.navRoute.Route.Skip(1).First();
-            if (firstHop == lastHop)
+            var firstHop = game.navRoute.Route.Skip(1).FirstOrDefault();
+            if (firstHop == lastHop || firstHop == null)
                 this.nextNetData = null;
             else
                 this.nextNetData = NetSysData.get(firstHop.StarSystem, firstHop.SystemAddress, (source, netData) => this.Invalidate());

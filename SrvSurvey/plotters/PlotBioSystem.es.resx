@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -86,6 +87,12 @@
     <comment>Header shown when body has geo signals
 {0} int, total count of geo signals on the body</comment>
     <source>Geo signals: {0}</source>
+  </data>
+  <data name="NotPredicted">
+    <!--Machine translated-->
+    <value>¡No se predijo!</value>
+    <comment>Message shown when some bio signal is present and it was not predicted.</comment>
+    <source>Not predicted!</source>
   </data>
   <data name="RewardFooter">
     <value>Recompensas: {0}</value>

@@ -103,7 +103,7 @@ namespace SrvSurvey.forms
                     Program.closePlotter<PlotSphericalSearch>();
             }
 
-            this.prepSiblings(bs.current);
+            this.prepSiblings(bs.boxel ?? cmdr.getCurrentBoxel());
         }
 
         private void btnBegin_Click(object sender, EventArgs e)

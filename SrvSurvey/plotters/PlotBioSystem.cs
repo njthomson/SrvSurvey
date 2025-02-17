@@ -238,7 +238,7 @@ namespace SrvSurvey.plotters
                     var yy = dty;
 
                     // displayName is either genus, or species/variant without the genus prefix
-                    var displayName = organism.bioMatch?.genus.locName;
+                    var displayName = organism.genusLocalized ?? organism.bioMatch?.genus.locName!;
                     if (organism.bioMatch?.genus.odyssey == true)
                     {
                         // make it <species>: <color>
@@ -252,8 +252,7 @@ namespace SrvSurvey.plotters
                     }
                     else
                     {
-                        // does this ever happen?
-                        Debugger.Break();
+                        displayName = RES("NotPredicted");
                     }
 
                     var minReward = body.getBioRewardForGenus(organism, true);
@@ -306,8 +305,8 @@ namespace SrvSurvey.plotters
                     if (discoveryPrefix != null)
                         drawTextAt(discoveryPrefix, shouldBeGold(discoveryPrefix) ? GameColors.Bio.brushGold : brush);
 
-                    var leftText = displayName != organism.bioMatch?.genus.locName || organism.entryId > 0
-                        ? organism.bioMatch?.genus.locName
+                    var leftText = displayName != (organism.genusLocalized ?? organism.bioMatch?.genus.locName) || organism.entryId > 0
+                        ? organism.genusLocalized
                         : "?";
                     drawTextAt(leftText, brush);
                     dtx += sz.Width + ten;
@@ -513,6 +512,7 @@ namespace SrvSurvey.plotters
             var sortedBodies = game.systemData.bodies.OrderBy(b => b.shortName).ToList();
             var anyFF = false;
             var fssNeeded = false;
+            var incBoxRight = false;
             foreach (var body in sortedBodies)
             {
                 if (body.bioSignalCount == 0) continue;
@@ -560,11 +560,20 @@ namespace SrvSurvey.plotters
                 {
                     var bodyHasKnownSignals = game.canonnPoi?.codex?.Any(c => c.body != null && body.name.EndsWith(c.body)) ?? false;
                     if (bodyHasKnownSignals)
-                        g.DrawImage(Properties.ImageResources.canonn_16x16, dtx, dty + two, 16, 16);
+                    {
+                        g.DrawImage(Properties.ImageResources.canonn_16x16, dtx + four, dty + two, 16, 16);
+                        if (!incBoxRight)
+                        {
+                            boxRight += 10;
+                            incBoxRight = true;
+                        }
+                    }
                 }
 
                 if (txt == "") txt = " ";
-                drawTextAt(this.ClientSize.Width - ten, txt, b, GameColors.fontMiddle, true);
+                dty += two;
+                drawTextAt(this.ClientSize.Width - ten, txt, b, GameColors.fontSmaller, true);
+                dty -= two;
 
                 dtx = lastTextSize.Width + boxRight + oneTwo;
                 newLine(+four, true);
@@ -577,7 +586,7 @@ namespace SrvSurvey.plotters
             // fss needed?
             if (fssNeeded)
             {
-                dty += two;
+                dty += eight;
                 this.drawTextAt(six, "► " + RES("FssRequired"), GameColors.brushCyan, GameColors.fontSmall);
                 newLine(true);
             }
