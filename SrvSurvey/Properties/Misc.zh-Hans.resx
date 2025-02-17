@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -59,185 +60,21 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-<<<<<<< Updated upstream
-  <data name="$this.Localizable" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="NetSysData_Bodies">
-    <value>天体</value>
-    <source>Bodies</source>
-  </data>
-  <data name="NetSysData_DiscoveredAll">
-    <value>已发现, {0} 天体</value>
-    <comment>{0} int, count of bodies</comment>
-    <source>Discovered, {0} bodies</source>
-  </data>
-  <data name="NetSysData_DiscoveredPartial">
-    <value>已发现 ({0} / {1})</value>
-    <comment>{0} int, count of bodies, {1} int, total count of bodies</comment>
-    <source>Discovered ({0} of {1})</source>
-  </data>
-  <data name="NetSysData_FC">
-    <value>FC</value>
-    <source>FC</source>
-  </data>
-  <data name="NetSysData_Genus">
-    <value>地质</value>
-    <source>Genus</source>
-  </data>
-  <data name="NetSysData_MaterialTrader">
-    <value>材料交易商</value>
-    <source>Material Trader</source>
-  </data>
-  <data name="NetSysData_Outposts">
-    <value>前哨站</value>
-    <source>Outposts</source>
-  </data>
-  <data name="NetSysData_Settlements">
-    <value>聚居点</value>
-    <source>Settlements</source>
-  </data>
-  <data name="NetSysData_StarPorts">
-    <value>星港</value>
-    <source>Star ports</source>
-  </data>
-  <data name="NetSysData_TechBroker">
-    <value>科技中介</value>
-    <source>Tech Broker</source>
-  </data>
-  <data name="NetSysData_UndiscoveredSystem">
-    <value>未发现的星系</value>
-    <source>Undiscovered system</source>
-  </data>
-  <data name="NetSysData_UnscannedSystem">
-    <value>未扫描的星系</value>
-    <source>Unscanned system</source>
-  </data>
-  <data name="NetSysData_Wars">
-    <value>战争</value>
-    <source>Wars</source>
-  </data>
-  <data name="PlotGalMap_CountGenus">
-    <value>{0}x 地质</value>
-    <source>{0}x Genus</source>
-  </data>
-  <data name="PlotGalMap_Current">
-    <value>当前:</value>
-    <source>Current:</source>
-  </data>
-  <data name="PlotGalMap_DataFrom">
-    <value>数据来源: EDSM + Spansh + Canonn</value>
-    <comment>Dim footer text</comment>
-    <source>Data from: EDSM + Spansh + Canonn</source>
-  </data>
-  <data name="PlotGalMap_Destination">
-    <value>目的地:</value>
-    <source>Destination:</source>
-  </data>
-  <data name="PlotGalMap_DiscoveredBy">
-    <value>由{0}于 {1} 发现</value>
-    <comment>{0} string, name of cmdr, {1} short date</comment>
-    <source>By {0}, {1}</source>
-  </data>
-  <data name="PlotGalMap_LastUpdated">
-    <value>最后更新: {0}</value>
-    <comment>{0} short date</comment>
-    <source>Last updated: {0}</source>
-  </data>
-  <data name="PlotGalMap_NextJump">
-    <value>下一跳:</value>
-    <source>Next jump:</source>
-  </data>
-  <data name="PlotGalMap_NoRouteSet">
-    <value>未设定路线</value>
-    <comment>When no route is set.</comment>
-    <source>No route set</source>
-  </data>
-  <data name="PlotGalMap_RouteFooter">
-    <value>总计: ► {0} 跳 ► 距离: {1} ly</value>
-    <comment>Footer shown summarizing the route. {0} int, count of jumps. {1} float, 1 decimal place, distance travelled.</comment>
-    <source>Total: ► {0} jumps ► Distance: {1} ly</source>
-  </data>
-  <data name="PlotGalMap_Selected">
-    <value>当前选择:</value>
-    <source>Selected:</source>
-  </data>
-  <data name="PlotSysStatus_BioSignals">
-    <value>| {0}x 生物信号: </value>
-    <comment>Appended to prior text. {0} int, count of bodies with bio signals</comment>
-    <source>| {0}x Bio signals on: </source>
-  </data>
-  <data name="PlotSysStatus_DssRemaining">
-    <value> {0}x 天体: </value>
-    <comment>May be appended to FssCompleteShort. {0} int, count of bodies worth of scanning.</comment>
-    <source> {0}x bodies: </source>
-  </data>
-  <data name="PlotSysStatus_FssCompleteLong">
-    <value>FSS {0}% 完成</value>
-    <comment>Short version, joined with more text. {0} int, percentage number</comment>
-    <source>FSS {0}% complete</source>
-  </data>
-  <data name="PlotSysStatus_FssCompleteShort">
-    <value>FSS {0}%</value>
-    <comment>Long version, shown alone. {0} int, percentage number</comment>
-    <source>FSS {0}%</source>
-  </data>
-  <data name="PlotSysStatus_FssNotStarted">
-    <value>FSS 未扫描</value>
-    <source>FSS not started</source>
-  </data>
-  <data name="PlotSysStatus_Header">
-    <value>DSS 扫描: </value>
-    <comment>Header line</comment>
-    <source>DSS survey: </source>
-  </data>
-  <data name="PlotSysStatus_NextSystem">
-    <value>下一星系:</value>
-    <source>Next system:</source>
-  </data>
-  <data name="PlotSysStatus_NoDssMeet">
-    <value>无</value>
-    <source>None</source>
-  </data>
-  <data name="PlotSysStatus_NonBodySignals">
-    <value>► {0} 非天体信号</value>
-    <comment>{0} int, count of non body signals</comment>
-    <source>► {0} non-body signals</source>
-  </data>
-  <data name="Settings_CreateFolderNotFound">
-    <value>无法找到目录:
-{0}
-
-你确定目录无误?</value>
-    <comment>Used in a message box when attempting to open a folder that does not exist.</comment>
-    <source>Cannot find folder:
-{0}
-
-Would you like to create it?</source>
-=======
   <data name="FormBoxelSearch_Activate">
     <value>启用</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>Activate</source>
->>>>>>> Stashed changes
   </data>
   <data name="FormBoxelSearch_Disable">
     <value>禁用</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>Disable</source>
   </data>
-  <data name="FormBoxelSearch_Activate">
-    <value>启用</value>
-    <comment>Used on a button in FormBoxelSearch</comment>
-    <source>Activate</source>
-  </data>
   <data name="FormBoxelSearch_HideList">
     <value>⏶ 隐藏列表</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>⏶ Hide list</source>
   </data>
-<<<<<<< Updated upstream
-=======
   <data name="FormBoxelSearch_NotViableMessage">
     <value>这不是一个由boxel生成的星系名称</value>
     <comment>Shown in FormBoxelSearch when attempting to boxel search a non generated system name</comment>
@@ -248,16 +85,10 @@ Would you like to create it?</source>
     <comment>Shown in FormBoxelSearch status var when the feature is not active</comment>
     <source>Boxel search is not active.</source>
   </data>
->>>>>>> Stashed changes
   <data name="FormBoxelSearch_ShowList">
     <value>⏷ 显示列表</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>⏷ Show list</source>
-  </data>
-  <data name="FormBoxelSearch_NotViableMessage">
-    <value>这不是一个由boxel生成的星系名称</value>
-    <comment>Shown in FormBoxelSearch when attempting to boxel search a non generated system name</comment>
-    <source>This is not a boxel generated system name.</source>
   </data>
   <data name="FormBoxelSearch_SpanshUpdated">
     <value>Spansh更新于: {0}</value>
@@ -283,11 +114,6 @@ Would you like to create it?</source>
 {0} DateTime, the date and time the system was visited, usually now</comment>
     <source>Visited: {0}</source>
   </data>
-  <data name="FormBoxelSearch_SearchNotActive">
-    <value>Boxel搜索未激活.</value>
-    <comment>Shown in FormBoxelSearch status var when the feature is not active</comment>
-    <source>Boxel search is not active.</source>
-  </data>
   <data name="FormBoxelSearch_VisitedCounts">
     <value>已搜索完成 {2} / {3} boxels,当前boxel中已访问星系数 {0} / {1} </value>
     <comment>Shown in FormBoxelSearch status bar, summarizing how many systems have been visited
@@ -297,9 +123,6 @@ Would you like to create it?</source>
 {3} int, total count of boxels to be searched</comment>
     <source>Completed {2} of {3} boxels, {0} of {1} systems in current boxel</source>
   </data>
-<<<<<<< Updated upstream
-  <data name="NetSysData_Encoded">
-=======
   <data name="NetSysData_Bodies">
     <value>天体</value>
     <source>Bodies</source>
@@ -316,13 +139,10 @@ Would you like to create it?</source>
   </data>
   <data name="NetSysData_Encoded">
     <!--Machine translated-->
->>>>>>> Stashed changes
     <value>(编码材料)</value>
     <comment>An Encoded Material Trader</comment>
     <source>(Encoded)</source>
   </data>
-<<<<<<< Updated upstream
-=======
   <data name="NetSysData_Engineer">
     <value>(工程师)</value>
     <comment>Suffix after an Engineer's name</comment>
@@ -336,7 +156,6 @@ Would you like to create it?</source>
     <value>地质</value>
     <source>Genus</source>
   </data>
->>>>>>> Stashed changes
   <data name="NetSysData_GuardianBroker">
     <value>(守护者)</value>
     <comment>A Guardian Tech Broker</comment>
@@ -352,8 +171,6 @@ Would you like to create it?</source>
     <comment>A Manufactured Material Trader</comment>
     <source>(Manufactured)</source>
   </data>
-<<<<<<< Updated upstream
-=======
   <data name="NetSysData_MaterialTrader">
     <value>材料交易商</value>
     <source>Material Trader</source>
@@ -362,18 +179,11 @@ Would you like to create it?</source>
     <value>前哨站</value>
     <source>Outposts</source>
   </data>
->>>>>>> Stashed changes
   <data name="NetSysData_Raw">
     <value>(元素材料)</value>
     <comment>A Raw Material Trader</comment>
     <source>(Raw)</source>
   </data>
-<<<<<<< Updated upstream
-  <data name="NetSysData_Engineer">
-    <value>(工程师)</value>
-    <comment>Suffix after an Engineer's name</comment>
-    <source>(Engineer)</source>
-=======
   <data name="NetSysData_Settlements">
     <value>聚居点</value>
     <source>Settlements</source>
@@ -499,6 +309,5 @@ Would you like to create it?</source>
   </data>
   <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
->>>>>>> Stashed changes
   </data>
 </root>

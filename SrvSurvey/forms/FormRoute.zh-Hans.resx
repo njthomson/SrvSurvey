@@ -411,7 +411,7 @@
     <value>Consolas, 9pt</value>
   </data>
   <data name="$this.Text">
-    <value>跟随路径</value>
+    <value>跟随航线</value>
     <source>Follow a route</source>
   </data>
   <data name="toolStrip1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">

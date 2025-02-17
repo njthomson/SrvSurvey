@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -58,27 +59,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-<<<<<<< Updated upstream
-  <data name="ZoomHeader">
-    <value>缩放: {0}</value>
-    <comment>Map zoom level, shown in top right corner
-{0} float, 1 decimal place, the map zoom level</comment>
-    <source>Zoom: {0}</source>
-  </data>
-  <data name="ZoomHeaderAuto">
-    <value>缩放: {0} (自动)</value>
-    <comment>Map zoom level when auto zooming, shown in top right corner
-{0} float, 1 decimal place, the map zoom level</comment>
-    <source>Zoom: {0} (Auto)</source>
-  </data>
-  <data name="ZoomHeaderMin">
-    <value>Z: {0}</value>
-    <comment>A minimal map zoom level, shown in top right corner when there's not much space
-{0} float, 1 decimal place, the map zoom level</comment>
-    <source>Z: {0}</source>
-  </data>
-  <data name="AGRI">
-=======
   <data name="ActiveFighter">
     <value>飞船就绪</value>
     <comment>Shown when approaching a settlement</comment>
@@ -86,19 +66,10 @@
   </data>
   <data name="AGRI">
     <!--不确定是否能放下3个中文字符,限定3字母的地方先使用原文-->
->>>>>>> Stashed changes
     <value>AGRI</value>
     <comment>A contraction of Agriculture, ideally 3 letters</comment>
     <source>AGRI</source>
   </data>
-<<<<<<< Updated upstream
-  <data name="HAB">
-    <value>HAB</value>
-    <comment>A contraction of Habitat, ideally 3 letters</comment>
-    <source>HAB</source>
-  </data>
-  <data name="CMD">
-=======
   <data name="AutoDock1">
     <value>正在自动停靠</value>
     <comment>Shown when approaching a settlement</comment>
@@ -116,108 +87,14 @@
   </data>
   <data name="CMD">
     <!--不确定是否能放下3个中文字符,限定3字母的地方先使用原文-->
->>>>>>> Stashed changes
     <value>CMD</value>
     <comment>A contraction of Command, ideally 3 letters</comment>
     <source>CMD</source>
   </data>
-<<<<<<< Updated upstream
-  <data name="POW">
-    <value>POW</value>
-    <comment>A contraction of Power Center, ideally 3 letters</comment>
-    <source>POW</source>
-  </data>
-  <data name="PWR">
-    <value>PWR</value>
-    <comment>A contraction of Power Center, ideally 3 letters</comment>
-    <source>PWR</source>
-  </data>
-  <data name="EXT">
-    <value>EXT</value>
-    <comment>A contraction of External, ideally 3 letters</comment>
-    <source>EXT</source>
-  </data>
-  <data name="STO">
-    <value>STO</value>
-    <comment>A contraction of Storage, ideally 3 letters</comment>
-    <source>STO</source>
-  </data>
-  <data name="RES">
-    <value>RES</value>
-    <comment>A contraction of Resources, ideally 3 letters</comment>
-    <source>RES</source>
-  </data>
-  <data name="IND">
-    <value>IND</value>
-    <comment>A contraction of Industrial Processing, ideally 3 letters</comment>
-    <source>IND</source>
-  </data>
-  <data name="MED">
-    <value>MED</value>
-    <comment>A contraction of Medical, ideally 3 letters</comment>
-    <source>MED</source>
-  </data>
-  <data name="LAB">
-    <value>LAB</value>
-    <comment>A contraction of Laboratory, ideally 3 letters</comment>
-    <source>LAB</source>
-  </data>
-  <data name="UnknownTypeHeading">
-    <value>未知聚居地类型及航向</value>
-=======
   <data name="Distance">
     <value>太远了</value>
->>>>>>> Stashed changes
     <comment>Shown when approaching a settlement</comment>
-    <source>Unknown settlement type and heading</source>
-  </data>
-  <data name="UnkownHeading">
-    <value>未知聚居地航向</value>
-    <comment>Shown when approaching a settlement</comment>
-    <source>Unknown settlement heading</source>
-  </data>
-  <data name="KnownSettlement">
-    <value>已知聚居地</value>
-    <comment>Shown when approaching a settlement</comment>
-    <source>Known settlement</source>
-  </data>
-  <data name="OnApproach">
-    <value>正在靠近</value>
-    <comment>Shown when approaching a settlement</comment>
-    <source>On approach</source>
-  </data>
-  <data name="Faction">
-    <value>派系</value>
-    <comment>Prefix shown when approaching a settlement</comment>
-    <source>Faction</source>
-  </data>
-  <data name="Influence">
-    <value>影响力</value>
-    <comment>Prefix shown when approaching a settlement</comment>
-    <source>Influence</source>
-  </data>
-  <data name="YourRep">
-    <value>你的声望: {0}</value>
-    <comment>Shown when approaching a settlement
-{0} string, your reputation with a faction</comment>
-    <source>Your reputation: {0}</source>
-  </data>
-
-  <data name="Government">
-    <value>政府</value>
-    <comment>Shown when approaching a settlement</comment>
-    <source>Government</source>
-  </data>
-  <data name="HasInterstellar">
-    <value>可用星际派系</value>
-    <comment>Shown when approaching a settlement</comment>
-    <source>Interstellar factions available</source>
-  </data>
-  
-  <data name="DockingRequested">
-    <value>停靠申请已发出</value>
-    <comment>Shown when approaching a settlement</comment>
-    <source>Docking requested</source>
+    <source>Too far away</source>
   </data>
   <data name="DockingApproved">
     <value>停靠申请已批准: 停机坪 #{0}</value>
@@ -230,20 +107,11 @@
     <comment>Shown when approaching a settlement</comment>
     <source>Docking denied</source>
   </data>
-<<<<<<< Updated upstream
-  <data name="Distance">
-    <value>太远了</value>
-=======
   <data name="DockingRequested">
     <value>停靠申请已发出</value>
->>>>>>> Stashed changes
     <comment>Shown when approaching a settlement</comment>
-    <source>Too far away</source>
+    <source>Docking requested</source>
   </data>
-<<<<<<< Updated upstream
-  <data name="Hostile">
-    <value>敌意</value>
-=======
   <data name="EXT">
     <!--不确定是否能放下3个中文字符,限定3字母的地方先使用原文-->
     <value>EXT</value>
@@ -257,14 +125,9 @@
   </data>
   <data name="Government">
     <value>政府</value>
->>>>>>> Stashed changes
     <comment>Shown when approaching a settlement</comment>
-    <source>Hostile</source>
+    <source>Government</source>
   </data>
-<<<<<<< Updated upstream
-  <data name="TooLarge">
-    <value>飞船太大了</value>
-=======
   <data name="HAB">
     <!--不确定是否能放下3个中文字符,限定3字母的地方先使用原文-->
     <value>HAB</value>
@@ -273,80 +136,9 @@
   </data>
   <data name="HasInterstellar">
     <value>可用星际派系</value>
->>>>>>> Stashed changes
     <comment>Shown when approaching a settlement</comment>
-    <source>Ship too large</source>
+    <source>Interstellar factions available</source>
   </data>
-  <data name="NoSpace">
-    <value>无可用停机坪</value>
-    <comment>Shown when approaching a settlement</comment>
-    <source>No pads available</source>
-  </data>
-  <data name="Offenses">
-    <value>敌对行为</value>
-    <comment>Shown when approaching a settlement</comment>
-    <source>Offenses</source>
-  </data>
-  <data name="ActiveFighter">
-    <value>飞船已就绪</value>
-    <comment>Shown when approaching a settlement</comment>
-    <source>Fighter is active</source>
-  </data>
-  <data name="Unknown">
-    <value>未知</value>
-    <comment>Shown when approaching a settlement</comment>
-    <source>Unknown</source>
-  </data>
-
-  <data name="AutoDock1">
-    <value>正在自动停靠</value>
-    <comment>Shown when approaching a settlement</comment>
-    <source>Auto dock in progress</source>
-  </data>
-  <data name="AutoDock2">
-    <value>聚居地自动识别功能已启用</value>
-    <comment>Shown when approaching a settlement</comment>
-    <source>Settlement auto-identification supported</source>
-  </data>
-  <data name="AutoDock3">
-    <value>请勿切换至外部视角</value>
-    <comment>Shown when approaching a settlement</comment>
-    <source>Do not switch to external camera</source>
-  </data>
-
-  <data name="ManualDock1">
-    <value>正在手动停靠</value>
-    <comment>Shown when approaching a settlement</comment>
-    <source>Manual docking in progress</source>
-  </data>
-  <data name="ManualDock2">
-    <value>聚居地识别将被推迟</value>
-    <comment>Shown when approaching a settlement</comment>
-    <source>Settlement identification will be delayed</source>
-  </data>
-  <data name="ManualDock3">
-    <value>推荐使用自动停靠</value>
-    <comment>Shown when approaching a settlement</comment>
-    <source>Auto dock recommended</source>
-  </data>
-
-  <data name="HelpShip1">
-    <value>聚居地将在下一步操作后识别</value>
-    <comment>Shown when landed and help is needed in a ship</comment>
-    <source>Settlement will be identified after next action</source>
-  </data>
-  <data name="HelpShip2">
-    <value>手动识别</value>
-    <comment>Shown when landed and help is needed in a ship</comment>
-    <source>To manually identify</source>
-  </data>
-  <data name="HelpShip3">
-    <value>当停靠后发送 '{0}'</value>
-    <comment>Shown when landed and help is needed in a ship
-{0} string, the non-localized command to type</comment>
-    <source>Send '{0}' when docked</source>
-  </data>
-
   <data name="HelpFoot0">
     <value>手动识别:</value>
     <comment>Shown when landed and help is needed on foot</comment>
@@ -380,16 +172,10 @@
     <source>5. Send message '{0}'</source>
   </data>
   <data name="HelpFoot6">
-<<<<<<< Updated upstream
-=======
-    <!--Machine translated-->
->>>>>>> Stashed changes
     <value>更多信息请查看Wiki</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>See the wiki for more info</source>
   </data>
-<<<<<<< Updated upstream
-=======
   <data name="HelpShip1">
     <value>聚居地将在下一步操作后识别</value>
     <comment>Shown when landed and help is needed in a ship</comment>
@@ -537,5 +323,4 @@
 {0} float, 1 decimal place, the map zoom level</comment>
     <source>Z: {0}</source>
   </data>
->>>>>>> Stashed changes
 </root>

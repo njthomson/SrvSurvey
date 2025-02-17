@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -58,30 +59,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-<<<<<<< Updated upstream
-  <data name="None">
-    <value>无</value>
-    <comment>Faction state None</comment>
-    <source>None</source>
-  </data>
-  <data name="Retreat">
-    <value>撤退</value>
-    <comment>Faction state Retreat</comment>
-    <source>Retreat</source>
-  </data>
-  <data name="War">
-    <value>战争</value>
-    <comment>Faction state War</comment>
-    <source>War</source>
-  </data>
-  <data name="Lockdown">
-    <value>封锁</value>
-    <comment>Faction state Lockdown</comment>
-    <source>Lockdown</source>
-  </data>
-  <data name="CivilUnrest">
-    <value>民间动荡</value>
-=======
   <data name="Blight">
     <value>枯萎病</value>
     <comment>Faction state Blight</comment>
@@ -104,7 +81,6 @@
   </data>
   <data name="CivilUnrest">
     <value>内乱</value>
->>>>>>> Stashed changes
     <comment>Faction state CivilUnrest</comment>
     <source>Civil Unrest</source>
   </data>
@@ -112,66 +88,6 @@
     <value>内战</value>
     <comment>Faction state CivilWar</comment>
     <source>Civil War</source>
-  </data>
-  <data name="Boom">
-    <value>繁荣</value>
-    <comment>Faction state Boom</comment>
-    <source>Boom</source>
-  </data>
-  <data name="Expansion">
-    <value>扩张</value>
-    <comment>Faction state Expansion</comment>
-    <source>Expansion</source>
-  </data>
-  <data name="Bust">
-    <value>萧条</value>
-    <comment>Faction state Bust</comment>
-    <source>Bust</source>
-  </data>
-  <data name="Outbreak">
-    <value>疫情爆发</value>
-    <comment>Faction state Outbreak</comment>
-    <source>Outbreak</source>
-  </data>
-  <data name="Famine">
-    <value>饥荒</value>
-    <comment>Faction state Famine</comment>
-    <source>Famine</source>
-  </data>
-  <data name="Election">
-    <value>选举</value>
-    <comment>Faction state Election</comment>
-    <source>Election</source>
-  </data>
-  <data name="Investment">
-    <value>投资热潮</value>
-    <comment>Faction state Investment</comment>
-    <source>Investment</source>
-  </data>
-  <data name="CivilLiberty">
-    <value>公民自由</value>
-    <comment>Faction state CivilLiberty</comment>
-    <source>Civil Liberty</source>
-  </data>
-  <data name="Incursion">
-    <value>渗透入侵</value>
-    <comment>Faction state Incursion</comment>
-    <source>Incursion</source>
-  </data>
-  <data name="PirateAttack">
-    <value>海盗袭击</value>
-    <comment>Faction state PirateAttack</comment>
-    <source>Pirate Attack</source>
-  </data>
-  <data name="Drought">
-    <value>干旱</value>
-    <comment>Faction state Drought, but translated as Blight</comment>
-    <source>Drought</source>
-  </data>
-  <data name="Blight">
-    <value>枯萎病</value>
-    <comment>Faction state Blight</comment>
-    <source>Blight</source>
   </data>
   <data name="ColdWar">
     <value>冷战</value>
@@ -183,8 +99,6 @@
     <comment>Faction state Colonisation</comment>
     <source>Colonisation</source>
   </data>
-<<<<<<< Updated upstream
-=======
   <data name="Drought">
     <value>干旱</value>
     <comment>Faction state Drought, but translated as Blight</comment>
@@ -205,27 +119,21 @@
     <comment>Faction state Famine</comment>
     <source>Famine</source>
   </data>
->>>>>>> Stashed changes
   <data name="HistoricEvent">
     <value>历史性事件</value>
     <comment>Faction state HistoricEvent</comment>
     <source>Historic Event</source>
   </data>
-<<<<<<< Updated upstream
-=======
   <data name="Incursion">
     <value>渗透入侵</value>
     <comment>Faction state Incursion</comment>
     <source>Incursion</source>
   </data>
->>>>>>> Stashed changes
   <data name="InfrastructureFailure">
     <value>基础设施故障</value>
     <comment>Faction state InfrastructureFailure</comment>
     <source>Infrastructure Failure</source>
   </data>
-<<<<<<< Updated upstream
-=======
   <data name="Investment">
     <value>投资热潮</value>
     <comment>Faction state Investment</comment>
@@ -236,14 +144,11 @@
     <comment>Faction state Lockdown</comment>
     <source>Lockdown</source>
   </data>
->>>>>>> Stashed changes
   <data name="NaturalDisaster">
     <value>自然灾害</value>
     <comment>Faction state NaturalDisaster</comment>
     <source>Natural Disaster</source>
   </data>
-<<<<<<< Updated upstream
-=======
   <data name="None">
     <value>无</value>
     <comment>Faction state None</comment>
@@ -259,20 +164,16 @@
     <comment>Faction state PirateAttack</comment>
     <source>Pirate Attack</source>
   </data>
->>>>>>> Stashed changes
   <data name="PublicHoliday">
     <value>公共假日</value>
     <comment>Faction state PublicHoliday</comment>
     <source>Public Holiday</source>
   </data>
-<<<<<<< Updated upstream
-=======
   <data name="Retreat">
     <value>撤退</value>
     <comment>Faction state Retreat</comment>
     <source>Retreat</source>
   </data>
->>>>>>> Stashed changes
   <data name="Revolution">
     <value>革命</value>
     <comment>Faction state Revolution</comment>
@@ -288,8 +189,6 @@
     <comment>Faction state Terrorism</comment>
     <source>Terrorism</source>
   </data>
-<<<<<<< Updated upstream
-=======
   <data name="Thargoid_Controlled">
     <value>Thargoid萨格族控制区</value>
     <comment>Faction state Thargoid_Controlled</comment>
@@ -311,46 +210,18 @@
     <source>Post-Thargoid Recovery</source>
   </data>
   <data name="Thargoid_Stronghold">
-    <value>萨格族动荡</value>
+    <value>Thargoid萨格族动荡</value>
     <comment>Faction state Thargoid_Stronghold</comment>
     <source>Thargoid Maelstrom</source>
   </data>
->>>>>>> Stashed changes
   <data name="TradeWar">
     <value>贸易战</value>
     <comment>Faction state TradeWar</comment>
     <source>Trade War</source>
   </data>
-<<<<<<< Updated upstream
-  <data name="Thargoid_Probing">
-    <value>Thargoid萨格族警报</value>
-    <comment>Faction state Thargoid_Probing</comment>
-    <source>Thargoid Alert</source>
-  </data>
-  <data name="Thargoid_Harvest">
-    <value>Thargoid萨格族入侵</value>
-    <comment>Faction state Thargoid_Harvest</comment>
-    <source>Thargoid Invasion</source>
-  </data>
-  <data name="Thargoid_Controlled">
-    <value>Thargoid萨格族控制区</value>
-    <comment>Faction state Thargoid_Controlled</comment>
-    <source>Thargoid Controlled</source>
-  </data>
-  <data name="Thargoid_Stronghold">
-    <value>Thargoid萨格族漩涡</value>
-    <comment>Faction state Thargoid_Stronghold</comment>
-    <source>Thargoid Maelstrom</source>
-  </data>
-  <data name="Thargoid_Recovery">
-    <value>后萨格族复苏期</value>
-    <comment>Faction state Thargoid_Recovery</comment>
-    <source>Post-Thargoid Recovery</source>
-=======
   <data name="War">
     <value>战争</value>
     <comment>Faction state War</comment>
     <source>War</source>
->>>>>>> Stashed changes
   </data>
 </root>

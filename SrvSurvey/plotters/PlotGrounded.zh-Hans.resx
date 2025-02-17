@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -59,18 +60,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="NearingShipDistance">
-<<<<<<< Updated upstream
-    <value>接近飞船起飞距离</value>
-=======
     <value>接近飞船起飞范围</value>
->>>>>>> Stashed changes
     <comment>Warning shown when nearing ship departure distance</comment>
     <source>Nearing ship departure distance</source>
-  </data>
-  <data name="ScanOneInvalid">
-    <value>第一次扫描: 无效</value>
-    <comment>Warning shown when scan one is not valid</comment>
-    <source>Scan one: invalid</source>
   </data>
   <data name="ScanOne_Long">
     <value>第一次扫描:</value>
@@ -78,16 +70,6 @@
     <source>Scan one:</source>
   </data>
   <data name="ScanOne_Short">
-<<<<<<< Updated upstream
-    <value>1st:</value>
-    <comment>A shorter prefix to bearing and distance to scan one, when window is too narrow</comment>
-    <source>1st:</source>
-  </data>
-  <data name="ScanTwoInvalid" xml:space="preserve">
-    <value>第二次扫描: 无效</value>
-    <comment>Warning shown when scan two is not valid</comment>
-    <source>Scan two: invalid</source>
-=======
     <value>1扫:</value>
     <comment>A shorter prefix to bearing and distance to scan one, when window is too narrow</comment>
     <source>1st:</source>
@@ -96,7 +78,6 @@
     <value>第一次扫描: 无效</value>
     <comment>Warning shown when scan one is not valid</comment>
     <source>Scan one: invalid</source>
->>>>>>> Stashed changes
   </data>
   <data name="ScanTwo_Long">
     <value>第二次扫描:</value>
@@ -104,13 +85,7 @@
     <source>Scan two:</source>
   </data>
   <data name="ScanTwo_Short">
-<<<<<<< Updated upstream
     <value>2nd:</value>
-    <comment>A shorter prefix to bearing and distance to scan two, when window is too narrow</comment>
-    <source>2nd:</source>
-  </data>
-=======
-    <value>2扫:</value>
     <comment>A shorter prefix to bearing and distance to scan two, when window is too narrow</comment>
     <source>2nd:</source>
   </data>
@@ -119,7 +94,6 @@
     <comment>Warning shown when scan two is not valid</comment>
     <source>Scan two: invalid</source>
   </data>
->>>>>>> Stashed changes
   <data name="Ship">
     <value>飞船:</value>
     <comment>Prefix to bearing and distance to the ship</comment>

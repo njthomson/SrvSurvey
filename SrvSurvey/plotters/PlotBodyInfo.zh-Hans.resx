@@ -27,6 +27,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -109,11 +110,7 @@
     <source>Pressure: {0}</source>
   </data>
   <data name="PressureValue">
-<<<<<<< Updated upstream
-    <value>{0}(标准大气压)</value>
-=======
     <value>{0}(标压)</value>
->>>>>>> Stashed changes
     <comment>The atmospheric pressure value
 {0} decimal, 4 places</comment>
     <source>{0}(atm)</source>
@@ -134,11 +131,7 @@
     <source>Scan value</source>
   </data>
   <data name="StarClass">
-<<<<<<< Updated upstream
-    <value>Class: {0}</value>
-=======
     <value>光谱型: {0}</value>
->>>>>>> Stashed changes
     <comment>Line prefix with the type of a star, A, O, M, etc
 {0} string, the class of some star</comment>
     <source>Class: {0}</source>
@@ -155,7 +148,7 @@
     <source>Terraformable</source>
   </data>
   <data name="Undiscovered">
-    <value>未被发现</value>
+    <value>未发现</value>
     <comment>Header tag</comment>
     <source>Undiscovered</source>
   </data>

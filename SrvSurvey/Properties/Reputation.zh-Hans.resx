@@ -9,6 +9,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -39,32 +40,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-<<<<<<< Updated upstream
-  <data name="Hostile">
-    <value>敌对</value>
-=======
   <data name="Allied">
     <value>盟友</value>
->>>>>>> Stashed changes
     <comment>Your reputation with some faction</comment>
-    <value>Hostile</value>
-  </data>
-  <data name="Unfriendly">
-    <value>冷淡</value>
-    <comment>Your reputation with some faction</comment>
-    <source>Unfriendly</source>
-  </data>
-  <data name="Neutral">
-    <value>中立</value>
-    <comment>Your reputation with some faction</comment>
-    <source>Neutral</source>
+    <source>Allied</source>
   </data>
   <data name="Cordial">
-<<<<<<< Updated upstream
-    <value>友善</value>
-=======
     <value>善意</value>
->>>>>>> Stashed changes
     <comment>Your reputation with some faction</comment>
     <source>Cordial</source>
   </data>
@@ -73,12 +55,6 @@
     <comment>Your reputation with some faction</comment>
     <source>Friendly</source>
   </data>
-<<<<<<< Updated upstream
-  <data name="Allied">
-    <value>盟友</value>
-    <comment>Your reputation with some faction</comment>
-    <source>Allied</source>
-=======
   <data name="Hostile">
     <value>敌对</value>
     <comment>Your reputation with some faction</comment>
@@ -93,6 +69,5 @@
     <value>恶意</value>
     <comment>Your reputation with some faction</comment>
     <source>Unfriendly</source>
->>>>>>> Stashed changes
   </data>
 </root>

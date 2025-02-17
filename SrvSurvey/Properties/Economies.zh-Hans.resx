@@ -9,6 +9,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -44,13 +45,6 @@
     <comment>Economy type Agri</comment>
     <source>Agriculture</source>
   </data>
-<<<<<<< Updated upstream
-  <data name="Colony">
-    <value>殖民类</value>
-    <comment>Economy type Colony</comment>
-    <source>Colony</source>
-  </data>
-=======
   <data name="Carrier">
     <value>私营企业</value>
     <comment>Economy Type Carrier</comment>
@@ -71,7 +65,6 @@
     <comment>Economy type Engineer</comment>
     <source>Engineering</source>
   </data>
->>>>>>> Stashed changes
   <data name="Extraction">
     <value>采掘业</value>
     <comment>Economy type Extraction</comment>
@@ -97,21 +90,16 @@
     <comment>Economy type None</comment>
     <source>None</source>
   </data>
-<<<<<<< Updated upstream
-=======
   <data name="Prison">
     <value>监狱</value>
     <comment>Economy type Prison</comment>
     <source>Prison</source>
   </data>
->>>>>>> Stashed changes
   <data name="Refinery">
     <value>精炼</value>
     <comment>Economy type Refinery</comment>
     <source>Refinery</source>
   </data>
-<<<<<<< Updated upstream
-=======
   <data name="Repair">
     <value>维修</value>
     <comment>Economy type Repair</comment>
@@ -122,7 +110,6 @@
     <comment>Economy type Rescue</comment>
     <source>Rescue</source>
   </data>
->>>>>>> Stashed changes
   <data name="Service">
     <value>服务业</value>
     <comment>Economy type Service</comment>
@@ -137,35 +124,5 @@
     <value>旅游业</value>
     <comment>Economy type Tourism</comment>
     <source>Tourism</source>
-  </data>
-  <data name="Rescue">
-    <value>救援</value>
-    <comment>Economy type Rescue</comment>
-    <source>Rescue</source>
-  </data>
-  <data name="Prison">
-    <value>监狱</value>
-    <comment>Economy type Prison</comment>
-    <source>Prison</source>
-  </data>
-  <data name="Repair">
-    <value>维修</value>
-    <comment>Economy type Repair</comment>
-    <source>Repair</source>
-  </data>
-  <data name="Damaged">
-    <value>受损</value>
-    <comment>Economy type Damaged</comment>
-    <source>Damaged</source>
-  </data>
-  <data name="Carrier">
-    <value>私营企业</value>
-    <comment>Economy Type Carrier</comment>
-    <source>Private Enterprise</source>
-  </data>
-  <data name="Engineer">
-    <value>工程类</value>
-    <comment>Economy type Engineer</comment>
-    <source>Engineering</source>
   </data>
 </root>
