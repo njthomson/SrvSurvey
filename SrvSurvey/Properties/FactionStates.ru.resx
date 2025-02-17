@@ -71,7 +71,7 @@
     <source>Boom</source>
   </data>
   <data name="Bust">
-    <value>Провал</value>
+    <value>Спад</value>
     <comment>Faction state Bust</comment>
     <source>Bust</source>
   </data>
@@ -131,7 +131,7 @@
     <source>Incursion</source>
   </data>
   <data name="InfrastructureFailure">
-    <value>Нарушение инфраструктуры</value>
+    <value>Отказ инфраструктуры</value>
     <comment>Faction state InfrastructureFailure</comment>
     <source>Infrastructure Failure</source>
   </data>
@@ -141,7 +141,7 @@
     <source>Investment</source>
   </data>
   <data name="Lockdown">
-    <value>Карантин</value>
+    <value>Изоляция</value>
     <comment>Faction state Lockdown</comment>
     <source>Lockdown</source>
   </data>
@@ -166,7 +166,7 @@
     <source>Pirate Attack</source>
   </data>
   <data name="PublicHoliday">
-    <value>Праздники</value>
+    <value>Официальный праздник</value>
     <comment>Faction state PublicHoliday</comment>
     <source>Public Holiday</source>
   </data>
@@ -186,7 +186,7 @@
     <source>Technological Leap</source>
   </data>
   <data name="Terrorism">
-    <value>Терроризм</value>
+    <value>Атака террористов</value>
     <comment>Faction state Terrorism</comment>
     <source>Terrorism</source>
   </data>
