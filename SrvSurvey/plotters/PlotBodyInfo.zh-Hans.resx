@@ -109,7 +109,11 @@
     <source>Pressure: {0}</source>
   </data>
   <data name="PressureValue">
+<<<<<<< Updated upstream
     <value>{0}(标准大气压)</value>
+=======
+    <value>{0}(标压)</value>
+>>>>>>> Stashed changes
     <comment>The atmospheric pressure value
 {0} decimal, 4 places</comment>
     <source>{0}(atm)</source>
@@ -130,7 +134,11 @@
     <source>Scan value</source>
   </data>
   <data name="StarClass">
+<<<<<<< Updated upstream
     <value>Class: {0}</value>
+=======
+    <value>光谱型: {0}</value>
+>>>>>>> Stashed changes
     <comment>Line prefix with the type of a star, A, O, M, etc
 {0} string, the class of some star</comment>
     <source>Class: {0}</source>

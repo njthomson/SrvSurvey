@@ -806,7 +806,11 @@
     <value>15</value>
   </data>
   <data name="checkAutoCopy.Text">
+<<<<<<< Updated upstream
     <value>&amp;Auto-copy in gal map</value>
+=======
+    <value>在银河地图中自动复制</value>
+>>>>>>> Stashed changes
     <source>&amp;Auto-copy in gal map</source>
   </data>
   <data name="checkCompleteOnEnterSystem.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -844,7 +848,11 @@
     <value>17</value>
   </data>
   <data name="checkCompleteOnFssAllBodies.Text">
+<<<<<<< Updated upstream
     <value>FSS扫描 所有天体</value>
+=======
+    <value>FSS扫描所有天体</value>
+>>>>>>> Stashed changes
     <source>FSS'ing all bodies</source>
   </data>
   <data name="checkSkipVisited.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -866,7 +874,11 @@
     <value>12</value>
   </data>
   <data name="checkSkipVisited.Text">
+<<<<<<< Updated upstream
     <value>跳过指定日期之前我已访问过的星系</value>
+=======
+    <value>跳过我在指定日期之前已经访问过的星系</value>
+>>>>>>> Stashed changes
     <source>Skip systems I've already visited before date</source>
   </data>
   <data name="checkSpinKnownToSpansh.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -909,7 +921,11 @@
     <value>80</value>
   </data>
   <data name="colSpansh.Text">
+<<<<<<< Updated upstream
     <value>Spansh 更新日期</value>
+=======
+    <value>Spansh更新时间</value>
+>>>>>>> Stashed changes
     <source>Spansh Updated</source>
   </data>
   <data name="colSpansh.Width" type="System.Int32, mscorlib">
@@ -1016,7 +1032,11 @@
     <value>18</value>
   </data>
   <data name="label1.Text">
+<<<<<<< Updated upstream
     <value>扫描的Boxel星系:</value>
+=======
+    <value>正在扫描Boxel:</value>
+>>>>>>> Stashed changes
     <source>Surveying boxel:</source>
   </data>
   <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -1165,8 +1185,13 @@
 立方体的大小取决于质量代码：'a' boxels 边长 10 光年，
     下一级以2倍递增，'h' boxels 边长 1280 光年
 
+<<<<<<< Updated upstream
 每个Boxel包含8个子节点，排列为2行、每行4个象限，
 每个象限都有自己生成的恒星系统</value>
+=======
+每个Boxel包含8个子节点，排列2行、每行4个节点，
+每个节点都有自己生成的恒星系统</value>
+>>>>>>> Stashed changes
     <source>A boxel is a cube of space containing procedurally generated star systems. Cube sizes depend on mass code: 'a' boxels are 10 ly across, 'h' boxels are 1280 ly.
 
 Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with their own generated star systems.</source>
@@ -1187,7 +1212,11 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>28</value>
   </data>
   <data name="lblBadBoxel.Text">
+<<<<<<< Updated upstream
     <value>该星系名不是一个有效的boxel名</value>
+=======
+    <value>该星系名不是一个有效的Boxel名</value>
+>>>>>>> Stashed changes
     <source>System name is not a valid boxel name</source>
   </data>
   <data name="lblBadBoxel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -1212,7 +1241,11 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>22</value>
   </data>
   <data name="lblBoxelCount.Text">
+<<<<<<< Updated upstream
     <value>(包含 X 矩形)</value>
+=======
+    <value>(包含 X boxels)</value>
+>>>>>>> Stashed changes
     <source>(Contains X boxels)</source>
   </data>
   <data name="lblConfigHeader.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">

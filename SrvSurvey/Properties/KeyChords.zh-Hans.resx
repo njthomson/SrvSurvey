@@ -58,10 +58,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+<<<<<<< Updated upstream
   <data name="toggleAllVisibility">
     <value>切换所有覆盖窗口的可见性</value>
     <comment>A description of a key-chord setting</comment>
     <source>Toggles visibility of all overlay windows.</source>
+=======
+  <data name="copyNextBoxel">
+    <value>在银河地图时，将下一个boxel搜索星系名复制到剪贴板</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>In gal-map, copy the next boxel search system to clipboard.</source>
+  </data>
+  <data name="mapBeHuge">
+    <value>切换使地图仅填充屏幕的一半，仅限于人类聚居地</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Toggles making the map fill half the screen, at Human settlements only.</source>
+  </data>
+  <data name="mapZoomAuto">
+    <value>重置人类聚居地和守护者地点地图的默认大小</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Reset the zoom to default, at Human and Guardian sites.</source>
+>>>>>>> Stashed changes
   </data>
   <data name="mapZoomIn">
     <value>放大人类聚居地和守护者地点的地图</value>
@@ -73,11 +90,17 @@
     <comment>A description of a key-chord setting</comment>
     <source>Zoom out on maps at Human and Guardian sites.</source>
   </data>
+<<<<<<< Updated upstream
   <data name="mapZoomAuto">
     <value>重置人类聚居地和守护者地点地图的默认大小</value>
+=======
+  <data name="pasteGalMap">
+    <value>在银河地图画面时粘贴剪贴板文字</value>
+>>>>>>> Stashed changes
     <comment>A description of a key-chord setting</comment>
     <source>Reset the zoom to default, at Human and Guardian sites.</source>
   </data>
+<<<<<<< Updated upstream
   <data name="mapBeHuge">
     <value>切换使地图仅填充屏幕的一半，仅限于人类聚居地</value>
     <comment>A description of a key-chord setting</comment>
@@ -85,6 +108,20 @@
   </data>
   <data name="showJumpInfo">
     <value>强制切换显示FSD跳跃信息而不用等跳跃时才显示</value>
+=======
+  <data name="showBodyInfo">
+    <value>强制切换显示Body(天体)信息覆盖层.</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Force show the Body info overlay.</source>
+  </data>
+  <data name="showFssInfo">
+    <value>强制切换显示FSS信息覆盖层</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Force show the FSS info overlay.</source>
+  </data>
+  <data name="showJumpInfo">
+    <value>强制切换显示FSD跳跃信息而不是跳跃时才显示</value>
+>>>>>>> Stashed changes
     <comment>A description of a key-chord setting</comment>
     <source>Force toggle the FSD jump overlay without starting to jump.</source>
   </data>
@@ -108,6 +145,14 @@
     <comment>A description of a key-chord setting</comment>
     <source>Make the system notes window visible.</source>
   </data>
+<<<<<<< Updated upstream
+=======
+  <data name="toggleAllVisibility">
+    <value>切换所有覆盖窗口的可见性</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Toggles visibility of all overlay windows.</source>
+  </data>
+>>>>>>> Stashed changes
   <data name="track1">
     <value>添加或移除 #1 追踪</value>
     <comment>A description of a key-chord setting</comment>

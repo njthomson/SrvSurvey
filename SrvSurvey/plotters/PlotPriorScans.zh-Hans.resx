@@ -59,7 +59,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Footer">
+<<<<<<< Updated upstream
     <value>(地点未必靠近信号源)</value>
+=======
+    <value>(地点可能没太靠近信号)</value>
+>>>>>>> Stashed changes
     <comment>Footer message</comment>
     <source>(Locations may not be that close to signals)</source>
   </data>

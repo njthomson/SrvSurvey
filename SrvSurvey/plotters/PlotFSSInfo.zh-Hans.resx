@@ -77,13 +77,21 @@
   </data>
   <data name="Footer2">
     <value>🌎 可改造
+<<<<<<< Updated upstream
 🚀 可着陆 ⚑ 未知</value>
+=======
+🚀 可着陆 ⚑ 未发现</value>
+>>>>>>> Stashed changes
     <comment>More footer lines with guidance</comment>
     <source>🌎 Terraformable
 🚀 Landable ⚑ Undiscovered</source>
   </data>
   <data name="HidingBodies">
+<<<<<<< Updated upstream
     <value>( 未显示的天体 &lt; {0} )</value>
+=======
+    <value>( 不显示 &lt; {0} 的天体 )</value>
+>>>>>>> Stashed changes
     <comment>Line showing minimum credit value needed for bodies to be shown in the list that follows
 {0} string, min value of credits</comment>
     <source>( Hiding bodies &lt; {0} )</source>

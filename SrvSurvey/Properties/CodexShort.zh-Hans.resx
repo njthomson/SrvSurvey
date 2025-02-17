@@ -59,6 +59,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Aleoida">
+<<<<<<< Updated upstream
+=======
+    <!--因要保留3字母，无法翻译-->
+>>>>>>> Stashed changes
     <value>ale</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>ale</source>

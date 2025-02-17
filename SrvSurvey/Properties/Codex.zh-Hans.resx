@@ -59,7 +59,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Aleoida">
+<<<<<<< Updated upstream
     <value>Aleoida{阿莱奥伊达}</value>
+=======
+    <!--以下尝试使用双语表述,使用“()”表示直译，使用“{}”表示音译,“[]”为译者结合描述重新取名-->
+    <value>Aleoida{阿莱奥达}</value>
+>>>>>>> Stashed changes
     <comment>An Odyssey genus name</comment>
     <source>Aleoida</source>
   </data>
@@ -99,7 +104,11 @@
     <source>Brain Trees</source>
   </data>
   <data name="Cactoida">
+<<<<<<< Updated upstream
     <value>Cactoida{卡克托伊达}</value>
+=======
+    <value>Cactoida(类仙人掌)</value>
+>>>>>>> Stashed changes
     <comment>An Odyssey genus name</comment>
     <source>Cactoida</source>
   </data>
@@ -114,7 +123,11 @@
     <source>Cobalt</source>
   </data>
   <data name="Concha">
+<<<<<<< Updated upstream
     <value>Concha{康查}</value>
+=======
+    <value>Concha(贝壳属)</value>
+>>>>>>> Stashed changes
     <comment>An Odyssey genus name</comment>
     <source>Concha</source>
   </data>
@@ -129,7 +142,11 @@
     <source>Cyan</source>
   </data>
   <data name="Electricae">
+<<<<<<< Updated upstream
     <value>Electricae{伊莱克特里克}</value>
+=======
+    <value>Electricae{伊莱克特里科}</value>
+>>>>>>> Stashed changes
     <comment>An Odyssey genus name</comment>
     <source>Electricae</source>
   </data>
@@ -194,7 +211,11 @@
     <source>Magenta</source>
   </data>
   <data name="Maroon">
+<<<<<<< Updated upstream
     <value>Maroon(栗色)</value>
+=======
+    <value>Maroon(褐红色)</value>
+>>>>>>> Stashed changes
     <comment>An Odyssey bio signal colour</comment>
     <source>Maroon</source>
   </data>
@@ -204,7 +225,11 @@
     <source>Mauve</source>
   </data>
   <data name="Mulberry">
+<<<<<<< Updated upstream
     <value>Mulberry(桑葚色)</value>
+=======
+    <value>Mulberry(深紫红色)</value>
+>>>>>>> Stashed changes
     <comment>An Odyssey bio signal colour</comment>
     <source>Mulberry</source>
   </data>
@@ -219,7 +244,11 @@
     <source>Orange</source>
   </data>
   <data name="Osseus">
+<<<<<<< Updated upstream
     <value>Osseus(骨质)</value>
+=======
+    <value>Osseus[骨质菇]</value>
+>>>>>>> Stashed changes
     <comment>An Odyssey genus name</comment>
     <source>Osseus</source>
   </data>
@@ -239,7 +268,11 @@
     <source>Red</source>
   </data>
   <data name="Sage">
+<<<<<<< Updated upstream
     <value>Sage(鼠尾草色)</value>
+=======
+    <value>Sage(灰绿色)</value>
+>>>>>>> Stashed changes
     <comment>An Odyssey bio signal colour</comment>
     <source>Sage</source>
   </data>
@@ -249,17 +282,29 @@
     <source>Sinuous Tubers</source>
   </data>
   <data name="Stratum">
+<<<<<<< Updated upstream
     <value>Stratum(地层)</value>
+=======
+    <value>Stratum[岩叠藓]</value>
+>>>>>>> Stashed changes
     <comment>An Odyssey genus name</comment>
     <source>Stratum</source>
   </data>
   <data name="Teal">
+<<<<<<< Updated upstream
     <value>Teal(水鸭色)</value>
+=======
+    <value>Teal(青绿色)</value>
+>>>>>>> Stashed changes
     <comment>An Odyssey bio signal colour</comment>
     <source>Teal</source>
   </data>
   <data name="Tubus">
+<<<<<<< Updated upstream
     <value>Tubus{图布斯}</value>
+=======
+    <value>Tubus[叠囊塔]</value>
+>>>>>>> Stashed changes
     <comment>An Odyssey genus name</comment>
     <source>Tubus</source>
   </data>

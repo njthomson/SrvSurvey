@@ -79,18 +79,30 @@
     <source>Applying first footfall bonus</source>
   </data>
   <data name="FooterUseCompScanner">
+<<<<<<< Updated upstream
     <value>使用 Compo Scanner 设置跟踪器目标</value>
+=======
+    <value>使用 COMP.SCANNER 设置跟踪器目标</value>
+>>>>>>> Stashed changes
     <comment>Footer shown to remind people to use the composition scanner</comment>
     <source>Use Composition Scanner to set tracker targets</source>
   </data>
   <data name="GeoN">
+<<<<<<< Updated upstream
     <value>地质信号 #{0}</value>
+=======
+    <value>地质 #{0}</value>
+>>>>>>> Stashed changes
     <comment>Shown with genus names but represents some unknown numbered geological signal
 {0} int, the index of the geo signal, 1 through 3</comment>
     <source>Geo #{0}</source>
   </data>
   <data name="Header">
+<<<<<<< Updated upstream
     <value>生物信号: {0} | 已分析完毕: {1}</value>
+=======
+    <value>生物信号: {0} | 已分析: {1}</value>
+>>>>>>> Stashed changes
     <comment>Header text
 {0} int, total count of bio signals
 {1} int, count of bio signals analyzed</comment>

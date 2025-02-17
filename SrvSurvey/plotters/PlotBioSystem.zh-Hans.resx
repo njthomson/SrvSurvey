@@ -87,6 +87,14 @@
 {0} int, total count of geo signals on the body</comment>
     <source>Geo signals: {0}</source>
   </data>
+<<<<<<< Updated upstream
+=======
+  <data name="NotPredicted">
+    <value>无法预测!</value>
+    <comment>Message shown when some bio signal is present and it was not predicted.</comment>
+    <source>Not predicted!</source>
+  </data>
+>>>>>>> Stashed changes
   <data name="RewardFooter">
     <value>奖励: {0}</value>
     <comment>Footer showing estimated credits
