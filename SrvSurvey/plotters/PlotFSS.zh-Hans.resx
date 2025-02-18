@@ -66,7 +66,7 @@
     <source>{0} bio signals:</source>
   </data>
   <data name="EstimatedValue">
-    <value>预估:</value>
+    <value>初步发现价值:</value>
     <comment>Line header for body estimated value</comment>
     <source>Estimated value:</source>
   </data>
@@ -78,7 +78,7 @@
   </data>
   <data name="WithSurfaceScan">
     <!--这个值似乎是单Dss的价值,不含基础发现价值,不太适合使用"含字眼",另外工具似乎没有处理dss完美加成的计算-->
-    <value>地表扫描:</value>
+    <value>额外地表扫描:</value>
     <comment>Line header for body estimated value with surface scan</comment>
     <source>With surface scan:</source>
   </data>
