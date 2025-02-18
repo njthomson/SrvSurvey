@@ -61,8 +61,7 @@
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Header">
-    <!--Machine translated-->
-    <value>大屠杀杀戮剩余：</value>
+    <value>清剿击杀剩余：</value>
     <comment>Header line</comment>
     <source>Massacre kills remaining:</source>
   </data>

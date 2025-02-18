@@ -62,78 +62,67 @@
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="FirewallBlocked">
     <!--Machine translated-->
-    <value>防火墙似乎阻止了对 SrvSurvey 的网络调用。从 Downloads 文件夹中运行 SrvSurvey 时，这种情况更有可能发生。将 SrvSurvey 的位置添加到文件墙中可以解决此问题。\r\n\r\n{0}\r\n\r\n是否要将该位置复制到剪贴板？</value>
+    <value>似乎SrvSurvey的网络调用被防火墙阻止了。当从 Downloads 文件夹中运行 SrvSurvey 时，这种情况更有可能发生。将 SrvSurvey 的位置添加到防火墙中可以解决此问题。\r\n\r\n{0}\r\n\r\n您想将该位置复制到剪贴板吗？</value>
     <comment>An error message shown when fire walls are causing problems
 {0} string, the folder path to SrvSurvey.exe</comment>
     <source>It appears network calls for SrvSurvey are being blocked by a firewall. This is more likely when running SrvSurvey from within the Downloads folder. Adding the location of SrvSurvey to your file wall will solve this problem.\r\n\r\n{0}\r\n\r\nWould you like to copy that location to the clipboard?</source>
   </data>
   <data name="FormBoxelSearch_Activate">
-    <!--Machine translated-->
-    <value>激活</value>
+    <value>启用</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>Activate</source>
   </data>
   <data name="FormBoxelSearch_Disable">
-    <!--Machine translated-->
     <value>禁用</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>Disable</source>
   </data>
   <data name="FormBoxelSearch_HideList">
-    <!--Machine translated-->
     <value>⏶ 隐藏列表</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>⏶ Hide list</source>
   </data>
   <data name="FormBoxelSearch_NotViableMessage">
-    <!--Machine translated-->
-    <value>这不是 boxel 生成的系统名称。</value>
+    <value>这不是一个由boxel生成的星系名称</value>
     <comment>Shown in FormBoxelSearch when attempting to boxel search a non generated system name</comment>
     <source>This is not a boxel generated system name.</source>
   </data>
   <data name="FormBoxelSearch_SearchNotActive">
-    <!--Machine translated-->
-    <value>Boxel 搜索未处于活动状态。</value>
+    <value>Boxel搜索未激活.</value>
     <comment>Shown in FormBoxelSearch status var when the feature is not active</comment>
     <source>Boxel search is not active.</source>
   </data>
   <data name="FormBoxelSearch_ShowList">
-    <!--Machine translated-->
     <value>⏷ 显示列表</value>
     <comment>Used on a button in FormBoxelSearch</comment>
     <source>⏷ Show list</source>
   </data>
   <data name="FormBoxelSearch_SpanshUpdated">
-    <!--Machine translated-->
-    <value>Spansh 更新时间：{0}</value>
+    <value>Spansh更新于: {0}</value>
     <comment>Shown in FormBoxelSearch as notes for a system.
 {0} DateTime, a short formatted date</comment>
     <source>Spansh updated: {0}</source>
   </data>
   <data name="FormBoxelSearch_SpanshUpdatedBodies">
-    <!--Machine translated-->
-    <value>Spansh 更新： {0}， bodies： {1}</value>
+    <value>Spansh更新于: {0}, 天体数: {1}</value>
     <comment>Shown in FormBoxelSearch as notes for a system.
 {0} DateTime, a short formatted date
 {1} int, a count of bodies in that system</comment>
     <source>Spansh updated: {0}, bodies: {1}</source>
   </data>
   <data name="FormBoxelSearch_UndiscoveredSystem">
-    <!--Machine translated-->
-    <value>未被发现的系统</value>
+    <value>未被发现的星系</value>
     <comment>Shown in FormBoxelSearch as notes for a system that has not been discovered</comment>
     <source>Undiscovered system</source>
   </data>
   <data name="FormBoxelSearch_Visited">
-    <!--Machine translated-->
-    <value>访问量： {0}</value>
+    <value>访问于: {0}</value>
     <comment>Shown in FormBoxelSearch as notes for a system that was just visited
 {0} DateTime, the date and time the system was visited, usually now</comment>
     <source>Visited: {0}</source>
   </data>
   <data name="FormBoxelSearch_VisitedCounts">
-    <!--Machine translated-->
-    <value>完成了 {3} 个 Boxel 的 {2}，当前 Boxel 的 {1} 个系统的{0}</value>
+    <value>已搜索完成 {2} / {3} boxels,当前boxel中已访问星系数 {0} / {1} </value>
     <comment>Shown in FormBoxelSearch status bar, summarizing how many systems have been visited
 {0} int, count of systems visited
 {1} int, total count of systems to be visited
@@ -142,101 +131,83 @@
     <source>Completed {2} of {3} boxels, {0} of {1} systems in current boxel</source>
   </data>
   <data name="NetSysData_Bodies">
-    <!--Machine translated-->
-    <value>机构</value>
+    <value>天体</value>
     <source>Bodies</source>
   </data>
   <data name="NetSysData_DiscoveredAll">
-    <!--Machine translated-->
-    <value>发现的 {0} 具尸体</value>
+    <value>已发现, {0} 天体</value>
     <comment>{0} int, count of bodies</comment>
     <source>Discovered, {0} bodies</source>
   </data>
   <data name="NetSysData_DiscoveredPartial">
-    <!--Machine translated-->
-    <value>已发现 （{0} 的 {1}）</value>
+    <value>已发现 ({0} / {1})</value>
     <comment>{0} int, count of bodies, {1} int, total count of bodies</comment>
     <source>Discovered ({0} of {1})</source>
   </data>
   <data name="NetSysData_Encoded">
-    <!--Machine translated-->
-    <value>（编码）</value>
+    <value>(数据材料)</value>
     <comment>An Encoded Material Trader</comment>
     <source>(Encoded)</source>
   </data>
   <data name="NetSysData_Engineer">
-    <!--Machine translated-->
-    <value>（工程师）</value>
+    <value>(工程师)</value>
     <comment>Suffix after an Engineer's name</comment>
     <source>(Engineer)</source>
   </data>
   <data name="NetSysData_FC">
-    <!--Machine translated-->
-    <value>燃料电池</value>
+    <value>FC</value>
     <source>FC</source>
   </data>
   <data name="NetSysData_Genus">
-    <!--Machine translated-->
-    <value>属</value>
+    <value>信号</value>
     <source>Genus</source>
   </data>
   <data name="NetSysData_GuardianBroker">
-    <!--Machine translated-->
-    <value>（卫报）</value>
+    <value>(守护者)</value>
     <comment>A Guardian Tech Broker</comment>
     <source>(Guardian)</source>
   </data>
   <data name="NetSysData_HumanBroker">
-    <!--Machine translated-->
-    <value>（人类）</value>
+    <value>(人类)</value>
     <comment>A Human Tech Broker</comment>
     <source>(Human)</source>
   </data>
   <data name="NetSysData_Manufactured">
-    <!--Machine translated-->
-    <value>（制造）</value>
+    <value>(人造材料)</value>
     <comment>A Manufactured Material Trader</comment>
     <source>(Manufactured)</source>
   </data>
   <data name="NetSysData_MaterialTrader">
-    <!--Machine translated-->
     <value>材料交易商</value>
     <source>Material Trader</source>
   </data>
   <data name="NetSysData_Outposts">
-    <!--Machine translated-->
-    <value>前哨</value>
+    <value>前哨站</value>
     <source>Outposts</source>
   </data>
   <data name="NetSysData_Raw">
-    <!--Machine translated-->
-    <value>（原始）</value>
+    <value>(天然材料)</value>
     <comment>A Raw Material Trader</comment>
     <source>(Raw)</source>
   </data>
   <data name="NetSysData_Settlements">
-    <!--Machine translated-->
-    <value>定居点</value>
+    <value>聚居点</value>
     <source>Settlements</source>
   </data>
   <data name="NetSysData_StarPorts">
-    <!--Machine translated-->
-    <value>星形端口</value>
+    <value>星港</value>
     <source>Star ports</source>
   </data>
   <data name="NetSysData_TechBroker">
-    <!--Machine translated-->
-    <value>技术经纪人</value>
+    <value>科技中介</value>
     <source>Tech Broker</source>
   </data>
   <data name="NetSysData_UndiscoveredSystem">
-    <!--Machine translated-->
-    <value>未被发现的系统</value>
+    <value>未发现的星系</value>
     <source>Undiscovered system</source>
   </data>
   <data name="NetSysData_UnscannedSystem">
-    <!--Machine translated-->
-    <value>未扫描的系统</value>
+    <value>未扫描的星系</value>
     <source>Unscanned system</source>
   </data>
   <data name="NetSysData_Wars">
@@ -245,11 +216,10 @@
     <source>Wars</source>
   </data>
   <data name="Settings_CreateFolderNotFound">
-    <!--Machine translated-->
-    <value>找不到文件夹
+    <value>无法找到目录:
 {0}
 
-您想创建它吗？</value>
+你需要创建该目录吗?</value>
     <comment>Used in a message box when attempting to open a folder that does not exist.</comment>
     <source>Cannot find folder:
 {0}
@@ -260,8 +230,7 @@ Would you like to create it?</source>
     <value>True</value>
   </data>
   <data name="UnexpectedWentWrong">
-    <!--Machine translated-->
-    <value>出现意外错误，请共享日志。\r\n建议重新启动 SrvSurvey。</value>
+    <value>出现意外错误，请提交日志。\r\n建议重新启动 SrvSurvey。</value>
     <comment>An error message shown when something unexpected went wrong</comment>
     <source>Something unexpected went wrong, please share the logs.\r\nIt is recommended to restart SrvSurvey.</source>
   </data>

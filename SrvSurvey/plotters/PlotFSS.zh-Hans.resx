@@ -77,7 +77,8 @@
     <source>Last scan: {0}</source>
   </data>
   <data name="WithSurfaceScan">
-    <value>含地表扫描:</value>
+    <!--这个值似乎是单Dss的价值,不含基础发现价值,不太适合使用"含字眼",另外工具似乎没有处理dss完美加成的计算-->
+    <value>地表扫描:</value>
     <comment>Line header for body estimated value with surface scan</comment>
     <source>With surface scan:</source>
   </data>

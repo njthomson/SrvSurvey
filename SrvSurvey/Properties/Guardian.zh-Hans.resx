@@ -60,134 +60,113 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BluePrintFighter">
-    <!--Machine translated-->
-    <value>战斗机</value>
+    <value>飞船蓝图</value>
     <comment>Blue print for a Fighter</comment>
     <source>Fighter</source>
   </data>
   <data name="BluePrintModule">
-    <!--Machine translated-->
-    <value>模块</value>
+    <value>部件蓝图</value>
     <comment>Blue print for a Module</comment>
     <source>Module</source>
   </data>
   <data name="BluePrintWeapon">
-    <!--Machine translated-->
-    <value>武器</value>
+    <value>武器蓝图</value>
     <comment>Blue print for a Weapon</comment>
     <source>Weapon</source>
   </data>
+  <!--以下为守护者考古任务的相关部件,暂时不翻译,方便玩家对照游戏内英文-->
   <data name="ItemBasilisk">
-    <!--Machine translated-->
-    <value>蛇</value>
+    <value>Basilisk</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Basilisk</source>
   </data>
   <data name="ItemCasket">
-    <!--Machine translated-->
-    <value>棺材</value>
+    <value>Casket</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Casket</source>
   </data>
   <data name="ItemCyclops">
-    <!--Machine translated-->
-    <value>独眼巨人</value>
+    <value>Cyclops</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Cyclops</source>
   </data>
   <data name="ItemLink">
-    <!--Machine translated-->
-    <value>链接</value>
+    <value>Link</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Link</source>
   </data>
   <data name="ItemMedusa">
-    <!--Machine translated-->
-    <value>水母</value>
+    <value>Medusa</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Medusa</source>
   </data>
   <data name="ItemOrb">
-    <!--Machine translated-->
-    <value>球</value>
+    <value>Orb</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Orb</source>
   </data>
   <data name="ItemProbe">
-    <!--Machine translated-->
-    <value>探针</value>
+    <value>Probe</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Probe</source>
   </data>
   <data name="ItemRelic">
-    <!--Machine translated-->
-    <value>遗迹</value>
+    <value>Relic</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Relic</source>
   </data>
   <data name="ItemSensor">
-    <!--Machine translated-->
-    <value>传感器</value>
+    <value>Sensor</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Sensor</source>
   </data>
   <data name="ItemTablet">
-    <!--Machine translated-->
-    <value>片</value>
+    <value>Tablet</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Tablet</source>
   </data>
   <data name="ItemTotem">
-    <!--Machine translated-->
-    <value>图腾</value>
+    <value>Totem</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Totem</source>
   </data>
   <data name="ItemUrn">
-    <!--Machine translated-->
-    <value>瓮</value>
+    <value>Urn</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Urn</source>
   </data>
   <data name="LogBiology">
-    <!--Machine translated-->
-    <value>生物学</value>
+    <value>Biology</value>
     <comment>A category of log received in the first Ram Tah mission.</comment>
     <source>Biology</source>
   </data>
   <data name="LogCulture">
-    <!--Machine translated-->
-    <value>文化</value>
+    <value>Culture</value>
     <comment>A category of log received in the first Ram Tah mission.</comment>
     <source>Culture</source>
   </data>
   <data name="LogHistory">
-    <!--Machine translated-->
-    <value>历史</value>
+    <value>History</value>
     <comment>A category of log received in the first Ram Tah mission.</comment>
     <source>History</source>
   </data>
   <data name="LogLanguage">
-    <!--Machine translated-->
-    <value>语言</value>
+    <value>Language</value>
     <comment>A category of log received in the first Ram Tah mission.</comment>
     <source>Language</source>
   </data>
   <data name="LogTechnology">
-    <!--Machine translated-->
-    <value>科技</value>
+    <value>Technology</value>
     <comment>A category of log received in the first Ram Tah mission.</comment>
     <source>Technology</source>
   </data>
   <data name="Ruins">
-    <!--Machine translated-->
     <value>废墟</value>
     <comment>As in a Guardian Ruins site</comment>
     <source>Ruins</source>
   </data>
   <data name="Structure">
-    <!--Machine translated-->
-    <value>结构</value>
+    <value>建筑</value>
     <comment>As in a Guardian Structure site</comment>
     <source>Structure</source>
   </data>

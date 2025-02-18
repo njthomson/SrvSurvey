@@ -60,58 +60,48 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CountGenus">
-    <!--Machine translated-->
-    <value>{0}x 属</value>
+    <value>{0}x 信号</value>
     <source>{0}x Genus</source>
   </data>
   <data name="Current">
-    <!--Machine translated-->
     <value>当前：</value>
     <source>Current:</source>
   </data>
   <data name="DataFrom">
-    <!--Machine translated-->
-    <value>数据来源：EDSM + Spansh + Canonn</value>
+    <value>数据来源: EDSM + Spansh + Canonn</value>
     <comment>Dim footer text</comment>
     <source>Data from: EDSM + Spansh + Canonn</source>
   </data>
   <data name="Destination">
-    <!--Machine translated-->
-    <value>目的地：</value>
+    <value>目的地:</value>
     <source>Destination:</source>
   </data>
   <data name="DiscoveredBy">
-    <!--Machine translated-->
-    <value>作者：{0}， {1}</value>
+    <value>由{0}于 {1} 发现</value>
     <comment>{0} string, name of cmdr, {1} short date</comment>
     <source>By {0}, {1}</source>
   </data>
   <data name="LastUpdated">
-    <!--Machine translated-->
-    <value>上次更新时间：{0}</value>
+    <value>上次更新: {0}</value>
     <comment>{0} short date</comment>
     <source>Last updated: {0}</source>
   </data>
   <data name="NextJump">
-    <!--Machine translated-->
-    <value>下一次跳跃：</value>
+    <value>下一跳:</value>
     <source>Next jump:</source>
   </data>
   <data name="NoRouteSet">
-    <!--Machine translated-->
-    <value>未设置路由</value>
+    <value>未设定航路</value>
     <comment>When no route is set.</comment>
     <source>No route set</source>
   </data>
   <data name="RouteFooter">
-    <!--Machine translated-->
-    <value>总计： ► {0} 次跳跃 ► 距离： {1} ly</value>
+    <value>总计: ► {0} 跳 ► 距离: {1} ly</value>
     <comment>Footer shown summarizing the route. {0} int, count of jumps. {1} float, 1 decimal place, distance travelled.</comment>
     <source>Total: ► {0} jumps ► Distance: {1} ly</source>
   </data>
   <data name="Selected">
-    <!--Machine translated-->
-    <value>选择：</value>
+    <value>当前选择:</value>
     <source>Selected:</source>
   </data>
 </root>

@@ -70,17 +70,17 @@
     <source>Toggles making the map fill half the screen, at Human settlements only.</source>
   </data>
   <data name="mapZoomAuto">
-    <value>重置人类聚居地和守护者地点地图的默认大小</value>
+    <value>重置人类聚居地和守护者遗址地图的默认大小</value>
     <comment>A description of a key-chord setting</comment>
     <source>Reset the zoom to default, at Human and Guardian sites.</source>
   </data>
   <data name="mapZoomIn">
-    <value>放大人类聚居地和守护者地点的地图</value>
+    <value>放大人类聚居地和守护者遗址地图</value>
     <comment>A description of a key-chord setting</comment>
     <source>Zoom in on maps at Human and Guardian sites.</source>
   </data>
   <data name="mapZoomOut">
-    <value>缩小人类聚居地和守护者地点的地图</value>
+    <value>缩小人类聚居地和守护者遗址地图</value>
     <comment>A description of a key-chord setting</comment>
     <source>Zoom out on maps at Human and Guardian sites.</source>
   </data>
