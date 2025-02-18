@@ -1164,8 +1164,8 @@
   <data name="labelGraphic.Text">
     <value>Boxel 是一个包含程序生成恒星系统的空间立方体。
   立方体的大小取决于质量代码：
-    'a' boxels 边长 10 光年，
-    下一级以2倍递增，'h' boxels 边长 1280 光年
+    'a' boxels 边长 10 光年，每级以2倍递增
+    'h' boxels 边长 1280 光年
 
 每个Boxel包含8个子节点，排列2行、每行4个节点，
 每个节点都有自己生成的恒星系统</value>
