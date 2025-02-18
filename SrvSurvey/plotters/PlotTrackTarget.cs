@@ -11,8 +11,6 @@ namespace SrvSurvey.plotters
         public static bool allowPlotter
         {
             get => Game.activeGame?.systemBody != null
-                && !Game.activeGame.isShutdown // not needed?
-                && !Game.activeGame.atMainMenu // not needed?
                 && Game.activeGame.status != null
                 && Game.activeGame.status.hasLatLong
                 && !Game.activeGame.status.InTaxi
@@ -109,7 +107,7 @@ namespace SrvSurvey.plotters
                                                               //var headingTxt = this.targetAngle.ToString("N0");
             var sz = g.MeasureString(headingTxt, GameColors.fontSmall);
             var ty = this.Height - sz.Height - six;
-            BaseWidget.renderText(g, "Bearing: " + this.td.angle.ToString(), four, ty, GameColors.fontSmall);
+            BaseWidget.renderText(g, RES("BearingTo", this.td.angle.ToString()), four, ty, GameColors.fontSmall);
 
             // draw distance text (center top)
             var dist = td.distance; // TODO: this.targetDist
@@ -117,7 +115,7 @@ namespace SrvSurvey.plotters
             if ((game.status.Flags & StatusFlags.AltitudeFromAverageRadius) > 0)
                 dist += td.distance + game.status.Altitude; // Remove it? I don't think it helps any more
 
-            var txt = "Distance: " + Util.metersToString(dist);
+            var txt = RES("DistanceTo", Util.metersToString(dist));
             BaseWidget.renderText(g, txt, four, ten, GameColors.fontSmall);
 
             var gt = new GroundTarget(this.Font);

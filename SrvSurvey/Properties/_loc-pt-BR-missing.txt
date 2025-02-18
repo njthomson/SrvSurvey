@@ -146,6 +146,18 @@
 	ScannedBodies
 	ScanToPopulate
 
+/plotters/PlotGalMap.pt-BR.resx
+	CountGenus
+	Current
+	DataFrom
+	Destination
+	DiscoveredBy
+	LastUpdated
+	NextJump
+	NoRouteSet
+	RouteFooter
+	Selected
+
 /plotters/PlotGrounded.pt-BR.resx
 	NearingShipDistance
 	ScanOneInvalid
@@ -156,6 +168,13 @@
 	ScanTwo_Short
 	Ship
 	SRV
+
+/plotters/PlotGuardianSystem.pt-BR.resx
+	BluePrintLine
+	Header
+	SurveyIncomplete
+	SurveyLine
+	SurveyNotStarted
 
 /plotters/PlotHumanSite.pt-BR.resx
 	ZoomHeader
@@ -225,10 +244,18 @@
 	SpecialNowEntering
 	SpecialRouteHop
 
+/plotters/PlotMassacre.pt-BR.resx
+	Header
+
 /plotters/PlotPriorScans.pt-BR.resx
 	Footer
 	Header
 	NoMoreSignals
+
+/plotters/PlotRamTah.pt-BR.resx
+	Footer
+	Header
+	NoNewLogs
 
 /plotters/PlotSphericalSearch.pt-BR.resx
 	Boxel
@@ -242,8 +269,23 @@
 	Visited
 	VisitedOf
 
+/plotters/PlotSysStatus.pt-BR.resx
+	BioSignals
+	DssRemaining
+	FssCompleteLong
+	FssCompleteShort
+	FssNotStarted
+	Header
+	NextSystem
+	NoDssMeet
+	NonBodySignals
+
 /plotters/PlotTrackers.pt-BR.resx
 	HeaderLine
+
+/plotters/PlotTrackTarget.pt-BR.resx
+	BearingTo
+	DistanceTo
 
 /Properties/Codex.pt-BR.resx
 	Aleoida
@@ -334,6 +376,30 @@
 	SpanshImportSuccess
 	TextFiles
 
+/Properties/Guardian.pt-BR.resx
+	BluePrintFighter
+	BluePrintModule
+	BluePrintWeapon
+	ItemBasilisk
+	ItemCasket
+	ItemCyclops
+	ItemLink
+	ItemMedusa
+	ItemOrb
+	ItemProbe
+	ItemRelic
+	ItemSensor
+	ItemTablet
+	ItemTotem
+	ItemUrn
+	LogBiology
+	LogCulture
+	LogHistory
+	LogLanguage
+	LogTechnology
+	Ruins
+	Structure
+
 /Properties/KeyChords.pt-BR.resx
 	toggleAllVisibility
 	mapZoomIn
@@ -369,25 +435,6 @@
 	NetSysData_UndiscoveredSystem
 	NetSysData_UnscannedSystem
 	NetSysData_Wars
-	PlotGalMap_CountGenus
-	PlotGalMap_Current
-	PlotGalMap_DataFrom
-	PlotGalMap_Destination
-	PlotGalMap_DiscoveredBy
-	PlotGalMap_LastUpdated
-	PlotGalMap_NextJump
-	PlotGalMap_NoRouteSet
-	PlotGalMap_RouteFooter
-	PlotGalMap_Selected
-	PlotSysStatus_BioSignals
-	PlotSysStatus_DssRemaining
-	PlotSysStatus_FssCompleteLong
-	PlotSysStatus_FssCompleteShort
-	PlotSysStatus_FssNotStarted
-	PlotSysStatus_Header
-	PlotSysStatus_NextSystem
-	PlotSysStatus_NoDssMeet
-	PlotSysStatus_NonBodySignals
 	Settings_CreateFolderNotFound
 	FormBoxelSearch_Disable
 	FormBoxelSearch_Activate
@@ -406,6 +453,8 @@
 	NetSysData_Manufactured
 	NetSysData_Raw
 	NetSysData_Engineer
+	FirewallBlocked
+	UnexpectedWentWrong
 
 /Properties/Reputation.pt-BR.resx
 	Hostile

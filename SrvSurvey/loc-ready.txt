@@ -8,6 +8,7 @@ FormRoute.resx
 FormRouteExtras.resx
 FormSetKeyChord.resx
 FormSphereLimit.resx
+Guardian.resx
 KeyChords.resx
 Materials.resx
 Misc.resx
@@ -17,10 +18,16 @@ PlotBodyInfo.resx
 PlotFlightWarning.resx
 PlotFSS.resx
 PlotFSSInfo.resx
+PlotGalMap.resx
 PlotGrounded.resx
+PlotGuardianSystem.resx
 PlotHumanSite.resx
 PlotJumpInfo.resx
+PlotMassacre.resx
 PlotPriorScans.resx
+PlotRamTah.resx
 PlotSphericalSearch.resx
+PlotSysStatus.resx
 PlotTrackers.resx
+PlotTrackTarget.resx
 Reputation.resx

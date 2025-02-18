@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BluePrintFighter">
+    <!--Machine translated-->
+    <value>战斗机</value>
+    <comment>Blue print for a Fighter</comment>
+    <source>Fighter</source>
+  </data>
+  <data name="BluePrintModule">
+    <!--Machine translated-->
+    <value>模块</value>
+    <comment>Blue print for a Module</comment>
+    <source>Module</source>
+  </data>
+  <data name="BluePrintWeapon">
+    <!--Machine translated-->
+    <value>武器</value>
+    <comment>Blue print for a Weapon</comment>
+    <source>Weapon</source>
+  </data>
+  <data name="ItemBasilisk">
+    <!--Machine translated-->
+    <value>蛇</value>
+    <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
+    <source>Basilisk</source>
+  </data>
+  <data name="ItemCasket">
+    <!--Machine translated-->
+    <value>棺材</value>
+    <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
+    <source>Casket</source>
+  </data>
+  <data name="ItemCyclops">
+    <!--Machine translated-->
+    <value>独眼巨人</value>
+    <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
+    <source>Cyclops</source>
+  </data>
+  <data name="ItemLink">
+    <!--Machine translated-->
+    <value>链接</value>
+    <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
+    <source>Link</source>
+  </data>
+  <data name="ItemMedusa">
+    <!--Machine translated-->
+    <value>水母</value>
+    <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
+    <source>Medusa</source>
+  </data>
+  <data name="ItemOrb">
+    <!--Machine translated-->
+    <value>球</value>
+    <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
+    <source>Orb</source>
+  </data>
+  <data name="ItemProbe">
+    <!--Machine translated-->
+    <value>探针</value>
+    <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
+    <source>Probe</source>
+  </data>
+  <data name="ItemRelic">
+    <!--Machine translated-->
+    <value>遗迹</value>
+    <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
+    <source>Relic</source>
+  </data>
+  <data name="ItemSensor">
+    <!--Machine translated-->
+    <value>传感器</value>
+    <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
+    <source>Sensor</source>
+  </data>
+  <data name="ItemTablet">
+    <!--Machine translated-->
+    <value>片</value>
+    <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
+    <source>Tablet</source>
+  </data>
+  <data name="ItemTotem">
+    <!--Machine translated-->
+    <value>图腾</value>
+    <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
+    <source>Totem</source>
+  </data>
+  <data name="ItemUrn">
+    <!--Machine translated-->
+    <value>瓮</value>
+    <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
+    <source>Urn</source>
+  </data>
+  <data name="LogBiology">
+    <!--Machine translated-->
+    <value>生物学</value>
+    <comment>A category of log received in the first Ram Tah mission.</comment>
+    <source>Biology</source>
+  </data>
+  <data name="LogCulture">
+    <!--Machine translated-->
+    <value>文化</value>
+    <comment>A category of log received in the first Ram Tah mission.</comment>
+    <source>Culture</source>
+  </data>
+  <data name="LogHistory">
+    <!--Machine translated-->
+    <value>历史</value>
+    <comment>A category of log received in the first Ram Tah mission.</comment>
+    <source>History</source>
+  </data>
+  <data name="LogLanguage">
+    <!--Machine translated-->
+    <value>语言</value>
+    <comment>A category of log received in the first Ram Tah mission.</comment>
+    <source>Language</source>
+  </data>
+  <data name="LogTechnology">
+    <!--Machine translated-->
+    <value>科技</value>
+    <comment>A category of log received in the first Ram Tah mission.</comment>
+    <source>Technology</source>
+  </data>
+  <data name="Ruins">
+    <!--Machine translated-->
+    <value>废墟</value>
+    <comment>As in a Guardian Ruins site</comment>
+    <source>Ruins</source>
+  </data>
+  <data name="Structure">
+    <!--Machine translated-->
+    <value>结构</value>
+    <comment>As in a Guardian Structure site</comment>
+    <source>Structure</source>
+  </data>
+</root>

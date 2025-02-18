@@ -146,6 +146,18 @@
 	ScannedBodies
 	ScanToPopulate
 
+/plotters/PlotGalMap.zh-Hans.resx
+	CountGenus
+	Current
+	DataFrom
+	Destination
+	DiscoveredBy
+	LastUpdated
+	NextJump
+	NoRouteSet
+	RouteFooter
+	Selected
+
 /plotters/PlotGrounded.zh-Hans.resx
 	NearingShipDistance
 	ScanOneInvalid
@@ -156,6 +168,13 @@
 	ScanTwo_Short
 	Ship
 	SRV
+
+/plotters/PlotGuardianSystem.zh-Hans.resx
+	BluePrintLine
+	Header
+	SurveyIncomplete
+	SurveyLine
+	SurveyNotStarted
 
 /plotters/PlotHumanSite.zh-Hans.resx
 	ZoomHeader
@@ -225,10 +244,18 @@
 	SpecialNowEntering
 	SpecialRouteHop
 
+/plotters/PlotMassacre.zh-Hans.resx
+	Header
+
 /plotters/PlotPriorScans.zh-Hans.resx
 	Footer
 	Header
 	NoMoreSignals
+
+/plotters/PlotRamTah.zh-Hans.resx
+	Footer
+	Header
+	NoNewLogs
 
 /plotters/PlotSphericalSearch.zh-Hans.resx
 	Boxel
@@ -242,8 +269,23 @@
 	Visited
 	VisitedOf
 
+/plotters/PlotSysStatus.zh-Hans.resx
+	BioSignals
+	DssRemaining
+	FssCompleteLong
+	FssCompleteShort
+	FssNotStarted
+	Header
+	NextSystem
+	NoDssMeet
+	NonBodySignals
+
 /plotters/PlotTrackers.zh-Hans.resx
 	HeaderLine
+
+/plotters/PlotTrackTarget.zh-Hans.resx
+	BearingTo
+	DistanceTo
 
 /Properties/Codex.zh-Hans.resx
 	Aleoida
@@ -369,6 +411,30 @@
 	SpanshImportSuccess
 	TextFiles
 
+/Properties/Guardian.zh-Hans.resx
+	BluePrintFighter
+	BluePrintModule
+	BluePrintWeapon
+	ItemBasilisk
+	ItemCasket
+	ItemCyclops
+	ItemLink
+	ItemMedusa
+	ItemOrb
+	ItemProbe
+	ItemRelic
+	ItemSensor
+	ItemTablet
+	ItemTotem
+	ItemUrn
+	LogBiology
+	LogCulture
+	LogHistory
+	LogLanguage
+	LogTechnology
+	Ruins
+	Structure
+
 /Properties/KeyChords.zh-Hans.resx
 	toggleAllVisibility
 	mapZoomIn
@@ -404,25 +470,6 @@
 	NetSysData_UndiscoveredSystem
 	NetSysData_UnscannedSystem
 	NetSysData_Wars
-	PlotGalMap_CountGenus
-	PlotGalMap_Current
-	PlotGalMap_DataFrom
-	PlotGalMap_Destination
-	PlotGalMap_DiscoveredBy
-	PlotGalMap_LastUpdated
-	PlotGalMap_NextJump
-	PlotGalMap_NoRouteSet
-	PlotGalMap_RouteFooter
-	PlotGalMap_Selected
-	PlotSysStatus_BioSignals
-	PlotSysStatus_DssRemaining
-	PlotSysStatus_FssCompleteLong
-	PlotSysStatus_FssCompleteShort
-	PlotSysStatus_FssNotStarted
-	PlotSysStatus_Header
-	PlotSysStatus_NextSystem
-	PlotSysStatus_NoDssMeet
-	PlotSysStatus_NonBodySignals
 	Settings_CreateFolderNotFound
 	FormBoxelSearch_Disable
 	FormBoxelSearch_Activate
@@ -441,6 +488,8 @@
 	NetSysData_Manufactured
 	NetSysData_Raw
 	NetSysData_Engineer
+	FirewallBlocked
+	UnexpectedWentWrong
 
 /Properties/Reputation.zh-Hans.resx
 	Hostile
