@@ -58,4 +58,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BioSignals" xml:space="preserve">
+    <value>| {0}x Bio signals on: </value>
+    <comment>Appended to prior text. {0} int, count of bodies with bio signals</comment>
+  </data>
+  <data name="DssRemaining" xml:space="preserve">
+    <value> {0}x bodies: </value>
+    <comment>May be appended to FssCompleteShort. {0} int, count of bodies worth of scanning.</comment>
+  </data>
+  <data name="FssCompleteLong" xml:space="preserve">
+    <value>FSS {0}% complete</value>
+    <comment>Short version, joined with more text. {0} int, percentage number</comment>
+  </data>
+  <data name="FssCompleteShort" xml:space="preserve">
+    <value>FSS {0}%</value>
+    <comment>Long version, shown alone. {0} int, percentage number</comment>
+  </data>
+  <data name="FssNotStarted" xml:space="preserve">
+    <value>FSS not started</value>
+  </data>
+  <data name="Header" xml:space="preserve">
+    <value>DSS survey: </value>
+    <comment>Header line</comment>
+  </data>
+  <data name="NextSystem" xml:space="preserve">
+    <value>Next system:</value>
+  </data>
+  <data name="NoDssMeet" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="NonBodySignals" xml:space="preserve">
+    <value>► {0} non-body signals</value>
+    <comment>{0} int, count of non body signals</comment>
+  </data>
 </root>

@@ -108,6 +108,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="plotters\PlotGalMap.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotGalMap.resx</DependentUpon>
+    </Compile>
+    <Compile Update="plotters\PlotGuardianSystem.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotGuardianSystem.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Codex.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -132,6 +142,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>FormRouteExtras.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Guardian.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Guardian.resx</DependentUpon>
     </Compile>
     <Compile Update="Properties\Icons.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -158,6 +173,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Reputation.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Update="plotters\PlotGalMap.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotGalMap.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotGuardianSystem.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotGuardianSystem.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Update="plotters\PlotHumanSite.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -180,6 +205,10 @@
     <EmbeddedResource Update="Properties\FormRouteExtras.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>FormRouteExtras.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Guardian.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Guardian.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Icons.resx">
       <Generator>ResXFileCodeGenerator</Generator>

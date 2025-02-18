@@ -134,11 +134,11 @@ namespace SrvSurvey.plotters
             if (bx == null || game.cmdr.boxelSearch == null)
                 return null;
             else if (!game.cmdr.boxelSearch.boxel.containsChild(bx))
-                return $"✋ Outside search boxel";
+                return $"✋ {bx.name}\nOutside search boxel";
             else if (bx.massCode < game.cmdr.boxelSearch.lowMassCode)
-                return $"⚠️ Mass code too low";
+                return $"⚠️ {bx.name}\nMass code too low";
             else if (game.cmdr.boxelSearch.systems.FirstOrDefault(sys => sys.name == bx)?.complete == true)
-                return $"✔️ System already surveyed";
+                return $"✔️ {bx.name}\nSystem already surveyed";
             else
                 return null;
         }
@@ -308,8 +308,16 @@ namespace SrvSurvey.plotters
             var ww = ten + Util.maxWidth(ff, RES("Boxel"), RES("Visited"), RES("Next"));
 
             this.drawTextAt(eight, RES("Boxel"), ff);
-            this.drawTextAt(ww, boxelSearch.current.prefix + " ...", ff);
+            this.drawTextAt(ww, boxelSearch.boxel.prefix + " ...", ff);
             newLine(two, true);
+
+            // also show the current system if different than the top boxel
+            if (boxelSearch.current.prefix != boxelSearch.boxel.prefix)
+            {
+                this.drawTextAt(eight, "Current:", ff);
+                this.drawTextAt(ww, boxelSearch.current.prefix + " ...", ff);
+                newLine(two, true);
+            }
 
             this.drawTextAt(eight, RES("Visited"), ff);
             var pp = (1f / boxelSearch.currentCount * boxelSearch.countSystemsComplete).ToString("p0");

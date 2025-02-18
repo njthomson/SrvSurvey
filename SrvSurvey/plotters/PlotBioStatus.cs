@@ -406,7 +406,7 @@ namespace SrvSurvey.plotters
             }
 
             // geo signals?
-            if (body.geoSignalCount > 0 && Debugger.IsAttached)
+            if (body.geoSignalCount > 0 && !Game.settings.hideGeoCountInBioSystem)
             {
                 var n = 0;
                 while (n < body.geoSignalCount)
@@ -428,7 +428,7 @@ namespace SrvSurvey.plotters
                         x, y
                     );
 
-                    if (n + 1 <= body.geoSignals?.Count)
+                    if (n + 1 <= body.geoSignalNames?.Count)
                     {
                         // strike-through if already analyzed
                         var ly = (int)(y + sz.Height * .35f);

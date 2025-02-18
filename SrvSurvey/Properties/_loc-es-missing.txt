@@ -1,2 +1,63 @@
 /plotters/PlotBioSystem.es.resx
 	NotPredicted
+
+/plotters/PlotGuardianSystem.es.resx
+	BluePrintLine
+	Header
+	SurveyIncomplete
+	SurveyLine
+	SurveyNotStarted
+
+/plotters/PlotMassacre.es.resx
+	Header
+
+/plotters/PlotRamTah.es.resx
+	Footer
+	Header
+	NoNewLogs
+
+/plotters/PlotTrackTarget.es.resx
+	BearingTo
+	DistanceTo
+
+/Properties/Guardian.es.resx
+	BluePrintFighter
+	BluePrintModule
+	BluePrintWeapon
+	ItemBasilisk
+	ItemCasket
+	ItemCyclops
+	ItemLink
+	ItemMedusa
+	ItemOrb
+	ItemProbe
+	ItemRelic
+	ItemSensor
+	ItemTablet
+	ItemTotem
+	ItemUrn
+	LogBiology
+	LogCulture
+	LogHistory
+	LogLanguage
+	LogTechnology
+	Ruins
+	Structure
+
+/Properties/Materials.es.resx
+	tg_biomechanicalconduits
+	tg_shipflightdata
+	tg_shipsystemsdata
+	tg_interdictiondata
+	tg_causticcrystal
+	tg_causticshard
+	tg_causticgeneratorparts
+	tg_abrasion01
+	tg_abrasion02
+	tg_abrasion03
+	unknowncorechip
+	searchrescuevoucher
+
+/Properties/Misc.es.resx
+	FirewallBlocked
+	UnexpectedWentWrong

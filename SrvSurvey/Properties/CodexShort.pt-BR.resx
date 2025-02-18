@@ -61,55 +61,55 @@
   </resheader>
   <data name="Aleoida">
     <!--Machine translated-->
-    <value>ale</value>
+    <value>cerveja</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>ale</source>
   </data>
   <data name="Amphora Plant">
     <!--Machine translated-->
-    <value>amp</value>
+    <value>AMP</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>amp</source>
   </data>
   <data name="Bacterium">
     <!--Machine translated-->
-    <value>bac</value>
+    <value>Bac</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>bac</source>
   </data>
   <data name="Bark Mounds">
     <!--Machine translated-->
-    <value>bar</value>
+    <value>barra</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>bar</source>
   </data>
   <data name="Brain Trees">
     <!--Machine translated-->
-    <value>bra</value>
+    <value>sutiã</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>bra</source>
   </data>
   <data name="Cactoida">
     <!--Machine translated-->
-    <value>cac</value>
+    <value>Cac</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>cac</source>
   </data>
   <data name="Clypeus">
     <!--Machine translated-->
-    <value>cly</value>
+    <value>Cly</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>cly</source>
   </data>
   <data name="Concha">
     <!--Machine translated-->
-    <value>con</value>
+    <value>Con</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>con</source>
   </data>
   <data name="Crystalline Shards">
     <!--Machine translated-->
-    <value>cry</value>
+    <value>chorar</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>cry</source>
   </data>
@@ -121,61 +121,61 @@
   </data>
   <data name="Fonticulua">
     <!--Machine translated-->
-    <value>fon</value>
+    <value>Fon</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>fon</source>
   </data>
   <data name="Frutexa">
     <!--Machine translated-->
-    <value>fru</value>
+    <value>Fru</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>fru</source>
   </data>
   <data name="Fumerola">
     <!--Machine translated-->
-    <value>fum</value>
+    <value>Fum</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>fum</source>
   </data>
   <data name="Fungoida">
     <!--Machine translated-->
-    <value>fun</value>
+    <value>divertimento</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>fun</source>
   </data>
   <data name="Luteolum Anemone">
     <!--Machine translated-->
-    <value>ane</value>
+    <value>ano</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>ane</source>
   </data>
   <data name="Osseus">
     <!--Machine translated-->
-    <value>oss</value>
+    <value>Oss</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>oss</source>
   </data>
   <data name="Recepta">
     <!--Machine translated-->
-    <value>rec</value>
+    <value>Rec</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>rec</source>
   </data>
   <data name="Sinuous Tubers">
     <!--Machine translated-->
-    <value>sin</value>
+    <value>pecado</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>sin</source>
   </data>
   <data name="Stratum">
     <!--Machine translated-->
-    <value>str</value>
+    <value>Str</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>str</source>
   </data>
   <data name="Tubus">
     <!--Machine translated-->
-    <value>tub</value>
+    <value>tina</value>
     <comment>A short name, ideally the first ~3 letters of the name. Cannot conflict with another short name.</comment>
     <source>tub</source>
   </data>

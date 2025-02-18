@@ -17,6 +17,25 @@
 /plotters/PlotBioSystem.ru.resx
 	NotPredicted
 
+/plotters/PlotGuardianSystem.ru.resx
+	BluePrintLine
+	Header
+	SurveyIncomplete
+	SurveyLine
+	SurveyNotStarted
+
+/plotters/PlotMassacre.ru.resx
+	Header
+
+/plotters/PlotRamTah.ru.resx
+	Footer
+	Header
+	NoNewLogs
+
+/plotters/PlotTrackTarget.ru.resx
+	BearingTo
+	DistanceTo
+
 /Properties/FactionStates.ru.resx
 	Thargoid_Probing
 	Thargoid_Harvest
@@ -42,3 +61,45 @@
 	RouteProgress
 	SpanshImportSuccess
 	TextFiles
+
+/Properties/Guardian.ru.resx
+	BluePrintFighter
+	BluePrintModule
+	BluePrintWeapon
+	ItemBasilisk
+	ItemCasket
+	ItemCyclops
+	ItemLink
+	ItemMedusa
+	ItemOrb
+	ItemProbe
+	ItemRelic
+	ItemSensor
+	ItemTablet
+	ItemTotem
+	ItemUrn
+	LogBiology
+	LogCulture
+	LogHistory
+	LogLanguage
+	LogTechnology
+	Ruins
+	Structure
+
+/Properties/Materials.ru.resx
+	tg_biomechanicalconduits
+	tg_shipflightdata
+	tg_shipsystemsdata
+	tg_interdictiondata
+	tg_causticcrystal
+	tg_causticshard
+	tg_causticgeneratorparts
+	tg_abrasion01
+	tg_abrasion02
+	tg_abrasion03
+	unknowncorechip
+	searchrescuevoucher
+
+/Properties/Misc.ru.resx
+	FirewallBlocked
+	UnexpectedWentWrong

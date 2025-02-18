@@ -1,4 +1,4 @@
-/forms/FormBoxelSearch.pt.resx
+/forms/FormBoxelSearch.pt-BR.resx
 	btnBegin.Text
 	btnBoxelEmpty.Text
 	btnConfig.Text
@@ -34,7 +34,7 @@
 	menuMore.Text
 	$this.Text
 
-/forms/FormGroundTarget.pt.resx
+/forms/FormGroundTarget.pt-BR.resx
 	btnBegin.Text
 	btnCancel.Text
 	btnPaste.Text
@@ -47,7 +47,7 @@
 	txtLat.Text
 	txtLong.Text
 
-/forms/FormRoute.pt.resx
+/forms/FormRoute.pt-BR.resx
 	btnActive.Text
 	btnAutoCopy.Text
 	btnImportSpanshUrl.Text
@@ -63,7 +63,7 @@
 	toolStrip1.Text
 	toolStripDropDownButton1.Text
 
-/forms/FormSetKeyChord.pt.resx
+/forms/FormSetKeyChord.pt-BR.resx
 	btnAccept.Text
 	btnCancel.Text
 	btnDisable.Text
@@ -71,7 +71,7 @@
 	lblInvalid.Text
 	$this.Text
 
-/forms/FormSphereLimit.pt.resx
+/forms/FormSphereLimit.pt-BR.resx
 	btnAccept.Text
 	btnCancel.Text
 	btnDisable.Text
@@ -83,7 +83,7 @@
 	label6.Text
 	$this.Text
 
-/plotters/PlotBioStatus.pt.resx
+/plotters/PlotBioStatus.pt-BR.resx
 	DssRequired
 	FooterAllScanned
 	FooterAllScannedFF
@@ -95,7 +95,7 @@
 	SuffixFF
 	WarningStaleScans
 
-/plotters/PlotBioSystem.pt.resx
+/plotters/PlotBioSystem.pt-BR.resx
 	BodyBio_Header
 	DssRequired
 	FFBonus
@@ -105,7 +105,7 @@
 	RewardFooter
 	SysBio_Header
 
-/plotters/PlotBodyInfo.pt.resx
+/plotters/PlotBodyInfo.pt-BR.resx
 	Atmosphere
 	BioSignals
 	EarthLike
@@ -127,16 +127,16 @@
 	Volcanism
 	WithDSS
 
-/plotters/PlotFlightWarning.pt.resx
+/plotters/PlotFlightWarning.pt-BR.resx
 	SurfaceGravityWarning
 
-/plotters/PlotFSS.pt.resx
+/plotters/PlotFSS.pt-BR.resx
 	CountBioSignals
 	EstimatedValue
 	LastScan
 	WithSurfaceScan
 
-/plotters/PlotFSSInfo.pt.resx
+/plotters/PlotFSSInfo.pt-BR.resx
 	CountGenus
 	CountGeo
 	Footer1
@@ -146,7 +146,19 @@
 	ScannedBodies
 	ScanToPopulate
 
-/plotters/PlotGrounded.pt.resx
+/plotters/PlotGalMap.pt-BR.resx
+	CountGenus
+	Current
+	DataFrom
+	Destination
+	DiscoveredBy
+	LastUpdated
+	NextJump
+	NoRouteSet
+	RouteFooter
+	Selected
+
+/plotters/PlotGrounded.pt-BR.resx
 	NearingShipDistance
 	ScanOneInvalid
 	ScanOne_Long
@@ -157,7 +169,14 @@
 	Ship
 	SRV
 
-/plotters/PlotHumanSite.pt.resx
+/plotters/PlotGuardianSystem.pt-BR.resx
+	BluePrintLine
+	Header
+	SurveyIncomplete
+	SurveyLine
+	SurveyNotStarted
+
+/plotters/PlotHumanSite.pt-BR.resx
 	ZoomHeader
 	ZoomHeaderAuto
 	ZoomHeaderMin
@@ -208,7 +227,7 @@
 	HelpFoot5
 	HelpFoot6
 
-/plotters/PlotJumpInfo.pt.resx
+/plotters/PlotJumpInfo.pt-BR.resx
 	NextJump
 	StarClass
 	DiscoveredBy
@@ -225,12 +244,20 @@
 	SpecialNowEntering
 	SpecialRouteHop
 
-/plotters/PlotPriorScans.pt.resx
+/plotters/PlotMassacre.pt-BR.resx
+	Header
+
+/plotters/PlotPriorScans.pt-BR.resx
 	Footer
 	Header
 	NoMoreSignals
 
-/plotters/PlotSphericalSearch.pt.resx
+/plotters/PlotRamTah.pt-BR.resx
+	Footer
+	Header
+	NoNewLogs
+
+/plotters/PlotSphericalSearch.pt-BR.resx
 	Boxel
 	Distance
 	DistanceExceeds
@@ -242,10 +269,25 @@
 	Visited
 	VisitedOf
 
-/plotters/PlotTrackers.pt.resx
+/plotters/PlotSysStatus.pt-BR.resx
+	BioSignals
+	DssRemaining
+	FssCompleteLong
+	FssCompleteShort
+	FssNotStarted
+	Header
+	NextSystem
+	NoDssMeet
+	NonBodySignals
+
+/plotters/PlotTrackers.pt-BR.resx
 	HeaderLine
 
-/Properties/Codex.pt.resx
+/plotters/PlotTrackTarget.pt-BR.resx
+	BearingTo
+	DistanceTo
+
+/Properties/Codex.pt-BR.resx
 	Aleoida
 	Amethyst
 	Amphora Plant
@@ -292,7 +334,7 @@
 	White
 	Yellow
 
-/Properties/CodexShort.pt.resx
+/Properties/CodexShort.pt-BR.resx
 	Aleoida
 	Amphora Plant
 	Bacterium
@@ -315,61 +357,7 @@
 	Tubus
 	Tussock
 
-/Properties/Economies.pt.resx
-	Agri
-	Colony
-	Extraction
-	HighTech
-	Industrial
-	Military
-	None
-	Refinery
-	Service
-	Terraforming
-	Tourism
-	Rescue
-	Prison
-	Repair
-	Damaged
-	Carrier
-	Engineer
-
-/Properties/FactionStates.pt.resx
-	None
-	Retreat
-	War
-	Lockdown
-	CivilUnrest
-	CivilWar
-	Boom
-	Expansion
-	Bust
-	Outbreak
-	Famine
-	Election
-	Investment
-	CivilLiberty
-	Incursion
-	PirateAttack
-	Drought
-	Blight
-	ColdWar
-	Colonisation
-	HistoricEvent
-	InfrastructureFailure
-	NaturalDisaster
-	PublicHoliday
-	Revolution
-	TechnologicalLeap
-	Terrorism
-	TradeWar
-	Thargoid_Probing
-	Thargoid_Harvest
-	Thargoid_Controlled
-	Thargoid_Stronghold
-	Thargoid_Recovery
-
-/Properties/FormRouteExtras.pt.resx
+/Properties/FormRouteExtras.pt-BR.resx
 	ArrivedAt
 	AutoCopyButton
 	ImportedSystems
@@ -388,7 +376,31 @@
 	SpanshImportSuccess
 	TextFiles
 
-/Properties/KeyChords.pt.resx
+/Properties/Guardian.pt-BR.resx
+	BluePrintFighter
+	BluePrintModule
+	BluePrintWeapon
+	ItemBasilisk
+	ItemCasket
+	ItemCyclops
+	ItemLink
+	ItemMedusa
+	ItemOrb
+	ItemProbe
+	ItemRelic
+	ItemSensor
+	ItemTablet
+	ItemTotem
+	ItemUrn
+	LogBiology
+	LogCulture
+	LogHistory
+	LogLanguage
+	LogTechnology
+	Ruins
+	Structure
+
+/Properties/KeyChords.pt-BR.resx
 	toggleAllVisibility
 	mapZoomIn
 	mapZoomOut
@@ -409,7 +421,7 @@
 	track8
 	pasteGalMap
 
-/Properties/Misc.pt.resx
+/Properties/Misc.pt-BR.resx
 	NetSysData_Bodies
 	NetSysData_DiscoveredAll
 	NetSysData_DiscoveredPartial
@@ -423,25 +435,6 @@
 	NetSysData_UndiscoveredSystem
 	NetSysData_UnscannedSystem
 	NetSysData_Wars
-	PlotGalMap_CountGenus
-	PlotGalMap_Current
-	PlotGalMap_DataFrom
-	PlotGalMap_Destination
-	PlotGalMap_DiscoveredBy
-	PlotGalMap_LastUpdated
-	PlotGalMap_NextJump
-	PlotGalMap_NoRouteSet
-	PlotGalMap_RouteFooter
-	PlotGalMap_Selected
-	PlotSysStatus_BioSignals
-	PlotSysStatus_DssRemaining
-	PlotSysStatus_FssCompleteLong
-	PlotSysStatus_FssCompleteShort
-	PlotSysStatus_FssNotStarted
-	PlotSysStatus_Header
-	PlotSysStatus_NextSystem
-	PlotSysStatus_NoDssMeet
-	PlotSysStatus_NonBodySignals
 	Settings_CreateFolderNotFound
 	FormBoxelSearch_Disable
 	FormBoxelSearch_Activate
@@ -460,8 +453,10 @@
 	NetSysData_Manufactured
 	NetSysData_Raw
 	NetSysData_Engineer
+	FirewallBlocked
+	UnexpectedWentWrong
 
-/Properties/Reputation.pt.resx
+/Properties/Reputation.pt-BR.resx
 	Hostile
 	Unfriendly
 	Neutral

@@ -233,6 +233,8 @@ namespace SrvSurvey.plotters
             this.reposition(Elite.getWindowRect());
             this.mid = this.Size / 2;
 
+            if (this.IsDisposed) return;
+
             this.BackgroundImage = GameGraphics.getBackgroundImage(this);
 
             Game.update += Game_modeChanged;

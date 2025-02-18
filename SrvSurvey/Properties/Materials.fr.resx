@@ -1,0 +1,810 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Pre-loc from: https://raw.githubusercontent.com/EDCD/EDDI/refs/heads/develop/DataDefinitions/Properties/Materials.fr.resx -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="adaptiveencryptors">
+    <value>Capture de cryptage évolutif</value>
+    <comment>Material adaptiveencryptors</comment>
+    <source>Adaptive Encryptors Capture</source>
+  </data>
+  <data name="ancientbiologicaldata">
+    <value>Données d'obélisque de type alpha (Biologique)</value>
+    <comment>Material ancientbiologicaldata</comment>
+    <source>Pattern Alpha Obelisk Data (Biological)</source>
+  </data>
+  <data name="ancientculturaldata">
+    <value>Données d'obélisque de type bêta (Culturel)</value>
+    <comment>Material ancientculturaldata</comment>
+    <source>Pattern Beta Obelisk Data (Cultural)</source>
+  </data>
+  <data name="ancienthistoricaldata">
+    <value>Données d'obélisque de type gamma (Historique)</value>
+    <comment>Material ancienthistoricaldata</comment>
+    <source>Pattern Gamma Obelisk Data (Historical)</source>
+  </data>
+  <data name="ancientlanguagedata">
+    <value>Données d'obélisque de type delta (Linguistique)</value>
+    <comment>Material ancientlanguagedata</comment>
+    <source>Pattern Delta Obelisk Data (Linguistic)</source>
+  </data>
+  <data name="ancienttechnologicaldata">
+    <value>Données d'obélisque de type epsilon (Technologique)</value>
+    <comment>Material ancienttechnologicaldata</comment>
+    <source>Pattern Epsilon Obelisk Data (Technological)</source>
+  </data>
+  <data name="antimony">
+    <value>Antimoine</value>
+    <comment>Material antimony</comment>
+    <source>Antimony</source>
+  </data>
+  <data name="archivedemissiondata">
+    <value>Données d'émissions aberrantes</value>
+    <comment>Material archivedemissiondata</comment>
+    <source>Irregular Emission Data</source>
+  </data>
+  <data name="arsenic">
+    <value>Arsenic</value>
+    <comment>Material arsenic</comment>
+    <source>Arsenic</source>
+  </data>
+  <data name="basicconductors">
+    <value>Conducteurs simples</value>
+    <comment>Material basicconductors</comment>
+    <source>Basic Conductors</source>
+  </data>
+  <data name="biotechconductors">
+    <value>Conducteurs biotechniques</value>
+    <comment>Material biotechconductors</comment>
+    <source>Biotech Conductors</source>
+  </data>
+  <data name="boron">
+    <value>Bore</value>
+    <comment>Material boron</comment>
+    <source>Boron</source>
+  </data>
+  <data name="bulkscandata">
+    <value>Fichier volumineux d'analyse anormal</value>
+    <comment>Material bulkscandata</comment>
+    <source>Anomalous Bulk Scan Data</source>
+  </data>
+  <data name="cadmium">
+    <value>Cadmium</value>
+    <comment>Material cadmium</comment>
+    <source>Cadmium</source>
+  </data>
+  <data name="carbon">
+    <value>Carbone</value>
+    <comment>Material carbon</comment>
+    <source>Carbon</source>
+  </data>
+  <data name="chemicaldistillery">
+    <value>Distillerie chimique</value>
+    <comment>Material chemicaldistillery</comment>
+    <source>Chemical Distillery</source>
+  </data>
+  <data name="chemicalmanipulators">
+    <value>Manipulateurs chimiques</value>
+    <comment>Material chemicalmanipulators</comment>
+    <source>Chemical Manipulators</source>
+  </data>
+  <data name="chemicalprocessors">
+    <value>Processeurs chimiques</value>
+    <comment>Material chemicalprocessors</comment>
+    <source>Chemical Processors</source>
+  </data>
+  <data name="chemicalstorageunits">
+    <value>Unités de stockage chimique</value>
+    <comment>Material chemicalstorageunits</comment>
+    <source>Chemical Storage Units</source>
+  </data>
+  <data name="chromium">
+    <value>Chrome</value>
+    <comment>Material chromium</comment>
+    <source>Chromium</source>
+  </data>
+  <data name="classifiedscandata">
+    <value>Données d'analyse classifiées parcellaires</value>
+    <comment>Material classifiedscandata</comment>
+    <source>Classified Scan Fragment</source>
+  </data>
+  <data name="compactcomposites">
+    <value>Composites compacts</value>
+    <comment>Material compactcomposites</comment>
+    <source>Compact Composites</source>
+  </data>
+  <data name="compactemissionsdata">
+    <value>Données d'émissions compactes anormales</value>
+    <comment>Material compactemissionsdata</comment>
+    <source>Abnormal Compact Emission Data</source>
+  </data>
+  <data name="compoundshielding">
+    <value>Protection Composite</value>
+    <comment>Material compoundshielding</comment>
+    <source>Compound Shielding</source>
+  </data>
+  <data name="conductiveceramics">
+    <value>Conducteurs en céramique</value>
+    <comment>Material conductiveceramics</comment>
+    <source>Conductive Ceramics</source>
+  </data>
+  <data name="conductivecomponents">
+    <value>Composants conducteurs</value>
+    <comment>Material conductivecomponents</comment>
+    <source>Conductive Components</source>
+  </data>
+  <data name="conductivepolymers">
+    <value>Conducteurs en polymères</value>
+    <comment>Material conductivepolymers</comment>
+    <source>Conductive Polymers</source>
+  </data>
+  <data name="configurablecomponents">
+    <value>Composants paramétrables</value>
+    <comment>Material configurablecomponents</comment>
+    <source>Configurable Components</source>
+  </data>
+  <data name="consumerfirmware">
+    <value>Micrologiciel consommateur modifié</value>
+    <comment>Material consumerfirmware</comment>
+    <source>Modified Consumer Firmware</source>
+  </data>
+  <data name="crystalshards">
+    <value>Éclat de cristal</value>
+    <comment>Material crystalshards</comment>
+    <source>Crystal Shards</source>
+  </data>
+  <data name="dataminedwake">
+    <value>Exploration de données de sillage anormales</value>
+    <comment>Material dataminedwake</comment>
+    <source>Datamined Wake Exceptions</source>
+  </data>
+  <data name="decodedemissiondata">
+    <value>Données d'émissions décodées</value>
+    <comment>Material decodedemissiondata</comment>
+    <source>Decoded Emission Data</source>
+  </data>
+  <data name="disruptedwakeechoes">
+    <value>Echos de sillages perturbés atypiques</value>
+    <comment>Material disruptedwakeechoes</comment>
+    <source>Atypical Disrupted Wake Echoes</source>
+  </data>
+  <data name="electrochemicalarrays">
+    <value>Réseaux électrochimiques</value>
+    <comment>Material electrochemicalarrays</comment>
+    <source>Electrochemical Arrays</source>
+  </data>
+  <data name="embeddedfirmware">
+    <value>Micrologiciel intégré modifié</value>
+    <comment>Material embeddedfirmware</comment>
+    <source>Modified Embedded Firmware</source>
+  </data>
+  <data name="emissiondata">
+    <value>Données d'émissions inattendues</value>
+    <comment>Material emissiondata</comment>
+    <source>Unexpected Emission Data</source>
+  </data>
+  <data name="encodedscandata">
+    <value>Données d'analyse divergentes</value>
+    <comment>Material encodedscandata</comment>
+    <source>Divergent Scan Data</source>
+  </data>
+  <data name="encryptedfiles">
+    <value>Fichiers cryptés inhabituels</value>
+    <comment>Material encryptedfiles</comment>
+    <source>Unusual Encrypted Files</source>
+  </data>
+  <data name="encryptionarchives">
+    <value>Archives cryptées atypiques</value>
+    <comment>Material encryptionarchives</comment>
+    <source>Atypical Encryption Archives</source>
+  </data>
+  <data name="encryptioncodes">
+    <value>Clés de cryptage balisées</value>
+    <comment>Material encryptioncodes</comment>
+    <source>Tagged Encryption Codes</source>
+  </data>
+  <data name="exquisitefocuscrystals">
+    <value>Cristaux de focalisation sans défaut</value>
+    <comment>Material exquisitefocuscrystals</comment>
+    <source>Exquisite Focus Crystals</source>
+  </data>
+  <data name="fedcorecomposites">
+    <value>Composites Core Dynamics</value>
+    <comment>Material fedcorecomposites</comment>
+    <source>Core Dynamics Composites</source>
+  </data>
+  <data name="fedproprietarycomposites">
+    <value>Composites brevetés</value>
+    <comment>Material fedproprietarycomposites</comment>
+    <source>Proprietary Composites</source>
+  </data>
+  <data name="filamentcomposites">
+    <value>Filament composite</value>
+    <comment>Material filamentcomposites</comment>
+    <source>Filament Composites</source>
+  </data>
+  <data name="focuscrystals">
+    <value>Cristaux de focalisation</value>
+    <comment>Material focuscrystals</comment>
+    <source>Focus Crystals</source>
+  </data>
+  <data name="fsdtelemetry">
+    <value>Télémétrie FSD anormale</value>
+    <comment>Material fsdtelemetry</comment>
+    <source>Anomalous FSD Telemetry</source>
+  </data>
+  <data name="galvanisingalloys">
+    <value>Alliages galvaniques</value>
+    <comment>Material galvanisingalloys</comment>
+    <source>Galvanising Alloys</source>
+  </data>
+  <data name="germanium">
+    <value>Germanium</value>
+    <comment>Material germanium</comment>
+    <source>Germanium</source>
+  </data>
+  <data name="gridresistors">
+    <value>Résistance à grille</value>
+    <comment>Material gridresistors</comment>
+    <source>Grid Resistors</source>
+  </data>
+  <data name="guardian_moduleblueprint">
+    <value>Plan de module - Guardians</value>
+    <comment>Material guardian_moduleblueprint</comment>
+    <source>Guardian Module Blueprint</source>
+  </data>
+  <data name="guardian_powercell">
+    <value>Cellule d'énergie - Guardians</value>
+    <comment>Material guardian_powercell</comment>
+    <source>Guardian Power Cell</source>
+  </data>
+  <data name="guardian_powerconduit">
+    <value>Conduit d'énergie - Guardians</value>
+    <comment>Material guardian_powerconduit</comment>
+    <source>Guardian Power Conduit</source>
+  </data>
+  <data name="guardian_sentinel_weaponparts">
+    <value>Pièce d'armement de sentinelle - Guardians</value>
+    <comment>Material guardian_sentinel_weaponparts</comment>
+    <source>Guardian Sentinel Weapon Parts</source>
+  </data>
+  <data name="guardian_sentinel_wreckagecomponents">
+    <value>Débris de sentinelle - Guardians</value>
+    <comment>Material guardian_sentinel_wreckagecomponents</comment>
+    <source>Guardian Sentinel Wreckage Components</source>
+  </data>
+  <data name="guardian_techcomponent">
+    <value>Composant technologique - Guardians</value>
+    <comment>Material guardian_techcomponent</comment>
+    <source>Guardian Technology Component</source>
+  </data>
+  <data name="guardian_vesselblueprint">
+    <value>Plan de vaisseau - Guardians</value>
+    <comment>Material guardian_vesselblueprint</comment>
+    <source>Guardian Vessel Blueprint</source>
+  </data>
+  <data name="guardian_weaponblueprint">
+    <value>Plan d'arme - Guardians</value>
+    <comment>Material guardian_weaponblueprint</comment>
+    <source>Guardian Weapon Blueprint</source>
+  </data>
+  <data name="heatconductionwiring">
+    <value>Câblage de conduction thermique</value>
+    <comment>Material heatconductionwiring</comment>
+    <source>Heat Conduction Wiring</source>
+  </data>
+  <data name="heatdispersionplate">
+    <value>Plaque de dissipation thermique</value>
+    <comment>Material heatdispersionplate</comment>
+    <source>Heat Dispersion Plate</source>
+  </data>
+  <data name="heatexchangers">
+    <value>Échangeurs de chaleur</value>
+    <comment>Material heatexchangers</comment>
+    <source>Heat Exchangers</source>
+  </data>
+  <data name="heatresistantceramics">
+    <value>Céramiques résistantes à la chaleur</value>
+    <comment>Material heatresistantceramics</comment>
+    <source>Heat Resistant Ceramics</source>
+  </data>
+  <data name="heatvanes">
+    <value>Vannes thermiques</value>
+    <comment>Material heatvanes</comment>
+    <source>Heat Vanes</source>
+  </data>
+  <data name="highdensitycomposites">
+    <value>Composites à haute densité</value>
+    <comment>Material highdensitycomposites</comment>
+    <source>High Density Composites</source>
+  </data>
+  <data name="hybridcapacitors">
+    <value>Condensateurs hybrides</value>
+    <comment>Material hybridcapacitors</comment>
+    <source>Hybrid Capacitors</source>
+  </data>
+  <data name="hyperspacetrajectories">
+    <value>Trajectoires d'hyperespace excentriques</value>
+    <comment>Material hyperspacetrajectories</comment>
+    <source>Eccentric Hyperspace Trajectories</source>
+  </data>
+  <data name="imperialshielding">
+    <value>Protection impériale</value>
+    <comment>Material imperialshielding</comment>
+    <source>Imperial Shielding</source>
+  </data>
+  <data name="improvisedcomponents">
+    <value>Composants improvisés</value>
+    <comment>Material improvisedcomponents</comment>
+    <source>Improvised Components</source>
+  </data>
+  <data name="industrialfirmware">
+    <value>Micrologiciel industriel piraté</value>
+    <comment>Material industrialfirmware</comment>
+    <source>Cracked Industrial Firmware</source>
+  </data>
+  <data name="iron">
+    <value>Fer</value>
+    <comment>Material iron</comment>
+    <source>Iron</source>
+  </data>
+  <data name="lead">
+    <value>Plomb</value>
+    <comment>Material lead</comment>
+    <source>Lead</source>
+  </data>
+  <data name="legacyfirmware">
+    <value>Micrologiciel spécialisé périmé</value>
+    <comment>Material legacyfirmware</comment>
+    <source>Specialised Legacy Firmware</source>
+  </data>
+  <data name="manganese">
+    <value>Manganèse</value>
+    <comment>Material manganese</comment>
+    <source>Manganese</source>
+  </data>
+  <data name="mechanicalcomponents">
+    <value>Composants mécaniques</value>
+    <comment>Material mechanicalcomponents</comment>
+    <source>Mechanical Components</source>
+  </data>
+  <data name="mechanicalequipment">
+    <value>Équipement mécanique</value>
+    <comment>Material mechanicalequipment</comment>
+    <source>Mechanical Equipment</source>
+  </data>
+  <data name="mechanicalscrap">
+    <value>Ferraille mécanique</value>
+    <comment>Material mechanicalscrap</comment>
+    <source>Mechanical Scrap</source>
+  </data>
+  <data name="mercury">
+    <value>Mercure</value>
+    <comment>Material mercury</comment>
+    <source>Mercury</source>
+  </data>
+  <data name="militarygradealloys">
+    <value>Alliages militaires</value>
+    <comment>Material militarygradealloys</comment>
+    <source>Military Grade Alloys</source>
+  </data>
+  <data name="militarysupercapacitors">
+    <value>Supercondensateurs militaires</value>
+    <comment>Material militarysupercapacitors</comment>
+    <source>Military Supercapacitors</source>
+  </data>
+  <data name="molybdenum">
+    <value>Molybdène</value>
+    <comment>Material molybdenum</comment>
+    <source>Molybdenum</source>
+  </data>
+  <data name="nickel">
+    <value>Nickel</value>
+    <comment>Material nickel</comment>
+    <source>Nickel</source>
+  </data>
+  <data name="niobium">
+    <value>Niobium</value>
+    <comment>Material niobium</comment>
+    <source>Niobium</source>
+  </data>
+  <data name="pharmaceuticalisolators">
+    <value>Isolants pharmaceutiques</value>
+    <comment>Material pharmaceuticalisolators</comment>
+    <source>Pharmaceutical Isolators</source>
+  </data>
+  <data name="phasealloys">
+    <value>Alliages de phase</value>
+    <comment>Material phasealloys</comment>
+    <source>Phase Alloys</source>
+  </data>
+  <data name="phosphorus">
+    <value>Phosphore</value>
+    <comment>Material phosphorus</comment>
+    <source>Phosphorus</source>
+  </data>
+  <data name="polonium">
+    <value>Polonium</value>
+    <comment>Material polonium</comment>
+    <source>Polonium</source>
+  </data>
+  <data name="polymercapacitors">
+    <value>Condensateurs en polymères</value>
+    <comment>Material polymercapacitors</comment>
+    <source>Polymer Capacitors</source>
+  </data>
+  <data name="precipitatedalloys">
+    <value>Alliages précipités</value>
+    <comment>Material precipitatedalloys</comment>
+    <source>Precipitated Alloys</source>
+  </data>
+  <data name="protoheatradiators">
+    <value>Proto-radiateurs</value>
+    <comment>Material protoheatradiators</comment>
+    <source>Proto Heat Radiators</source>
+  </data>
+  <data name="protolightalloys">
+    <value>Proto-alliages légers</value>
+    <comment>Material protolightalloys</comment>
+    <source>Proto Light Alloys</source>
+  </data>
+  <data name="protoradiolicalloys">
+    <value>Proto-alliages radiologiques</value>
+    <comment>Material protoradiolicalloys</comment>
+    <source>Proto Radiolic Alloys</source>
+  </data>
+  <data name="refinedfocuscrystals">
+    <value>Cristaux de focalisation raffinés</value>
+    <comment>Material refinedfocuscrystals</comment>
+    <source>Refined Focus Crystals</source>
+  </data>
+  <data name="rhenium">
+    <value>Rhénium</value>
+    <comment>Material rhenium</comment>
+    <source>Rhenium</source>
+  </data>
+  <data name="ruthenium">
+    <value>Ruthénium</value>
+    <comment>Material ruthenium</comment>
+    <source>Ruthenium</source>
+  </data>
+  <data name="salvagedalloys">
+    <value>Alliages récupérés</value>
+    <comment>Material salvagedalloys</comment>
+    <source>Salvaged Alloys</source>
+  </data>
+  <data name="scanarchives">
+    <value>Données d'analyse archivées non identifiées</value>
+    <comment>Material scanarchives</comment>
+    <source>Unidentified Scan Archives</source>
+  </data>
+  <data name="scandatabanks">
+    <value>Banques de données d'analyse classifiées</value>
+    <comment>Material scandatabanks</comment>
+    <source>Classified Scan Databanks</source>
+  </data>
+  <data name="scrambledemissiondata">
+    <value>Données d'émissions brouillées exceptionnelles</value>
+    <comment>Material scrambledemissiondata</comment>
+    <source>Exceptional Scrambled Emission Data</source>
+  </data>
+  <data name="searchrescuevoucher">
+    <!--Machine translated-->
+    <value>Bon de recherche et de sauvetage</value>
+    <comment>material searchrescuevoucher</comment>
+    <source>Search and Rescue Voucher</source>
+  </data>
+  <data name="securityfirmware">
+    <value>Mise à jour de micrologiciel de sécurité</value>
+    <comment>Material securityfirmware</comment>
+    <source>Security Firmware Patch</source>
+  </data>
+  <data name="selenium">
+    <value>Sélénium</value>
+    <comment>Material selenium</comment>
+    <source>Selenium</source>
+  </data>
+  <data name="shieldcyclerecordings">
+    <value>Enregistrements de cycles de bouclier déformés</value>
+    <comment>Material shieldcyclerecordings</comment>
+    <source>Distorted Shield Cycle Recordings</source>
+  </data>
+  <data name="shielddensityreports">
+    <value>Analyses de bouclier atypiques</value>
+    <comment>Material shielddensityreports</comment>
+    <source>Untypical Shield Scans</source>
+  </data>
+  <data name="shieldemitters">
+    <value>Émetteurs de bouclier</value>
+    <comment>Material shieldemitters</comment>
+    <source>Shield Emitters</source>
+  </data>
+  <data name="shieldfrequencydata">
+    <value>Données de Fréquences de bouclier Singulières</value>
+    <comment>Material shieldfrequencydata</comment>
+    <source>Peculiar Shield Frequency Data</source>
+  </data>
+  <data name="shieldingsensors">
+    <value>Capteurs de bouclier</value>
+    <comment>Material shieldingsensors</comment>
+    <source>Shielding Sensors</source>
+  </data>
+  <data name="shieldpatternanalysis">
+    <value>Analyse de modèle de bouclier aberrante</value>
+    <comment>Material shieldpatternanalysis</comment>
+    <source>Aberrant Shield Pattern Analysis</source>
+  </data>
+  <data name="shieldsoakanalysis">
+    <value>Analyse d'absorption de bouclier incohérente</value>
+    <comment>Material shieldsoakanalysis</comment>
+    <source>Inconsistent Shield Soak Analysis</source>
+  </data>
+  <data name="sulphur">
+    <value>Souffre</value>
+    <comment>Material sulphur</comment>
+    <source>Sulphur</source>
+  </data>
+  <data name="symmetrickeys">
+    <value>Clés symétriques ouvertes</value>
+    <comment>Material symmetrickeys</comment>
+    <source>Open Symmetric Keys</source>
+  </data>
+  <data name="technetium">
+    <value>Technétium</value>
+    <comment>Material technetium</comment>
+    <source>Technetium</source>
+  </data>
+  <data name="tellurium">
+    <value>Tellure</value>
+    <comment>Material tellurium</comment>
+    <source>Tellurium</source>
+  </data>
+  <data name="temperedalloys">
+    <value>Alliages trempés</value>
+    <comment>Material temperedalloys</comment>
+    <source>Tempered Alloys</source>
+  </data>
+  <data name="tg_abrasion01">
+    <!--Machine translated-->
+    <value>Échantillon d’exposition à la chaleur</value>
+    <comment>Material tg_abrasion01</comment>
+    <source>Heat Exposure Specimen</source>
+  </data>
+  <data name="tg_abrasion02">
+    <!--Machine translated-->
+    <value>Résidu de membrane de phasage</value>
+    <comment>Material tg_abrasion02</comment>
+    <source>Phasing Membrane Residue</source>
+  </data>
+  <data name="tg_abrasion03">
+    <!--Machine translated-->
+    <value>Fragments de surface durcis</value>
+    <comment>Material tg_abrasion03</comment>
+    <source>Hardened Surface Fragments</source>
+  </data>
+  <data name="tg_biomechanicalconduits">
+    <!--Machine translated-->
+    <value>Conduits biomécaniques thargoids</value>
+    <comment>Material tg_biomechanicalconduits</comment>
+    <source>Thargoid Bio-Mechanical Conduits</source>
+  </data>
+  <data name="tg_causticcrystal">
+    <!--Machine translated-->
+    <value>Cristal caustique</value>
+    <comment>Material tg_causticcrystal</comment>
+    <source>Caustic Crystal</source>
+  </data>
+  <data name="tg_causticgeneratorparts">
+    <!--Machine translated-->
+    <value>Mécanismes corrosifs</value>
+    <comment>Material tg_causticgeneratorparts</comment>
+    <source>Corrosive Mechanisms</source>
+  </data>
+  <data name="tg_causticshard">
+    <!--Machine translated-->
+    <value>Éclat caustique</value>
+    <comment>Material tg_causticshard</comment>
+    <source>Caustic Shard</source>
+  </data>
+  <data name="tg_compositiondata">
+    <value>Données de composition de matériau Thargoïdes</value>
+    <comment>Material tg_compositiondata</comment>
+    <source>Thargoid Material Composition Data</source>
+  </data>
+  <data name="tg_interdictiondata">
+    <!--Machine translated-->
+    <value>Télémétrie d’interdiction thargoïde</value>
+    <comment>Material tg_interdictiondata</comment>
+    <source>Thargoid Interdiction Telemetry</source>
+  </data>
+  <data name="tg_propulsionelement">
+    <value>Élément de propulsion Thargoïd</value>
+    <comment>Material tg_propulsionelement</comment>
+    <source>Thargoid Propulsion Element</source>
+  </data>
+  <data name="tg_residuedata">
+    <value>Données de résidu Thargoïdes</value>
+    <comment>Material tg_residuedata</comment>
+    <source>Thargoid Residue Data</source>
+  </data>
+  <data name="tg_shipflightdata">
+    <!--Machine translated-->
+    <value>Données de vol du navire</value>
+    <comment>Material tg_shipflightdata</comment>
+    <source>Ship Flight Data</source>
+  </data>
+  <data name="tg_shipsystemsdata">
+    <!--Machine translated-->
+    <value>Données des systèmes du navire</value>
+    <comment>Material tg_shipsystemsdata</comment>
+    <source>Ship Systems Data</source>
+  </data>
+  <data name="tg_shutdowndata">
+    <value>Analyse de surcharge d'énergie massive</value>
+    <comment>Material tg_shutdowndata</comment>
+    <source>Massive Energy Surge Analytics</source>
+  </data>
+  <data name="tg_structuraldata">
+    <value>Données de structure Thargoïdes</value>
+    <comment>Material tg_structuraldata</comment>
+    <source>Thargoid Structural Data</source>
+  </data>
+  <data name="tg_weaponparts">
+    <value>Pièces d'armement Thargoïdes</value>
+    <comment>Material tg_weaponparts</comment>
+    <source>Thargoid Weapon Parts</source>
+  </data>
+  <data name="tg_wreckagecomponents">
+    <value>Débris d'épave Thargoïds</value>
+    <comment>Material tg_wreckagecomponents</comment>
+    <source>Thargoid Wreckage Components</source>
+  </data>
+  <data name="thermicalloys">
+    <value>Alliages thermiques</value>
+    <comment>Material thermicalloys</comment>
+    <source>Thermic Alloys</source>
+  </data>
+  <data name="tin">
+    <value>Étain</value>
+    <comment>Material tin</comment>
+    <source>Tin</source>
+  </data>
+  <data name="tungsten">
+    <value>Tungstène</value>
+    <comment>Material tungsten</comment>
+    <source>Tungsten</source>
+  </data>
+  <data name="uncutfocuscrystals">
+    <value>Cristaux de focalisation imparfaits</value>
+    <comment>Material uncutfocuscrystals</comment>
+    <source>Flawed Focus Crystals</source>
+  </data>
+  <data name="unknowncarapace">
+    <value>Carapace Thargoïde</value>
+    <comment>Material unknowncarapace</comment>
+    <source>Thargoid Carapace</source>
+  </data>
+  <data name="unknowncorechip">
+    <!--Machine translated-->
+    <value>Puce de base tactique</value>
+    <comment>Material unknowncorechip</comment>
+    <source>Tactical Core Chip</source>
+  </data>
+  <data name="unknownenergycell">
+    <value>Cellule d'énergie Thargoïde</value>
+    <comment>Material unknownenergycell</comment>
+    <source>Thargoid Energy Cell</source>
+  </data>
+  <data name="unknownenergysource">
+    <value>Fragment de capteur</value>
+    <comment>Material unknownenergysource</comment>
+    <source>Sensor Fragment</source>
+  </data>
+  <data name="unknownorganiccircuitry">
+    <value>Circuits organiques Thargoïds</value>
+    <comment>Material unknownorganiccircuitry</comment>
+    <source>Thargoid Organic Circuitry</source>
+  </data>
+  <data name="unknownshipsignature">
+    <value>Signature de Vaisseau Thargoïde</value>
+    <comment>Material unknownshipsignature</comment>
+    <source>Thargoid Ship Signature</source>
+  </data>
+  <data name="unknowntechnologycomponents">
+    <value>Composants technologiques Thargoïds</value>
+    <comment>Material unknowntechnologycomponents</comment>
+    <source>Thargoid Technology Components</source>
+  </data>
+  <data name="unknownwakedata">
+    <value>Données de Sillage Thargoïdes</value>
+    <comment>Material unknownwakedata</comment>
+    <source>Thargoid Wake Data</source>
+  </data>
+  <data name="vanadium">
+    <value>Vanadium</value>
+    <comment>Material vanadium</comment>
+    <source>Vanadium</source>
+  </data>
+  <data name="wakesolutions">
+    <value>Solutions de sillages anormales</value>
+    <comment>Material wakesolutions</comment>
+    <source>Strange Wake Solutions</source>
+  </data>
+  <data name="wornshieldemitters">
+    <value>Émetteurs de bouclier usé</value>
+    <comment>Material wornshieldemitters</comment>
+    <source>Worn Shield Emitters</source>
+  </data>
+  <data name="yttrium">
+    <value>Yttrium</value>
+    <comment>Material yttrium</comment>
+    <source>Yttrium</source>
+  </data>
+  <data name="zinc">
+    <value>Zinc</value>
+    <comment>Material zinc</comment>
+    <source>Zinc</source>
+  </data>
+  <data name="zirconium">
+    <value>Zirconium</value>
+    <comment>Material zirconium</comment>
+    <source>Zirconium</source>
+  </data>
+</root>

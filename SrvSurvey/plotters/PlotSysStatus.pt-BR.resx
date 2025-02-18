@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BioSignals">
+    <!--Machine translated-->
+    <value>| {0}x Sinais biológicos em: </value>
+    <comment>Appended to prior text. {0} int, count of bodies with bio signals</comment>
+    <source>| {0}x Bio signals on: </source>
+  </data>
+  <data name="DssRemaining">
+    <!--Machine translated-->
+    <value> {0}x corpos: </value>
+    <comment>May be appended to FssCompleteShort. {0} int, count of bodies worth of scanning.</comment>
+    <source> {0}x bodies: </source>
+  </data>
+  <data name="FssCompleteLong">
+    <!--Machine translated-->
+    <value>FSS {0}% concluído</value>
+    <comment>Short version, joined with more text. {0} int, percentage number</comment>
+    <source>FSS {0}% complete</source>
+  </data>
+  <data name="FssCompleteShort">
+    <!--Machine translated-->
+    <value>FSS {0}%</value>
+    <comment>Long version, shown alone. {0} int, percentage number</comment>
+    <source>FSS {0}%</source>
+  </data>
+  <data name="FssNotStarted">
+    <!--Machine translated-->
+    <value>FSS não iniciado</value>
+    <source>FSS not started</source>
+  </data>
+  <data name="Header">
+    <!--Machine translated-->
+    <value>Pesquisa DSS: </value>
+    <comment>Header line</comment>
+    <source>DSS survey: </source>
+  </data>
+  <data name="NextSystem">
+    <!--Machine translated-->
+    <value>Próximo sistema:</value>
+    <source>Next system:</source>
+  </data>
+  <data name="NoDssMeet">
+    <!--Machine translated-->
+    <value>Nenhum</value>
+    <source>None</source>
+  </data>
+  <data name="NonBodySignals">
+    <!--Machine translated-->
+    <value>► {0} sinais não corporais</value>
+    <comment>{0} int, count of non body signals</comment>
+    <source>► {0} non-body signals</source>
+  </data>
+</root>

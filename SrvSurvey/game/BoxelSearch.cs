@@ -529,7 +529,7 @@ namespace SrvSurvey.game
                 next = current.prefix;
 
             // otherwise, use the first unknown or incomplete system
-            if (next == null)
+            if (!currentEmpty && next == null)
             {
                 var max = (int)Math.Max(this.currentMax, this.currentCount);
                 for (int n = max - 1; n >= 0; n--)
@@ -544,7 +544,7 @@ namespace SrvSurvey.game
             // suggest another incomplete boxel 
             if (next == null && progress?.Count > 0)
             {
-                next = progress.FirstOrDefault(p => !completed.Contains(p.Key)).Key;// p.Value == 0 && Boxel.parse(p.Key)!.massCode == mc).Key;
+                next = progress.FirstOrDefault(p => p.Value != -1 && !completed.Contains(p.Key)).Key;// p.Value == 0 && Boxel.parse(p.Key)!.massCode == mc).Key;
 
                 //// TODO: revisit
                 //var mc = boxel.massCode;
@@ -575,7 +575,7 @@ namespace SrvSurvey.game
 
         /// <summary> Returns true when all systems have been searched </summary>
         [JsonIgnore]
-        public bool systemsComplete => this.systems.Count(sys => sys.complete) == this.systems.Count;
+        public bool systemsComplete => this.systems.Count > 0 && this.systems.Count(sys => sys.complete) == this.systems.Count;
 
         /// <summary> A total count of systems across all relevant boxels </summary>
         [JsonIgnore]

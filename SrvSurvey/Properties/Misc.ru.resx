@@ -60,6 +60,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="FirewallBlocked">
+    <!--Machine translated-->
+    <value>Похоже, что сетевые вызовы для SrvSurvey блокируются брандмауэром. Это более вероятно при запуске SrvSurvey из папки «Загрузки». Добавление местоположения SrvSurvey на стену файлов решит эту проблему.\r\n\r\n{0}\r\n\r\nХотели бы вы скопировать это местоположение в буфер обмена?</value>
+    <comment>An error message shown when fire walls are causing problems
+{0} string, the folder path to SrvSurvey.exe</comment>
+    <source>It appears network calls for SrvSurvey are being blocked by a firewall. This is more likely when running SrvSurvey from within the Downloads folder. Adding the location of SrvSurvey to your file wall will solve this problem.\r\n\r\n{0}\r\n\r\nWould you like to copy that location to the clipboard?</source>
+  </data>
   <data name="FormBoxelSearch_Activate">
     <value>Активировать</value>
     <comment>Used on a button in FormBoxelSearch</comment>
@@ -207,93 +214,6 @@
     <value>Войны</value>
     <source>Wars</source>
   </data>
-  <data name="PlotGalMap_CountGenus">
-    <value>{0}x Род</value>
-    <source>{0}x Genus</source>
-  </data>
-  <data name="PlotGalMap_Current">
-    <value>Текущий:</value>
-    <source>Current:</source>
-  </data>
-  <data name="PlotGalMap_DataFrom">
-    <value>Данные из: EDSM + Spansh + Canonn</value>
-    <comment>Dim footer text</comment>
-    <source>Data from: EDSM + Spansh + Canonn</source>
-  </data>
-  <data name="PlotGalMap_Destination">
-    <value>Назначение:</value>
-    <source>Destination:</source>
-  </data>
-  <data name="PlotGalMap_DiscoveredBy">
-    <value>{0}, {1}</value>
-    <comment>{0} string, name of cmdr, {1} short date</comment>
-    <source>By {0}, {1}</source>
-  </data>
-  <data name="PlotGalMap_LastUpdated">
-    <value>Последнее обновление: {0}</value>
-    <comment>{0} short date</comment>
-    <source>Last updated: {0}</source>
-  </data>
-  <data name="PlotGalMap_NextJump">
-    <value>Следующий прыжок:</value>
-    <source>Next jump:</source>
-  </data>
-  <data name="PlotGalMap_NoRouteSet">
-    <value>Маршрут не установлен</value>
-    <comment>When no route is set.</comment>
-    <source>No route set</source>
-  </data>
-  <data name="PlotGalMap_RouteFooter">
-    <value>Всего: ► {0} прыжков ► Расстояние: {1} ly</value>
-    <comment>Footer shown summarizing the route. {0} int, count of jumps. {1} float, 1 decimal place, distance travelled.</comment>
-    <source>Total: ► {0} jumps ► Distance: {1} ly</source>
-  </data>
-  <data name="PlotGalMap_Selected">
-    <value>Выбранная:</value>
-    <source>Selected:</source>
-  </data>
-  <data name="PlotSysStatus_BioSignals">
-    <value>| {0}x биосигналов на: </value>
-    <comment>Appended to prior text. {0} int, count of bodies with bio signals</comment>
-    <source>| {0}x Bio signals on: </source>
-  </data>
-  <data name="PlotSysStatus_DssRemaining">
-    <value> {0}x тел: </value>
-    <comment>May be appended to FssCompleteShort. {0} int, count of bodies worth of scanning.</comment>
-    <source> {0}x bodies: </source>
-  </data>
-  <data name="PlotSysStatus_FssCompleteLong">
-    <value>FSS завершен на {0}%</value>
-    <comment>Short version, joined with more text. {0} int, percentage number</comment>
-    <source>FSS {0}% complete</source>
-  </data>
-  <data name="PlotSysStatus_FssCompleteShort">
-    <value>FSS {0}%</value>
-    <comment>Long version, shown alone. {0} int, percentage number</comment>
-    <source>FSS {0}%</source>
-  </data>
-  <data name="PlotSysStatus_FssNotStarted">
-    <value>FSS не запущен</value>
-    <source>FSS not started</source>
-  </data>
-  <data name="PlotSysStatus_Header">
-    <value>Исследование DSS: </value>
-    <comment>Header line</comment>
-    <source>DSS survey: </source>
-  </data>
-  <data name="PlotSysStatus_NextSystem">
-    <value>Следующая система:</value>
-    <source>Next system:</source>
-  </data>
-  <data name="PlotSysStatus_NoDssMeet">
-    <value>Нет</value>
-    <source>None</source>
-  </data>
-  <data name="PlotSysStatus_NonBodySignals">
-    <value>► {0} посторонних сигналов</value>
-    <comment>{0} int, count of non body signals</comment>
-    <source>► {0} non-body signals</source>
-  </data>
   <data name="Settings_CreateFolderNotFound">
     <value>Не удается найти папку:
 {0}
@@ -307,5 +227,11 @@ Would you like to create it?</source>
   </data>
   <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="UnexpectedWentWrong">
+    <!--Machine translated-->
+    <value>Что-то неожиданное пошло не так, пожалуйста, поделитесь логами.\r\nРекомендуется перезапустить SrvSurvey.</value>
+    <comment>An error message shown when something unexpected went wrong</comment>
+    <source>Something unexpected went wrong, please share the logs.\r\nIt is recommended to restart SrvSurvey.</source>
   </data>
 </root>
