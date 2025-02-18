@@ -22,14 +22,14 @@ namespace Loc {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class PlotTrackTarget {
+    internal class PlotFSS {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal PlotTrackTarget() {
+        internal PlotFSS() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Loc {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SrvSurvey.plotters.PlotTrackTarget", typeof(PlotTrackTarget).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SrvSurvey.plotters.PlotFSS", typeof(PlotFSS).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,38 @@ namespace Loc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bearing: {0}.
+        ///   Looks up a localized string similar to {0} bio signals:.
         /// </summary>
-        internal static string BearingTo {
+        internal static string CountBioSignals {
             get {
-                return ResourceManager.GetString("BearingTo", resourceCulture);
+                return ResourceManager.GetString("CountBioSignals", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Distance: {0}.
+        ///   Looks up a localized string similar to Estimated value:.
         /// </summary>
-        internal static string DistanceTo {
+        internal static string EstimatedValue {
             get {
-                return ResourceManager.GetString("DistanceTo", resourceCulture);
+                return ResourceManager.GetString("EstimatedValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last scan: {0}.
+        /// </summary>
+        internal static string LastScan {
+            get {
+                return ResourceManager.GetString("LastScan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to With surface scan:.
+        /// </summary>
+        internal static string WithSurfaceScan {
+            get {
+                return ResourceManager.GetString("WithSurfaceScan", resourceCulture);
             }
         }
     }

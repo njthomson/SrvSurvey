@@ -22,14 +22,14 @@ namespace Loc {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class PlotTrackTarget {
+    internal class PlotBioSystem {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal PlotTrackTarget() {
+        internal PlotBioSystem() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Loc {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SrvSurvey.plotters.PlotTrackTarget", typeof(PlotTrackTarget).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SrvSurvey.plotters.PlotBioSystem", typeof(PlotBioSystem).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,74 @@ namespace Loc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bearing: {0}.
+        ///   Looks up a localized string similar to Body {0} bio signals: {1}.
         /// </summary>
-        internal static string BearingTo {
+        internal static string BodyBio_Header {
             get {
-                return ResourceManager.GetString("BearingTo", resourceCulture);
+                return ResourceManager.GetString("BodyBio_Header", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Distance: {0}.
+        ///   Looks up a localized string similar to DSS required.
         /// </summary>
-        internal static string DistanceTo {
+        internal static string DssRequired {
             get {
-                return ResourceManager.GetString("DistanceTo", resourceCulture);
+                return ResourceManager.GetString("DssRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (FF bonus: {0}).
+        /// </summary>
+        internal static string FFBonus {
+            get {
+                return ResourceManager.GetString("FFBonus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System FSS required.
+        /// </summary>
+        internal static string FssRequired {
+            get {
+                return ResourceManager.GetString("FssRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Geo signals: {0}.
+        /// </summary>
+        internal static string GeoSignals {
+            get {
+                return ResourceManager.GetString("GeoSignals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not predicted!.
+        /// </summary>
+        internal static string NotPredicted {
+            get {
+                return ResourceManager.GetString("NotPredicted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rewards: {0}.
+        /// </summary>
+        internal static string RewardFooter {
+            get {
+                return ResourceManager.GetString("RewardFooter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bio signals: {0}.
+        /// </summary>
+        internal static string SysBio_Header {
+            get {
+                return ResourceManager.GetString("SysBio_Header", resourceCulture);
             }
         }
     }

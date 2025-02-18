@@ -22,14 +22,14 @@ namespace Loc {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class PlotTrackTarget {
+    internal class PlotMassacre {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal PlotTrackTarget() {
+        internal PlotMassacre() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Loc {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SrvSurvey.plotters.PlotTrackTarget", typeof(PlotTrackTarget).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SrvSurvey.plotters.PlotMassacre", typeof(PlotMassacre).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,11 @@ namespace Loc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bearing: {0}.
+        ///   Looks up a localized string similar to Massacre kills remaining:.
         /// </summary>
-        internal static string BearingTo {
+        internal static string Header {
             get {
-                return ResourceManager.GetString("BearingTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Distance: {0}.
-        /// </summary>
-        internal static string DistanceTo {
-            get {
-                return ResourceManager.GetString("DistanceTo", resourceCulture);
+                return ResourceManager.GetString("Header", resourceCulture);
             }
         }
     }

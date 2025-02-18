@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.widgets;
+using Res = Loc.PlotRamTah;
 
 namespace SrvSurvey.plotters
 {
@@ -49,7 +50,7 @@ namespace SrvSurvey.plotters
             var sz = new SizeF(six, six);
 
             var ramTahObelisks = game.systemSite.ramTahObelisks;
-            this.drawTextAt(RES("Header", ramTahObelisks?.Count ?? 0), GameColors.fontSmall);
+            this.drawTextAt(Res.Header.format(ramTahObelisks?.Count ?? 0), GameColors.fontSmall);
             if (this.dtx > sz.Width) sz.Width = this.dtx;
             this.dty = twoFour;
 
@@ -100,7 +101,7 @@ namespace SrvSurvey.plotters
                     }
 
                     this.drawRamTahDot(0, 0, item1);
-                    var item1Text = RES("Item" + item1, Properties.Guardian.ResourceManager);
+                    var item1Text = Util.getLoc(item1);
                     this.drawTextAt(item1Text, hasItem1 ? GameColors.brushGameOrange : Brushes.Red, GameColors.fontSmall);
 
                     if (item2 != null)
@@ -108,7 +109,7 @@ namespace SrvSurvey.plotters
                         this.drawTextAt("+", brush, GameColors.fontSmall);
                         this.dtx += two;
                         this.drawRamTahDot(0, 0, item2);
-                        var item2Text = RES("Item" + item2, Properties.Guardian.ResourceManager);
+                        var item2Text = Util.getLoc(item2);
                         this.drawTextAt(item2Text, hasItem2 ? GameColors.brushGameOrange : Brushes.Red, GameColors.fontSmall);
                     }
 
@@ -131,13 +132,13 @@ namespace SrvSurvey.plotters
 
                 this.dtx = eight;
                 this.dty += ten;
-                this.dty += this.drawTextAt(RES("Footer"), GameColors.fontSmall).Height;
+                this.dty += this.drawTextAt(Res.Footer, GameColors.fontSmall).Height;
                 if (this.dtx > sz.Width) sz.Width = this.dtx;
             }
             else
             {
                 this.dtx = twoFour;
-                this.dty += this.drawTextAt(RES("NoNewLogs"), GameColors.brushGameOrange, GameColors.fontMiddle).Height;
+                this.dty += this.drawTextAt(Res.NoNewLogs, GameColors.brushGameOrange, GameColors.fontMiddle).Height;
                 if (this.dtx > sz.Width) sz.Width = this.dtx;
             }
 

@@ -4,6 +4,7 @@ using SrvSurvey.game;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.Drawing.Drawing2D;
+using Res = Loc.PlotPriorScans;
 
 namespace SrvSurvey.plotters
 {
@@ -250,19 +251,19 @@ namespace SrvSurvey.plotters
 
             this.resetPlotter(g);
 
-            this.drawFooterText(RES("Footer"), GameColors.brushGameOrangeDim, this.Font);
+            this.drawFooterText(Res.Footer, GameColors.brushGameOrangeDim, this.Font);
 
             this.dtx = four;
             this.dty = eight;
 
-            var txt = RES("Header", this.signals.Count);
+            var txt = Res.Header.format(this.signals.Count);
             if (Game.settings.skipPriorScansLowValue)
                 txt += $" (> {Util.credits(Game.settings.skipPriorScansLowValueAmount)})";
             base.drawTextAt(txt, GameColors.brushGameOrange, GameColors.fontSmall);
 
             if (this.signals.Count == 0)
             {
-                g.DrawString(RES("NoMoreSignals"), this.Font, GameColors.brushGameOrange, 16f, 36f);
+                g.DrawString(Res.NoMoreSignals, this.Font, GameColors.brushGameOrange, 16f, 36f);
                 return;
             }
 

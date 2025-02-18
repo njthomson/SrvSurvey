@@ -31,3 +31,4 @@ PlotSysStatus.resx
 PlotTrackers.resx
 PlotTrackTarget.resx
 Reputation.resx
+ViewLogs.resx

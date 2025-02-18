@@ -83,6 +83,13 @@
 	label6.Text
 	$this.Text
 
+/forms/ViewLogs.zh-Hans.resx
+	btnClear.Text
+	btnClose.Text
+	btnCopy.Text
+	btnOpenFolder.Text
+	$this.Text
+
 /plotters/PlotBioStatus.zh-Hans.resx
 	DssRequired
 	FooterAllScanned

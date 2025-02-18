@@ -22,14 +22,14 @@ namespace Loc {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class PlotTrackTarget {
+    internal class PlotFSSInfo {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal PlotTrackTarget() {
+        internal PlotFSSInfo() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Loc {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SrvSurvey.plotters.PlotTrackTarget", typeof(PlotTrackTarget).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SrvSurvey.plotters.PlotFSSInfo", typeof(PlotFSSInfo).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,75 @@ namespace Loc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bearing: {0}.
+        ///   Looks up a localized string similar to {0} Genus.
         /// </summary>
-        internal static string BearingTo {
+        internal static string CountGenus {
             get {
-                return ResourceManager.GetString("BearingTo", resourceCulture);
+                return ResourceManager.GetString("CountGenus", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Distance: {0}.
+        ///   Looks up a localized string similar to {0} Geo.
         /// </summary>
-        internal static string DistanceTo {
+        internal static string CountGeo {
             get {
-                return ResourceManager.GetString("DistanceTo", resourceCulture);
+                return ResourceManager.GetString("CountGeo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan value | DSS value.
+        /// </summary>
+        internal static string Footer1 {
+            get {
+                return ResourceManager.GetString("Footer1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🌎 Terraformable
+        ///🚀 Landable ⚑ Undiscovered.
+        /// </summary>
+        internal static string Footer2 {
+            get {
+                return ResourceManager.GetString("Footer2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ( Hiding bodies &lt; {0} ).
+        /// </summary>
+        internal static string HidingBodies {
+            get {
+                return ResourceManager.GetString("HidingBodies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scanned all {0} bodies: {1}.
+        /// </summary>
+        internal static string ScannedAllBodies {
+            get {
+                return ResourceManager.GetString("ScannedAllBodies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scanned {0} bodies: {1}.
+        /// </summary>
+        internal static string ScannedBodies {
+            get {
+                return ResourceManager.GetString("ScannedBodies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (scan to populate).
+        /// </summary>
+        internal static string ScanToPopulate {
+            get {
+                return ResourceManager.GetString("ScanToPopulate", resourceCulture);
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.widgets;
 using System.Drawing.Drawing2D;
+// Currently, this does not require any localization
 
 namespace SrvSurvey.plotters
 {

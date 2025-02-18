@@ -3,6 +3,7 @@ using SrvSurvey.net;
 using SrvSurvey.Properties;
 using SrvSurvey.widgets;
 using System.Diagnostics;
+using Res = Loc.PlotJumpInfo;
 
 namespace SrvSurvey.plotters
 {
@@ -158,22 +159,22 @@ namespace SrvSurvey.plotters
                 var list = new HashSet<string>();
 
                 var countRuins = Game.canonn.allRuins.Count(r => r.systemAddress == next.SystemAddress);
-                if (countRuins > 0) list.Add(RES("GuardianRuins", countRuins));
+                if (countRuins > 0) list.Add(Res.GuardianRuins.format(countRuins));
 
                 var countStructures = Game.canonn.allStructures.Count(r => r.systemAddress == next.SystemAddress);
-                if (countStructures > 0) list.Add(RES("GuardianStructures", countStructures));
+                if (countStructures > 0) list.Add(Res.GuardianStructures.format(countStructures));
 
                 var countBeacons = Game.canonn.allBeacons.Count(r => r.systemAddress == next.SystemAddress);
-                if (countBeacons > 0) list.Add(RES("GuardianBeacon"));
+                if (countBeacons > 0) list.Add(Res.GuardianBeacon);
 
                 if (list.Count > 0)
-                    netData.special[RES("SpecialGuardian")] = list;
+                    netData.special[Res.SpecialGuardian] = list;
             }
 
             if (game.cmdr.route.active && game.cmdr.route.nextHop?.id64 == next.SystemAddress)
             {
-                var set = netData.special.init(RES("SpecialRouteHop"));
-                set.Add(RES("SpecialHopInfo", game.cmdr.route.last + 1, game.cmdr.route.hops.Count));
+                var set = netData.special.init(Res.SpecialRouteHop);
+                set.Add(Res.SpecialHopInfo.format(game.cmdr.route.last + 1, game.cmdr.route.hops.Count));
                 // and show any notes
                 if (game.cmdr.route.nextHop?.notes != null)
                     set.Add(game.cmdr.route.nextHop.notes!);
@@ -184,7 +185,7 @@ namespace SrvSurvey.plotters
             {
                 var nextRegion = EliteDangerousRegionMap.RegionMap.FindRegion(next.StarPos);
                 if (nextRegion.Name != GalacticRegions.current)
-                    netData.special.init(RES("SpecialNowEntering")).Add(nextRegion.Name);
+                    netData.special.init(Res.SpecialNowEntering).Add(nextRegion.Name);
             }
             else
                 Debugger.Break();
@@ -226,12 +227,12 @@ namespace SrvSurvey.plotters
 
             // 1st line the name of the system we are jumping to
             dty += two;
-            drawTextAt2(eight, RES("NextJump"));
+            drawTextAt2(eight, Res.NextJump);
             dty -= two;
 
             drawTextAt2(" " + this.netData.systemName, GameColors.fontMiddleBold);
             if (netData.starClass != null)
-                drawTextAt2(this.Width - eight, RES("StarClass", netData.starClass), netData.starClass == "N" ? GameColors.Cyan : null, null, true);
+                drawTextAt2(this.Width - eight, Res.StarClass.format(netData.starClass), netData.starClass == "N" ? GameColors.Cyan : null, null, true);
             newLine(+ten, true);
 
             this.drawJumpLine();
@@ -240,12 +241,12 @@ namespace SrvSurvey.plotters
             if (netData.totalBodyCount == 0)
                 drawTextAt2(eight, $"▶️ {netData.discoveryStatus}", GameColors.Cyan);
             else if (netData.discoveredDate.HasValue)
-                drawTextAt2(eight, $"▶️ " + RES("DiscoveredBy", netData.discoveredBy, netData.discoveredDate.Value.ToString("d")));
+                drawTextAt2(eight, $"▶️ " + Res.DiscoveredBy.format(netData.discoveredBy, netData.discoveredDate.Value.ToString("d")));
 
             var lastUpdated = netData.lastUpdated;// ?? netData.spanshSystem?.updated_at.GetValueOrDefault()?.ToLocalTime();
             if (lastUpdated != null && (lastUpdated > netData.discoveredDate || netData.discoveredDate == null))
             {
-                drawTextAt2($" ▶️ " + RES("LastUpdated", lastUpdated.Value.ToString("d")));
+                drawTextAt2($" ▶️ " + Res.LastUpdated.format(lastUpdated.Value.ToString("d")));
                 //drawTextAt2(eight, lineTwo, netData.discovered == false ? GameColors.Cyan : null);
                 //drawTextAt2(Game.settings.useLastUpdatedFromSpanshNotEDSM ? "(Spansh)" : "(EDSM)", GameColors.OrangeDim);
             }
@@ -255,7 +256,7 @@ namespace SrvSurvey.plotters
             var traffic = netData.edsmTraffic?.traffic;
             if (traffic != null && traffic.total > 0)
             {
-                var lineThree = $"▶️ " + RES("TrafficInfo", traffic.day.ToString("n0"), traffic.week.ToString("n0"), traffic.total.ToString("n0"));
+                var lineThree = $"▶️ " + Res.TrafficInfo.format(traffic.day.ToString("n0"), traffic.week.ToString("n0"), traffic.total.ToString("n0"));
                 drawTextAt2(eight, lineThree);
                 drawTextAt2(" (EDSM)", GameColors.OrangeDim);
                 newLine(+two, true);
@@ -278,7 +279,7 @@ namespace SrvSurvey.plotters
                 foreach (var pair in netData.special)
                 {
                     drawTextAt2(eight, $"▶️ {pair.Key}: ", GameColors.Cyan);
-                    drawTextAt2(string.Join(RES("SpecialJoiner") + " ", pair.Value), GameColors.Cyan);
+                    drawTextAt2(string.Join(Res.SpecialJoiner + " ", pair.Value), GameColors.Cyan);
                     newLine(+two, true);
                 }
             }
@@ -294,8 +295,8 @@ namespace SrvSurvey.plotters
             if (hopDistances.Count == 0) return;
             dty += six;
             // draw text for `#1 of 2` on left, and total distance travelled on the right
-            var szLeft = drawTextAt(eight, RES("JumpCounts", nextHopIdx + 1, hopDistances.Count));
-            var szRight = drawTextAt(this.Width - eight, RES("JumpDistance", totalDistance.ToString("N1")), null, null, true);
+            var szLeft = drawTextAt(eight, Res.JumpCounts.format(nextHopIdx + 1, hopDistances.Count));
+            var szRight = drawTextAt(this.Width - eight, Res.JumpDistance.format(totalDistance.ToString("N1")), null, null, true);
 
             // calc left edge of line + whole line width to fix between rendered text
             var left = szLeft.Width + oneFour;

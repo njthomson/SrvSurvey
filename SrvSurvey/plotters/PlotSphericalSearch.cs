@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.widgets;
+using Res = Loc.PlotSphericalSearch;
 
 namespace SrvSurvey.plotters
 {
@@ -255,24 +256,24 @@ namespace SrvSurvey.plotters
 
         private void drawSphereLimit()
         {
-            var ww = ten + Util.maxWidth(this.Font, RES("From"), RES("To"), RES("Distance"));
+            var ww = ten + Util.maxWidth(this.Font, Res.From, Res.To, Res.Distance);
 
-            this.drawTextAt(eight, RES("From"));
+            this.drawTextAt(eight, Res.From);
             this.drawTextAt(ww, game.cmdr.sphereLimit.centerSystemName);
             newLine(true);
 
-            this.drawTextAt(eight, RES("To"));
+            this.drawTextAt(eight, Res.To);
             this.drawTextAt(ww, this.targetSystemName);
             newLine(true);
 
-            this.drawTextAt(eight, RES("Distance"));
+            this.drawTextAt(eight, Res.Distance);
             if (this.distance == -1)
             {
                 this.drawTextAt(ww, "...");
             }
             else if (this.distance == -2)
             {
-                this.drawTextAt(ww, RES("UnknownDist"), GameColors.brushRed);
+                this.drawTextAt(ww, Res.UnknownDist, GameColors.brushRed);
             }
             else if (this.distance >= 0)
             {
@@ -280,9 +281,9 @@ namespace SrvSurvey.plotters
                 var limitDist = game.cmdr.sphereLimit.radius.ToString("N2");
 
                 if (this.distance < game.cmdr.sphereLimit.radius)
-                    this.drawTextAt(ww, RES("DistanceWithin", dist, limitDist), GameColors.brushCyan);
+                    this.drawTextAt(ww, Res.DistanceWithin.format(dist, limitDist), GameColors.brushCyan);
                 else
-                    this.drawTextAt(ww, RES("DistanceExceeds", dist, limitDist), GameColors.brushRed);
+                    this.drawTextAt(ww, Res.DistanceExceeds.format(dist, limitDist), GameColors.brushRed);
             }
 
             newLine(true);
@@ -305,9 +306,9 @@ namespace SrvSurvey.plotters
             if (boxelSearch?.active != true || boxelSearch.current == null) return;
 
             var ff = GameColors.fontSmall;
-            var ww = ten + Util.maxWidth(ff, RES("Boxel"), RES("Visited"), RES("Next"));
+            var ww = ten + Util.maxWidth(ff, Res.Boxel, Res.Visited, Res.Next);
 
-            this.drawTextAt(eight, RES("Boxel"), ff);
+            this.drawTextAt(eight, Res.Boxel, ff);
             this.drawTextAt(ww, boxelSearch.boxel.prefix + " ...", ff);
             newLine(two, true);
 
@@ -319,12 +320,12 @@ namespace SrvSurvey.plotters
                 newLine(two, true);
             }
 
-            this.drawTextAt(eight, RES("Visited"), ff);
+            this.drawTextAt(eight, Res.Visited, ff);
             var pp = (1f / boxelSearch.currentCount * boxelSearch.countSystemsComplete).ToString("p0");
-            this.drawTextAt(ww, RES("VisitedOf", pp, boxelSearch.countSystemsComplete, boxelSearch.currentCount), ff);
+            this.drawTextAt(ww, Res.VisitedOf.format(pp, boxelSearch.countSystemsComplete, boxelSearch.currentCount), ff);
             newLine(two, true);
 
-            this.drawTextAt(eight, RES("Next"), ff);
+            this.drawTextAt(eight, Res.Next, ff);
             var next = boxelSearch.nextSystem;
             if (next == boxelSearch.current.prefix || next == boxelSearch.boxel.prefix) next += " ?";
             this.drawTextAt(ww, next, GameColors.fontMiddle);
@@ -367,8 +368,9 @@ namespace SrvSurvey.plotters
                 dty += one;
             }
 
+            // TODO: Localize the following ...
             var ff = GameColors.Fonts.gothic_10;
-            var ww = ten + Util.maxWidth(ff, RES("Boxel"), "Distance:");
+            var ww = ten + Util.maxWidth(ff, Res.Boxel, "Distance:");
             var route = game.cmdr.route!;
 
             var txt = $"Following route: ";

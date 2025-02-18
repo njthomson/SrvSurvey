@@ -2,6 +2,7 @@
 using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.Drawing.Drawing2D;
+using Res = Loc.PlotTrackTarget;
 
 namespace SrvSurvey.plotters
 {
@@ -107,7 +108,7 @@ namespace SrvSurvey.plotters
                                                               //var headingTxt = this.targetAngle.ToString("N0");
             var sz = g.MeasureString(headingTxt, GameColors.fontSmall);
             var ty = this.Height - sz.Height - six;
-            BaseWidget.renderText(g, RES("BearingTo", this.td.angle.ToString()), four, ty, GameColors.fontSmall);
+            BaseWidget.renderText(g, Res.BearingTo.format(this.td.angle.ToString()), four, ty, GameColors.fontSmall);
 
             // draw distance text (center top)
             var dist = td.distance; // TODO: this.targetDist
@@ -115,7 +116,7 @@ namespace SrvSurvey.plotters
             if ((game.status.Flags & StatusFlags.AltitudeFromAverageRadius) > 0)
                 dist += td.distance + game.status.Altitude; // Remove it? I don't think it helps any more
 
-            var txt = RES("DistanceTo", Util.metersToString(dist));
+            var txt = Res.DistanceTo.format(Util.metersToString(dist));
             BaseWidget.renderText(g, txt, four, ten, GameColors.fontSmall);
 
             var gt = new GroundTarget(this.Font);

@@ -22,14 +22,14 @@ namespace Loc {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class PlotTrackTarget {
+    internal class PlotSysStatus {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal PlotTrackTarget() {
+        internal PlotSysStatus() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Loc {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SrvSurvey.plotters.PlotTrackTarget", typeof(PlotTrackTarget).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SrvSurvey.plotters.PlotSysStatus", typeof(PlotSysStatus).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,83 @@ namespace Loc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bearing: {0}.
+        ///   Looks up a localized string similar to | {0}x Bio signals on: .
         /// </summary>
-        internal static string BearingTo {
+        internal static string BioSignals {
             get {
-                return ResourceManager.GetString("BearingTo", resourceCulture);
+                return ResourceManager.GetString("BioSignals", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Distance: {0}.
+        ///   Looks up a localized string similar to  {0}x bodies: .
         /// </summary>
-        internal static string DistanceTo {
+        internal static string DssRemaining {
             get {
-                return ResourceManager.GetString("DistanceTo", resourceCulture);
+                return ResourceManager.GetString("DssRemaining", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FSS {0}% complete.
+        /// </summary>
+        internal static string FssCompleteLong {
+            get {
+                return ResourceManager.GetString("FssCompleteLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FSS {0}%.
+        /// </summary>
+        internal static string FssCompleteShort {
+            get {
+                return ResourceManager.GetString("FssCompleteShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FSS not started.
+        /// </summary>
+        internal static string FssNotStarted {
+            get {
+                return ResourceManager.GetString("FssNotStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DSS survey: .
+        /// </summary>
+        internal static string Header {
+            get {
+                return ResourceManager.GetString("Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next system:.
+        /// </summary>
+        internal static string NextSystem {
+            get {
+                return ResourceManager.GetString("NextSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        internal static string NoDssMeet {
+            get {
+                return ResourceManager.GetString("NoDssMeet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ► {0} non-body signals.
+        /// </summary>
+        internal static string NonBodySignals {
+            get {
+                return ResourceManager.GetString("NonBodySignals", resourceCulture);
             }
         }
     }

@@ -108,15 +108,95 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="plotters\PlotBioStatus.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotBioStatus.resx</DependentUpon>
+    </Compile>
+    <Compile Update="plotters\PlotBioSystem.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotBioSystem.resx</DependentUpon>
+    </Compile>
+    <Compile Update="plotters\PlotBodyInfo.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotBodyInfo.resx</DependentUpon>
+    </Compile>
+    <Compile Update="plotters\PlotFlightWarning.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotFlightWarning.resx</DependentUpon>
+    </Compile>
+    <Compile Update="plotters\PlotFSS.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotFSS.resx</DependentUpon>
+    </Compile>
+    <Compile Update="plotters\PlotFSSInfo.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotFSSInfo.resx</DependentUpon>
+    </Compile>
     <Compile Update="plotters\PlotGalMap.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>PlotGalMap.resx</DependentUpon>
     </Compile>
+    <Compile Update="plotters\PlotGrounded.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotGrounded.resx</DependentUpon>
+    </Compile>
     <Compile Update="plotters\PlotGuardianSystem.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>PlotGuardianSystem.resx</DependentUpon>
+    </Compile>
+    <Compile Update="plotters\PlotHumanSite.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotHumanSite.resx</DependentUpon>
+    </Compile>
+    <Compile Update="plotters\PlotJumpInfo.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotJumpInfo.resx</DependentUpon>
+    </Compile>
+    <Compile Update="plotters\PlotMassacre.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotMassacre.resx</DependentUpon>
+    </Compile>
+    <Compile Update="plotters\PlotPriorScans.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotPriorScans.resx</DependentUpon>
+    </Compile>
+    <Compile Update="plotters\PlotRamTah.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotRamTah.resx</DependentUpon>
+    </Compile>
+    <Compile Update="plotters\PlotSphericalSearch.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotSphericalSearch.resx</DependentUpon>
+    </Compile>
+    <Compile Update="plotters\PlotSysStatus.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotSysStatus.resx</DependentUpon>
+    </Compile>
+    <Compile Update="plotters\PlotTrackers.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotTrackers.resx</DependentUpon>
+    </Compile>
+    <Compile Update="plotters\PlotTrackTarget.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotTrackTarget.resx</DependentUpon>
     </Compile>
     <Compile Update="Properties\Codex.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -173,9 +253,44 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Reputation.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Update="plotters\PlotBioStatus.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotBioStatus.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotBioSystem.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotBioSystem.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotBodyInfo.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotBodyInfo.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotFlightWarning.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotFlightWarning.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotFSS.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotFSS.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotFSSInfo.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotFSSInfo.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Update="plotters\PlotGalMap.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PlotGalMap.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotGrounded.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotGrounded.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Loc</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Update="plotters\PlotGuardianSystem.resx">
@@ -185,6 +300,49 @@
     </EmbeddedResource>
     <EmbeddedResource Update="plotters\PlotHumanSite.resx">
       <SubType>Designer</SubType>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotHumanSite.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotJumpInfo.resx">
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotJumpInfo.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotMassacre.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotMassacre.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotPriorScans.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotPriorScans.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotRamTah.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotRamTah.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotSphericalSearch.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotSphericalSearch.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotSysStatus.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotSysStatus.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotTrackers.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotTrackers.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotTrackTarget.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotTrackTarget.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Codex.resx">
       <Generator>ResXFileCodeGenerator</Generator>

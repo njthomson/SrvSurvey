@@ -1,3 +1,10 @@
+/forms/ViewLogs.es.resx
+	btnClear.Text
+	btnClose.Text
+	btnCopy.Text
+	btnOpenFolder.Text
+	$this.Text
+
 /plotters/PlotBioSystem.es.resx
 	NotPredicted
 

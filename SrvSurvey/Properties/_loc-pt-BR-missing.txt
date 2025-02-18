@@ -83,6 +83,13 @@
 	label6.Text
 	$this.Text
 
+/forms/ViewLogs.pt-BR.resx
+	btnClear.Text
+	btnClose.Text
+	btnCopy.Text
+	btnOpenFolder.Text
+	$this.Text
+
 /plotters/PlotBioStatus.pt-BR.resx
 	DssRequired
 	FooterAllScanned

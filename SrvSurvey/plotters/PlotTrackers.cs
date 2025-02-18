@@ -1,6 +1,7 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
+using Res = Loc.PlotTrackers;
 
 namespace SrvSurvey.plotters
 {
@@ -151,7 +152,7 @@ namespace SrvSurvey.plotters
         {
             if (game?.systemData == null || game.systemBody == null || game.systemBody.bookmarks == null || game.systemBody.bookmarks?.Count == 0) return;
 
-            this.drawTextAt(eight, RES("HeaderLine", game.systemBody.bookmarks?.Count ?? 0), GameColors.fontSmall);
+            this.drawTextAt(eight, Res.HeaderLine.format(game.systemBody.bookmarks?.Count ?? 0), GameColors.fontSmall);
             newLine(+eight, true);
 
             // measure width of all names

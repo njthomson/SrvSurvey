@@ -832,6 +832,31 @@ namespace SrvSurvey
             }
         }
 
+        /// <summary> Returns the localized string for something</summary>
+        public static string getLoc(string name)
+        {
+            switch (name)
+            {
+                // Guardian items for Ram Tah missions
+                case "casket": return Properties.Guardian.ItemCasket;
+                case "orb": return Properties.Guardian.ItemOrb;
+                case "relic": return Properties.Guardian.ItemRelic;
+                case "tablet": return Properties.Guardian.ItemTablet;
+                case "totem": return Properties.Guardian.ItemTotem;
+                case "urn": return Properties.Guardian.ItemUrn;
+
+                case "sensor": return Properties.Guardian.ItemSensor;
+                case "probe": return Properties.Guardian.ItemProbe;
+                case "link": return Properties.Guardian.ItemLink;
+                case "cyclops": return Properties.Guardian.ItemCyclops;
+                case "basilisk": return Properties.Guardian.ItemBasilisk;
+                case "medusa": return Properties.Guardian.ItemMedusa;
+
+                default:
+                    throw new Exception($"Unexpected localizable name: '{name}'");
+            }
+        }
+
         /// <summary>
         /// Returns True if the two numbers are within tolerance of each other.
         /// </summary>
@@ -1261,7 +1286,7 @@ namespace SrvSurvey
         /// <summary>
         /// Apply String.Format to the given string with the given parameters
         /// </summary>
-        public static string format(this string txt, params object[] args)
+        public static string format(this string txt, params object?[] args)
         {
             return string.Format(txt, args);
         }

@@ -4,6 +4,7 @@ using SrvSurvey.game;
 using SrvSurvey.Properties;
 using SrvSurvey.widgets;
 using System.Diagnostics;
+using Res = Loc.PlotBioStatus;
 
 namespace SrvSurvey.plotters
 {
@@ -137,7 +138,7 @@ namespace SrvSurvey.plotters
             if (game.systemBody.organisms?.Count > 0)
             {
                 g.DrawString(
-                    RES("Header", game.systemBody.bioSignalCount, game.systemBody.countAnalyzedBioSignals),
+                    Res.Header.format(game.systemBody.bioSignalCount, game.systemBody.countAnalyzedBioSignals),
                     GameColors.fontSmall, GameColors.brushGameOrange, four, eight);
 
                 var organism = scanOne == null ? null : game.systemBody?.organisms?.FirstOrDefault(_ => _.species == scanOne.species);
@@ -149,7 +150,7 @@ namespace SrvSurvey.plotters
                     if (scanOne?.body != null && scanOne.body != game.systemBody?.name)
                     {
                         var matchGenus = Game.codexRef.matchFromGenus(scanOne.genus);
-                        var sz = this.drawFooterText(g, RES("WarningStaleScans", matchGenus?.locName, scanOne.body), GameColors.brushRed);
+                        var sz = this.drawFooterText(g, Res.WarningStaleScans.format(matchGenus?.locName, scanOne.body), GameColors.brushRed);
 
                         var y = ClientSize.Height - twenty;
                         var w = (ClientSize.Width - sz.Width - oneSix) / 2;
@@ -165,7 +166,7 @@ namespace SrvSurvey.plotters
             else
             {
                 // show a message if cmdr forgot to DSS the body
-                var msg = RES("DssRequired");
+                var msg = Res.DssRequired;
                 var mid = this.Size / 2;
                 var font = GameColors.fontSmall;
                 var sz = g.MeasureString(msg, GameColors.fontMiddle);
@@ -178,9 +179,9 @@ namespace SrvSurvey.plotters
             {
                 var allScanned = game.systemBody!.countAnalyzedBioSignals == game.systemBody.bioSignalCount;
                 if (allScanned && game.systemBody.firstFootFall)
-                    this.drawFooterText(g, RES("FooterAllScannedFF"));
+                    this.drawFooterText(g, Res.FooterAllScannedFF);
                 else if (allScanned)
-                    this.drawFooterText(g, RES("FooterAllScanned"), GameColors.brushGameOrange);
+                    this.drawFooterText(g, Res.FooterAllScanned, GameColors.brushGameOrange);
                 else if (this.lastCodexScan != null)
                 {
                     this.drawFooterText(g, this.lastCodexScan, GameColors.brushCyan);
@@ -188,11 +189,11 @@ namespace SrvSurvey.plotters
                         this.drawHasImage(g, this.Width - threeSix, this.Height - threeSix);
                 }
                 else if (game.systemBody.firstFootFall && Random.Shared.NextDouble() > 0.5d)
-                    this.drawFooterText(g, RES("FooterApplyFF"), GameColors.brushCyan);
+                    this.drawFooterText(g, Res.FooterApplyFF, GameColors.brushCyan);
                 //else if (!game.systemBody.wasMapped && game.systemBody.countAnalyzedBioSignals == 0 && Game.settings.useExternalData && Game.settings.autoLoadPriorScans && Program.getPlotter<PlotPriorScans>() == null)
                 //    this.drawFooterText(g, "Potential first footfall - send '.ff' to confirm", GameColors.brushCyan);
                 else
-                    this.drawFooterText(g, RES("FooterUseCompScanner"));
+                    this.drawFooterText(g, Res.FooterUseCompScanner);
             }
         }
 
@@ -245,7 +246,7 @@ namespace SrvSurvey.plotters
             {
                 var reward = game.systemBody!.firstFootFall ? organism.reward * 5 : organism.reward;
                 var txt2 = Util.credits(reward);
-                if (game.systemBody.firstFootFall) txt2 += " " + RES("SuffixFF");
+                if (game.systemBody.firstFootFall) txt2 += " " + Res.SuffixFF;
                 g.DrawString(
                     txt2,
                     GameColors.fontSmall, GameColors.brushCyan,
@@ -347,7 +348,7 @@ namespace SrvSurvey.plotters
             {
                 Game.log($"Why is game.systemBody!.organisms NULL ??");
                 g.DrawString(
-                    RES("SomethingWrong"),
+                    Res.SomethingWrong,
                     GameColors.fontSmall,
                     Brushes.OrangeRed,
                     x, y);
@@ -412,7 +413,7 @@ namespace SrvSurvey.plotters
                 while (n < body.geoSignalCount)
                 {
                     // TODO: use a widget
-                    var txt = RES("GeoN", n + 1);
+                    var txt = Res.GeoN.format(n + 1);
 
                     var sz = g.MeasureString(txt, GameColors.fontSmall);
                     if (x + sz.Width > this.Width - oneSix)

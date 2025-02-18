@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.widgets;
+using Res = Loc.PlotSysStatus;
 
 namespace SrvSurvey.plotters
 {
@@ -70,7 +71,7 @@ namespace SrvSurvey.plotters
                 }
 
                 this.dty = eight;
-                drawTextAt2(six, RES("Header"), GameColors.fontSmall);
+                drawTextAt2(six, Res.Header, GameColors.fontSmall);
                 newLine(0, true);
                 dtx = six;
 
@@ -80,7 +81,7 @@ namespace SrvSurvey.plotters
                 if (this.nextSystem != null)
                 {
                     // render next system only, if populated
-                    this.drawTextAt2(RES("NextSystem"));
+                    this.drawTextAt2(Res.NextSystem);
                     this.drawTextAt2(this.nextSystem, GameColors.Cyan);
                     return;
                 }
@@ -88,26 +89,26 @@ namespace SrvSurvey.plotters
                 var dssRemaining = game.systemData.getDssRemainingNames();
                 if (!game.systemData.honked)
                 {
-                    this.drawTextAt2(RES("FssNotStarted"), GameColors.Cyan);
+                    this.drawTextAt2(Res.FssNotStarted, GameColors.Cyan);
                 }
                 else if (!game.systemData.fssComplete)
                 {
                     var fssProgress = 100.0 / (float)game.systemData.bodyCount * (float)game.systemData.fssBodyCount;
                     var txt = dssRemaining.Count == 0
-                        ? RES("FssCompleteLong", (int)fssProgress)
-                        : RES("FssCompleteShort", (int)fssProgress);
+                        ? Res.FssCompleteLong.format((int)fssProgress)
+                        : Res.FssCompleteShort.format((int)fssProgress);
                     this.drawTextAt2(txt, GameColors.Cyan);
                 }
 
                 if (dssRemaining.Count > 0)
                 {
                     if (dtx > 6) this.drawTextAt2(" ");
-                    this.drawTextAt2(RES("DssRemaining", dssRemaining.Count));
+                    this.drawTextAt2(Res.DssRemaining.format(dssRemaining.Count));
                     this.drawRemainingBodies(destinationBody, dssRemaining);
                 }
                 else if (game.systemData.fssComplete && game.systemData.honked)
                 {
-                    this.drawTextAt2(RES("NoDssMeet"));
+                    this.drawTextAt2(Res.NoDssMeet);
                 }
                 newLine(true);
 
@@ -116,7 +117,7 @@ namespace SrvSurvey.plotters
                     var bioRemaining = game.systemData.getBioRemainingNames();
                     if (bioRemaining.Count > 0)
                     {
-                        this.drawTextAt2(RES("BioSignals", game.systemData.bioSignalsRemaining));
+                        this.drawTextAt2(Res.BioSignals.format(game.systemData.bioSignalsRemaining));
                         this.drawRemainingBodies(destinationBody, bioRemaining);
                     }
                 }
@@ -124,7 +125,7 @@ namespace SrvSurvey.plotters
                 var nonBodySignalCount = game.systemData.nonBodySignalCount;
                 if (Game.settings.showNonBodySignals && nonBodySignalCount > 0)
                 {
-                    var sz = this.drawTextAt2(six, RES("NonBodySignals", nonBodySignalCount), GameColors.fontSmall2);
+                    var sz = this.drawTextAt2(six, Res.NonBodySignals.format(nonBodySignalCount), GameColors.fontSmall2);
                     newLine(true);
                 }
             }

@@ -2,6 +2,7 @@
 using SrvSurvey.widgets;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
+using Res = Loc.PlotBioSystem;
 
 namespace SrvSurvey.plotters
 {
@@ -184,7 +185,7 @@ namespace SrvSurvey.plotters
         {
             if (game == null) return;
 
-            drawTextAt(eight, RES("BodyBio_Header", body.shortName, body.bioSignalCount), GameColors.brushGameOrange);
+            drawTextAt(eight, Res.BodyBio_Header.format(body.shortName, body.bioSignalCount), GameColors.brushGameOrange);
             newLine(+eight, true);
 
             if (this.durationTimer.Enabled && this.durationCount > 0)
@@ -195,7 +196,7 @@ namespace SrvSurvey.plotters
                 if (!body.dssComplete)
                 {
                     dty -= four;
-                    this.drawTextAt(ten, "► " + RES("DssRequired"), GameColors.brushCyan);
+                    this.drawTextAt(ten, "► " + Res.DssRequired, GameColors.brushCyan);
                     newLine(+four, true);
                 }
 
@@ -252,7 +253,7 @@ namespace SrvSurvey.plotters
                     }
                     else
                     {
-                        displayName = RES("NotPredicted");
+                        displayName = Res.NotPredicted;
                     }
 
                     var minReward = body.getBioRewardForGenus(organism, true);
@@ -324,14 +325,14 @@ namespace SrvSurvey.plotters
 
             // summary footer
             this.dty += two;
-            var footerTxt = RES("RewardFooter", body.getMinMaxBioRewards(false));
+            var footerTxt = Res.RewardFooter.format(body.getMinMaxBioRewards(false));
             drawTextAt(eight, footerTxt, GameColors.brushGameOrange);
             newLine(true);
 
             if (body.firstFootFall)
             {
                 this.dty += two;
-                drawTextAt(this.Width - eight, RES("FFBonus", body.getMinMaxBioRewards(true)), GameColors.brushCyan, null, true);
+                drawTextAt(this.Width - eight, Res.FFBonus.format(body.getMinMaxBioRewards(true)), GameColors.brushCyan, null, true);
                 dtx = lastTextSize.Width;
                 newLine(true);
             }
@@ -342,7 +343,7 @@ namespace SrvSurvey.plotters
                 g.DrawLine(GameColors.penGameOrangeDim1, eight, dty - five, this.ClientSize.Width - eight, dty - five);
                 dty += two;
 
-                drawTextAt(eight, RES("GeoSignals", body.geoSignalCount), GameColors.brushGameOrange);
+                drawTextAt(eight, Res.GeoSignals.format(body.geoSignalCount), GameColors.brushGameOrange);
                 newLine(+four, true);
 
                 // geo signals?
@@ -490,7 +491,7 @@ namespace SrvSurvey.plotters
         {
             if (game.systemData == null) return;
 
-            this.drawTextAt(RES("SysBio_Header", game.systemData.bioSignalsTotal), GameColors.brushGameOrange, GameColors.fontSmall);
+            this.drawTextAt(Res.SysBio_Header.format(game.systemData.bioSignalsTotal), GameColors.brushGameOrange, GameColors.fontSmall);
             newLine(+four, true);
 
             //var anyFoo = game.systemData.bodies.Any(b => b.id == game.status.Destination?.Body && b.bioSignalCount > 0);
@@ -587,18 +588,18 @@ namespace SrvSurvey.plotters
             if (fssNeeded)
             {
                 dty += eight;
-                this.drawTextAt(six, "► " + RES("FssRequired"), GameColors.brushCyan, GameColors.fontSmall);
+                this.drawTextAt(six, "► " + Res.FssRequired, GameColors.brushCyan, GameColors.fontSmall);
                 newLine(true);
             }
 
             this.dty += four;
-            var footerTxt = RES("RewardFooter", Util.getMinMaxCredits(game.systemData.getMinBioRewards(false), game.systemData.getMaxBioRewards(false)));
+            var footerTxt = Res.RewardFooter.format(Util.getMinMaxCredits(game.systemData.getMinBioRewards(false), game.systemData.getMaxBioRewards(false)));
             this.drawTextAt(six, footerTxt, GameColors.brushGameOrange, GameColors.fontSmall);
             newLine(+two, true);
 
             if (anyFF)
             {
-                drawTextAt(this.Width - eight, RES("FFBonus", Util.getMinMaxCredits(game.systemData.getMinBioRewards(true), game.systemData.getMaxBioRewards(true))), GameColors.brushCyan, null, true);
+                drawTextAt(this.Width - eight, Res.FFBonus.format(Util.getMinMaxCredits(game.systemData.getMinBioRewards(true), game.systemData.getMaxBioRewards(true))), GameColors.brushCyan, null, true);
                 dtx = lastTextSize.Width;
                 newLine(+two, true);
             }

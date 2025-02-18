@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.widgets;
+using Res = Loc.PlotFSS;
 
 namespace SrvSurvey.plotters
 {
@@ -49,7 +50,7 @@ namespace SrvSurvey.plotters
                 lastInitialValue = Util.GetBodyValue(lastFssBody, false, false).ToString("N0");
                 lastMappedValue = Util.GetBodyValue(lastFssBody, true, true).ToString("N0");
                 if (lastFssBody.bioSignalCount > 0)
-                    lastNotes = RES("CountBioSignals", lastFssBody.bioSignalCount);
+                    lastNotes = Res.CountBioSignals.format(lastFssBody.bioSignalCount);
                 else
                     lastNotes = "";
             }
@@ -133,7 +134,7 @@ namespace SrvSurvey.plotters
 
                 if (bioSignal != null)
                 {
-                    lastNotes = RES("CountBioSignals", bioSignal.Count);
+                    lastNotes = Res.CountBioSignals.format(bioSignal.Count);
 
                     //var hasVulcanism = !string.IsNullOrEmpty(entry.Volcanism);
                     //// TODO: consider check for zero or low atmosphere?
@@ -153,7 +154,7 @@ namespace SrvSurvey.plotters
             var col = lastWasDiscovered ? GameColors.Orange : GameColors.Cyan;
 
             dty = eight;
-            drawTextAt2(four, RES("LastScan", lastBodyName), col, GameColors.fontSmaller);
+            drawTextAt2(four, Res.LastScan.format(lastBodyName), col, GameColors.fontSmaller);
 
             if (game?.systemData?.lastFssBody != null)
                 drawTextAt2(ClientSize.Width - eight, game.systemData.lastFssBody.distanceFromArrivalLS.ToString("N0") + " LS", col, GameColors.fontSmaller, true);
@@ -161,12 +162,12 @@ namespace SrvSurvey.plotters
 
             if (string.IsNullOrEmpty(lastBodyName)) return;
 
-            var ww = oneEight + eight + Util.maxWidth(this.Font, "► " + RES("EstimatedValue"), "► " + RES("WithSurfaceScan"));
+            var ww = oneEight + eight + Util.maxWidth(this.Font, "► " + Res.EstimatedValue, "► " + Res.WithSurfaceScan);
 
-            drawTextAt2(oneEight, "► " + RES("EstimatedValue"));
+            drawTextAt2(oneEight, "► " + Res.EstimatedValue);
             drawTextAt2(ww, $"{lastInitialValue} cr");
             newLine(true);
-            drawTextAt2(oneEight, "► " + RES("WithSurfaceScan"));
+            drawTextAt2(oneEight, "► " + Res.WithSurfaceScan);
             drawTextAt2(ww, $"{lastMappedValue} cr");
             newLine(true);
 

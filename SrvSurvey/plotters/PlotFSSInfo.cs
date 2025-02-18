@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.widgets;
+using Res = Loc.PlotFSSInfo;
 
 namespace SrvSurvey.plotters
 {
@@ -114,17 +115,17 @@ namespace SrvSurvey.plotters
             // 2nd line body count / values
             var bodyCount = game.systemData.bodies.Count(_ => _.scanned && _.type != SystemBodyType.Asteroid).ToString();
             if (game.systemData.fssAllBodies)
-                drawTextAt2(eight, RES("ScannedAllBodies", bodyCount, Util.credits(game.systemData.sumRewards())));
+                drawTextAt2(eight, Res.ScannedAllBodies.format(bodyCount, Util.credits(game.systemData.sumRewards())));
             else
-                drawTextAt2(eight, RES("ScannedBodies", bodyCount, Util.credits(game.systemData.sumRewards())));
+                drawTextAt2(eight, Res.ScannedBodies.format(bodyCount, Util.credits(game.systemData.sumRewards())));
 
             newLine(true);
-            drawTextAt2(eight, RES("HidingBodies", Util.credits(Game.settings.hideFssLowValueAmount)), GameColors.OrangeDim);
+            drawTextAt2(eight, Res.HidingBodies.format(Util.credits(Game.settings.hideFssLowValueAmount)), GameColors.OrangeDim);
             newLine(+eight, true);
 
             if (scans.Count == 0)
             {
-                drawTextAt2(eight, RES("ScanToPopulate"));
+                drawTextAt2(eight, Res.ScanToPopulate);
                 newLine(true);
             }
 
@@ -174,7 +175,7 @@ namespace SrvSurvey.plotters
                 {
                     drawTextAt2(" | ", GameColors.OrangeDim);
                     var analyzed = scan.body.countAnalyzedBioSignals == scan.body.bioSignalCount;
-                    var sz = drawTextAt2(RES("CountGenus", scan.body.bioSignalCount), analyzed ? GameColors.Orange : GameColors.Cyan);
+                    var sz = drawTextAt2(Res.CountGenus.format(scan.body.bioSignalCount), analyzed ? GameColors.Orange : GameColors.Cyan);
                     if (analyzed)
                         strikeThrough(dtx, dty + two + sz.Height / 2, -sz.Width, false);
                 }
@@ -183,7 +184,7 @@ namespace SrvSurvey.plotters
                 {
                     drawTextAt2(" | ", GameColors.OrangeDim);
                     var analyzed = scan.body.geoSignalNames.Count == scan.body.geoSignalCount;
-                    var sz = drawTextAt2(RES("CountGeo", scan.body.geoSignalCount), analyzed ? GameColors.Orange : GameColors.Cyan);
+                    var sz = drawTextAt2(Res.CountGeo.format(scan.body.geoSignalCount), analyzed ? GameColors.Orange : GameColors.Cyan);
                     if (analyzed)
                         strikeThrough(dtx, dty + two + sz.Height / 2, -sz.Width, false);
 
@@ -197,9 +198,9 @@ namespace SrvSurvey.plotters
                     break;
             }
 
-            drawTextAt2(eight, RES("Footer1"), GameColors.OrangeDim);
+            drawTextAt2(eight, Res.Footer1, GameColors.OrangeDim);
             newLine(true);
-            drawTextAt2(eight, RES("Footer2"), GameColors.OrangeDim);
+            drawTextAt2(eight, Res.Footer2, GameColors.OrangeDim);
             newLine(true);
 
             this.formAdjustSize(+oneEight, +ten);

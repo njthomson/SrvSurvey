@@ -6,6 +6,7 @@ using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.Diagnostics;
 using System.Globalization;
+using Res = Loc.PlotHumanSite;
 
 namespace SrvSurvey.plotters
 {
@@ -534,20 +535,20 @@ namespace SrvSurvey.plotters
             var headerLeftSz = drawTextAt2(eight, headerTxt);
 
             // (one time) figure out how much space we need for the zoom headers
-            if (zoomLevelAutoWidth == 0) zoomLevelAutoWidth = 8 + Util.maxWidth(GameColors.fontSmall, RES("ZoomHeaderAuto", (44.4f).ToString("N1")));
-            if (zoomLevelMinWidth == 0) zoomLevelMinWidth = 8 + Util.maxWidth(GameColors.fontSmall, RES("ZoomHeaderMin", (44.4f).ToString("N1")));
+            if (zoomLevelAutoWidth == 0) zoomLevelAutoWidth = 8 + Util.maxWidth(GameColors.fontSmall, Res.ZoomHeaderAuto.format((44.4f).ToString("N1")));
+            if (zoomLevelMinWidth == 0) zoomLevelMinWidth = 8 + Util.maxWidth(GameColors.fontSmall, Res.ZoomHeaderMin.format((44.4f).ToString("N1")));
 
             // header - right (if there's enough space)
             if (headerLeftSz.Width < this.Width - zoomLevelAutoWidth)
             {
                 var zoomText = PlotHumanSite.autoZoom
-                    ? RES("ZoomHeaderAuto", this.scale.ToString("N1"))
-                    : RES("ZoomHeader", this.scale.ToString("N1"));
+                    ? Res.ZoomHeaderAuto.format(this.scale.ToString("N1"))
+                    : Res.ZoomHeader.format(this.scale.ToString("N1"));
                 drawTextAt2(this.ClientSize.Width - 8, zoomText, GameColors.OrangeDim, GameColors.fontSmall, true);
             }
             else if (headerLeftSz.Width < this.Width - zoomLevelMinWidth)
             {
-                var zoomText = RES("ZoomHeaderMin", this.scale.ToString("N1"));
+                var zoomText = Res.ZoomHeaderMin.format(this.scale.ToString("N1"));
                 drawTextAt2(this.ClientSize.Width - 8, zoomText, GameColors.OrangeDim, GameColors.fontSmall, true);
             }
 
@@ -918,27 +919,27 @@ namespace SrvSurvey.plotters
             g.FillRectangle(GameColors.HumanSite.brushTextFade, four, twoSix, this.Width - eight, this.Height - threeSix);
 
             if (station.subType == 0 && station.heading == -1)
-                drawApproachText("❓", RES("UnknownTypeHeading"), GameColors.Cyan);
+                drawApproachText("❓", Res.UnknownTypeHeading, GameColors.Cyan);
             else if (station.heading == -1)
-                drawApproachText("❓", RES("UnknownHeading"), GameColors.Cyan);
+                drawApproachText("❓", Res.UnkownHeading, GameColors.Cyan);
             else if (!this.hasLanded)
-                drawApproachText("►", RES("KnownSettlement"), GameColors.LimeIsh);
+                drawApproachText("►", Res.KnownSettlement, GameColors.LimeIsh);
 
             if (!this.hasLanded)
             {
                 // distance to site, triangulated with altitude 
                 var d = new PointM(distToSiteOrigin, game.status.Altitude).dist;
-                drawApproachText("►", $"{RES("OnApproach")}: " + Util.metersToString(d));
+                drawApproachText("►", $"{Res.OnApproach}: " + Util.metersToString(d));
 
                 // the controlling faction
 
                 //var w = Util.maxWidth(GameColors.fontMiddle, prefixFaction, prefixInfluence);
                 drawTextAt2(eight, "►", GameColors.fontMiddle);
-                drawTextAt2(threeTwo, $"{RES("Faction")}: ", GameColors.fontMiddle);
+                drawTextAt2(threeTwo, $"{Res.Faction}: ", GameColors.fontMiddle);
                 var x = dtx;
                 drawTextAt2(station.factionName, GameColors.fontMiddleBold);
                 newLine();
-                drawTextAt2(x, $"{RES("Influence")}: ", GameColors.fontMiddle);
+                drawTextAt2(x, $"{Res.Influence}: ", GameColors.fontMiddle);
                 drawTextAt2(station.influence?.ToString("p0"), GameColors.fontMiddleBold);
 
                 // append faction state if we know it
@@ -967,27 +968,27 @@ namespace SrvSurvey.plotters
                     }
 
                     var rep = Util.getReputationText(station.reputation.Value);
-                    drawApproachText(prefix, RES("YourRep", rep), col);
+                    drawApproachText(prefix, Res.YourRep.format(rep), col);
                 }
 
                 if (station.government == "$government_Anarchy;")
-                    drawApproachText("🏴‍☠️", $"{RES("Government")}: {station.governmentLocalized}");
+                    drawApproachText("🏴‍☠️", $"{Res.Government}: {station.governmentLocalized}");
 
                 if (station.stationServices?.Contains("facilitator") == true)
-                    drawApproachText("🙂", RES("HasInterstellar"));
+                    drawApproachText("🙂", Res.HasInterstellar);
             }
 
             if (game.dockingInProgress)
             {
                 // docking status?
                 if (this.dockingState == DockingState.requested || this.dockingState == DockingState.approved || this.dockingState == DockingState.denied)
-                    drawApproachText("►", RES("DockingRequested"));
+                    drawApproachText("►", Res.DockingRequested);
                 if (this.dockingState == DockingState.approved)
-                    drawApproachText("►", RES("DockingApproved", this.grantedPad));
+                    drawApproachText("►", Res.DockingApproved.format(this.grantedPad));
             }
             else if (this.dockingState == DockingState.denied)
             {
-                drawTextAt2(eight, $"⛔ {RES("DockingDenied")}", GameColors.fontMiddle);
+                drawTextAt2(eight, $"⛔ {Res.DockingDenied}", GameColors.fontMiddle);
                 newLine(+ten, true);
                 if (this.deniedReason == "Distance")
                     drawTextAt2(threeTwo, $"➟ {RES(this.deniedReason)}", GameColors.fontMiddle);
@@ -1002,7 +1003,7 @@ namespace SrvSurvey.plotters
                 else if (this.deniedReason == "ActiveFighter")
                     drawTextAt2(threeTwo, $"🛩️ {RES(this.deniedReason)}", GameColors.fontMiddle);
                 else
-                    drawTextAt2(threeTwo, $"🚫 {RES("Unknown")}", GameColors.fontMiddle);
+                    drawTextAt2(threeTwo, $"🚫 {Res.Unknown}", GameColors.fontMiddle);
                 newLine(+ten, true);
             }
 
@@ -1014,33 +1015,33 @@ namespace SrvSurvey.plotters
                 if (game.musicTrack == "DockingComputer")
                 {
                     drawTextAt2(eight, $"⛳", GameColors.LimeIsh, GameColors.fontBig);
-                    drawTextAt2b(fiveTwo, $"► {RES("AutoDock1")}", GameColors.LimeIsh, GameColors.fontMiddle);
+                    drawTextAt2b(fiveTwo, $"► {Res.AutoDock1}", GameColors.LimeIsh, GameColors.fontMiddle);
                     newLine();
-                    drawTextAt2b(fiveTwo, $"► {RES("AutoDock2")}", GameColors.LimeIsh, GameColors.fontMiddle);
+                    drawTextAt2b(fiveTwo, $"► {Res.AutoDock2}", GameColors.LimeIsh, GameColors.fontMiddle);
                     newLine();
-                    drawTextAt2b(fiveTwo, $"► {RES("AutoDock3")}", GameColors.LimeIsh, GameColors.fontMiddleBold);
+                    drawTextAt2b(fiveTwo, $"► {Res.AutoDock3}", GameColors.LimeIsh, GameColors.fontMiddleBold);
                 }
                 else
                 {
                     drawTextAt2(eight, $"✋", GameColors.fontBig);
 
                     // manual docking
-                    drawTextAt2b(fiveTwo, $"► {RES("ManualDock1")}", GameColors.fontMiddle);
+                    drawTextAt2b(fiveTwo, $"► {Res.ManualDock1}", GameColors.fontMiddle);
                     newLine();
-                    drawTextAt2b(fiveTwo, $"⏳ {RES("ManualDock2")}", GameColors.fontMiddle);
+                    drawTextAt2b(fiveTwo, $"⏳ {Res.ManualDock2}", GameColors.fontMiddle);
                     newLine();
-                    drawTextAt2b(fiveTwo, $"► {RES("ManualDock3")}", GameColors.fontMiddleBold);
+                    drawTextAt2b(fiveTwo, $"► {Res.ManualDock3}", GameColors.fontMiddleBold);
                 }
             }
             else if (this.hasLanded && siteHeading == -1)
             {
                 if (game.status.Docked)
                 {
-                    drawTextAt2b(eight, $"► {RES("HelpShip1")}", GameColors.fontMiddle);
+                    drawTextAt2b(eight, $"► {Res.HelpShip1}", GameColors.fontMiddle);
                     newLine(+six);
-                    drawTextAt2b(eight, $"{RES("HelpShip2")}:", GameColors.fontMiddleBold);
+                    drawTextAt2b(eight, $"{Res.HelpShip2}:", GameColors.fontMiddleBold);
                     newLine(+six);
-                    drawTextAt2b(eight, $"► {RES("HelpShip3", ".settlement")}", GameColors.fontMiddle);
+                    drawTextAt2b(eight, $"► {Res.HelpShip3.format(".settlement")}", GameColors.fontMiddle);
                 }
                 else if (game.vehicle == ActiveVehicle.Foot || game.vehicle == ActiveVehicle.SRV)
                 {
@@ -1048,19 +1049,19 @@ namespace SrvSurvey.plotters
                     {
                         // otherwise, show guidance to manually set it
                         //g.ResetTransform();
-                        drawTextAt2b(eight, RES("HelpFoot0"), GameColors.fontMiddleBold);
+                        drawTextAt2b(eight, Res.HelpFoot0, GameColors.fontMiddleBold);
                         newLine(+six);
-                        drawTextAt2b(eight, RES("HelpFoot1"), GameColors.fontMiddle);
+                        drawTextAt2b(eight, Res.HelpFoot1, GameColors.fontMiddle);
                         newLine();
-                        drawTextAt2b(eight, RES("HelpFoot2"), GameColors.fontMiddle);
+                        drawTextAt2b(eight, Res.HelpFoot2, GameColors.fontMiddle);
                         newLine();
-                        drawTextAt2b(eight, RES("HelpFoot3"), GameColors.fontMiddle);
+                        drawTextAt2b(eight, Res.HelpFoot3, GameColors.fontMiddle);
                         newLine();
-                        drawTextAt2b(eight, RES("HelpFoot4"), GameColors.fontMiddle);
+                        drawTextAt2b(eight, Res.HelpFoot4, GameColors.fontMiddle);
                         newLine();
-                        drawTextAt2b(eight, RES("HelpFoot5", ".settlement"), GameColors.fontMiddle);
+                        drawTextAt2b(eight, Res.HelpFoot5.format(".settlement"), GameColors.fontMiddle);
                         newLine(+oneTwo);
-                        drawTextAt2b(eight, RES("HelpFoot6"), GameColors.fontMiddle);
+                        drawTextAt2b(eight, Res.HelpFoot6, GameColors.fontMiddle);
                     }
                 }
             }

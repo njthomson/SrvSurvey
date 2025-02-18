@@ -22,14 +22,14 @@ namespace Loc {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class PlotTrackTarget {
+    internal class PlotGrounded {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal PlotTrackTarget() {
+        internal PlotGrounded() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Loc {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SrvSurvey.plotters.PlotTrackTarget", typeof(PlotTrackTarget).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SrvSurvey.plotters.PlotGrounded", typeof(PlotGrounded).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,83 @@ namespace Loc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bearing: {0}.
+        ///   Looks up a localized string similar to Nearing ship departure distance.
         /// </summary>
-        internal static string BearingTo {
+        internal static string NearingShipDistance {
             get {
-                return ResourceManager.GetString("BearingTo", resourceCulture);
+                return ResourceManager.GetString("NearingShipDistance", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Distance: {0}.
+        ///   Looks up a localized string similar to Scan one:.
         /// </summary>
-        internal static string DistanceTo {
+        internal static string ScanOne_Long {
             get {
-                return ResourceManager.GetString("DistanceTo", resourceCulture);
+                return ResourceManager.GetString("ScanOne_Long", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1st:.
+        /// </summary>
+        internal static string ScanOne_Short {
+            get {
+                return ResourceManager.GetString("ScanOne_Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan one: invalid.
+        /// </summary>
+        internal static string ScanOneInvalid {
+            get {
+                return ResourceManager.GetString("ScanOneInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan two:.
+        /// </summary>
+        internal static string ScanTwo_Long {
+            get {
+                return ResourceManager.GetString("ScanTwo_Long", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2nd:.
+        /// </summary>
+        internal static string ScanTwo_Short {
+            get {
+                return ResourceManager.GetString("ScanTwo_Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan two: invalid.
+        /// </summary>
+        internal static string ScanTwoInvalid {
+            get {
+                return ResourceManager.GetString("ScanTwoInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ship:.
+        /// </summary>
+        internal static string Ship {
+            get {
+                return ResourceManager.GetString("Ship", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SRV:.
+        /// </summary>
+        internal static string SRV {
+            get {
+                return ResourceManager.GetString("SRV", resourceCulture);
             }
         }
     }

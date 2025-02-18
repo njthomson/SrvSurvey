@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
 using SrvSurvey.widgets;
+using Res = Loc.PlotMassacre;
 
 namespace SrvSurvey.plotters
 {
@@ -42,7 +43,7 @@ namespace SrvSurvey.plotters
                 return;
             }
 
-            drawTextAt2(eight, RES("Header"));
+            drawTextAt2(eight, Res.Header);
             newLine(eight, true);
 
             foreach (var massacre in game.cmdr.trackMassacres.OrderBy(m => m.targetFaction + m.missionGiver))
