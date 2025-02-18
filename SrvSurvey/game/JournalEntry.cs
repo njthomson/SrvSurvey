@@ -1131,16 +1131,85 @@ namespace SrvSurvey
     {
         // { "timestamp":"2024-03-18T00:04:26Z", "event":"Materials", "Raw":[ { "Name":"sulphur", "Count":3 }, { "Name":"zirconium", "Count":6 }, { "Name":"manganese", "Count":9 }, { "Name":"vanadium", "Count":15 }, { "Name":"tungsten", "Count":6 }, { "Name":"zinc", "Count":18 }, { "Name":"chromium", "Count":15 } ], "Manufactured":[ { "Name":"highdensitycomposites", "Name_Localised":"High Density Composites", "Count":3 }, { "Name":"configurablecomponents", "Name_Localised":"Configurable Components", "Count":5 }, { "Name":"phasealloys", "Name_Localised":"Phase Alloys", "Count":3 }, { "Name":"heatconductionwiring", "Name_Localised":"Heat Conduction Wiring", "Count":3 }, { "Name":"crystalshards", "Name_Localised":"Crystal Shards", "Count":3 }, { "Name":"hybridcapacitors", "Name_Localised":"Hybrid Capacitors", "Count":3 }, { "Name":"chemicalprocessors", "Name_Localised":"Chemical Processors", "Count":2 }, { "Name":"biotechconductors", "Name_Localised":"Biotech Conductors", "Count":4 }, { "Name":"refinedfocuscrystals", "Name_Localised":"Refined Focus Crystals", "Count":4 } ], "Encoded":[ { "Name":"encryptionarchives", "Name_Localised":"Atypical Encryption Archives", "Count":15 }, { "Name":"adaptiveencryptors", "Name_Localised":"Adaptive Encryptors Capture", "Count":6 }, { "Name":"consumerfirmware", "Name_Localised":"Modified Consumer Firmware", "Count":9 }, { "Name":"embeddedfirmware", "Name_Localised":"Modified Embedded Firmware", "Count":8 }, { "Name":"dataminedwake", "Name_Localised":"Datamined Wake Exceptions", "Count":12 }, { "Name":"disruptedwakeechoes", "Name_Localised":"Atypical Disrupted Wake Echoes", "Count":29 }, { "Name":"hyperspacetrajectories", "Name_Localised":"Eccentric Hyperspace Trajectories", "Count":18 }, { "Name":"compactemissionsdata", "Name_Localised":"Abnormal Compact Emissions Data", "Count":3 }, { "Name":"fsdtelemetry", "Name_Localised":"Anomalous FSD Telemetry", "Count":6 } ] }
 
-        public List<Material> Raw;
-        public List<Material> Manufactured;
-        public List<Material> Encoded;
+        public List<MaterialEntry> Raw;
+        public List<MaterialEntry> Manufactured;
+        public List<MaterialEntry> Encoded;
+
+        public MaterialEntry? getMaterialEntry(string category, string name)
+        {
+            if (category == "Raw")
+                return this.Raw.Find(m => m.Name == name);
+            else if (category == "Encoded")
+                return this.Encoded.Find(m => m.Name == name);
+            else if (category == "Manufactured")
+                return this.Manufactured.Find(m => m.Name == name);
+            else
+                throw new Exception("Unexpected category: " + category);
+        }
     }
 
-    class Material
+    public class MaterialEntry
     {
         public string Name;
-        public string Name_Localised;
+        /// <summary> Not present for raw materials </summary>
+        public string? Name_Localised;
         public int Count;
+
+        [JsonIgnore]
+        public string displayName => Name_Localised ?? Name;
+    }
+
+    class MaterialTrade : JournalEntry
+    {
+        // { "timestamp":"2024-02-11T01:42:25Z", "event":"MaterialTrade", "MarketID":3222950656, "TraderType":"manufactured", "Paid":{ "Material":"conductivepolymers", "Material_Localised":"Conductive Polymers", "Category":"Manufactured", "Quantity":1 }, "Received":{ "Material":"conductivecomponents", "Material_Localised":"Conductive Components", "Category":"Manufactured", "Quantity":9 } }
+        // { "timestamp":"2024-10-06T06:32:14Z", "event":"MaterialTrade", "MarketID":3229698816, "TraderType":"raw", "Paid":{ "Material":"zinc", "Category":"Raw", "Quantity":36 }, "Received":{ "Material":"selenium", "Category":"Raw", "Quantity":1 } }
+
+        public long MarketID;
+        public string TraderType;
+        public MaterialCost Paid;
+        public MaterialCost Received;
+
+        public class MaterialCost
+        {
+            public string Material; // conductivepolymers"
+            /// <summary> Not present for raw materials </summary>
+            public string? Material_Localised; // Conductive Polymers"
+            public string Category; // Manufactured
+            public int Quantity; // 1
+
+            [JsonIgnore]
+            public string displayName => Material_Localised ?? Material;
+        }
+    }
+
+    class TechnologyBroker : JournalEntry
+    {
+        // { "timestamp":"2024-06-02T02:17:55Z", "event":"TechnologyBroker", "BrokerType":"rescue", "MarketID":129020543, "ItemsUnlocked":[ { "Name":"Hpt_ATMultiCannon_Gimbal_Large", "Name_Localised":"Enhanced AX Multi-Cannon" } ], "Commodities":[  ], "Materials":[ { "Name":"iron", "Count":11, "Category":"Raw" }, { "Name":"zirconium", "Count":16, "Category":"Raw" }, { "Name":"tg_biomechanicalconduits", "Name_Localised":"Bio-Mechanical Conduits", "Count":9, "Category":"Manufactured" }, { "Name":"tg_weaponparts", "Name_Localised":"Weapon Parts", "Count":17, "Category":"Manufactured" }, { "Name":"tg_shipsystemsdata", "Name_Localised":"Ship Systems Data", "Count":6, "Category":"Encoded" }, { "Name":"tg_wreckagecomponents", "Name_Localised":"Wreckage Components", "Count":12, "Category":"Manufactured" } ] }
+        // { "timestamp":"2023-09-19T05:02:55Z", "event":"TechnologyBroker", "BrokerType":"rescue", "MarketID":129021823, "ItemsUnlocked":[ { "Name":"Hpt_CausticSinkLauncher_Turret_Tiny", "Name_Localised":"Caustic Sink Launcher" } ], "Commodities":[ { "Name":"thargoidgeneratortissuesample", "Name_Localised":"Caustic Tissue Sample", "Count":5 } ], "Materials":[ { "Name":"galvanisingalloys", "Name_Localised":"Galvanising Alloys", "Count":10, "Category":"Manufactured" }, { "Name":"chemicalstorageunits", "Name_Localised":"Chemical Storage Units", "Count":15, "Category":"Manufactured" }, { "Name":"tg_causticshard", "Name_Localised":"Caustic Shard", "Count":20, "Category":"Manufactured" }, { "Name":"tg_causticgeneratorparts", "Name_Localised":"Corrosive Mechanisms", "Count":10, "Category":"Manufactured" } ] }
+
+        public string BrokerType;
+        public long MarketID;
+        public List<UnlockedItem> ItemsUnlocked;
+        public List<MaterialEntry> Commodities;
+        public List<Material> Materials;
+
+        public class UnlockedItem
+        {
+            public string Name;
+            public string? Name_Localised;
+        }
+
+        public class Material
+        {
+            public string Name;
+            /// <summary> Not present for raw materials </summary>
+            public string? Name_Localised;
+            public int Count;
+            public string Category;
+
+            [JsonIgnore]
+            public string displayName => Name_Localised ?? Name;
+        }
     }
 
     class MultiSellExplorationData : JournalEntry

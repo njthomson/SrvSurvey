@@ -61,6 +61,15 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to It appears network calls for SrvSurvey are being blocked by a firewall. This is more likely when running SrvSurvey from within the Downloads folder. Adding the location of SrvSurvey to your file wall will solve this problem.\r\n\r\n{0}\r\n\r\nWould you like to copy that location to the clipboard?.
+        /// </summary>
+        internal static string FirewallBlocked {
+            get {
+                return ResourceManager.GetString("FirewallBlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activate.
         /// </summary>
         internal static string FormBoxelSearch_Activate {
@@ -510,6 +519,15 @@ namespace SrvSurvey.Properties {
         internal static string Settings_CreateFolderNotFound {
             get {
                 return ResourceManager.GetString("Settings_CreateFolderNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Something unexpected went wrong, please share the logs.\r\nIt is recommended to restart SrvSurvey..
+        /// </summary>
+        internal static string UnexpectedWentWrong {
+            get {
+                return ResourceManager.GetString("UnexpectedWentWrong", resourceCulture);
             }
         }
     }

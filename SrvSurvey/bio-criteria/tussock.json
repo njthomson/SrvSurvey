@@ -225,6 +225,7 @@
       "query": [
         "# hit count: 10000",
         "atmosType [CarbonDioxide]",
+        "     temp [161 ~ 170]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
         "  regions [3,7,8,15,16,17,18,19,20,21,22,23,30,32,33,34,35,36,38,39,40]"
@@ -236,7 +237,6 @@
             "# hit count: 10000",
             "     body [Rocky]",
             "  gravity [0.04 ~ 0.171]",
-            "     temp [150 ~ 188]",
             " pressure [0.003 ~ 0.0522]"
           ]
         },
@@ -246,7 +246,6 @@
             "# hit count: 3309",
             "     body [HMC]",
             "  gravity [0.046 ~ 0.194]",
-            "     temp [161 ~ 170]",
             " pressure [0.0028 ~ 0.0511]"
           ]
         }
@@ -351,6 +350,7 @@
       "query": [
         "# hit count: 8769",
         "atmosType [CarbonDioxide]",
+        "    temp [171 ~ 174]",
         "pressure [0.0106 ~ 0.0704]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
@@ -362,8 +362,7 @@
           "query": [
             "# hit count: 7270",
             "    body [Rocky]",
-            " gravity [0.042 ~ 0.198]",
-            "    temp [171 ~ 178]"
+            " gravity [0.042 ~ 0.198]"
           ]
         },
         {
@@ -371,8 +370,7 @@
           "query": [
             "# hit count: 1499",
             "    body [HMC]",
-            " gravity [0.046 ~ 0.226]",
-            "    temp [171 ~ 174]"
+            " gravity [0.046 ~ 0.226]"
           ]
         }
       ]

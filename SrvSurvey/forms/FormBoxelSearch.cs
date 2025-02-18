@@ -149,7 +149,10 @@ namespace SrvSurvey.forms
 
             // start finding systems...
             bs.active = true;
-            this.saveAndSetCurrent(bs.current, true);
+            // set current to be what ever next needs to be done
+            // TODO: are we sure about this?
+            bs.setNextToVisit();
+            this.saveAndSetCurrent(Boxel.parse(bs.nextSystem + "0") ?? bs.current, true);
             Game.log($"Enabled boxel search:\r\n\tname: {bs.boxel}");
 
             // make plotter appear, update or close
@@ -566,9 +569,20 @@ namespace SrvSurvey.forms
             bs.toggleEmpty();
             cmdr.Save();
 
-            // auto trigger nav menu to assist in selecting the next boxel to search
             if (bs.currentEmpty)
-                menuSiblings.ShowOnTarget();
+            {
+                // figure out next system to visit and make that the new current + copy it to the clipboard
+                bs.setNextToVisit();
+                if (bs.nextSystem != null)
+                {
+                    this.saveAndSetCurrent(Boxel.parse(bs.nextSystem + "0") ?? bs.current, false);
+                    if (bs.autoCopy) Clipboard.SetText(bs.nextSystem);
+                }
+
+                // or ... 
+                // auto trigger nav menu to assist in selecting the next boxel to search
+                //menuSiblings.ShowOnTarget();
+            }
         }
 
         private void btnToggleList_ButtonClick(object sender, EventArgs e)

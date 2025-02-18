@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.widgets;
+using Res = Loc.PlotGuardianSystem;
 
 namespace SrvSurvey.plotters
 {
@@ -58,15 +59,17 @@ namespace SrvSurvey.plotters
             var sz = new SizeF(six, six);
 
             var sites = game?.systemData?.settlements;
-            this.drawTextAt($"Guardian sites: {sites?.Count ?? 0}", GameColors.brushGameOrange, GameColors.fontSmall);
+            this.drawTextAt(Res.Header.format(sites?.Count ?? 0), GameColors.brushGameOrange, GameColors.fontSmall);
             if (this.dtx > sz.Width) sz.Width = this.dtx;
+
+            // TODO: Use ► not -
 
             if (sites?.Count > 0)
             {
                 this.dty = twenty;
                 foreach (var site in sites)
                 {
-                    var txt = $"{site.displayText}{site.type}";
+                    var txt = $"{site.displayText}";
 
                     var highlight = game?.status?.Destination?.Body == site.body.id;
                     if (highlight && game?.status?.Destination.Name.StartsWith("$Ancient") == true && game?.status?.Destination.Name != site.name)
@@ -82,14 +85,14 @@ namespace SrvSurvey.plotters
                     if (site.bluePrint != null)
                     {
                         this.dtx = twenty;
-                        this.dty += this.drawTextAt("- " + site.bluePrint, brush, GameColors.fontSmall).Height + two;
+                        this.dty += this.drawTextAt("- " + Res.BluePrintLine.format(site.bluePrint), brush, GameColors.fontSmall).Height + two;
                         if (this.dtx > sz.Width) sz.Width = this.dtx;
                     }
 
                     if (site.status != null)
                     {
                         this.dtx = twenty;
-                        this.dty += this.drawTextAt("- " + site.status, brush, GameColors.fontSmall).Height + two;
+                        this.dty += this.drawTextAt("- " + Res.SurveyLine.format(site.status), brush, GameColors.fontSmall).Height + two;
                         if (this.dtx > sz.Width) sz.Width = this.dtx;
                     }
 
@@ -103,6 +106,7 @@ namespace SrvSurvey.plotters
                 }
             }
 
+            // TODO: use adjustFormSize
             // resize window as necessary
             sz.Width += ten;
             sz.Height = this.dty + ten;

@@ -25,7 +25,7 @@ namespace SrvSurvey
             { "Deutsch",   "de" },
             { "Español",   "es" },
             { "Français",  "fr" },
-            { "Português", "pt" },
+            { "Português (Brasil)", "pt-BR" },
             { "Русский",   "ru" },
             { "简体中文",    "zh-Hans" },
             { "Pseudo",    "ps" },
@@ -142,6 +142,15 @@ namespace SrvSurvey
             if (newTargetDoc.Root?.FirstNode?.NodeType == System.Xml.XmlNodeType.Comment)
                 newTargetDoc.Root.FirstNode.Remove();
 
+            // maintain "Pre-loc from" comments at the top
+            var preLoc = false;
+            var oldFirstNode = oldTargetDoc?.Root?.FirstNode as XComment;
+            if (oldFirstNode?.NodeType == System.Xml.XmlNodeType.Comment && oldFirstNode.Value.Contains("Pre-loc from") == true)
+            {
+                preLoc = true;
+                newTargetDoc.Root!.AddFirst(oldFirstNode);
+            }
+
             var sourceNodes = sourceDoc.Root?.Elements().Where(_ => _.Name.LocalName == "data")!;
             if (sourceNodes == null) return;
 
@@ -209,7 +218,7 @@ namespace SrvSurvey
                 if (oldSource == sourceText && !string.IsNullOrEmpty(oldTranslation)) continue;
 
                 // presume translate to pseudo
-                var translation = $"* {sourceText.ToUpperInvariant()} →→→!";
+                var translation = preLoc ? oldTranslation : $"* {sourceText.ToUpperInvariant()} →→→!";
 
                 // or translate into a real language
                 if (targetLang != "ps")

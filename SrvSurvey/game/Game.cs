@@ -140,6 +140,8 @@ namespace SrvSurvey.game
         public SettlementMatCollectionData? matStatsTracker;
         private string? lastDestination;
         public bool destinationNextRouteHop = false;
+        /// <summary> Current counts of materials for the cmdr </summary>
+        private Materials materials;
 
         /// <summary>
         /// An arbitrary point on a planet surface. Doesn't really matter where, so long as it isn't too far away.
@@ -1477,6 +1479,9 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Materials entry)
         {
+            // keep track of this, it will be maintained
+            this.materials = entry;
+
             if (!guardianMatsFull)
                 guardianMatsFull = entry.Encoded.Find(_ => _.Name == "ancientbiologicaldata")?.Count == 150;
             if (!guardianMatsFull)
@@ -1487,6 +1492,65 @@ namespace SrvSurvey.game
                 guardianMatsFull = entry.Encoded.Find(_ => _.Name == "ancienttechnologicaldata")?.Count == 150;
             if (!guardianMatsFull)
                 guardianMatsFull = entry.Encoded.Find(_ => _.Name == "ancienthistoricaldata")?.Count == 150;
+        }
+
+        private void onJournalEntry(MaterialCollected entry)
+        {
+            // find the matching material
+            var match = this.materials.getMaterialEntry(entry.Category, entry.Name);
+            if (match == null)
+            {
+                Game.log("Why no material match??");
+                Debugger.Break();
+                return;
+            }
+
+            // adjust the count and show a message
+            match.Count += entry.Count;
+            PlotFloatie.showMessage($"Collected: {entry.Count}x {match.displayName}, new total {match.Count}"); // TODO: localize
+        }
+
+        private void onJournalEntry(MaterialTrade entry)
+        {
+            // track adjustments to Materials from Material Trader interactions
+
+            var matchPaid = this.materials.getMaterialEntry(entry.Paid.Category, entry.Paid.Material);
+            if (matchPaid == null)
+            {
+                Game.log($"MaterialTrade: Why no paid material '{entry.Paid.Category}'/'{entry.Paid.Material}' match??");
+                Debugger.Break();
+                return;
+            }
+
+            var matchReceived = this.materials.getMaterialEntry(entry.Received.Category, entry.Received.Material);
+            if (matchReceived == null)
+            {
+                Game.log($"MaterialTrade: Why no received material '{entry.Received.Category}'/'{entry.Received.Material}' match??");
+                Debugger.Break();
+                return;
+            }
+
+            matchPaid.Count -= entry.Paid.Quantity;
+            matchReceived.Count += entry.Received.Quantity;
+            Game.log($"MaterialTrade: {matchPaid.Name} -{entry.Paid.Quantity} => {matchPaid.Count} | {matchReceived.Name} +{entry.Received.Quantity} => {matchReceived.Count}");
+        }
+
+        private void onJournalEntry(TechnologyBroker entry)
+        {
+            // track adjustments to Materials from Tech Broker interactions
+            foreach(var mat in entry.Materials)
+            {
+                var match = this.materials.getMaterialEntry(mat.Category, mat.Name);
+                if (match == null)
+                {
+                    Game.log($"TechnologyBroker: Why no material '{mat.Category}'/'{mat.Name}' match??");
+                    Debugger.Break();
+                    continue;
+                }
+
+                match.Count -= mat.Count;
+                Game.log($"TechnologyBroker: {match.Name} -{mat.Count} => {match.Count}");
+            }
         }
 
         #endregion

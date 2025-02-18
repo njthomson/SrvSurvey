@@ -1242,12 +1242,14 @@ namespace SrvSurvey.game
         }
     }
 
+    /// <summary>
+    /// TODO: replace this whole class with GuardianSitePub ?
+    /// </summary>
     internal class SystemSettlementSummary
     {
         public SystemBody body;
         public string name;
         public string displayText;
-        public string type;
         public string status;
         public string extra;
         public string bluePrint;
@@ -1267,7 +1269,7 @@ namespace SrvSurvey.game
             {
                 body = body,
                 name = $"$Ancient:#index={idx};",
-                displayText = $"{body.name.Replace(systemData.name, "")}: Ruins #{idx} - {site.siteType}",
+                displayText = $"{body.name.Replace(systemData.name, "")}: {Properties.Guardian.Ruins} #{idx} - {site.siteType}", // TODO: Localize Alpha, Beta, Gamma, etc?
             };
 
             // show survey status if not complete
@@ -1275,9 +1277,9 @@ namespace SrvSurvey.game
             {
                 var siteData = GuardianSiteData.Load(body.name, idx, true);
                 if (site.surveyProgress == 0 && siteData == null)
-                    summary.status = "Survey: not started";
+                    summary.status = Loc.PlotGuardianSystem.SurveyNotStarted;
                 else if (siteData?.isSurveyComplete() == false)
-                    summary.status = "Survey: incomplete";
+                    summary.status = Loc.PlotGuardianSystem.SurveyIncomplete;
             }
 
             // add required Ram Tah logs, if relevant
@@ -1321,20 +1323,20 @@ namespace SrvSurvey.game
 
             // add blue print type
             if (siteType == GuardianSiteData.SiteType.Robolobster || siteType == GuardianSiteData.SiteType.Squid || siteType == GuardianSiteData.SiteType.Stickyhand)
-                summary.bluePrint = "Blue print: fighter";
+                summary.bluePrint = Properties.Guardian.BluePrintFighter;
             else if (siteType == GuardianSiteData.SiteType.Turtle)
-                summary.bluePrint = "Blue print: module";
+                summary.bluePrint = Properties.Guardian.BluePrintModule;
             else if (siteType == GuardianSiteData.SiteType.Bear || siteType == GuardianSiteData.SiteType.Hammerbot || siteType == GuardianSiteData.SiteType.Bowl)
-                summary.bluePrint = "Blue print: weapon";
+                summary.bluePrint = Properties.Guardian.BluePrintWeapon;
 
             // show survey status if not complete
             if (!site.surveyComplete)
             {
                 var siteData = GuardianSiteData.Load(body.name, summary.name);
                 if (site.surveyProgress == 0 && siteData == null)
-                    summary.status = "Survey: not started";
+                    summary.status = Loc.PlotGuardianSystem.SurveyNotStarted;
                 else if (siteData?.isSurveyComplete() == false)
-                    summary.status = "Survey: incomplete";
+                    summary.status = Loc.PlotGuardianSystem.SurveyIncomplete;
             }
 
             // add required Ram Tah logs, if relevant

@@ -42,7 +42,7 @@ namespace SrvSurvey.plotters
                 return;
             }
 
-            drawTextAt2(eight, "Massacre kills remaining:");
+            drawTextAt2(eight, RES("Header"));
             newLine(eight, true);
 
             foreach (var massacre in game.cmdr.trackMassacres.OrderBy(m => m.targetFaction + m.missionGiver))

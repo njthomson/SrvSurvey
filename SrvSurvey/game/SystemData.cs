@@ -1593,6 +1593,7 @@ namespace SrvSurvey.game
                     var body = this.bodies.FirstOrDefault(_ => _.name == site.bodyName)!;
                     if (body != null)
                     {
+                        // TODO: replace this with GuardianSitePub ?
                         var ruins = SystemSettlementSummary.forRuins(this, body, site.idx);
                         if (ruins != null)
                             this._settlements.Add(ruins);
@@ -1603,6 +1604,7 @@ namespace SrvSurvey.game
                     var body = this.bodies.FirstOrDefault(_ => _.name == site.bodyName)!;
                     if (body != null)
                     {
+                        // TODO: replace this with GuardianSitePub ?
                         var structure = SystemSettlementSummary.forStructure(this, body);
                         if (structure != null)
                             this._settlements.Add(structure);

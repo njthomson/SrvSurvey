@@ -765,7 +765,7 @@ namespace SrvSurvey
                 || ex?.Message.Contains("A socket operation was attempted to an unreachable network") == true)
             {
                 var rslt = MessageBox.Show(
-                    $"It appears network calls for SrvSurvey are being blocked by a firewall. This is more likely when running SrvSurvey from within the Downloads folder. Adding the location of SrvSurvey to your filewall will solve this problem.\r\n\r\n{Application.ExecutablePath}\r\n\r\nWould you like to copy that location to the clipboard?",
+                    Properties.Misc.FirewallBlocked.format(Application.ExecutablePath),
                     "SrvSurvey",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning);
@@ -806,7 +806,7 @@ namespace SrvSurvey
             {
                 MessageBox.Show(
                     Main.ActiveForm,
-                    "Something unexpected went wrong, please share the logs.\r\nIt is recommended to restart SrvSurvey.",
+                    Properties.Misc.UnexpectedWentWrong,
                     "SrvSurvey",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -816,15 +816,16 @@ namespace SrvSurvey
 
         }
 
+        /// <summary> Returns the localized name of the log category </summary>
         public static string getLogNameFromChar(char c)
         {
             switch (c)
             {
-                case 'C': return "Culture";
-                case 'H': return "History";
-                case 'B': return "Biology";
-                case 'T': return "Technology";
-                case 'L': return "Language";
+                case 'C': return Properties.Guardian.LogCulture;
+                case 'H': return Properties.Guardian.LogHistory;
+                case 'B': return Properties.Guardian.LogBiology;
+                case 'T': return Properties.Guardian.LogTechnology;
+                case 'L': return Properties.Guardian.LogLanguage;
                 case '#': return "";
                 default:
                     throw new Exception($"Unexpected character '{c}'");
@@ -1003,7 +1004,6 @@ namespace SrvSurvey
 
                 default: throw new Exception($"Unexpected: {economy}");
             }
-
         }
 
         public static void applyTheme(Control ctrl)
