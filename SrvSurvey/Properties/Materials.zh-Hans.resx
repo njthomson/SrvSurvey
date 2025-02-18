@@ -60,38 +60,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <!--数据材料(Encoded Material)人造材料(Manufactured Material)的翻译以中文wiki为参照(elite-dangerous.fandom.com/zh/wiki/)-->
+  <!--天然材料(raw Material)的翻译以中文wiki为参照,同时保留原文以方便对照游戏内显示(试行)-->
   <data name="adaptiveencryptors">
-    <value>自适应加密记录</value>
+    <value>自适应加密器快照</value>
     <comment>Material adaptiveencryptors</comment>
     <source>Adaptive Encryptors Capture</source>
   </data>
   <data name="ancientbiologicaldata">
-    <value>Alpha 方尖碑数据模式(生物)</value>
+    <value>α型方尖碑数据(生物)</value>
     <comment>Material ancientbiologicaldata</comment>
     <source>Pattern Alpha Obelisk Data (Biological)</source>
   </data>
   <data name="ancientculturaldata">
-    <value>Beta 方尖碑数据模式(文化)</value>
+    <value>β型方尖碑数据(文化)</value>
     <comment>Material ancientculturaldata</comment>
     <source>Pattern Beta Obelisk Data (Cultural)</source>
   </data>
   <data name="ancienthistoricaldata">
-    <value>伽玛方尖碑数据模式(历史)</value>
+    <value>γ型方尖碑数据(历史)</value>
     <comment>Material ancienthistoricaldata</comment>
     <source>Pattern Gamma Obelisk Data (Historical)</source>
   </data>
   <data name="ancientlanguagedata">
-    <value>Delta 方尖碑数据模式(语言)</value>
+    <value>Δ型方尖碑数据(语言)</value>
     <comment>Material ancientlanguagedata</comment>
     <source>Pattern Delta Obelisk Data (Linguistic)</source>
   </data>
   <data name="ancienttechnologicaldata">
-    <value>Epsilon 方尖碑数据模式(技术)</value>
+    <value>ε型方尖碑数据(技术)</value>
     <comment>Material ancienttechnologicaldata</comment>
     <source>Pattern Epsilon Obelisk Data (Technological)</source>
   </data>
   <data name="antimony">
-    <value>锑</value>
+    <value>Antimony锑</value>
     <comment>Material antimony</comment>
     <source>Antimony</source>
   </data>
@@ -101,22 +103,22 @@
     <source>Irregular Emission Data</source>
   </data>
   <data name="arsenic">
-    <value>砷</value>
+    <value>Arsenic砷</value>
     <comment>Material arsenic</comment>
     <source>Arsenic</source>
   </data>
   <data name="basicconductors">
-    <value>基本导体</value>
+    <value>基础导线</value>
     <comment>Material basicconductors</comment>
     <source>Basic Conductors</source>
   </data>
   <data name="biotechconductors">
-    <value>生物技术导体</value>
+    <value>生物技术导线</value>
     <comment>Material biotechconductors</comment>
     <source>Biotech Conductors</source>
   </data>
   <data name="boron">
-    <value>硼</value>
+    <value>Boron硼</value>
     <comment>Material boron</comment>
     <source>Boron</source>
   </data>
@@ -126,42 +128,42 @@
     <source>Anomalous Bulk Scan Data</source>
   </data>
   <data name="cadmium">
-    <value>镉</value>
+    <value>Cadmium镉</value>
     <comment>Material cadmium</comment>
     <source>Cadmium</source>
   </data>
   <data name="carbon">
-    <value>碳</value>
+    <value>Carbon碳</value>
     <comment>Material carbon</comment>
     <source>Carbon</source>
   </data>
   <data name="chemicaldistillery">
-    <value>化学分离器</value>
+    <value>化学物质分馏器</value>
     <comment>Material chemicaldistillery</comment>
     <source>Chemical Distillery</source>
   </data>
   <data name="chemicalmanipulators">
-    <value>化学操纵器</value>
+    <value>化学反应控制器</value>
     <comment>Material chemicalmanipulators</comment>
     <source>Chemical Manipulators</source>
   </data>
   <data name="chemicalprocessors">
-    <value>化学处理器</value>
+    <value>化学物质加工器</value>
     <comment>Material chemicalprocessors</comment>
     <source>Chemical Processors</source>
   </data>
   <data name="chemicalstorageunits">
-    <value>化学品储存单元</value>
+    <value>化学物质储存单元</value>
     <comment>Material chemicalstorageunits</comment>
     <source>Chemical Storage Units</source>
   </data>
   <data name="chromium">
-    <value>铬</value>
+    <value>Chromium铬</value>
     <comment>Material chromium</comment>
     <source>Chromium</source>
   </data>
   <data name="classifiedscandata">
-    <value>分类扫描片段</value>
+    <value>机密扫描碎片</value>
     <comment>Material classifiedscandata</comment>
     <source>Classified Scan Fragment</source>
   </data>
@@ -171,7 +173,7 @@
     <source>Compact Composites</source>
   </data>
   <data name="compactemissionsdata">
-    <value>异常紧凑排放数据</value>
+    <value>异常简略排放数据</value>
     <comment>Material compactemissionsdata</comment>
     <source>Abnormal Compact Emission Data</source>
   </data>
@@ -211,17 +213,17 @@
     <source>Crystal Shards</source>
   </data>
   <data name="dataminedwake">
-    <value>已获取数据的尾迹异常</value>
+    <value>已记录尾迹异常</value>
     <comment>Material dataminedwake</comment>
     <source>Datamined Wake Exceptions</source>
   </data>
   <data name="decodedemissiondata">
-    <value>被解码的排放数据</value>
+    <value>已解码排放数据</value>
     <comment>Material decodedemissiondata</comment>
     <source>Decoded Emission Data</source>
   </data>
   <data name="disruptedwakeechoes">
-    <value>非典型被扰乱的尾迹回声</value>
+    <value>非典型迁跃干扰尾迹回波</value>
     <comment>Material disruptedwakeechoes</comment>
     <source>Atypical Disrupted Wake Echoes</source>
   </data>
@@ -231,22 +233,22 @@
     <source>Electrochemical Arrays</source>
   </data>
   <data name="embeddedfirmware">
-    <value>被修改的嵌入式固件</value>
+    <value>修改的嵌入式固件</value>
     <comment>Material embeddedfirmware</comment>
     <source>Modified Embedded Firmware</source>
   </data>
   <data name="emissiondata">
-    <value>意外排放数据</value>
+    <value>非预期的排放数据</value>
     <comment>Material emissiondata</comment>
     <source>Unexpected Emission Data</source>
   </data>
   <data name="encodedscandata">
-    <value>发散扫描数据</value>
+    <value>相异的扫描数据</value>
     <comment>Material encodedscandata</comment>
     <source>Divergent Scan Data</source>
   </data>
   <data name="encryptedfiles">
-    <value>不寻常的加密文件</value>
+    <value>特殊加密文件</value>
     <comment>Material encryptedfiles</comment>
     <source>Unusual Encrypted Files</source>
   </data>
@@ -256,12 +258,12 @@
     <source>Atypical Encryption Archives</source>
   </data>
   <data name="encryptioncodes">
-    <value>被标记的加密代码</value>
+    <value>标记的加密代码</value>
     <comment>Material encryptioncodes</comment>
     <source>Tagged Encryption Codes</source>
   </data>
   <data name="exquisitefocuscrystals">
-    <value>精致的聚焦晶体</value>
+    <value>顶级聚焦晶体</value>
     <comment>Material exquisitefocuscrystals</comment>
     <source>Exquisite Focus Crystals</source>
   </data>
@@ -276,7 +278,7 @@
     <source>Proprietary Composites</source>
   </data>
   <data name="filamentcomposites">
-    <value>长丝复合材料</value>
+    <value>丝状复合材料</value>
     <comment>Material filamentcomposites</comment>
     <source>Filament Composites</source>
   </data>
@@ -286,7 +288,7 @@
     <source>Focus Crystals</source>
   </data>
   <data name="fsdtelemetry">
-    <value>异常 FSD 遥测</value>
+    <value>异常FSD遥测数据</value>
     <comment>Material fsdtelemetry</comment>
     <source>Anomalous FSD Telemetry</source>
   </data>
@@ -296,17 +298,17 @@
     <source>Galvanising Alloys</source>
   </data>
   <data name="germanium">
-    <value>锗</value>
+    <value>Germanium锗</value>
     <comment>Material germanium</comment>
     <source>Germanium</source>
   </data>
   <data name="gridresistors">
-    <value>栅极电阻器</value>
+    <value>栅极电阻</value>
     <comment>Material gridresistors</comment>
     <source>Grid Resistors</source>
   </data>
   <data name="guardian_moduleblueprint">
-    <value>守护者模块蓝图</value>
+    <value>守护者部件蓝图</value>
     <comment>Material guardian_moduleblueprint</comment>
     <source>Guardian Module Blueprint</source>
   </data>
@@ -376,12 +378,12 @@
     <source>High Density Composites</source>
   </data>
   <data name="hybridcapacitors">
-    <value>混合电容器</value>
+    <value>复合电容</value>
     <comment>Material hybridcapacitors</comment>
     <source>Hybrid Capacitors</source>
   </data>
   <data name="hyperspacetrajectories">
-    <value>偏离的超空间轨迹</value>
+    <value>异常超空间轨迹数据</value>
     <comment>Material hyperspacetrajectories</comment>
     <source>Eccentric Hyperspace Trajectories</source>
   </data>
@@ -391,7 +393,7 @@
     <source>Imperial Shielding</source>
   </data>
   <data name="improvisedcomponents">
-    <value>简易组件</value>
+    <value>临时组件</value>
     <comment>Material improvisedcomponents</comment>
     <source>Improvised Components</source>
   </data>
@@ -401,12 +403,12 @@
     <source>Cracked Industrial Firmware</source>
   </data>
   <data name="iron">
-    <value>铁</value>
+    <value>Iron铁</value>
     <comment>Material iron</comment>
     <source>Iron</source>
   </data>
   <data name="lead">
-    <value>铅</value>
+    <value>Lead铅</value>
     <comment>Material lead</comment>
     <source>Lead</source>
   </data>
@@ -416,17 +418,17 @@
     <source>Specialised Legacy Firmware</source>
   </data>
   <data name="manganese">
-    <value>锰</value>
+    <value>Manganese锰</value>
     <comment>Material manganese</comment>
     <source>Manganese</source>
   </data>
   <data name="mechanicalcomponents">
-    <value>机械元件</value>
+    <value>机械组件</value>
     <comment>Material mechanicalcomponents</comment>
     <source>Mechanical Components</source>
   </data>
   <data name="mechanicalequipment">
-    <value>机械设备</value>
+    <value>机械装备</value>
     <comment>Material mechanicalequipment</comment>
     <source>Mechanical Equipment</source>
   </data>
@@ -436,7 +438,7 @@
     <source>Mechanical Scrap</source>
   </data>
   <data name="mercury">
-    <value>汞</value>
+    <value>Mercury汞</value>
     <comment>Material mercury</comment>
     <source>Mercury</source>
   </data>
@@ -446,57 +448,57 @@
     <source>Military Grade Alloys</source>
   </data>
   <data name="militarysupercapacitors">
-    <value>军用超级电容器</value>
+    <value>军用超级电容</value>
     <comment>Material militarysupercapacitors</comment>
     <source>Military Supercapacitors</source>
   </data>
   <data name="molybdenum">
-    <value>钼</value>
+    <value>Molybdenum钼</value>
     <comment>Material molybdenum</comment>
     <source>Molybdenum</source>
   </data>
   <data name="nickel">
-    <value>镍</value>
+    <value>Nickel镍</value>
     <comment>Material nickel</comment>
     <source>Nickel</source>
   </data>
   <data name="niobium">
-    <value>铌</value>
+    <value>Niobium铌</value>
     <comment>Material niobium</comment>
     <source>Niobium</source>
   </data>
   <data name="pharmaceuticalisolators">
-    <value>药用隔离器</value>
+    <value>药品分离器</value>
     <comment>Material pharmaceuticalisolators</comment>
     <source>Pharmaceutical Isolators</source>
   </data>
   <data name="phasealloys">
-    <value>相合金</value>
+    <value>相位合金</value>
     <comment>Material phasealloys</comment>
     <source>Phase Alloys</source>
   </data>
   <data name="phosphorus">
-    <value>磷</value>
+    <value>Phosphorus磷</value>
     <comment>Material phosphorus</comment>
     <source>Phosphorus</source>
   </data>
   <data name="polonium">
-    <value>钋</value>
+    <value>Polonium钋</value>
     <comment>Material polonium</comment>
     <source>Polonium</source>
   </data>
   <data name="polymercapacitors">
-    <value>聚合物电容器</value>
+    <value>聚合物电容</value>
     <comment>Material polymercapacitors</comment>
     <source>Polymer Capacitors</source>
   </data>
   <data name="precipitatedalloys">
-    <value>沉淀合金</value>
+    <value>析出硬化合金</value>
     <comment>Material precipitatedalloys</comment>
     <source>Precipitated Alloys</source>
   </data>
   <data name="protoheatradiators">
-    <value>原型热辐射器</value>
+    <value>原型散热器</value>
     <comment>Material protoheatradiators</comment>
     <source>Proto Heat Radiators</source>
   </data>
@@ -516,12 +518,12 @@
     <source>Refined Focus Crystals</source>
   </data>
   <data name="rhenium">
-    <value>铼</value>
+    <value>Rhenium铼</value>
     <comment>Material rhenium</comment>
     <source>Rhenium</source>
   </data>
   <data name="ruthenium">
-    <value>钌</value>
+    <value>Ruthenium钌</value>
     <comment>Material ruthenium</comment>
     <source>Ruthenium</source>
   </data>
@@ -536,12 +538,12 @@
     <source>Unidentified Scan Archives</source>
   </data>
   <data name="scandatabanks">
-    <value>分类扫描数据库</value>
+    <value>机密扫描数据库</value>
     <comment>Material scandatabanks</comment>
     <source>Classified Scan Databanks</source>
   </data>
   <data name="scrambledemissiondata">
-    <value>特殊的加扰排放数据</value>
+    <value>异常乱码排放数据</value>
     <comment>Material scrambledemissiondata</comment>
     <source>Exceptional Scrambled Emission Data</source>
   </data>
@@ -556,17 +558,17 @@
     <source>Security Firmware Patch</source>
   </data>
   <data name="selenium">
-    <value>硒</value>
+    <value>Selenium硒</value>
     <comment>Material selenium</comment>
     <source>Selenium</source>
   </data>
   <data name="shieldcyclerecordings">
-    <value>扭曲的护盾循环记录</value>
+    <value>失真的护盾循环记录</value>
     <comment>Material shieldcyclerecordings</comment>
     <source>Distorted Shield Cycle Recordings</source>
   </data>
   <data name="shielddensityreports">
-    <value>非典型护盾扫描</value>
+    <value>常见的护盾扫描结果</value>
     <comment>Material shielddensityreports</comment>
     <source>Untypical Shield Scans</source>
   </data>
@@ -586,37 +588,37 @@
     <source>Shielding Sensors</source>
   </data>
   <data name="shieldpatternanalysis">
-    <value>异常护盾模式分析</value>
+    <value>异常护盾模式分析结果</value>
     <comment>Material shieldpatternanalysis</comment>
     <source>Aberrant Shield Pattern Analysis</source>
   </data>
   <data name="shieldsoakanalysis">
-    <value>不协调护盾浸润情况分析</value>
+    <value>不稳定的护盾穿透分析结果</value>
     <comment>Material shieldsoakanalysis</comment>
     <source>Inconsistent Shield Soak Analysis</source>
   </data>
   <data name="sulphur">
-    <value>硫磺</value>
+    <value>Sulphur硫</value>
     <comment>Material sulphur</comment>
     <source>Sulphur</source>
   </data>
   <data name="symmetrickeys">
-    <value>开放对称密钥</value>
+    <value>开放式对称密钥</value>
     <comment>Material symmetrickeys</comment>
     <source>Open Symmetric Keys</source>
   </data>
   <data name="technetium">
-    <value>锝</value>
+    <value>Technetium锝</value>
     <comment>Material technetium</comment>
     <source>Technetium</source>
   </data>
   <data name="tellurium">
-    <value>碲</value>
+    <value>Tellurium碲</value>
     <comment>Material tellurium</comment>
     <source>Tellurium</source>
   </data>
   <data name="temperedalloys">
-    <value>回火合金</value>
+    <value>淬火合金</value>
     <comment>Material temperedalloys</comment>
     <source>Tempered Alloys</source>
   </data>
@@ -636,7 +638,7 @@
     <source>Hardened Surface Fragments</source>
   </data>
   <data name="tg_biomechanicalconduits">
-    <value>八角生物机械管线</value>
+    <value>Thargoid生物机械管线</value>
     <comment>Material tg_biomechanicalconduits</comment>
     <source>Thargoid Bio-Mechanical Conduits</source>
   </data>
@@ -646,7 +648,7 @@
     <source>Caustic Crystal</source>
   </data>
   <data name="tg_causticgeneratorparts">
-    <value>有腐蚀性的装置</value>
+    <value>腐蚀性装置</value>
     <comment>Material tg_causticgeneratorparts</comment>
     <source>Corrosive Mechanisms</source>
   </data>
@@ -656,22 +658,22 @@
     <source>Caustic Shard</source>
   </data>
   <data name="tg_compositiondata">
-    <value>八角材料成分数据</value>
+    <value>Thargoid材料成分数据</value>
     <comment>Material tg_compositiondata</comment>
     <source>Thargoid Material Composition Data</source>
   </data>
   <data name="tg_interdictiondata">
-    <value>八角拦截遥测数据</value>
+    <value>Thargoid拦截遥测数据</value>
     <comment>Material tg_interdictiondata</comment>
     <source>Thargoid Interdiction Telemetry</source>
   </data>
   <data name="tg_propulsionelement">
-    <value>八角推进元件</value>
+    <value>Thargoid推进元件</value>
     <comment>Material tg_propulsionelement</comment>
     <source>Thargoid Propulsion Element</source>
   </data>
   <data name="tg_residuedata">
-    <value>八角残留数据</value>
+    <value>Thargoid残留数据</value>
     <comment>Material tg_residuedata</comment>
     <source>Thargoid Residue Data</source>
   </data>
@@ -691,42 +693,42 @@
     <source>Massive Energy Surge Analytics</source>
   </data>
   <data name="tg_structuraldata">
-    <value>八角结构数据</value>
+    <value>Thargoid结构数据</value>
     <comment>Material tg_structuraldata</comment>
     <source>Thargoid Structural Data</source>
   </data>
   <data name="tg_weaponparts">
-    <value>八角武器零件</value>
+    <value>Thargoid武器零件</value>
     <comment>Material tg_weaponparts</comment>
     <source>Thargoid Weapon Parts</source>
   </data>
   <data name="tg_wreckagecomponents">
-    <value>八角残骸组件</value>
+    <value>Thargoid残骸组件</value>
     <comment>Material tg_wreckagecomponents</comment>
     <source>Thargoid Wreckage Components</source>
   </data>
   <data name="thermicalloys">
-    <value>热合金</value>
+    <value>热处理合金</value>
     <comment>Material thermicalloys</comment>
     <source>Thermic Alloys</source>
   </data>
   <data name="tin">
-    <value>锡</value>
+    <value>Tin锡</value>
     <comment>Material tin</comment>
     <source>Tin</source>
   </data>
   <data name="tungsten">
-    <value>钨</value>
+    <value>Tungsten钨</value>
     <comment>Material tungsten</comment>
     <source>Tungsten</source>
   </data>
   <data name="uncutfocuscrystals">
-    <value>有缺陷的聚焦晶体</value>
+    <value>瑕疵聚焦晶体</value>
     <comment>Material uncutfocuscrystals</comment>
     <source>Flawed Focus Crystals</source>
   </data>
   <data name="unknowncarapace">
-    <value>八角甲壳</value>
+    <value>Thargoid甲壳</value>
     <comment>Material unknowncarapace</comment>
     <source>Thargoid Carapace</source>
   </data>
@@ -736,7 +738,7 @@
     <source>Tactical Core Chip</source>
   </data>
   <data name="unknownenergycell">
-    <value>八角能量电池</value>
+    <value>Thargoid能量电池</value>
     <comment>Material unknownenergycell</comment>
     <source>Thargoid Energy Cell</source>
   </data>
@@ -746,52 +748,52 @@
     <source>Sensor Fragment</source>
   </data>
   <data name="unknownorganiccircuitry">
-    <value>八角有机电路</value>
+    <value>Thargoid有机电路</value>
     <comment>Material unknownorganiccircuitry</comment>
     <source>Thargoid Organic Circuitry</source>
   </data>
   <data name="unknownshipsignature">
-    <value>八角飞船特征</value>
+    <value>Thargoid飞船特征</value>
     <comment>Material unknownshipsignature</comment>
     <source>Thargoid Ship Signature</source>
   </data>
   <data name="unknowntechnologycomponents">
-    <value>八角技术组件</value>
+    <value>Thargoid技术组件</value>
     <comment>Material unknowntechnologycomponents</comment>
     <source>Thargoid Technology Components</source>
   </data>
   <data name="unknownwakedata">
-    <value>八角尾迹数据</value>
+    <value>Thargoid尾迹数据</value>
     <comment>Material unknownwakedata</comment>
     <source>Thargoid Wake Data</source>
   </data>
   <data name="vanadium">
-    <value>钒</value>
+    <value>Vanadium钒</value>
     <comment>Material vanadium</comment>
     <source>Vanadium</source>
   </data>
   <data name="wakesolutions">
-    <value>奇异的尾迹消融状态</value>
+    <value>陌生尾迹数据解析结果</value>
     <comment>Material wakesolutions</comment>
     <source>Strange Wake Solutions</source>
   </data>
   <data name="wornshieldemitters">
-    <value>磨损的护盾发生器</value>
+    <value>破损的护盾发生器</value>
     <comment>Material wornshieldemitters</comment>
     <source>Worn Shield Emitters</source>
   </data>
   <data name="yttrium">
-    <value>钇</value>
+    <value>Yttrium钇</value>
     <comment>Material yttrium</comment>
     <source>Yttrium</source>
   </data>
   <data name="zinc">
-    <value>锌</value>
+    <value>Zinc锌</value>
     <comment>Material zinc</comment>
     <source>Zinc</source>
   </data>
   <data name="zirconium">
-    <value>锆</value>
+    <value>Zirconium锆</value>
     <comment>Material zirconium</comment>
     <source>Zirconium</source>
   </data>

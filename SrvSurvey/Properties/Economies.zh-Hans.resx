@@ -47,7 +47,7 @@
     <source>Agriculture</source>
   </data>
   <data name="Carrier">
-    <value>私人企业</value>
+    <value>私营企业</value>
     <comment>Economy Type Carrier</comment>
     <source>Private Enterprise</source>
   </data>
@@ -57,17 +57,17 @@
     <source>Colony</source>
   </data>
   <data name="Damaged">
-    <value>损坏</value>
+    <value>受损</value>
     <comment>Economy type Damaged</comment>
     <source>Damaged</source>
   </data>
   <data name="Engineer">
-    <value>工程师</value>
+    <value>工程</value>
     <comment>Economy type Engineer</comment>
     <source>Engineering</source>
   </data>
   <data name="Extraction">
-    <value>萃取</value>
+    <value>采掘业</value>
     <comment>Economy type Extraction</comment>
     <source>Extraction</source>
   </data>
@@ -112,17 +112,17 @@
     <source>Rescue</source>
   </data>
   <data name="Service">
-    <value>服务</value>
+    <value>服务业</value>
     <comment>Economy type Service</comment>
     <source>Service</source>
   </data>
   <data name="Terraforming">
-    <value>地球化</value>
+    <value>类地改造</value>
     <comment>Economy type Terraforming</comment>
     <source>Terraforming</source>
   </data>
   <data name="Tourism">
-    <value>旅游</value>
+    <value>旅游业</value>
     <comment>Economy type Tourism</comment>
     <source>Tourism</source>
   </data>

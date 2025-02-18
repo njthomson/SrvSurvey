@@ -60,53 +60,45 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BioSignals">
-    <!--Machine translated-->
-    <value>|{0}x 生物信号开启：</value>
+    <value>| {0}x 生物信号: </value>
     <comment>Appended to prior text. {0} int, count of bodies with bio signals</comment>
     <source>| {0}x Bio signals on: </source>
   </data>
   <data name="DssRemaining">
-    <!--Machine translated-->
-    <value>{0}x 体：</value>
+    <value> {0}x 天体: </value>
     <comment>May be appended to FssCompleteShort. {0} int, count of bodies worth of scanning.</comment>
     <source> {0}x bodies: </source>
   </data>
   <data name="FssCompleteLong">
-    <!--Machine translated-->
     <value>FSS {0}% 完成</value>
     <comment>Short version, joined with more text. {0} int, percentage number</comment>
     <source>FSS {0}% complete</source>
   </data>
   <data name="FssCompleteShort">
-    <!--Machine translated-->
     <value>FSS {0}%</value>
     <comment>Long version, shown alone. {0} int, percentage number</comment>
     <source>FSS {0}%</source>
   </data>
   <data name="FssNotStarted">
-    <!--Machine translated-->
-    <value>FSS 未启动</value>
+    <value>FSS 未扫描</value>
     <source>FSS not started</source>
   </data>
   <data name="Header">
-    <!--Machine translated-->
-    <value>DSS 调查：</value>
+    <value>推荐的DSS扫描: </value>
     <comment>Header line</comment>
     <source>DSS survey: </source>
   </data>
   <data name="NextSystem">
     <!--Machine translated-->
-    <value>下一个系统：</value>
+    <value>下一星系:</value>
     <source>Next system:</source>
   </data>
   <data name="NoDssMeet">
-    <!--Machine translated-->
-    <value>没有</value>
+    <value>无</value>
     <source>None</source>
   </data>
   <data name="NonBodySignals">
-    <!--Machine translated-->
-    <value>►{0}非体信号</value>
+    <value>► {0} 非天体信号</value>
     <comment>{0} int, count of non body signals</comment>
     <source>► {0} non-body signals</source>
   </data>

@@ -60,128 +60,111 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ActiveFighter">
-    <!--Machine translated-->
-    <value>战斗机处于活动状态</value>
+    <value>飞船就绪</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Fighter is active</source>
   </data>
   <data name="AGRI">
-    <!--Machine translated-->
-    <value>农业</value>
+    <!--不确定是否能放下3个中文字符,限定3字母的地方先使用原文-->
+    <value>AGRI</value>
     <comment>A contraction of Agriculture, ideally 3 letters</comment>
     <source>AGRI</source>
   </data>
   <data name="AutoDock1">
-    <!--Machine translated-->
-    <value>正在进行自动停靠</value>
+    <value>正在自动停靠</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Auto dock in progress</source>
   </data>
   <data name="AutoDock2">
-    <!--Machine translated-->
-    <value>支持结算自动识别</value>
+    <value>聚居地自动识别功能已启用</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Settlement auto-identification supported</source>
   </data>
   <data name="AutoDock3">
-    <!--Machine translated-->
-    <value>不要切换到外部摄像头</value>
+    <value>请勿切换至外部视角</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Do not switch to external camera</source>
   </data>
   <data name="CMD">
-    <!--Machine translated-->
+    <!--不确定是否能放下3个中文字符,限定3字母的地方先使用原文-->
     <value>CMD</value>
     <comment>A contraction of Command, ideally 3 letters</comment>
     <source>CMD</source>
   </data>
   <data name="Distance">
-    <!--Machine translated-->
     <value>太远了</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Too far away</source>
   </data>
   <data name="DockingApproved">
-    <!--Machine translated-->
-    <value>对接批准：垫 #{0}</value>
+    <value>停靠申请已批准: 停机坪 #{0}</value>
     <comment>Shown when approaching a settlement
 {0} int, the pad number assigned</comment>
     <source>Docking approved: pad #{0}</source>
   </data>
   <data name="DockingDenied">
-    <!--Machine translated-->
-    <value>停靠被拒绝</value>
+    <value>停靠申请被拒绝</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Docking denied</source>
   </data>
   <data name="DockingRequested">
-    <!--Machine translated-->
-    <value>请求停靠</value>
+    <value>停靠申请已发出</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Docking requested</source>
   </data>
   <data name="EXT">
-    <!--Machine translated-->
-    <value>内线</value>
+    <!--不确定是否能放下3个中文字符,限定3字母的地方先使用原文-->
+    <value>EXT</value>
     <comment>A contraction of External, ideally 3 letters</comment>
     <source>EXT</source>
   </data>
   <data name="Faction">
-    <!--Machine translated-->
-    <value>派</value>
+    <value>派系</value>
     <comment>Prefix shown when approaching a settlement</comment>
     <source>Faction</source>
   </data>
   <data name="Government">
-    <!--Machine translated-->
     <value>政府</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Government</source>
   </data>
   <data name="HAB">
-    <!--Machine translated-->
-    <value>有害藻华</value>
+    <!--不确定是否能放下3个中文字符,限定3字母的地方先使用原文-->
+    <value>HAB</value>
     <comment>A contraction of Habitat, ideally 3 letters</comment>
     <source>HAB</source>
   </data>
   <data name="HasInterstellar">
-    <!--Machine translated-->
-    <value>可用的星际派系</value>
+    <value>可用星际派系</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Interstellar factions available</source>
   </data>
   <data name="HelpFoot0">
-    <!--Machine translated-->
-    <value>要手动识别：</value>
+    <value>手动识别:</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>To manually identify:</source>
   </data>
   <data name="HelpFoot1">
-    <!--Machine translated-->
-    <value>1. 走到任何着陆垫的中心并蹲下</value>
+    <value>1. 走到任意停机坪的中心并蹲下</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>1. Walk to the center of any landing pad and crouch</source>
   </data>
   <data name="HelpFoot2">
-    <!--Machine translated-->
     <value>2. 将左脚放在中心凹槽上</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>2. Place your left foot over the the center grooves</source>
   </data>
   <data name="HelpFoot3">
-    <!--Machine translated-->
-    <value>3. 脸朝左侧的 V 形图案</value>
+    <value>3. 面朝前方，使箭头标志位于你的左侧</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>3. Face with the chevrons ahead to your left</source>
   </data>
   <data name="HelpFoot4">
-    <!--Machine translated-->
-    <value>4. 瞄准前方的凹槽末端</value>
+    <value>4. 瞄准前方凹槽的末端</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>4. Aim at the end of the groove ahead of you</source>
   </data>
   <data name="HelpFoot5">
-    <!--Machine translated-->
     <value>5. 发送消息 '{0}'</value>
     <comment>
       Shown when landed and help is needed on foot
@@ -189,173 +172,152 @@
     <source>5. Send message '{0}'</source>
   </data>
   <data name="HelpFoot6">
-    <!--Machine translated-->
-    <value>有关更多信息，请参阅 wiki</value>
+    <value>更多信息请查看Wiki</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>See the wiki for more info</source>
   </data>
   <data name="HelpShip1">
-    <!--Machine translated-->
-    <value>结算将在下一步行动后确定</value>
+    <value>聚居地将在下一步操作后识别</value>
     <comment>Shown when landed and help is needed in a ship</comment>
     <source>Settlement will be identified after next action</source>
   </data>
   <data name="HelpShip2">
-    <!--Machine translated-->
     <value>手动识别</value>
     <comment>Shown when landed and help is needed in a ship</comment>
     <source>To manually identify</source>
   </data>
   <data name="HelpShip3">
-    <!--Machine translated-->
-    <value>停靠时发送 '{0}'</value>
+    <value>当停靠后发送 '{0}'</value>
     <comment>Shown when landed and help is needed in a ship
 {0} string, the non-localized command to type</comment>
     <source>Send '{0}' when docked</source>
   </data>
   <data name="Hostile">
-    <!--Machine translated-->
-    <value>敌对的</value>
+    <value>敌对</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Hostile</source>
   </data>
   <data name="IND">
-    <!--Machine translated-->
+    <!--不确定是否能放下3个中文字符,限定3字母的地方先使用原文-->
     <value>工业</value>
     <comment>A contraction of Industrial Processing, ideally 3 letters</comment>
     <source>IND</source>
   </data>
   <data name="Influence">
-    <!--Machine translated-->
-    <value>影响</value>
+    <value>影响力</value>
     <comment>Prefix shown when approaching a settlement</comment>
     <source>Influence</source>
   </data>
   <data name="KnownSettlement">
-    <!--Machine translated-->
-    <value>已知定居点</value>
+    <value>已知聚居地</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Known settlement</source>
   </data>
   <data name="LAB">
-    <!--Machine translated-->
-    <value>实验室</value>
+    <!--不确定是否能放下3个中文字符,限定3字母的地方先使用原文-->
+    <value>LAB</value>
     <comment>A contraction of Laboratory, ideally 3 letters</comment>
     <source>LAB</source>
   </data>
   <data name="ManualDock1">
-    <!--Machine translated-->
-    <value>正在进行手动对接</value>
+    <value>正在手动停靠</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Manual docking in progress</source>
   </data>
   <data name="ManualDock2">
-    <!--Machine translated-->
-    <value>结算确定将延迟</value>
+    <value>聚居地识别将被推迟</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Settlement identification will be delayed</source>
   </data>
   <data name="ManualDock3">
-    <!--Machine translated-->
-    <value>推荐自动停靠</value>
+    <value>推荐使用自动停靠</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Auto dock recommended</source>
   </data>
   <data name="MED">
-    <!--Machine translated-->
-    <value>地中海</value>
+    <!--不确定是否能放下3个中文字符,限定3字母的地方先使用原文-->
+    <value>MED</value>
     <comment>A contraction of Medical, ideally 3 letters</comment>
     <source>MED</source>
   </data>
   <data name="NoSpace">
-    <!--Machine translated-->
-    <value>无可用垫片</value>
+    <value>无可用停机坪</value>
     <comment>Shown when approaching a settlement</comment>
     <source>No pads available</source>
   </data>
   <data name="Offenses">
-    <!--Machine translated-->
-    <value>犯罪</value>
+    <value>敌对行为</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Offenses</source>
   </data>
   <data name="OnApproach">
-    <!--Machine translated-->
-    <value>进近时</value>
+    <value>正在靠近</value>
     <comment>Shown when approaching a settlement</comment>
     <source>On approach</source>
   </data>
   <data name="POW">
-    <!--Machine translated-->
-    <value>战俘</value>
+    <!--不确定是否能放下3个中文字符,限定3字母的地方先使用原文-->
+    <value>POW</value>
     <comment>A contraction of Power Center, ideally 3 letters</comment>
     <source>POW</source>
   </data>
   <data name="PWR">
-    <!--Machine translated-->
-    <value>压水堆</value>
+    <!--不确定是否能放下3个中文字符,限定3字母的地方先使用原文-->
+    <value>PWR</value>
     <comment>A contraction of Power Center, ideally 3 letters</comment>
     <source>PWR</source>
   </data>
   <data name="RES">
-    <!--Machine translated-->
-    <value>可再生能源</value>
+    <!--不确定是否能放下3个中文字符,限定3字母的地方先使用原文-->
+    <value>RES</value>
     <comment>A contraction of Resources, ideally 3 letters</comment>
     <source>RES</source>
   </data>
   <data name="STO">
-    <!--Machine translated-->
+    <!--不确定是否能放下3个中文字符,限定3字母的地方先使用原文-->
     <value>STO</value>
     <comment>A contraction of Storage, ideally 3 letters</comment>
     <source>STO</source>
   </data>
   <data name="TooLarge">
-    <!--Machine translated-->
-    <value>装运太大</value>
+    <value>飞船太大了</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Ship too large</source>
   </data>
   <data name="Unknown">
-    <!--Machine translated-->
     <value>未知</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Unknown</source>
   </data>
   <data name="UnknownTypeHeading">
-    <!--Machine translated-->
-    <value>未知的结算类型和标题</value>
+    <value>未知聚居地类型及航向</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Unknown settlement type and heading</source>
   </data>
   <data name="UnkownHeading">
-    <!--Machine translated-->
-    <value>未知的结算标题</value>
+    <value>未知聚居地航向</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Unknown settlement heading</source>
   </data>
   <data name="YourRep">
-    <!--Machine translated-->
-    <value>您的声誉：{0}</value>
+    <value>你的声望: {0}</value>
     <comment>Shown when approaching a settlement
 {0} string, your reputation with a faction</comment>
     <source>Your reputation: {0}</source>
   </data>
   <data name="ZoomHeader">
-    <!--Machine translated-->
     <value>缩放：{0}</value>
     <comment>Map zoom level, shown in top right corner
 {0} float, 1 decimal place, the map zoom level</comment>
     <source>Zoom: {0}</source>
   </data>
   <data name="ZoomHeaderAuto">
-    <!--Machine translated-->
-    <value>变焦：{0}（自动）</value>
+    <value>缩放：{0}（自动）</value>
     <comment>Map zoom level when auto zooming, shown in top right corner
 {0} float, 1 decimal place, the map zoom level</comment>
     <source>Zoom: {0} (Auto)</source>
   </data>
   <data name="ZoomHeaderMin">
-    <!--Machine translated-->
     <value>Z：{0}</value>
     <comment>A minimal map zoom level, shown in top right corner when there's not much space
 {0} float, 1 decimal place, the map zoom level</comment>
