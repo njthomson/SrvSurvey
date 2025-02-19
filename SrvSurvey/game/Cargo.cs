@@ -32,7 +32,7 @@ namespace SrvSurvey
                 {
                     Game.log($"Creating empty CargoFile.json in: {CargoFile.Filepath}");
                     var isoNow = DateTimeOffset.UtcNow.ToString("s");
-                    var json = "{ \"timestamp\":\"" + isoNow + "Z\", \"event\":\"Cargo\", \"Vessel\":\"Ship\", \"Count\":0, \"Inventory\":[] } }";
+                    var json = "{ \"timestamp\":\"" + isoNow + "Z\", \"event\":\"Cargo\", \"Vessel\":\"Ship\", \"Count\":0, \"Inventory\":[] }";
                     File.WriteAllText(CargoFile.Filepath, json);
                 }
                 catch (Exception ex)

@@ -424,9 +424,6 @@
   <data name="status.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="status.Text" xml:space="preserve">
-    <value>statusStrip1</value>
-  </data>
   <data name="table.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
@@ -483,9 +480,6 @@
   </data>
   <data name="toolStrip1.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
-  </data>
-  <data name="toolStrip1.Text" xml:space="preserve">
-    <value>toolStrip1</value>
   </data>
   <data name="toolStripDropDownButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

@@ -103,7 +103,7 @@
             // 
             // btnShare
             // 
-            btnShare.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            btnShare.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnShare.Location = new Point(736, 36);
             btnShare.Name = "btnShare";
             btnShare.Size = new Size(208, 23);
@@ -121,13 +121,12 @@
             statusStrip1.Size = new Size(1176, 22);
             statusStrip1.TabIndex = 11;
             statusStrip1.TabStop = true;
-            statusStrip1.Text = "statusStrip1";
             // 
             // lblStatus
             // 
             lblStatus.DisplayStyle = ToolStripItemDisplayStyle.Text;
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(1033, 17);
+            lblStatus.Size = new Size(1064, 17);
             lblStatus.Spring = true;
             lblStatus.Text = "...";
             lblStatus.TextAlign = ContentAlignment.MiddleLeft;
@@ -419,7 +418,7 @@
             // 
             contextMenu.Items.AddRange(new ToolStripItem[] { menuOpenSiteSurvey, toolStripSeparator3, copyToolStripMenuItem, copySystemNameToolStripMenuItem, systemAddressToolStripMenuItem, copyBodyNameToolStripMenuItem, copyStarPosToolStripMenuItem, copyLatlongToolStripMenuItem, notesToolStripMenuItem, toolStripSeparator1, openSystemInEDSMToolStripMenuItem, toolStripSeparator2, menuOpenImagesFolder, menuOpenDataFile, menuOpenPubData });
             contextMenu.Name = "contextMenu";
-            contextMenu.Size = new Size(198, 286);
+            contextMenu.Size = new Size(198, 308);
             // 
             // menuOpenSiteSurvey
             // 

@@ -9,9 +9,7 @@
 	colNotes.Text
 	colSystem.Text
 	lblIntro.Text
-	status.Text
 	$this.Text
-	toolStrip1.Text
 	toolStripDropDownButton1.Text
 
 /forms/ViewLogs.ru.resx
