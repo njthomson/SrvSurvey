@@ -59,6 +59,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <!--Localizable elements are below-->
   <data name="Aleoida">
     <!--因要保留3个字母，暂时不翻译而保留原文-->
     <value>ale</value>

@@ -60,6 +60,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <!--Localizable elements are below-->
   <data name="FirewallBlocked">
     <!--Machine translated-->
     <value>Il semble que les appels réseau pour SrvSurvey soient bloqués par un pare-feu. Cela est plus probable lors de l’exécution de SrvSurvey à partir du dossier Téléchargements. L’ajout de l’emplacement de SrvSurvey à votre mur de fichiers résoudra ce problème.\r\n\r\n{0}\r\n\r\nSouhaitez-vous copier cet emplacement dans le presse-papiers ?</value>
@@ -255,9 +259,6 @@ Vous souhaitez le créer ?</value>
 {0}
 
 Would you like to create it?</source>
-  </data>
-  <data name="$this.Localizable" type="System.Boolean, mscorlib">
-    <value>True</value>
   </data>
   <data name="UnexpectedWentWrong">
     <!--Machine translated-->

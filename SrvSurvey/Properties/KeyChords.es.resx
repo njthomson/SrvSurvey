@@ -59,6 +59,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <!--Localizable elements are below-->
   <data name="copyNextBoxel">
     <value>En el mapa de la galaxia, copia el siguiente sistema de búsqueda de boxel en el portapapeles.</value>
     <comment>A description of a key-chord setting</comment>

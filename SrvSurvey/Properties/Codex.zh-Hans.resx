@@ -59,6 +59,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <!--Localizable elements are below-->
   <data name="Aleoida">
     <!--以下尝试使用双语表述,使用“()”表示直译，使用“{}”表示音译,“[]”为译者结合描述重新取名-->
     <value>Aleoida{阿莱奥达}</value>

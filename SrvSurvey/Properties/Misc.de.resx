@@ -60,6 +60,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <!--Localizable elements are below-->
   <data name="FirewallBlocked">
     <!--Machine translated-->
     <value>Es scheint, dass Netzwerkaufrufe für SrvSurvey von einer Firewall blockiert werden. Dies ist wahrscheinlicher, wenn SrvSurvey aus dem Ordner "Downloads" ausgeführt wird. Wenn Sie den Speicherort von SrvSurvey zu Ihrer Dateiwall hinzufügen, wird dieses Problem gelöst.\r\n\r\n{0}\r\n\r\nMöchten Sie diesen Speicherort in die Zwischenablage kopieren?</value>
@@ -255,9 +259,6 @@ Möchtest du ihn erstellen?</value>
 {0}
 
 Would you like to create it?</source>
-  </data>
-  <data name="$this.Localizable" type="System.Boolean, mscorlib">
-    <value>True</value>
   </data>
   <data name="UnexpectedWentWrong">
     <!--Machine translated-->

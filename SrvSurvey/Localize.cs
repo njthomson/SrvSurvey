@@ -252,25 +252,46 @@ namespace SrvSurvey
             alphaSortResx(newTargetDoc, targetFilepath);
         }
 
-        private static void alphaSortResx(XDocument doc, string filepath)
+        public static void alphaSortResx(XDocument doc, string filepath)
         {
-            // collect elements to be sorted
-            var sorted = doc.Root!.Elements()
-                .Where(_ => _.Name.LocalName == "data")
-                .OrderBy(n => n.FirstAttribute?.Value.Replace("$", "").Replace("&gt;&gt;", ""))
-                .ToList();
+            var locBelowComment = "Localizable elements are below";
+
+            // remove the comments we don't want
+            var badComments = doc.Root!.Nodes().Where(_ => (_ as XComment)?.Value == locBelowComment).ToList();
+            foreach (var node in badComments)
+                node.Remove();
 
             // collect free floating comments, we would like to keep these
             var comments = doc.Root!.Nodes()
-                .Where(_ => _.Parent == doc.Root && _.NodeType == System.Xml.XmlNodeType.Comment && _.NextNode != null)
+                .Where(_ => _.Parent == doc.Root && _.NodeType == System.Xml.XmlNodeType.Comment && _.NextNode != null && (_ as XComment)?.Value != locBelowComment)
                 .Reverse()
-                .ToDictionary(_ => _, _ => _.NextNode!);
+                .ToDictionary(_ => (XComment)_, _ => _.NextNode!);
 
-            // remove then re-add them
+            // collect elements to be sorted
+            var sorted = doc.Root!.Elements()
+                .Where(_ => _.Name.LocalName == "data")
+                .OrderBy(n => n.FirstAttribute?.Value.Replace("$", "").Replace(">>", ""))
+                .ToList();
+
+            // remove then re-add them in the correct order
             foreach (var element in sorted) element.Remove();
             foreach (var element in sorted) doc.Root.Add(element);
 
-            // restore those comments 
+            // collect elements to be sorted
+            var locNodes = doc.Root!.Elements()
+                .Where(_ => _.Name.LocalName == "data"
+                    && _.Attribute("type") == null // text elements have no type - ignore anything that does
+                    && _.Attribute("name")?.Value.StartsWith(">") != true
+                )
+                .OrderBy(n => n.FirstAttribute?.Value.Replace("$", ""))
+                .ToList();
+
+            // remove then re-add them, with a comment telling where localizable elements will begin
+            foreach (var element in locNodes) element.Remove();
+            doc.Root.Add(new XComment(locBelowComment));
+            foreach (var element in locNodes) doc.Root.Add(element);
+
+            // restore those comments to be ahead of where they were before
             foreach (var (comment, nextNode) in comments)
             {
                 comment.Remove();

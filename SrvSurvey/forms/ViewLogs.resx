@@ -124,84 +124,6 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="&gt;&gt;btnClear.Name" xml:space="preserve">
-    <value>btnClear</value>
-  </data>
-  <data name="&gt;&gt;btnClear.Parent" xml:space="preserve">
-    <value>tableBottom</value>
-  </data>
-  <data name="&gt;&gt;btnClear.Type" xml:space="preserve">
-    <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;btnClear.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Name" xml:space="preserve">
-    <value>btnClose</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Parent" xml:space="preserve">
-    <value>tableBottom</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Type" xml:space="preserve">
-    <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;btnCopy.Name" xml:space="preserve">
-    <value>btnCopy</value>
-  </data>
-  <data name="&gt;&gt;btnCopy.Parent" xml:space="preserve">
-    <value>tableBottom</value>
-  </data>
-  <data name="&gt;&gt;btnCopy.Type" xml:space="preserve">
-    <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;btnCopy.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;btnOpenFolder.Name" xml:space="preserve">
-    <value>btnOpenFolder</value>
-  </data>
-  <data name="&gt;&gt;btnOpenFolder.Parent" xml:space="preserve">
-    <value>tableBottom</value>
-  </data>
-  <data name="&gt;&gt;btnOpenFolder.Type" xml:space="preserve">
-    <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;btnOpenFolder.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;tableBottom.Name" xml:space="preserve">
-    <value>tableBottom</value>
-  </data>
-  <data name="&gt;&gt;tableBottom.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tableBottom.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tableBottom.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ViewLogs</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>SrvSurvey.forms.SizableForm, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;txtLogs.Name" xml:space="preserve">
-    <value>txtLogs</value>
-  </data>
-  <data name="&gt;&gt;txtLogs.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;txtLogs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txtLogs.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="btnClear.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
@@ -211,14 +133,23 @@
   <data name="btnClear.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 3, 4, 3</value>
   </data>
+  <data name="&gt;&gt;btnClear.Name" xml:space="preserve">
+    <value>btnClear</value>
+  </data>
+  <data name="&gt;&gt;btnClear.Parent" xml:space="preserve">
+    <value>tableBottom</value>
+  </data>
   <data name="btnClear.Size" type="System.Drawing.Size, System.Drawing">
     <value>88, 27</value>
   </data>
   <data name="btnClear.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="btnClear.Text" xml:space="preserve">
-    <value>&amp;Reset</value>
+  <data name="&gt;&gt;btnClear.Type" xml:space="preserve">
+    <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;btnClear.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="btnClose.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -229,14 +160,23 @@
   <data name="btnClose.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 3, 4, 3</value>
   </data>
+  <data name="&gt;&gt;btnClose.Name" xml:space="preserve">
+    <value>btnClose</value>
+  </data>
+  <data name="&gt;&gt;btnClose.Parent" xml:space="preserve">
+    <value>tableBottom</value>
+  </data>
   <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
     <value>88, 27</value>
   </data>
   <data name="btnClose.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="btnClose.Text" xml:space="preserve">
-    <value>&amp;Close</value>
+  <data name="&gt;&gt;btnClose.Type" xml:space="preserve">
+    <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="btnCopy.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -247,14 +187,23 @@
   <data name="btnCopy.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 3, 4, 3</value>
   </data>
+  <data name="&gt;&gt;btnCopy.Name" xml:space="preserve">
+    <value>btnCopy</value>
+  </data>
+  <data name="&gt;&gt;btnCopy.Parent" xml:space="preserve">
+    <value>tableBottom</value>
+  </data>
   <data name="btnCopy.Size" type="System.Drawing.Size, System.Drawing">
     <value>88, 27</value>
   </data>
   <data name="btnCopy.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="btnCopy.Text" xml:space="preserve">
-    <value>C&amp;opy</value>
+  <data name="&gt;&gt;btnCopy.Type" xml:space="preserve">
+    <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;btnCopy.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="btnOpenFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -265,14 +214,23 @@
   <data name="btnOpenFolder.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 3, 4, 3</value>
   </data>
+  <data name="&gt;&gt;btnOpenFolder.Name" xml:space="preserve">
+    <value>btnOpenFolder</value>
+  </data>
+  <data name="&gt;&gt;btnOpenFolder.Parent" xml:space="preserve">
+    <value>tableBottom</value>
+  </data>
   <data name="btnOpenFolder.Size" type="System.Drawing.Size, System.Drawing">
     <value>135, 27</value>
   </data>
   <data name="btnOpenFolder.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="btnOpenFolder.Text" xml:space="preserve">
-    <value>&amp;Open logs folder</value>
+  <data name="&gt;&gt;btnOpenFolder.Type" xml:space="preserve">
+    <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;btnOpenFolder.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="tableBottom.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -292,6 +250,12 @@
   <data name="tableBottom.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 486</value>
   </data>
+  <data name="&gt;&gt;tableBottom.Name" xml:space="preserve">
+    <value>tableBottom</value>
+  </data>
+  <data name="&gt;&gt;tableBottom.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
   <data name="tableBottom.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
@@ -300,6 +264,12 @@
   </data>
   <data name="tableBottom.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
+  </data>
+  <data name="&gt;&gt;tableBottom.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableBottom.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>7, 15</value>
@@ -313,8 +283,11 @@
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>600, 400</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>SrvSurvey Logs</value>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>ViewLogs</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>SrvSurvey.forms.SizableForm, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="txtLogs.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -328,6 +301,12 @@
   <data name="txtLogs.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="&gt;&gt;txtLogs.Name" xml:space="preserve">
+    <value>txtLogs</value>
+  </data>
+  <data name="&gt;&gt;txtLogs.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
   <data name="txtLogs.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
     <value>Both</value>
   </data>
@@ -336,5 +315,27 @@
   </data>
   <data name="txtLogs.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
+  </data>
+  <data name="&gt;&gt;txtLogs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtLogs.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <!--Localizable elements are below-->
+  <data name="btnClear.Text" xml:space="preserve">
+    <value>&amp;Reset</value>
+  </data>
+  <data name="btnClose.Text" xml:space="preserve">
+    <value>&amp;Close</value>
+  </data>
+  <data name="btnCopy.Text" xml:space="preserve">
+    <value>C&amp;opy</value>
+  </data>
+  <data name="btnOpenFolder.Text" xml:space="preserve">
+    <value>&amp;Open logs folder</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>SrvSurvey Logs</value>
   </data>
 </root>

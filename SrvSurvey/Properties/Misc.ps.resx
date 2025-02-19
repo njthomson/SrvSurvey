@@ -60,6 +60,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <!--Localizable elements are below-->
   <data name="FirewallBlocked">
     <!--Machine translated-->
     <value>* IT APPEARS NETWORK CALLS FOR SRVSURVEY ARE BEING BLOCKED BY A FIREWALL. THIS IS MORE LIKELY WHEN RUNNING SRVSURVEY FROM WITHIN THE DOWNLOADS FOLDER. ADDING THE LOCATION OF SRVSURVEY TO YOUR FILE WALL WILL SOLVE THIS PROBLEM.\R\N\R\N{0}\R\N\R\NWOULD YOU LIKE TO COPY THAT LOCATION TO THE CLIPBOARD? →→→!</value>
@@ -255,9 +259,6 @@ WOULD YOU LIKE TO CREATE IT? →→→!</value>
 {0}
 
 Would you like to create it?</source>
-  </data>
-  <data name="$this.Localizable" type="System.Boolean, mscorlib">
-    <value>True</value>
   </data>
   <data name="UnexpectedWentWrong">
     <!--Machine translated-->

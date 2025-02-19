@@ -59,6 +59,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <!--Localizable elements are below-->
   <data name="copyNextBoxel">
     <value>在银河地图时，将下一个boxel搜索星系名复制到剪贴板</value>
     <comment>A description of a key-chord setting</comment>

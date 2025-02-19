@@ -61,6 +61,7 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <!--Localizable elements are below-->
   <data name="Boxel" xml:space="preserve">
     <value>Boxel:</value>
     <comment>Header before name of boxel we are searching</comment>

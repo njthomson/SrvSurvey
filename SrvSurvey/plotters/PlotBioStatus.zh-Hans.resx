@@ -59,6 +59,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <!--Localizable elements are below-->
   <data name="DssRequired">
     <value>检测到生物信号 - 需要 DSS 扫描</value>
     <comment>Warning shown when body has not been DSS'd</comment>
