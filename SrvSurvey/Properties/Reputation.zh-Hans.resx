@@ -41,38 +41,32 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Allied">
-    <!--Machine translated-->
-    <value>盟军</value>
+    <value>盟友</value>
     <comment>Your reputation with some faction</comment>
     <source>Allied</source>
   </data>
   <data name="Cordial">
-    <!--Machine translated-->
-    <value>亲切</value>
+    <value>善意</value>
     <comment>Your reputation with some faction</comment>
     <source>Cordial</source>
   </data>
   <data name="Friendly">
-    <!--Machine translated-->
     <value>友好</value>
     <comment>Your reputation with some faction</comment>
     <source>Friendly</source>
   </data>
   <data name="Hostile">
-    <!--Machine translated-->
-    <value>敌对的</value>
+    <value>敌对</value>
     <comment>Your reputation with some faction</comment>
     <source>Hostile</source>
   </data>
   <data name="Neutral">
-    <!--Machine translated-->
-    <value>中性</value>
+    <value>中立</value>
     <comment>Your reputation with some faction</comment>
     <source>Neutral</source>
   </data>
   <data name="Unfriendly">
-    <!--Machine translated-->
-    <value>友好</value>
+    <value>恶意</value>
     <comment>Your reputation with some faction</comment>
     <source>Unfriendly</source>
   </data>

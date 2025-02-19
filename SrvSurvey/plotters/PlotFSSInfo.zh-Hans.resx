@@ -60,59 +60,51 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CountGenus">
-    <!--Machine translated-->
-    <value>{0}属</value>
+    <value>{0} 生物</value>
     <comment>Line prefix showing the count of genus on a body
 {0} int, count of genus</comment>
     <source>{0} Genus</source>
   </data>
   <data name="CountGeo">
-    <!--Machine translated-->
-    <value>{0} Geo</value>
+    <value>{0} 地质</value>
     <comment>Line suffix showing the count of geo signals on a body
 {0} int, count of geo signals</comment>
     <source>{0} Geo</source>
   </data>
   <data name="Footer1">
-    <!--Machine translated-->
-    <value>扫描值 |DSS 值</value>
+    <value>扫描奖励 | DSS 奖励</value>
     <comment>First footer line with guidance</comment>
     <source>Scan value | DSS value</source>
   </data>
   <data name="Footer2">
-    <!--Machine translated-->
-    <value>🌎 可地形化
-🚀 可⚑登陆未被发现</value>
+    <value>🌎 可改造
+🚀 可着陆 ⚑ 未发现</value>
     <comment>More footer lines with guidance</comment>
     <source>🌎 Terraformable
 🚀 Landable ⚑ Undiscovered</source>
   </data>
   <data name="HidingBodies">
-    <!--Machine translated-->
-    <value>（ 隐藏身体 &lt; {0} ）</value>
+    <value>( 不显示 &lt; {0} 的天体 )</value>
     <comment>Line showing minimum credit value needed for bodies to be shown in the list that follows
 {0} string, min value of credits</comment>
     <source>( Hiding bodies &lt; {0} )</source>
   </data>
   <data name="ScannedAllBodies">
-    <!--Machine translated-->
-    <value>扫描了所有 {0} 具尸体：{1}</value>
+    <value>全部已扫描 {0} 天体: {1}</value>
     <comment>Line showing when all bodies have been scanned and how many credits thats worth
 {0} int, count of bodies
 {1} string, value of credits</comment>
     <source>Scanned all {0} bodies: {1}</source>
   </data>
   <data name="ScannedBodies">
-    <!--Machine translated-->
-    <value>扫描{0}体：{1}</value>
+    <value>已扫描 {0} 天体: {1}</value>
     <comment>Line showing how many bodies are scanned and how many credits thats worth
 {0} int, count of bodies
 {1} string, value of credits</comment>
     <source>Scanned {0} bodies: {1}</source>
   </data>
   <data name="ScanToPopulate">
-    <!--Machine translated-->
-    <value>（扫描以填充）</value>
+    <value>(扫描以生成)</value>
     <comment>Warning message line shown when a scan is needed</comment>
     <source>(scan to populate)</source>
   </data>

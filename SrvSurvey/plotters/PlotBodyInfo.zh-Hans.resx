@@ -60,130 +60,110 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Atmosphere">
-    <!--Machine translated-->
-    <value>大气层：</value>
+    <value>大气:</value>
     <comment>Line prefix for atmosphere</comment>
     <source>Atmosphere:</source>
   </data>
   <data name="BioSignals">
-    <!--Machine translated-->
-    <value>生物信号：{0}（值：{1} cr）</value>
+    <value>生物信号: {0} ( 价值: {1} cr )</value>
     <comment>Line prefix when bio signals are present
 {0} int, count of bio signals
 {1} string, value of credits</comment>
     <source>Bio signals: {0} ( value: {1} cr )</source>
   </data>
   <data name="EarthLike">
-    <!--Machine translated-->
-    <value>像地球一样</value>
+    <value>类地球</value>
     <comment>Atmosphere type is like Earth</comment>
     <source>Earth Like</source>
   </data>
   <data name="FirstMapped">
-    <!--Machine translated-->
-    <value>首次映射</value>
+    <value>首次测绘（FM）</value>
     <comment>Header tag</comment>
     <source>First mapped</source>
   </data>
   <data name="GeoSignals">
-    <!--Machine translated-->
-    <value>地理信号：{0}</value>
+    <value>地质信号: {0}</value>
     <comment>Line prefix when geo signals are present
 {0} int, count of geo signals</comment>
     <source>Geo signals: {0}</source>
   </data>
   <data name="Gravity">
-    <!--Machine translated-->
-    <value>比重： {0}g</value>
+    <value>重力: {0}g</value>
     <comment>Body gravity
 {0} decimal, 3 places, gravity value</comment>
     <source>Gravity: {0}g</source>
   </data>
   <data name="Materials">
-    <!--Machine translated-->
-    <value>材料：</value>
+    <value>材料:</value>
     <comment>Line prefix for materials</comment>
     <source>Materials:</source>
   </data>
   <data name="None">
-    <!--Machine translated-->
-    <value>没有</value>
+    <value>无</value>
     <comment>Text shown when body pressure value is zero, or there is no volcanism, or no atmoshpere</comment>
     <source>None</source>
   </data>
   <data name="Pressure">
-    <!--Machine translated-->
-    <value>压力：{0}</value>
+    <value>气压: {0}</value>
     <comment>
 {0} string, the value of PressureValue or PressureNone</comment>
     <source>Pressure: {0}</source>
   </data>
   <data name="PressureValue">
-    <!--Machine translated-->
-    <value>{0}（自动柜员机）</value>
+    <value>{0}(标压)</value>
     <comment>The atmospheric pressure value
 {0} decimal, 4 places</comment>
     <source>{0}(atm)</source>
   </data>
   <data name="Rings">
-    <!--Machine translated-->
-    <value>环：</value>
+    <value>环带:</value>
     <comment>Line prefix for rings</comment>
     <source>Rings:</source>
   </data>
   <data name="ScanRequired">
-    <!--Machine translated-->
     <value>需要扫描</value>
     <comment>Header shown when a scan is required</comment>
     <source>Scan required</source>
   </data>
   <data name="ScanValue">
-    <!--Machine translated-->
-    <value>扫描值</value>
+    <value>扫描价值</value>
     <comment>Line prefix before showing the scan value for a body</comment>
     <source>Scan value</source>
   </data>
   <data name="StarClass">
-    <!--Machine translated-->
-    <value>类： {0}</value>
+    <value>光谱型: {0}</value>
     <comment>Line prefix with the type of a star, A, O, M, etc
 {0} string, the class of some star</comment>
     <source>Class: {0}</source>
   </data>
   <data name="Temp">
-    <!--Machine translated-->
-    <value>温度： {0}K</value>
+    <value>开尔文温度: {0}K</value>
     <comment>Body temperature of a body
 {0} int, temp in Kelvin</comment>
     <source>Temp: {0}K</source>
   </data>
   <data name="Terraformable">
-    <!--Machine translated-->
-    <value>可地形化</value>
+    <value>可改造的</value>
     <comment>Header tag</comment>
     <source>Terraformable</source>
   </data>
   <data name="Undiscovered">
-    <!--Machine translated-->
-    <value>未发现的</value>
+    <value>未发现</value>
     <comment>Header tag</comment>
     <source>Undiscovered</source>
   </data>
   <data name="Unmapped">
-    <!--Machine translated-->
-    <value>未映射</value>
+    <value>未测绘</value>
     <comment>Header tag</comment>
     <source>Unmapped</source>
   </data>
   <data name="Volcanism">
-    <!--Machine translated-->
-    <value>火山作用：</value>
+    <value>火山活动:</value>
     <comment>Line prefix for volcanism</comment>
     <source>Volcanism:</source>
   </data>
   <data name="WithDSS">
-    <!--Machine translated-->
-    <value>（带 DSS：{0}）</value>
+    <value>(含DSS: {0})</value>
     <comment>Suffix shown after scan value for a body
 {0} string, value of credits</comment>
     <source>(with DSS: {0})</source>

@@ -60,116 +60,97 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="copyNextBoxel">
-    <!--Machine translated-->
-    <value>在 gal-map 中，将下一个 boxel 搜索系统复制到剪贴板。</value>
+    <value>在银河地图时，将下一个boxel搜索星系名复制到剪贴板</value>
     <comment>A description of a key-chord setting</comment>
     <source>In gal-map, copy the next boxel search system to clipboard.</source>
   </data>
   <data name="mapBeHuge">
-    <!--Machine translated-->
-    <value>切换使地图填满屏幕的一半，仅限人类定居点。</value>
+    <value>切换使地图仅填充屏幕的一半，仅限于人类聚居地</value>
     <comment>A description of a key-chord setting</comment>
     <source>Toggles making the map fill half the screen, at Human settlements only.</source>
   </data>
   <data name="mapZoomAuto">
-    <!--Machine translated-->
-    <value>在 Human 和 Guardian 站点将缩放重置为默认值。</value>
+    <value>重置人类聚居地和守护者遗址地图的默认大小</value>
     <comment>A description of a key-chord setting</comment>
     <source>Reset the zoom to default, at Human and Guardian sites.</source>
   </data>
   <data name="mapZoomIn">
-    <!--Machine translated-->
-    <value>放大 Human 和 Guardian 站点的地图。</value>
+    <value>放大人类聚居地和守护者遗址地图</value>
     <comment>A description of a key-chord setting</comment>
     <source>Zoom in on maps at Human and Guardian sites.</source>
   </data>
   <data name="mapZoomOut">
-    <!--Machine translated-->
-    <value>缩小 Human 和 Guardian 站点的地图。</value>
+    <value>缩小人类聚居地和守护者遗址地图</value>
     <comment>A description of a key-chord setting</comment>
     <source>Zoom out on maps at Human and Guardian sites.</source>
   </data>
   <data name="pasteGalMap">
-    <!--Machine translated-->
-    <value>在 Gal-Map 中粘贴剪贴板文本</value>
+    <value>在银河地图画面时粘贴剪贴板文字</value>
     <comment>A description of a key-chord setting</comment>
     <source>Paste clipboard text when in Gal-Map</source>
   </data>
   <data name="showBodyInfo">
-    <!--Machine translated-->
-    <value>强制显示 Body info 叠加层。</value>
+    <value>强制切换显示Body(天体)信息覆盖层.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force show the Body info overlay.</source>
   </data>
   <data name="showFssInfo">
-    <!--Machine translated-->
-    <value>强制显示 FSS 信息叠加。</value>
+    <value>强制切换显示FSS信息覆盖层</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force show the FSS info overlay.</source>
   </data>
   <data name="showJumpInfo">
-    <!--Machine translated-->
-    <value>强制切换 FSD 跳跃叠加层，而不开始跳跃。</value>
+    <value>强制切换显示FSD跳跃信息而不是跳跃时才显示</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force toggle the FSD jump overlay without starting to jump.</source>
   </data>
   <data name="showSystemNotes">
-    <!--Machine translated-->
-    <value>使 system notes 窗口可见。</value>
+    <value>打开星系笔记窗口</value>
     <comment>A description of a key-chord setting</comment>
     <source>Make the system notes window visible.</source>
   </data>
   <data name="toggleAllVisibility">
-    <!--Machine translated-->
-    <value>切换所有叠加窗口的可见性。</value>
+    <value>切换所有覆盖窗口的可见性</value>
     <comment>A description of a key-chord setting</comment>
     <source>Toggles visibility of all overlay windows.</source>
   </data>
   <data name="track1">
-    <!--Machine translated-->
-    <value>添加或删除跟踪链接 #1</value>
+    <value>添加或移除 #1 追踪</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #1</source>
   </data>
   <data name="track2">
-    <!--Machine translated-->
-    <value>添加或删除跟踪链接 #2</value>
+    <value>添加或移除 #2 追踪</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #2</source>
   </data>
   <data name="track3">
-    <!--Machine translated-->
-    <value>添加或删除跟踪链接 #3</value>
+    <value>添加或移除 #3 追踪</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #3</source>
   </data>
   <data name="track4">
-    <!--Machine translated-->
-    <value>添加或删除跟踪链接 #4</value>
+    <value>添加或移除 #4 追踪</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #4</source>
   </data>
   <data name="track5">
-    <!--Machine translated-->
-    <value>添加或删除跟踪链接 #5</value>
+    <value>添加或移除 #5 追踪</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #5</source>
   </data>
   <data name="track6">
-    <!--Machine translated-->
-    <value>添加或删除跟踪链接 #6</value>
+    <value>添加或移除 #6 追踪</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #6</source>
   </data>
   <data name="track7">
-    <!--Machine translated-->
-    <value>添加或删除跟踪链接 #7</value>
+    <value>添加或移除 #7 追踪</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #7</source>
   </data>
   <data name="track8">
-    <!--Machine translated-->
-    <value>添加或删除跟踪链接 #8</value>
+    <value>添加或移除 #8 追踪</value>
     <comment>A description of a key-chord setting</comment>
     <source>Add or remove tracker #8</source>
   </data>

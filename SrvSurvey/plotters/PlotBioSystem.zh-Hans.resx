@@ -60,55 +60,47 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BodyBio_Header">
-    <!--Machine translated-->
-    <value>身体{0}生物信号：{1}</value>
+    <value>行星 {0} 生物信号: {1}</value>
     <comment>Header shown when showing bio signals for a body
 {0} string, the short name of a body
 {1} int, total count of bio signals on this body</comment>
     <source>Body {0} bio signals: {1}</source>
   </data>
   <data name="DssRequired">
-    <!--Machine translated-->
     <value>需要 DSS</value>
     <comment>Message shown if the body needs to be DSS scanned</comment>
     <source>DSS required</source>
   </data>
   <data name="FFBonus">
-    <!--Machine translated-->
-    <value>（FF 奖金：{0}）</value>
+    <value>(FF奖励: {0})</value>
     <comment>Extra footer line showing rewards if body has FF bonus applied
 {0} string, either a single number of credits or &lt;min&gt; ~ &lt;max&gt; credits</comment>
     <source>(FF bonus: {0})</source>
   </data>
   <data name="FssRequired">
-    <!--Machine translated-->
-    <value>需要系统 FSS</value>
+    <value>需要 FSS 扫描</value>
     <comment>Message shown if the system needs to be FSS scanned</comment>
     <source>System FSS required</source>
   </data>
   <data name="GeoSignals">
-    <!--Machine translated-->
-    <value>地理信号：{0}</value>
+    <value>地质信号: {0}</value>
     <comment>Header shown when body has geo signals
 {0} int, total count of geo signals on the body</comment>
     <source>Geo signals: {0}</source>
   </data>
   <data name="NotPredicted">
-    <!--Machine translated-->
-    <value>没想到！</value>
+    <value>无法预测!</value>
     <comment>Message shown when some bio signal is present and it was not predicted.</comment>
     <source>Not predicted!</source>
   </data>
   <data name="RewardFooter">
-    <!--Machine translated-->
-    <value>奖励： {0}</value>
+    <value>奖励: {0}</value>
     <comment>Footer showing estimated credits
 {0} string, either a single number of credits or &lt;min&gt; ~ &lt;max&gt; credits</comment>
     <source>Rewards: {0}</source>
   </data>
   <data name="SysBio_Header">
-    <!--Machine translated-->
-    <value>生物信号：{0}</value>
+    <value>生物信号: {0}</value>
     <comment>Header shown when showing bio signals forthe whole system
 {0} int, count of bio signals in this system</comment>
     <source>Bio signals: {0}</source>

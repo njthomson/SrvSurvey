@@ -238,8 +238,7 @@
     <value>95, 22</value>
   </data>
   <data name="btnActive.Text">
-    <!--Machine translated-->
-    <value>路由活动</value>
+    <value>航线激活</value>
     <source>Route active</source>
   </data>
   <data name="btnAutoCopy.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -249,32 +248,28 @@
     <value>151, 22</value>
   </data>
   <data name="btnAutoCopy.Text">
-    <!--Machine translated-->
-    <value>在 Gal-Map 中自动复制</value>
+    <value>在银河地图中自动复制</value>
     <source>Auto copy in Gal-Map</source>
   </data>
   <data name="btnImportSpanshUrl.Size" type="System.Drawing.Size, System.Drawing">
     <value>291, 22</value>
   </data>
   <data name="btnImportSpanshUrl.Text">
-    <!--Machine translated-->
-    <value>剪贴板中的 Spansh 路由 URL</value>
+    <value>从剪贴板中导入 Spansh航线的URL</value>
     <source>Spansh route URL from clipboard</source>
   </data>
   <data name="btnNamesFromClipboard.Size" type="System.Drawing.Size, System.Drawing">
     <value>291, 22</value>
   </data>
   <data name="btnNamesFromClipboard.Text">
-    <!--Machine translated-->
-    <value>剪贴板中的系统名称</value>
+    <value>从剪贴板中导入星系名</value>
     <source>System names from clipboard</source>
   </data>
   <data name="btnNamesFromFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>291, 22</value>
   </data>
   <data name="btnNamesFromFile.Text">
-    <!--Machine translated-->
-    <value>文件中的系统名称</value>
+    <value>从文件中导入星系名</value>
     <source>System names from file</source>
   </data>
   <data name="btnSave.Font" type="System.Drawing.Font, System.Drawing">
@@ -296,12 +291,10 @@
     <value>95, 22</value>
   </data>
   <data name="btnSave.Text">
-    <!--Machine translated-->
     <value>保存更改</value>
     <source>Save changes</source>
   </data>
   <data name="colDistance.Text">
-    <!--Machine translated-->
     <value>距离</value>
     <source>Distance</source>
   </data>
@@ -309,16 +302,14 @@
     <value>80</value>
   </data>
   <data name="colNotes.Text">
-    <!--Machine translated-->
-    <value>笔记</value>
+    <value>备注</value>
     <source>Notes</source>
   </data>
   <data name="colNotes.Width" type="System.Int32, mscorlib">
     <value>160</value>
   </data>
   <data name="colSystem.Text">
-    <!--Machine translated-->
-    <value>系统</value>
+    <value>星系</value>
     <source>System</source>
   </data>
   <data name="colSystem.Width" type="System.Int32, mscorlib">
@@ -343,8 +334,7 @@
     <value>9</value>
   </data>
   <data name="lblIntro.Text">
-    <!--Machine translated-->
-    <value>使用路线手动绘制穿越银河系的道路。首先导入路线，然后在 Gal-Map 的右上角查找指导。</value>
+    <value>使用航线手动规划你在银河系中的路径。首先导入一条航线，然后在银河地图的右上角寻找指引。</value>
     <source>Use routes to manually plot your way across the galaxy. Begin by importing a route, then look for guidance in the top-right corner in the Gal-Map.</source>
   </data>
   <data name="lblStatus.AutoSize" type="System.Boolean, mscorlib">
@@ -387,8 +377,7 @@
     <value>3</value>
   </data>
   <data name="status.Text">
-    <!--Machine translated-->
-    <value>statusStrip1</value>
+    <value>状态栏1</value>
     <source>statusStrip1</source>
   </data>
   <data name="table.ColumnCount" type="System.Int32, mscorlib">
@@ -422,8 +411,7 @@
     <value>Consolas, 9pt</value>
   </data>
   <data name="$this.Text">
-    <!--Machine translated-->
-    <value>遵循路线</value>
+    <value>跟随航线</value>
     <source>Follow a route</source>
   </data>
   <data name="toolStrip1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -451,8 +439,7 @@
     <value>8</value>
   </data>
   <data name="toolStrip1.Text">
-    <!--Machine translated-->
-    <value>toolStrip1</value>
+    <value>工具栏1</value>
     <source>toolStrip1</source>
   </data>
   <data name="toolStripDropDownButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -471,8 +458,7 @@
     <value>83, 22</value>
   </data>
   <data name="toolStripDropDownButton1.Text">
-    <!--Machine translated-->
-    <value>进口。。。</value>
+    <value>导入...</value>
     <source>Import...</source>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
