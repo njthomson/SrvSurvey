@@ -1,0 +1,3 @@
+/forms/FormSphereLimit.zh-Hans.resx
+	label4.Text
+	$this.Text

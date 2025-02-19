@@ -150,8 +150,8 @@ namespace SrvSurvey
                 newTargetDoc.Root!.AddFirst(oldFirstNode);
             }
 
-            var sourceNodes = sourceDoc.Root?.Elements().Where(_ => _.Name.LocalName == "data")!;
-            if (sourceNodes == null) return;
+            var sourceNodes = sourceDoc.Root?.Elements().Where(_ => _.Name.LocalName == "data" && _.Attribute("type") == null); // text elements have no type - ignore anything that does
+            if (sourceNodes == null || sourceNodes.Count() == 0) return;
 
             // add to the file's schema otherwise new elements are deemed invalid
             var commentElement = newTargetDoc.Root!.Descendants().Where(_ => _.Name.LocalName == "element" && _.FirstAttribute?.Value == "comment").First();
@@ -186,21 +186,33 @@ namespace SrvSurvey
                 targetNode.ReplaceWith(newNode);
                 targetNode = newNode;
 
-                // default to prior translation
+                // retrieve prior values
                 var oldTargetNode = oldTargetDoc?.Root?.Elements().Where(_ => _.Name.LocalName == "data" && _.FirstAttribute?.Value == resourceName).FirstOrDefault();
                 var oldTranslation = oldTargetNode?.Element("value")?.Value;
                 var oldSource = oldTargetNode?.Element("source")?.Value;
                 var sourceChanged = oldSource != null && oldSource != sourceText;
 
-                var shouldTranslate = oldTargetNode == null || (oldTargetNode.FirstNode as XComment)?.Value == machineTranslated;
+                var oldFirstChildCommentNode = (oldTargetNode?.FirstNode as XComment);
+                var shouldTranslate = oldTargetNode == null || oldFirstChildCommentNode?.Value == machineTranslated;
                 var needsUpdating = (oldTargetNode?.FirstNode as XComment)?.Value == translateNeeded;
 
                 //if (resourceName == "Rescue" && preLoc) Debugger.Break();
+
+                if (oldTargetNode?.PreviousNode?.NodeType == System.Xml.XmlNodeType.Comment)
+                {
+                    // maintain any ad-hoc comment above the <data /> element
+                    targetNode.AddBeforeSelf(oldTargetNode.PreviousNode);
+                }
 
                 if (!shouldTranslate && (sourceChanged || needsUpdating))
                 {
                     locUpdate.init(targetLang).init(relativeSourceFilePath).Add(resourceName);
                     targetNode.AddFirst(new XComment(translateNeeded));
+                }
+                else if (oldFirstChildCommentNode != null && oldFirstChildCommentNode?.Value != machineTranslated)
+                {
+                    // maintain ad-hoc comment within the <data /> element
+                    targetNode.AddFirst(oldFirstChildCommentNode);
                 }
 
                 // initialize with the old values
@@ -240,14 +252,6 @@ namespace SrvSurvey
             alphaSortResx(newTargetDoc, targetFilepath);
         }
 
-        private static void alphaSortResx(string filepath)
-        {
-            if (!File.Exists(filepath)) throw new FileNotFoundException($"File not found: {filepath}");
-
-            var doc = XDocument.Load(filepath);
-            alphaSortResx(doc, filepath);
-        }
-
         private static void alphaSortResx(XDocument doc, string filepath)
         {
             // collect elements to be sorted
@@ -256,9 +260,22 @@ namespace SrvSurvey
                 .OrderBy(n => n.FirstAttribute?.Value.Replace("$", "").Replace("&gt;&gt;", ""))
                 .ToList();
 
+            // collect free floating comments, we would like to keep these
+            var comments = doc.Root!.Nodes()
+                .Where(_ => _.Parent == doc.Root && _.NodeType == System.Xml.XmlNodeType.Comment && _.NextNode != null)
+                .Reverse()
+                .ToDictionary(_ => _, _ => _.NextNode!);
+
             // remove then re-add them
             foreach (var element in sorted) element.Remove();
             foreach (var element in sorted) doc.Root.Add(element);
+
+            // restore those comments 
+            foreach (var (comment, nextNode) in comments)
+            {
+                comment.Remove();
+                nextNode.AddBeforeSelf(comment);
+            }
 
             doc.Save(filepath);
         }

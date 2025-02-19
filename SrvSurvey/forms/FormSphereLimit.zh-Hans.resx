@@ -439,8 +439,9 @@
     <value>0</value>
   </data>
   <data name="label4.Text">
+    <!--Update needed: ZH-HANS-->
     <value>球形搜索有助于导航到距中央星系一定距离内的星系</value>
-    <source>Spherical limit helps navigating to systems within a given distance of a central system.</source>
+    <source>Spherical searches help navigating around within a given distance of a central system.</source>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -541,8 +542,9 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text">
+    <!--Update needed: ZH-HANS-->
     <value>球形搜索</value>
-    <source>Spherical limit</source>
+    <source>Spherical Search</source>
   </data>
   <data name="txtCurrentDistance.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 121</value>
