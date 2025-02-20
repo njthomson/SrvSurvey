@@ -274,7 +274,7 @@
     <source>&amp;Close</source>
   </data>
   <data name="btnCopy.Text">
-    <value>复制到剪贴板(&amp;C)</value>
+    <value>复制(&amp;C)</value>
     <source>C&amp;opy</source>
   </data>
   <data name="btnOpenFolder.Text">
