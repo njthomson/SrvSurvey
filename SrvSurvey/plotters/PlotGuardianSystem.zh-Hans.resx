@@ -61,7 +61,6 @@
   </resheader>
   <!--Localizable elements are below-->
   <data name="BluePrintLine">
-    <!--Machine translated-->
     <value>蓝图：{0}</value>
     <comment>Line header shown if the site yields some blue print
 {0} string, the type of blue print</comment>
