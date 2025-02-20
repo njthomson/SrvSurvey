@@ -117,6 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Alpha" xml:space="preserve">
+    <value>Alpha</value>
+    <comment>Guardian Ruins type</comment>
+  </data>
+  <data name="Beta" xml:space="preserve">
+    <value>Beta</value>
+    <comment>Guardian Ruins type</comment>
+  </data>
   <data name="BluePrintFighter" xml:space="preserve">
     <value>Fighter</value>
     <comment>Blue print for a Fighter</comment>
@@ -128,6 +136,10 @@
   <data name="BluePrintWeapon" xml:space="preserve">
     <value>Weapon</value>
     <comment>Blue print for a Weapon</comment>
+  </data>
+  <data name="Gamma" xml:space="preserve">
+    <value>Gamma</value>
+    <comment>Guardian Ruins type</comment>
   </data>
   <data name="ItemBasilisk" xml:space="preserve">
     <value>Basilisk</value>
@@ -201,8 +213,36 @@
     <value>Ruins</value>
     <comment>As in a Guardian Ruins site</comment>
   </data>
+  <data name="SitePoiStatus_absent" xml:space="preserve">
+    <value>absent</value>
+    <comment>Display name for PoiSiteStatus enum</comment>
+  </data>
+  <data name="SitePoiStatus_empty" xml:space="preserve">
+    <value>empty</value>
+    <comment>Display name for PoiSiteStatus enum</comment>
+  </data>
+  <data name="SitePoiStatus_present" xml:space="preserve">
+    <value>present</value>
+    <comment>Display name for PoiSiteStatus enum</comment>
+  </data>
+  <data name="SitePoiStatus_unknown" xml:space="preserve">
+    <value>unknown</value>
+    <comment>Display name for PoiSiteStatus enum</comment>
+  </data>
+  <data name="StatusUnknown" xml:space="preserve">
+    <value>unknown</value>
+    <comment>The status of some site POI</comment>
+  </data>
   <data name="Structure" xml:space="preserve">
     <value>Structure</value>
     <comment>As in a Guardian Structure site</comment>
+  </data>
+  <data name="POIType_Component" xml:space="preserve">
+    <value>Component tower</value>
+    <comment>Those towers with 3 blastable panels</comment>
+  </data>
+  <data name="POIType_Pylon" xml:space="preserve">
+    <value>Pylon</value>
+    <comment>The things we shoot to charge up at Guardian structures</comment>
   </data>
 </root>

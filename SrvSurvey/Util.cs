@@ -7,6 +7,7 @@ using SrvSurvey.plotters;
 using SrvSurvey.Properties;
 using SrvSurvey.units;
 using System.Diagnostics;
+using static SrvSurvey.game.GuardianSiteData;
 using static System.Windows.Forms.ListView;
 
 namespace SrvSurvey
@@ -832,28 +833,92 @@ namespace SrvSurvey
             }
         }
 
+        public static string getLoc(Enum enumValue)
+        {
+            var enumName = enumValue.GetType().Name + $".{enumValue}";
+            return getLoc(enumName);
+        }
+
         /// <summary> Returns the localized string for something</summary>
         public static string getLoc(string name)
         {
             switch (name)
             {
-                // Guardian items for Ram Tah missions
-                case "casket": return Properties.Guardian.ItemCasket;
-                case "orb": return Properties.Guardian.ItemOrb;
-                case "relic": return Properties.Guardian.ItemRelic;
-                case "tablet": return Properties.Guardian.ItemTablet;
-                case "totem": return Properties.Guardian.ItemTotem;
-                case "urn": return Properties.Guardian.ItemUrn;
+                case nameof(SiteType.Alpha): return Properties.Guardian.Alpha;
+                case nameof(SiteType.Beta): return Properties.Guardian.Beta;
+                case nameof(SiteType.Gamma): return Properties.Guardian.Gamma;
 
-                case "sensor": return Properties.Guardian.ItemSensor;
-                case "probe": return Properties.Guardian.ItemProbe;
-                case "link": return Properties.Guardian.ItemLink;
-                case "cyclops": return Properties.Guardian.ItemCyclops;
-                case "basilisk": return Properties.Guardian.ItemBasilisk;
-                case "medusa": return Properties.Guardian.ItemMedusa;
+                // Guardian items for Ram Tah missions
+                case $"{nameof(POIType)}.{nameof(ObeliskItem.casket)}":
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.casket)}":
+                case nameof(ObeliskItem.casket):
+                    return Properties.Guardian.ItemCasket;
+
+                case $"{nameof(POIType)}.{nameof(ObeliskItem.orb)}":
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.orb)}":
+                case nameof(ObeliskItem.orb):
+                    return Properties.Guardian.ItemOrb;
+
+                case $"{nameof(POIType)}.{nameof(ObeliskItem.relic)}":
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.relic)}":
+                case nameof(ObeliskItem.relic):
+                    return Properties.Guardian.ItemRelic;
+
+                case $"{nameof(POIType)}.{nameof(ObeliskItem.tablet)}":
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.tablet)}":
+                case nameof(ObeliskItem.tablet):
+                    return Properties.Guardian.ItemTablet;
+
+                case $"{nameof(POIType)}.{nameof(ObeliskItem.totem)}":
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.totem)}":
+                case nameof(ObeliskItem.totem):
+                    return Properties.Guardian.ItemTotem;
+
+                case $"{nameof(POIType)}.{nameof(ObeliskItem.urn)}":
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.urn)}":
+                case nameof(ObeliskItem.urn):
+                    return Properties.Guardian.ItemUrn;
+
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.sensor)}":
+                case nameof(ObeliskItem.sensor):
+                    return Properties.Guardian.ItemSensor;
+
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.probe)}":
+                case nameof(ObeliskItem.probe):
+                    return Properties.Guardian.ItemProbe;
+
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.link)}":
+                case nameof(ObeliskItem.link):
+                    return Properties.Guardian.ItemLink;
+
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.cyclops)}":
+                case nameof(ObeliskItem.cyclops):
+                    return Properties.Guardian.ItemCyclops;
+
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.basilisk)}":
+                case nameof(ObeliskItem.basilisk):
+                    return Properties.Guardian.ItemBasilisk;
+
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.medusa)}":
+                case nameof(ObeliskItem.medusa):
+                    return Properties.Guardian.ItemMedusa;
+
+                case nameof(SitePoiStatus) + ".unknown": return Properties.Guardian.SitePoiStatus_unknown;
+                case nameof(SitePoiStatus) + ".present": return Properties.Guardian.SitePoiStatus_present;
+                case nameof(SitePoiStatus) + ".absent": return Properties.Guardian.SitePoiStatus_absent;
+                case nameof(SitePoiStatus) + ".empty":
+                    return Properties.Guardian.SitePoiStatus_empty;
+
+                case $"{nameof(POIType)}.{nameof(POIType.component)}":
+                    return Properties.Guardian.POIType_Component;
+
+                case $"{nameof(POIType)}.{nameof(POIType.pylon)}":
+                    return Properties.Guardian.POIType_Pylon;
 
                 default:
-                    throw new Exception($"Unexpected localizable name: '{name}'");
+                    Game.log($"Unexpected localizable name: '{name}'");
+                    Debugger.Break();
+                    return name + "?";
             }
         }
 
@@ -1074,17 +1139,17 @@ namespace SrvSurvey
         public static string getReputationText(double reputation)
         {
             if (reputation <= -90)
-                return "Hostile";
+                return Properties.Reputation.Hostile;
             else if (reputation <= -35)
-                return "Unfriendly";
+                return Properties.Reputation.Unfriendly;
             else if (reputation <= +4)
-                return "Neutral";
+                return Properties.Reputation.Neutral;
             else if (reputation <= +35)
-                return "Cordial";
+                return Properties.Reputation.Cordial;
             else if (reputation <= +90)
-                return "Friendly";
+                return Properties.Reputation.Friendly;
             else
-                return "Allied";
+                return Properties.Reputation.Allied;
         }
 
         public static int stringWidth(Font? font, string? text)

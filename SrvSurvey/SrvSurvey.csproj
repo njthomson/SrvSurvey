@@ -148,6 +148,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>PlotGrounded.resx</DependentUpon>
     </Compile>
+    <Compile Update="plotters\PlotGuardianStatus.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotGuardianStatus.resx</DependentUpon>
+    </Compile>
     <Compile Update="plotters\PlotGuardianSystem.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -212,6 +217,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Economies.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Enum_SitePoiStatus.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Enum_SitePoiStatus.resx</DependentUpon>
     </Compile>
     <Compile Update="Properties\FactionStates.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -293,6 +303,11 @@
       <LastGenOutput>PlotGrounded.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Loc</CustomToolNamespace>
     </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotGuardianStatus.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotGuardianStatus.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Update="plotters\PlotGuardianSystem.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PlotGuardianSystem.Designer.cs</LastGenOutput>
@@ -355,6 +370,10 @@
     <EmbeddedResource Update="Properties\Economies.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Economies.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Enum_SitePoiStatus.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Enum_SitePoiStatus.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\FactionStates.resx">
       <Generator>ResXFileCodeGenerator</Generator>

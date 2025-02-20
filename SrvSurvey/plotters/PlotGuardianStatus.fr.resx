@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <!--Localizable elements are below-->
+  <data name="AlignAndRise">
+    <!--Machine translated-->
+    <value>Alignement avec l’origine du site et élévation jusqu’à l’altitude cible : {0} m</value>
+    <comment>Message shown when cmdr needs to rise up to a suitable altitude for aerial assistance mode
+{0} int, altitude in metres</comment>
+    <source>Align with site origin and rise to target altitude: {0}m</source>
+  </data>
+  <data name="AlignWithButtress">
+    <!--Machine translated-->
+    <value>Alignement avec contrefort</value>
+    <comment>Message shown when the site needs to be identified by aligning with a specific buttress</comment>
+    <source>Align with buttress</source>
+  </data>
+  <data name="ChooseAbsent">
+    <!--Machine translated-->
+    <value>Absent</value>
+    <comment>Selectable option shown in a box, chosen by matching a fire-group</comment>
+    <source>Absent</source>
+  </data>
+  <data name="ChooseEmpty">
+    <!--Machine translated-->
+    <value>Vide</value>
+    <comment>Selectable option shown in a box, chosen by matching a fire-group</comment>
+    <source>Empty</source>
+  </data>
+  <data name="ChoosePresent">
+    <!--Machine translated-->
+    <value>Présent</value>
+    <comment>Selectable option shown in a box, chosen by matching a fire-group</comment>
+    <source>Present</source>
+  </data>
+  <data name="FooterActiveObeliskGroups">
+    <!--Machine translated-->
+    <value>Groupes d’obélisques actifs : {0}</value>
+    <comment>Footer showing which obelisks groups are present
+{0} string, list of obelisk group names eg "C, D, Q, T"</comment>
+    <source>Active obelisk groups: {0}</source>
+  </data>
+  <data name="FooterToggleModeOnce">
+    <!--Machine translated-->
+    <value>(basculez le mode cockpit une fois pour régler)</value>
+    <comment>Footer hint telling cmdr how to take a measurement</comment>
+    <source>(toggle cockpit mode once to set)</source>
+  </data>
+  <data name="FooterToggleModeTwice">
+    <!--Machine translated-->
+    <value>(bascule deux fois le mode cockpit pour régler)</value>
+    <comment>Footer hint telling cmdr how to take a measurement</comment>
+    <source>(toggle cockpit mode twice to set)</source>
+  </data>
+  <data name="HeaderUnknownSiteType">
+    <!--Machine translated-->
+    <value>Type de site inconnu</value>
+    <comment>Header with site type is unknown</comment>
+    <source>Site type unknown</source>
+  </data>
+  <data name="LineRamTahAcquired">
+    <!--Machine translated-->
+    <value>Log a été acquis</value>
+    <comment>Line shown when log has already been acquired for Ram Tah mission</comment>
+    <source>Log has been acquired</source>
+  </data>
+  <data name="LineRamTahNeeded">
+    <!--Machine translated-->
+    <value>Nécessaire pour la mission de Ram Tah</value>
+    <comment>Line shown when log is needed for Ram Tah mission</comment>
+    <source>Needed for Ram Tah mission</source>
+  </data>
+  <data name="MatsFullOne">
+    <!--Machine translated-->
+    <value>(Tapis de gardien pleins - basculez à nouveau le mode cockpit pour marquer comme scanné)</value>
+    <comment>Message hint shown when cmdrs Guardian mats are full</comment>
+    <source>(Guardian mats full - toggle cockpit mode again to mark scanned)</source>
+  </data>
+  <data name="MatsFullTwo">
+    <!--Machine translated-->
+    <value>(Tapis de gardien pleins - basculez deux fois le mode cockpit pour marquer comme scanné)</value>
+    <comment>Following up hint shown when cmdrs Guardian mats are full</comment>
+    <source>(Guardian mats full - toggle cockpit mode twice to mark scanned)</source>
+  </data>
+  <data name="NearObeliskHeader">
+    <!--Machine translated-->
+    <value>Obélisque {0} : {1}</value>
+    <comment>Header shown when cmdr is near an obeslisk
+{0} string, the id name of the obelisk, eg "G12"
+{1} string, the status of the obelisk, eg "Active"</comment>
+    <source>Obelisk {0}: {1}</source>
+  </data>
+  <data name="NoNearPoiHeader">
+    <!--Machine translated-->
+    <value>Déplacez-vous à ~75m pour inspecter un article</value>
+    <comment>Header shown when cmdr is not near any POI</comment>
+    <source>Move within ~75m to inspect an item</source>
+  </data>
+  <data name="ObeliskActive">
+    <!--Machine translated-->
+    <value>Actif</value>
+    <comment>The state of an obelisk</comment>
+    <source>Active</source>
+  </data>
+  <data name="ObeliskBroken">
+    <!--Machine translated-->
+    <value>Cassé</value>
+    <comment>The state of an obelisk</comment>
+    <source>Broken</source>
+  </data>
+  <data name="ObeliskInactive">
+    <!--Machine translated-->
+    <value>Inactif</value>
+    <comment>The state of an obelisk</comment>
+    <source>Inactive</source>
+  </data>
+  <data name="OnApproachFooter">
+    <!--Machine translated-->
+    <value>( N’oubliez pas de mettre 3 groupes de feu dans les navires et les SRV )</value>
+    <comment>Footer shown when on approach to a Guardian site</comment>
+    <source>( Don't forget to set 3 fire groups in ships and SRVs )</source>
+  </data>
+  <data name="OnApproachHeaderRuins">
+    <!--Machine translated-->
+    <value>Approche des ruines des Gardiens ...</value>
+    <comment>Header when approaching a Ruins</comment>
+    <source>Approaching Guardian Ruins ...</source>
+  </data>
+  <data name="OnApproachHeaderStructure">
+    <!--Machine translated-->
+    <value>Approche de la structure gardienne ...</value>
+    <comment>Header when approaching a Structure</comment>
+    <source>Approaching Guardian Structure ...</source>
+  </data>
+  <data name="OnApproachMiddleRuins">
+    <!--Machine translated-->
+    <value>Ruines #{0} - {1}</value>
+    <comment>Middle text when approaching a Ruins
+{0} int, the 1 based index of the site
+{1} string, the type of Ruins, eg: Alpha, Beta or Gamma</comment>
+    <source>Ruins #{0} - {1}</source>
+  </data>
+  <data name="OnApproachMiddleStructure">
+    <!--Machine translated-->
+    <value>{0} - Impression bleue : {1}</value>
+    <comment>Middle text when approaching a Stucture
+{0} string, the structure type name, eg: Stickhand
+{1} string, which blue print is available</comment>
+    <source>{0} - blue print: {1}</source>
+  </data>
+  <data name="OnApproachMiddleStructureNoBluePrint">
+    <!--Machine translated-->
+    <value>{0} - pas de plan</value>
+    <comment>Middle text when approaching a Stucture that does not provide blue prints
+{0} string, the structure type name, eg: Stickhand</comment>
+    <source>{0} - no blue print</source>
+  </data>
+  <data name="RelicTowerFaceHint">
+    <!--Machine translated-->
+    <value>Faites face sur le côté avec un seul grand triangle orienté vers la gauche.</value>
+    <comment>Message hint for which side of a relic tower to measure from</comment>
+    <source>Face the side with a single large left facing triangle.</source>
+  </data>
+  <data name="RelicTowerFootHint">
+    <!--Machine translated-->
+    <value>(basculer l’arme pour forcer la mise à jour de l’emplacement)</value>
+    <comment>Footer hint shown to remind cmdr's how to force an update when on foot</comment>
+    <source>(toggle weapon to force location update)</source>
+  </data>
+  <data name="RelicTowerHeadingKnown">
+    <!--Machine translated-->
+    <value>Cap enregistré : {0}°</value>
+    <comment>Message shown when relic tower heading is already known</comment>
+    <source>Recorded heading: {0}°</source>
+  </data>
+  <data name="RelicTowerNonToolHint">
+    <!--Machine translated-->
+    <value>Utilisez l’analyseur de profil près des tours Relic pour l’aide à la visée.
+Faites face sur le côté avec un seul grand triangle orienté vers la gauche.</value>
+    <comment>Message hint for which tool and side of a relic tower to use</comment>
+    <source>Use Profile Analyser near Relic Towers for aiming assistance.
+Face the side with a single large left facing triangle.</source>
+  </data>
+  <data name="RequiresPrefix">
+    <!--Machine translated-->
+    <value>Exige:</value>
+    <comment>Line header telling cmdr what items are required to scan this obelisk for Ram Tah mission</comment>
+    <source>Requires:</source>
+  </data>
+  <data name="RequiresSuffix">
+    <!--Machine translated-->
+    <value>pour {0}</value>
+    <comment>Line suffix telling cmdr what they get if they scan this obelisk during Ram Tah mission
+{0} string, name of some log</comment>
+    <source>for {0}</source>
+  </data>
+  <data name="ToggleLightsUpdateHint">
+    <!--Machine translated-->
+    <value>(bascule les lumières pour forcer la mise à jour)</value>
+    <comment>Footer hint shown to remind cmdr's how to force an update</comment>
+    <source>(toggle lights to force update)</source>
+  </data>
+  <data name="ToggleShieldsForRelicTower">
+    <!--Machine translated-->
+    <value>Basculez les boucliers pour définir l’en-tête de la Tour des reliques.</value>
+    <comment>Message shown to help taking relic tower headings</comment>
+    <source>Toggle shields to set Relic Tower heading.</source>
+  </data>
+  <data name="YouHaveNotScanned">
+    <!--Machine translated-->
+    <value>Vous n’avez pas scanné cet obélisque</value>
+    <comment>Footer hint telling cmdr if they have scanned an obelisk</comment>
+    <source>You have not scanned this obelisk</source>
+  </data>
+  <data name="YouHaveScanned">
+    <!--Machine translated-->
+    <value>Vous avez scanné cet obélisque</value>
+    <comment>Footer hint telling cmdr if they have scanned an obelisk</comment>
+    <source>You have scanned this obelisk</source>
+  </data>
+</root>

@@ -60,6 +60,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <!--Localizable elements are below-->
+  <data name="Alpha">
+    <!--Machine translated-->
+    <value>阿尔法</value>
+    <comment>Guardian Ruins type</comment>
+    <source>Alpha</source>
+  </data>
+  <data name="Beta">
+    <!--Machine translated-->
+    <value>试用版</value>
+    <comment>Guardian Ruins type</comment>
+    <source>Beta</source>
+  </data>
   <data name="BluePrintFighter">
     <value>飞船蓝图</value>
     <comment>Blue print for a Fighter</comment>
@@ -74,6 +86,12 @@
     <value>武器蓝图</value>
     <comment>Blue print for a Weapon</comment>
     <source>Weapon</source>
+  </data>
+  <data name="Gamma">
+    <!--Machine translated-->
+    <value>伽马</value>
+    <comment>Guardian Ruins type</comment>
+    <source>Gamma</source>
   </data>
   <!--以下为守护者考古任务的相关部件,暂时不翻译,方便玩家对照游戏内英文-->
   <data name="ItemBasilisk">
@@ -161,10 +179,52 @@
     <comment>A category of log received in the first Ram Tah mission.</comment>
     <source>Technology</source>
   </data>
+  <data name="POIType_Component">
+    <!--Machine translated-->
+    <value>组件塔</value>
+    <comment>Those towers with 3 blastable panels</comment>
+    <source>Component tower</source>
+  </data>
+  <data name="POIType_Pylon">
+    <!--Machine translated-->
+    <value>塔</value>
+    <comment>The things we shoot to charge up at Guardian structures</comment>
+    <source>Pylon</source>
+  </data>
   <data name="Ruins">
     <value>废墟</value>
     <comment>As in a Guardian Ruins site</comment>
     <source>Ruins</source>
+  </data>
+  <data name="SitePoiStatus_absent">
+    <!--Machine translated-->
+    <value>缺席</value>
+    <comment>Display name for PoiSiteStatus enum</comment>
+    <source>absent</source>
+  </data>
+  <data name="SitePoiStatus_empty">
+    <!--Machine translated-->
+    <value>空</value>
+    <comment>Display name for PoiSiteStatus enum</comment>
+    <source>empty</source>
+  </data>
+  <data name="SitePoiStatus_present">
+    <!--Machine translated-->
+    <value>目前</value>
+    <comment>Display name for PoiSiteStatus enum</comment>
+    <source>present</source>
+  </data>
+  <data name="SitePoiStatus_unknown">
+    <!--Machine translated-->
+    <value>未知</value>
+    <comment>Display name for PoiSiteStatus enum</comment>
+    <source>unknown</source>
+  </data>
+  <data name="StatusUnknown">
+    <!--Machine translated-->
+    <value>未知</value>
+    <comment>The status of some site POI</comment>
+    <source>unknown</source>
   </data>
   <data name="Structure">
     <value>建筑</value>
