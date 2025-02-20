@@ -22,6 +22,42 @@
 /plotters/PlotBioSystem.ru.resx
 	NotPredicted
 
+/plotters/PlotGuardianStatus.ru.resx
+	AlignAndRise
+	AlignWithButtress
+	ChooseAbsent
+	ChooseEmpty
+	ChoosePresent
+	FooterActiveObeliskGroups
+	FooterToggleModeOnce
+	FooterToggleModeTwice
+	HeaderUnknownSiteType
+	LineRamTahAcquired
+	LineRamTahNeeded
+	MatsFullOne
+	MatsFullTwo
+	NearObeliskHeader
+	NoNearPoiHeader
+	ObeliskActive
+	ObeliskBroken
+	ObeliskInactive
+	OnApproachFooter
+	OnApproachHeaderRuins
+	OnApproachHeaderStructure
+	OnApproachMiddleRuins
+	OnApproachMiddleStructure
+	OnApproachMiddleStructureNoBluePrint
+	RelicTowerFaceHint
+	RelicTowerFootHint
+	RelicTowerHeadingKnown
+	RelicTowerNonToolHint
+	RequiresPrefix
+	RequiresSuffix
+	ToggleLightsUpdateHint
+	ToggleShieldsForRelicTower
+	YouHaveNotScanned
+	YouHaveScanned
+
 /plotters/PlotGuardianSystem.ru.resx
 	BluePrintLine
 	Header
@@ -68,9 +104,12 @@
 	TextFiles
 
 /Properties/Guardian.ru.resx
+	Alpha
+	Beta
 	BluePrintFighter
 	BluePrintModule
 	BluePrintWeapon
+	Gamma
 	ItemBasilisk
 	ItemCasket
 	ItemCyclops
@@ -89,7 +128,14 @@
 	LogLanguage
 	LogTechnology
 	Ruins
+	SitePoiStatus_absent
+	SitePoiStatus_empty
+	SitePoiStatus_present
+	SitePoiStatus_unknown
+	StatusUnknown
 	Structure
+	POIType_Component
+	POIType_Pylon
 
 /Properties/Materials.ru.resx
 	tg_biomechanicalconduits

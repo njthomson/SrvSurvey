@@ -60,6 +60,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <!--Localizable elements are below-->
+  <data name="Alpha">
+    <!--Machine translated-->
+    <value>* ALPHA →→→!</value>
+    <comment>Guardian Ruins type</comment>
+    <source>Alpha</source>
+  </data>
+  <data name="Beta">
+    <!--Machine translated-->
+    <value>* BETA →→→!</value>
+    <comment>Guardian Ruins type</comment>
+    <source>Beta</source>
+  </data>
   <data name="BluePrintFighter">
     <!--Machine translated-->
     <value>* FIGHTER →→→!</value>
@@ -77,6 +89,12 @@
     <value>* WEAPON →→→!</value>
     <comment>Blue print for a Weapon</comment>
     <source>Weapon</source>
+  </data>
+  <data name="Gamma">
+    <!--Machine translated-->
+    <value>* GAMMA →→→!</value>
+    <comment>Guardian Ruins type</comment>
+    <source>Gamma</source>
   </data>
   <data name="ItemBasilisk">
     <!--Machine translated-->
@@ -180,11 +198,53 @@
     <comment>A category of log received in the first Ram Tah mission.</comment>
     <source>Technology</source>
   </data>
+  <data name="POIType_Component">
+    <!--Machine translated-->
+    <value>* COMPONENT TOWER →→→!</value>
+    <comment>Those towers with 3 blastable panels</comment>
+    <source>Component tower</source>
+  </data>
+  <data name="POIType_Pylon">
+    <!--Machine translated-->
+    <value>* PYLON →→→!</value>
+    <comment>The things we shoot to charge up at Guardian structures</comment>
+    <source>Pylon</source>
+  </data>
   <data name="Ruins">
     <!--Machine translated-->
     <value>* RUINS →→→!</value>
     <comment>As in a Guardian Ruins site</comment>
     <source>Ruins</source>
+  </data>
+  <data name="SitePoiStatus_absent">
+    <!--Machine translated-->
+    <value>* ABSENT →→→!</value>
+    <comment>Display name for PoiSiteStatus enum</comment>
+    <source>absent</source>
+  </data>
+  <data name="SitePoiStatus_empty">
+    <!--Machine translated-->
+    <value>* EMPTY →→→!</value>
+    <comment>Display name for PoiSiteStatus enum</comment>
+    <source>empty</source>
+  </data>
+  <data name="SitePoiStatus_present">
+    <!--Machine translated-->
+    <value>* PRESENT →→→!</value>
+    <comment>Display name for PoiSiteStatus enum</comment>
+    <source>present</source>
+  </data>
+  <data name="SitePoiStatus_unknown">
+    <!--Machine translated-->
+    <value>* UNKNOWN →→→!</value>
+    <comment>Display name for PoiSiteStatus enum</comment>
+    <source>unknown</source>
+  </data>
+  <data name="StatusUnknown">
+    <!--Machine translated-->
+    <value>* UNKNOWN →→→!</value>
+    <comment>The status of some site POI</comment>
+    <source>unknown</source>
   </data>
   <data name="Structure">
     <!--Machine translated-->

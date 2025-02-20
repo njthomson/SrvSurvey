@@ -5,11 +5,59 @@
 	btnOpenFolder.Text
 	$this.Text
 
+/plotters/PlotGuardianStatus.zh-Hans.resx
+	AlignAndRise
+	AlignWithButtress
+	ChooseAbsent
+	ChooseEmpty
+	ChoosePresent
+	FooterActiveObeliskGroups
+	FooterToggleModeOnce
+	FooterToggleModeTwice
+	HeaderUnknownSiteType
+	LineRamTahAcquired
+	LineRamTahNeeded
+	MatsFullOne
+	MatsFullTwo
+	NearObeliskHeader
+	NoNearPoiHeader
+	ObeliskActive
+	ObeliskBroken
+	ObeliskInactive
+	OnApproachFooter
+	OnApproachHeaderRuins
+	OnApproachHeaderStructure
+	OnApproachMiddleRuins
+	OnApproachMiddleStructure
+	OnApproachMiddleStructureNoBluePrint
+	RelicTowerFaceHint
+	RelicTowerFootHint
+	RelicTowerHeadingKnown
+	RelicTowerNonToolHint
+	RequiresPrefix
+	RequiresSuffix
+	ToggleLightsUpdateHint
+	ToggleShieldsForRelicTower
+	YouHaveNotScanned
+	YouHaveScanned
+
 /plotters/PlotGuardianSystem.zh-Hans.resx
 	BluePrintLine
 
 /plotters/PlotSysStatus.zh-Hans.resx
 	NextSystem
+
+/Properties/Guardian.zh-Hans.resx
+	Alpha
+	Beta
+	Gamma
+	SitePoiStatus_absent
+	SitePoiStatus_empty
+	SitePoiStatus_present
+	SitePoiStatus_unknown
+	StatusUnknown
+	POIType_Component
+	POIType_Pylon
 
 /Properties/Misc.zh-Hans.resx
 	NetSysData_Wars

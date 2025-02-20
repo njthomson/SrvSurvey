@@ -582,9 +582,9 @@ namespace SrvSurvey.plotters
             g.DrawString(Util.metersToString(dist), GameColors.fontSmall, brush, x, y);
         }
 
-        protected void drawHeaderText(string msg, Brush? brush = null)
+        protected SizeF drawHeaderText(string msg, Brush? brush = null)
         {
-            if (g == null) return;
+            if (g == null) return Size.Empty;
 
             // draw heading text (center bottom)
             g.ResetTransform();
@@ -592,15 +592,16 @@ namespace SrvSurvey.plotters
 
             var font = GameColors.fontMiddle;
             var sz = g.MeasureString(msg, font);
-            var tx = mid.Width - (sz.Width / 2);
+            var tx = Util.centerIn(this.Width, sz.Width);
             var ty = 5;
 
             g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);
+            return sz;
         }
 
-        protected void drawFooterText(string msg, Brush? brush = null, Font? font = null)
+        protected SizeF drawFooterText(string msg, Brush? brush = null, Font? font = null)
         {
-            if (g == null) return;
+            if (g == null) return Size.Empty;
 
             // draw heading text (center bottom)
             g.ResetTransform();
@@ -608,17 +609,18 @@ namespace SrvSurvey.plotters
 
             font = font ?? GameColors.fontMiddle;
             var sz = g.MeasureString(msg, font);
-            var tx = mid.Width - (sz.Width / 2);
+            var tx = Util.centerIn(this.Width, sz.Width);
             var ty = this.Height - sz.Height - 6;
 
             g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);
+            return sz;
         }
 
         protected void drawCenterMessage(string msg, Brush? brush = null)
         {
             var font = GameColors.fontMiddle;
             var sz = g.MeasureString(msg, font);
-            var tx = mid.Width - (sz.Width / 2);
+            var tx = Util.centerIn(this.Width, sz.Width);
             var ty = 34;
 
             g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);

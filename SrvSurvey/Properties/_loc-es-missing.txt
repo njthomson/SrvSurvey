@@ -8,6 +8,42 @@
 /plotters/PlotBioSystem.es.resx
 	NotPredicted
 
+/plotters/PlotGuardianStatus.es.resx
+	AlignAndRise
+	AlignWithButtress
+	ChooseAbsent
+	ChooseEmpty
+	ChoosePresent
+	FooterActiveObeliskGroups
+	FooterToggleModeOnce
+	FooterToggleModeTwice
+	HeaderUnknownSiteType
+	LineRamTahAcquired
+	LineRamTahNeeded
+	MatsFullOne
+	MatsFullTwo
+	NearObeliskHeader
+	NoNearPoiHeader
+	ObeliskActive
+	ObeliskBroken
+	ObeliskInactive
+	OnApproachFooter
+	OnApproachHeaderRuins
+	OnApproachHeaderStructure
+	OnApproachMiddleRuins
+	OnApproachMiddleStructure
+	OnApproachMiddleStructureNoBluePrint
+	RelicTowerFaceHint
+	RelicTowerFootHint
+	RelicTowerHeadingKnown
+	RelicTowerNonToolHint
+	RequiresPrefix
+	RequiresSuffix
+	ToggleLightsUpdateHint
+	ToggleShieldsForRelicTower
+	YouHaveNotScanned
+	YouHaveScanned
+
 /plotters/PlotGuardianSystem.es.resx
 	BluePrintLine
 	Header
@@ -28,9 +64,12 @@
 	DistanceTo
 
 /Properties/Guardian.es.resx
+	Alpha
+	Beta
 	BluePrintFighter
 	BluePrintModule
 	BluePrintWeapon
+	Gamma
 	ItemBasilisk
 	ItemCasket
 	ItemCyclops
@@ -49,7 +88,14 @@
 	LogLanguage
 	LogTechnology
 	Ruins
+	SitePoiStatus_absent
+	SitePoiStatus_empty
+	SitePoiStatus_present
+	SitePoiStatus_unknown
+	StatusUnknown
 	Structure
+	POIType_Component
+	POIType_Pylon
 
 /Properties/Materials.es.resx
 	tg_biomechanicalconduits
