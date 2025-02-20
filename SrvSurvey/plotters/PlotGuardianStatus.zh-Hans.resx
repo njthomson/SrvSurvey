@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <!--Localizable elements are below-->
+  <data name="AlignAndRise">
+    <value>与遗址原点对齐并上升到目标高度：{0}m</value>
+    <comment>Message shown when cmdr needs to rise up to a suitable altitude for aerial assistance mode
+{0} int, altitude in metres</comment>
+    <source>Align with site origin and rise to target altitude: {0}m</source>
+  </data>
+  <data name="AlignWithButtress">
+    <value>与支撑对齐</value>
+    <comment>Message shown when the site needs to be identified by aligning with a specific buttress</comment>
+    <source>Align with buttress</source>
+  </data>
+  <data name="ChooseAbsent">
+    <value>缺失</value>
+    <comment>Selectable option shown in a box, chosen by matching a fire-group</comment>
+    <source>Absent</source>
+  </data>
+  <data name="ChooseEmpty">
+    <value>空的</value>
+    <comment>Selectable option shown in a box, chosen by matching a fire-group</comment>
+    <source>Empty</source>
+  </data>
+  <data name="ChoosePresent">
+    <value>存在</value>
+    <comment>Selectable option shown in a box, chosen by matching a fire-group</comment>
+    <source>Present</source>
+  </data>
+  <data name="FooterActiveObeliskGroups">
+    <value>活动方尖碑组：{0}</value>
+    <comment>Footer showing which obelisks groups are present
+{0} string, list of obelisk group names eg "C, D, Q, T"</comment>
+    <source>Active obelisk groups: {0}</source>
+  </data>
+  <data name="FooterToggleModeOnce">
+    <value>（切换驾驶舱模式一次来设置状态）</value>
+    <comment>Footer hint telling cmdr how to take a measurement</comment>
+    <source>(toggle cockpit mode once to set)</source>
+  </data>
+  <data name="FooterToggleModeTwice">
+    <value>（切换驾驶舱模式两次来设置状态）</value>
+    <comment>Footer hint telling cmdr how to take a measurement</comment>
+    <source>(toggle cockpit mode twice to set)</source>
+  </data>
+  <data name="HeaderUnknownSiteType">
+    <value>遗址类型 不明</value>
+    <comment>Header with site type is unknown</comment>
+    <source>Site type unknown</source>
+  </data>
+  <data name="LineRamTahAcquired">
+    <value>日志已获取</value>
+    <comment>Line shown when log has already been acquired for Ram Tah mission</comment>
+    <source>Log has been acquired</source>
+  </data>
+  <data name="LineRamTahNeeded">
+    <value>拉姆‐塔赫(Ram Tah)任务需要</value>
+    <comment>Line shown when log is needed for Ram Tah mission</comment>
+    <source>Needed for Ram Tah mission</source>
+  </data>
+  <data name="MatsFullOne">
+    <value>(守护者材料已满 - 再次切换驾驶舱模式以标记已扫描)</value>
+    <comment>Message hint shown when cmdrs Guardian mats are full</comment>
+    <source>(Guardian mats full - toggle cockpit mode again to mark scanned)</source>
+  </data>
+  <data name="MatsFullTwo">
+    <value>(守护者材料已满 - 切换驾驶舱模式两次以标记已扫描）</value>
+    <comment>Following up hint shown when cmdrs Guardian mats are full</comment>
+    <source>(Guardian mats full - toggle cockpit mode twice to mark scanned)</source>
+  </data>
+  <data name="NearObeliskHeader">
+    <value>方尖碑 {0}： {1}</value>
+    <comment>Header shown when cmdr is near an obeslisk
+{0} string, the id name of the obelisk, eg "G12"
+{1} string, the status of the obelisk, eg "Active"</comment>
+    <source>Obelisk {0}: {1}</source>
+  </data>
+  <data name="NoNearPoiHeader">
+    <value>移动到任意POI约75米内以检查物品</value>
+    <comment>Header shown when cmdr is not near any POI</comment>
+    <source>Move within ~75m to inspect an item</source>
+  </data>
+  <data name="ObeliskActive">
+    <value>激活</value>
+    <comment>The state of an obelisk</comment>
+    <source>Active</source>
+  </data>
+  <data name="ObeliskBroken">
+    <value>破损</value>
+    <comment>The state of an obelisk</comment>
+    <source>Broken</source>
+  </data>
+  <data name="ObeliskInactive">
+    <value>未激活</value>
+    <comment>The state of an obelisk</comment>
+    <source>Inactive</source>
+  </data>
+  <data name="OnApproachFooter">
+    <value>(别忘了在飞船和SRV中设置3个火力组)</value>
+    <comment>Footer shown when on approach to a Guardian site</comment>
+    <source>( Don't forget to set 3 fire groups in ships and SRVs )</source>
+  </data>
+  <data name="OnApproachHeaderRuins">
+    <value>接近守护者废墟......</value>
+    <comment>Header when approaching a Ruins</comment>
+    <source>Approaching Guardian Ruins ...</source>
+  </data>
+  <data name="OnApproachHeaderStructure">
+    <value>接近守护者结构 ...</value>
+    <comment>Header when approaching a Structure</comment>
+    <source>Approaching Guardian Structure ...</source>
+  </data>
+  <data name="OnApproachMiddleRuins">
+    <value>废墟 #{0} - {1}</value>
+    <comment>Middle text when approaching a Ruins
+{0} int, the 1 based index of the site
+{1} string, the type of Ruins, eg: Alpha, Beta or Gamma</comment>
+    <source>Ruins #{0} - {1}</source>
+  </data>
+  <data name="OnApproachMiddleStructure">
+    <value>{0} - 蓝图：{1}</value>
+    <comment>Middle text when approaching a Stucture
+{0} string, the structure type name, eg: Stickhand
+{1} string, which blue print is available</comment>
+    <source>{0} - blue print: {1}</source>
+  </data>
+  <data name="OnApproachMiddleStructureNoBluePrint">
+    <value>{0} - 无蓝图</value>
+    <comment>Middle text when approaching a Stucture that does not provide blue prints
+{0} string, the structure type name, eg: Stickhand</comment>
+    <source>{0} - no blue print</source>
+  </data>
+  <data name="RelicTowerFaceHint">
+    <value>面向只有一个朝左的大三角形的一侧</value>
+    <comment>Message hint for which side of a relic tower to measure from</comment>
+    <source>Face the side with a single large left facing triangle.</source>
+  </data>
+  <data name="RelicTowerFootHint">
+    <value>(切换武器以强制更新位置)</value>
+    <comment>Footer hint shown to remind cmdr's how to force an update when on foot</comment>
+    <source>(toggle weapon to force location update)</source>
+  </data>
+  <data name="RelicTowerHeadingKnown">
+    <value>已记录的航向：{0}°</value>
+    <comment>Message shown when relic tower heading is already known</comment>
+    <source>Recorded heading: {0}°</source>
+  </data>
+  <data name="RelicTowerNonToolHint">
+    <value>在遗迹塔(Relic Towers)附近使用档案分析仪(4)以获得瞄准辅助
+面向只有一个朝左的大三角形的一侧</value>
+    <comment>Message hint for which tool and side of a relic tower to use</comment>
+    <source>Use Profile Analyser near Relic Towers for aiming assistance.
+Face the side with a single large left facing triangle.</source>
+  </data>
+  <data name="RequiresPrefix">
+    <value>需要：</value>
+    <comment>Line header telling cmdr what items are required to scan this obelisk for Ram Tah mission</comment>
+    <source>Requires:</source>
+  </data>
+  <data name="RequiresSuffix">
+    <value>获得 {0}</value>
+    <comment>Line suffix telling cmdr what they get if they scan this obelisk during Ram Tah mission
+{0} string, name of some log</comment>
+    <source>for {0}</source>
+  </data>
+  <data name="ToggleLightsUpdateHint">
+    <value>(切换灯光(默认T键)以强制更新)</value>
+    <comment>Footer hint shown to remind cmdr's how to force an update</comment>
+    <source>(toggle lights to force update)</source>
+  </data>
+  <data name="ToggleShieldsForRelicTower">
+    <value>切换护盾(默认C键)以设置遗迹塔(Relic Tower)的朝向</value>
+    <comment>Message shown to help taking relic tower headings</comment>
+    <source>Toggle shields to set Relic Tower heading.</source>
+  </data>
+  <data name="YouHaveNotScanned">
+    <value>还未扫描此方尖碑</value>
+    <comment>Footer hint telling cmdr if they have scanned an obelisk</comment>
+    <source>You have not scanned this obelisk</source>
+  </data>
+  <data name="YouHaveScanned">
+    <value>已扫描此方尖碑</value>
+    <comment>Footer hint telling cmdr if they have scanned an obelisk</comment>
+    <source>You have scanned this obelisk</source>
+  </data>
+</root>
