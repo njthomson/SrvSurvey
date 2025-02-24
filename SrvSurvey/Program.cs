@@ -216,7 +216,7 @@ namespace SrvSurvey
         public static void closePlotter<T>(bool async = false) where T : Form
         {
             if (async)
-                Program.control.BeginInvoke(() => closePlotter(typeof(T).Name));
+                Program.defer(() => closePlotter(typeof(T).Name));
             else
                 closePlotter(typeof(T).Name);
         }
@@ -323,7 +323,7 @@ namespace SrvSurvey
             //Game.log($"Program.hideActivePlotters: {activePlotters.Count}");
 
             foreach (PlotterForm form in activePlotters.Values)
-                form.Opacity = 0;
+                form.setOpacity(0);
         }
 
         public static void showActivePlotters()
@@ -333,7 +333,7 @@ namespace SrvSurvey
             //Game.log($"Program.showActivePlotters: {activePlotters.Count}");
 
             foreach (PlotterForm form in activePlotters.Values)
-                form.Opacity = PlotPos.getOpacity(form);
+                form.resetOpacity();
         }
 
         public static void invalidate<T>(bool defer = false) where T : Form
@@ -610,6 +610,8 @@ namespace SrvSurvey
     {
         void reposition(Rectangle gameRect);
         double Opacity { get; set; }
+        public void setOpacity(double newOpacity);
+        public void resetOpacity();
         void Invalidate();
         int Width { get; set; }
         int Height { get; set; }
@@ -624,5 +626,6 @@ namespace SrvSurvey
         bool didFirstPaint { get; set; }
         /// <summary> A flag true immediately about the time we begin showing a window </summary>
         bool showing { get; set; }
+        bool forceHide { get; set; }
     }
 }

@@ -1157,6 +1157,11 @@ namespace SrvSurvey
 
         [JsonIgnore]
         public string displayName => Name_Localised ?? Name;
+
+        public override string ToString()
+        {
+            return $"{Name}: {Count}";
+        }
     }
 
     class MaterialTrade : JournalEntry

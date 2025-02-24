@@ -2,7 +2,6 @@
 using SrvSurvey.canonn;
 using SrvSurvey.forms;
 using SrvSurvey.game;
-using SrvSurvey.Properties;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.Diagnostics;
@@ -51,7 +50,7 @@ namespace SrvSurvey.plotters
             this.MaximizeBox = false;
             this.ControlBox = false;
             this.FormBorderStyle = FormBorderStyle.None;
-            this.Opacity = 0;
+            this.Opacity = 0; // ok
             this.DoubleBuffered = true;
             this.Name = this.GetType().Name;
             this.ResizeRedraw = true;
@@ -74,6 +73,8 @@ namespace SrvSurvey.plotters
             // Does this cause windows to become visible when alt-tabbing?
             this.Text = this.Name;
         }
+
+        protected override bool ShowWithoutActivation => true;
 
         protected override CreateParams CreateParams
         {
@@ -188,17 +189,38 @@ namespace SrvSurvey.plotters
 
         #endregion
 
+        /// <summary> When true, forces zero Opacity </summary>
+        public bool forceHide {
+            get => this._forceHide;
+            set
+            {
+                this._forceHide = value;
+
+                if (this._forceHide)
+                    this.setOpacity(0);
+                else
+                    this.resetOpacity();
+
+                this.Invalidate();
+            }
+        }
+        private bool _forceHide;
+
         /// <summary> Reset opacity to default it's value </summary>
-        public void resetOpacity()
+        public virtual void resetOpacity()
         {
             setOpacity(PlotPos.getOpacity(this));
         }
 
         /// <summary> Set opacity to the given value. </summary>
-        public void setOpacity(double newOpacity)
+        public virtual void setOpacity(double newOpacity)
         {
+            // enforce zero opacity if we're force hiding
+            if (this.forceHide)
+                newOpacity = 0;
+
             if (this.Opacity != newOpacity)
-                this.Opacity = newOpacity;
+                this.Opacity = newOpacity; // ok
         }
 
         public virtual void reposition(Rectangle gameRect)
@@ -206,11 +228,7 @@ namespace SrvSurvey.plotters
             // do not attempt to reposition anything if the game window has been minimized
             //Game.log($"reposition:{this.Name}: opacity:{Opacity}, bounds:{this.Bounds}, gameRect:{gameRect}");
             if (gameRect.X < -30_000 || gameRect.Y < -30_000 || gameRect.Width == 0 || gameRect.Height == 0)
-            {
-                //Debugger.Break();
-                //this.Opacity = 0;
                 return;
-            }
 
             // restore opacity, reposition ourselves according to plotters.json rules, then re-render
             var newOpacity = PlotPos.getOpacity(this);
@@ -254,7 +272,7 @@ namespace SrvSurvey.plotters
             if (this.IsDisposed) return;
 
             if (this.Opacity > 0 && !this.allow)
-                this.Opacity = 0;
+                this.setOpacity(0);
             else if (this.Opacity == 0 && this.allow)
                 this.reposition(Elite.getWindowRect());
 

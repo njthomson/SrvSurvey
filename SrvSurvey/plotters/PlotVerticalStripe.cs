@@ -45,6 +45,7 @@ namespace SrvSurvey.plotters
         protected Game game = Game.activeGame!;
         public bool didFirstPaint { get; set; } = true;
         public bool showing { get; set; }
+        public bool forceHide { get; set; }
 
         private Rectangle er;
         private float mw;
@@ -67,7 +68,7 @@ namespace SrvSurvey.plotters
             this.ControlBox = false;
             this.Visible = false;
 
-            this.Opacity = getOpacity() * Game.settings.Opacity;
+            this.Opacity = getOpacity() * Game.settings.Opacity; // ok
             this.TopMost = true;
 
             this.BackColor = Color.Red;
@@ -113,9 +114,22 @@ namespace SrvSurvey.plotters
             base.Dispose(disposing);
         }
 
+        /// <summary> Set opacity to the given value. </summary>
+        public void setOpacity(double newOpacity)
+        {
+            if (this.Opacity != newOpacity)
+                this.Opacity = newOpacity; // ok
+        }
+
+        /// <summary> Reset opacity to default it's value </summary>
+        public void resetOpacity()
+        {
+            setOpacity(PlotPos.getOpacity(this));
+        }
+
         public void reposition(Rectangle gameRect)
         {
-            this.Opacity = getOpacity() * Game.settings.Opacity;
+            this.setOpacity(getOpacity() * Game.settings.Opacity);
 
             // float center, spanning whole height
             if (gameRect != Rectangle.Empty)
@@ -137,7 +151,7 @@ namespace SrvSurvey.plotters
 
         private void Status_StatusChanged(bool blink)
         {
-            this.Opacity = getOpacity() * Game.settings.Opacity;
+            this.setOpacity(getOpacity() * Game.settings.Opacity);
 
             this.Invalidate();
         }
@@ -235,7 +249,7 @@ namespace SrvSurvey.plotters
 
                 default:
                     Game.log($"Unexpected mode: {mode}");
-                    this.Opacity = 0;
+                    this.setOpacity(0);
                     break;
             }
         }

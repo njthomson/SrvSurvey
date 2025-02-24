@@ -166,14 +166,27 @@ namespace SrvSurvey
                 var jumpInfo = Program.getPlotter<PlotJumpInfo>();
                 if (jumpInfo == null)
                 {
+                    // force show if no plotter
                     PlotJumpInfo.forceShow = true;
                     Program.showPlotter<PlotJumpInfo>();
                 }
                 else if (PlotJumpInfo.forceShow)
                 {
+                    // unforce (hide)
                     PlotJumpInfo.forceShow = false;
                     Program.closePlotter<PlotJumpInfo>();
                 }
+                else
+                {
+                    // the plotter exists and was not forced ... toggle forceHide on it
+                    jumpInfo.forceHide = !jumpInfo.forceHide;
+                    if (!jumpInfo.forceHide) PlotJumpInfo.forceShow = false;
+                }
+            }
+            else
+            {
+                // unforce if there's no route currently
+                PlotJumpInfo.forceShow = false;
             }
 
             return true;
@@ -233,13 +246,21 @@ namespace SrvSurvey
             var fssInfo = Program.getPlotter<PlotFSSInfo>();
             if (fssInfo == null)
             {
+                // force show if no plotter
                 PlotFSSInfo.forceShow = true;
                 Program.showPlotter<PlotFSSInfo>();
             }
             else if (PlotFSSInfo.forceShow)
             {
+                // unforce (hide)
                 PlotFSSInfo.forceShow = false;
                 Program.closePlotter<PlotFSSInfo>();
+            }
+            else
+            {
+                // the plotter exists and was not forced ... toggle forceHide on it
+                fssInfo.forceHide = !fssInfo.forceHide;
+                if (!fssInfo.forceHide) PlotFSSInfo.forceShow = false;
             }
 
             return true;
@@ -247,17 +268,32 @@ namespace SrvSurvey
 
         private static bool toggleBodyInfo()
         {
-            var bodyInfo = Program.getPlotter<PlotBodyInfo>();
+            // exit early if there's no relevant body
             var targetBody = Game.activeGame?.systemBody ?? Game.activeGame?.targetBody;
-            if (bodyInfo == null && targetBody != null)
+            if (targetBody == null)
             {
+                PlotBodyInfo.forceShow = false;
+                return true;
+            }
+
+            var bodyInfo = Program.getPlotter<PlotBodyInfo>();
+            if (bodyInfo == null)
+            {
+                // force show if no plotter
                 PlotBodyInfo.forceShow = true;
                 Program.showPlotter<PlotBodyInfo>();
             }
             else if (PlotBodyInfo.forceShow)
             {
+                // unforce (hide)
                 PlotBodyInfo.forceShow = false;
                 Program.closePlotter<PlotBodyInfo>();
+            }
+            else
+            {
+                // the plotter exists and was not forced ... toggle forceHide on it
+                bodyInfo.forceHide = !bodyInfo.forceHide;
+                if (!bodyInfo.forceHide) PlotBodyInfo.forceShow = false;
             }
 
             return true;

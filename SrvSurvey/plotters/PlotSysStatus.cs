@@ -65,7 +65,7 @@ namespace SrvSurvey.plotters
             {
                 if (game?.systemData == null || game.status == null || !PlotSysStatus.allowPlotter)
                 {
-                    this.Opacity = 0;
+                    this.setOpacity(0);
                     Program.control.BeginInvoke(() => Program.closePlotter<PlotSysStatus>());
                     return;
                 }

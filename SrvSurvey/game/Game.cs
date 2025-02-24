@@ -1115,6 +1115,12 @@ namespace SrvSurvey.game
                 this.fetchedSystemData = null;
                 this.Status_StatusChanged(false);
 
+                // stop force showing these any time we change systems
+                PlotFSSInfo.forceShow = false;
+                PlotBodyInfo.forceShow = false;
+                Program.closePlotter<PlotFSSInfo>();
+                Program.closePlotter<PlotBodyInfo>();
+
                 // clear the nextSystem displayed when jumping to some other system
                 var form = Program.getPlotter<PlotSysStatus>();
                 if (form != null)
@@ -1538,7 +1544,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(TechnologyBroker entry)
         {
             // track adjustments to Materials from Tech Broker interactions
-            foreach(var mat in entry.Materials)
+            foreach (var mat in entry.Materials)
             {
                 var match = this.materials.getMaterialEntry(mat.Category, mat.Name);
                 if (match == null)

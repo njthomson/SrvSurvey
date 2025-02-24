@@ -43,7 +43,7 @@ namespace SrvSurvey.plotters
 
             var targetMode = this.game.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap, GameMode.CommsPanel);
             if (this.Opacity > 0 && !targetMode)
-                this.Opacity = 0;
+                this.setOpacity(0);
             else if (this.Opacity == 0 && targetMode)
                 this.reposition(Elite.getWindowRect());
 

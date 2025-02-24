@@ -515,7 +515,7 @@ namespace SrvSurvey
             }
         }
 
-        public static void fadeOpacity(Form form, float targetOpacity, float durationMs = 0)
+        public static void fadeOpacity(PlotterForm form, float targetOpacity, float durationMs = 0)
         {
             if (targetOpacity < 0 || targetOpacity > 1) throw new ArgumentOutOfRangeException(nameof(targetOpacity));
             //Debug.WriteLine($"!START! {form.Name} {form.Size} {durationMs}ms / {form.Opacity} => {targetOpacity}");
@@ -525,7 +525,7 @@ namespace SrvSurvey
 
             // don't animate if duration is zero
             if (durationMs == 0)
-                form.Opacity = targetOpacity;
+                form.setOpacity(targetOpacity);
             else
             {
                 var started = DateTime.Now.Ticks;
@@ -574,13 +574,13 @@ namespace SrvSurvey
             }
         }
 
-        private static void fadeNext(Form form, float targetOpacity, long lastTick, float delta)
+        private static void fadeNext(PlotterForm form, float targetOpacity, long lastTick, float delta)
         {
             if (form.IsDisposed) return;
-            if (!Elite.gameHasFocus)
+            if (!Elite.gameHasFocus || form.forceHide)
             {
-                // stop early and hide form if the game loses focus
-                form.Opacity = 0;
+                // stop early and hide form if the game loses focus, or the form is being forced hidden
+                form.setOpacity(0);
                 return;
             }
 
@@ -601,13 +601,13 @@ namespace SrvSurvey
                 if (wasSmaller != isSmaller || form.Opacity == targetOpacity)
                 {
                     if (form.Opacity != newOpacity)
-                        form.Opacity = targetOpacity;
+                        form.setOpacity(targetOpacity);
                     //Debug.WriteLine($"!STOP! {form.Name} {form.Size} {form.Opacity}");
                     form.Invalidate();
                     return;
                 }
 
-                form.Opacity = newOpacity;
+                form.setOpacity(newOpacity);
                 lastTick = DateTime.Now.Ticks;
                 // TODO: animate the location too, just a little?
             }

@@ -69,9 +69,9 @@ namespace SrvSurvey.plotters
 
             // hide ourselves whilst FSD is charging to jump systems
             if ((game.status.FsdChargingJump || !this.allow || !Elite.gameHasFocus) && !Debugger.IsAttached)
-                this.Opacity = 0;
+                this.setOpacity(0);
             else if (this.Opacity == 0 && this.allow && Elite.gameHasFocus)
-                this.Opacity = PlotPos.getOpacity(this);
+                this.resetOpacity();
         }
 
         #region journal events
