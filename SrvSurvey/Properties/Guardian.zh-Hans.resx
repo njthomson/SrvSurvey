@@ -61,14 +61,14 @@
   </resheader>
   <!--Localizable elements are below-->
   <data name="Alpha">
-    <!--Machine translated-->
-    <value>阿尔法</value>
+    <!--不建议翻译守护者类型-->
+    <value>Alpha</value>
     <comment>Guardian Ruins type</comment>
     <source>Alpha</source>
   </data>
   <data name="Beta">
-    <!--Machine translated-->
-    <value>试用版</value>
+    <!--不建议翻译守护者类型-->
+    <value>Beta</value>
     <comment>Guardian Ruins type</comment>
     <source>Beta</source>
   </data>
@@ -88,8 +88,8 @@
     <source>Weapon</source>
   </data>
   <data name="Gamma">
-    <!--Machine translated-->
-    <value>伽马</value>
+    <!--不建议翻译守护者类型-->
+    <value>Gamma</value>
     <comment>Guardian Ruins type</comment>
     <source>Gamma</source>
   </data>
@@ -180,14 +180,12 @@
     <source>Technology</source>
   </data>
   <data name="POIType_Component">
-    <!--Machine translated-->
-    <value>组件塔</value>
+    <value>组件塔(Component tower)</value>
     <comment>Those towers with 3 blastable panels</comment>
     <source>Component tower</source>
   </data>
   <data name="POIType_Pylon">
-    <!--Machine translated-->
-    <value>塔</value>
+    <value>光能塔(Pylon)</value>
     <comment>The things we shoot to charge up at Guardian structures</comment>
     <source>Pylon</source>
   </data>
@@ -197,37 +195,32 @@
     <source>Ruins</source>
   </data>
   <data name="SitePoiStatus_absent">
-    <!--Machine translated-->
-    <value>缺席</value>
+    <value>缺失</value>
     <comment>Display name for PoiSiteStatus enum</comment>
     <source>absent</source>
   </data>
   <data name="SitePoiStatus_empty">
-    <!--Machine translated-->
-    <value>空</value>
+    <value>空的</value>
     <comment>Display name for PoiSiteStatus enum</comment>
     <source>empty</source>
   </data>
   <data name="SitePoiStatus_present">
-    <!--Machine translated-->
-    <value>目前</value>
+    <value>存在</value>
     <comment>Display name for PoiSiteStatus enum</comment>
     <source>present</source>
   </data>
   <data name="SitePoiStatus_unknown">
-    <!--Machine translated-->
     <value>未知</value>
     <comment>Display name for PoiSiteStatus enum</comment>
     <source>unknown</source>
   </data>
   <data name="StatusUnknown">
-    <!--Machine translated-->
     <value>未知</value>
     <comment>The status of some site POI</comment>
     <source>unknown</source>
   </data>
   <data name="Structure">
-    <value>建筑</value>
+    <value>结构</value>
     <comment>As in a Guardian Structure site</comment>
     <source>Structure</source>
   </data>

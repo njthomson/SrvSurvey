@@ -557,7 +557,6 @@
     <source>Star pos:</source>
   </data>
   <data name="label4.Text">
-    <!--Update needed: ZH-HANS-->
     <value>球形搜索有助于导航到距中央星系一定距离内的星系</value>
     <source>Spherical searches help navigating around within a given distance of a central system.</source>
   </data>
@@ -570,7 +569,6 @@
     <source>Distance:</source>
   </data>
   <data name="$this.Text">
-    <!--Update needed: ZH-HANS-->
     <value>球形搜索</value>
     <source>Spherical Search</source>
   </data>

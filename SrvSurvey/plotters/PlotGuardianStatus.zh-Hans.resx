@@ -61,87 +61,73 @@
   </resheader>
   <!--Localizable elements are below-->
   <data name="AlignAndRise">
-    <!--Machine translated-->
-    <value>与站点起点对齐并上升到目标高度：{0}m</value>
+    <value>与遗址原点对齐并上升到目标高度：{0}m</value>
     <comment>Message shown when cmdr needs to rise up to a suitable altitude for aerial assistance mode
 {0} int, altitude in metres</comment>
     <source>Align with site origin and rise to target altitude: {0}m</source>
   </data>
   <data name="AlignWithButtress">
-    <!--Machine translated-->
-    <value>与扶壁对齐</value>
+    <value>与支撑对齐</value>
     <comment>Message shown when the site needs to be identified by aligning with a specific buttress</comment>
     <source>Align with buttress</source>
   </data>
   <data name="ChooseAbsent">
-    <!--Machine translated-->
-    <value>缺席</value>
+    <value>缺失</value>
     <comment>Selectable option shown in a box, chosen by matching a fire-group</comment>
     <source>Absent</source>
   </data>
   <data name="ChooseEmpty">
-    <!--Machine translated-->
-    <value>空</value>
+    <value>空的</value>
     <comment>Selectable option shown in a box, chosen by matching a fire-group</comment>
     <source>Empty</source>
   </data>
   <data name="ChoosePresent">
-    <!--Machine translated-->
-    <value>目前</value>
+    <value>存在</value>
     <comment>Selectable option shown in a box, chosen by matching a fire-group</comment>
     <source>Present</source>
   </data>
   <data name="FooterActiveObeliskGroups">
-    <!--Machine translated-->
     <value>活动方尖碑组：{0}</value>
     <comment>Footer showing which obelisks groups are present
 {0} string, list of obelisk group names eg "C, D, Q, T"</comment>
     <source>Active obelisk groups: {0}</source>
   </data>
   <data name="FooterToggleModeOnce">
-    <!--Machine translated-->
-    <value>（切换 Cockpit Mode 一次进行设置）</value>
+    <value>（切换驾驶舱模式一次来设置状态）</value>
     <comment>Footer hint telling cmdr how to take a measurement</comment>
     <source>(toggle cockpit mode once to set)</source>
   </data>
   <data name="FooterToggleModeTwice">
-    <!--Machine translated-->
-    <value>（切换驾驶舱模式两次进行设置）</value>
+    <value>（切换驾驶舱模式两次来设置状态）</value>
     <comment>Footer hint telling cmdr how to take a measurement</comment>
     <source>(toggle cockpit mode twice to set)</source>
   </data>
   <data name="HeaderUnknownSiteType">
-    <!--Machine translated-->
-    <value>站点类型 unknown</value>
+    <value>遗址类型 不明</value>
     <comment>Header with site type is unknown</comment>
     <source>Site type unknown</source>
   </data>
   <data name="LineRamTahAcquired">
-    <!--Machine translated-->
-    <value>已获取日志</value>
+    <value>日志已获取</value>
     <comment>Line shown when log has already been acquired for Ram Tah mission</comment>
     <source>Log has been acquired</source>
   </data>
   <data name="LineRamTahNeeded">
-    <!--Machine translated-->
-    <value>Ram Tah 任务需要</value>
+    <value>拉姆‐塔赫(Ram Tah)任务需要</value>
     <comment>Line shown when log is needed for Ram Tah mission</comment>
     <source>Needed for Ram Tah mission</source>
   </data>
   <data name="MatsFullOne">
-    <!--Machine translated-->
-    <value>（守护者垫已满 - 再次切换驾驶舱模式以标记扫描）</value>
+    <value>(守护者材料已满 - 再次切换驾驶舱模式以标记已扫描)</value>
     <comment>Message hint shown when cmdrs Guardian mats are full</comment>
     <source>(Guardian mats full - toggle cockpit mode again to mark scanned)</source>
   </data>
   <data name="MatsFullTwo">
-    <!--Machine translated-->
-    <value>（Guardian mats full - 切换驾驶舱模式两次以标记扫描）</value>
+    <value>(守护者材料已满 - 切换驾驶舱模式两次以标记已扫描）</value>
     <comment>Following up hint shown when cmdrs Guardian mats are full</comment>
     <source>(Guardian mats full - toggle cockpit mode twice to mark scanned)</source>
   </data>
   <data name="NearObeliskHeader">
-    <!--Machine translated-->
     <value>方尖碑 {0}： {1}</value>
     <comment>Header shown when cmdr is near an obeslisk
 {0} string, the id name of the obelisk, eg "G12"
@@ -149,49 +135,41 @@
     <source>Obelisk {0}: {1}</source>
   </data>
   <data name="NoNearPoiHeader">
-    <!--Machine translated-->
-    <value>移动到 ~75m 范围内以检查物品</value>
+    <value>移动到任意POI约75米内以检查物品</value>
     <comment>Header shown when cmdr is not near any POI</comment>
     <source>Move within ~75m to inspect an item</source>
   </data>
   <data name="ObeliskActive">
-    <!--Machine translated-->
-    <value>积极</value>
+    <value>激活</value>
     <comment>The state of an obelisk</comment>
     <source>Active</source>
   </data>
   <data name="ObeliskBroken">
-    <!--Machine translated-->
-    <value>破碎</value>
+    <value>破损</value>
     <comment>The state of an obelisk</comment>
     <source>Broken</source>
   </data>
   <data name="ObeliskInactive">
-    <!--Machine translated-->
-    <value>无效</value>
+    <value>未激活</value>
     <comment>The state of an obelisk</comment>
     <source>Inactive</source>
   </data>
   <data name="OnApproachFooter">
-    <!--Machine translated-->
-    <value>（ 不要忘记在船舶和 SRV 中设置 3 个火组 ）</value>
+    <value>(别忘了在飞船和SRV中设置3个火力组)</value>
     <comment>Footer shown when on approach to a Guardian site</comment>
     <source>( Don't forget to set 3 fire groups in ships and SRVs )</source>
   </data>
   <data name="OnApproachHeaderRuins">
-    <!--Machine translated-->
     <value>接近守护者废墟......</value>
     <comment>Header when approaching a Ruins</comment>
     <source>Approaching Guardian Ruins ...</source>
   </data>
   <data name="OnApproachHeaderStructure">
-    <!--Machine translated-->
-    <value>接近 Guardian 结构 ...</value>
+    <value>接近守护者结构 ...</value>
     <comment>Header when approaching a Structure</comment>
     <source>Approaching Guardian Structure ...</source>
   </data>
   <data name="OnApproachMiddleRuins">
-    <!--Machine translated-->
     <value>废墟 #{0} - {1}</value>
     <comment>Middle text when approaching a Ruins
 {0} int, the 1 based index of the site
@@ -199,7 +177,6 @@
     <source>Ruins #{0} - {1}</source>
   </data>
   <data name="OnApproachMiddleStructure">
-    <!--Machine translated-->
     <value>{0} - 蓝图：{1}</value>
     <comment>Middle text when approaching a Stucture
 {0} string, the structure type name, eg: Stickhand
@@ -207,72 +184,61 @@
     <source>{0} - blue print: {1}</source>
   </data>
   <data name="OnApproachMiddleStructureNoBluePrint">
-    <!--Machine translated-->
     <value>{0} - 无蓝图</value>
     <comment>Middle text when approaching a Stucture that does not provide blue prints
 {0} string, the structure type name, eg: Stickhand</comment>
     <source>{0} - no blue print</source>
   </data>
   <data name="RelicTowerFaceHint">
-    <!--Machine translated-->
-    <value>面向侧面，有一个大的面向左侧的三角形。</value>
+    <value>面向只有一个朝左的大三角形的一侧</value>
     <comment>Message hint for which side of a relic tower to measure from</comment>
     <source>Face the side with a single large left facing triangle.</source>
   </data>
   <data name="RelicTowerFootHint">
-    <!--Machine translated-->
-    <value>（切换武器以强制更新位置）</value>
+    <value>(切换武器以强制更新位置)</value>
     <comment>Footer hint shown to remind cmdr's how to force an update when on foot</comment>
     <source>(toggle weapon to force location update)</source>
   </data>
   <data name="RelicTowerHeadingKnown">
-    <!--Machine translated-->
-    <value>记录航向：{0}°</value>
+    <value>已记录的航向：{0}°</value>
     <comment>Message shown when relic tower heading is already known</comment>
     <source>Recorded heading: {0}°</source>
   </data>
   <data name="RelicTowerNonToolHint">
-    <!--Machine translated-->
-    <value>使用 Relic Towers 附近的 Profile Analyser 进行瞄准辅助。
-面向侧面，有一个大的面向左侧的三角形。</value>
+    <value>在遗迹塔(Relic Towers)附近使用档案分析仪(4)以获得瞄准辅助
+面向只有一个朝左的大三角形的一侧</value>
     <comment>Message hint for which tool and side of a relic tower to use</comment>
     <source>Use Profile Analyser near Relic Towers for aiming assistance.
 Face the side with a single large left facing triangle.</source>
   </data>
   <data name="RequiresPrefix">
-    <!--Machine translated-->
     <value>需要：</value>
     <comment>Line header telling cmdr what items are required to scan this obelisk for Ram Tah mission</comment>
     <source>Requires:</source>
   </data>
   <data name="RequiresSuffix">
-    <!--Machine translated-->
-    <value>{0}</value>
+    <value>获得 {0}</value>
     <comment>Line suffix telling cmdr what they get if they scan this obelisk during Ram Tah mission
 {0} string, name of some log</comment>
     <source>for {0}</source>
   </data>
   <data name="ToggleLightsUpdateHint">
-    <!--Machine translated-->
-    <value>（切换灯光以强制更新）</value>
+    <value>(切换灯光(默认T键)以强制更新)</value>
     <comment>Footer hint shown to remind cmdr's how to force an update</comment>
     <source>(toggle lights to force update)</source>
   </data>
   <data name="ToggleShieldsForRelicTower">
-    <!--Machine translated-->
-    <value>切换盾牌以设置 Relic Tower 的航向。</value>
+    <value>切换护盾(默认C键)以设置遗迹塔(Relic Tower)的朝向</value>
     <comment>Message shown to help taking relic tower headings</comment>
     <source>Toggle shields to set Relic Tower heading.</source>
   </data>
   <data name="YouHaveNotScanned">
-    <!--Machine translated-->
-    <value>您尚未扫描此方尖碑</value>
+    <value>还未扫描此方尖碑</value>
     <comment>Footer hint telling cmdr if they have scanned an obelisk</comment>
     <source>You have not scanned this obelisk</source>
   </data>
   <data name="YouHaveScanned">
-    <!--Machine translated-->
-    <value>您已扫描此方尖碑</value>
+    <value>已扫描此方尖碑</value>
     <comment>Footer hint telling cmdr if they have scanned an obelisk</comment>
     <source>You have scanned this obelisk</source>
   </data>
