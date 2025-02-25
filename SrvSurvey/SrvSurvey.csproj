@@ -148,6 +148,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>PlotGrounded.resx</DependentUpon>
     </Compile>
+    <Compile Update="plotters\PlotGuardians.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotGuardians.resx</DependentUpon>
+    </Compile>
     <Compile Update="plotters\PlotGuardianStatus.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -301,6 +306,11 @@
     <EmbeddedResource Update="plotters\PlotGrounded.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PlotGrounded.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotGuardians.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlotGuardians.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Loc</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Update="plotters\PlotGuardianStatus.resx">

@@ -847,6 +847,18 @@ namespace SrvSurvey
                 case nameof(SiteType.Alpha): return Properties.Guardian.Alpha;
                 case nameof(SiteType.Beta): return Properties.Guardian.Beta;
                 case nameof(SiteType.Gamma): return Properties.Guardian.Gamma;
+                // These are not localized - just use the given string
+                case "SiteType." + nameof(SiteType.Lacrosse): // Tiny
+                case "SiteType." + nameof(SiteType.Crossroads):
+                case "SiteType." + nameof(SiteType.Fistbump):
+                case "SiteType." + nameof(SiteType.Hammerbot): // Small
+                case "SiteType." + nameof(SiteType.Bear):
+                case "SiteType." + nameof(SiteType.Bowl):
+                case "SiteType." + nameof(SiteType.Turtle):
+                case "SiteType." + nameof(SiteType.Robolobster): // Medium
+                case "SiteType." + nameof(SiteType.Squid):
+                case "SiteType." + nameof(SiteType.Stickyhand):
+                    return name;
 
                 // Guardian items for Ram Tah missions
                 case $"{nameof(POIType)}.{nameof(ObeliskItem.casket)}":
@@ -914,6 +926,9 @@ namespace SrvSurvey
 
                 case $"{nameof(POIType)}.{nameof(POIType.pylon)}":
                     return Properties.Guardian.POIType_Pylon;
+
+                case $"{nameof(POIType)}.{nameof(POIType.destructablePanel)}":
+                    return "Destructable Panel";
 
                 default:
                     Game.log($"Unexpected localizable name: '{name}'");

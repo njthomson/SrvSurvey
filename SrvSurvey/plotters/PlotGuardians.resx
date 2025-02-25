@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="HeaderGeneral" xml:space="preserve">
+    <value>Survey: {0} | {1}/{2} relics, {3}/{4} items</value>
+    <comment>General header used when at some site
+{0} string, pre-formatted percentage of completion
+{1} int, count of confirmed relic towers
+{2} int, count of potential relic towers
+{3} int, count of confirmed POI
+{4} total count of potential POI</comment>
+  </data>
+  <data name="HeaderNeedRelicTowerHeading" xml:space="preserve">
+    <value>Need Relic Tower heading</value>
+    <comment>Header shown when we need the heading of relic towers</comment>
+  </data>
+  <data name="HeaderNeedRelicTowers" xml:space="preserve">
+    <value>Need {0} Relic Tower heading</value>
+    <comment>Header shown when we need the headings of more relic towers
+{0} int, the count of towers needed to be measured</comment>
+  </data>
+  <data name="HeaderRuinsComplete" xml:space="preserve">
+    <value>Ruins #{0}: survey complete</value>
+    <comment>Header shown when the Ruins has been fully surveyed
+{0} int, the index of the site</comment>
+  </data>
+  <data name="HeaderStructureComplete" xml:space="preserve">
+    <value>Structure {0}: survey complete</value>
+    <comment>Header shown when the Strcture has been fully surveyed
+{0} string, the type of the site, eg: Stickyhand, Hammerbot (not localized)</comment>
+  </data>
+  <data name="HeadingSite" xml:space="preserve">
+    <value>site: {0}°</value>
+    <comment>Fragment used to show site heading
+{0} int, the heading of a site in degrees</comment>
+  </data>
+  <data name="HeadingUnknown" xml:space="preserve">
+    <value>unknown heading</value>
+    <comment>Fragment used when the site heading is not known</comment>
+  </data>
+  <data name="IdentifyNoMap" xml:space="preserve">
+    <value>■ Note: there is no map yet for: {0}</value>
+    <comment>Message shown when we have no map for a site type
+{0} string, the type of the size</comment>
+  </data>
+  <data name="IdentifySiteHeading" xml:space="preserve">
+    <value>Need site heading:
+
+■ To use current heading either:
+    - Toggle cockpit mode twice
+    - Send message:   .heading
+
+■ Or send message: &lt;degrees&gt;</value>
+    <comment>Message shown when we need to identify the heading of a site</comment>
+  </data>
+  <data name="IdentifySiteType" xml:space="preserve">
+    <value>Select site type with
+fire group or send
+message:
+
+ 'a' for {0}
+
+ 'b' for {1}
+
+ 'g' for {2}</value>
+    <comment>Message shown when a Ruins site type has not been identified
+{0} string, localized name for Alpha
+{1} string, localized name for Beta
+{2} string, localized name for Gamma</comment>
+  </data>
+  <data name="IdentifyWithButtress" xml:space="preserve">
+    <value>Align with this buttress:</value>
+    <comment>Suffix appended to IdentifySiteHeading, when we need to align with some buttress</comment>
+  </data>
+  <data name="IdentifyWithPort" xml:space="preserve">
+    <value>Align with the data port:</value>
+    <comment>Suffix appended to IdentifySiteHeading, when we need to align with the data port</comment>
+  </data>
+  <data name="NoMapForType" xml:space="preserve">
+    <value>(There is no map yet for: {0})</value>
+    <comment>Footer shown when there is no background map for some site type
+{0} string, the type of site</comment>
+  </data>
+  <data name="ObliskFooter" xml:space="preserve">
+    <value>Obelisk {0} - dist: {1}</value>
+    <comment>Footer when moving around a site near some obelisk
+{0} string, the name of some obelisk, eg: "M22"
+{1} string, a formatted distance in meters</comment>
+  </data>
+  <data name="RuinsFooter" xml:space="preserve">
+    <value>{0}, Ruins #{1} - {2}</value>
+    <comment>Footer shown when moving around a Ruins
+{0} string, the name of the current body
+{1} int, site number
+{2} string, type of ruins, eg: Alpha, Beta or Gamma (localized)</comment>
+  </data>
+  <data name="StructureFooter" xml:space="preserve">
+    <value>{0}: {1}</value>
+    <comment>Footer shown when moving around a Structure
+{0} string, the name of the current body
+{1} string, type of ruins, eg: Stickyhand, Hammerbot (not localized)</comment>
+  </data>
+  <data name="TrackLeft" xml:space="preserve">
+    <value>left</value>
+    <comment>Used in "TrackOriginHeaderSuffix" when turning left</comment>
+  </data>
+  <data name="TrackOriginFooter" xml:space="preserve">
+    <value>Altitude: {0}m | Target altitude: {1}m</value>
+    <comment>Footer shown when in aerial assistance mode
+{0} int, current ship altitude in meters
+{1} int, the desired altitude they should reach</comment>
+  </data>
+  <data name="TrackOriginHeaderPrefix" xml:space="preserve">
+    <value>Site heading: {0}°</value>
+    <comment>Header prefix shown when in aerial assistance mode
+{0} int, current site heading</comment>
+  </data>
+  <data name="TrackOriginHeaderSuffix" xml:space="preserve">
+    <value>Rotate ship {0} {1}°</value>
+    <comment>Header suffix shown when in aerial assistance mode
+{0} string, a direction: "left" or "right"
+{1} int, how many degrees to rotate in that direction</comment>
+  </data>
+  <data name="TrackRight" xml:space="preserve">
+    <value>right</value>
+    <comment>Used in "TrackOriginHeaderSuffix" when turning right</comment>
+  </data>
+  <data name="ZoomLevel" xml:space="preserve">
+    <value>Zoom: {0}</value>
+    <comment>Zoom level shown top right
+{0} float, 1 decimal place: the zoom level, eg: 1.5</comment>
+  </data>
+  <data name="ZoomLevelAuto" xml:space="preserve">
+    <value>(auto)</value>
+    <comment>Suffix shown after ZoomLevel when zoom level is set automatically</comment>
+  </data>
+</root>

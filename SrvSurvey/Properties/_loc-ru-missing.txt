@@ -22,6 +22,31 @@
 /plotters/PlotBioSystem.ru.resx
 	NotPredicted
 
+/plotters/PlotGuardians.ru.resx
+	HeaderGeneral
+	HeaderNeedRelicTowerHeading
+	HeaderNeedRelicTowers
+	HeaderRuinsComplete
+	HeaderStructureComplete
+	HeadingSite
+	HeadingUnknown
+	IdentifyNoMap
+	IdentifySiteHeading
+	IdentifySiteType
+	IdentifyWithButtress
+	IdentifyWithPort
+	NoMapForType
+	ObliskFooter
+	RuinsFooter
+	StructureFooter
+	TrackLeft
+	TrackOriginFooter
+	TrackOriginHeaderPrefix
+	TrackOriginHeaderSuffix
+	TrackRight
+	ZoomLevel
+	ZoomLevelAuto
+
 /plotters/PlotGuardianStatus.ru.resx
 	AlignAndRise
 	AlignWithButtress

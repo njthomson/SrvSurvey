@@ -338,6 +338,10 @@ namespace SrvSurvey.plotters
 
             if (highlightIdx != -2)
                 showSelectionCue();
+
+            // make sure we're wide enough for 3x blocks
+            var ww = (this.blockWidth * 3) + (oneTwo * 5);
+            if (ww > maxTextWidth) maxTextWidth = ww;
         }
 
         private void showSelectionCue()

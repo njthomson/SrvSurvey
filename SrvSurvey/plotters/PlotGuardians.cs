@@ -7,6 +7,7 @@ using SrvSurvey.widgets;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using static SrvSurvey.game.GuardianSiteData;
+using Res = Loc.PlotGuardians;
 
 namespace SrvSurvey.plotters
 {
@@ -674,7 +675,6 @@ namespace SrvSurvey.plotters
                 this.Invalidate();
             }
 
-
             this.setMapScale();
         }
 
@@ -1195,7 +1195,7 @@ namespace SrvSurvey.plotters
 
             var alt = game.status.Altitude.ToString("N0");
             var targetAlt = Util.targetAltitudeForSite(siteData.type);
-            var footerTxt = $"Altitude: {alt}m | Target altitude: {targetAlt}m";
+            var footerTxt = Res.TrackOriginFooter.format(alt, targetAlt);
 
             // header text and rotation arrows
             this.drawOriginRotationGuide();
@@ -1221,7 +1221,7 @@ namespace SrvSurvey.plotters
             var adjustAngle = siteData.siteHeading - game.status.Heading;
             if (adjustAngle < 0) adjustAngle += 360;
 
-            var headerTxt = $"Site heading: {siteData.siteHeading}°";
+            var headerTxt = Res.TrackOriginHeaderPrefix.format(siteData.siteHeading);
 
             Brush brush = GameColors.brushGameOrange;
             if (Math.Abs(adjustAngle) > 2)
@@ -1245,10 +1245,9 @@ namespace SrvSurvey.plotters
 
             if (Math.Abs(adjustAngle) > 0)
             {
-                headerTxt += $" | Rotate ship ";
-                headerTxt += adjustAngle > 0 && adjustAngle < 180 ? "right" : "left";
+                var turnDirection = (adjustAngle > 0 && adjustAngle < 180) ? Res.TrackRight : Res.TrackLeft;
                 if (adjustAngle > 180) adjustAngle = 360 - adjustAngle;
-                headerTxt += $" {Math.Abs(adjustAngle)}°";
+                headerTxt += " | " + Res.TrackOriginHeaderSuffix.format(turnDirection, Math.Abs(adjustAngle));
             }
 
             this.drawHeaderText(headerTxt, brush);
@@ -1385,7 +1384,7 @@ namespace SrvSurvey.plotters
             if (this.template == null || this.template.poi.Count == 0)
             {
                 // there is no map for these
-                this.drawFooterText($"(There is no map yet for: {siteData.type})");
+                this.drawFooterText(Res.NoMapForType.format(siteData.type));
                 return;
             }
 
@@ -1526,10 +1525,9 @@ namespace SrvSurvey.plotters
             var footerTxt = "";
             var footerBrush = GameColors.brushGameOrange;
 
-
             if (this.targetObelisk != null && nearestUnknownDist != double.MaxValue) // && this.targetObelisk == siteData.currentObelisk?.name)
             {
-                footerTxt = $"Obelisk {this.targetObelisk} - dist: {Util.metersToString(nearestUnknownDist)}";
+                footerTxt = Res.ObliskFooter.format(this.targetObelisk, Util.metersToString(nearestUnknownDist));
                 footerBrush = GameColors.brushCyan;
                 if (this.targetObelisk == this.nearestPoi?.name)
                     g.DrawEllipse(GameColors.penLime2Dot, -nearestPt.X - 8, -nearestPt.Y - 8, 16, 16);
@@ -1544,14 +1542,14 @@ namespace SrvSurvey.plotters
                     case SiteType.Squid:
                     case SiteType.Stickyhand:
                         // there is no map for these
-                        footerTxt = $"(There is no map yet for: {siteData.type})";
+                        footerTxt = Res.NoMapForType.format(siteData.type);
                         break;
 
                     default:
                         if (siteData.isRuins)
-                            footerTxt = $"{siteData.bodyName}, Ruins #{siteData.index} - {siteData.type}";
+                            footerTxt = Res.RuinsFooter.format(siteData.bodyName, siteData.index, siteData.type);
                         else
-                            footerTxt = $"{siteData.bodyName}: {siteData.type}";
+                            footerTxt = Res.StructureFooter.format(siteData.bodyName, siteData.type);
                         break;
                 }
             }
@@ -1570,15 +1568,13 @@ namespace SrvSurvey.plotters
 
                 var poiStatus = siteData.getPoiStatus(this.nearestPoi.name);
 
-                var action = "";
-
                 if (this.nearestPoi.type == POIType.obelisk || this.nearestPoi.type == POIType.brokeObelisk)
                 {
                     var obelisk = siteData.getActiveObelisk(nearestPoi.name);
                     // draw footer text about obelisks
                     if (this.targetObelisk != null)
                     {
-                        footerTxt = $"Obelisk {this.targetObelisk} dist: {Util.metersToString(nearestUnknownDist)}";
+                        footerTxt = Res.ObliskFooter.format(this.targetObelisk, Util.metersToString(nearestUnknownDist));
                         footerBrush = GameColors.brushCyan;
                     }
                     else
@@ -1593,6 +1589,7 @@ namespace SrvSurvey.plotters
                 }
                 else
                 {
+                    var action = "";
                     if (string.IsNullOrEmpty(action) && this.nearestPoi.type == POIType.relic && poiStatus != SitePoiStatus.absent)
                     {
                         // show the relic tower heading (individual or site general)
@@ -1600,12 +1597,12 @@ namespace SrvSurvey.plotters
                         if (relicHeading != null)
                             action = $" ({relicHeading}°)";
                         else if (siteData.isRuins)
-                            action = $" (site: {siteData.relicTowerHeading}°)";
+                            action = $" ({Res.HeadingSite.format(siteData.relicTowerHeading)})";
                         else if (relicHeading == null || siteData.relicTowerHeading == -1)
-                            action = $" (unknown heading)";
+                            action = $" ({Res.HeadingUnknown})";
                     }
                     footerBrush = poiStatus == SitePoiStatus.unknown ? GameColors.brushCyan : GameColors.brushGameOrange;
-                    footerTxt = $"{this.nearestPoi.type} {this.nearestPoi.name}: {poiStatus} {action}";
+                    footerTxt = $"{Util.getLoc(this.nearestPoi.type)} {this.nearestPoi.name}: {Util.getLoc(poiStatus)} {action}";
                 }
             }
             this.drawFooterText(footerTxt, footerBrush);
@@ -1627,28 +1624,28 @@ namespace SrvSurvey.plotters
             if (confirmedRelics < countRelics || confirmedPuddles < countPuddles)
             {
                 // how many relic and puddles remain
-                this.drawHeaderText($"Survey: {status.percent} | {confirmedRelics}/{countRelics} relics, {confirmedPuddles}/{countPuddles} items", GameColors.brushCyan); // TODO: use this.drawAt for different colors?
+                this.drawHeaderText(Res.HeaderGeneral.format(status.percent, confirmedRelics, countRelics, confirmedPuddles, countPuddles), GameColors.brushCyan); // TODO: use this.drawAt for different colors?
             }
             else if (siteData.isRuins)
             {
                 // Ruins ...
                 if (siteData.relicTowerHeading == -1)
-                    this.drawHeaderText($"Need Relic Tower heading", GameColors.brushCyan);
+                    this.drawHeaderText(Res.HeaderNeedRelicTowerHeading, GameColors.brushCyan);
                 else
-                    this.drawHeaderText($"Ruins #{siteData.index}: survey complete", GameColors.brushGameOrange);
+                    this.drawHeaderText(Res.HeaderRuinsComplete.format(siteData.index), GameColors.brushGameOrange);
             }
             else
             {
                 // Structures...
                 var countRelicTowersPresent = siteData.poiStatus.Count(_ => _.Key.StartsWith('t') && _.Value == SitePoiStatus.present);
                 if (status.countRelicsNeedingHeading > 0)
-                    this.drawHeaderText($"Need {status.countRelicsNeedingHeading} Relic Tower heading", GameColors.brushCyan);
+                    this.drawHeaderText(Res.HeaderNeedRelicTowers.format(status.countRelicsNeedingHeading), GameColors.brushCyan);
                 else
-                    this.drawHeaderText($"Structure {siteData.type}: survey complete", GameColors.brushGameOrange);
+                    this.drawHeaderText(Res.HeaderStructureComplete.format(siteData.type), GameColors.brushGameOrange);
             }
 
-            var zt = $"Zoom: {this.scale.ToString("N1")}";
-            if (autoZoom) zt += " (auto)";
+            var zt = Res.ZoomLevel.format(this.scale.ToString("N1"));
+            if (autoZoom) zt += " " + Res.ZoomLevelAuto;
             this.drawTextAt2(this.Width - eight, zt, null, null, true);
         }
 
@@ -1851,7 +1848,7 @@ namespace SrvSurvey.plotters
                 case GComponent.tech: return Brushes.OrangeRed;
             }
 
-            throw new Exception($"Exexpected GComponent: {cmp}");
+            throw new Exception($"Expected GComponent: {cmp}");
         }
 
         private static PointF[] relicPoints = {
@@ -1984,7 +1981,7 @@ namespace SrvSurvey.plotters
         {
             if (g == null) return;
 
-            this.drawHeaderText($"{siteData.nameLocalised} | {siteData.type} | ???°");
+            this.drawHeaderText($"{siteData.nameLocalised} | {Util.getLoc(siteData.type)} | ???°");
             this.drawFooterText($"{game.systemBody?.name}");
             g.ResetTransform();
             this.clipToMiddle();
@@ -1997,7 +1994,7 @@ namespace SrvSurvey.plotters
             this.drawFooterText($"{game.systemBody?.name}");
 
             // if we don't know the site type yet ...
-            msg = $"\r\nSelect site type with \r\nfire group or send\r\nmessage:\r\n\r\n 'a' for Alpha\r\n\r\n 'b' for Beta\r\n\r\n 'g' for Gamma";
+            msg = "\r\n" + Res.IdentifySiteType.format(Properties.Guardian.Alpha, Properties.Guardian.Beta, Properties.Guardian.Gamma);
             sz = g.MeasureString(msg, GameColors.font1, this.Width);
             g.DrawString(msg, GameColors.font1, GameColors.brushCyan, tx, ty, StringFormat.GenericTypographic);
         }
@@ -2006,7 +2003,7 @@ namespace SrvSurvey.plotters
         {
             if (g == null) return;
 
-            this.drawHeaderText($"{siteData.nameLocalised} | {siteData.type} | ???°");
+            this.drawHeaderText($"{siteData.nameLocalised} | {Util.getLoc(siteData.type)} | ???°");
             this.drawFooterText($"{game.systemBody?.name}");
             g.ResetTransform();
             this.clipToMiddle();
@@ -2016,9 +2013,9 @@ namespace SrvSurvey.plotters
             var ty = twoEight;
 
             var isRuins = siteData.isRuins;
-            msg = $"Need site heading:\r\n\r\n■ To use current heading either:\r\n    - Toggle cockpit mode twice\r\n    - Send message:   .heading\r\n\r\n■ Or send message: <degrees>";
+            msg = Res.IdentifySiteHeading;
             if (isRuins)
-                msg += $"\r\n\r\nAlign with this buttress:";
+                msg += "\r\n\r\n" + Res.IdentifyWithButtress;
             else
             {
                 switch (siteData.type)
@@ -2026,12 +2023,12 @@ namespace SrvSurvey.plotters
                     case SiteType.Squid:
                     case SiteType.Stickyhand:
                         // there is no map for these
-                        msg += $"\r\n\r\n■ Note: there is no map yet for: {siteData.type}";
+                        msg += "\r\n\r\n" + Res.IdentifyNoMap.format(siteData.type);
                         break;
                 }
 
                 if (siteData.name.StartsWith("$Ancient_Medium") || siteData.name.StartsWith("$Ancient_Small"))
-                    msg += $"\r\n\r\nAlign with the data port:";
+                    msg += "\r\n\r\n" + Res.IdentifyWithPort;
             }
             var sz = g.MeasureString(msg, GameColors.fontMiddle, this.Width);
 

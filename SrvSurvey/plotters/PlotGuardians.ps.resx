@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <!--Localizable elements are below-->
+  <data name="HeaderGeneral">
+    <!--Machine translated-->
+    <value>* SURVEY: {0} | {1}/{2} RELICS, {3}/{4} ITEMS →→→!</value>
+    <comment>General header used when at some site
+{0} string, pre-formatted percentage of completion
+{1} int, count of confirmed relic towers
+{2} int, count of potential relic towers
+{3} int, count of confirmed POI
+{4} total count of potential POI</comment>
+    <source>Survey: {0} | {1}/{2} relics, {3}/{4} items</source>
+  </data>
+  <data name="HeaderNeedRelicTowerHeading">
+    <!--Machine translated-->
+    <value>* NEED RELIC TOWER HEADING →→→!</value>
+    <comment>Header shown when we need the heading of relic towers</comment>
+    <source>Need Relic Tower heading</source>
+  </data>
+  <data name="HeaderNeedRelicTowers">
+    <!--Machine translated-->
+    <value>* NEED {0} RELIC TOWER HEADING →→→!</value>
+    <comment>Header shown when we need the headings of more relic towers
+{0} int, the count of towers needed to be measured</comment>
+    <source>Need {0} Relic Tower heading</source>
+  </data>
+  <data name="HeaderRuinsComplete">
+    <!--Machine translated-->
+    <value>* RUINS #{0}: SURVEY COMPLETE →→→!</value>
+    <comment>Header shown when the Ruins has been fully surveyed
+{0} int, the index of the site</comment>
+    <source>Ruins #{0}: survey complete</source>
+  </data>
+  <data name="HeaderStructureComplete">
+    <!--Machine translated-->
+    <value>* STRUCTURE {0}: SURVEY COMPLETE →→→!</value>
+    <comment>Header shown when the Strcture has been fully surveyed
+{0} string, the type of the site, eg: Stickyhand, Hammerbot (not localized)</comment>
+    <source>Structure {0}: survey complete</source>
+  </data>
+  <data name="HeadingSite">
+    <!--Machine translated-->
+    <value>* SITE: {0}° →→→!</value>
+    <comment>Fragment used to show site heading
+{0} int, the heading of a site in degrees</comment>
+    <source>site: {0}°</source>
+  </data>
+  <data name="HeadingUnknown">
+    <!--Machine translated-->
+    <value>* UNKNOWN HEADING →→→!</value>
+    <comment>Fragment used when the site heading is not known</comment>
+    <source>unknown heading</source>
+  </data>
+  <data name="IdentifyNoMap">
+    <!--Machine translated-->
+    <value>* ■ NOTE: THERE IS NO MAP YET FOR: {0} →→→!</value>
+    <comment>Message shown when we have no map for a site type
+{0} string, the type of the size</comment>
+    <source>■ Note: there is no map yet for: {0}</source>
+  </data>
+  <data name="IdentifySiteHeading">
+    <!--Machine translated-->
+    <value>* NEED SITE HEADING:
+
+■ TO USE CURRENT HEADING EITHER:
+    - TOGGLE COCKPIT MODE TWICE
+    - SEND MESSAGE:   .HEADING
+
+■ OR SEND MESSAGE: &lt;DEGREES&gt; →→→!</value>
+    <comment>Message shown when we need to identify the heading of a site</comment>
+    <source>Need site heading:
+
+■ To use current heading either:
+    - Toggle cockpit mode twice
+    - Send message:   .heading
+
+■ Or send message: &lt;degrees&gt;</source>
+  </data>
+  <data name="IdentifySiteType">
+    <!--Machine translated-->
+    <value>* SELECT SITE TYPE WITH
+FIRE GROUP OR SEND
+MESSAGE:
+
+ 'A' FOR {0}
+
+ 'B' FOR {1}
+
+ 'G' FOR {2} →→→!</value>
+    <comment>Message shown when a Ruins site type has not been identified
+{0} string, localized name for Alpha
+{1} string, localized name for Beta
+{2} string, localized name for Gamma</comment>
+    <source>Select site type with
+fire group or send
+message:
+
+ 'a' for {0}
+
+ 'b' for {1}
+
+ 'g' for {2}</source>
+  </data>
+  <data name="IdentifyWithButtress">
+    <!--Machine translated-->
+    <value>* ALIGN WITH THIS BUTTRESS: →→→!</value>
+    <comment>Suffix appended to IdentifySiteHeading, when we need to align with some buttress</comment>
+    <source>Align with this buttress:</source>
+  </data>
+  <data name="IdentifyWithPort">
+    <!--Machine translated-->
+    <value>* ALIGN WITH THE DATA PORT: →→→!</value>
+    <comment>Suffix appended to IdentifySiteHeading, when we need to align with the data port</comment>
+    <source>Align with the data port:</source>
+  </data>
+  <data name="NoMapForType">
+    <!--Machine translated-->
+    <value>* (THERE IS NO MAP YET FOR: {0}) →→→!</value>
+    <comment>Footer shown when there is no background map for some site type
+{0} string, the type of site</comment>
+    <source>(There is no map yet for: {0})</source>
+  </data>
+  <data name="ObliskFooter">
+    <!--Machine translated-->
+    <value>* OBELISK {0} - DIST: {1} →→→!</value>
+    <comment>Footer when moving around a site near some obelisk
+{0} string, the name of some obelisk, eg: "M22"
+{1} string, a formatted distance in meters</comment>
+    <source>Obelisk {0} - dist: {1}</source>
+  </data>
+  <data name="RuinsFooter">
+    <!--Machine translated-->
+    <value>* {0}, RUINS #{1} - {2} →→→!</value>
+    <comment>Footer shown when moving around a Ruins
+{0} string, the name of the current body
+{1} int, site number
+{2} string, type of ruins, eg: Alpha, Beta or Gamma (localized)</comment>
+    <source>{0}, Ruins #{1} - {2}</source>
+  </data>
+  <data name="StructureFooter">
+    <!--Machine translated-->
+    <value>* {0}: {1} →→→!</value>
+    <comment>Footer shown when moving around a Structure
+{0} string, the name of the current body
+{1} string, type of ruins, eg: Stickyhand, Hammerbot (not localized)</comment>
+    <source>{0}: {1}</source>
+  </data>
+  <data name="TrackLeft">
+    <!--Machine translated-->
+    <value>* LEFT →→→!</value>
+    <comment>Used in "TrackOriginHeaderSuffix" when turning left</comment>
+    <source>left</source>
+  </data>
+  <data name="TrackOriginFooter">
+    <!--Machine translated-->
+    <value>* ALTITUDE: {0}M | TARGET ALTITUDE: {1}M →→→!</value>
+    <comment>Footer shown when in aerial assistance mode
+{0} int, current ship altitude in meters
+{1} int, the desired altitude they should reach</comment>
+    <source>Altitude: {0}m | Target altitude: {1}m</source>
+  </data>
+  <data name="TrackOriginHeaderPrefix">
+    <!--Machine translated-->
+    <value>* SITE HEADING: {0}° →→→!</value>
+    <comment>Header prefix shown when in aerial assistance mode
+{0} int, current site heading</comment>
+    <source>Site heading: {0}°</source>
+  </data>
+  <data name="TrackOriginHeaderSuffix">
+    <!--Machine translated-->
+    <value>* ROTATE SHIP {0} {1}° →→→!</value>
+    <comment>Header suffix shown when in aerial assistance mode
+{0} string, a direction: "left" or "right"
+{1} int, how many degrees to rotate in that direction</comment>
+    <source>Rotate ship {0} {1}°</source>
+  </data>
+  <data name="TrackRight">
+    <!--Machine translated-->
+    <value>* RIGHT →→→!</value>
+    <comment>Used in "TrackOriginHeaderSuffix" when turning right</comment>
+    <source>right</source>
+  </data>
+  <data name="ZoomLevel">
+    <!--Machine translated-->
+    <value>* ZOOM: {0} →→→!</value>
+    <comment>Zoom level shown top right
+{0} float, 1 decimal place: the zoom level, eg: 1.5</comment>
+    <source>Zoom: {0}</source>
+  </data>
+  <data name="ZoomLevelAuto">
+    <!--Machine translated-->
+    <value>* (AUTO) →→→!</value>
+    <comment>Suffix shown after ZoomLevel when zoom level is set automatically</comment>
+    <source>(auto)</source>
+  </data>
+</root>
