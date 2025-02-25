@@ -1729,6 +1729,7 @@ namespace SrvSurvey
             "Pub_HumanSites",
             "Test_BioCriteria",
             "Build_BioCriteria",
+            "Query_Factions"
         };
 
         private void comboDev_SelectedIndexChanged(object sender, EventArgs e)
@@ -1753,6 +1754,7 @@ namespace SrvSurvey
                         case "Pub_HumanSites": Game.git.publishHumanSettlements(); break;
                         case "Test_BioCriteria": await BioPredictor.testSystemsAsync(); break;
                         case "Build_BioCriteria": CriteriaBuilder.buildWholeSet(); break;
+                        case "Query_Factions": await Game.spansh.queryMinorFactionSystems(); break;
 
                         default: Game.log("Unexpected!"); break;
                     }

@@ -91,7 +91,7 @@ namespace SrvSurvey.net
             Game.log(txt); // JsonConvert.SerializeObject(colonizationTargets, Formatting.Indented));
         }
 
-        public async Task getMinorFactionSystems()
+        public async Task queryMinorFactionSystems()
         {
             Game.log($"Requesting api/systems/search for factions by body");
 
@@ -99,13 +99,14 @@ namespace SrvSurvey.net
             {
                 "Raven Colonial Corporation",
                 "Steven Gordon Jolliffe",
+                "Sap Core Legion",
                 "Elite Secret Service",
-                "The Blue Brotherhood",
-                "Guardians of Cygnus"
+                "Razorback Astronautics",
+                "The Buurian Protectorate"
             };
 
             var factionsTxt = string.Join(",", factions.Select(_ => $"\"{_}\""));
-            var json = "{\"filters\":{\"minor_faction_presences\":{\"value\":[" + factionsTxt + "]}},\"sort\":[{\"distance\":{\"direction\":\"asc\"}}],\"size\":200,\"page\":0,\"reference_system\":\"Banka\"}";
+            var json = "{\"filters\":{\"minor_faction_presences\":{\"value\":[" + factionsTxt + "]}},\"sort\":[{\"distance\":{\"direction\":\"asc\"}}],\"size\":500,\"page\":0,\"reference_system\":\"Banka\"}";
 
             var body = new StringContent(json, Encoding.ASCII, "application/json");
 
@@ -140,16 +141,6 @@ namespace SrvSurvey.net
                     }
                 }
 
-                switch (system.name)
-                {
-                    case "Banka": // Raven Colonial Corporation
-                    case "Hungalun": //Steven Gordon Jolliffe
-                    case "Loperada": // Elite Secret Service
-                    case "Bhumians": // The Blue Brotherhood
-                    case "Dyavansana": // Guardians of Cygnus
-                        foo.cat[0] = 99;
-                        break;
-                }
 
                 foos.Add(foo);
             }
@@ -158,7 +149,7 @@ namespace SrvSurvey.net
                 .Replace("]},", "]},\r\n");
             txt = txt.Insert(1, "\r\n");
             txt = txt.Insert(txt.Length - 1, "\r\n");
-            Clipboard.SetText(txt);
+            Program.defer(() => Clipboard.SetText(txt));
 
             Game.log($"Processed {results.size} of {results.count} results");
         }
