@@ -58,7 +58,7 @@ namespace SrvSurvey.net
              */
             var q2 = new SystemQuery
             {
-                page= 0,
+                page = 0,
                 size = 50,
                 sort = new() { new("name", SortOrder.asc) },
                 reference_system = "Kwatyri", // <-- !!
@@ -73,7 +73,7 @@ namespace SrvSurvey.net
             {
                 q2.reference_system = name;
                 var response = await this.querySystems(q2);
-                foreach(var r in response.results)
+                foreach (var r in response.results)
                 {
                     var key = $"`{r.name}` ({r.bodies?.Count} bodies)";
                     var dist = factionSystems[name].getDistanceFrom(r);
@@ -162,7 +162,5 @@ namespace SrvSurvey.net
 
             Game.log($"Processed {results.size} of {results.count} results");
         }
-
-
     }
 }

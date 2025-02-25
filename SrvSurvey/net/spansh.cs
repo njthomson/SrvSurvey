@@ -147,14 +147,15 @@ namespace SrvSurvey.net
             }
         }
 
-        public async Task<T?> getRoute<T>(Guid routeId) where T : RouteBase
+        public async Task<T?> getRoute<T>(Guid routeId, int maxTimeSeconds = 60) where T : RouteBase
         {
             Game.log($"Spansh.getTouristRoute: {routeId}");
 
             try
             {
-                var count = 5;
-                while (count > 0)
+                var pollDurationMs = 5_000;
+                var durationWaitedMs = 0;
+                while (durationWaitedMs < maxTimeSeconds * 1000)
                 {
                     // https://spansh.co.uk/api/results/69ECD234-E12F-11EF-B000-86AB9ACB91F4
                     var json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/results/{routeId.ToString().ToUpper()}");
@@ -163,10 +164,10 @@ namespace SrvSurvey.net
                     if (route.state == "completed" && route.status == "ok")
                         return route;
 
-                    // wait 5 seconds before trying again
+                    // wait a number seconds before trying again
                     Game.log($"Spansh.getRoute: routeId: {routeId}, state: {route.state}, status: {route.status}");
-                    count--;
-                    await Task.Delay(5000);
+                    await Task.Delay(pollDurationMs);
+                    durationWaitedMs += pollDurationMs;
                 }
                 return null;
             }
