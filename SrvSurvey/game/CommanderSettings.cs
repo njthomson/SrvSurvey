@@ -142,6 +142,9 @@ namespace SrvSurvey.game
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public BoxelSearch? boxelSearch;
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public CmdrSummary colonySummary;
+
         #endregion
 
         public void applyExplReward(long reward, string reason)
@@ -329,6 +332,17 @@ namespace SrvSurvey.game
             }
         }
         private FollowRoute? _followRoute;
+
+        public async Task<CmdrSummary> loadColonySummary()
+        {
+            //Game.log(this.colonySummary?.buildIds.formatWithHeader($"loadAllBuildProjects: loading: {this.colonySummary?.buildIds.Count} ...", "\r\n\t"));
+            this.colonySummary = await Game.colony.getCmdrSummary(this.commander);
+
+            Game.log(colonySummary.buildIds.formatWithHeader($"colonySummary.buildIds:", "\r\n\t"));
+            Game.log(colonySummary.needs.formatWithHeader($"colonySummary.needs:", "\r\n\t"));
+            this.Save();
+            return colonySummary;
+        }
     }
 
     internal class SphereLimit

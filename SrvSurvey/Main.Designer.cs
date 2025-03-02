@@ -96,6 +96,7 @@ namespace SrvSurvey
             menuSearchTools = new ButtonContextMenuStrip(components);
             menuSpherical = new ToolStripMenuItem();
             menuBoxel = new ToolStripMenuItem();
+            menuBuildProjects = new ToolStripMenuItem();
             lblBig = new Label();
             comboDev = new ComboBox();
             menuJourney = new ButtonContextMenuStrip(components);
@@ -858,10 +859,10 @@ namespace SrvSurvey
             // menuSearchTools
             // 
             menuSearchTools.Font = new Font("Segoe UI", 18F);
-            menuSearchTools.Items.AddRange(new ToolStripItem[] { menuSpherical, menuBoxel });
+            menuSearchTools.Items.AddRange(new ToolStripItem[] { menuSpherical, menuBoxel, menuBuildProjects });
             menuSearchTools.Name = "menuSearchTools";
             menuSearchTools.RenderMode = ToolStripRenderMode.System;
-            menuSearchTools.Size = new Size(218, 112);
+            menuSearchTools.Size = new Size(265, 188);
             menuSearchTools.targetButton = btnSphereLimit;
             // 
             // menuSpherical
@@ -870,7 +871,7 @@ namespace SrvSurvey
             menuSpherical.ImageScaling = ToolStripItemImageScaling.None;
             menuSpherical.ImageTransparentColor = Color.White;
             menuSpherical.Name = "menuSpherical";
-            menuSpherical.Size = new Size(217, 54);
+            menuSpherical.Size = new Size(264, 54);
             menuSpherical.Text = "Spherical";
             menuSpherical.ToolTipText = "Search within a spherical area of space, around a central location.";
             menuSpherical.Click += menuSpherical_Click;
@@ -881,10 +882,17 @@ namespace SrvSurvey
             menuBoxel.ImageScaling = ToolStripItemImageScaling.None;
             menuBoxel.ImageTransparentColor = Color.White;
             menuBoxel.Name = "menuBoxel";
-            menuBoxel.Size = new Size(217, 54);
+            menuBoxel.Size = new Size(264, 54);
             menuBoxel.Text = "Boxel";
             menuBoxel.ToolTipText = "Search every system within a named boxel.";
             menuBoxel.Click += menuBoxel_Click;
+            // 
+            // menuBuildProjects
+            // 
+            menuBuildProjects.Name = "menuBuildProjects";
+            menuBuildProjects.Size = new Size(264, 54);
+            menuBuildProjects.Text = "Build Projects";
+            menuBuildProjects.Click += menuBuildProjects_Click;
             // 
             // lblBig
             // 
@@ -916,7 +924,7 @@ namespace SrvSurvey
             menuJourney.Items.AddRange(new ToolStripItem[] { menuResetOldTrip, toolStripSeparator1, menuJourneyBegin, menuJourneyNotes, menuJourneyReview, toolStripSeparator2, menuFollowRoute });
             menuJourney.Name = "menuJourney";
             menuJourney.RenderMode = ToolStripRenderMode.System;
-            menuJourney.Size = new Size(317, 218);
+            menuJourney.Size = new Size(317, 196);
             menuJourney.targetButton = btnResetExploration;
             menuJourney.Opening += menuJourney_Opening;
             // 
@@ -1090,5 +1098,6 @@ namespace SrvSurvey
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripMenuItem menuFollowRoute;
+        private ToolStripMenuItem menuBuildProjects;
     }
 }

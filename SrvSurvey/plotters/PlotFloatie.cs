@@ -53,6 +53,7 @@ namespace SrvSurvey.plotters
             };
             this.timer.Tick += timer_Tick;
         }
+
         public override bool allow { get => PlotFloatie.allowPlotter; }
 
         protected override void OnLoad(EventArgs e)

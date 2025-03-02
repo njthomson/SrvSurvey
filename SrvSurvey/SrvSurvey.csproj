@@ -45,6 +45,7 @@
     <None Remove="allRuins.json" />
     <None Remove="allStructures.json" />
     <None Remove="bio-criteria\*.json" />
+    <None Remove="colonization-costs.json" />
     <None Remove="guardianSiteTemplates.json" />
     <None Remove="humanSiteTemplates.json" />
     <None Remove="images\*.png" />
@@ -66,6 +67,9 @@
     </Content>
     <Content Include="bio-criteria\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="colonization-costs.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="guardianSiteTemplates.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -1,4 +1,5 @@
 ﻿using BioCriterias;
+using SharpDX.DirectInput;
 using SrvSurvey.canonn;
 using SrvSurvey.forms;
 using SrvSurvey.game;
@@ -85,6 +86,9 @@ namespace SrvSurvey
                 while (menuJourney.Items.Count > 1)
                     menuJourney.Items.RemoveAt(1);
             }
+
+            if (!Game.settings.buildProjects_TEST)
+                menuBuildProjects.Visible = false;
 
             Util.applyTheme(this);
         }
@@ -410,6 +414,11 @@ namespace SrvSurvey
                 Program.showPlotter<PlotStationInfo>();
             else
                 Program.closePlotter<PlotStationInfo>();
+
+            if (gameIsActive && PlotBuildCommodities.allowPlotter)
+                Program.showPlotter<PlotBuildCommodities>();
+            else
+                Program.closePlotter<PlotBuildCommodities>();
 
             // show high gravity warning
             var isLandableAndHighGravity = game?.systemBody?.type == SystemBodyType.LandableBody && game.systemBody.surfaceGravity >= Game.settings.highGravityWarningLevel * 10;
@@ -1831,6 +1840,11 @@ namespace SrvSurvey
             BaseForm.show<FormBoxelSearch>();
         }
 
+        private void menuBuildProjects_Click(object sender, EventArgs e)
+        {
+            BaseForm.show<FormBuildNew>();
+        }
+
         private void btnRamTah_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormRamTah>();
@@ -1839,6 +1853,7 @@ namespace SrvSurvey
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormCodexBingo>();
+            //Game.spansh.testColonizationRoute("Col 285 Sector MD-S d4-60");
         }
 
         private void btnLogs_Click(object sender, EventArgs e)
@@ -1867,6 +1882,7 @@ namespace SrvSurvey
             // */
         }
         private MainView mv;
+
     }
 }
 

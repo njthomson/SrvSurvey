@@ -93,15 +93,15 @@ namespace SrvSurvey.net
                 exclude_secondary = 0,
                 refuel_every_scoopable = 1,
                 fuel_power = 2.6,
-                fuel_multiplier = 0.008,
-                optimal_mass = 1794,
-                base_mass = 1533.13,
+                fuel_multiplier = 0.012,
+                optimal_mass = 2010.6,
+                base_mass = 1525.13,
                 tank_size = 648,
                 internal_tank_size = 1.13,
                 reserve_size = 0,
-                max_fuel_per_jump = 5.3,
+                max_fuel_per_jump = 8,
                 range_boost = "",
-                ship_build = "[{\"header\":{\"appName\":\"EDSY\",\"appVersion\":419049901,\"appURL\":\"https://edsy.org/#/L=Iz00000H4C0S00,,,9p300ADw00ARM00AfkG05GS80Au600BCQ00BS200Bcg00,,Bfo00Bfo00Bfo00BeE00BeE00Bcg00Bcg00Bb600Bb600BZY004wE00\"},\"data\":{\"event\":\"Loadout\",\"Ship\":\"federation_corvette\",\"ShipName\":\"\",\"ShipIdent\":\"\",\"HullValue\":183147460,\"ModulesValue\":62412940,\"UnladenMass\":1532,\"CargoCapacity\":0,\"MaxJumpRange\":14.194997,\"FuelCapacity\":{\"Main\":648,\"Reserve\":1.13},\"Rebuy\":12278020,\"Modules\":[{\"Slot\":\"CargoHatch\",\"Item\":\"modularcargobaydoor\",\"On\":true,\"Priority\":0},{\"Slot\":\"Armour\",\"Item\":\"federation_corvette_armour_grade1\",\"On\":true,\"Priority\":0,\"Value\":0},{\"Slot\":\"PowerPlant\",\"Item\":\"int_powerplant_size8_class1\",\"On\":true,\"Priority\":0,\"Value\":1441230},{\"Slot\":\"MainEngines\",\"Item\":\"int_engine_size7_class5\",\"On\":true,\"Priority\":0,\"Value\":51289110},{\"Slot\":\"FrameShiftDrive\",\"Item\":\"int_hyperdrive_size6_class3\",\"On\":true,\"Priority\":0,\"Value\":1797730,\"Engineering\":{\"BlueprintName\":\"FSD_LongRange\",\"Level\":5,\"Quality\":0.45,\"Modifiers\":[{\"Label\":\"Mass\",\"Value\":52,\"OriginalValue\":40},{\"Label\":\"Integrity\",\"Value\":96.05,\"OriginalValue\":113},{\"Label\":\"PowerDraw\",\"Value\":0.575,\"OriginalValue\":0.5},{\"Label\":\"FSDOptimalMass\",\"Value\":1794,\"OriginalValue\":1200}]}},{\"Slot\":\"LifeSupport\",\"Item\":\"int_lifesupport_size5_class1\",\"On\":true,\"Priority\":0,\"Value\":31780},{\"Slot\":\"PowerDistributor\",\"Item\":\"int_powerdistributor_size8_class1\",\"On\":true,\"Priority\":0,\"Value\":697580},{\"Slot\":\"Radar\",\"Item\":\"int_sensors_size8_class1\",\"On\":true,\"Priority\":0,\"Value\":697580},{\"Slot\":\"FuelTank\",\"Item\":\"int_fueltank_size5_class3\",\"On\":true,\"Priority\":0,\"Value\":97750},{\"Slot\":\"Slot01_Size7\",\"Item\":\"int_fueltank_size7_class3\",\"On\":true,\"Priority\":0,\"Value\":1780910},{\"Slot\":\"Slot02_Size7\",\"Item\":\"int_fueltank_size7_class3\",\"On\":true,\"Priority\":0,\"Value\":1780910},{\"Slot\":\"Slot03_Size7\",\"Item\":\"int_fueltank_size7_class3\",\"On\":true,\"Priority\":0,\"Value\":1780910},{\"Slot\":\"Slot04_Size6\",\"Item\":\"int_fueltank_size6_class3\",\"On\":true,\"Priority\":0,\"Value\":341580},{\"Slot\":\"Slot05_Size6\",\"Item\":\"int_fueltank_size6_class3\",\"On\":true,\"Priority\":0,\"Value\":341580},{\"Slot\":\"Slot06_Size5\",\"Item\":\"int_fueltank_size5_class3\",\"On\":true,\"Priority\":0,\"Value\":97750},{\"Slot\":\"Slot07_Size5\",\"Item\":\"int_fueltank_size5_class3\",\"On\":true,\"Priority\":0,\"Value\":97750},{\"Slot\":\"Slot08_Size4\",\"Item\":\"int_fueltank_size4_class3\",\"On\":true,\"Priority\":0,\"Value\":24730},{\"Slot\":\"Slot09_Size4\",\"Item\":\"int_fueltank_size4_class3\",\"On\":true,\"Priority\":0,\"Value\":24730},{\"Slot\":\"Slot10_Size3\",\"Item\":\"int_fueltank_size3_class3\",\"On\":true,\"Priority\":0,\"Value\":7060},{\"Slot\":\"Slot11_Size1\",\"Item\":\"int_fuelscoop_size1_class5\",\"On\":true,\"Priority\":0,\"Value\":82270}]}}]",
+                ship_build = "[{\"header\":{\"appName\":\"EDSY\",\"appVersion\":419049901,\"appURL\":\"https://edsy.org/#/L=Iz00000H4C0S00,,,9p300ADw00ARM00AfQG04Gfu0Au600BCQ00BS200Bcg00,,Bfo00Bfo00Bfo00BeE00BeE00Bcg00Bcg00Bb600Bb600BZY004wE00\"},\"data\":{\"event\":\"Loadout\",\"Ship\":\"federation_corvette\",\"ShipName\":\"\",\"ShipIdent\":\"\",\"HullValue\":183147460,\"ModulesValue\":76794740,\"UnladenMass\":1524,\"CargoCapacity\":0,\"MaxJumpRange\":16.00242,\"FuelCapacity\":{\"Main\":648,\"Reserve\":1.13},\"Rebuy\":12997110,\"Modules\":[{\"Slot\":\"CargoHatch\",\"Item\":\"modularcargobay…\"Priority\":0,\"Value\":97750},{\"Slot\":\"Slot07_Size5\",\"Item\":\"int_fueltank_size5_class3\",\"On\":true,\"Priority\":0,\"Value\":97750},{\"Slot\":\"Slot08_Size4\",\"Item\":\"int_fueltank_size4_class3\",\"On\":true,\"Priority\":0,\"Value\":24730},{\"Slot\":\"Slot09_Size4\",\"Item\":\"int_fueltank_size4_class3\",\"On\":true,\"Priority\":0,\"Value\":24730},{\"Slot\":\"Slot10_Size3\",\"Item\":\"int_fueltank_size3_class3\",\"On\":true,\"Priority\":0,\"Value\":7060},{\"Slot\":\"Slot11_Size1\",\"Item\":\"int_fuelscoop_size1_class5\",\"On\":true,\"Priority\":0,\"Value\":82270}]}}]",
                 max_time = 60,
                 cargo = 0,
                 algorithm = Algorithm.optimistic,
@@ -110,10 +110,11 @@ namespace SrvSurvey.net
 
         public void testColonizationRoute(string targetSystem)
         {
-            Game.spansh.generateColonizationRoute(targetSystem).continueOnSuccess(route =>
+            Game.spansh.generateColonizationRoute(targetSystem).continueOnMain(null, route =>
             {
-                var txt = route?.result.jumps.Skip(1).Select((j, n) => $"#{n + 1} {j.name} ({j.distance:N2}ly)").formatWithHeader($"Best route: {route.result.jumps.Count - 1} hops", "\r\n\t");
-                Game.log(txt ?? "??");
+                var txt = route?.result.jumps.Select((j, n) => $"#{n} `{j.name}` ({j.distance:N2}ly)").formatWithHeader($"Best route to `{targetSystem}`: {route.result.jumps.Count - 1} hops", "\r\n\t") ?? "??";
+                Game.log(txt);
+                Clipboard.SetText(txt);
                 Game.log("--*--");
             });
         }
@@ -154,8 +155,8 @@ namespace SrvSurvey.net
             }
 
             // ... two jobs to generate two routes
-            var task1 = getColonizationRoute(startSystem1, targetSystem);
-            var task2 = getColonizationRoute(startSystem2, targetSystem);
+            var task1 = getColonizationRoute(targetSystem, startSystem1);
+            var task2 = getColonizationRoute(targetSystem, startSystem2);
 
             var routes = await Task.WhenAll(task1, task2);
             if (routes?[0]?.result.jumps.Count <= routes?[1]?.result.jumps.Count)
@@ -176,7 +177,7 @@ namespace SrvSurvey.net
             Game.log($"getColonizationRoute: '{targetSystem}' => '{sourceSystem}' => {jobId}");
 
             // wait ~30 seconds, then start polling for a result
-            await Task.Delay(30_000);
+            await Task.Delay(10_000);
 
             var route = await getRoute<GalaxyRoute>(jobId, req.max_time);
             Game.log($"getColonizationRoute: '{targetSystem}' => '{sourceSystem}' => {jobId} => {route?.result.jumps.Count - 1} hops");

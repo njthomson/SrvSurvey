@@ -9,6 +9,7 @@ namespace SrvSurvey
 {
     class Settings
     {
+        public bool buildProjects_TEST = false;
         public Color defaultOrange = GameColors.Defaults.Orange;
         public Color defaultOrangeDim = GameColors.Defaults.OrangeDim;
         public Color defaultCyan = GameColors.Defaults.Cyan;

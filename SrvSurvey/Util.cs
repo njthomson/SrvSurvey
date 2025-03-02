@@ -1190,7 +1190,7 @@ namespace SrvSurvey
 
         /// <summary>
         /// Center the inner size within the outer size.
-        /// </summary>        
+        /// </summary>
         public static int centerIn(int outer, int inner)
         {
             return (int)Math.Ceiling((outer / 2f) - (inner / 2f));
@@ -1405,12 +1405,12 @@ namespace SrvSurvey
         /// <summary>
         /// Continues execution on the main thread only if the Task is successful and yields a non-null result, and the form has not been disposed
         /// </summary>
-        public static Task continueOnMain<T>(this Task<T> preTask, Form? form, Action<T> func)
+        public static Task continueOnMain<T>(this Task<T> preTask, Form? form, Action<T> func, bool allowNull = false)
         {
-            return continueOnSuccess(preTask, form, true, func);
+            return continueOnSuccess(preTask, form, true, func, allowNull);
         }
 
-        private static Task continueOnSuccess<T>(this Task<T> preTask, Form? form, bool onMainThread, Action<T> func)
+        private static Task continueOnSuccess<T>(this Task<T> preTask, Form? form, bool onMainThread, Action<T> func, bool allowNull = false)
         {
             return preTask.ContinueWith(postTask =>
             {
@@ -1419,7 +1419,7 @@ namespace SrvSurvey
                     Util.isFirewallProblem(postTask.Exception);
 
                 // exit early if the call did not succeed or returns a null
-                if (postTask.Exception != null || postTask.Result == null) return;
+                if (postTask.Exception != null || (!allowNull && postTask.Result == null)) return;
 
                 // of if we have a form but it's disposed
                 if (form?.IsDisposed == true) return;

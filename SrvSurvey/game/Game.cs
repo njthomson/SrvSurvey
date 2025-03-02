@@ -34,6 +34,7 @@ namespace SrvSurvey.game
             spansh = new Spansh();
             edsm = new EDSM();
             git = new Git();
+            colony = new Colony();
         }
 
         #region logging
@@ -106,6 +107,7 @@ namespace SrvSurvey.game
         public static Spansh spansh { get; private set; }
         public static EDSM edsm { get; private set; }
         public static Git git { get; private set; }
+        public static Colony colony { get; private set; }
 
         public bool initialized { get; private set; }
 
@@ -583,6 +585,9 @@ namespace SrvSurvey.game
                 this.cmdrCodex = cmdr.loadCodex();
                 this.journey = cmdr.loadActiveJourney();
                 this.journey?.doCatchup(this.journals!);
+
+                if (Game.settings.buildProjects_TEST)
+                    this.cmdr.loadColonySummary().continueOnSuccess(commodities => { });
             }
 
             // if we have MainMenu music - we know we're not actively playing
@@ -1104,7 +1109,7 @@ namespace SrvSurvey.game
             if (entry.JumpType == "Hyperspace")
             {
                 cmdr.countJumps += 1;
-                cmdr.Save();
+                cmdr.setMarketId(0); // (saves)
 
                 Program.defer(() => this.fsdJumping = true);
                 SystemData.Close(this.systemData);
@@ -1133,7 +1138,6 @@ namespace SrvSurvey.game
             // for either FSD type ...
 
             // we are certainly no longer at any humanSite
-            this.cmdr.setMarketId(0);
             if (this.systemStation != null)
                 this.systemStation = null;
 
@@ -1441,6 +1445,43 @@ namespace SrvSurvey.game
             {
                 var remaining = entry.TotalItemsToDeliver - entry.ItemsDelivered;
                 PlotFloatie.showMessage($"Deliver {entry.CargoType}: {remaining} units remaining");
+            }
+        }
+
+        private void onJournalEntry(Cargo entry)
+        {
+            var buildId = cmdr.colonySummary.getBuildId(cmdr.currentSystemAddress, cmdr.currentMarketId);
+            if (Game.settings.buildProjects_TEST && buildId != null)
+            {
+                var form = Program.getPlotter<PlotBuildCommodities>();
+
+                var diff = this.cargoFile.getDiff();
+                if (diff.Count > 0)
+                {
+                    if (form != null)
+                        form.pendingDiff = diff;
+
+                    Game.log(diff.formatWithHeader($"Supplying commodities for: {buildId}", "\r\n\t"));
+                    foreach (var name in diff.Keys) diff[name] *= -1;
+                    Game.colony.supply(buildId, diff).continueOnMain(null, build =>
+                    {
+                        // update local numbers
+                        foreach (var (name, delta) in diff)
+                            cmdr.colonySummary.needs[name] -= delta;
+                        Game.log(cmdr.colonySummary.needs.formatWithHeader($"Local deltas applied:", "\r\n\t"));
+
+                        Task.Delay(1000).ContinueWith(t =>
+                        {
+                            if (form != null && !form.IsDisposed)
+                            {
+                                form.pendingDiff = null;
+                                form.Invalidate();
+                            }
+                        });
+                    });
+                }
+                
+                form?.Invalidate();
             }
         }
 
@@ -3046,6 +3087,10 @@ namespace SrvSurvey.game
                 }
             }
         }
+
+        #endregion
+
+        #region Colonization stuff
 
         #endregion
     }
