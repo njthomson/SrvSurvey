@@ -180,6 +180,7 @@ namespace SrvSurvey
             checkBox8 = new CheckBox();
             checkBox4 = new CheckBox();
             tabPage7 = new TabPage();
+            checkColonization = new CheckBox();
             numPriorScanMinValue = new NumericUpDown();
             pictureBox7 = new PictureBox();
             checkUseBioData = new CheckBox();
@@ -234,7 +235,6 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
-            checkBox39 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -2249,7 +2249,7 @@ namespace SrvSurvey
             // tabPage7
             // 
             tabPage7.BorderStyle = BorderStyle.Fixed3D;
-            tabPage7.Controls.Add(checkBox39);
+            tabPage7.Controls.Add(checkColonization);
             tabPage7.Controls.Add(numPriorScanMinValue);
             tabPage7.Controls.Add(pictureBox7);
             tabPage7.Controls.Add(checkUseBioData);
@@ -2269,6 +2269,19 @@ namespace SrvSurvey
             tabPage7.Size = new Size(651, 448);
             tabPage7.TabIndex = 6;
             tabPage7.Text = "External Data";
+            // 
+            // checkColonization
+            // 
+            checkColonization.AutoSize = true;
+            checkColonization.CheckAlign = ContentAlignment.TopLeft;
+            checkColonization.FlatStyle = FlatStyle.System;
+            checkColonization.Location = new Point(403, 379);
+            checkColonization.Name = "checkColonization";
+            checkColonization.Size = new Size(180, 35);
+            checkColonization.TabIndex = 33;
+            checkColonization.Tag = "buildProjects_TEST";
+            checkColonization.Text = "Enable colonization features\r\n(very experimental)";
+            checkColonization.UseVisualStyleBackColor = true;
             // 
             // numPriorScanMinValue
             // 
@@ -2903,19 +2916,6 @@ namespace SrvSurvey
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
             // 
-            // checkBox39
-            // 
-            checkBox39.AutoSize = true;
-            checkBox39.CheckAlign = ContentAlignment.TopLeft;
-            checkBox39.FlatStyle = FlatStyle.System;
-            checkBox39.Location = new Point(403, 379);
-            checkBox39.Name = "checkBox39";
-            checkBox39.Size = new Size(180, 35);
-            checkBox39.TabIndex = 33;
-            checkBox39.Tag = "buildProjects_TEST";
-            checkBox39.Text = "Enable colonization features\r\n(very experimental)";
-            checkBox39.UseVisualStyleBackColor = true;
-            // 
             // FormSettings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -3204,6 +3204,6 @@ namespace SrvSurvey
         private CheckBox checkBox38;
         private CheckBox checkBox35;
         private CheckBox checkJumpInfoIfDestination;
-        private CheckBox checkBox39;
+        private CheckBox checkColonization;
     }
 }

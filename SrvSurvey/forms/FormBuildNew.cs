@@ -40,6 +40,8 @@ namespace SrvSurvey.forms
             comboBuildType.Enabled = false;
             txtArchitect.Enabled = false;
             txtName.Enabled = false;
+            btnAssign.Enabled = false;
+            linkLink.Visible = false;
 
 
             var game = Game.activeGame;
@@ -54,7 +56,7 @@ namespace SrvSurvey.forms
                     return false;
                 });
 
-                if (lastDocked?.StationName == "System Colonisation Ship")
+                if (lastDocked?.StationName == "System Colonisation Ship" && cmdr.currentMarketId != 0)
                 {
                     lblNot.Visible = false;
                     txtArchitect.Enabled = true;
@@ -73,6 +75,7 @@ namespace SrvSurvey.forms
                         {
                             this.project = project;
 
+                            linkLink.Visible = true;
                             txtName.Text = project.buildName;
                             txtArchitect.Text = project.architectName;
                             comboBuildType.Text = project.buildType;
@@ -81,8 +84,9 @@ namespace SrvSurvey.forms
 
                             btnAccept.Text = "Update";
                             btnAccept.Enabled = true;
+                            btnAssign.Enabled = true;
 
-                            if (!project.commanders?.Contains(cmdr.commander) == true)
+                            if (!project.commanders?.Keys.Contains(cmdr.commander) == true)
                                 btnJoin.Enabled = true;
                         }
 
@@ -136,7 +140,7 @@ namespace SrvSurvey.forms
                     factionName = "",
                     notes = "",
 
-                    commodities = data.ToDictionary(_ => _.Key, _ => new CommodityCount(data[_.Key], project.commodities[_.Key].total )),
+                    commodities = data.ToDictionary(_ => _.Key, _ => new CommodityCount(data[_.Key], project.commodities[_.Key].total)),
                 };
 
                 Game.log($"Updating: {project}");
@@ -179,7 +183,7 @@ namespace SrvSurvey.forms
 
                     commodities = data,
 
-                    commanders = new[] { cmdr.commander },
+                    commanders = new Dictionary<string, HashSet<string>>() { { cmdr.commander, new() } },
                 };
 
                 Game.log($"Creating: {project}");
@@ -236,6 +240,22 @@ namespace SrvSurvey.forms
                 txtJson.SelectionStart = 0;
                 txtJson.SelectionLength = 0;
             }
+        }
+
+        private void btnAssign_Click(object sender, EventArgs e)
+        {
+            var buildType = comboBuildType.SelectedItem?.ToString();
+            if (buildType != null && allCosts.ContainsKey(buildType))
+            {
+                var form = new FormBuildAssign(this.project.buildId, cmdr.commander, allCosts[buildType].Keys.ToList());
+                form.ShowDialog(this);
+            }
+        }
+
+        private void linkLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            var url = $"{Colony.svcUri}/Project?bid={project.buildId}";
+            Util.openLink(url);
         }
     }
 }

@@ -42,6 +42,8 @@
             label5 = new Label();
             txtArchitect = new TextBox();
             label6 = new Label();
+            btnAssign = new Button();
+            linkLink = new LinkLabel();
             SuspendLayout();
             // 
             // label1
@@ -69,7 +71,7 @@
             comboBuildType.FormattingEnabled = true;
             comboBuildType.Location = new Point(123, 89);
             comboBuildType.Name = "comboBuildType";
-            comboBuildType.Size = new Size(329, 23);
+            comboBuildType.Size = new Size(335, 23);
             comboBuildType.TabIndex = 8;
             comboBuildType.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
@@ -86,7 +88,7 @@
             // btnAccept
             // 
             btnAccept.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnAccept.Location = new Point(377, 475);
+            btnAccept.Location = new Point(383, 471);
             btnAccept.Name = "btnAccept";
             btnAccept.Size = new Size(75, 23);
             btnAccept.TabIndex = 3;
@@ -101,13 +103,13 @@
             txtJson.Multiline = true;
             txtJson.Name = "txtJson";
             txtJson.ScrollBars = ScrollBars.Vertical;
-            txtJson.Size = new Size(440, 272);
+            txtJson.Size = new Size(446, 268);
             txtJson.TabIndex = 1;
             // 
             // btnJoin
             // 
             btnJoin.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnJoin.Location = new Point(12, 475);
+            btnJoin.Location = new Point(12, 471);
             btnJoin.Name = "btnJoin";
             btnJoin.Size = new Size(75, 23);
             btnJoin.TabIndex = 2;
@@ -125,17 +127,18 @@
             // 
             // textSystem
             // 
+            textSystem.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             textSystem.Location = new Point(123, 63);
             textSystem.Name = "textSystem";
             textSystem.ReadOnly = true;
-            textSystem.Size = new Size(329, 23);
+            textSystem.Size = new Size(335, 23);
             textSystem.TabIndex = 9;
             // 
             // lblNot
             // 
             lblNot.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblNot.AutoSize = true;
-            lblNot.Location = new Point(108, 479);
+            lblNot.Location = new Point(93, 475);
             lblNot.Name = "lblNot";
             lblNot.Size = new Size(207, 15);
             lblNot.TabIndex = 10;
@@ -143,9 +146,10 @@
             // 
             // txtName
             // 
+            txtName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtName.Location = new Point(123, 118);
             txtName.Name = "txtName";
-            txtName.Size = new Size(329, 23);
+            txtName.Size = new Size(335, 23);
             txtName.TabIndex = 12;
             txtName.Text = "primary-port";
             // 
@@ -160,9 +164,10 @@
             // 
             // txtArchitect
             // 
+            txtArchitect.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtArchitect.Location = new Point(123, 147);
             txtArchitect.Name = "txtArchitect";
-            txtArchitect.Size = new Size(329, 23);
+            txtArchitect.Size = new Size(335, 23);
             txtArchitect.TabIndex = 14;
             // 
             // label6
@@ -174,11 +179,36 @@
             label6.TabIndex = 13;
             label6.Text = "Architect:";
             // 
+            // btnAssign
+            // 
+            btnAssign.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnAssign.Location = new Point(332, 172);
+            btnAssign.Name = "btnAssign";
+            btnAssign.Size = new Size(126, 23);
+            btnAssign.TabIndex = 15;
+            btnAssign.Text = "Assign Commodity";
+            btnAssign.UseVisualStyleBackColor = true;
+            btnAssign.Click += btnAssign_Click;
+            // 
+            // linkLink
+            // 
+            linkLink.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            linkLink.AutoSize = true;
+            linkLink.Location = new Point(351, 475);
+            linkLink.Name = "linkLink";
+            linkLink.Size = new Size(26, 15);
+            linkLink.TabIndex = 16;
+            linkLink.TabStop = true;
+            linkLink.Text = "link";
+            linkLink.LinkClicked += linkLink_LinkClicked;
+            // 
             // FormBuildNew
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(465, 503);
+            ClientSize = new Size(471, 499);
+            Controls.Add(linkLink);
+            Controls.Add(btnAssign);
             Controls.Add(txtArchitect);
             Controls.Add(label6);
             Controls.Add(txtName);
@@ -219,5 +249,7 @@
         private Label label5;
         private TextBox txtArchitect;
         private Label label6;
+        private Button btnAssign;
+        private LinkLabel linkLink;
     }
 }

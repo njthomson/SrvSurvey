@@ -321,6 +321,7 @@ namespace SrvSurvey
 
             // restart the app if these are different:
             var restartApp = !sameCmdr || langChanged
+                || checkColonization.Checked != Game.settings.buildProjects_TEST
                 || comboOverlayScale.SelectedIndex != Game.settings.plotterScale
                 || this.checkEnableGuardianFeatures.Checked != Game.settings.enableGuardianSites
                 || this.linkJournalFolder.Text != Game.settings.watchedJournalFolder

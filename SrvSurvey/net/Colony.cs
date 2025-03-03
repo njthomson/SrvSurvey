@@ -6,8 +6,8 @@ namespace SrvSurvey.game
     class Colony
     {
         private static string colonizationCostsPath = Path.Combine(Application.StartupPath, "colonization-costs.json");
-        private static string svcUri = "https://ravencolonial100-awcbdvabgze4c5cq.canadacentral-01.azurewebsites.net";
-        //private static string svcUri = "https://localhost:7007";
+        public static string svcUri = "https://ravencolonial100-awcbdvabgze4c5cq.canadacentral-01.azurewebsites.net";
+        //public static string svcUri = "https://localhost:7007";
         private static HttpClient client;
 
         static Colony()
@@ -19,7 +19,7 @@ namespace SrvSurvey.game
         public Dictionary<string, Dictionary<string, int>> loadDefaultCosts()
         {
             var json = File.ReadAllText(colonizationCostsPath);
-            var data = JsonConvert.DeserializeObject<AllColonizationCosts>(json);
+            var data = JsonConvert.DeserializeObject<AllColonizationCosts>(json)!;
             return data; //.GetValueOrDefault(type)!;
         }
 
@@ -57,7 +57,7 @@ namespace SrvSurvey.game
 
             var json1 = JsonConvert.SerializeObject("");
             var body = new StringContent(json1, Encoding.Default, "application/json");
-            var response = await Colony.client.PostAsync($"{svcUri}/api/project/{buildId}/link/{cmdr}", null);
+            var response = await Colony.client.PutAsync($"{svcUri}/api/project/{buildId}/link/{cmdr}", null);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             var json2 = await response.Content.ReadAsStringAsync();
@@ -65,7 +65,27 @@ namespace SrvSurvey.game
             return obj;
         }
 
+        public async Task assign(string buildId, string cmdr, string commodity)
+        {
+            Game.log($"Colony.link: {cmdr} => {commodity}=> {buildId}");
 
+            var response = await Colony.client.PutAsync($"{svcUri}/api/project/{buildId}/assign/{cmdr}/{commodity}", null);
+            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
+
+            var txt = await response.Content.ReadAsStringAsync();
+            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}: {txt}");
+        }
+
+        public async Task unAssign(string buildId, string cmdr, string commodity)
+        {
+            Game.log($"Colony.link: {cmdr} => {commodity}=> {buildId}");
+
+            var response = await Colony.client.DeleteAsync($"{svcUri}/api/project/{buildId}/assign/{cmdr}/{commodity}");
+            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
+
+            var txt = await response.Content.ReadAsStringAsync();
+            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}: {txt}");
+        }
 
         public async Task<Project?> load(long id64, long marketId)
         {
@@ -76,6 +96,8 @@ namespace SrvSurvey.game
                 Game.log($"Colony.load: {url}");
 
                 var response = await Colony.client.GetAsync(url);
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
+
                 var json = await response.Content.ReadAsStringAsync();
                 if (string.IsNullOrEmpty(json)) return null;
 
@@ -97,7 +119,7 @@ namespace SrvSurvey.game
             var json1 = JsonConvert.SerializeObject(diff);
             var body = new StringContent(json1, Encoding.Default, "application/json");
             var url = $"{svcUri}/api/project/{buildId}/supply/{Game.activeGame?.Commander}";
-            var response = await Colony.client.PostAsync(url, body);
+            var response = await Colony.client.PutAsync(url, body);
 
             // ---
 
@@ -246,30 +268,6 @@ namespace SrvSurvey.game
 
     class AllColonizationCosts : Dictionary<string, Dictionary<string, int>> { }
 
-    //public class Build
-    //{
-    //    public DateTimeOffset? Timestamp;
-    //    public string? ETag;
-
-    //    public long systemAddress;
-    //    public string systemName;
-    //    public string factionName;
-    //    public long marketId;
-    //    public string buildName;
-    //    public BuildType type;
-
-    //    public Dictionary<string, int> commodities;
-
-    //    public override string ToString()
-    //    {
-    //        return $"{buildName} ({systemName}/{key})";
-    //    }
-
-    //    [JsonIgnore]
-    //    public string key => $"{systemAddress}-{marketId}";
-    //}
-
-
     public class ProjectCore
     {
         // Schema.Project
@@ -286,7 +284,7 @@ namespace SrvSurvey.game
         public string? factionName;
         public string? architectName;
 
-        public string[]? commanders;
+        public Dictionary<string, HashSet<string>>? commanders;
 
         // Schema.ProjectNotes
         public string? notes;
