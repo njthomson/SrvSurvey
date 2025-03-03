@@ -58,18 +58,16 @@ namespace SrvSurvey.plotters
                 var col = C.orange;
                 var ff = GameColors.Fonts.gothic_10;
                 var nameTxt = name;
-                // highlight what we just supplied
                 if (pendingDiff?.ContainsKey(name) == true)
                 {
+                    // highlight what we just supplied
                     ff = GameColors.Fonts.gothic_10B;
                     col = C.cyan;
                     nameTxt = "► " + name;
                 }
-
-                // highlight things in cargo hold
-                if (game.cargoFile.Inventory.Find(i => i.Name == name) != null)
+                else if (game.cargoFile.Inventory.Find(i => i.Name == name) != null)
                 {
-                    ff = GameColors.Fonts.gothic_10B;
+                    // highlight things in cargo hold
                     col = C.cyan;
                 }
 
