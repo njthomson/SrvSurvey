@@ -1480,9 +1480,23 @@ namespace SrvSurvey.game
                         });
                     });
                 }
-                
+
                 form?.Invalidate();
             }
+        }
+
+        private void onJournalEntry(MarketBuy entry)
+        {
+            var item = cargoFile.Inventory.Find(i => i.Name == entry.Type);
+            if (item == null)
+            {
+                // add if missing
+                item = new InventoryItem(entry.Type, entry.Type_Localised);
+                cargoFile.Inventory.Add(item);
+            }
+            item.Count += entry.Count;
+
+            Program.invalidate<PlotBuildCommodities>();
         }
 
         private static Dictionary<string, string> inventoryItemNameMap = new Dictionary<string, string>()

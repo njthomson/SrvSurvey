@@ -140,7 +140,7 @@ namespace SrvSurvey.forms
                     factionName = "",
                     notes = "",
 
-                    commodities = data.ToDictionary(_ => _.Key, _ => new CommodityCount(data[_.Key], project.commodities[_.Key].total)),
+                    commodities = data.ToDictionary(_ => _.Key, _ => new CommodityCount(data[_.Key], project.commodities.GetValueOrDefault(_.Key)?.total ?? data[_.Key])),
                 };
 
                 Game.log($"Updating: {project}");

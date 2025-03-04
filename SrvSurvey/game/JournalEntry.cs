@@ -1280,4 +1280,16 @@ namespace SrvSurvey
         public string Name_Localised;
         public string Type;
     }
+
+    class MarketBuy : JournalEntry
+    {
+
+        // { "timestamp":"2025-03-04T16:10:26Z", "event":"MarketBuy", "MarketID":3708733696, "Type":"insulatingmembrane", "Type_Localised":"Insulating Membrane", "Count":32, "BuyPrice":10605, "TotalCost":339360 }
+        public long MarketId;
+        public string Type;
+        public string Type_Localised;
+        public int Count;
+        public int BuyPrice;
+        public long TotalCost;
+    }
 }
