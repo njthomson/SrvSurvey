@@ -80,6 +80,7 @@ namespace SrvSurvey
             { KeyAction.copyNextBoxel, "CTRL C" },
             { KeyAction.showFssInfo, "ALT F" },
             { KeyAction.showBodyInfo, "ALT B" },
+            { KeyAction.showColonyShopping, "ALT S" },
             { KeyAction.showSystemNotes, "CTRL SHIFT N" },
             { KeyAction.track1, "ALT CTRL F1" },
             { KeyAction.track2, "ALT CTRL F2" },
@@ -109,6 +110,7 @@ namespace SrvSurvey
                 case KeyAction.pasteGalMap: return pasteGalMap();
                 case KeyAction.showFssInfo: return toggleFSSInfo();
                 case KeyAction.showBodyInfo: return toggleBodyInfo();
+                case KeyAction.showColonyShopping: return toggleColonyShopping();
                 case KeyAction.showSystemNotes: return showSystemNotes();
                 case KeyAction.track1: return trackLocation(1);
                 case KeyAction.track2: return trackLocation(2);
@@ -299,6 +301,31 @@ namespace SrvSurvey
             return true;
         }
 
+        private static bool toggleColonyShopping()
+        {
+            var plotter = Program.getPlotter<PlotBuildCommodities>();
+            if (plotter == null)
+            {
+                // force show if no plotter
+                PlotBuildCommodities.forceShow = true;
+                Program.showPlotter<PlotBuildCommodities>();
+            }
+            else if (PlotBuildCommodities.forceShow)
+            {
+                // unforce (hide)
+                PlotBuildCommodities.forceShow = false;
+                Program.closePlotter<PlotBuildCommodities>();
+            }
+            else
+            {
+                // the plotter exists and was not forced ... toggle forceHide on it
+                plotter.forceHide = !plotter.forceHide;
+                if (!plotter.forceHide) PlotBuildCommodities.forceShow = false;
+            }
+
+            return true;
+        }
+
         private static bool showSystemNotes()
         {
             if (Game.activeGame?.isShutdown == false && Game.activeGame.fsdJumping == false && Game.activeGame.systemData != null)
@@ -346,6 +373,8 @@ namespace SrvSurvey
         showBodyInfo,
         /// <summary> Make the system notes window appear </summary>
         showSystemNotes,
+        /// <summary> Make the PlotBuildNew appear </summary>
+        showColonyShopping,
         /// <summary> Track the current location as #1 </summary>
         track1,
         /// <summary> Track the current location as #2 </summary>

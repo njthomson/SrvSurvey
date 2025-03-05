@@ -964,7 +964,7 @@ namespace SrvSurvey
 
     class Mission
     {
-        public long MissionID;
+        public decimal MissionID;
         public string Name;
         public bool PassengerMission;
         public long Expires;
@@ -1292,4 +1292,17 @@ namespace SrvSurvey
         public int BuyPrice;
         public long TotalCost;
     }
+
+    class Market : JournalEntry
+    {
+        // { "timestamp":"2025-03-04T21:54:50Z", "event":"Market", "MarketID":3708733696, "StationName":"H6B-5HQ", "StationType":"FleetCarrier", "CarrierDockingAccess":"squadronfriends", "StarSystem":"Sedimo" }
+        // { "timestamp":"2025-03-04T18:39:33Z", "event":"Market", "MarketID":3528735744, "StationName":"Hume Beacon", "StationType":"CraterOutpost", "StarSystem":"Sedimo" }
+
+        public long MarketId;
+        public string StationName;
+        public string StationType;
+        public string CarrierDockingAccess;
+        public string StarSystem;
+    }
+
 }

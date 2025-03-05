@@ -31,9 +31,7 @@
             label1 = new Label();
             label2 = new Label();
             comboBuildType = new ComboBox();
-            label3 = new Label();
             btnAccept = new Button();
-            txtJson = new TextBox();
             btnJoin = new Button();
             label4 = new Label();
             textSystem = new TextBox();
@@ -44,6 +42,11 @@
             label6 = new Label();
             btnAssign = new Button();
             linkLink = new LinkLabel();
+            table = new TableLayoutPanel();
+            textBox1 = new TextBox();
+            panelList = new Panel();
+            table.SuspendLayout();
+            panelList.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -58,7 +61,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(12, 92);
+            label2.Location = new Point(13, 153);
             label2.Name = "label2";
             label2.Size = new Size(105, 15);
             label2.TabIndex = 7;
@@ -69,42 +72,22 @@
             comboBuildType.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboBuildType.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBuildType.FormattingEnabled = true;
-            comboBuildType.Location = new Point(123, 89);
+            comboBuildType.Location = new Point(124, 150);
             comboBuildType.Name = "comboBuildType";
-            comboBuildType.Size = new Size(335, 23);
+            comboBuildType.Size = new Size(215, 23);
             comboBuildType.TabIndex = 8;
             comboBuildType.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(13, 176);
-            label3.Margin = new Padding(3);
-            label3.Name = "label3";
-            label3.Size = new Size(124, 15);
-            label3.TabIndex = 0;
-            label3.Text = "Commodities needed:";
             // 
             // btnAccept
             // 
             btnAccept.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnAccept.Location = new Point(383, 471);
+            btnAccept.Location = new Point(396, 471);
             btnAccept.Name = "btnAccept";
             btnAccept.Size = new Size(75, 23);
             btnAccept.TabIndex = 3;
             btnAccept.Text = "Create";
             btnAccept.UseVisualStyleBackColor = true;
             btnAccept.Click += btnAccept_Click;
-            // 
-            // txtJson
-            // 
-            txtJson.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtJson.Location = new Point(12, 197);
-            txtJson.Multiline = true;
-            txtJson.Name = "txtJson";
-            txtJson.ScrollBars = ScrollBars.Vertical;
-            txtJson.Size = new Size(446, 268);
-            txtJson.TabIndex = 1;
             // 
             // btnJoin
             // 
@@ -131,7 +114,7 @@
             textSystem.Location = new Point(123, 63);
             textSystem.Name = "textSystem";
             textSystem.ReadOnly = true;
-            textSystem.Size = new Size(335, 23);
+            textSystem.Size = new Size(348, 23);
             textSystem.TabIndex = 9;
             // 
             // lblNot
@@ -147,16 +130,16 @@
             // txtName
             // 
             txtName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtName.Location = new Point(123, 118);
+            txtName.Location = new Point(123, 92);
             txtName.Name = "txtName";
-            txtName.Size = new Size(335, 23);
+            txtName.Size = new Size(348, 23);
             txtName.TabIndex = 12;
             txtName.Text = "primary-port";
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(37, 121);
+            label5.Location = new Point(37, 95);
             label5.Name = "label5";
             label5.Size = new Size(80, 15);
             label5.TabIndex = 11;
@@ -165,15 +148,15 @@
             // txtArchitect
             // 
             txtArchitect.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtArchitect.Location = new Point(123, 147);
+            txtArchitect.Location = new Point(123, 121);
             txtArchitect.Name = "txtArchitect";
-            txtArchitect.Size = new Size(335, 23);
+            txtArchitect.Size = new Size(348, 23);
             txtArchitect.TabIndex = 14;
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(59, 150);
+            label6.Location = new Point(59, 124);
             label6.Name = "label6";
             label6.Size = new Size(58, 15);
             label6.TabIndex = 13;
@@ -182,7 +165,7 @@
             // btnAssign
             // 
             btnAssign.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnAssign.Location = new Point(332, 172);
+            btnAssign.Location = new Point(346, 150);
             btnAssign.Name = "btnAssign";
             btnAssign.Size = new Size(126, 23);
             btnAssign.TabIndex = 15;
@@ -194,7 +177,7 @@
             // 
             linkLink.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             linkLink.AutoSize = true;
-            linkLink.Location = new Point(351, 475);
+            linkLink.Location = new Point(364, 475);
             linkLink.Name = "linkLink";
             linkLink.Size = new Size(26, 15);
             linkLink.TabIndex = 16;
@@ -202,11 +185,48 @@
             linkLink.Text = "link";
             linkLink.LinkClicked += linkLink_LinkClicked;
             // 
+            // table
+            // 
+            table.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            table.AutoSize = true;
+            table.ColumnCount = 2;
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            table.ColumnStyles.Add(new ColumnStyle());
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            table.Controls.Add(textBox1, 0, 0);
+            table.Location = new Point(0, -1);
+            table.Margin = new Padding(0, 0, 6, 0);
+            table.Name = "table";
+            table.RowCount = 1;
+            table.RowStyles.Add(new RowStyle());
+            table.Size = new Size(452, 245);
+            table.TabIndex = 17;
+            table.Paint += table_Paint;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(3, 3);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(100, 23);
+            textBox1.TabIndex = 0;
+            // 
+            // panelList
+            // 
+            panelList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panelList.AutoScroll = true;
+            panelList.BorderStyle = BorderStyle.FixedSingle;
+            panelList.Controls.Add(table);
+            panelList.Location = new Point(12, 179);
+            panelList.Name = "panelList";
+            panelList.Size = new Size(460, 286);
+            panelList.TabIndex = 18;
+            // 
             // FormBuildNew
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(471, 499);
+            ClientSize = new Size(484, 499);
+            Controls.Add(panelList);
             Controls.Add(linkLink);
             Controls.Add(btnAssign);
             Controls.Add(txtArchitect);
@@ -217,15 +237,17 @@
             Controls.Add(textSystem);
             Controls.Add(label4);
             Controls.Add(btnJoin);
-            Controls.Add(txtJson);
             Controls.Add(btnAccept);
-            Controls.Add(label3);
             Controls.Add(comboBuildType);
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "FormBuildNew";
             Text = "New Build Project";
             Load += FormBuildNew_Load;
+            table.ResumeLayout(false);
+            table.PerformLayout();
+            panelList.ResumeLayout(false);
+            panelList.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -235,12 +257,10 @@
         private Label label1;
         private Label label2;
         private ComboBox comboBuildType;
-        private Label label3;
         private DataGridView dataGridView1;
         private DataGridViewTextBoxColumn Commodity;
         private DataGridViewTextBoxColumn Needed;
         private Button btnAccept;
-        private TextBox txtJson;
         private Button btnJoin;
         private Label label4;
         private TextBox textSystem;
@@ -251,5 +271,8 @@
         private Label label6;
         private Button btnAssign;
         private LinkLabel linkLink;
+        private TableLayoutPanel table;
+        private Panel panelList;
+        private TextBox textBox1;
     }
 }

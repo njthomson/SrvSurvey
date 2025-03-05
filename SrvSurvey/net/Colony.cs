@@ -6,8 +6,8 @@ namespace SrvSurvey.game
     class Colony
     {
         private static string colonizationCostsPath = Path.Combine(Application.StartupPath, "colonization-costs.json");
-        public static string svcUri = "https://ravencolonial100-awcbdvabgze4c5cq.canadacentral-01.azurewebsites.net";
-        //public static string svcUri = "https://localhost:7007";
+        //public static string svcUri = "https://ravencolonial100-awcbdvabgze4c5cq.canadacentral-01.azurewebsites.net";
+        public static string svcUri = "https://localhost:7007";
         private static HttpClient client;
 
         static Colony()
@@ -111,7 +111,7 @@ namespace SrvSurvey.game
             }
         }
 
-        public async Task<Dictionary<string, CommodityCount>> supply(string buildId, Dictionary<string, int> diff)
+        public async Task<Dictionary<string, int>> supply(string buildId, Dictionary<string, int> diff)
         {
             Game.log(diff.formatWithHeader($"Colony.supply: {buildId}", "\r\n\t"));
 
@@ -126,18 +126,18 @@ namespace SrvSurvey.game
             //var body = new StringContent(JsonConvert.SerializeObject(diff), Encoding.Default, "application/json");
             //var response = await Colony.client.PostAsync($"{svcUri}/api/project/{buildId}/supply/{Game.activeGame?.Commander}", body);
             var json = await response.Content.ReadAsStringAsync();
-            var obj = JsonConvert.DeserializeObject<Dictionary<string, CommodityCount>>(json)!;
+            var obj = JsonConvert.DeserializeObject<Dictionary<string, int>>(json)!;
             return obj;
         }
 
 
-        public async Task<CmdrSummary> getCmdrSummary(string cmdr)
+        public async Task<List<Project>> getCmdrProjects(string cmdr)
         {
             Game.log($"Colony.getCmdrNeeds: {cmdr}");
 
-            var response = await Colony.client.GetAsync($"{svcUri}/api/cmdr/{cmdr}/summary");
+            var response = await Colony.client.GetAsync($"{svcUri}/api/cmdr/{cmdr}");
             var json = await response.Content.ReadAsStringAsync();
-            var obj = JsonConvert.DeserializeObject<CmdrSummary>(json)!;
+            var obj = JsonConvert.DeserializeObject<List<Project>>(json)!;
             return obj;
         }
 
@@ -307,24 +307,7 @@ namespace SrvSurvey.game
         public int sumTotal;
 
         // Schema.ProjectCommodity
-        public required Dictionary<string, CommodityCount> commodities;
-    }
-
-    public class CommodityCount
-    {
-        public int need;
-        public int total;
-
-        public CommodityCount(int need, int total)
-        {
-            this.need = need;
-            this.total = total;
-        }
-
-        public override string ToString()
-        {
-            return $"need: {need}, total: {total}";
-        }
+        public required Dictionary<string, int> commodities;
     }
 
     public class ProjectRef
@@ -385,7 +368,7 @@ namespace SrvSurvey.game
         public string? notes;
 
         // Schema.ProjectCommodity
-        public Dictionary<string, CommodityCount>? commodities;
+        public Dictionary<string, int>? commodities;
     }
 
 }

@@ -294,6 +294,9 @@ namespace SrvSurvey.game
                 doUpdate = true;
             }
 
+            if (newMode != GameMode.StationServices)
+                this.marketEventSeen = false;
+
             if (status != null && landingGearDown != status.landingGearDown)
             {
                 // TODO: one day ... move this type of logic into status
@@ -587,7 +590,11 @@ namespace SrvSurvey.game
                 this.journey?.doCatchup(this.journals!);
 
                 if (Game.settings.buildProjects_TEST)
-                    this.cmdr.loadColonySummary().continueOnSuccess(commodities => { });
+                    this.cmdr.loadColonyData().ContinueWith(t =>
+                    {
+                        if (t.Exception != null || !t.IsCompletedSuccessfully)
+                            Util.isFirewallProblem(t.Exception);
+                    });
             }
 
             // if we have MainMenu music - we know we're not actively playing
@@ -1450,7 +1457,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Cargo entry)
         {
-            var buildId = cmdr.colonySummary.getBuildId(cmdr.currentSystemAddress, cmdr.currentMarketId);
+            var buildId = cmdr.colonyData.getBuildId(cmdr.currentSystemAddress, cmdr.currentMarketId);
             if (Game.settings.buildProjects_TEST && buildId != null)
             {
                 var form = Program.getPlotter<PlotBuildCommodities>();
@@ -1467,8 +1474,8 @@ namespace SrvSurvey.game
                     {
                         // update local numbers
                         foreach (var (name, delta) in diff)
-                            cmdr.colonySummary.needs[name] -= delta;
-                        Game.log(cmdr.colonySummary.needs.formatWithHeader($"Local deltas applied:", "\r\n\t"));
+                            cmdr.colonyData.allCommodities[name] -= delta;
+                        Game.log(cmdr.colonyData.allCommodities.formatWithHeader($"Local deltas applied:", "\r\n\t"));
 
                         Task.Delay(1000).ContinueWith(t =>
                         {
@@ -1497,6 +1504,16 @@ namespace SrvSurvey.game
             item.Count += entry.Count;
 
             Program.invalidate<PlotBuildCommodities>();
+        }
+
+        public bool marketEventSeen = false;
+
+        private void onJournalEntry(Market entry)
+        {
+            marketEventSeen = true;
+
+            if (PlotBuildCommodities.allowPlotter)
+                Program.showPlotter<PlotBuildCommodities>();
         }
 
         private static Dictionary<string, string> inventoryItemNameMap = new Dictionary<string, string>()
