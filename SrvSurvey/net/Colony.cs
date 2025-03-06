@@ -6,8 +6,8 @@ namespace SrvSurvey.game
     class Colony
     {
         private static string colonizationCostsPath = Path.Combine(Application.StartupPath, "colonization-costs.json");
-        //public static string svcUri = "https://ravencolonial100-awcbdvabgze4c5cq.canadacentral-01.azurewebsites.net";
-        public static string svcUri = "https://localhost:7007";
+        public static string svcUri = "https://ravencolonial100-awcbdvabgze4c5cq.canadacentral-01.azurewebsites.net";
+        //public static string svcUri = "https://localhost:7007";
         private static HttpClient client;
 
         static Colony()
