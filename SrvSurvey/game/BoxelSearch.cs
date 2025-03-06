@@ -511,10 +511,10 @@ namespace SrvSurvey.game
                 this.setNextToVisit();
                 this.fireChanged();
 
-                if (this.completeOnFssAllBodies)
+                if (Game.settings.allowNotifications.currentBoxelSearchStatus && this.completeOnFssAllBodies)
                     PlotFloatie.showMessage($"Current boxel {(double)this.systems.Count(sys => sys.complete) / (double)this.systems.Count:P0} searched.");
 
-                if (this.systemsComplete)
+                if (Game.settings.allowNotifications.showNextBoxelToSearch && this.systemsComplete)
                     Task.Delay(2000).continueOnMain(null, () => PlotFloatie.showMessage($"Next boxel to search: {this.nextSystem}0"));
             }
         }

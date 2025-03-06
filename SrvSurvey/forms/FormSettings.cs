@@ -205,6 +205,15 @@ namespace SrvSurvey
                             ((RadioButton)ctrl).Checked = (bool)map[name].GetValue(Game.settings)!;
                             break;
 
+                        case nameof(ListView):
+                            if (ctrl.Tag != null)
+                            {
+                                var subSettings = map[name].GetValue(Game.settings);
+                                foreach (ListViewItem item in ((ListView)ctrl).Items)
+                                    item.Checked = subSettings!.GetType()!.GetField((string)item.Tag!)!.GetValue(subSettings) as bool? ?? false;
+                            }
+                            break;
+
                         default:
                             throw new Exception($"Unexpected control type: {ctrl.GetType().Name}");
                     }
@@ -297,6 +306,17 @@ namespace SrvSurvey
                         case nameof(RadioButton):
                             val = ((RadioButton)ctrl).Checked;
                             break;
+
+                        case nameof(ListView):
+                            if (ctrl.Tag != null)
+                            {
+                                var subSettings = map[name].GetValue(Game.settings)!;
+                                foreach (ListViewItem item in ((ListView)ctrl).Items)
+                                    subSettings.GetType()!.GetField((string)item.Tag!)!.SetValue(subSettings, item.Checked);
+                                return;
+                            }
+                            break;
+
 
                         default:
                             throw new Exception($"Unexpected control type: {ctrl.GetType().Name}");

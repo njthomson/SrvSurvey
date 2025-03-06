@@ -341,13 +341,13 @@ namespace SrvSurvey.plotters
                 // draw line part from right to left, highlighting if Neutron and/or if next, ahead or behind
                 if (n == nextHopIdx)
                     g.DrawLine(GameColors.Route.penNext4, x - one, y, x - w, y);
-                else if (n < nextHopIdx && d > game.shipMaxJump)
+                else if (n < nextHopIdx && d > game.currentShip.maxJump)
                     g.DrawLine(GameColors.Route.penNeutronBehind, x, y, x - w, y);
                 else if (n < nextHopIdx)
                     g.DrawLine(GameColors.Route.penBehind, x, y, x - w, y);
-                else if (d > game.shipMaxJump && this.totalDistance <= limitExcessDistance)
+                else if (d > game.currentShip.maxJump && this.totalDistance <= limitExcessDistance)
                     g.DrawLine(GameColors.Route.penNeutronAhead, x - two, y, x - w, y);
-                else if (d > game.shipMaxJump && this.totalDistance > limitExcessDistance)
+                else if (d > game.currentShip.maxJump && this.totalDistance > limitExcessDistance)
                     g.DrawLine(GameColors.Route.penNeutronBehind, x - two, y, x - w, y);
                 else if (this.totalDistance < limitExcessDistance)
                     g.DrawLine(GameColors.Route.penAhead, x, y, x - w, y);

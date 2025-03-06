@@ -49,7 +49,8 @@ namespace SrvSurvey
         public bool Horizons { get; set; }
         public bool Odyssey { get; set; }
         public string Ship { get; set; }
-        public double ShipID { get; set; }
+        public string? Ship_Localised { get; set; }
+        public int ShipID { get; set; }
         public string ShipName { get; set; }
         public string ShipIdent { get; set; }
         public double FuelLevel { get; set; }
@@ -111,7 +112,8 @@ namespace SrvSurvey
         public int ShipID;
         public string ShipName;
         public string ShipIDent;
-        public float MaxJumpRange;
+        public double MaxJumpRange;
+        public int CargoCapacity;
     }
 
     class Died : JournalEntry
@@ -425,7 +427,7 @@ namespace SrvSurvey
         public FSDJumpBodyType BodyType { get; set; }  // "Star"
         public List<string> Powers { get; set; } // [ "Felicia Winters" ]
         public string PowerplayState { get; set; } // Exploited
-        public float JumpDist { get; set; }// 8.278
+        public double JumpDist { get; set; }// 8.278
         public float FuelUsed { get; set; } // 0.091548
         public float FuelLevel { get; set; } // 13.458453
         public List<SystemFaction>? Factions { get; set; }
@@ -1051,6 +1053,11 @@ namespace SrvSurvey
         public string Vessel { get; set; }
         public int Count { get; set; }
         public List<InventoryItem> Inventory { get; set; }
+
+        public int getCount(string commodity)
+        {
+            return this.Inventory.FirstOrDefault(i => i.Name == commodity)?.Count ?? 0;
+        }
     }
 
     class CargoDepot : JournalEntry
@@ -1305,4 +1312,13 @@ namespace SrvSurvey
         public string StarSystem;
     }
 
+    class Interdicted: JournalEntry
+    {
+        // { "timestamp":"2025-01-31T04:13:05Z", "event":"Interdicted", "Submitted":false, "Interdictor":"Geno Garon", "IsPlayer":true, "CombatRank":10 }
+
+        public bool Submitted;
+        public string Interdictor;
+        public bool IsPlayer;
+        public int CombatRank;
+    }
 }

@@ -1102,9 +1102,9 @@ namespace SrvSurvey
             {
                 // helper for ship cockpit offsets (from target lat/long)
                 var po = Util.getOffset(game.status.PlanetRadius, Game.settings.targetLatLong, game.status.Heading);
-                Game.log($"cockpit offset: {{ \"{game.shipType}\", new PointM({po.x}, {po.y}) }}");
-                CanonnStation.setShipOffset(game.shipType, po);
-                Clipboard.SetText($"{{ \"{game.shipType}\", new PointM({po.x}, {po.y}) }}, ");
+                Game.log($"cockpit offset: {{ \"{game.currentShip.type}\", new PointM({po.x}, {po.y}) }}");
+                CanonnStation.setShipOffset(game.currentShip.type, po);
+                Clipboard.SetText($"{{ \"{game.currentShip.type}\", new PointM({po.x}, {po.y}) }}, ");
             }
 
             if (game.systemStation != null)
@@ -1177,7 +1177,7 @@ namespace SrvSurvey
                     if (game.status.OnFootOutside)
                         changed = game.systemStation.inferFromFoot(game.status.Heading, game.status.Latitude, game.status.Longitude, (double)game.status.PlanetRadius);
                     else if (game.status.Docked)
-                        changed = game.systemStation.inferFromShip(game.status.Heading, game.status.Latitude, game.status.Longitude, game.shipType, (double)game.status.PlanetRadius, CalcMethod.AutoDock);
+                        changed = game.systemStation.inferFromShip(game.status.Heading, game.status.Latitude, game.status.Longitude, game.currentShip.type, (double)game.status.PlanetRadius, CalcMethod.AutoDock);
                     else
                         return;
 

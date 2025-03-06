@@ -161,13 +161,13 @@ namespace SrvSurvey.canonn
         //    Game.log($"~~calculateOdysseySettlementHeadingFromDocking: new heading {station.heading}");
         //}
 
-        public bool inferFromShip(float heading, double lat, double @long, string ship, double bodyRadius, CalcMethod calcMethod)
+        public bool inferFromShip(float heading, double lat, double @long, string shipType, double bodyRadius, CalcMethod calcMethod)
         {
             this.calcMethod = calcMethod;
             this.cmdrHeading = heading;
             this.cmdrLat = lat;
             this.cmdrLong = @long;
-            this.cmdrShip = ship;
+            this.cmdrShip = shipType;
             this.bodyRadius = bodyRadius;
             this.timestamp = DateTimeOffset.UtcNow;
 

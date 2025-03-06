@@ -348,13 +348,28 @@ namespace SrvSurvey.game
 
         public async Task loadColonyData()
         {
+            var form = Program.getPlotter<PlotBuildCommodities>();
+
+            // set an empty dictionary to make it render "updating..."
+            if (form != null)
+            {
+                form.pendingDiff = new();
+                form.Invalidate();
+            }
+
             this.colonyData.projects = await Game.colony.getCmdrProjects(this.commander);
-            this.colonyData.prepNeeds(this.commander);
+            this.colonyData.prepNeeds();
 
             //Game.log(this.colonySummary?.buildIds.formatWithHeader($"loadAllBuildProjects: loading: {this.colonySummary?.buildIds.Count} ...", "\r\n\t"));
 
-            Game.log(colonyData.projects.Select(p => p.buildId).formatWithHeader($"colonySummary.buildIds:", "\r\n\t"));
+            Game.log(colonyData.projects.Select(p => p.buildId).formatWithHeader($"colonySummary.buildIds: {colonyData.projects.Count}", "\r\n\t"));
             this.Save();
+
+            if (form != null)
+            {
+                form.pendingDiff = null;
+                form.Invalidate();
+            }
         }
     }
 

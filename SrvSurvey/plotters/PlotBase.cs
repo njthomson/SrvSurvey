@@ -520,7 +520,7 @@ namespace SrvSurvey.plotters
                 var ship = Util.getOffset(game.systemBody.radius, shipLatLong, 180);
 
                 // adjust location by ship cockpit offset
-                var po = CanonnStation.getShipOffset(game.shipType);
+                var po = CanonnStation.getShipOffset(game.currentShip.type);
                 var pd = po.rotate(game.cmdr.lastTouchdownHeading);
                 ship += pd;
 
@@ -1233,7 +1233,7 @@ namespace SrvSurvey.plotters
                 var ship = Util.getOffset(game.systemBody.radius, shipLatLong, 180);
 
                 // adjust location by ship cockpit offset
-                var po = CanonnStation.getShipOffset(game.shipType);
+                var po = CanonnStation.getShipOffset(game.currentShip.type);
                 var pd = po.rotate(game.cmdr.lastTouchdownHeading);
                 ship += pd;
 

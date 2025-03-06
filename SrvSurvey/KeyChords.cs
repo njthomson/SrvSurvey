@@ -81,6 +81,7 @@ namespace SrvSurvey
             { KeyAction.showFssInfo, "ALT F" },
             { KeyAction.showBodyInfo, "ALT B" },
             { KeyAction.showColonyShopping, "ALT S" },
+            { KeyAction.refreshColonyData, "ALT CTRL S" },
             { KeyAction.showSystemNotes, "CTRL SHIFT N" },
             { KeyAction.track1, "ALT CTRL F1" },
             { KeyAction.track2, "ALT CTRL F2" },
@@ -111,6 +112,7 @@ namespace SrvSurvey
                 case KeyAction.showFssInfo: return toggleFSSInfo();
                 case KeyAction.showBodyInfo: return toggleBodyInfo();
                 case KeyAction.showColonyShopping: return toggleColonyShopping();
+                case KeyAction.refreshColonyData: return Game.activeGame?.cmdr?.loadColonyData().justDoIt() ?? true;
                 case KeyAction.showSystemNotes: return showSystemNotes();
                 case KeyAction.track1: return trackLocation(1);
                 case KeyAction.track2: return trackLocation(2);
@@ -375,6 +377,8 @@ namespace SrvSurvey
         showSystemNotes,
         /// <summary> Make the PlotBuildNew appear </summary>
         showColonyShopping,
+        /// <summary> Force refresh ColonyData  </summary>
+        refreshColonyData,
         /// <summary> Track the current location as #1 </summary>
         track1,
         /// <summary> Track the current location as #2 </summary>

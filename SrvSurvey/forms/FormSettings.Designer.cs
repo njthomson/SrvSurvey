@@ -31,6 +31,11 @@ namespace SrvSurvey
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
+            ListViewItem listViewItem1 = new ListViewItem("Materials count after pickup");
+            ListViewItem listViewItem2 = new ListViewItem("Mission remaining cargo count");
+            ListViewItem listViewItem3 = new ListViewItem("Boxel search status");
+            ListViewItem listViewItem4 = new ListViewItem("Next boxel to search");
+            ListViewItem listViewItem5 = new ListViewItem("Buying bug at FCs");
             panel1 = new Panel();
             btnNextProc = new FlatButton();
             btnSave = new FlatButton();
@@ -229,12 +234,17 @@ namespace SrvSurvey
             tabPage2 = new TabPage();
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
+            tabPage8 = new TabPage();
+            checkBox42 = new CheckBox();
+            checkBox41 = new CheckBox();
+            checkBox40 = new CheckBox();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
             menuCodexImages = new ButtonContextMenuStrip(components);
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
+            listView1 = new ListView();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -287,6 +297,7 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).BeginInit();
             tabKeyChords.SuspendLayout();
             tabPage2.SuspendLayout();
+            tabPage8.SuspendLayout();
             menuCodexImages.SuspendLayout();
             SuspendLayout();
             // 
@@ -299,7 +310,7 @@ namespace SrvSurvey
             panel1.Location = new Point(0, 476);
             panel1.Margin = new Padding(4, 3, 4, 3);
             panel1.Name = "panel1";
-            panel1.Size = new Size(659, 48);
+            panel1.Size = new Size(707, 48);
             panel1.TabIndex = 1;
             // 
             // btnNextProc
@@ -316,7 +327,7 @@ namespace SrvSurvey
             // btnSave
             // 
             btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSave.Location = new Point(463, 14);
+            btnSave.Location = new Point(511, 14);
             btnSave.Margin = new Padding(4, 3, 4, 3);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(88, 27);
@@ -329,7 +340,7 @@ namespace SrvSurvey
             // 
             btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.Location = new Point(557, 14);
+            btnCancel.Location = new Point(605, 14);
             btnCancel.Margin = new Padding(4, 3, 4, 3);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(88, 27);
@@ -383,7 +394,7 @@ namespace SrvSurvey
             tabPage1.Margin = new Padding(4, 3, 4, 3);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(4, 3, 4, 3);
-            tabPage1.Size = new Size(651, 448);
+            tabPage1.Size = new Size(699, 448);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
             // 
@@ -864,12 +875,13 @@ namespace SrvSurvey
             tabControl.Controls.Add(tabSettlements);
             tabControl.Controls.Add(tabKeyChords);
             tabControl.Controls.Add(tabPage2);
+            tabControl.Controls.Add(tabPage8);
             tabControl.Dock = DockStyle.Fill;
             tabControl.Location = new Point(0, 0);
             tabControl.Margin = new Padding(4, 3, 4, 3);
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
-            tabControl.Size = new Size(659, 476);
+            tabControl.Size = new Size(707, 476);
             tabControl.TabIndex = 0;
             // 
             // tabPage4
@@ -901,7 +913,7 @@ namespace SrvSurvey
             tabPage4.Location = new Point(4, 24);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new Padding(3);
-            tabPage4.Size = new Size(651, 448);
+            tabPage4.Size = new Size(699, 448);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
             // 
@@ -1358,9 +1370,9 @@ namespace SrvSurvey
             tabPage3.Location = new Point(4, 24);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(651, 448);
+            tabPage3.Size = new Size(699, 448);
             tabPage3.TabIndex = 2;
-            tabPage3.Text = "Guardian sites";
+            tabPage3.Text = "Guardians";
             // 
             // comboGuardianWindowSize
             // 
@@ -1598,7 +1610,7 @@ namespace SrvSurvey
             tabPage5.Location = new Point(4, 24);
             tabPage5.Name = "tabPage5";
             tabPage5.Padding = new Padding(3);
-            tabPage5.Size = new Size(651, 448);
+            tabPage5.Size = new Size(699, 448);
             tabPage5.TabIndex = 4;
             tabPage5.Text = "Screenshots";
             // 
@@ -1862,7 +1874,7 @@ namespace SrvSurvey
             tabPage6.Location = new Point(4, 24);
             tabPage6.Name = "tabPage6";
             tabPage6.Padding = new Padding(3);
-            tabPage6.Size = new Size(651, 448);
+            tabPage6.Size = new Size(699, 448);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
             // 
@@ -2266,7 +2278,7 @@ namespace SrvSurvey
             tabPage7.Location = new Point(4, 24);
             tabPage7.Name = "tabPage7";
             tabPage7.Padding = new Padding(3);
-            tabPage7.Size = new Size(651, 448);
+            tabPage7.Size = new Size(699, 448);
             tabPage7.TabIndex = 6;
             tabPage7.Text = "External Data";
             // 
@@ -2457,7 +2469,7 @@ namespace SrvSurvey
             tabSettlements.Location = new Point(4, 24);
             tabSettlements.Name = "tabSettlements";
             tabSettlements.Padding = new Padding(3);
-            tabSettlements.Size = new Size(651, 448);
+            tabSettlements.Size = new Size(699, 448);
             tabSettlements.TabIndex = 7;
             tabSettlements.Text = "Settlements";
             // 
@@ -2758,7 +2770,7 @@ namespace SrvSurvey
             tabKeyChords.Location = new Point(4, 24);
             tabKeyChords.Name = "tabKeyChords";
             tabKeyChords.Padding = new Padding(3);
-            tabKeyChords.Size = new Size(651, 448);
+            tabKeyChords.Size = new Size(699, 448);
             tabKeyChords.TabIndex = 8;
             tabKeyChords.Text = "Key Chords";
             // 
@@ -2768,7 +2780,7 @@ namespace SrvSurvey
             comboDirectXDevice.DropDownStyle = ComboBoxStyle.DropDownList;
             comboDirectXDevice.FlatStyle = FlatStyle.System;
             comboDirectXDevice.FormattingEnabled = true;
-            comboDirectXDevice.Location = new Point(261, 25);
+            comboDirectXDevice.Location = new Point(309, 25);
             comboDirectXDevice.Name = "comboDirectXDevice";
             comboDirectXDevice.Size = new Size(378, 23);
             comboDirectXDevice.TabIndex = 2;
@@ -2800,7 +2812,7 @@ namespace SrvSurvey
             listKeys.Location = new Point(6, 52);
             listKeys.Name = "listKeys";
             listKeys.ShowItemToolTips = true;
-            listKeys.Size = new Size(633, 386);
+            listKeys.Size = new Size(681, 386);
             listKeys.TabIndex = 4;
             listKeys.UseCompatibleStateImageBehavior = false;
             listKeys.View = View.Details;
@@ -2850,7 +2862,7 @@ namespace SrvSurvey
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(651, 448);
+            tabPage2.Size = new Size(699, 448);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "About";
             // 
@@ -2860,7 +2872,7 @@ namespace SrvSurvey
             linkAboutTwo.LinkArea = new LinkArea(83, 21);
             linkAboutTwo.Location = new Point(3, 393);
             linkAboutTwo.Name = "linkAboutTwo";
-            linkAboutTwo.Size = new Size(641, 48);
+            linkAboutTwo.Size = new Size(689, 48);
             linkAboutTwo.TabIndex = 2;
             linkAboutTwo.TabStop = true;
             linkAboutTwo.Text = "SrvSurvey is not an official tool for \"Elite Dangerous\" and is not affiliated with Frontier Developments. All trademarks and copyright are acknowledged as the property of their respective owners.\r\n";
@@ -2873,11 +2885,65 @@ namespace SrvSurvey
             linkAboutOne.LinkArea = new LinkArea(65, 15);
             linkAboutOne.Location = new Point(3, 3);
             linkAboutOne.Name = "linkAboutOne";
-            linkAboutOne.Size = new Size(641, 319);
+            linkAboutOne.Size = new Size(689, 319);
             linkAboutOne.TabIndex = 1;
             linkAboutOne.TabStop = true;
             linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
             linkAboutOne.UseCompatibleTextRendering = true;
+            // 
+            // tabPage8
+            // 
+            tabPage8.BackColor = SystemColors.Control;
+            tabPage8.BorderStyle = BorderStyle.Fixed3D;
+            tabPage8.Controls.Add(checkBox40);
+            tabPage8.Controls.Add(listView1);
+            tabPage8.Controls.Add(checkBox42);
+            tabPage8.Controls.Add(checkBox41);
+            tabPage8.Location = new Point(4, 24);
+            tabPage8.Name = "tabPage8";
+            tabPage8.Padding = new Padding(3);
+            tabPage8.Size = new Size(699, 448);
+            tabPage8.TabIndex = 9;
+            tabPage8.Text = "More";
+            // 
+            // checkBox42
+            // 
+            checkBox42.AutoSize = true;
+            checkBox42.CheckAlign = ContentAlignment.TopLeft;
+            checkBox42.FlatStyle = FlatStyle.System;
+            checkBox42.Location = new Point(12, 16);
+            checkBox42.Name = "checkBox42";
+            checkBox42.Size = new Size(340, 20);
+            checkBox42.TabIndex = 38;
+            checkBox42.Tag = "autoShowPlotStationInfo_TEST";
+            checkBox42.Text = "Show station/target details in left nav panel (experimental)";
+            checkBox42.UseVisualStyleBackColor = true;
+            // 
+            // checkBox41
+            // 
+            checkBox41.AutoSize = true;
+            checkBox41.CheckAlign = ContentAlignment.TopLeft;
+            checkBox41.FlatStyle = FlatStyle.System;
+            checkBox41.Location = new Point(12, 42);
+            checkBox41.Name = "checkBox41";
+            checkBox41.Size = new Size(216, 20);
+            checkBox41.TabIndex = 37;
+            checkBox41.Tag = "logDockToDockTimes";
+            checkBox41.Text = "Log dock-to-dock times to .csv file";
+            checkBox41.UseVisualStyleBackColor = true;
+            // 
+            // checkBox40
+            // 
+            checkBox40.AutoSize = true;
+            checkBox40.CheckAlign = ContentAlignment.TopLeft;
+            checkBox40.FlatStyle = FlatStyle.System;
+            checkBox40.Location = new Point(12, 305);
+            checkBox40.Name = "checkBox40";
+            checkBox40.Size = new Size(214, 20);
+            checkBox40.TabIndex = 35;
+            checkBox40.Tag = "autoShowFloatie_TEST";
+            checkBox40.Text = "Allow timed notification messages";
+            checkBox40.UseVisualStyleBackColor = true;
             // 
             // colorDialog
             // 
@@ -2916,12 +2982,34 @@ namespace SrvSurvey
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
             // 
+            // listView1
+            // 
+            listView1.CheckBoxes = true;
+            listViewItem1.StateImageIndex = 0;
+            listViewItem1.Tag = "materialCountAfterPickup";
+            listViewItem2.StateImageIndex = 0;
+            listViewItem2.Tag = "cargoMissionRemaining";
+            listViewItem3.StateImageIndex = 0;
+            listViewItem3.Tag = "currentBoxelSearchStatus";
+            listViewItem4.StateImageIndex = 0;
+            listViewItem4.Tag = "showNextBoxelToSearch";
+            listViewItem5.StateImageIndex = 0;
+            listViewItem5.Tag = "fcMarketPurchaseBugReminder";
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5 });
+            listView1.Location = new Point(12, 331);
+            listView1.Name = "listView1";
+            listView1.Size = new Size(309, 107);
+            listView1.TabIndex = 39;
+            listView1.Tag = "allowNotifications";
+            listView1.UseCompatibleStateImageBehavior = false;
+            listView1.View = View.SmallIcon;
+            // 
             // FormSettings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(659, 524);
+            ClientSize = new Size(707, 524);
             Controls.Add(tabControl);
             Controls.Add(panel1);
             FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -2996,6 +3084,8 @@ namespace SrvSurvey
             tabKeyChords.ResumeLayout(false);
             tabKeyChords.PerformLayout();
             tabPage2.ResumeLayout(false);
+            tabPage8.ResumeLayout(false);
+            tabPage8.PerformLayout();
             menuCodexImages.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -3205,5 +3295,10 @@ namespace SrvSurvey
         private CheckBox checkBox35;
         private CheckBox checkJumpInfoIfDestination;
         private CheckBox checkColonization;
+        private TabPage tabPage8;
+        private CheckBox checkBox40;
+        private CheckBox checkBox41;
+        private CheckBox checkBox42;
+        private ListView listView1;
     }
 }

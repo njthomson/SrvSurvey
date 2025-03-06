@@ -34,7 +34,6 @@
             btnAccept = new Button();
             btnJoin = new Button();
             label4 = new Label();
-            textSystem = new TextBox();
             lblNot = new Label();
             txtName = new TextBox();
             label5 = new Label();
@@ -52,7 +51,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(69, 63);
+            label1.Location = new Point(68, 66);
             label1.Name = "label1";
             label1.Size = new Size(48, 15);
             label1.TabIndex = 5;
@@ -104,24 +103,15 @@
             // 
             label4.Location = new Point(13, 9);
             label4.Name = "label4";
-            label4.Size = new Size(440, 51);
+            label4.Size = new Size(458, 35);
             label4.TabIndex = 4;
-            label4.Text = "Create a build project only when docked at the Colonization ship. Only one person needs to do this.\r\nMake sure the numbers below match what is actually needed.";
-            // 
-            // textSystem
-            // 
-            textSystem.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textSystem.Location = new Point(123, 63);
-            textSystem.Name = "textSystem";
-            textSystem.ReadOnly = true;
-            textSystem.Size = new Size(348, 23);
-            textSystem.TabIndex = 9;
+            label4.Text = "Add or edit a build project when docked at the Colonization ship. Numbers will need to be checked when creating. Follow the link to track progress online.";
             // 
             // lblNot
             // 
             lblNot.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblNot.AutoSize = true;
-            lblNot.Location = new Point(93, 475);
+            lblNot.Location = new Point(123, 475);
             lblNot.Name = "lblNot";
             lblNot.Size = new Size(207, 15);
             lblNot.TabIndex = 10;
@@ -175,14 +165,14 @@
             // 
             // linkLink
             // 
-            linkLink.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            linkLink.AutoSize = true;
-            linkLink.Location = new Point(364, 475);
+            linkLink.BorderStyle = BorderStyle.FixedSingle;
+            linkLink.Location = new Point(123, 65);
             linkLink.Name = "linkLink";
-            linkLink.Size = new Size(26, 15);
+            linkLink.Size = new Size(348, 23);
             linkLink.TabIndex = 16;
             linkLink.TabStop = true;
             linkLink.Text = "link";
+            linkLink.TextAlign = ContentAlignment.MiddleLeft;
             linkLink.LinkClicked += linkLink_LinkClicked;
             // 
             // table
@@ -234,7 +224,6 @@
             Controls.Add(txtName);
             Controls.Add(label5);
             Controls.Add(lblNot);
-            Controls.Add(textSystem);
             Controls.Add(label4);
             Controls.Add(btnJoin);
             Controls.Add(btnAccept);
@@ -263,7 +252,6 @@
         private Button btnAccept;
         private Button btnJoin;
         private Label label4;
-        private TextBox textSystem;
         private Label lblNot;
         private TextBox txtName;
         private Label label5;

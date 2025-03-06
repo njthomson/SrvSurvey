@@ -23,8 +23,7 @@ namespace SrvSurvey.forms
             this.allCosts = Game.colony.loadDefaultCosts();
 
             this.cmdr = CommanderSettings.LoadCurrentOrLast();
-
-            textSystem.Text = cmdr.currentSystem;
+            linkLink.Text = cmdr.currentSystem;
 
             // show create button if docked at the right type of station
 
@@ -37,7 +36,6 @@ namespace SrvSurvey.forms
             txtArchitect.Enabled = false;
             txtName.Enabled = false;
             btnAssign.Enabled = false;
-            linkLink.Visible = false;
             panelList.Enabled = false;
         }
 
@@ -49,7 +47,6 @@ namespace SrvSurvey.forms
                 prepButtons();
             });
         }
-
 
         private void prepButtons()
         {
@@ -65,7 +62,7 @@ namespace SrvSurvey.forms
                     return false;
                 });
 
-                if (lastDocked?.StationName == "System Colonisation Ship" && cmdr.currentMarketId != 0)
+                if (lastDocked?.StationName == ColonyData.SystemColonisationShip && cmdr.currentMarketId != 0)
                 {
                     lblNot.Visible = false;
                     txtArchitect.Enabled = true;
@@ -84,7 +81,6 @@ namespace SrvSurvey.forms
                         {
                             this.project = project;
 
-                            linkLink.Visible = true;
                             txtName.Text = project.buildName;
                             txtArchitect.Text = project.architectName;
                             comboBuildType.Text = project.buildType;
@@ -379,7 +375,9 @@ namespace SrvSurvey.forms
 
         private void linkLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            var url = $"{Colony.svcUri}/Project?bid={project.buildId}";
+            var url = this.project == null
+                ? $"{Colony.svcUri}/Find?q={cmdr.currentSystem}"
+                : $"{Colony.svcUri}/Project?bid={project.buildId}";
             Util.openLink(url);
         }
 

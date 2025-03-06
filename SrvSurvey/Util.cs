@@ -1178,6 +1178,14 @@ namespace SrvSurvey
         /// <summary>
         /// Returns the max width of any of the given strings
         /// </summary>
+        public static float maxWidth(Font font, IEnumerable<string> texts)
+        {
+            return maxWidth(font, texts.ToArray());
+        }
+
+        /// <summary>
+        /// Returns the max width of any of the given strings
+        /// </summary>
         public static float maxWidth(Font font, params string[] texts)
         {
             if (texts.Length == 0) return 0;
@@ -1455,6 +1463,21 @@ namespace SrvSurvey
         }
 
         /// <summary>
+        /// Handle some task, logging errors but otherwise being silent
+        /// </summary>
+        public static bool justDoIt(this Task preTask)
+        {
+            preTask.ContinueWith(postTask =>
+            {
+                // check for firewall problems?
+                if (postTask.Exception != null || !postTask.IsCompletedSuccessfully)
+                    Util.isFirewallProblem(postTask.Exception);
+            });
+
+            return true;
+        }
+
+        /// <summary>
         /// Returns a string using local short date and 24 hour time
         /// </summary>
         public static string ToLocalShortDateTime24Hours(this DateTimeOffset dateTime)
@@ -1477,6 +1500,29 @@ namespace SrvSurvey
                 dictionary[key] = Activator.CreateInstance<TValue>();
 
             return dictionary[key];
+        }
+
+        public static TValue? GetValueOrDefault<TValue>(this Dictionary<string, TValue> dictionary, string key, StringComparison comparison)
+        {
+            // match a key based on string comparison
+            var matchKey = dictionary.Keys.FirstOrDefault(k => k.Equals(key, comparison));
+
+            if (matchKey == null)
+            {
+                // initialize dictionary entry if not found
+                return default;
+            }
+            else
+            {
+                return dictionary[matchKey];
+            }
+        }
+
+        public static SizeF widestColumn(this SizeF sz, int idx, Dictionary<int, float> columns)
+        {
+            columns.init(idx);
+            if (sz.Width > columns[idx]) columns[idx] = sz.Width;
+            return sz;
         }
     }
 
