@@ -44,9 +44,7 @@ namespace SrvSurvey
 
         private FileSystemWatcher? fileWatcher;
 
-        private CargoFile()
-        {
-        }
+        private CargoFile() { }
 
         public static CargoFile load(bool watch)
         {

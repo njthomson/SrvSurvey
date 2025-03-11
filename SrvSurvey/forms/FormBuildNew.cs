@@ -1,107 +1,187 @@
-﻿using Newtonsoft.Json;
-using SrvSurvey.game;
-using SrvSurvey.widgets;
+﻿using SrvSurvey.game;
+using SrvSurvey.Properties;
 
 namespace SrvSurvey.forms
 {
     [Draggable, TrackPosition]
     internal partial class FormBuildNew : SizableForm
     {
-        private CommanderSettings cmdr;
+        private Game game => Game.activeGame!;
+        private CommanderSettings cmdr; // TODO: <-- retire?
+        private ColonyData colonyData;
+
+        private Project project;
+        private bool dirty = false;
+
         private string? key;
         private Dictionary<string, Dictionary<string, int>> allCosts;
-        private Project project;
         private Font fontB;
+        private Font lblFont;
         private List<Control> lastCtrls = new();
         private Dictionary<string, int> pendingCommodities = new();
+        private Project? untrackedProject;
 
         public FormBuildNew()
         {
             InitializeComponent();
+            this.Icon = Icons.ruler;
             this.fontB = new Font(this.Font, FontStyle.Bold);
+            this.lblFont = new Font("Segoe UI Emoji", this.Font.Size);
+
+            this.cmdr = CommanderSettings.LoadCurrentOrLast(); // Remove?
+            this.colonyData = game.cmdrColony;
 
             this.allCosts = Game.colony.loadDefaultCosts();
+            this.comboBuildType.Items.AddRange(allCosts.Keys.ToArray());
 
-            this.cmdr = CommanderSettings.LoadCurrentOrLast();
-            linkLink.Text = cmdr.currentSystem;
+            // fill combo with known projects
+            setComboProjectBindingSource();
+            this.comboProjects.DisplayMember = "Value";
+            this.comboProjects.ValueMember = "Key";
 
-            // show create button if docked at the right type of station
-
-            comboBuildType.Items.AddRange(allCosts.Keys.ToArray());
-
-            btnAccept.Enabled = false;
-            btnJoin.Enabled = false;
-            lblNot.Visible = true;
-            comboBuildType.Enabled = false;
-            txtArchitect.Enabled = false;
-            txtName.Enabled = false;
-            btnAssign.Enabled = false;
-            panelList.Enabled = false;
+            this.chooseInitialProject();
         }
 
-        private void FormBuildNew_Load(object sender, EventArgs e)
+        private void chooseInitialProject()
         {
-            Program.defer(() =>
+            if (colonyData.primaryBuildId != null)
+                comboProjects.SelectedValue = colonyData.primaryBuildId;
+            if (comboProjects.SelectedItem == null)
+                comboProjects.SelectedIndex = 0;
+
+            // if we are currently at a construction ship - select that one
+            if (game.lastDocked != null && game.lastDocked.StationName == ColonyData.SystemColonisationShip)
             {
-                comboBuildType.SelectedIndex = 0;
-                prepButtons();
-            });
-        }
-
-        private void prepButtons()
-        {
-            var game = Game.activeGame;
-            if (game != null && game.isMode(GameMode.Docked, GameMode.StationServices))
-            {
-                Docked? lastDocked = null;
-                game.journals?.walkDeep(true, entry =>
+                // do we know about this one already?
+                var match = colonyData.projects.Find(p => p.marketId == game.lastDocked.MarketID);
+                Game.log($"FormBuildNew.ctor: match: {match?.buildId}");
+                if (match != null)
                 {
-                    if (entry is Undocked) return true;
-                    lastDocked = entry as Docked;
-                    if (lastDocked != null) return true;
-                    return false;
-                });
-
-                if (lastDocked?.StationName == ColonyData.SystemColonisationShip && cmdr.currentMarketId != 0)
+                    comboProjects.SelectedValue = match.buildId;
+                    this.setEnabled(true);
+                    return;
+                }
+                else
                 {
-                    lblNot.Visible = false;
-                    txtArchitect.Enabled = true;
-                    txtName.Enabled = true;
-                    panelList.Enabled = true;
-
-                    Game.colony.load(lastDocked.SystemAddress, lastDocked.MarketID).continueOnMain(this, project =>
+                    // not one we know about - make a network request for it...
+                    this.setEnabled(false);
+                    Game.colony.load(game.lastDocked.SystemAddress, game.lastDocked.MarketID).continueOnMain(this, newProject =>
                     {
-                        if (project == null)
+                        if (newProject != null)
                         {
-                            // project is not tracked - enable to start tracking
-                            btnAccept.Enabled = true;
-                            comboBuildType.Enabled = true;
+                            // it is tracked, but not by this cmdr
+                            this.untrackedProject = newProject;
                         }
                         else
                         {
-                            this.project = project;
-
-                            txtName.Text = project.buildName;
-                            txtArchitect.Text = project.architectName;
-                            comboBuildType.Text = project.buildType;
-
-                            btnAccept.Text = "Update";
-                            btnAccept.Enabled = true;
-                            btnAssign.Enabled = true;
-
-                            pendingCommodities = project.commodities;
-                            prepCommodityRows();
-
-                            if (!project.commanders?.Keys.Contains(cmdr.commander) == true)
-                                btnJoin.Enabled = true;
+                            // is not tracked by anyone
+                            this.untrackedProject = new()
+                            {
+                                buildId = "",
+                                buildType = allCosts.Keys.First(),
+                                buildName = "Primary port",
+                                marketId = game.lastDocked.MarketID,
+                                systemAddress = game.lastDocked.SystemAddress,
+                                systemName = game.lastDocked.StarSystem,
+                                starPos = game.systemData!.starPos,
+                                bodyNum = game.systemBody?.id,
+                                bodyName = game.systemBody?.name,
+                                commanders = new Dictionary<string, HashSet<string>>() { { cmdr.commander, new() } },
+                            };
+                            comboBuildType.Enabled = true;
                         }
 
+                        setComboProjectBindingSource(this.untrackedProject.buildId);
+
+                        Game.log($"FormBuildNew.ctor: found untracked build: {newProject?.buildId}");
+                        this.setEnabled(true);
+
+                        setProject(newProject);
                     }, true);
                 }
             }
         }
 
-        private void prepCommodityRows()
+        private void setComboProjectBindingSource(string? selectBuildId = null)
+        {
+            var selectedValue = comboProjects.SelectedValue;
+
+            // alpha sort known projects
+            var list = new List<Project>(colonyData.projects.OrderBy(p => $"{p.systemName} {p.buildName}"));
+
+            // inject the untracked project at beginning of list
+            if (this.untrackedProject != null)
+                list.Insert(0, untrackedProject);
+
+            var dic = list.ToDictionary(_ => _.buildId, _ => _.ToString());
+            this.comboProjects.DataSource = new BindingSource(dic, null);
+
+            if (selectBuildId != null)
+                comboProjects.SelectedValue = selectBuildId;
+            else if (selectedValue != null)
+                comboProjects.SelectedValue = selectedValue;
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            // TODO: dirty check?
+
+            // reload data from network
+            var selectedValue = comboProjects.SelectedValue as string;
+
+            this.setEnabled(false);
+            colonyData.fetchLatest().continueOnMain(this, () =>
+            {
+                var refreshedProject = colonyData.getProject(this.project.buildId);
+                setComboProjectBindingSource(selectedValue);
+                setProject(refreshedProject, true);
+                this.setEnabled(true);
+            });
+        }
+
+        private void setEnabled(bool enable)
+        {
+            this.setChildrenEnabled(enable, comboBuildType);
+
+            if (enable && untrackedProject?.buildId == "")
+                comboBuildType.Enabled = true;
+
+        }
+
+        private void comboProjects_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Game.log(comboProjects.SelectedItem);
+            if (comboProjects.SelectedItem is KeyValuePair<string, string>)
+            {
+                var pair = (KeyValuePair<string, string>)comboProjects.SelectedItem;
+                if (pair.Key == untrackedProject?.buildId)
+                    setProject(untrackedProject);
+                else
+                    setProject(colonyData.getProject(pair.Key));
+            }
+        }
+
+        private void setProject(Project? project, bool force = false)
+        {
+            if (project == null || (this.project?.buildId == project.buildId && !force)) return;
+            this.project = project;
+
+            txtName.Text = project.buildName;
+            txtArchitect.Text = project.architectName;
+            txtFaction.Text = project.factionName;
+            txtNotes.Text = project.notes;
+            linkLink.Text = project.systemName;
+            comboBuildType.Text = project.buildType;
+            checkPrimary.Checked = colonyData.primaryBuildId == project.buildId;
+
+            listCmdrs.Items.Clear();
+            listCmdrs.Items.AddRange(project.commanders.Keys.ToArray());
+
+            prepCommodityRows(project);
+            dirty = false;
+        }
+
+        private void prepCommodityRows(Project proj)
         {
             var start = DateTime.Now;
             table.SuspendLayout();
@@ -135,7 +215,7 @@ namespace SrvSurvey.forms
             rowCount++;
 
             var flip = false;
-            foreach (var (commodity, need) in pendingCommodities)
+            foreach (var (commodity, need) in proj.commodities)
             {
                 table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                 var backColor = flip ? table.BackColor : SystemColors.Info;
@@ -144,6 +224,7 @@ namespace SrvSurvey.forms
                 var lbl = new Label()
                 {
                     Text = commodity,
+                    Font = this.lblFont,
                     Anchor = AnchorStyles.Left | AnchorStyles.Right,
                     Height = 19,
                     Margin = new Padding(8, 0, 0, 1),
@@ -153,6 +234,9 @@ namespace SrvSurvey.forms
                     //Tag = rowCount,
                     Tag = backColor,
                 };
+
+                if (proj.commanders.Any(c => c.Value.Contains(commodity)))
+                    lbl.Text += " 📌";
 
                 var numNeed = new NumericUpDown()
                 {
@@ -191,6 +275,22 @@ namespace SrvSurvey.forms
                     // restore colour on last controls
                     restoreLastCtrls();
                 };
+                var mouseDown = (object? sender, MouseEventArgs e) =>
+                {
+                    if (e.Button == MouseButtons.Right)
+                    {
+                        var c = sender as Control;
+                        //var menu = new ContextMenuStrip();
+                        //menu.Items.Add(new ToolStripMenuItem("Assign to Commander"));
+                        //menu.Items.Add(new ToolStripMenuItem("Remove"));
+                        //contextMenu.Show(tree.PointToScreen(e.Location));
+                        if (c != null)
+                        {
+                            menuCommodities.Tag = commodity;
+                            menuCommodities.Show(c, e.Location);
+                        }
+                    }
+                };
 
                 var ctrls = new List<Control>();
                 ctrls.Add(lbl);
@@ -200,6 +300,7 @@ namespace SrvSurvey.forms
                 {
                     ctrl.MouseEnter += new EventHandler(mouseEnter);
                     ctrl.MouseLeave += new EventHandler(mouseLeave);
+                    ctrl.MouseDown += new MouseEventHandler(mouseDown);
                 }
 
                 numNeed.Height = lbl.Height;
@@ -218,7 +319,7 @@ namespace SrvSurvey.forms
 
         private void restoreLastCtrls()
         {
-            foreach(var ctrl in lastCtrls)
+            foreach (var ctrl in lastCtrls)
             {
                 var tag = ctrl.Tag ?? ctrl.Parent?.Tag;
                 if (tag is Color)
@@ -239,8 +340,10 @@ namespace SrvSurvey.forms
 
         private void btnAccept_Click(object sender, EventArgs e)
         {
+            comboBuildType.Enabled = false;
+
             if (comboBuildType.SelectedItem == null) return;
-            if (this.project == null)
+            if (this.project.buildId == "")
                 createProject();
             else
                 updateProject();
@@ -250,31 +353,43 @@ namespace SrvSurvey.forms
         {
             try
             {
-                //var data = JsonConvert.DeserializeObject<Dictionary<string, int>>(txtJson.Text)!;
+                this.setEnabled(false);
+                Game.log($"Updating: {project.buildName} ({project.buildId})");
                 var updateProject = new ProjectUpdate
                 {
                     buildId = project.buildId,
                     buildName = txtName.Text,
                     architectName = txtArchitect.Text,
-
-                    factionName = "",
-                    notes = "",
+                    factionName = txtFaction.Text,
+                    notes = txtNotes.Text,
 
                     commodities = pendingCommodities
-                    //data.ToDictionary(_ => _.Key, _ => new CommodityCount(data[_.Key], project.commodities.GetValueOrDefault(_.Key)?.total ?? data[_.Key])),
+
+                    // TODO: add/remove commanders
                 };
 
-                Game.log($"Updating: {project}");
-                btnAccept.Enabled = false;
-                Game.colony.update(updateProject).continueOnMain(this, saved =>
+                // TODO: do in parallel!
+                // if marking as primary - write this at the same time
+                if (checkPrimary.Checked)
                 {
-                    Game.log($"Updated project: {saved.buildId}");
-                    Game.log(saved);
+                    colonyData.primaryBuildId = project.buildId;
+                    Game.colony.setPrimary(colonyData.cmdr, project.buildId).justDoIt();
+                }
+                else if (colonyData.primaryBuildId == project.buildId)
+                {
+                    colonyData.primaryBuildId = "";
+                    Game.colony.setPrimary(colonyData.cmdr, project.buildId).justDoIt();
+                }
 
-                    // TODO: revisit
-                    //cmdr.colonySummary.buildIds.Add(saved.buildId);
-                    cmdr.Save();
-                    this.Close();
+                // cmdrs to add and remove
+                var cmdrsToAdd = listCmdrs.Items.Cast<string>().Where(c => !project.commanders.ContainsKey(c)).ToList();
+                var cmdrsToRemove = project.commanders.Keys.Where(c => !listCmdrs.Items.Contains(c)).ToList();
+                cmdrsToAdd.ForEach(cmdr => Game.colony.linkCmdr(project.buildId, cmdr).justDoIt());
+                cmdrsToRemove.ForEach(cmdr => Game.colony.unlinkCmdr(project.buildId, cmdr).justDoIt());
+
+                Game.colony.update(updateProject).continueOnMain(this, savedProject =>
+                {
+                    processServerResponse(savedProject);
                 });
             }
             catch (Exception ex)
@@ -282,42 +397,76 @@ namespace SrvSurvey.forms
                 FormErrorSubmit.Show(ex);
                 return;
             }
+        }
+
+        private void processServerResponse(Project serverProject)
+        {
+            untrackedProject = null;
+
+            // replace the reference and save
+            var originalProject = colonyData.getProject(serverProject.buildId);
+            if (originalProject == null)
+            {
+                var match = serverProject.commanders.GetValueOrDefault(colonyData.cmdr, StringComparison.OrdinalIgnoreCase);
+                if (match == null)
+                {
+                    // ignore updates for projects we are not tracking
+                }
+                else
+                {
+                    // start tracking
+                    colonyData.projects.Add(serverProject);
+                }
+            }
+            else
+            {
+                var idx = colonyData.projects.IndexOf(originalProject);
+                colonyData.projects[idx] = serverProject;
+            }
+            colonyData.Save();
+            setComboProjectBindingSource(serverProject.buildId);
+            Game.log($"Updated project: {serverProject.buildName} {serverProject.buildId}");
+            setProject(serverProject);
+            this.setEnabled(true);
         }
 
         private void createProject()
         {
             try
             {
-                //var data = JsonConvert.DeserializeObject<Dictionary<string, int>>(txtJson.Text)!;
-                var project = new ProjectCreate
+                var createProject = new ProjectCreate
                 {
                     buildType = (string)comboBuildType.SelectedItem,
                     buildName = txtName.Text ?? "primary-port",
                     architectName = txtArchitect.Text,
+                    factionName = txtFaction.Text,
+                    notes = txtNotes.Text,
 
-                    marketId = cmdr.currentMarketId,
-                    factionName = "",
+                    marketId = project.marketId,
                     systemAddress = cmdr.currentSystemAddress,
                     systemName = cmdr.currentSystem,
                     starPos = cmdr.starPos,
-                    notes = "",
+                    bodyNum = project.bodyNum,
+                    bodyName = project.bodyName,
 
                     commodities = pendingCommodities,
 
-                    commanders = new Dictionary<string, HashSet<string>>() { { cmdr.commander, new() } },
+                    // add all cmdrs
+                    commanders = listCmdrs.Items.Cast<string>().ToDictionary(_ => _, _ => new HashSet<string>()),
                 };
 
-                Game.log($"Creating: {project}");
-                btnAccept.Enabled = false;
-                Game.colony.create(project).continueOnMain(this, saved =>
+                Game.log($"Creating: '{createProject.buildName}' in '{createProject.systemName}' ({createProject.systemAddress}/{createProject.marketId})");
+                setEnabled(false);
+                Game.colony.create(createProject).continueOnMain(this, saved =>
                 {
-                    Game.log($"New build created: {saved.buildId}");
-                    Game.log(saved);
+                    processServerResponse(saved);
+                    //Game.log($"New build created: {saved.buildId}");
+                    //Game.log(saved);
 
-                    this.cmdr.loadColonyData().continueOnMain(this, () =>
-                    {
-                        this.Close();
-                    });
+                    //game.cmdrColony.fetchLatest().continueOnMain(this, () =>
+                    //{
+                    //    this.Close();
+                    //});
                 });
             }
             catch (Exception ex)
@@ -327,39 +476,15 @@ namespace SrvSurvey.forms
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void comboBuildType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (this.project == null) return;
-            btnAccept.Enabled = false;
-            btnJoin.Enabled = false;
-
-            Game.log($"Start contributing to: {project.buildId}");
-
-            // confirm the build project exists first
-            Game.colony.link(project.buildId, cmdr.commander).continueOnMain(this, build =>
-            {
-                // TODO: revisit
-                //cmdr.colonySummary.has.buildIds.Add(key);
-                //cmdr.Save();
-
-                Game.log($"Contributing success!");
-                this.cmdr.loadColonyData().continueOnMain(this, () =>
-                {
-                    MessageBox.Show(this, "You are now contributing to this build project", "SrvSurvey");
-                    this.Close();
-                });
-            });
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!this.IsHandleCreated || this.IsDisposed) return;
+            if (!this.IsHandleCreated || this.IsDisposed || comboBuildType.Enabled == false || untrackedProject == null) return;
 
             var buildType = comboBuildType.SelectedItem?.ToString();
             if (buildType != null && allCosts.ContainsKey(buildType))
             {
-                pendingCommodities = allCosts[buildType].OrderBy(kv => kv.Key).ToDictionary(_ => _.Key, _ => _.Value);
-                prepCommodityRows();
+                untrackedProject.commodities = allCosts[buildType].OrderBy(kv => kv.Key).ToDictionary(_ => _.Key, _ => _.Value);
+                prepCommodityRows(untrackedProject);
             }
         }
 
@@ -376,39 +501,78 @@ namespace SrvSurvey.forms
         private void linkLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             var url = this.project == null
-                ? $"{Colony.svcUri}/Find?q={cmdr.currentSystem}"
-                : $"{Colony.svcUri}/Project?bid={project.buildId}";
+                ? $"{Colony.uxUri}#find={cmdr.currentSystem}"
+                : $"{Colony.uxUri}#build={project.buildId}";
             Util.openLink(url);
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void btnCmdrAdd_Click(object sender, EventArgs e)
         {
-            comboBox1_SelectedIndexChanged(null!, null!);
+            var suggestCmdr = listCmdrs.Items.Contains(colonyData.cmdr) ? "" : colonyData.cmdr;
+            var form = new FormBuildAddCmdr(suggestCmdr);
+            var rslt = form.ShowDialog(this);
+            if (rslt == DialogResult.OK)
+            {
+                listCmdrs.Items.Add(form.commander);
+                dirty = true;
+            }
         }
 
-        private Rectangle lastTableClip;
-        private void table_Paint(object sender, PaintEventArgs e)
+        private void btnCmdrRemove_Click(object sender, EventArgs e)
         {
-            //Game.log($"Draw table: {table.RowCount} / {mouseRow} / {e.ClipRectangle}");
-            //if (e.ClipRectangle.Height < 50) return;
-            //lastTableClip = e.ClipRectangle;
-            //e.Graphics.SetClip(e.ClipRectangle);
+            var cmdr = listCmdrs.SelectedItem as string;
+            if (cmdr == null) return;
 
-            //for (var n = 0; n < table.RowCount; n += 1)
-            //{
-            //    var lbl = table.GetControlFromPosition(0, n);
-            //    if (lbl == null) continue;
-            //    //if (!e.ClipRectangle.Contains(lbl.Bounds)) continue;
+            if (listCmdrs.Items.Contains(cmdr))
+            {
+                listCmdrs.Items.Remove(cmdr);
+                dirty = true;
+            }
+        }
 
-            //    //if (n == mouseRow)
-            //    //    e.Graphics.FillRectangle(Brushes.Cyan, 0, lbl.Top + 1, table.Width, lbl.Height - 1);
-            //    //else if (n % 2 == 0)
-            //    //    e.Graphics.FillRectangle(SystemBrushes.Info, 0, lbl.Top + 1, table.Width, lbl.Height - 1);
+        private void menuCommodities_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var commodity = menuCommodities.Tag as string;
+            if (project?.commanders == null || commodity == null || project.buildId == "")
+            {
+                e.Cancel = true;
+                return;
+            }
 
-            //    //e.Graphics.DrawLine(Pens.Red, 0, lbl.Top, table.Width, lbl.Top);
-            //}
+            while (menuCommodities.Items.Count > 1) menuCommodities.Items.RemoveAt(1);
 
-            //e.Graphics.DrawRectangle(Pens.Red, e.ClipRectangle);
+            foreach (var (cmdr, assigned) in project.commanders)
+            {
+                var item = (ToolStripMenuItem)menuCommodities.Items.Add(cmdr, cmdr, null!);
+                item.Checked = assigned.Contains(commodity);
+                item.Click += (s, e) =>
+                {
+                    Game.log($"menuCommodities: buildId: {project.buildId}, cmdr: {cmdr}, commodity: {commodity}, checked: {item.Checked}");
+                    if (item.Checked)
+                    {
+                        Game.colony.unAssign(project.buildId, cmdr, commodity).continueOnMain(this, () =>
+                        {
+                            project.commanders?.GetValueOrDefault(cmdr, StringComparison.OrdinalIgnoreCase)?.Remove(commodity);
+                            setProject(project, true);
+                        });
+                    }
+                    else
+                    {
+                        Game.colony.assign(project.buildId, cmdr, commodity).continueOnMain(this, () =>
+                        {
+                            project.commanders?.GetValueOrDefault(cmdr, StringComparison.OrdinalIgnoreCase)?.Add(commodity);
+                            setProject(project, true);
+                        });
+                    }
+
+                };
+            }
+
+        }
+
+        private void linkRaven_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Util.openLink(Colony.uxUri);
         }
     }
 }

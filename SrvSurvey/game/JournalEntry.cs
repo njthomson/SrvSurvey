@@ -43,6 +43,7 @@ namespace SrvSurvey
     class LoadGame : JournalEntry
     {
         // { "timestamp":"2023-03-07T06:38:34Z", "event":"LoadGame", "FID":"F10171085", "Commander":"GRINNING2002", "Horizons":true, "Odyssey":true, "Ship":"Dolphin", "ShipID":24, "ShipName":"", "ShipIdent":"", "FuelLevel":15.500000, "FuelCapacity":16.000000, "StartLanded":true, "GameMode":"Solo", "Credits":1597404741, "Loan":0, "language":"English/UK", "gameversion":"4.0.0.1477", "build":"r291050/r0 " }
+        // { "timestamp":"2025-03-09T03:34:04Z", "event":"LoadGame", "FID":"F6985613", "Commander":"grinning2001", "Horizons":true, "Odyssey":true, "Ship":"TacticalSuit_Class5", "Ship_Localised":"$TacticalSuit_Class1_Name;", "ShipID":4293000002, "ShipName":"", "ShipIdent":"", "FuelLevel":1.000000, "FuelCapacity":1.000000, "GameMode":"Open", "Credits":7626827113, "Loan":0, "language":"English/UK", "gameversion":"4.1.0.100", "build":"r311607/r0 " }
 
         public string FID { get; set; }
         public string Commander { get; set; }
@@ -50,7 +51,7 @@ namespace SrvSurvey
         public bool Odyssey { get; set; }
         public string Ship { get; set; }
         public string? Ship_Localised { get; set; }
-        public int ShipID { get; set; }
+        public long ShipID { get; set; }
         public string ShipName { get; set; }
         public string ShipIdent { get; set; }
         public double FuelLevel { get; set; }
@@ -236,6 +237,7 @@ namespace SrvSurvey
         CraterPort,
         AsteroidBase,
         SurfaceStation,
+        PlanetaryConstructionDepot,
     }
 
     class Undocked : JournalEntry
@@ -1290,7 +1292,6 @@ namespace SrvSurvey
 
     class MarketBuy : JournalEntry
     {
-
         // { "timestamp":"2025-03-04T16:10:26Z", "event":"MarketBuy", "MarketID":3708733696, "Type":"insulatingmembrane", "Type_Localised":"Insulating Membrane", "Count":32, "BuyPrice":10605, "TotalCost":339360 }
         public long MarketId;
         public string Type;
@@ -1298,6 +1299,19 @@ namespace SrvSurvey
         public int Count;
         public int BuyPrice;
         public long TotalCost;
+    }
+
+    class MarketSell : JournalEntry
+    {
+        // { "timestamp":"2025-03-06T20:58:16Z", "event":"MarketSell", "MarketID":3708733696, "Type":"aluminium", "Count":2, "SellPrice":2540, "TotalSale":5080, "AvgPricePaid":2604 }
+
+
+        public long MarketId;
+        public string Type;
+        public int Count;
+        public int SellPrice;
+        public int AvgPricePaid;
+        public long TotalSale;
     }
 
     class Market : JournalEntry

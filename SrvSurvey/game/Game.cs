@@ -5,6 +5,7 @@ using SrvSurvey.net.EDSM;
 using SrvSurvey.plotters;
 using SrvSurvey.units;
 using System.Diagnostics;
+using static SrvSurvey.canonn.GRReports;
 
 namespace SrvSurvey.game
 {
@@ -128,6 +129,7 @@ namespace SrvSurvey.game
         public Status status { get; private set; }
         public NavRouteFile navRoute { get; private set; }
         public CargoFile cargoFile { get; private set; }
+        public MarketFile marketFile => GameFileWatcher.read<MarketFile>(MarketFile.filepath);
         public bool guardianMatsFull;
         public bool processDockedOnNextStatusChange = false;
         public bool dockingInProgress = false;
@@ -155,6 +157,7 @@ namespace SrvSurvey.game
         /// </summary>
         public CommanderSettings cmdr;
         public CommanderCodex cmdrCodex;
+        public ColonyData cmdrColony;
         public CommanderJourney? journey;
 
         public SystemPoi? canonnPoi = null;
@@ -591,11 +594,12 @@ namespace SrvSurvey.game
                 // How much does it matter that v4-live/Horizons acts just like Odyssey?
                 this.cmdr = CommanderSettings.Load(loadEntry.FID, journals.isOdyssey, loadEntry.Commander);
                 this.cmdrCodex = cmdr.loadCodex();
+                this.cmdrColony = ColonyData.Load(loadEntry.FID, loadEntry.Commander);
                 this.journey = cmdr.loadActiveJourney();
                 this.journey?.doCatchup(this.journals!);
 
                 if (Game.settings.buildProjects_TEST)
-                    this.cmdr.loadColonyData().ContinueWith(t =>
+                    this.cmdrColony.fetchLatest().ContinueWith(t =>
                     {
                         if (t.Exception != null || !t.IsCompletedSuccessfully)
                             Util.isFirewallProblem(t.Exception);
@@ -1456,6 +1460,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(CargoTransfer entry)
         {
             Game.log($"Updating inventory from transfer");
+            var saveColonyData = false;
             foreach (var transferItem in entry.Transfers)
             {
                 // TODO: check to / from ship?
@@ -1475,9 +1480,21 @@ namespace SrvSurvey.game
                 {
                     inventoryItem.Count += delta;
                 }
+
+                // track colonization commodities pushed onto some FleetCarrier?
+                if (cmdrColony.fcTracking && transferItem.Direction == "tocarrier")
+                {
+                    cmdrColony.fcCommodities.init(transferItem.Type);
+                    cmdrColony.fcCommodities[transferItem.Type] += delta;
+                    Game.log($"Adding {delta}x {transferItem.Type} to colonyData.fcCommodities");
+                    saveColonyData = true;
+                }
             }
+
             Program.invalidateActivePlotters();
             log($"Game.CargoTransfer: Current cargo:\r\n  " + string.Join("\r\n  ", this.cargoFile.Inventory));
+
+            if (saveColonyData) cmdrColony.Save();
         }
 
         private void onJournalEntry(CargoDepot entry)
@@ -1496,7 +1513,7 @@ namespace SrvSurvey.game
             {
                 var diff = this.cargoFile.getDiff();
                 if (diff.Count > 0)
-                    this.cmdr.colonyData.supplyNeeds(lastDocked, diff);
+                    this.cmdrColony.supplyNeeds(lastDocked, diff);
             }
         }
 
@@ -1515,6 +1532,17 @@ namespace SrvSurvey.game
 
             if (Game.settings.allowNotifications.fcMarketPurchaseBugReminder && this.fcMarketIds.Contains(entry.MarketId))
                 marketBuyOnFC = true;
+        }
+        private void onJournalEntry(MarketSell entry)
+        {
+            // include sales to FleetCarriers if tracking colonization commodities that way
+            if (lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.fcTracking)
+            {
+                cmdrColony.fcCommodities.init(entry.Type);
+                cmdrColony.fcCommodities[entry.Type] += entry.Count;
+                Game.log($"Adding {entry.Count}x {entry.Type} to colonyData.fcCommodities");
+                cmdrColony.Save();
+            }
         }
 
         public bool marketBuyOnFC = false;
@@ -1930,6 +1958,8 @@ namespace SrvSurvey.game
 
         public void setLocations(Location entry, string? fid = null, string? cmdrName = null)
         {
+            if (cmdr == null) return;
+
             Game.log($"setLocations: from Location: {entry.StarSystem} / {entry.Body} ({entry.BodyType})");
 
             cmdr.currentSystem = entry.StarSystem;
@@ -2445,6 +2475,13 @@ namespace SrvSurvey.game
             // end the dock-to-dock timer
             if (Game.settings.logDockToDockTimes && dockTimer != null)
                 dockTimer.onJournalEntry(entry);
+
+            if (PlotBuildCommodities.forceShow)
+            {
+                // stop showing this - it's about to be wrong
+                PlotBuildCommodities.forceShow = false;
+                Program.closePlotter<PlotBuildCommodities>();
+            }
 
             if (entry.StationType != StationType.OnFootSettlement || this.systemData == null) return;
 
@@ -3165,7 +3202,7 @@ namespace SrvSurvey.game
 
     class ShipData
     {
-        public int id;
+        public long id;
         public string name;
         public string ident;
         public string type;

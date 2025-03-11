@@ -1,23 +1,69 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.plotters;
+using static SrvSurvey.plotters.PlotVerticalStripe;
 
 namespace SrvSurvey.game
 {
-
-    class ColonyData
+    class ColonyData : Data
     {
         public static string SystemColonisationShip = "System Colonisation Ship";
 
+        public static ColonyData Load(string fid, string cmdr)
+        {
+            var filepath = Path.Combine(Program.dataFolder, $"{fid}-colony.json");
+
+            var data = Data.Load<ColonyData>(filepath);
+            if (data == null)
+                data = new ColonyData() { filepath = filepath };
+
+            // migrate from original file format
+            data.cmdr ??= cmdr;
+
+            return data;
+        }
+
+        public async Task fetchLatest()
+        {
+            var form = Program.getPlotter<PlotBuildCommodities>();
+
+            // set an empty dictionary to make it render "updating..."
+            if (form != null)
+            {
+                form.pendingDiff = new();
+                form.Invalidate();
+            }
+
+            var summary = await Game.colony.getCmdrSummary(this.cmdr);
+            this.primaryBuildId = summary.primaryBuildId;
+            this.projects = summary.projects;
+
+            this.prepNeeds();
+
+            //Game.log(this.colonySummary?.buildIds.formatWithHeader($"loadAllBuildProjects: loading: {this.colonySummary?.buildIds.Count} ...", "\r\n\t"));
+
+            Game.log(this.projects.Select(p => p.buildId).formatWithHeader($"colonySummary.buildIds: {this.projects.Count}", "\r\n\t"));
+            this.Save();
+
+            if (form != null)
+            {
+                form.pendingDiff = null;
+                form.Invalidate();
+            }
+        }
+
+        #region instance data
+
         public List<Project> projects = new();
-        //[JsonIgnore]
-        //public Dictionary<string, int> allCommodities = new();
-        //[JsonIgnore]
-        //public Dictionary<string, List<Project>> assigned = new();
+
+        public string cmdr;
+        public string? primaryBuildId;
+        public bool fcTracking = true;
+        public Dictionary<string, int> fcCommodities = new();
+
+        #endregion
 
         [JsonIgnore]
         public Needs allNeeds;
-
-        private string cmdr => Game.activeGame?.Commander!;
 
         public void prepNeeds()
         {
@@ -27,6 +73,7 @@ namespace SrvSurvey.game
 
         public Project? getProject(string buildId)
         {
+            if (buildId == null) return null;
             return projects?.FirstOrDefault(p => p.buildId == buildId);
         }
 

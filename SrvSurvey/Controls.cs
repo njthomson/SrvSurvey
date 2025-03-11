@@ -61,10 +61,11 @@ namespace SrvSurvey
             return newItem;
         }
 
-        public static void setChildrenEnabled(this Control parent, bool enabled)
+        public static void setChildrenEnabled(this Control parent, bool enabled, params Control[] except)
         {
             foreach (Control child in parent.Controls)
-                child.Enabled = enabled;
+                if (!except.Contains(child))
+                    child.Enabled = enabled;
         }
     }
 

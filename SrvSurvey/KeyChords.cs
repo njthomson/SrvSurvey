@@ -112,7 +112,7 @@ namespace SrvSurvey
                 case KeyAction.showFssInfo: return toggleFSSInfo();
                 case KeyAction.showBodyInfo: return toggleBodyInfo();
                 case KeyAction.showColonyShopping: return toggleColonyShopping();
-                case KeyAction.refreshColonyData: return Game.activeGame?.cmdr?.loadColonyData().justDoIt() ?? true;
+                case KeyAction.refreshColonyData: return Game.activeGame?.cmdrColony.fetchLatest().justDoIt() ?? true;
                 case KeyAction.showSystemNotes: return showSystemNotes();
                 case KeyAction.track1: return trackLocation(1);
                 case KeyAction.track2: return trackLocation(2);

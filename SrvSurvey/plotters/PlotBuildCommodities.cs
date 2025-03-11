@@ -10,11 +10,11 @@ namespace SrvSurvey.plotters
         {
             // show in any mode, so long as we have some messages so show
             get => Game.settings.buildProjects_TEST
-                && Game.activeGame?.cmdr.colonyData?.projects.Count > 0
+                && Game.activeGame?.cmdrColony?.projects.Count > 0
                 && (
-                    (PlotBodyInfo.forceShow && !Game.activeGame.fsdJumping)
+                    (PlotBuildCommodities.forceShow && !Game.activeGame.fsdJumping)
                     || (Game.activeGame.isMode(GameMode.StationServices) && (
-                            Game.activeGame.marketEventSeen || Game.activeGame.cmdr.colonyData.has(Game.activeGame.lastDocked))
+                            Game.activeGame.marketEventSeen || Game.activeGame.cmdrColony.has(Game.activeGame.lastDocked))
                     )
                 )
                 ;
@@ -23,6 +23,9 @@ namespace SrvSurvey.plotters
         /// <summary> When true, makes the plotter become visible </summary>
         public static bool forceShow = false;
 
+        private static Brush brushBackgroundStripe = new SolidBrush(Color.FromArgb(255, 12, 12, 12));
+        private static Size szBigNumbers;
+
         public Dictionary<string, int>? pendingDiff;
         private string? localConstructionShipProjectTitle;
 
@@ -30,14 +33,17 @@ namespace SrvSurvey.plotters
         {
             this.Size = Size.Empty;
             this.Font = GameColors.Fonts.gothic_10;
+
+            if (szBigNumbers == Size.Empty)
+                szBigNumbers = TextRenderer.MeasureText(12345.ToString("N0"), this.Font, Size.Empty);
         }
 
         public override bool allow { get => PlotBuildCommodities.allowPlotter; }
 
         protected override void OnLoad(EventArgs e)
         {
-            this.Width = scaled(100);
-            this.Height = scaled(80);
+            this.Width = scaled(300);
+            this.Height = scaled(600);
 
             base.OnLoad(e);
 
@@ -47,57 +53,76 @@ namespace SrvSurvey.plotters
 
         protected override void onPaintPlotter(PaintEventArgs e)
         {
-            var colonyData = game.cmdr.colonyData;
-            if (this.IsDisposed || colonyData == null || game.systemData == null || game.lastDocked == null) return;
+            var colonyData = game.cmdrColony;
+            if (this.IsDisposed || colonyData == null || game.systemData == null) return;
 
-            var localMarketId = game.lastDocked.MarketID;
-            var needs = colonyData.allNeeds;
-            var headerText = "Commodities needed:";
+            var localMarketId = game.lastDocked?.MarketID ?? -1;
             var relevantProjects = colonyData.projects;
+            var headerText = $"Commodities for {relevantProjects.Count} projects:";
             var projectNames = new HashSet<string>();
 
             // if we are in a system to deliver supplies - show only those
-            var localProjects = colonyData.projects.Where(p => p.systemAddress == game.systemData.address).ToList();
-            if (localProjects.Any())
+            var effectiveAddress = -1L;
+            var effectiveMarketId = -1L;
+
+            if (!string.IsNullOrWhiteSpace(colonyData.primaryBuildId))
             {
-                // show name/type of projects in this system ...
-                projectNames = localProjects.Select((p, n) => $"{p.buildName} ({p.buildType} #{n})").ToHashSet();
-                headerText = "Local projects:";
-
-                // ... but if we are docked at a colonization ship - use the corresponding project name/type
-                if (game.lastDocked.StationName == ColonyData.SystemColonisationShip)
+                var primaryProject = colonyData.getProject(colonyData.primaryBuildId);
+                if (primaryProject != null)
                 {
-                    if (this.localConstructionShipProjectTitle == null)
-                    {
-                        // get name/type of projects in this system
-                        var localProject = localProjects.FirstOrDefault(p => p.marketId == localMarketId);
-                        if (localProject != null)
-                        {
-                            var idx = localProjects.IndexOf(localProject);
-                            // remember this for future renders
-                            if (idx < projectNames.Count)
-                                this.localConstructionShipProjectTitle = "► " + projectNames.ToList()[idx];
-                        }
-                    }
-
-                    if (this.localConstructionShipProjectTitle != null)
-                    {
-                        headerText = this.localConstructionShipProjectTitle;
-                        projectNames.Clear();
-                        needs = colonyData.getLocalNeeds(game.lastDocked.SystemAddress, localMarketId);
-                    }
-                }
-                else
-                {
-                    // TODO: sum for multiple local projects
-                    needs = colonyData.getLocalNeeds(game.lastDocked.SystemAddress, -1);
+                    effectiveAddress = primaryProject.systemAddress;
+                    effectiveMarketId = primaryProject.marketId;
+                    headerText = $"► {primaryProject.buildName} ({primaryProject.buildType})\r\n     ► {primaryProject.systemName}";
                 }
             }
             else
             {
-                // show all system names
-                projectNames = colonyData.projects.Select(p => $"{p.systemName}").ToHashSet();
+                var localProjects = colonyData.projects.Where(p => p.systemAddress == game.systemData.address).ToList();
+                if (localProjects.Any())
+                {
+                    // show name/type of projects in this system ...
+                    projectNames = localProjects.Select((p, n) => $"{p.buildName} ({p.buildType} #{n})").ToHashSet();
+                    headerText = "Local projects:";
+
+                    // ... but if we are docked at a colonization ship - use the corresponding project name/type
+                    if (game.lastDocked?.StationName == ColonyData.SystemColonisationShip)
+                    {
+                        if (this.localConstructionShipProjectTitle == null)
+                        {
+                            // get name/type of projects in this system
+                            var localProject = localProjects.FirstOrDefault(p => p.marketId == localMarketId);
+                            if (localProject != null)
+                            {
+                                var idx = localProjects.IndexOf(localProject);
+                                // remember this for future renders
+                                if (idx < projectNames.Count)
+                                    this.localConstructionShipProjectTitle = "► " + projectNames.ToList()[idx];
+                            }
+                        }
+
+                        if (this.localConstructionShipProjectTitle != null)
+                        {
+                            headerText = this.localConstructionShipProjectTitle;
+                            projectNames.Clear();
+                            effectiveAddress = game.lastDocked?.SystemAddress ?? -1;
+                            effectiveMarketId = localMarketId;
+                        }
+                    }
+                    else
+                    {
+                        // TODO: sum for multiple local projects
+                        effectiveAddress = game.lastDocked?.SystemAddress ?? -1;
+                    }
+                }
+                else
+                {
+                    // show system names for all projects
+                    projectNames = colonyData.projects.Select(p => $"{p.systemName}").ToHashSet();
+                }
             }
+
+            var needs = colonyData.getLocalNeeds(effectiveAddress, effectiveMarketId);
+
 
             // start rendering...
             drawTextAt2(ten, headerText, GameColors.Fonts.gothic_12B);
@@ -135,12 +160,8 @@ namespace SrvSurvey.plotters
 
         private bool drawNeeds(ColonyData.Needs needs)
         {
-            var bb = new SolidBrush(Color.FromArgb(255, 12, 12, 12));
-
-            var sz = TextRenderer.MeasureText("88888", this.Font, Size.Empty);
-
             var hasLocalCargo = game.cargoFile.Inventory.Count > 0;
-            var needIndent = hasLocalCargo ? sz.Width : 0;
+            var needIndent = hasLocalCargo ? szBigNumbers.Width : 0;
 
             // prep 3 columns of zero width
             var columns = new Dictionary<int, float>() { { 0, 0 }, { 1, needIndent }, { 2, needIndent } };
@@ -153,12 +174,19 @@ namespace SrvSurvey.plotters
             drawTextAt2(ten, "Commodity", C.orangeDark, null).widestColumn(0, columns);
             newLine(true);
 
+            var localMarketItems = game.lastDocked == null || game.lastDocked.StationName == ColonyData.SystemColonisationShip
+                ? new()
+                : game.marketFile.Items
+                    .Where(i => i.Stock > 0)
+                    .Select(_ => _.Name.Substring(1).Replace("_name;", ""))
+                    .ToHashSet();
+
             var flip = false;
             var hasPin = false;
             var sumNeed = 0;
             foreach (var (name, count) in needs.commodities)
             {
-                if (flip) g.FillRectangle(bb, four, dty - one, this.Width - eight, sz.Height + one);
+                if (flip) g.FillRectangle(brushBackgroundStripe, four, dty - one, this.Width - eight, szBigNumbers.Height + one);
                 var col = C.orange;
                 var ff = GameColors.Fonts.gothic_10;
 
@@ -186,6 +214,7 @@ namespace SrvSurvey.plotters
                 if (count == 0)
                 {
                     col = C.orangeDark;
+                    nameTxt += " ✔️";
                 }
                 else if (cargoCount > count)
                 {
@@ -197,6 +226,12 @@ namespace SrvSurvey.plotters
                 {
                     col = C.green;
                     nameTxt += " ✔️";
+                }
+                else if (localMarketItems.Count > 0 && !localMarketItems.Contains(name))
+                {
+                    // make needed items missing in the current market dark red
+                    col = C.redDark;
+                    nameTxt += " ❌";
                 }
 
                 // render needed count
@@ -215,7 +250,7 @@ namespace SrvSurvey.plotters
                     .widestColumn(0, columns);
 
                 if (count == 0 && false)
-                    strikeThrough(dtx + four, dty + one + Util.centerIn(sz.Height, 0), -sz2.Width - six, true);
+                    strikeThrough(dtx + four, dty + one + Util.centerIn(szBigNumbers.Height, 0), -sz2.Width - six, true);
 
                 newLine(true);
                 flip = !flip;

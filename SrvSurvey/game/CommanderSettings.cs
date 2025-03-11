@@ -31,19 +31,6 @@ namespace SrvSurvey.game
                 };
         }
 
-        public override void Save()
-        {
-            // save colony data into a separate file
-            if (this.colonyData != null)
-            {
-                var json = JsonConvert.SerializeObject(this.colonyData, Formatting.Indented);
-                var filepath = this.filepath.Replace("-live.json", "-colony.json");
-                saveWithRetry(filepath, json);
-            }
-
-            base.Save();
-        }
-
         public static string currentOrLastFid
         {
             get => Game.activeGame?.cmdr?.fid ?? Game.settings.lastFid!;
@@ -154,9 +141,6 @@ namespace SrvSurvey.game
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public BoxelSearch? boxelSearch;
-
-        [JsonIgnore]
-        public ColonyData colonyData = new();
 
         #endregion
 
@@ -346,31 +330,7 @@ namespace SrvSurvey.game
         }
         private FollowRoute? _followRoute;
 
-        public async Task loadColonyData()
-        {
-            var form = Program.getPlotter<PlotBuildCommodities>();
 
-            // set an empty dictionary to make it render "updating..."
-            if (form != null)
-            {
-                form.pendingDiff = new();
-                form.Invalidate();
-            }
-
-            this.colonyData.projects = await Game.colony.getCmdrProjects(this.commander);
-            this.colonyData.prepNeeds();
-
-            //Game.log(this.colonySummary?.buildIds.formatWithHeader($"loadAllBuildProjects: loading: {this.colonySummary?.buildIds.Count} ...", "\r\n\t"));
-
-            Game.log(colonyData.projects.Select(p => p.buildId).formatWithHeader($"colonySummary.buildIds: {colonyData.projects.Count}", "\r\n\t"));
-            this.Save();
-
-            if (form != null)
-            {
-                form.pendingDiff = null;
-                form.Invalidate();
-            }
-        }
     }
 
     internal class SphereLimit

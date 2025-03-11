@@ -1,5 +1,4 @@
 ﻿using BioCriterias;
-using SharpDX.DirectInput;
 using SrvSurvey.canonn;
 using SrvSurvey.forms;
 using SrvSurvey.game;
@@ -347,6 +346,8 @@ namespace SrvSurvey
             this.updateSphereLimit();
 
             groupCodex.Invalidate();
+
+            menuBuildProjects.Enabled = Game.ready;
 
             // enable button only if this system has some bio signals
             btnPredictions.Enabled = Game.activeGame?.systemData?.bioSignalsTotal > 0;
@@ -1842,7 +1843,8 @@ namespace SrvSurvey
 
         private void menuBuildProjects_Click(object sender, EventArgs e)
         {
-            BaseForm.show<FormBuildNew>();
+            if (game?.cmdrColony != null)
+                BaseForm.show<FormBuildNew>();
         }
 
         private void btnRamTah_Click(object sender, EventArgs e)
@@ -1854,6 +1856,24 @@ namespace SrvSurvey
         {
             BaseForm.show<FormCodexBingo>();
             //Game.spansh.testColonizationRoute("Col 285 Sector MD-S d4-60");
+
+            //var mf = new SystemQuery.Markets();
+            //mf.Add(new SystemQuery.Market() { name = "Copper", supply = new Query.Market.Clause(100, 10_000_000) });
+
+            ////var mf = new SystemQuery.Market();
+            ////mf.name = "Copper";
+            ////mf.supply = new Query.Market.Clause(100, 10_000_000);
+
+            //var q = new SystemQuery
+            //{
+            //    page = 0,
+            //    size = 10,
+            //    filters = new() { { "market", mf } }
+            //};
+
+            //Game.spansh.queryStations(q);
+
+            //var tt = this.GetType();
         }
 
         private void btnLogs_Click(object sender, EventArgs e)

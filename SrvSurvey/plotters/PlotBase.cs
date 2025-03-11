@@ -94,7 +94,7 @@ namespace SrvSurvey.plotters
 
         protected override void OnActivated(EventArgs e)
         {
-            Game.log($"!!!! OnActivated: {this.Name}. Mouse is:{Cursor.Position}");
+            //Game.log($"!!!! OnActivated: {this.Name}. Mouse is:{Cursor.Position}");
 
             // plotters are not suppose to receive focus - force it back onto the game if we do
             base.OnActivated(e);
@@ -180,7 +180,7 @@ namespace SrvSurvey.plotters
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            Game.log($"!!!! OnMouseDown: {this.Name}. Mouse is:{Cursor.Position}");
+            //Game.log($"!!!! OnMouseDown: {this.Name}. Mouse is:{Cursor.Position}");
             base.OnMouseDown(e);
 
             this.Invalidate();

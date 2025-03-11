@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace SrvSurvey.game
 {
@@ -8,6 +9,8 @@ namespace SrvSurvey.game
         private static string colonizationCostsPath = Path.Combine(Application.StartupPath, "colonization-costs.json");
         public static string svcUri = "https://ravencolonial100-awcbdvabgze4c5cq.canadacentral-01.azurewebsites.net";
         //public static string svcUri = "https://localhost:7007";
+        public static string uxUri = "https://ravencolonial.com";
+
         private static HttpClient client;
 
         static Colony()
@@ -51,18 +54,24 @@ namespace SrvSurvey.game
             return obj;
         }
 
-        public async Task<Project> link(string buildId, string cmdr)
+        public async Task linkCmdr(string buildId, string cmdr)
         {
             Game.log($"Colony.link: {cmdr} => {buildId}");
 
-            var json1 = JsonConvert.SerializeObject("");
-            var body = new StringContent(json1, Encoding.Default, "application/json");
             var response = await Colony.client.PutAsync($"{svcUri}/api/project/{buildId}/link/{cmdr}", null);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
-            var json2 = await response.Content.ReadAsStringAsync();
-            var obj = JsonConvert.DeserializeObject<Project>(json2)!;
-            return obj;
+            await response.Content.ReadAsStringAsync();
+        }
+
+        public async Task unlinkCmdr(string buildId, string cmdr)
+        {
+            Game.log($"Colony.link: {cmdr} => {buildId}");
+
+            var response = await Colony.client.DeleteAsync($"{svcUri}/api/project/{buildId}/link/{cmdr}");
+            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
+
+            await response.Content.ReadAsStringAsync();
         }
 
         public async Task assign(string buildId, string cmdr, string commodity)
@@ -133,6 +142,24 @@ namespace SrvSurvey.game
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<List<Project>>(json)!;
             return obj;
+        }
+
+        public async Task<CmdrSummary> getCmdrSummary(string cmdr)
+        {
+            Game.log($"Colony.getCmdrProjects: {cmdr}");
+
+            var response = await Colony.client.GetAsync($"{svcUri}/api/cmdr/{cmdr}/summary");
+            var json = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<CmdrSummary>(json)!;
+            return obj;
+        }
+
+        public async Task setPrimary(string cmdr, string buildId)
+        {
+            Game.log($"Colony.setPrimary: {cmdr} => {buildId}");
+
+            var response = await Colony.client.PostAsync($"{svcUri}/api/cmdr/{cmdr}/primary/{buildId}", null);
+            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
         }
 
         /*
@@ -265,20 +292,21 @@ namespace SrvSurvey.game
     public class ProjectCore
     {
         // Schema.Project
-        public required string buildType;
-        public required string buildName;
+        public string buildType;
+        public string buildName;
 
         public long marketId;
         public long systemAddress;
-        public required string systemName;
-        public required double[] starPos;
+        public string systemName;
+        public double[] starPos;
         public int? bodyNum;
         public string? bodyName;
 
         public string? factionName;
         public string? architectName;
 
-        public Dictionary<string, HashSet<string>>? commanders;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public Dictionary<string, HashSet<string>> commanders = new();
 
         // Schema.ProjectNotes
         public string? notes;
@@ -295,13 +323,20 @@ namespace SrvSurvey.game
         public DateTimeOffset? Timestamp { get; set; }
         public string ETag { get; set; }
 
-        public required string buildId;
+        public string buildId;
 
         public int sumNeed;
         public int sumTotal;
 
         // Schema.ProjectCommodity
-        public required Dictionary<string, int> commodities;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public Dictionary<string, int> commodities = new();
+
+        public override string ToString()
+        {
+            // Used as display name by ComboBox
+            return $"{systemName}: {buildName}";
+        }
     }
 
     public class ProjectRef
@@ -322,28 +357,10 @@ namespace SrvSurvey.game
         public string? architectName;
     }
 
-    class CmdrSummary
+    public class CmdrSummary
     {
-        public required List<ProjectRef> projects;
-        public required Dictionary<string, int> needs;
-
-        public bool has(string buildId)
-        {
-            return projects.Any(p => p.buildId == buildId);
-        }
-
-        public bool has(long id64, long marketId)
-        {
-            return projects.Any(p => p.systemAddress == id64 && p.marketId == marketId);
-        }
-
-        [JsonIgnore]
-        public string[] buildIds => projects?.Select(p => p.buildId).ToArray() ?? new string[0];
-
-        public string? getBuildId(long id64, long marketId)
-        {
-            return projects?.FirstOrDefault(p => p.systemAddress == id64 && p.marketId == marketId)?.buildId;
-        }
+        public string? primaryBuildId;
+        public List<Project> projects;
     }
 
     public class ProjectUpdate
