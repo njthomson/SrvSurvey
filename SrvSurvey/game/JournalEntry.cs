@@ -1155,6 +1155,25 @@ namespace SrvSurvey
             else
                 throw new Exception("Unexpected category: " + category);
         }
+
+        public MaterialEntry addEntry(MaterialCollected entry)
+        {
+            var newEntry = new MaterialEntry()
+            {
+                Name = entry.Name,
+                Name_Localised = entry.Name_Localised,
+                Count = entry.Count,
+            };
+
+            if (entry.Category == "Raw")
+                this.Raw.Add(newEntry);
+            else if (entry.Category == "Encoded")
+                this.Encoded.Add(newEntry);
+            else if (entry.Category == "Manufactured")
+                this.Manufactured.Add(newEntry);
+
+            return newEntry;
+        }
     }
 
     public class MaterialEntry

@@ -150,7 +150,7 @@ namespace SrvSurvey.game
                     form.Invalidate();
                 }
 
-                Game.colony.supply(localProject.buildId, diff).continueOnMain(null, updatedCommodities =>
+                Game.colony.supply(localProject.buildId, this.cmdr, diff).continueOnMain(null, updatedCommodities =>
                 {
                     // update local numbers
                     foreach (var (name, count) in updatedCommodities)

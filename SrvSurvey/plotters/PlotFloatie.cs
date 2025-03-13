@@ -23,6 +23,10 @@ namespace SrvSurvey.plotters
             // exit early if this plotter is disabled
             if (!Game.settings.autoShowFloatie_TEST) return;
 
+            var existing = messages.Find(_ => _.msg == msg);
+            if (existing != null)
+                messages.Remove(existing);
+
             // reset close time, add message and show the window
             closeTime = DateTime.Now.AddSeconds(durationVisible);
             messages.Add(new(msg, closeTime));

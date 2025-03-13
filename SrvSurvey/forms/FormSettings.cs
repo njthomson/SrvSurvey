@@ -313,7 +313,8 @@ namespace SrvSurvey
                                 var subSettings = map[name].GetValue(Game.settings)!;
                                 foreach (ListViewItem item in ((ListView)ctrl).Items)
                                     subSettings.GetType()!.GetField((string)item.Tag!)!.SetValue(subSettings, item.Checked);
-                                return;
+
+                                name = null;
                             }
                             break;
 
@@ -323,7 +324,8 @@ namespace SrvSurvey
                     }
 
                     // Game.log($"Write setting: {name} => {val}");
-                    map[name].SetValue(Game.settings, val);
+                    if (name != null)
+                        map[name].SetValue(Game.settings, val);
                 }
 
                 // recurse if there are children

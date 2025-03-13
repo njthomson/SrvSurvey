@@ -120,14 +120,14 @@ namespace SrvSurvey.game
             }
         }
 
-        public async Task<Dictionary<string, int>> supply(string buildId, Dictionary<string, int> diff)
+        public async Task<Dictionary<string, int>> supply(string buildId, string cmdr, Dictionary<string, int> diff)
         {
             //Game.log(diff.formatWithHeader($"Colony.supply: {buildId}", "\r\n\t"));
 
             var json1 = JsonConvert.SerializeObject(diff);
             var body = new StringContent(json1, Encoding.Default, "application/json");
-            var url = $"{svcUri}/api/project/{buildId}/supply/{Game.activeGame?.Commander}";
-            var response = await Colony.client.PutAsync(url, body);
+            var url = $"{svcUri}/api/project/{buildId}/supply/{cmdr}";
+            var response = await Colony.client.PostAsync(url, body);
 
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<Dictionary<string, int>>(json)!;

@@ -1624,17 +1624,13 @@ namespace SrvSurvey.game
         {
             if (Game.settings.allowNotifications.materialCountAfterPickup)
             {
-                // find the matching material
+                // add or adjust the count and show a message
                 var match = this.materials.getMaterialEntry(entry.Category, entry.Name);
                 if (match == null)
-                {
-                    Game.log("Why no material match??");
-                    Debugger.Break();
-                    return;
-                }
+                    match = this.materials.addEntry(entry);
+                else
+                    match.Count += entry.Count;
 
-                // adjust the count and show a message
-                match.Count += entry.Count;
                 PlotFloatie.showMessage($"Collected: {entry.Count}x {match.displayName}, new total {match.Count}"); // TODO: localize
             }
         }

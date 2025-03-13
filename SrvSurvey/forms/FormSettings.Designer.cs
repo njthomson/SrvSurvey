@@ -231,20 +231,20 @@ namespace SrvSurvey
             colDesc = new ColumnHeader();
             label28 = new Label();
             checkKeyChords = new CheckBox();
+            tabPage8 = new TabPage();
+            checkBox40 = new CheckBox();
+            listView1 = new ListView();
+            checkBox42 = new CheckBox();
+            checkBox41 = new CheckBox();
             tabPage2 = new TabPage();
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
-            tabPage8 = new TabPage();
-            checkBox42 = new CheckBox();
-            checkBox41 = new CheckBox();
-            checkBox40 = new CheckBox();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
             menuCodexImages = new ButtonContextMenuStrip(components);
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
-            listView1 = new ListView();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -296,8 +296,8 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)numericUpDown6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).BeginInit();
             tabKeyChords.SuspendLayout();
-            tabPage2.SuspendLayout();
             tabPage8.SuspendLayout();
+            tabPage2.SuspendLayout();
             menuCodexImages.SuspendLayout();
             SuspendLayout();
             // 
@@ -874,8 +874,8 @@ namespace SrvSurvey
             tabControl.Controls.Add(tabPage7);
             tabControl.Controls.Add(tabSettlements);
             tabControl.Controls.Add(tabKeyChords);
-            tabControl.Controls.Add(tabPage2);
             tabControl.Controls.Add(tabPage8);
+            tabControl.Controls.Add(tabPage2);
             tabControl.Dock = DockStyle.Fill;
             tabControl.Location = new Point(0, 0);
             tabControl.Margin = new Padding(4, 3, 4, 3);
@@ -2853,6 +2853,82 @@ namespace SrvSurvey
             checkKeyChords.UseVisualStyleBackColor = true;
             checkKeyChords.CheckedChanged += checkKeyChords_CheckedChanged;
             // 
+            // tabPage8
+            // 
+            tabPage8.BackColor = SystemColors.Control;
+            tabPage8.BorderStyle = BorderStyle.Fixed3D;
+            tabPage8.Controls.Add(checkBox40);
+            tabPage8.Controls.Add(listView1);
+            tabPage8.Controls.Add(checkBox42);
+            tabPage8.Controls.Add(checkBox41);
+            tabPage8.Location = new Point(4, 24);
+            tabPage8.Name = "tabPage8";
+            tabPage8.Padding = new Padding(3);
+            tabPage8.Size = new Size(699, 448);
+            tabPage8.TabIndex = 9;
+            tabPage8.Text = "More";
+            // 
+            // checkBox40
+            // 
+            checkBox40.AutoSize = true;
+            checkBox40.CheckAlign = ContentAlignment.TopLeft;
+            checkBox40.FlatStyle = FlatStyle.System;
+            checkBox40.Location = new Point(12, 305);
+            checkBox40.Name = "checkBox40";
+            checkBox40.Size = new Size(214, 20);
+            checkBox40.TabIndex = 35;
+            checkBox40.Tag = "autoShowFloatie_TEST";
+            checkBox40.Text = "Allow timed notification messages";
+            checkBox40.UseVisualStyleBackColor = true;
+            // 
+            // listView1
+            // 
+            listView1.CheckBoxes = true;
+            listViewItem1.StateImageIndex = 0;
+            listViewItem1.Tag = "materialCountAfterPickup";
+            listViewItem2.StateImageIndex = 0;
+            listViewItem2.Tag = "cargoMissionRemaining";
+            listViewItem3.StateImageIndex = 0;
+            listViewItem3.Tag = "currentBoxelSearchStatus";
+            listViewItem4.StateImageIndex = 0;
+            listViewItem4.Tag = "showNextBoxelToSearch";
+            listViewItem5.StateImageIndex = 0;
+            listViewItem5.Tag = "fcMarketPurchaseBugReminder";
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5 });
+            listView1.Location = new Point(12, 331);
+            listView1.Name = "listView1";
+            listView1.Size = new Size(400, 107);
+            listView1.TabIndex = 39;
+            listView1.Tag = "allowNotifications";
+            listView1.UseCompatibleStateImageBehavior = false;
+            listView1.View = View.SmallIcon;
+            // 
+            // checkBox42
+            // 
+            checkBox42.AutoSize = true;
+            checkBox42.CheckAlign = ContentAlignment.TopLeft;
+            checkBox42.FlatStyle = FlatStyle.System;
+            checkBox42.Location = new Point(12, 16);
+            checkBox42.Name = "checkBox42";
+            checkBox42.Size = new Size(340, 20);
+            checkBox42.TabIndex = 38;
+            checkBox42.Tag = "autoShowPlotStationInfo_TEST";
+            checkBox42.Text = "Show station/target details in left nav panel (experimental)";
+            checkBox42.UseVisualStyleBackColor = true;
+            // 
+            // checkBox41
+            // 
+            checkBox41.AutoSize = true;
+            checkBox41.CheckAlign = ContentAlignment.TopLeft;
+            checkBox41.FlatStyle = FlatStyle.System;
+            checkBox41.Location = new Point(12, 42);
+            checkBox41.Name = "checkBox41";
+            checkBox41.Size = new Size(216, 20);
+            checkBox41.TabIndex = 37;
+            checkBox41.Tag = "logDockToDockTimes";
+            checkBox41.Text = "Log dock-to-dock times to .csv file";
+            checkBox41.UseVisualStyleBackColor = true;
+            // 
             // tabPage2
             // 
             tabPage2.BorderStyle = BorderStyle.Fixed3D;
@@ -2891,60 +2967,6 @@ namespace SrvSurvey
             linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
             linkAboutOne.UseCompatibleTextRendering = true;
             // 
-            // tabPage8
-            // 
-            tabPage8.BackColor = SystemColors.Control;
-            tabPage8.BorderStyle = BorderStyle.Fixed3D;
-            tabPage8.Controls.Add(checkBox40);
-            tabPage8.Controls.Add(listView1);
-            tabPage8.Controls.Add(checkBox42);
-            tabPage8.Controls.Add(checkBox41);
-            tabPage8.Location = new Point(4, 24);
-            tabPage8.Name = "tabPage8";
-            tabPage8.Padding = new Padding(3);
-            tabPage8.Size = new Size(699, 448);
-            tabPage8.TabIndex = 9;
-            tabPage8.Text = "More";
-            // 
-            // checkBox42
-            // 
-            checkBox42.AutoSize = true;
-            checkBox42.CheckAlign = ContentAlignment.TopLeft;
-            checkBox42.FlatStyle = FlatStyle.System;
-            checkBox42.Location = new Point(12, 16);
-            checkBox42.Name = "checkBox42";
-            checkBox42.Size = new Size(340, 20);
-            checkBox42.TabIndex = 38;
-            checkBox42.Tag = "autoShowPlotStationInfo_TEST";
-            checkBox42.Text = "Show station/target details in left nav panel (experimental)";
-            checkBox42.UseVisualStyleBackColor = true;
-            // 
-            // checkBox41
-            // 
-            checkBox41.AutoSize = true;
-            checkBox41.CheckAlign = ContentAlignment.TopLeft;
-            checkBox41.FlatStyle = FlatStyle.System;
-            checkBox41.Location = new Point(12, 42);
-            checkBox41.Name = "checkBox41";
-            checkBox41.Size = new Size(216, 20);
-            checkBox41.TabIndex = 37;
-            checkBox41.Tag = "logDockToDockTimes";
-            checkBox41.Text = "Log dock-to-dock times to .csv file";
-            checkBox41.UseVisualStyleBackColor = true;
-            // 
-            // checkBox40
-            // 
-            checkBox40.AutoSize = true;
-            checkBox40.CheckAlign = ContentAlignment.TopLeft;
-            checkBox40.FlatStyle = FlatStyle.System;
-            checkBox40.Location = new Point(12, 305);
-            checkBox40.Name = "checkBox40";
-            checkBox40.Size = new Size(214, 20);
-            checkBox40.TabIndex = 35;
-            checkBox40.Tag = "autoShowFloatie_TEST";
-            checkBox40.Text = "Allow timed notification messages";
-            checkBox40.UseVisualStyleBackColor = true;
-            // 
             // colorDialog
             // 
             colorDialog.Color = Color.Yellow;
@@ -2981,28 +3003,6 @@ namespace SrvSurvey
             menuClearCodexCache.Text = "Clear cached images";
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
-            // 
-            // listView1
-            // 
-            listView1.CheckBoxes = true;
-            listViewItem1.StateImageIndex = 0;
-            listViewItem1.Tag = "materialCountAfterPickup";
-            listViewItem2.StateImageIndex = 0;
-            listViewItem2.Tag = "cargoMissionRemaining";
-            listViewItem3.StateImageIndex = 0;
-            listViewItem3.Tag = "currentBoxelSearchStatus";
-            listViewItem4.StateImageIndex = 0;
-            listViewItem4.Tag = "showNextBoxelToSearch";
-            listViewItem5.StateImageIndex = 0;
-            listViewItem5.Tag = "fcMarketPurchaseBugReminder";
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5 });
-            listView1.Location = new Point(12, 331);
-            listView1.Name = "listView1";
-            listView1.Size = new Size(309, 107);
-            listView1.TabIndex = 39;
-            listView1.Tag = "allowNotifications";
-            listView1.UseCompatibleStateImageBehavior = false;
-            listView1.View = View.SmallIcon;
             // 
             // FormSettings
             // 
@@ -3083,9 +3083,9 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).EndInit();
             tabKeyChords.ResumeLayout(false);
             tabKeyChords.PerformLayout();
-            tabPage2.ResumeLayout(false);
             tabPage8.ResumeLayout(false);
             tabPage8.PerformLayout();
+            tabPage2.ResumeLayout(false);
             menuCodexImages.ResumeLayout(false);
             ResumeLayout(false);
         }
