@@ -174,7 +174,7 @@ namespace SrvSurvey.plotters
             drawTextAt2(ten, "Commodity", C.orangeDark, null).widestColumn(0, columns);
             newLine(true);
 
-            var localMarketItems = game.lastDocked == null || game.lastDocked.StationName == ColonyData.SystemColonisationShip
+            var localMarketItems = game.lastDocked == null || game.lastDocked.StationName == ColonyData.SystemColonisationShip || game.lastDocked.StationType == StationType.PlanetaryConstructionDepot
                 ? new()
                 : game.marketFile.Items
                     .Where(i => i.Stock > 0)
@@ -193,6 +193,7 @@ namespace SrvSurvey.plotters
                 sumNeed += count;
                 var nameTxt = name;
                 var cargoCount = hasLocalCargo ? game.cargoFile.getCount(name) : 0;
+                var inHold = game.cargoFile.Inventory.Find(i => i.Name == name) != null;
 
                 if (needs.assigned.Contains(name))
                 {
@@ -206,7 +207,7 @@ namespace SrvSurvey.plotters
                     col = C.cyan;
                     nameTxt = "► " + name;
                 }
-                else if (game.cargoFile.Inventory.Find(i => i.Name == name) != null)
+                else if (inHold)
                 {
                     // highlight things in cargo hold
                     col = C.cyan;
@@ -235,13 +236,13 @@ namespace SrvSurvey.plotters
                 }
 
                 // render needed count
-                drawTextAt2(this.Width - eight - needIndent, count.ToString("N0"), col, ff, true)
+                drawTextAt2(this.Width - eight - needIndent, count.ToString("N0"), inHold ? C.cyan : col, ff, true)
                     .widestColumn(1, columns);
 
                 // render cargo count
                 if (cargoCount > 0)
                 {
-                    drawTextAt2(this.Width - eight, cargoCount.ToString("N0"), col, ff, true)
+                    drawTextAt2(this.Width - eight, cargoCount.ToString("N0"), inHold ? C.cyan : col, ff, true)
                     .widestColumn(2, columns);
                 }
 

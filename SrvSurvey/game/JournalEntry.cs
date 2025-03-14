@@ -209,7 +209,7 @@ namespace SrvSurvey
         public string StarSystem;
         public long SystemAddress;
         public long MarketID;
-        // StationFaction ?
+        public NamedFaction StationFaction;
         public string? StationGovernment;
         public string? StationGovernment_Localised;
         public List<string>? StationServices;

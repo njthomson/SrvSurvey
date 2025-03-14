@@ -35,7 +35,7 @@ namespace SrvSurvey.game
             spansh = new Spansh();
             edsm = new EDSM();
             git = new Git();
-            colony = new Colony();
+            colony = new ColonyNet();
         }
 
         #region logging
@@ -108,7 +108,7 @@ namespace SrvSurvey.game
         public static Spansh spansh { get; private set; }
         public static EDSM edsm { get; private set; }
         public static Git git { get; private set; }
-        public static Colony colony { get; private set; }
+        public static ColonyNet colony { get; private set; }
 
         public bool initialized { get; private set; }
 
@@ -2479,6 +2479,22 @@ namespace SrvSurvey.game
                 Program.closePlotter<PlotBuildCommodities>();
             }
 
+            if (Game.settings.buildProjects_TEST)
+            {
+                // Auto update faction names if incorrect
+                var proj = cmdrColony.getProject(entry.SystemAddress, entry.MarketID);
+                if (proj != null && proj.factionName != entry.StationFaction.Name)
+                {
+                    Game.log($"Auto-update factionName: {proj.factionName} => {entry.StationFaction.Name}");
+                    Game.colony.update(new ProjectUpdate()
+                    {
+                        buildId = proj.buildId,
+                        factionName = entry.StationFaction.Name,
+                    }).justDoIt();
+                }
+            }
+
+            // stop here if we're not at an Odyssey settlement
             if (entry.StationType != StationType.OnFootSettlement || this.systemData == null) return;
 
             // new ...

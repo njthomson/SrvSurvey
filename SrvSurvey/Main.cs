@@ -1880,6 +1880,8 @@ namespace SrvSurvey
         {
             BaseForm.show<ViewLogs>();
 
+            var txt = "";
+
             /*
             if (this.mv != null)
             {

@@ -71,6 +71,9 @@
     <Content Include="colonization-costs.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="colonization-costs2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="guardianSiteTemplates.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -14,7 +14,7 @@ namespace SrvSurvey.forms
         private bool dirty = false;
 
         private string? key;
-        private Dictionary<string, Dictionary<string, int>> allCosts;
+        private List<ColonyCost2> allCosts;
         private Font fontB;
         private Font lblFont;
         private List<Control> lastCtrls = new();
@@ -27,12 +27,16 @@ namespace SrvSurvey.forms
             this.Icon = Icons.ruler;
             this.fontB = new Font(this.Font, FontStyle.Bold);
             this.lblFont = new Font("Segoe UI Emoji", this.Font.Size);
+            this.table.Controls.Clear();
 
             this.cmdr = CommanderSettings.LoadCurrentOrLast(); // Remove?
             this.colonyData = game.cmdrColony;
 
             this.allCosts = Game.colony.loadDefaultCosts();
-            this.comboBuildType.Items.AddRange(allCosts.Keys.ToArray());
+            var sourceCosts = allCosts.ToDictionary(c => c.buildType, c => $"Tier {c.tier}: {c.displayName} ({string.Join(", ", c.layouts)})");
+            this.comboBuildType.DataSource = new BindingSource(sourceCosts, null);
+            this.comboBuildType.DisplayMember = "Value";
+            this.comboBuildType.ValueMember = "Key";
 
             // fill combo with known projects
             setComboProjectBindingSource();
@@ -46,7 +50,7 @@ namespace SrvSurvey.forms
         {
             if (colonyData.primaryBuildId != null)
                 comboProjects.SelectedValue = colonyData.primaryBuildId;
-            if (comboProjects.SelectedItem == null)
+            if (comboProjects.SelectedItem == null && comboProjects.Items.Count > 0)
                 comboProjects.SelectedIndex = 0;
 
             // if we are currently at a construction ship - select that one
@@ -78,7 +82,7 @@ namespace SrvSurvey.forms
                             this.untrackedProject = new()
                             {
                                 buildId = "",
-                                buildType = allCosts.Keys.First(),
+                                buildType = "plutus",
                                 buildName = "Primary port",
                                 marketId = game.lastDocked.MarketID,
                                 systemAddress = game.lastDocked.SystemAddress,
@@ -89,6 +93,7 @@ namespace SrvSurvey.forms
                                 commanders = new Dictionary<string, HashSet<string>>() { { cmdr.commander, new() } },
                             };
                             comboBuildType.Enabled = true;
+                            comboBuildType.SelectedValue = this.untrackedProject.buildType;
                         }
 
                         setComboProjectBindingSource(this.untrackedProject.buildId);
@@ -113,13 +118,16 @@ namespace SrvSurvey.forms
             if (this.untrackedProject != null)
                 list.Insert(0, untrackedProject);
 
-            var dic = list.ToDictionary(_ => _.buildId, _ => _.ToString());
-            this.comboProjects.DataSource = new BindingSource(dic, null);
+            var dic = list.ToDictionary(p => p.buildId, p => p.buildId == "" ? "(new) " + p.ToString() : p.ToString());
+            if (dic.Count > 0)
+            {
+                this.comboProjects.DataSource = new BindingSource(dic, null);
 
-            if (selectBuildId != null)
-                comboProjects.SelectedValue = selectBuildId;
-            else if (selectedValue != null)
-                comboProjects.SelectedValue = selectedValue;
+                if (selectBuildId != null)
+                    comboProjects.SelectedValue = selectBuildId;
+                else if (selectedValue != null)
+                    comboProjects.SelectedValue = selectedValue;
+            }
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
@@ -132,9 +140,12 @@ namespace SrvSurvey.forms
             this.setEnabled(false);
             colonyData.fetchLatest().continueOnMain(this, () =>
             {
-                var refreshedProject = colonyData.getProject(this.project.buildId);
-                setComboProjectBindingSource(selectedValue);
-                setProject(refreshedProject, true);
+                if (this.project != null)
+                {
+                    var refreshedProject = colonyData.getProject(this.project.buildId);
+                    setComboProjectBindingSource(selectedValue);
+                    setProject(refreshedProject, true);
+                }
                 this.setEnabled(true);
             });
         }
@@ -436,10 +447,10 @@ namespace SrvSurvey.forms
             {
                 var createProject = new ProjectCreate
                 {
-                    buildType = (string)comboBuildType.SelectedItem,
+                    buildType = comboBuildType.SelectedValue?.ToString() ?? "",
                     buildName = txtName.Text ?? "primary-port",
                     architectName = txtArchitect.Text,
-                    factionName = txtFaction.Text,
+                    factionName = game.lastDocked?.StationFaction.Name ?? "", // txtFaction.Text,
                     notes = txtNotes.Text,
 
                     marketId = project.marketId,
@@ -480,29 +491,20 @@ namespace SrvSurvey.forms
         {
             if (!this.IsHandleCreated || this.IsDisposed || comboBuildType.Enabled == false || untrackedProject == null) return;
 
-            var buildType = comboBuildType.SelectedItem?.ToString();
-            if (buildType != null && allCosts.ContainsKey(buildType))
-            {
-                untrackedProject.commodities = allCosts[buildType].OrderBy(kv => kv.Key).ToDictionary(_ => _.Key, _ => _.Value);
-                prepCommodityRows(untrackedProject);
-            }
-        }
+            var buildType = comboBuildType.SelectedValue?.ToString();
+            if (buildType == null) return;
+            var match = allCosts.Find(c => c.layouts.Contains(buildType, StringComparer.OrdinalIgnoreCase));
+            if (match == null) return;
 
-        private void btnAssign_Click(object sender, EventArgs e)
-        {
-            var buildType = comboBuildType.SelectedItem?.ToString();
-            if (buildType != null && allCosts.ContainsKey(buildType))
-            {
-                var form = new FormBuildAssign(this.project.buildId, cmdr.commander, allCosts[buildType].Keys.ToList());
-                form.ShowDialog(this);
-            }
+            untrackedProject.commodities = match.cargo;
+            prepCommodityRows(untrackedProject);
         }
 
         private void linkLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            var url = this.project == null
-                ? $"{Colony.uxUri}#find={cmdr.currentSystem}"
-                : $"{Colony.uxUri}#build={project.buildId}";
+            var url = this.project == null || this.project.buildId == ""
+                ? $"{ColonyNet.uxUri}#find={cmdr.currentSystem}"
+                : $"{ColonyNet.uxUri}#build={project.buildId}";
             Util.openLink(url);
         }
 
@@ -572,7 +574,7 @@ namespace SrvSurvey.forms
 
         private void linkRaven_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Util.openLink(Colony.uxUri);
+            Util.openLink(ColonyNet.uxUri);
         }
     }
 }
