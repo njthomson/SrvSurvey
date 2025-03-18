@@ -8,6 +8,14 @@ namespace SrvSurvey.game
     {
         public static string SystemColonisationShip = "System Colonisation Ship";
 
+        public static bool isConstructionSite(Docked? entry)
+        {
+            return entry != null && (
+                entry.StationName.Equals(SystemColonisationShip, StringComparison.OrdinalIgnoreCase)
+                || entry.StationType == StationType.PlanetaryConstructionDepot
+                );
+        }
+
         public static ColonyData Load(string fid, string cmdr)
         {
             var filepath = Path.Combine(Program.dataFolder, $"{fid}-colony.json");

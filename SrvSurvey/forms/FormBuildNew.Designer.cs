@@ -346,6 +346,7 @@
             // 
             // linkRaven
             // 
+            linkRaven.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             linkRaven.AutoSize = true;
             linkRaven.Location = new Point(12, 521);
             linkRaven.Name = "linkRaven";

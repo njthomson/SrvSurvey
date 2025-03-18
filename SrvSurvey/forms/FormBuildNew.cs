@@ -54,7 +54,7 @@ namespace SrvSurvey.forms
                 comboProjects.SelectedIndex = 0;
 
             // if we are currently at a construction ship - select that one
-            if (game.lastDocked != null && game.lastDocked.StationName == ColonyData.SystemColonisationShip)
+            if (ColonyData.isConstructionSite(game.lastDocked))
             {
                 // do we know about this one already?
                 var match = colonyData.projects.Find(p => p.marketId == game.lastDocked.MarketID);
@@ -76,7 +76,7 @@ namespace SrvSurvey.forms
                             // it is tracked, but not by this cmdr
                             this.untrackedProject = newProject;
                         }
-                        else
+                        else if (ColonyData.isConstructionSite(game.lastDocked))
                         {
                             // is not tracked by anyone
                             this.untrackedProject = new()
@@ -96,7 +96,7 @@ namespace SrvSurvey.forms
                             comboBuildType.SelectedValue = this.untrackedProject.buildType;
                         }
 
-                        setComboProjectBindingSource(this.untrackedProject.buildId);
+                        setComboProjectBindingSource(this.untrackedProject?.buildId);
 
                         Game.log($"FormBuildNew.ctor: found untracked build: {newProject?.buildId}");
                         this.setEnabled(true);

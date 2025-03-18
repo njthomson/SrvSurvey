@@ -85,7 +85,7 @@ namespace SrvSurvey.plotters
                     headerText = "Local projects:";
 
                     // ... but if we are docked at a colonization ship - use the corresponding project name/type
-                    if (game.lastDocked?.StationName == ColonyData.SystemColonisationShip)
+                    if (ColonyData.isConstructionSite(game.lastDocked))
                     {
                         if (this.localConstructionShipProjectTitle == null)
                         {
@@ -174,7 +174,7 @@ namespace SrvSurvey.plotters
             drawTextAt2(ten, "Commodity", C.orangeDark, null).widestColumn(0, columns);
             newLine(true);
 
-            var localMarketItems = game.lastDocked == null || game.lastDocked.StationName == ColonyData.SystemColonisationShip || game.lastDocked.StationType == StationType.PlanetaryConstructionDepot
+            var localMarketItems = ColonyData.isConstructionSite(game.lastDocked)
                 ? new()
                 : game.marketFile.Items
                     .Where(i => i.Stock > 0)

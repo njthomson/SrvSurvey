@@ -1,15 +1,25 @@
 ﻿using Newtonsoft.Json;
+using System.Diagnostics;
 using System.Text;
-using System.Text.Json.Serialization;
 
 namespace SrvSurvey.game
 {
     class ColonyNet
     {
         private static string colonizationCostsPath = Path.Combine(Application.StartupPath, "colonization-costs2.json");
-        public static string svcUri = "https://ravencolonial100-awcbdvabgze4c5cq.canadacentral-01.azurewebsites.net";
-        //public static string svcUri = "https://localhost:7007";
         public static string uxUri = "https://ravencolonial.com";
+        public static string svcUri
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Game.settings.buildProjectsUrl_TEST))
+                    return Game.settings.buildProjectsUrl_TEST;
+                else if (Debugger.IsAttached && Process.GetProcessesByName("RavenColonial").Length > 0)
+                    return "https://localhost:7007";
+                else
+                    return "https://ravencolonial100-awcbdvabgze4c5cq.canadacentral-01.azurewebsites.net";
+            }
+        }
 
         private static HttpClient client;
 

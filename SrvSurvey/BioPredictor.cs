@@ -25,7 +25,7 @@ namespace BioCriterias
 
         private static BioPredictor? predict(SystemBody body, string? targetVariant = null)
         {
-            if (body.type != SystemBodyType.LandableBody) return null;
+            if (body == null || body.type != SystemBodyType.LandableBody) return null;
             if (body.parents == null || body.parents.Count == 0) return null;
             lock (BioCriteria.allCriteria)
             {

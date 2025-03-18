@@ -465,6 +465,11 @@ namespace SrvSurvey
 
         private void disableEverythingElse_CheckedChanged(object sender, EventArgs e)
         {
+            disableEverythingElse(sender as CheckBox, groupColonization);
+        }
+
+        private void disableEverythingGuardian_CheckedChanged(object sender, EventArgs e)
+        {
             disableEverythingElse(sender as CheckBox);
         }
 
@@ -877,6 +882,11 @@ namespace SrvSurvey
                 Task.Delay(100)
                     .ContinueWith(t => Main.form.hook.startDirectX(newDeviceId));
             }
+        }
+
+        private void checkColonization_CheckedChanged(object sender, EventArgs e)
+        {
+            disableEverythingElse(sender as CheckBox);
         }
     }
 }

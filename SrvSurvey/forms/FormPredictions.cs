@@ -28,18 +28,12 @@ namespace SrvSurvey
         protected Game game = Game.activeGame!;
 
         // TODO: Move to GameColors ...
-        private readonly static Brush brushPartial = Brushes.Orange;
-        private readonly static Brush brushComplete = Brushes.GreenYellow;
-        private Brush brushRowOdd = new SolidBrush(Color.FromArgb(255, 24, 24, 24));
-        private Brush brushRowEven = new SolidBrush(Color.FromArgb(255, 16, 16, 16));
-        private Pen penRowEven = new Pen(Color.FromArgb(255, 64, 64, 64), 2f);
-        private Brush treeBackBrush;
+        private readonly static Brush brushRowOdd = new SolidBrush(Color.FromArgb(255, 24, 24, 24));
+        private readonly static Brush brushRowEven = new SolidBrush(Color.FromArgb(255, 16, 16, 16));
 
-        private Font nodeBig = new Font("Lucida Console", 12f, FontStyle.Regular, GraphicsUnit.Point);
-        private Font nodeMiddle = new Font("Lucida Console", 10f, FontStyle.Regular, GraphicsUnit.Point);
-        private Font nodeMiddleI = new Font("Lucida Console", 10f, FontStyle.Italic, GraphicsUnit.Point);
-        private Font nodeSmall2 = new Font("Lucida Console", 9f, FontStyle.Regular, GraphicsUnit.Point);
-        private Font nodeSmall = new Font("Lucida Console", 8f, FontStyle.Regular, GraphicsUnit.Point);
+        private Font nodeBig;
+        private Font nodeMiddle;
+        private Font nodeSmall2;
 
         private TreeNode? hoverNode;
         private float maxBodyTextWidth = 0;
@@ -53,12 +47,12 @@ namespace SrvSurvey
             InitializeComponent();
             this.Icon = Icons.dna;
             this.toolMore.DropDownDirection = ToolStripDropDownDirection.AboveLeft;
+            this.setFontSize(Game.settings.formPredictionsRowFontSize);
 
             this.currentBodyOnly = Game.settings.formPredictionsCurrentBodyOnly;
 
             this.statusStrip1.ForeColor = SystemColors.WindowText;
             this.toolFiller.Spring = true;
-            this.treeBackBrush = new SolidBrush(tree.BackColor);
 
             tree.MouseWheel += Tree_MouseWheel;
             tree.TreeViewNodeSorter = NodeSorter.ByName;
@@ -82,6 +76,32 @@ namespace SrvSurvey
             this.lastCurrentBodyName = game.systemBody?.name;
 
             // Not themed - this is always dark.
+        }
+
+        private void setFontSize(int newSize)
+        {
+            menuFontSmall.Checked = newSize == 1;
+            menuFontMedium.Checked = newSize == 2;
+            menuFontLarge.Checked = newSize == 3;
+
+            if (Game.settings.formPredictionsRowFontSize == 1)
+            {
+                this.nodeBig = new Font("Lucida Console", 12f, FontStyle.Regular, GraphicsUnit.Point);
+                this.nodeMiddle = new Font("Lucida Console", 9f, FontStyle.Regular, GraphicsUnit.Point);
+                this.nodeSmall2 = new Font("Lucida Console", 9f, FontStyle.Regular, GraphicsUnit.Point);
+            }
+            else if (Game.settings.formPredictionsRowFontSize == 2)
+            {
+                this.nodeBig = new Font("Lucida Console", 13f, FontStyle.Regular, GraphicsUnit.Point);
+                this.nodeMiddle = new Font("Lucida Console", 10f, FontStyle.Regular, GraphicsUnit.Point);
+                this.nodeSmall2 = new Font("Lucida Console", 10f, FontStyle.Regular, GraphicsUnit.Point);
+            }
+            else
+            {
+                this.nodeBig = new Font("Lucida Console", 14f, FontStyle.Regular, GraphicsUnit.Point);
+                this.nodeMiddle = new Font("Lucida Console", 12f, FontStyle.Regular, GraphicsUnit.Point);
+                this.nodeSmall2 = new Font("Lucida Console", 12f, FontStyle.Regular, GraphicsUnit.Point);
+            }
         }
 
         protected override void OnLoad(EventArgs e)
@@ -770,6 +790,12 @@ namespace SrvSurvey
             Util.openLink(url);
         }
 
+        private void viewOnEDSMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var url = $"https://www.edsm.net/en/system?systemID64={game.systemData!.address}";
+            Util.openLink(url);
+        }
+
         private void btnExpandAll_Click(object sender, EventArgs e)
         {
             treeMode = TreeViewMode.Everything;
@@ -796,6 +822,22 @@ namespace SrvSurvey
         {
             game?.targetBody?.predictSpecies();
             refresh();
+        }
+
+        private void menuSetFontSize_Click(object sender, EventArgs e)
+        {
+            var menu = sender as ToolStripMenuItem;
+            if (int.TryParse(menu?.Tag?.ToString(), out int newSize))
+            {
+                if (newSize != Game.settings.formPredictionsRowFontSize)
+                {
+                    Game.settings.formPredictionsRowFontSize = newSize;
+                    Game.settings.Save();
+
+                    this.Close();
+                    Program.defer(() => BaseForm.show<FormPredictions>());
+                }
+            }
         }
 
         enum TreeViewMode

@@ -141,6 +141,8 @@ namespace SrvSurvey.game
         public FSDTarget? fsdTarget;
         public ShipData currentShip = new();
         public Docked? lastDocked;
+        public Docked? lastEverDocked;
+        public Undocked? lastUndocked;
         public SettlementMatCollectionData? matStatsTracker;
         private string? lastDestination;
         public bool destinationNextRouteHop = false;
@@ -946,7 +948,10 @@ namespace SrvSurvey.game
 
                 var dockedEvent = entry as Docked;
                 if (dockedEvent != null && this.lastDocked == null)
+                {
                     this.lastDocked = dockedEvent;
+                    this.lastEverDocked = dockedEvent;
+                }
 
                 return false;
             });
@@ -1509,11 +1514,17 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Cargo entry)
         {
-            if (Game.settings.buildProjects_TEST)
+            if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST)
             {
-                var diff = this.cargoFile.getDiff();
-                if (diff.Count > 0)
-                    this.cmdrColony.supplyNeeds(lastDocked, diff);
+                var timeSinceUndocked = DateTime.Now - lastUndocked?.timestamp;
+                Game.log($"timeSinceUndocked: {timeSinceUndocked?.TotalSeconds} seconds");
+                // if we are currently docked at a construction site or we just undocked from one in the last 10 seconds
+                if (ColonyData.isConstructionSite(lastDocked) || (timeSinceUndocked?.TotalSeconds < 10 && ColonyData.isConstructionSite(lastEverDocked)))
+                {
+                    var diff = this.cargoFile.getDiff();
+                    if (diff.Count > 0)
+                        this.cmdrColony.supplyNeeds(lastDocked, diff);
+                }
             }
         }
 
@@ -2463,6 +2474,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(Docked entry)
         {
             this.lastDocked = entry;
+            this.lastEverDocked = entry;
 
             // store that we've docked here
             this.cmdr.setMarketId(entry.MarketID);
@@ -2578,6 +2590,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Undocked entry)
         {
+            this.lastUndocked = entry;
             this.lastDocked = null;
             this.marketBuyOnFC = false;
             this.touchdownLocation = LatLong2.Empty;

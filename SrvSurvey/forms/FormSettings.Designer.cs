@@ -31,11 +31,11 @@ namespace SrvSurvey
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            ListViewItem listViewItem1 = new ListViewItem("Materials count after pickup");
-            ListViewItem listViewItem2 = new ListViewItem("Mission remaining cargo count");
-            ListViewItem listViewItem3 = new ListViewItem("Boxel search status");
-            ListViewItem listViewItem4 = new ListViewItem("Next boxel to search");
-            ListViewItem listViewItem5 = new ListViewItem("Buying bug at FCs");
+            ListViewItem listViewItem11 = new ListViewItem("Materials count after pickup");
+            ListViewItem listViewItem12 = new ListViewItem("Mission remaining cargo count");
+            ListViewItem listViewItem13 = new ListViewItem("Boxel search status");
+            ListViewItem listViewItem14 = new ListViewItem("Next boxel to search");
+            ListViewItem listViewItem15 = new ListViewItem("Buying bug at FCs");
             panel1 = new Panel();
             btnNextProc = new FlatButton();
             btnSave = new FlatButton();
@@ -245,6 +245,8 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
+            groupColonization = new GroupBox();
+            checkBox39 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -299,6 +301,7 @@ namespace SrvSurvey
             tabPage8.SuspendLayout();
             tabPage2.SuspendLayout();
             menuCodexImages.SuspendLayout();
+            groupColonization.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -1588,7 +1591,7 @@ namespace SrvSurvey
             checkEnableGuardianFeatures.Tag = "enableGuardianSites";
             checkEnableGuardianFeatures.Text = "Enable Guardian Ruins features";
             checkEnableGuardianFeatures.UseVisualStyleBackColor = true;
-            checkEnableGuardianFeatures.CheckedChanged += disableEverythingElse_CheckedChanged;
+            checkEnableGuardianFeatures.CheckedChanged += disableEverythingGuardian_CheckedChanged;
             // 
             // tabPage5
             // 
@@ -2261,7 +2264,7 @@ namespace SrvSurvey
             // tabPage7
             // 
             tabPage7.BorderStyle = BorderStyle.Fixed3D;
-            tabPage7.Controls.Add(checkColonization);
+            tabPage7.Controls.Add(groupColonization);
             tabPage7.Controls.Add(numPriorScanMinValue);
             tabPage7.Controls.Add(pictureBox7);
             tabPage7.Controls.Add(checkUseBioData);
@@ -2287,13 +2290,14 @@ namespace SrvSurvey
             checkColonization.AutoSize = true;
             checkColonization.CheckAlign = ContentAlignment.TopLeft;
             checkColonization.FlatStyle = FlatStyle.System;
-            checkColonization.Location = new Point(403, 379);
+            checkColonization.Location = new Point(6, 22);
             checkColonization.Name = "checkColonization";
-            checkColonization.Size = new Size(180, 35);
+            checkColonization.Size = new Size(180, 20);
             checkColonization.TabIndex = 33;
             checkColonization.Tag = "buildProjects_TEST";
-            checkColonization.Text = "Enable colonization features\r\n(very experimental)";
+            checkColonization.Text = "Enable colonization features";
             checkColonization.UseVisualStyleBackColor = true;
+            checkColonization.CheckedChanged += checkColonization_CheckedChanged;
             // 
             // numPriorScanMinValue
             // 
@@ -2884,17 +2888,17 @@ namespace SrvSurvey
             // listView1
             // 
             listView1.CheckBoxes = true;
-            listViewItem1.StateImageIndex = 0;
-            listViewItem1.Tag = "materialCountAfterPickup";
-            listViewItem2.StateImageIndex = 0;
-            listViewItem2.Tag = "cargoMissionRemaining";
-            listViewItem3.StateImageIndex = 0;
-            listViewItem3.Tag = "currentBoxelSearchStatus";
-            listViewItem4.StateImageIndex = 0;
-            listViewItem4.Tag = "showNextBoxelToSearch";
-            listViewItem5.StateImageIndex = 0;
-            listViewItem5.Tag = "fcMarketPurchaseBugReminder";
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5 });
+            listViewItem11.StateImageIndex = 0;
+            listViewItem11.Tag = "materialCountAfterPickup";
+            listViewItem12.StateImageIndex = 0;
+            listViewItem12.Tag = "cargoMissionRemaining";
+            listViewItem13.StateImageIndex = 0;
+            listViewItem13.Tag = "currentBoxelSearchStatus";
+            listViewItem14.StateImageIndex = 0;
+            listViewItem14.Tag = "showNextBoxelToSearch";
+            listViewItem15.StateImageIndex = 0;
+            listViewItem15.Tag = "fcMarketPurchaseBugReminder";
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem11, listViewItem12, listViewItem13, listViewItem14, listViewItem15 });
             listView1.Location = new Point(12, 331);
             listView1.Name = "listView1";
             listView1.Size = new Size(400, 107);
@@ -3004,6 +3008,30 @@ namespace SrvSurvey
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
             // 
+            // groupBox3
+            // 
+            groupColonization.Controls.Add(checkBox39);
+            groupColonization.Controls.Add(checkColonization);
+            groupColonization.Location = new Point(355, 264);
+            groupColonization.Name = "groupBox3";
+            groupColonization.Size = new Size(312, 150);
+            groupColonization.TabIndex = 34;
+            groupColonization.TabStop = false;
+            groupColonization.Text = "Colonization: (experimental)";
+            // 
+            // checkBox39
+            // 
+            checkBox39.AutoSize = true;
+            checkBox39.CheckAlign = ContentAlignment.TopLeft;
+            checkBox39.FlatStyle = FlatStyle.System;
+            checkBox39.Location = new Point(19, 48);
+            checkBox39.Name = "checkBox39";
+            checkBox39.Size = new Size(256, 20);
+            checkBox39.TabIndex = 34;
+            checkBox39.Tag = "trackConstructionContributions_TEST";
+            checkBox39.Text = "Upload/track supplies at construction sites";
+            checkBox39.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -3087,6 +3115,8 @@ namespace SrvSurvey
             tabPage8.PerformLayout();
             tabPage2.ResumeLayout(false);
             menuCodexImages.ResumeLayout(false);
+            groupColonization.ResumeLayout(false);
+            groupColonization.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -3300,5 +3330,7 @@ namespace SrvSurvey
         private CheckBox checkBox41;
         private CheckBox checkBox42;
         private ListView listView1;
+        private GroupBox groupColonization;
+        private CheckBox checkBox39;
     }
 }

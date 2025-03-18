@@ -9,7 +9,10 @@ namespace SrvSurvey
 {
     class Settings
     {
-        public bool buildProjects_TEST = false;
+        public bool buildProjects_TEST = true;
+        public bool trackConstructionContributions_TEST = true;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string? buildProjectsUrl_TEST = null;
         public Color defaultOrange = GameColors.Defaults.Orange;
         public Color defaultOrangeDim = GameColors.Defaults.OrangeDim;
         public Color defaultCyan = GameColors.Defaults.Cyan;
@@ -100,6 +103,7 @@ namespace SrvSurvey
 
         public bool tempRange_TEST = false;
         public bool formPredictionsCurrentBodyOnly = false;
+        public int formPredictionsRowFontSize = 1;
 
         /// <summary>
         /// Controls if we make any calls to get exploration or bio data
