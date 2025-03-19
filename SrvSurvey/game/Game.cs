@@ -1518,12 +1518,17 @@ namespace SrvSurvey.game
             {
                 var timeSinceUndocked = DateTime.Now - lastUndocked?.timestamp;
                 Game.log($"timeSinceUndocked: {timeSinceUndocked?.TotalSeconds} seconds");
-                // if we are currently docked at a construction site or we just undocked from one in the last 10 seconds
-                if (ColonyData.isConstructionSite(lastDocked) || (timeSinceUndocked?.TotalSeconds < 10 && ColonyData.isConstructionSite(lastEverDocked)))
+                if (lastDocked != null && ColonyData.isConstructionSite(lastDocked))
                 {
+                    // if we are currently docked at a construction site ...
                     var diff = this.cargoFile.getDiff();
-                    if (diff.Count > 0)
-                        this.cmdrColony.supplyNeeds(lastDocked, diff);
+                    this.cmdrColony.supplyNeeds(lastDocked.SystemAddress, lastDocked.MarketID, diff);
+                }
+                else if (lastEverDocked != null && timeSinceUndocked?.TotalSeconds < 10 && ColonyData.isConstructionSite(lastEverDocked))
+                {
+                    // ... or we just undocked from one in the last 10 seconds
+                    var diff = this.cargoFile.getDiff();
+                    this.cmdrColony.supplyNeeds(lastEverDocked.SystemAddress, lastEverDocked.MarketID, diff);
                 }
             }
         }

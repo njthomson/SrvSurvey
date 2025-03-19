@@ -132,22 +132,20 @@ namespace SrvSurvey.game
             return needs;
         }
 
-        public void supplyNeeds(Docked? lastDocked, Dictionary<string, int> diff)
+        public void supplyNeeds(long systemAddress, long marketId, Dictionary<string, int> diff)
         {
-            if (lastDocked == null) return;
-
             foreach (var name in diff.Keys) diff[name] *= -1;
 
-            var localProject = this.getProject(lastDocked.SystemAddress, lastDocked.MarketID);
+            var localProject = this.getProject(systemAddress, marketId);
             if (localProject == null)
             {
-                Game.log(diff.formatWithHeader($"TODO! Supplying commodities for untracked project: {lastDocked.SystemAddress}/{lastDocked.MarketID}", "\r\n\t"));
+                Game.log(diff.formatWithHeader($"TODO! Supplying commodities for untracked project: {systemAddress}/{marketId}", "\r\n\t"));
                 // TODO: call the API but do no tracking
                 return;
             }
             else
             {
-                Game.log(diff.formatWithHeader($"Supplying commodities for: {localProject.buildId} ({lastDocked.SystemAddress}/{lastDocked.MarketID})", "\r\n\t"));
+                Game.log(diff.formatWithHeader($"Supplying commodities for: {localProject.buildId} ({systemAddress}/{marketId})", "\r\n\t"));
 
                 var form = Program.getPlotter<PlotBuildCommodities>();
                 if (form != null)
