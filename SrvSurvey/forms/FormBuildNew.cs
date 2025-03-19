@@ -112,7 +112,9 @@ namespace SrvSurvey.forms
             var selectedValue = comboProjects.SelectedValue;
 
             // alpha sort known projects
-            var list = new List<Project>(colonyData.projects.OrderBy(p => $"{p.systemName} {p.buildName}"));
+            var list = colonyData.projects
+                .OrderBy(p => $"{p.systemName} {p.buildName}")
+                .ToList();
 
             // inject the untracked project at beginning of list
             if (this.untrackedProject != null)

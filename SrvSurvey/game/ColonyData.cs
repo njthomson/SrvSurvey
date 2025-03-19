@@ -10,10 +10,7 @@ namespace SrvSurvey.game
 
         public static bool isConstructionSite(Docked? entry)
         {
-            return entry != null && (
-                entry.StationName.Equals(SystemColonisationShip, StringComparison.OrdinalIgnoreCase)
-                || entry.StationType == StationType.PlanetaryConstructionDepot
-                );
+            return entry != null && entry.StationServices?.Contains("colonisationcontribution") == true;
         }
 
         public static ColonyData Load(string fid, string cmdr)
@@ -43,7 +40,8 @@ namespace SrvSurvey.game
 
             var summary = await Game.colony.getCmdrSummary(this.cmdr);
             this.primaryBuildId = summary.primaryBuildId;
-            this.projects = summary.projects;
+            // ACTIVE projects only
+            this.projects = summary.projects.Where(p => !p.complete).ToList();
 
             this.prepNeeds();
 

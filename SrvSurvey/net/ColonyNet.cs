@@ -325,6 +325,8 @@ namespace SrvSurvey.game
 
         public string? factionName;
         public string? architectName;
+        public int maxNeed;
+        public bool complete;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public Dictionary<string, HashSet<string>> commanders = new();

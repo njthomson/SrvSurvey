@@ -238,6 +238,7 @@ namespace SrvSurvey
         AsteroidBase,
         SurfaceStation,
         PlanetaryConstructionDepot,
+        SpaceConstructionDepot,
     }
 
     class Undocked : JournalEntry

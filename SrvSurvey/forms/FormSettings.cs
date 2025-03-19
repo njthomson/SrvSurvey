@@ -341,14 +341,15 @@ namespace SrvSurvey
 
             var langChanged = Game.settings.lang != Localize.codeFromName(comboLang.Text);
 
+            var themeChanged = this.panelTheme2.BackColor != Game.settings.defaultCyan
+                || this.panelTheme.BackColor != Game.settings.defaultOrange;
+
             // restart the app if these are different:
-            var restartApp = !sameCmdr || langChanged
+            var restartApp = !sameCmdr || langChanged || themeChanged
                 || checkColonization.Checked != Game.settings.buildProjects_TEST
                 || comboOverlayScale.SelectedIndex != Game.settings.plotterScale
                 || this.checkEnableGuardianFeatures.Checked != Game.settings.enableGuardianSites
-                || this.linkJournalFolder.Text != Game.settings.watchedJournalFolder
-                || this.panelTheme2.BackColor != Game.settings.defaultCyan
-                || this.panelTheme.BackColor != Game.settings.defaultOrange;
+                || this.linkJournalFolder.Text != Game.settings.watchedJournalFolder;
 
             updateAllSettingsFromForm();
 
@@ -356,37 +357,47 @@ namespace SrvSurvey
             Game.settings.preferredCommander = comboCmdr.SelectedIndex > 0 ? comboCmdr.Text : null;
             Game.settings.screenshotBannerColor = colorScreenshotBanner;
 
-            // ratio for darker colours
-            var rr = 0.5f;
-            // primary theme color
-            if (Game.settings.defaultOrange != panelTheme.BackColor
-                // but not if we're resetting
-                && panelTheme.BackColor != GameColors.Defaults.Orange)
+            if (themeChanged)
             {
-                // generate a new dimmer colour
-                Game.settings.defaultOrangeDim = Color.FromArgb(
-                    255,
-                    (int)((float)panelTheme.BackColor.R * rr),
-                    (int)((float)panelTheme.BackColor.G * rr),
-                    (int)((float)panelTheme.BackColor.B * rr)
-                );
-            }
-            Game.settings.defaultOrange = panelTheme.BackColor;
+                var theme = Theme.loadTheme();
 
-            // secondary theme color
-            if (Game.settings.defaultCyan != panelTheme2.BackColor
-                // but not if we're resetting
-                && panelTheme2.BackColor != GameColors.Defaults.Cyan)
-            {
-                // generate a new dimmer colour
-                Game.settings.defaultDarkCyan = Color.FromArgb(
-                    255,
-                    (int)((float)panelTheme2.BackColor.R * rr),
-                    (int)((float)panelTheme2.BackColor.G * rr),
-                    (int)((float)panelTheme2.BackColor.B * rr)
-                );
+                // ratio for darker colours
+                var rr = 0.5f;
+                // primary theme color
+                if (Game.settings.defaultOrange != panelTheme.BackColor
+                    // but not if we're resetting
+                    && panelTheme.BackColor != GameColors.Defaults.Orange)
+                {
+                    // generate a new dimmer colour
+                    Game.settings.defaultOrangeDim = Color.FromArgb(
+                        255,
+                        (int)((float)panelTheme.BackColor.R * rr),
+                        (int)((float)panelTheme.BackColor.G * rr),
+                        (int)((float)panelTheme.BackColor.B * rr)
+                    );
+                    theme.update("orangeDark", Game.settings.defaultOrangeDim);
+                }
+                Game.settings.defaultOrange = panelTheme.BackColor;
+                theme.update("orange", Game.settings.defaultOrange);
+
+                // secondary theme color
+                if (Game.settings.defaultCyan != panelTheme2.BackColor
+                    // but not if we're resetting
+                    && panelTheme2.BackColor != GameColors.Defaults.Cyan)
+                {
+                    // generate a new dimmer colour
+                    Game.settings.defaultDarkCyan = Color.FromArgb(
+                        255,
+                        (int)((float)panelTheme2.BackColor.R * rr),
+                        (int)((float)panelTheme2.BackColor.G * rr),
+                        (int)((float)panelTheme2.BackColor.B * rr)
+                    );
+                    theme.update("cyanDark", Game.settings.defaultDarkCyan);
+                }
+                Game.settings.defaultCyan = panelTheme2.BackColor;
+                theme.update("cyan", Game.settings.defaultCyan);
+                theme.saveUpdates();
             }
-            Game.settings.defaultCyan = panelTheme2.BackColor;
 
             Game.settings.Save();
             this.DialogResult = DialogResult.OK;

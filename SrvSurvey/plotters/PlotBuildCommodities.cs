@@ -194,6 +194,7 @@ namespace SrvSurvey.plotters
                 var nameTxt = name;
                 var cargoCount = hasLocalCargo ? game.cargoFile.getCount(name) : 0;
                 var inHold = game.cargoFile.Inventory.Find(i => i.Name == name) != null;
+                var needTxt = count.ToString("N0");
 
                 if (needs.assigned.Contains(name))
                 {
@@ -206,6 +207,7 @@ namespace SrvSurvey.plotters
                     ff = GameColors.Fonts.gothic_10B;
                     col = C.cyan;
                     nameTxt = "► " + name;
+                    needTxt = "...";
                 }
                 else if (inHold)
                 {
@@ -236,7 +238,7 @@ namespace SrvSurvey.plotters
                 }
 
                 // render needed count
-                drawTextAt2(this.Width - eight - needIndent, count.ToString("N0"), inHold ? C.cyan : col, ff, true)
+                drawTextAt2(this.Width - eight - needIndent, needTxt, inHold ? C.cyan : col, ff, true)
                     .widestColumn(1, columns);
 
                 // render cargo count

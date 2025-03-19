@@ -1,5 +1,6 @@
 {
-  /* One day this contain all the colors used by SrvSurvey */
+  /* One day this will contain all the colors used by SrvSurvey */
+
   "orange": [ 255, 255, 111, 0 ],
   "orangeDark": [ 255, 95, 48, 3 ],
   "cyan": [ 255, 84, 223, 237 ],
@@ -16,6 +17,5 @@
 
     "unknown": [ 255, 105, 105, 105 ],
     "hatch": [ 242, 64, 64, 64 ]
-
   }
 }

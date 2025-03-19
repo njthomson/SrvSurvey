@@ -102,6 +102,9 @@ namespace SrvSurvey
                 this.nodeMiddle = new Font("Lucida Console", 12f, FontStyle.Regular, GraphicsUnit.Point);
                 this.nodeSmall2 = new Font("Lucida Console", 12f, FontStyle.Regular, GraphicsUnit.Point);
             }
+
+            var sz = TextRenderer.MeasureText("H", this.nodeBig);
+            tree.ItemHeight = (int)(sz.Height * 1.4f);
         }
 
         protected override void OnLoad(EventArgs e)
