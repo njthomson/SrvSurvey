@@ -375,10 +375,8 @@ namespace SrvSurvey
                         (int)((float)panelTheme.BackColor.G * rr),
                         (int)((float)panelTheme.BackColor.B * rr)
                     );
-                    theme.update("orangeDark", Game.settings.defaultOrangeDim);
                 }
                 Game.settings.defaultOrange = panelTheme.BackColor;
-                theme.update("orange", Game.settings.defaultOrange);
 
                 // secondary theme color
                 if (Game.settings.defaultCyan != panelTheme2.BackColor
@@ -392,10 +390,13 @@ namespace SrvSurvey
                         (int)((float)panelTheme2.BackColor.G * rr),
                         (int)((float)panelTheme2.BackColor.B * rr)
                     );
-                    theme.update("cyanDark", Game.settings.defaultDarkCyan);
                 }
                 Game.settings.defaultCyan = panelTheme2.BackColor;
+
+                theme.update("orange", Game.settings.defaultOrange);
+                theme.update("orangeDark", Game.settings.defaultOrangeDim);
                 theme.update("cyan", Game.settings.defaultCyan);
+                theme.update("cyanDark", Game.settings.defaultDarkCyan);
                 theme.saveUpdates();
             }
 

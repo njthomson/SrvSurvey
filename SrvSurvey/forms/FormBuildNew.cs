@@ -54,7 +54,7 @@ namespace SrvSurvey.forms
                 comboProjects.SelectedIndex = 0;
 
             // if we are currently at a construction ship - select that one
-            if (ColonyData.isConstructionSite(game.lastDocked))
+            if (game.lastDocked != null && ColonyData.isConstructionSite(game.lastDocked))
             {
                 // do we know about this one already?
                 var match = colonyData.projects.Find(p => p.marketId == game.lastDocked.MarketID);
@@ -78,12 +78,19 @@ namespace SrvSurvey.forms
                         }
                         else if (ColonyData.isConstructionSite(game.lastDocked))
                         {
+                            var newName = game.lastDocked.StationName == ColonyData.SystemColonisationShip
+                            ? "Primary port"
+                            : game.lastDocked.StationName
+                                .Replace("Planetary Construction Site:", "")
+                                .Replace("Orbital Construction Site:", "")
+                            ?? "";
+
                             // is not tracked by anyone
                             this.untrackedProject = new()
                             {
                                 buildId = "",
                                 buildType = "plutus",
-                                buildName = "Primary port",
+                                buildName = newName,
                                 marketId = game.lastDocked.MarketID,
                                 systemAddress = game.lastDocked.SystemAddress,
                                 systemName = game.lastDocked.StarSystem,
@@ -191,6 +198,10 @@ namespace SrvSurvey.forms
             listCmdrs.Items.AddRange(project.commanders.Keys.ToArray());
 
             prepCommodityRows(project);
+
+            btnAccept.Text = project == this.untrackedProject
+                ? "Create Project"
+                : "Update Project";
             dirty = false;
         }
 
@@ -228,8 +239,10 @@ namespace SrvSurvey.forms
             rowCount++;
 
             var flip = false;
-            foreach (var (commodity, need) in proj.commodities)
+            foreach (var commodity in proj.commodities.Keys.Order())
             {
+                var need = proj.commodities[commodity];
+
                 table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                 var backColor = flip ? table.BackColor : SystemColors.Info;
                 flip = !flip;
