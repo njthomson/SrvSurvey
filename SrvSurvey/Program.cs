@@ -122,7 +122,7 @@ namespace SrvSurvey
             {
                 if (beginInvoke)
                 {
-                    control.BeginInvoke(func);
+                    defer(func);
                 }
                 else
                 {
@@ -131,8 +131,8 @@ namespace SrvSurvey
             }
             catch (Exception ex)
             {
-                Game.log($"crashGuard {ex}");
-                Program.control.BeginInvoke(() =>
+                Game.log($"crashGuard: {ex}");
+                Program.defer(() =>
                 {
                     FormErrorSubmit.Show(ex);
                 });

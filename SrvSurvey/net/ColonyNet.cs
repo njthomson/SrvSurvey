@@ -139,8 +139,27 @@ namespace SrvSurvey.game
             var url = $"{svcUri}/api/project/{buildId}/supply/{cmdr}";
             var response = await ColonyNet.client.PostAsync(url, body);
 
-            var json = await response.Content.ReadAsStringAsync();
-            var obj = JsonConvert.DeserializeObject<Dictionary<string, int>>(json)!;
+            var json2 = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<Dictionary<string, int>>(json2)!;
+            return obj;
+        }
+
+        public async Task<Dictionary<string, int>> supplyFC(long marketId, string cargo, int delta)
+        {
+            return await supplyFC(marketId, new Dictionary<string, int> { { cargo, delta } });
+        }
+
+        public async Task<Dictionary<string, int>> supplyFC(long marketId, Dictionary<string, int> diff)
+        {
+            Game.log(diff.formatWithHeader($"Colony.supplyFC: {marketId}", "\r\n\t"));
+
+            var json1 = JsonConvert.SerializeObject(diff);
+            var body = new StringContent(json1, Encoding.Default, "application/json");
+            var url = $"{svcUri}/api/fc/{marketId}/cargo";
+            var response = await ColonyNet.client.PatchAsync(url, body);
+
+            var json2 = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<Dictionary<string, int>>(json2)!;
             return obj;
         }
 
@@ -326,7 +345,6 @@ namespace SrvSurvey.game
         public string? factionName;
         public string? architectName;
         public int maxNeed;
-        public bool complete;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public Dictionary<string, HashSet<string>> commanders = new();
@@ -350,16 +368,32 @@ namespace SrvSurvey.game
 
         public int sumNeed;
         public int sumTotal;
+        public bool complete;
 
         // Schema.ProjectCommodity
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public Dictionary<string, int> commodities = new();
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public HashSet<string> ready;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public List<ProjectFC> linkedFC;
 
         public override string ToString()
         {
             // Used as display name by ComboBox
             return $"{systemName}: {buildName}";
         }
+    }
+
+    public class ProjectFC
+    {
+        public long marketId;
+        public string name;
+        public string displayName;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public HashSet<string> assign = new();
     }
 
     public class ProjectRef

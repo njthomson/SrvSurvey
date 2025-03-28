@@ -43,6 +43,10 @@ namespace SrvSurvey.game
             // ACTIVE projects only
             this.projects = summary.projects.Where(p => !p.complete).ToList();
 
+            // extract all marketId's from linked FCs
+            this.allLinkedFCs.Clear();
+            this.projects.ForEach(p => p.linkedFC.ForEach(fc => this.allLinkedFCs[fc.marketId] = fc));
+
             this.prepNeeds();
 
             //Game.log(this.colonySummary?.buildIds.formatWithHeader($"loadAllBuildProjects: loading: {this.colonySummary?.buildIds.Count} ...", "\r\n\t"));
@@ -65,6 +69,9 @@ namespace SrvSurvey.game
         public string? primaryBuildId;
         public bool fcTracking = true;
         public Dictionary<string, int> fcCommodities = new();
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public Dictionary<long, ProjectFC> allLinkedFCs = new();
 
         #endregion
 

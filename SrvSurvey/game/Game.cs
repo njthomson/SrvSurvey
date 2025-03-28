@@ -1466,6 +1466,7 @@ namespace SrvSurvey.game
         {
             Game.log($"Updating inventory from transfer");
             var saveColonyData = false;
+            var fcTrackedCargo = new Dictionary<string, int>();
             foreach (var transferItem in entry.Transfers)
             {
                 // TODO: check to / from ship?
@@ -1480,26 +1481,39 @@ namespace SrvSurvey.game
                 if ((this.vehicle == ActiveVehicle.SRV && transferItem.Direction == "toship") || (this.vehicle == ActiveVehicle.MainShip && transferItem.Direction == "tocarrier"))
                 {
                     inventoryItem.Count -= delta;
+
+                    // update linked FC?
+                    if (lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(lastDocked.MarketID))
+                    {
+                        Game.log($"Transferring {delta}x {transferItem.Type} to tracked marketId: {lastDocked.MarketID}");
+                        fcTrackedCargo.init(transferItem.Type);
+                        fcTrackedCargo[transferItem.Type] += delta;
+                    }
                 }
                 else if ((this.vehicle == ActiveVehicle.SRV && transferItem.Direction == "tosrv") || (this.vehicle == ActiveVehicle.MainShip && transferItem.Direction == "toship"))
                 {
+                    // update ship in-memory data
                     inventoryItem.Count += delta;
-                }
 
-                // track colonization commodities pushed onto some FleetCarrier?
-                if (cmdrColony.fcTracking && transferItem.Direction == "tocarrier")
-                {
-                    cmdrColony.fcCommodities.init(transferItem.Type);
-                    cmdrColony.fcCommodities[transferItem.Type] += delta;
-                    Game.log($"Adding {delta}x {transferItem.Type} to colonyData.fcCommodities");
-                    saveColonyData = true;
+                    // update linked FC?
+                    if (lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(lastDocked.MarketID))
+                    {
+                        Game.log($"Transferring {delta}x {transferItem.Type} from tracked marketId: {lastDocked.MarketID}");
+                        fcTrackedCargo.init(transferItem.Type);
+                        fcTrackedCargo[transferItem.Type] -= delta;
+                    }
                 }
             }
 
             Program.invalidateActivePlotters();
             log($"Game.CargoTransfer: Current cargo:\r\n  " + string.Join("\r\n  ", this.cargoFile.Inventory));
 
-            if (saveColonyData) cmdrColony.Save();
+
+            if (lastDocked != null && fcTrackedCargo.Count > 0)
+                Game.colony.supplyFC(lastDocked.MarketID, fcTrackedCargo).justDoIt();
+
+            if (saveColonyData)
+                cmdrColony.Save();
         }
 
         private void onJournalEntry(CargoDepot entry)
@@ -1535,6 +1549,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(MarketBuy entry)
         {
+            // add to cargo counts tracked in memory
             var item = cargoFile.Inventory.Find(i => i.Name == entry.Type);
             if (item == null)
             {
@@ -1544,6 +1559,13 @@ namespace SrvSurvey.game
             }
             item.Count += entry.Count;
 
+            // track purchases from linked FleetCarriers
+            if (lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(entry.MarketId))
+            {
+                Game.log($"Buying {entry.Count}x {entry.Type} from linked FC marketId: {entry.MarketId}");
+                Game.colony.supplyFC(entry.MarketId, entry.Type, -entry.Count).justDoIt();
+            }
+
             Program.invalidate<PlotBuildCommodities>();
 
             if (Game.settings.allowNotifications.fcMarketPurchaseBugReminder && this.fcMarketIds.Contains(entry.MarketId))
@@ -1551,13 +1573,17 @@ namespace SrvSurvey.game
         }
         private void onJournalEntry(MarketSell entry)
         {
-            // include sales to FleetCarriers if tracking colonization commodities that way
-            if (lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.fcTracking)
+            // tracked sales to linked FleetCarriers
+            if (lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(entry.MarketId))
             {
+                Game.log($"Selling {entry.Count}x {entry.Type} to linked FC marketId: {entry.MarketId}");
+                Game.colony.supplyFC(entry.MarketId, entry.Type, entry.Count).justDoIt();
+                /*
                 cmdrColony.fcCommodities.init(entry.Type);
                 cmdrColony.fcCommodities[entry.Type] += entry.Count;
                 Game.log($"Adding {entry.Count}x {entry.Type} to colonyData.fcCommodities");
                 cmdrColony.Save();
+                */
             }
         }
 
