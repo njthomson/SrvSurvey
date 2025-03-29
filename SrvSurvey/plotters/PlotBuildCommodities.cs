@@ -230,7 +230,7 @@ namespace SrvSurvey.plotters
                     col = C.green;
                     nameTxt += " ✔️";
                 }
-                else if (localMarketItems.Count > 0 && !localMarketItems.Contains(name))
+                else if (game.lastDocked?.timestamp < game.marketFile.timestamp && localMarketItems.Count > 0 && !localMarketItems.Contains(name))
                 {
                     // make needed items missing in the current market dark red
                     col = C.redDark;

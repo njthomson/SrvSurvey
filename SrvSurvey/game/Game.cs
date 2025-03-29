@@ -128,8 +128,8 @@ namespace SrvSurvey.game
         public JournalWatcher? journals;
         public Status status { get; private set; }
         public NavRouteFile navRoute { get; private set; }
-        public CargoFile cargoFile { get; private set; }
-        public MarketFile marketFile => GameFileWatcher.read<MarketFile>(MarketFile.filepath);
+        public CargoFile2 cargoFile => CargoFile2.read(false);
+        public MarketFile marketFile => MarketFile.read(false);
         public bool guardianMatsFull;
         public bool processDockedOnNextStatusChange = false;
         public bool dockingInProgress = false;
@@ -172,8 +172,18 @@ namespace SrvSurvey.game
 
         public Game(string? cmdr)
         {
-            log($"Game .ctor, targetCmdr: {cmdr}");
-            this.targetCmdr = cmdr;
+            if (Program.forceFid != null)
+            {
+                var fidCmdr = CommanderSettings.getAllCmdrs().GetValueOrDefault(Program.forceFid);
+                log($"Game .ctor, targetFID: {Program.forceFid} => {fidCmdr}");
+                if (fidCmdr != null)
+                    this.targetCmdr = fidCmdr;
+            }
+            else
+            {
+                log($"Game .ctor, targetCmdr: {cmdr}");
+                this.targetCmdr = cmdr;
+            }
 
             // track this instance as the active one
             Game.activeGame = this;
@@ -183,13 +193,12 @@ namespace SrvSurvey.game
             // track status file changes and force an immediate read
             this.status = new Status(true);
             this.navRoute = NavRouteFile.load(true);
-            this.cargoFile = CargoFile.load(true);
 
             // initialize from a journal file
-            var filepath = JournalFile.getSiblingCommanderJournal(cmdr, true, DateTime.MaxValue);
+            var filepath = JournalFile.getSiblingCommanderJournal(this.targetCmdr, true, DateTime.MaxValue);
             if (filepath == null)
             {
-                Game.log($"No journal files found for: {cmdr}");
+                Game.log($"No journal files found for: {this.targetCmdr}");
                 this.isShutdown = true;
                 return;
             }
@@ -947,10 +956,11 @@ namespace SrvSurvey.game
                     playForwards.Add(entry);
 
                 var dockedEvent = entry as Docked;
-                if (dockedEvent != null && this.lastDocked == null)
+                if (dockedEvent != null && this.lastEverDocked == null)
                 {
-                    this.lastDocked = dockedEvent;
                     this.lastEverDocked = dockedEvent;
+                    if (status.Docked)
+                        this.lastDocked = dockedEvent;
                 }
 
                 return false;
@@ -1528,10 +1538,13 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Cargo entry)
         {
+            // force re-read the cargo file
+            CargoFile2.read(true);
+
             if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST)
             {
                 var timeSinceUndocked = DateTime.Now - lastUndocked?.timestamp;
-                Game.log($"timeSinceUndocked: {timeSinceUndocked?.TotalSeconds} seconds");
+                Game.log($"timeSinceUndocked: {timeSinceUndocked?.TotalSeconds ?? '?'} seconds");
                 if (lastDocked != null && ColonyData.isConstructionSite(lastDocked))
                 {
                     // if we are currently docked at a construction site ...
@@ -1545,6 +1558,8 @@ namespace SrvSurvey.game
                     this.cmdrColony.supplyNeeds(lastEverDocked.SystemAddress, lastEverDocked.MarketID, diff);
                 }
             }
+
+            Program.invalidate<PlotBuildCommodities>();
         }
 
         private void onJournalEntry(MarketBuy entry)
@@ -1584,6 +1599,8 @@ namespace SrvSurvey.game
                 Game.log($"Adding {entry.Count}x {entry.Type} to colonyData.fcCommodities");
                 cmdrColony.Save();
                 */
+
+                Program.invalidate<PlotBuildCommodities>();
             }
         }
 
@@ -1594,6 +1611,9 @@ namespace SrvSurvey.game
         private void onJournalEntry(Market entry)
         {
             marketEventSeen = true;
+
+            // force re-read the market file
+            MarketFile.read(true);
 
             if (Game.settings.allowNotifications.fcMarketPurchaseBugReminder && entry.StationType == "FleetCarrier")
             {

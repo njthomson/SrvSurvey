@@ -408,7 +408,11 @@ namespace SrvSurvey
             {
                 try
                 {
-                    Program.forceRestart();
+                    var targetFID = comboCmdr.SelectedIndex != 0
+                        ? CommanderSettings.getAllCmdrs().FirstOrDefault(_ => _.Value == comboCmdr.Text).Key
+                        : null;
+
+                    Program.forceRestart(targetFID);
                 }
                 catch { /* swallow */ }
             }

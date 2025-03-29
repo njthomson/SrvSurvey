@@ -105,7 +105,7 @@ namespace SrvSurvey
             }
         }
 
-        private void parseFile()
+        public void parseFile()
         {
             if (!File.Exists(Status.Filepath))
             {

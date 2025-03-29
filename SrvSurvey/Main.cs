@@ -602,6 +602,8 @@ namespace SrvSurvey
             {
                 if (!string.IsNullOrEmpty(Game.settings.preferredCommander))
                     this.txtCommander.Text = Game.settings.preferredCommander + " (only)";
+                else if (Program.forceFid != null)
+                    this.txtCommander.Text = $"{Program.forceFid} ? (forced)";
                 else
                     this.txtCommander.Text = Game.settings.lastCommander + " ?";
 
@@ -621,6 +623,7 @@ namespace SrvSurvey
             }
 
             this.txtCommander.Text = $"{game.Commander} (FID:{game.fid}, Odyssey:{game.cmdr.isOdyssey})";
+            if (Program.forceFid != null) this.txtCommander.Text += " (forced)";
             this.txtMode.Text = game.mode.ToString();
             if (game.mode == GameMode.Docked && game.systemStation != null)
                 this.txtMode.Text += ": " + game.systemStation.name;
@@ -633,7 +636,10 @@ namespace SrvSurvey
                 return;
             }
 
-            this.txtVehicle.Text = game.vehicle.ToString();
+            if (game.vehicle == ActiveVehicle.MainShip)
+                this.txtVehicle.Text = game.currentShip.name ?? game.currentShip.type;
+            else
+                this.txtVehicle.Text = game.vehicle.ToString();
 
             this.txtLocation.Text = game.systemBody?.name ?? $"{game.systemData?.name}" ?? "";
             btnCopyLocation.Enabled = !string.IsNullOrEmpty(this.txtLocation.Text);

@@ -23,10 +23,12 @@ namespace SrvSurvey
         public static string userAgent = $"SrvSurvey-{Program.releaseVersion}";
         public static bool useLastIfShutdown = false;
         public static bool isLinux = false;
+        public static string? forceFid = null;
 
         public static string cmdArgScanOld = "-scan-old";
         public static string cmdArgRestart = "-restart";
         public static string cmdArgLinux = "-linux";
+        public static string cmdArgFid = "-fid";
 
         private static string dataRootFolder = Path.GetFullPath(Path.Combine(dataFolder, ".."));
 
@@ -73,7 +75,12 @@ namespace SrvSurvey
                 Program.isLinux = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("WINELOADER")) || args.Any(a => a == Program.cmdArgLinux);
                 var invokePostProcessor = args.Any(a => a == Program.cmdArgScanOld);
                 var restarted = args.Any(a => a == Program.cmdArgRestart);
-                if (!restarted && !invokePostProcessor)
+
+                // capture forced FID?
+                var idxFID = args.ToList().IndexOf(Program.cmdArgFid);
+                if (idxFID >= 0 && idxFID + 1 < args.Length) Program.forceFid = args[idxFID + 1];
+
+                if (!restarted && !invokePostProcessor && forceFid == null)
                 {
                     var processes = Process.GetProcessesByName("SrvSurvey");
                     if (processes.Length > 1)
@@ -589,12 +596,15 @@ namespace SrvSurvey
 
         #endregion
 
-        public static void forceRestart()
+        public static void forceRestart(string? fid = null)
         {
+            var args = Program.cmdArgRestart;
+            if (fid != null) args += $" {Program.cmdArgFid} {fid}";
+
             // force a restart
             Application.DoEvents();
             Application.DoEvents();
-            Process.Start(Application.ExecutablePath, Program.cmdArgRestart);
+            Process.Start(Application.ExecutablePath, args);
             Application.DoEvents();
             Process.GetCurrentProcess().Kill();
         }
