@@ -73,7 +73,7 @@ namespace SrvSurvey.plotters
             // NOT calling base class
 
             // match opacity of PlotGrounded
-            this.Opacity = PlotPos.getOpacity(nameof(PlotGrounded));
+            this.setOpacity(PlotPos.getOpacity(nameof(PlotGrounded)));
 
             if (gameRect != Rectangle.Empty)
             {
@@ -101,7 +101,7 @@ namespace SrvSurvey.plotters
             if (this.IsDisposed) return;
 
             if (this.Opacity > 0 && !PlotGrounded.allowPlotter)
-                this.Opacity = 0;
+                this.setOpacity(0);
             else if (this.Opacity == 0 && PlotGrounded.allowPlotter)
                 this.reposition(Elite.getWindowRect());
 

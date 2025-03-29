@@ -47,13 +47,18 @@ namespace SrvSurvey.game
             return null;
         }
 
-        public void Save()
+        public virtual void Save()
         {
-            if (this.filepath == null) return;
+            saveWithRetry(this.filepath, JsonConvert.SerializeObject(this, Formatting.Indented));
+        }
+
+        protected static void saveWithRetry(string filepath,  string json)
+        {
+            if (filepath == null) return;
 
             try
             {
-                var folder = Path.GetDirectoryName(this.filepath)!;
+                var folder = Path.GetDirectoryName(filepath)!;
                 Directory.CreateDirectory(folder);
 
                 var success = false;
@@ -63,15 +68,14 @@ namespace SrvSurvey.game
                     try
                     {
                         attempts++;
-                        var json = JsonConvert.SerializeObject(this, Formatting.Indented);
                         if (json.Length == 0) return;
 
-                        File.WriteAllText(this.filepath, json);
+                        File.WriteAllText(filepath, json);
                         success = true;
                     }
                     catch (Exception ex)
                     {
-                        Game.log($"Failed on attempt {attempts} to save: {this.filepath}\r\n\r\n{ex}");
+                        Game.log($"Failed on attempt {attempts} to save: {filepath}\r\n\r\n{ex}");
                         // swallow and try again
                         Application.DoEvents();
                     }
@@ -79,7 +83,7 @@ namespace SrvSurvey.game
             }
             catch (Exception ex)
             {
-                Game.log($"Error preparing to save: {this.filepath.Replace(Program.dataFolder, "")}\r\n\r\n{ex}");
+                Game.log($"Error preparing to save: {filepath.Replace(Program.dataFolder, "")}\r\n\r\n{ex}");
                 FormErrorSubmit.Show(ex);
             }
         }

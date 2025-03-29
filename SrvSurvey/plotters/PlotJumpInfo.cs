@@ -221,7 +221,7 @@ namespace SrvSurvey.plotters
             if (this.netData == null)
             {
                 // avoid showing an empty plotter
-                this.Opacity = 0;
+                this.setOpacity(0);
                 return;
             }
 
@@ -238,15 +238,17 @@ namespace SrvSurvey.plotters
             this.drawJumpLine();
 
             // 2nd line: discovered vs unvisited + discovered and update dates
+            dtx = eight;
             if (netData.totalBodyCount == 0)
-                drawTextAt2(eight, $"▶️ {netData.discoveryStatus}", GameColors.Cyan);
+                drawTextAt2("▶️ " + netData.discoveryStatus, GameColors.Cyan);
             else if (netData.discoveredDate.HasValue)
-                drawTextAt2(eight, $"▶️ " + Res.DiscoveredBy.format(netData.discoveredBy, netData.discoveredDate.Value.ToString("d")));
+                drawTextAt2("▶️ " + Res.DiscoveredBy.format(netData.discoveredBy, netData.discoveredDate.Value.ToString("d")));
 
             var lastUpdated = netData.lastUpdated;// ?? netData.spanshSystem?.updated_at.GetValueOrDefault()?.ToLocalTime();
             if (lastUpdated != null && (lastUpdated > netData.discoveredDate || netData.discoveredDate == null))
             {
-                drawTextAt2($" ▶️ " + Res.LastUpdated.format(lastUpdated.Value.ToString("d")));
+                if (dtx > eight) dtx += eight;
+                drawTextAt2("▶️ " + Res.LastUpdated.format(lastUpdated.Value.ToString("d")));
                 //drawTextAt2(eight, lineTwo, netData.discovered == false ? GameColors.Cyan : null);
                 //drawTextAt2(Game.settings.useLastUpdatedFromSpanshNotEDSM ? "(Spansh)" : "(EDSM)", GameColors.OrangeDim);
             }
@@ -339,13 +341,13 @@ namespace SrvSurvey.plotters
                 // draw line part from right to left, highlighting if Neutron and/or if next, ahead or behind
                 if (n == nextHopIdx)
                     g.DrawLine(GameColors.Route.penNext4, x - one, y, x - w, y);
-                else if (n < nextHopIdx && d > game.shipMaxJump)
+                else if (n < nextHopIdx && d > game.currentShip.maxJump)
                     g.DrawLine(GameColors.Route.penNeutronBehind, x, y, x - w, y);
                 else if (n < nextHopIdx)
                     g.DrawLine(GameColors.Route.penBehind, x, y, x - w, y);
-                else if (d > game.shipMaxJump && this.totalDistance <= limitExcessDistance)
+                else if (d > game.currentShip.maxJump && this.totalDistance <= limitExcessDistance)
                     g.DrawLine(GameColors.Route.penNeutronAhead, x - two, y, x - w, y);
-                else if (d > game.shipMaxJump && this.totalDistance > limitExcessDistance)
+                else if (d > game.currentShip.maxJump && this.totalDistance > limitExcessDistance)
                     g.DrawLine(GameColors.Route.penNeutronBehind, x - two, y, x - w, y);
                 else if (this.totalDistance < limitExcessDistance)
                     g.DrawLine(GameColors.Route.penAhead, x, y, x - w, y);

@@ -23,10 +23,12 @@ namespace SrvSurvey
         public static string userAgent = $"SrvSurvey-{Program.releaseVersion}";
         public static bool useLastIfShutdown = false;
         public static bool isLinux = false;
+        public static string? forceFid = null;
 
         public static string cmdArgScanOld = "-scan-old";
         public static string cmdArgRestart = "-restart";
         public static string cmdArgLinux = "-linux";
+        public static string cmdArgFid = "-fid";
 
         private static string dataRootFolder = Path.GetFullPath(Path.Combine(dataFolder, ".."));
 
@@ -73,7 +75,12 @@ namespace SrvSurvey
                 Program.isLinux = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("WINELOADER")) || args.Any(a => a == Program.cmdArgLinux);
                 var invokePostProcessor = args.Any(a => a == Program.cmdArgScanOld);
                 var restarted = args.Any(a => a == Program.cmdArgRestart);
-                if (!restarted && !invokePostProcessor)
+
+                // capture forced FID?
+                var idxFID = args.ToList().IndexOf(Program.cmdArgFid);
+                if (idxFID >= 0 && idxFID + 1 < args.Length) Program.forceFid = args[idxFID + 1];
+
+                if (!restarted && !invokePostProcessor && forceFid == null)
                 {
                     var processes = Process.GetProcessesByName("SrvSurvey");
                     if (processes.Length > 1)
@@ -122,7 +129,7 @@ namespace SrvSurvey
             {
                 if (beginInvoke)
                 {
-                    control.BeginInvoke(func);
+                    defer(func);
                 }
                 else
                 {
@@ -131,8 +138,8 @@ namespace SrvSurvey
             }
             catch (Exception ex)
             {
-                Game.log($"crashGuard {ex}");
-                Program.control.BeginInvoke(() =>
+                Game.log($"crashGuard: {ex}");
+                Program.defer(() =>
                 {
                     FormErrorSubmit.Show(ex);
                 });
@@ -216,7 +223,7 @@ namespace SrvSurvey
         public static void closePlotter<T>(bool async = false) where T : Form
         {
             if (async)
-                Program.control.BeginInvoke(() => closePlotter(typeof(T).Name));
+                Program.defer(() => closePlotter(typeof(T).Name));
             else
                 closePlotter(typeof(T).Name);
         }
@@ -323,7 +330,7 @@ namespace SrvSurvey
             //Game.log($"Program.hideActivePlotters: {activePlotters.Count}");
 
             foreach (PlotterForm form in activePlotters.Values)
-                form.Opacity = 0;
+                form.setOpacity(0);
         }
 
         public static void showActivePlotters()
@@ -333,7 +340,7 @@ namespace SrvSurvey
             //Game.log($"Program.showActivePlotters: {activePlotters.Count}");
 
             foreach (PlotterForm form in activePlotters.Values)
-                form.Opacity = PlotPos.getOpacity(form);
+                form.resetOpacity();
         }
 
         public static void invalidate<T>(bool defer = false) where T : Form
@@ -589,12 +596,15 @@ namespace SrvSurvey
 
         #endregion
 
-        public static void forceRestart()
+        public static void forceRestart(string? fid = null)
         {
+            var args = Program.cmdArgRestart;
+            if (fid != null) args += $" {Program.cmdArgFid} {fid}";
+
             // force a restart
             Application.DoEvents();
             Application.DoEvents();
-            Process.Start(Application.ExecutablePath, Program.cmdArgRestart);
+            Process.Start(Application.ExecutablePath, args);
             Application.DoEvents();
             Process.GetCurrentProcess().Kill();
         }
@@ -610,6 +620,8 @@ namespace SrvSurvey
     {
         void reposition(Rectangle gameRect);
         double Opacity { get; set; }
+        public void setOpacity(double newOpacity);
+        public void resetOpacity();
         void Invalidate();
         int Width { get; set; }
         int Height { get; set; }
@@ -624,5 +636,6 @@ namespace SrvSurvey
         bool didFirstPaint { get; set; }
         /// <summary> A flag true immediately about the time we begin showing a window </summary>
         bool showing { get; set; }
+        bool forceHide { get; set; }
     }
 }

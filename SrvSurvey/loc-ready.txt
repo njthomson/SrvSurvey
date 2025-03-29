@@ -20,7 +20,9 @@ PlotFSS.resx
 PlotFSSInfo.resx
 PlotGalMap.resx
 PlotGrounded.resx
+PlotGuardianStatus.resx
 PlotGuardianSystem.resx
+PlotGuardians.resx
 PlotHumanSite.resx
 PlotJumpInfo.resx
 PlotMassacre.resx

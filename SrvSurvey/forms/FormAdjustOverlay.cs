@@ -353,7 +353,7 @@ namespace SrvSurvey.forms
                 this.MaximizeBox = false;
                 this.ControlBox = false;
                 this.FormBorderStyle = FormBorderStyle.None;
-                this.Opacity = 0.7f;
+                this.Opacity = 0.7f; // ok
                 this.ResizeRedraw = true;
             }
 

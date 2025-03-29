@@ -1,0 +1,181 @@
+/forms/FormRoute.ru.resx
+	btnActive.Text
+	btnAutoCopy.Text
+	btnImportSpanshUrl.Text
+	btnNamesFromClipboard.Text
+	btnNamesFromFile.Text
+	btnSave.Text
+	colDistance.Text
+	colNotes.Text
+	colSystem.Text
+	lblIntro.Text
+	$this.Text
+	toolStripDropDownButton1.Text
+
+/forms/ViewLogs.ru.resx
+	btnClear.Text
+	btnClose.Text
+	btnCopy.Text
+	btnOpenFolder.Text
+	$this.Text
+
+/plotters/PlotBioSystem.ru.resx
+	NotPredicted
+
+/plotters/PlotGuardians.ru.resx
+	HeaderGeneral
+	HeaderNeedRelicTowerHeading
+	HeaderNeedRelicTowers
+	HeaderRuinsComplete
+	HeaderStructureComplete
+	HeadingSite
+	HeadingUnknown
+	IdentifyNoMap
+	IdentifySiteHeading
+	IdentifySiteType
+	IdentifyWithButtress
+	IdentifyWithPort
+	NoMapForType
+	ObliskFooter
+	RuinsFooter
+	StructureFooter
+	TrackLeft
+	TrackOriginFooter
+	TrackOriginHeaderPrefix
+	TrackOriginHeaderSuffix
+	TrackRight
+	ZoomLevel
+	ZoomLevelAuto
+
+/plotters/PlotGuardianStatus.ru.resx
+	AlignAndRise
+	AlignWithButtress
+	ChooseAbsent
+	ChooseEmpty
+	ChoosePresent
+	FooterActiveObeliskGroups
+	FooterToggleModeOnce
+	FooterToggleModeTwice
+	HeaderUnknownSiteType
+	LineRamTahAcquired
+	LineRamTahNeeded
+	MatsFullOne
+	MatsFullTwo
+	NearObeliskHeader
+	NoNearPoiHeader
+	ObeliskActive
+	ObeliskBroken
+	ObeliskInactive
+	OnApproachFooter
+	OnApproachHeaderRuins
+	OnApproachHeaderStructure
+	OnApproachMiddleRuins
+	OnApproachMiddleStructure
+	OnApproachMiddleStructureNoBluePrint
+	RelicTowerFaceHint
+	RelicTowerFootHint
+	RelicTowerHeadingKnown
+	RelicTowerNonToolHint
+	RequiresPrefix
+	RequiresSuffix
+	ToggleLightsUpdateHint
+	ToggleShieldsForRelicTower
+	YouHaveNotScanned
+	YouHaveScanned
+
+/plotters/PlotGuardianSystem.ru.resx
+	BluePrintLine
+	Header
+	SurveyIncomplete
+	SurveyLine
+	SurveyNotStarted
+
+/plotters/PlotMassacre.ru.resx
+	Header
+
+/plotters/PlotRamTah.ru.resx
+	Footer
+	Header
+	NoNewLogs
+
+/plotters/PlotTrackTarget.ru.resx
+	BearingTo
+	DistanceTo
+
+/Properties/FactionStates.ru.resx
+	Thargoid_Probing
+	Thargoid_Harvest
+	Thargoid_Controlled
+	Thargoid_Stronghold
+	Thargoid_Recovery
+
+/Properties/FormRouteExtras.ru.resx
+	ArrivedAt
+	AutoCopyButton
+	ImportedSystems
+	ImportingSpansh
+	ImportNames
+	MsgNamesClipboard
+	MsgSpanshClipboard
+	Neutron
+	OpenTextFileDialogTitle
+	Refuel
+	RouteActiveButton
+	RouteComplete
+	RouteNotFound
+	RouteNotStarted
+	RouteProgress
+	SpanshImportSuccess
+	TextFiles
+
+/Properties/Guardian.ru.resx
+	Alpha
+	Beta
+	BluePrintFighter
+	BluePrintModule
+	BluePrintWeapon
+	Gamma
+	ItemBasilisk
+	ItemCasket
+	ItemCyclops
+	ItemLink
+	ItemMedusa
+	ItemOrb
+	ItemProbe
+	ItemRelic
+	ItemSensor
+	ItemTablet
+	ItemTotem
+	ItemUrn
+	LogBiology
+	LogCulture
+	LogHistory
+	LogLanguage
+	LogTechnology
+	Ruins
+	SitePoiStatus_absent
+	SitePoiStatus_empty
+	SitePoiStatus_present
+	SitePoiStatus_unknown
+	StatusUnknown
+	Structure
+	POIType_Component
+	POIType_Pylon
+
+/Properties/Materials.ru.resx
+	tg_biomechanicalconduits
+	tg_shipflightdata
+	tg_shipsystemsdata
+	tg_interdictiondata
+	tg_causticcrystal
+	tg_causticshard
+	tg_causticgeneratorparts
+	tg_abrasion01
+	tg_abrasion02
+	tg_abrasion03
+	unknowncorechip
+	searchrescuevoucher
+
+/Properties/Misc.ru.resx
+	FirewallBlocked
+	UnexpectedWentWrong

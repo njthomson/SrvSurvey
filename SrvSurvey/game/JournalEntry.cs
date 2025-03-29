@@ -43,13 +43,15 @@ namespace SrvSurvey
     class LoadGame : JournalEntry
     {
         // { "timestamp":"2023-03-07T06:38:34Z", "event":"LoadGame", "FID":"F10171085", "Commander":"GRINNING2002", "Horizons":true, "Odyssey":true, "Ship":"Dolphin", "ShipID":24, "ShipName":"", "ShipIdent":"", "FuelLevel":15.500000, "FuelCapacity":16.000000, "StartLanded":true, "GameMode":"Solo", "Credits":1597404741, "Loan":0, "language":"English/UK", "gameversion":"4.0.0.1477", "build":"r291050/r0 " }
+        // { "timestamp":"2025-03-09T03:34:04Z", "event":"LoadGame", "FID":"F6985613", "Commander":"grinning2001", "Horizons":true, "Odyssey":true, "Ship":"TacticalSuit_Class5", "Ship_Localised":"$TacticalSuit_Class1_Name;", "ShipID":4293000002, "ShipName":"", "ShipIdent":"", "FuelLevel":1.000000, "FuelCapacity":1.000000, "GameMode":"Open", "Credits":7626827113, "Loan":0, "language":"English/UK", "gameversion":"4.1.0.100", "build":"r311607/r0 " }
 
         public string FID { get; set; }
         public string Commander { get; set; }
         public bool Horizons { get; set; }
         public bool Odyssey { get; set; }
         public string Ship { get; set; }
-        public double ShipID { get; set; }
+        public string? Ship_Localised { get; set; }
+        public long ShipID { get; set; }
         public string ShipName { get; set; }
         public string ShipIdent { get; set; }
         public double FuelLevel { get; set; }
@@ -111,7 +113,8 @@ namespace SrvSurvey
         public int ShipID;
         public string ShipName;
         public string ShipIDent;
-        public float MaxJumpRange;
+        public double MaxJumpRange;
+        public int CargoCapacity;
     }
 
     class Died : JournalEntry
@@ -206,7 +209,7 @@ namespace SrvSurvey
         public string StarSystem;
         public long SystemAddress;
         public long MarketID;
-        // StationFaction ?
+        public NamedFaction StationFaction;
         public string? StationGovernment;
         public string? StationGovernment_Localised;
         public List<string>? StationServices;
@@ -234,6 +237,8 @@ namespace SrvSurvey
         CraterPort,
         AsteroidBase,
         SurfaceStation,
+        PlanetaryConstructionDepot,
+        SpaceConstructionDepot,
     }
 
     class Undocked : JournalEntry
@@ -425,7 +430,7 @@ namespace SrvSurvey
         public FSDJumpBodyType BodyType { get; set; }  // "Star"
         public List<string> Powers { get; set; } // [ "Felicia Winters" ]
         public string PowerplayState { get; set; } // Exploited
-        public float JumpDist { get; set; }// 8.278
+        public double JumpDist { get; set; }// 8.278
         public float FuelUsed { get; set; } // 0.091548
         public float FuelLevel { get; set; } // 13.458453
         public List<SystemFaction>? Factions { get; set; }
@@ -964,7 +969,7 @@ namespace SrvSurvey
 
     class Mission
     {
-        public long MissionID;
+        public decimal MissionID;
         public string Name;
         public bool PassengerMission;
         public long Expires;
@@ -1051,6 +1056,11 @@ namespace SrvSurvey
         public string Vessel { get; set; }
         public int Count { get; set; }
         public List<InventoryItem> Inventory { get; set; }
+
+        public int getCount(string commodity)
+        {
+            return this.Inventory.FirstOrDefault(i => i.Name == commodity)?.Count ?? 0;
+        }
     }
 
     class CargoDepot : JournalEntry
@@ -1146,6 +1156,25 @@ namespace SrvSurvey
             else
                 throw new Exception("Unexpected category: " + category);
         }
+
+        public MaterialEntry addEntry(MaterialCollected entry)
+        {
+            var newEntry = new MaterialEntry()
+            {
+                Name = entry.Name,
+                Name_Localised = entry.Name_Localised,
+                Count = entry.Count,
+            };
+
+            if (entry.Category == "Raw")
+                this.Raw.Add(newEntry);
+            else if (entry.Category == "Encoded")
+                this.Encoded.Add(newEntry);
+            else if (entry.Category == "Manufactured")
+                this.Manufactured.Add(newEntry);
+
+            return newEntry;
+        }
     }
 
     public class MaterialEntry
@@ -1157,6 +1186,11 @@ namespace SrvSurvey
 
         [JsonIgnore]
         public string displayName => Name_Localised ?? Name;
+
+        public override string ToString()
+        {
+            return $"{Name}: {Count}";
+        }
     }
 
     class MaterialTrade : JournalEntry
@@ -1274,5 +1308,51 @@ namespace SrvSurvey
         public string Name;
         public string Name_Localised;
         public string Type;
+    }
+
+    class MarketBuy : JournalEntry
+    {
+        // { "timestamp":"2025-03-04T16:10:26Z", "event":"MarketBuy", "MarketID":3708733696, "Type":"insulatingmembrane", "Type_Localised":"Insulating Membrane", "Count":32, "BuyPrice":10605, "TotalCost":339360 }
+        public long MarketId;
+        public string Type;
+        public string Type_Localised;
+        public int Count;
+        public int BuyPrice;
+        public long TotalCost;
+    }
+
+    class MarketSell : JournalEntry
+    {
+        // { "timestamp":"2025-03-06T20:58:16Z", "event":"MarketSell", "MarketID":3708733696, "Type":"aluminium", "Count":2, "SellPrice":2540, "TotalSale":5080, "AvgPricePaid":2604 }
+
+
+        public long MarketId;
+        public string Type;
+        public int Count;
+        public int SellPrice;
+        public int AvgPricePaid;
+        public long TotalSale;
+    }
+
+    class Market : JournalEntry
+    {
+        // { "timestamp":"2025-03-04T21:54:50Z", "event":"Market", "MarketID":3708733696, "StationName":"H6B-5HQ", "StationType":"FleetCarrier", "CarrierDockingAccess":"squadronfriends", "StarSystem":"Sedimo" }
+        // { "timestamp":"2025-03-04T18:39:33Z", "event":"Market", "MarketID":3528735744, "StationName":"Hume Beacon", "StationType":"CraterOutpost", "StarSystem":"Sedimo" }
+
+        public long MarketId;
+        public string StationName;
+        public string StationType;
+        public string CarrierDockingAccess;
+        public string StarSystem;
+    }
+
+    class Interdicted: JournalEntry
+    {
+        // { "timestamp":"2025-01-31T04:13:05Z", "event":"Interdicted", "Submitted":false, "Interdictor":"Geno Garon", "IsPlayer":true, "CombatRank":10 }
+
+        public bool Submitted;
+        public string Interdictor;
+        public bool IsPlayer;
+        public int CombatRank;
     }
 }

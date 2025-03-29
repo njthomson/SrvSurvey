@@ -174,6 +174,67 @@
 	Ship
 	SRV
 
+/plotters/PlotGuardians.fr.resx
+	HeaderGeneral
+	HeaderNeedRelicTowerHeading
+	HeaderNeedRelicTowers
+	HeaderRuinsComplete
+	HeaderStructureComplete
+	HeadingSite
+	HeadingUnknown
+	IdentifyNoMap
+	IdentifySiteHeading
+	IdentifySiteType
+	IdentifyWithButtress
+	IdentifyWithPort
+	NoMapForType
+	ObliskFooter
+	RuinsFooter
+	StructureFooter
+	TrackLeft
+	TrackOriginFooter
+	TrackOriginHeaderPrefix
+	TrackOriginHeaderSuffix
+	TrackRight
+	ZoomLevel
+	ZoomLevelAuto
+
+/plotters/PlotGuardianStatus.fr.resx
+	AlignAndRise
+	AlignWithButtress
+	ChooseAbsent
+	ChooseEmpty
+	ChoosePresent
+	FooterActiveObeliskGroups
+	FooterToggleModeOnce
+	FooterToggleModeTwice
+	HeaderUnknownSiteType
+	LineRamTahAcquired
+	LineRamTahNeeded
+	MatsFullOne
+	MatsFullTwo
+	NearObeliskHeader
+	NoNearPoiHeader
+	ObeliskActive
+	ObeliskBroken
+	ObeliskInactive
+	OnApproachFooter
+	OnApproachHeaderRuins
+	OnApproachHeaderStructure
+	OnApproachMiddleRuins
+	OnApproachMiddleStructure
+	OnApproachMiddleStructureNoBluePrint
+	RelicTowerFaceHint
+	RelicTowerFootHint
+	RelicTowerHeadingKnown
+	RelicTowerNonToolHint
+	RequiresPrefix
+	RequiresSuffix
+	ToggleLightsUpdateHint
+	ToggleShieldsForRelicTower
+	YouHaveNotScanned
+	YouHaveScanned
+
 /plotters/PlotGuardianSystem.fr.resx
 	BluePrintLine
 	Header
@@ -392,9 +453,12 @@
 	TextFiles
 
 /Properties/Guardian.fr.resx
+	Alpha
+	Beta
 	BluePrintFighter
 	BluePrintModule
 	BluePrintWeapon
+	Gamma
 	ItemBasilisk
 	ItemCasket
 	ItemCyclops
@@ -413,7 +477,14 @@
 	LogLanguage
 	LogTechnology
 	Ruins
+	SitePoiStatus_absent
+	SitePoiStatus_empty
+	SitePoiStatus_present
+	SitePoiStatus_unknown
+	StatusUnknown
 	Structure
+	POIType_Component
+	POIType_Pylon
 
 /Properties/KeyChords.fr.resx
 	toggleAllVisibility

@@ -90,7 +90,7 @@ namespace SrvSurvey.plotters
             showPlotter = showPlotter && (!force && this.signals.Count > 0); // keep plotter hidden if no more signals
 
             if (!force && this.Opacity > 0 && !showPlotter)
-                this.Opacity = 0;
+                this.setOpacity(0);
             else if (this.Opacity == 0 && showPlotter)
                 this.reposition(Elite.getWindowRect());
 

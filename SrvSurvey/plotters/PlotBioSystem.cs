@@ -156,7 +156,7 @@ namespace SrvSurvey.plotters
         {
             if (this.IsDisposed || game.systemData == null || game.status == null || !PlotBioSystem.allowPlotter)
             {
-                this.Opacity = 0;
+                this.setOpacity(0);
                 return;
             }
 

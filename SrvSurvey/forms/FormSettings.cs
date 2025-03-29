@@ -205,6 +205,15 @@ namespace SrvSurvey
                             ((RadioButton)ctrl).Checked = (bool)map[name].GetValue(Game.settings)!;
                             break;
 
+                        case nameof(ListView):
+                            if (ctrl.Tag != null)
+                            {
+                                var subSettings = map[name].GetValue(Game.settings);
+                                foreach (ListViewItem item in ((ListView)ctrl).Items)
+                                    item.Checked = subSettings!.GetType()!.GetField((string)item.Tag!)!.GetValue(subSettings) as bool? ?? false;
+                            }
+                            break;
+
                         default:
                             throw new Exception($"Unexpected control type: {ctrl.GetType().Name}");
                     }
@@ -298,12 +307,25 @@ namespace SrvSurvey
                             val = ((RadioButton)ctrl).Checked;
                             break;
 
+                        case nameof(ListView):
+                            if (ctrl.Tag != null)
+                            {
+                                var subSettings = map[name].GetValue(Game.settings)!;
+                                foreach (ListViewItem item in ((ListView)ctrl).Items)
+                                    subSettings.GetType()!.GetField((string)item.Tag!)!.SetValue(subSettings, item.Checked);
+
+                                name = null;
+                            }
+                            break;
+
+
                         default:
                             throw new Exception($"Unexpected control type: {ctrl.GetType().Name}");
                     }
 
                     // Game.log($"Write setting: {name} => {val}");
-                    map[name].SetValue(Game.settings, val);
+                    if (name != null)
+                        map[name].SetValue(Game.settings, val);
                 }
 
                 // recurse if there are children
@@ -319,13 +341,15 @@ namespace SrvSurvey
 
             var langChanged = Game.settings.lang != Localize.codeFromName(comboLang.Text);
 
+            var themeChanged = this.panelTheme2.BackColor != Game.settings.defaultCyan
+                || this.panelTheme.BackColor != Game.settings.defaultOrange;
+
             // restart the app if these are different:
-            var restartApp = !sameCmdr || langChanged
+            var restartApp = !sameCmdr || langChanged || themeChanged
+                || checkColonization.Checked != Game.settings.buildProjects_TEST
                 || comboOverlayScale.SelectedIndex != Game.settings.plotterScale
                 || this.checkEnableGuardianFeatures.Checked != Game.settings.enableGuardianSites
-                || this.linkJournalFolder.Text != Game.settings.watchedJournalFolder
-                || this.panelTheme2.BackColor != Game.settings.defaultCyan
-                || this.panelTheme.BackColor != Game.settings.defaultOrange;
+                || this.linkJournalFolder.Text != Game.settings.watchedJournalFolder;
 
             updateAllSettingsFromForm();
 
@@ -333,37 +357,48 @@ namespace SrvSurvey
             Game.settings.preferredCommander = comboCmdr.SelectedIndex > 0 ? comboCmdr.Text : null;
             Game.settings.screenshotBannerColor = colorScreenshotBanner;
 
-            // ratio for darker colours
-            var rr = 0.5f;
-            // primary theme color
-            if (Game.settings.defaultOrange != panelTheme.BackColor
-                // but not if we're resetting
-                && panelTheme.BackColor != GameColors.Defaults.Orange)
+            if (themeChanged)
             {
-                // generate a new dimmer colour
-                Game.settings.defaultOrangeDim = Color.FromArgb(
-                    255,
-                    (int)((float)panelTheme.BackColor.R * rr),
-                    (int)((float)panelTheme.BackColor.G * rr),
-                    (int)((float)panelTheme.BackColor.B * rr)
-                );
-            }
-            Game.settings.defaultOrange = panelTheme.BackColor;
+                var theme = Theme.loadTheme();
 
-            // secondary theme color
-            if (Game.settings.defaultCyan != panelTheme2.BackColor
-                // but not if we're resetting
-                && panelTheme2.BackColor != GameColors.Defaults.Cyan)
-            {
-                // generate a new dimmer colour
-                Game.settings.defaultDarkCyan = Color.FromArgb(
-                    255,
-                    (int)((float)panelTheme2.BackColor.R * rr),
-                    (int)((float)panelTheme2.BackColor.G * rr),
-                    (int)((float)panelTheme2.BackColor.B * rr)
-                );
+                // ratio for darker colours
+                var rr = 0.5f;
+                // primary theme color
+                if (Game.settings.defaultOrange != panelTheme.BackColor
+                    // but not if we're resetting
+                    && panelTheme.BackColor != GameColors.Defaults.Orange)
+                {
+                    // generate a new dimmer colour
+                    Game.settings.defaultOrangeDim = Color.FromArgb(
+                        255,
+                        (int)((float)panelTheme.BackColor.R * rr),
+                        (int)((float)panelTheme.BackColor.G * rr),
+                        (int)((float)panelTheme.BackColor.B * rr)
+                    );
+                }
+                Game.settings.defaultOrange = panelTheme.BackColor;
+
+                // secondary theme color
+                if (Game.settings.defaultCyan != panelTheme2.BackColor
+                    // but not if we're resetting
+                    && panelTheme2.BackColor != GameColors.Defaults.Cyan)
+                {
+                    // generate a new dimmer colour
+                    Game.settings.defaultDarkCyan = Color.FromArgb(
+                        255,
+                        (int)((float)panelTheme2.BackColor.R * rr),
+                        (int)((float)panelTheme2.BackColor.G * rr),
+                        (int)((float)panelTheme2.BackColor.B * rr)
+                    );
+                }
+                Game.settings.defaultCyan = panelTheme2.BackColor;
+
+                theme.update("orange", Game.settings.defaultOrange);
+                theme.update("orangeDark", Game.settings.defaultOrangeDim);
+                theme.update("cyan", Game.settings.defaultCyan);
+                theme.update("cyanDark", Game.settings.defaultDarkCyan);
+                theme.saveUpdates();
             }
-            Game.settings.defaultCyan = panelTheme2.BackColor;
 
             Game.settings.Save();
             this.DialogResult = DialogResult.OK;
@@ -373,7 +408,11 @@ namespace SrvSurvey
             {
                 try
                 {
-                    Program.forceRestart();
+                    var targetFID = comboCmdr.SelectedIndex != 0
+                        ? CommanderSettings.getAllCmdrs().FirstOrDefault(_ => _.Value == comboCmdr.Text).Key
+                        : null;
+
+                    Program.forceRestart(targetFID);
                 }
                 catch { /* swallow */ }
             }
@@ -441,6 +480,11 @@ namespace SrvSurvey
         }
 
         private void disableEverythingElse_CheckedChanged(object sender, EventArgs e)
+        {
+            disableEverythingElse(sender as CheckBox, groupColonization);
+        }
+
+        private void disableEverythingGuardian_CheckedChanged(object sender, EventArgs e)
         {
             disableEverythingElse(sender as CheckBox);
         }
@@ -854,6 +898,11 @@ namespace SrvSurvey
                 Task.Delay(100)
                     .ContinueWith(t => Main.form.hook.startDirectX(newDeviceId));
             }
+        }
+
+        private void checkColonization_CheckedChanged(object sender, EventArgs e)
+        {
+            disableEverythingElse(sender as CheckBox);
         }
     }
 }

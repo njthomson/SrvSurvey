@@ -9,6 +9,10 @@ namespace SrvSurvey
 {
     class Settings
     {
+        public bool buildProjects_TEST = true;
+        public bool trackConstructionContributions_TEST = true;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string? buildProjectsUrl_TEST = null;
         public Color defaultOrange = GameColors.Defaults.Orange;
         public Color defaultOrangeDim = GameColors.Defaults.OrangeDim;
         public Color defaultCyan = GameColors.Defaults.Cyan;
@@ -99,6 +103,7 @@ namespace SrvSurvey
 
         public bool tempRange_TEST = false;
         public bool formPredictionsCurrentBodyOnly = false;
+        public int formPredictionsRowFontSize = 1;
 
         /// <summary>
         /// Controls if we make any calls to get exploration or bio data
@@ -227,6 +232,11 @@ namespace SrvSurvey
         public bool viewJourneyTopMost = false;
         public bool viewJourneyGalacticTime = true;
 
+        public bool logDockToDockTimes = false;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public Notifications allowNotifications = new();
+
         #region loading / saving
 
         static readonly string settingsPath = Path.Combine(Program.dataFolder, "settings.json");
@@ -291,5 +301,14 @@ namespace SrvSurvey
         }
 
         #endregion
+
+        public class Notifications
+        {
+            public bool materialCountAfterPickup = true;
+            public bool cargoMissionRemaining = true;
+            public bool currentBoxelSearchStatus = true;
+            public bool showNextBoxelToSearch = true;
+            public bool fcMarketPurchaseBugReminder = true;
+        }
     }
 }

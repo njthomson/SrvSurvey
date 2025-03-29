@@ -266,27 +266,22 @@
   </data>
   <!--Localizable elements are below-->
   <data name="btnClear.Text">
-    <!--Machine translated-->
-    <value>&amp;重置</value>
+    <value>清空(&amp;R)</value>
     <source>&amp;Reset</source>
   </data>
   <data name="btnClose.Text">
-    <!--Machine translated-->
-    <value>&amp;关闭</value>
+    <value>关闭(&amp;Q)</value>
     <source>&amp;Close</source>
   </data>
   <data name="btnCopy.Text">
-    <!--Machine translated-->
-    <value>C&amp;opy 餐厅</value>
+    <value>复制(&amp;C)</value>
     <source>C&amp;opy</source>
   </data>
   <data name="btnOpenFolder.Text">
-    <!--Machine translated-->
-    <value>&amp; 打开日志文件夹</value>
+    <value>打开日志文件夹(&amp;O)</value>
     <source>&amp;Open logs folder</source>
   </data>
   <data name="$this.Text">
-    <!--Machine translated-->
     <value>SrvSurvey 日志</value>
     <source>SrvSurvey Logs</source>
   </data>

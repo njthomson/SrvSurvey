@@ -15,13 +15,36 @@ namespace SrvSurvey
 
         #endregion
 
+        public Dictionary<string, int> getDiff()
+        {
+            var diffs = new Dictionary<string, int>();
+            if (lastInventory.Count > 0)
+            {
+                foreach (var entry in this.Inventory)
+                {
+                    var delta = entry.Count - lastInventory.GetValueOrDefault(entry.Name);
+                    if (delta != 0) diffs[entry.Name] = delta;
+                }
+
+                foreach (var entry in this.lastInventory)
+                {
+                    if (!this.Inventory.Any(_ => _.Name == entry.Key))
+                        diffs[entry.Key] = -entry.Value;
+                }
+
+            }
+
+            return diffs;
+        }
+
+        [JsonIgnore]
+        public Dictionary<string, int> lastInventory = new();
+
         #region deserializing + file watching
 
         private FileSystemWatcher? fileWatcher;
 
-        private CargoFile()
-        {
-        }
+        private CargoFile() { }
 
         public static CargoFile load(bool watch)
         {
@@ -82,13 +105,19 @@ namespace SrvSurvey
             }
         }
 
-        private void parseFile()
+        public void parseFile()
         {
             if (!File.Exists(Status.Filepath))
             {
                 Game.log($"Check watched journal folder setting!\r\nCannot find file: {CargoFile.Filepath}");
                 return;
             }
+
+            // clone prior inventory
+            lastInventory.Clear();
+            if (this.Inventory != null)
+                foreach (var entry in this.Inventory)
+                    lastInventory[entry.Name] = entry.Count;
 
             // read the file contents ...
             using (var sr = new StreamReader(new FileStream(CargoFile.Filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))

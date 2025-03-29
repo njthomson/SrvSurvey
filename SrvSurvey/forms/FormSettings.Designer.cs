@@ -31,6 +31,11 @@ namespace SrvSurvey
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
+            ListViewItem listViewItem11 = new ListViewItem("Materials count after pickup");
+            ListViewItem listViewItem12 = new ListViewItem("Mission remaining cargo count");
+            ListViewItem listViewItem13 = new ListViewItem("Boxel search status");
+            ListViewItem listViewItem14 = new ListViewItem("Next boxel to search");
+            ListViewItem listViewItem15 = new ListViewItem("Buying bug at FCs");
             panel1 = new Panel();
             btnNextProc = new FlatButton();
             btnSave = new FlatButton();
@@ -180,6 +185,7 @@ namespace SrvSurvey
             checkBox8 = new CheckBox();
             checkBox4 = new CheckBox();
             tabPage7 = new TabPage();
+            checkColonization = new CheckBox();
             numPriorScanMinValue = new NumericUpDown();
             pictureBox7 = new PictureBox();
             checkUseBioData = new CheckBox();
@@ -225,6 +231,11 @@ namespace SrvSurvey
             colDesc = new ColumnHeader();
             label28 = new Label();
             checkKeyChords = new CheckBox();
+            tabPage8 = new TabPage();
+            checkBox40 = new CheckBox();
+            listView1 = new ListView();
+            checkBox42 = new CheckBox();
+            checkBox41 = new CheckBox();
             tabPage2 = new TabPage();
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
@@ -234,6 +245,8 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
+            groupColonization = new GroupBox();
+            checkBox39 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -285,8 +298,10 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)numericUpDown6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).BeginInit();
             tabKeyChords.SuspendLayout();
+            tabPage8.SuspendLayout();
             tabPage2.SuspendLayout();
             menuCodexImages.SuspendLayout();
+            groupColonization.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -298,7 +313,7 @@ namespace SrvSurvey
             panel1.Location = new Point(0, 476);
             panel1.Margin = new Padding(4, 3, 4, 3);
             panel1.Name = "panel1";
-            panel1.Size = new Size(659, 48);
+            panel1.Size = new Size(707, 48);
             panel1.TabIndex = 1;
             // 
             // btnNextProc
@@ -315,7 +330,7 @@ namespace SrvSurvey
             // btnSave
             // 
             btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSave.Location = new Point(463, 14);
+            btnSave.Location = new Point(511, 14);
             btnSave.Margin = new Padding(4, 3, 4, 3);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(88, 27);
@@ -328,7 +343,7 @@ namespace SrvSurvey
             // 
             btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.Location = new Point(557, 14);
+            btnCancel.Location = new Point(605, 14);
             btnCancel.Margin = new Padding(4, 3, 4, 3);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(88, 27);
@@ -382,7 +397,7 @@ namespace SrvSurvey
             tabPage1.Margin = new Padding(4, 3, 4, 3);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(4, 3, 4, 3);
-            tabPage1.Size = new Size(651, 448);
+            tabPage1.Size = new Size(699, 448);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
             // 
@@ -862,13 +877,14 @@ namespace SrvSurvey
             tabControl.Controls.Add(tabPage7);
             tabControl.Controls.Add(tabSettlements);
             tabControl.Controls.Add(tabKeyChords);
+            tabControl.Controls.Add(tabPage8);
             tabControl.Controls.Add(tabPage2);
             tabControl.Dock = DockStyle.Fill;
             tabControl.Location = new Point(0, 0);
             tabControl.Margin = new Padding(4, 3, 4, 3);
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
-            tabControl.Size = new Size(659, 476);
+            tabControl.Size = new Size(707, 476);
             tabControl.TabIndex = 0;
             // 
             // tabPage4
@@ -900,7 +916,7 @@ namespace SrvSurvey
             tabPage4.Location = new Point(4, 24);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new Padding(3);
-            tabPage4.Size = new Size(651, 448);
+            tabPage4.Size = new Size(699, 448);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
             // 
@@ -1357,9 +1373,9 @@ namespace SrvSurvey
             tabPage3.Location = new Point(4, 24);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(651, 448);
+            tabPage3.Size = new Size(699, 448);
             tabPage3.TabIndex = 2;
-            tabPage3.Text = "Guardian sites";
+            tabPage3.Text = "Guardians";
             // 
             // comboGuardianWindowSize
             // 
@@ -1575,7 +1591,7 @@ namespace SrvSurvey
             checkEnableGuardianFeatures.Tag = "enableGuardianSites";
             checkEnableGuardianFeatures.Text = "Enable Guardian Ruins features";
             checkEnableGuardianFeatures.UseVisualStyleBackColor = true;
-            checkEnableGuardianFeatures.CheckedChanged += disableEverythingElse_CheckedChanged;
+            checkEnableGuardianFeatures.CheckedChanged += disableEverythingGuardian_CheckedChanged;
             // 
             // tabPage5
             // 
@@ -1597,7 +1613,7 @@ namespace SrvSurvey
             tabPage5.Location = new Point(4, 24);
             tabPage5.Name = "tabPage5";
             tabPage5.Padding = new Padding(3);
-            tabPage5.Size = new Size(651, 448);
+            tabPage5.Size = new Size(699, 448);
             tabPage5.TabIndex = 4;
             tabPage5.Text = "Screenshots";
             // 
@@ -1861,7 +1877,7 @@ namespace SrvSurvey
             tabPage6.Location = new Point(4, 24);
             tabPage6.Name = "tabPage6";
             tabPage6.Padding = new Padding(3);
-            tabPage6.Size = new Size(651, 448);
+            tabPage6.Size = new Size(699, 448);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
             // 
@@ -2248,6 +2264,7 @@ namespace SrvSurvey
             // tabPage7
             // 
             tabPage7.BorderStyle = BorderStyle.Fixed3D;
+            tabPage7.Controls.Add(groupColonization);
             tabPage7.Controls.Add(numPriorScanMinValue);
             tabPage7.Controls.Add(pictureBox7);
             tabPage7.Controls.Add(checkUseBioData);
@@ -2264,9 +2281,23 @@ namespace SrvSurvey
             tabPage7.Location = new Point(4, 24);
             tabPage7.Name = "tabPage7";
             tabPage7.Padding = new Padding(3);
-            tabPage7.Size = new Size(651, 448);
+            tabPage7.Size = new Size(699, 448);
             tabPage7.TabIndex = 6;
             tabPage7.Text = "External Data";
+            // 
+            // checkColonization
+            // 
+            checkColonization.AutoSize = true;
+            checkColonization.CheckAlign = ContentAlignment.TopLeft;
+            checkColonization.FlatStyle = FlatStyle.System;
+            checkColonization.Location = new Point(6, 22);
+            checkColonization.Name = "checkColonization";
+            checkColonization.Size = new Size(180, 20);
+            checkColonization.TabIndex = 33;
+            checkColonization.Tag = "buildProjects_TEST";
+            checkColonization.Text = "Enable colonization features";
+            checkColonization.UseVisualStyleBackColor = true;
+            checkColonization.CheckedChanged += checkColonization_CheckedChanged;
             // 
             // numPriorScanMinValue
             // 
@@ -2442,7 +2473,7 @@ namespace SrvSurvey
             tabSettlements.Location = new Point(4, 24);
             tabSettlements.Name = "tabSettlements";
             tabSettlements.Padding = new Padding(3);
-            tabSettlements.Size = new Size(651, 448);
+            tabSettlements.Size = new Size(699, 448);
             tabSettlements.TabIndex = 7;
             tabSettlements.Text = "Settlements";
             // 
@@ -2743,7 +2774,7 @@ namespace SrvSurvey
             tabKeyChords.Location = new Point(4, 24);
             tabKeyChords.Name = "tabKeyChords";
             tabKeyChords.Padding = new Padding(3);
-            tabKeyChords.Size = new Size(651, 448);
+            tabKeyChords.Size = new Size(699, 448);
             tabKeyChords.TabIndex = 8;
             tabKeyChords.Text = "Key Chords";
             // 
@@ -2753,7 +2784,7 @@ namespace SrvSurvey
             comboDirectXDevice.DropDownStyle = ComboBoxStyle.DropDownList;
             comboDirectXDevice.FlatStyle = FlatStyle.System;
             comboDirectXDevice.FormattingEnabled = true;
-            comboDirectXDevice.Location = new Point(261, 25);
+            comboDirectXDevice.Location = new Point(309, 25);
             comboDirectXDevice.Name = "comboDirectXDevice";
             comboDirectXDevice.Size = new Size(378, 23);
             comboDirectXDevice.TabIndex = 2;
@@ -2785,7 +2816,7 @@ namespace SrvSurvey
             listKeys.Location = new Point(6, 52);
             listKeys.Name = "listKeys";
             listKeys.ShowItemToolTips = true;
-            listKeys.Size = new Size(633, 386);
+            listKeys.Size = new Size(681, 386);
             listKeys.TabIndex = 4;
             listKeys.UseCompatibleStateImageBehavior = false;
             listKeys.View = View.Details;
@@ -2826,6 +2857,82 @@ namespace SrvSurvey
             checkKeyChords.UseVisualStyleBackColor = true;
             checkKeyChords.CheckedChanged += checkKeyChords_CheckedChanged;
             // 
+            // tabPage8
+            // 
+            tabPage8.BackColor = SystemColors.Control;
+            tabPage8.BorderStyle = BorderStyle.Fixed3D;
+            tabPage8.Controls.Add(checkBox40);
+            tabPage8.Controls.Add(listView1);
+            tabPage8.Controls.Add(checkBox42);
+            tabPage8.Controls.Add(checkBox41);
+            tabPage8.Location = new Point(4, 24);
+            tabPage8.Name = "tabPage8";
+            tabPage8.Padding = new Padding(3);
+            tabPage8.Size = new Size(699, 448);
+            tabPage8.TabIndex = 9;
+            tabPage8.Text = "More";
+            // 
+            // checkBox40
+            // 
+            checkBox40.AutoSize = true;
+            checkBox40.CheckAlign = ContentAlignment.TopLeft;
+            checkBox40.FlatStyle = FlatStyle.System;
+            checkBox40.Location = new Point(12, 305);
+            checkBox40.Name = "checkBox40";
+            checkBox40.Size = new Size(214, 20);
+            checkBox40.TabIndex = 35;
+            checkBox40.Tag = "autoShowFloatie_TEST";
+            checkBox40.Text = "Allow timed notification messages";
+            checkBox40.UseVisualStyleBackColor = true;
+            // 
+            // listView1
+            // 
+            listView1.CheckBoxes = true;
+            listViewItem11.StateImageIndex = 0;
+            listViewItem11.Tag = "materialCountAfterPickup";
+            listViewItem12.StateImageIndex = 0;
+            listViewItem12.Tag = "cargoMissionRemaining";
+            listViewItem13.StateImageIndex = 0;
+            listViewItem13.Tag = "currentBoxelSearchStatus";
+            listViewItem14.StateImageIndex = 0;
+            listViewItem14.Tag = "showNextBoxelToSearch";
+            listViewItem15.StateImageIndex = 0;
+            listViewItem15.Tag = "fcMarketPurchaseBugReminder";
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem11, listViewItem12, listViewItem13, listViewItem14, listViewItem15 });
+            listView1.Location = new Point(12, 331);
+            listView1.Name = "listView1";
+            listView1.Size = new Size(400, 107);
+            listView1.TabIndex = 39;
+            listView1.Tag = "allowNotifications";
+            listView1.UseCompatibleStateImageBehavior = false;
+            listView1.View = View.SmallIcon;
+            // 
+            // checkBox42
+            // 
+            checkBox42.AutoSize = true;
+            checkBox42.CheckAlign = ContentAlignment.TopLeft;
+            checkBox42.FlatStyle = FlatStyle.System;
+            checkBox42.Location = new Point(12, 16);
+            checkBox42.Name = "checkBox42";
+            checkBox42.Size = new Size(340, 20);
+            checkBox42.TabIndex = 38;
+            checkBox42.Tag = "autoShowPlotStationInfo_TEST";
+            checkBox42.Text = "Show station/target details in left nav panel (experimental)";
+            checkBox42.UseVisualStyleBackColor = true;
+            // 
+            // checkBox41
+            // 
+            checkBox41.AutoSize = true;
+            checkBox41.CheckAlign = ContentAlignment.TopLeft;
+            checkBox41.FlatStyle = FlatStyle.System;
+            checkBox41.Location = new Point(12, 42);
+            checkBox41.Name = "checkBox41";
+            checkBox41.Size = new Size(216, 20);
+            checkBox41.TabIndex = 37;
+            checkBox41.Tag = "logDockToDockTimes";
+            checkBox41.Text = "Log dock-to-dock times to .csv file";
+            checkBox41.UseVisualStyleBackColor = true;
+            // 
             // tabPage2
             // 
             tabPage2.BorderStyle = BorderStyle.Fixed3D;
@@ -2835,7 +2942,7 @@ namespace SrvSurvey
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(651, 448);
+            tabPage2.Size = new Size(699, 448);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "About";
             // 
@@ -2845,7 +2952,7 @@ namespace SrvSurvey
             linkAboutTwo.LinkArea = new LinkArea(83, 21);
             linkAboutTwo.Location = new Point(3, 393);
             linkAboutTwo.Name = "linkAboutTwo";
-            linkAboutTwo.Size = new Size(641, 48);
+            linkAboutTwo.Size = new Size(689, 48);
             linkAboutTwo.TabIndex = 2;
             linkAboutTwo.TabStop = true;
             linkAboutTwo.Text = "SrvSurvey is not an official tool for \"Elite Dangerous\" and is not affiliated with Frontier Developments. All trademarks and copyright are acknowledged as the property of their respective owners.\r\n";
@@ -2858,7 +2965,7 @@ namespace SrvSurvey
             linkAboutOne.LinkArea = new LinkArea(65, 15);
             linkAboutOne.Location = new Point(3, 3);
             linkAboutOne.Name = "linkAboutOne";
-            linkAboutOne.Size = new Size(641, 319);
+            linkAboutOne.Size = new Size(689, 319);
             linkAboutOne.TabIndex = 1;
             linkAboutOne.TabStop = true;
             linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
@@ -2901,12 +3008,36 @@ namespace SrvSurvey
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
             // 
+            // groupBox3
+            // 
+            groupColonization.Controls.Add(checkBox39);
+            groupColonization.Controls.Add(checkColonization);
+            groupColonization.Location = new Point(355, 264);
+            groupColonization.Name = "groupBox3";
+            groupColonization.Size = new Size(312, 150);
+            groupColonization.TabIndex = 34;
+            groupColonization.TabStop = false;
+            groupColonization.Text = "Colonization: (experimental)";
+            // 
+            // checkBox39
+            // 
+            checkBox39.AutoSize = true;
+            checkBox39.CheckAlign = ContentAlignment.TopLeft;
+            checkBox39.FlatStyle = FlatStyle.System;
+            checkBox39.Location = new Point(19, 48);
+            checkBox39.Name = "checkBox39";
+            checkBox39.Size = new Size(256, 20);
+            checkBox39.TabIndex = 34;
+            checkBox39.Tag = "trackConstructionContributions_TEST";
+            checkBox39.Text = "Upload/track supplies at construction sites";
+            checkBox39.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(659, 524);
+            ClientSize = new Size(707, 524);
             Controls.Add(tabControl);
             Controls.Add(panel1);
             FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -2980,8 +3111,12 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).EndInit();
             tabKeyChords.ResumeLayout(false);
             tabKeyChords.PerformLayout();
+            tabPage8.ResumeLayout(false);
+            tabPage8.PerformLayout();
             tabPage2.ResumeLayout(false);
             menuCodexImages.ResumeLayout(false);
+            groupColonization.ResumeLayout(false);
+            groupColonization.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -3189,5 +3324,13 @@ namespace SrvSurvey
         private CheckBox checkBox38;
         private CheckBox checkBox35;
         private CheckBox checkJumpInfoIfDestination;
+        private CheckBox checkColonization;
+        private TabPage tabPage8;
+        private CheckBox checkBox40;
+        private CheckBox checkBox41;
+        private CheckBox checkBox42;
+        private ListView listView1;
+        private GroupBox groupColonization;
+        private CheckBox checkBox39;
     }
 }

@@ -28,6 +28,25 @@ namespace SrvSurvey.net
             return obj;
         }
 
+        public async Task<SystemResponse> queryStations(SystemQuery query)
+        {
+            var queryJson = JsonConvert.SerializeObject(query, Formatting.None);
+            Game.log($"Spansh.querySystems:\r\n{queryJson}");
+
+            var body = new StringContent(queryJson, Encoding.ASCII, "application/json");
+            var response = await Spansh.client.PostAsync($"https://spansh.co.uk/api/stations/search", body);
+            var json = await response.Content.ReadAsStringAsync();
+
+            if (json == "{\"error\":\"Invalid request\"}")
+            {
+                Debugger.Break();
+                throw new Exception("Bad Spansh request: " + json);
+            }
+
+            var obj = JsonConvert.DeserializeObject<SystemResponse>(json)!;
+            return obj;
+        }
+
         #region Query
 
         internal class Query
@@ -40,9 +59,11 @@ namespace SrvSurvey.net
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
             public string? reference_system;
 
-            public Dictionary<string, Filter> filters;
+            public Dictionary<string, IFilter> filters;
 
-            internal abstract class Filter { }
+            internal abstract class Filter: IFilter { }
+
+            internal interface IFilter { }
 
             /// <summary> Filter by a single value property </summary>
             internal class Value : Filter
@@ -83,6 +104,36 @@ namespace SrvSurvey.net
 
                 public Comparison() { }
                 public Comparison(int min, int max) { this.min = min; this.max = max; }
+            }
+
+            internal class Markets : List<Market>, IFilter { }
+
+            internal class Market : IFilter
+            {
+                public string name;
+                public Clause buy_price;
+                public Clause sell_price;
+                public Clause supply;
+                public Clause demand;
+
+                public Market() { }
+
+                public class Clause
+                {
+                    [JsonIgnore]
+                    public long min = 0;
+                    [JsonIgnore]
+                    public long max = 0;
+                    public long[] value => new long[2] { min, max };
+
+                    public string comparison = "<=>";
+
+                    public Clause(long min, long max)
+                    {
+                        this.min = min;
+                        this.max = max;
+                    }
+                }
             }
         }
 

@@ -86,6 +86,9 @@ namespace SrvSurvey
                     menuJourney.Items.RemoveAt(1);
             }
 
+            if (!Game.settings.buildProjects_TEST)
+                menuBuildProjects.Visible = false;
+
             Util.applyTheme(this);
         }
 
@@ -344,6 +347,8 @@ namespace SrvSurvey
 
             groupCodex.Invalidate();
 
+            menuBuildProjects.Enabled = Game.ready;
+
             // enable button only if this system has some bio signals
             btnPredictions.Enabled = Game.activeGame?.systemData?.bioSignalsTotal > 0;
 
@@ -410,6 +415,11 @@ namespace SrvSurvey
                 Program.showPlotter<PlotStationInfo>();
             else
                 Program.closePlotter<PlotStationInfo>();
+
+            if (gameIsActive && PlotBuildCommodities.allowPlotter)
+                Program.showPlotter<PlotBuildCommodities>();
+            else
+                Program.closePlotter<PlotBuildCommodities>();
 
             // show high gravity warning
             var isLandableAndHighGravity = game?.systemBody?.type == SystemBodyType.LandableBody && game.systemBody.surfaceGravity >= Game.settings.highGravityWarningLevel * 10;
@@ -592,6 +602,8 @@ namespace SrvSurvey
             {
                 if (!string.IsNullOrEmpty(Game.settings.preferredCommander))
                     this.txtCommander.Text = Game.settings.preferredCommander + " (only)";
+                else if (Program.forceFid != null)
+                    this.txtCommander.Text = $"{Program.forceFid} ? (forced)";
                 else
                     this.txtCommander.Text = Game.settings.lastCommander + " ?";
 
@@ -611,6 +623,7 @@ namespace SrvSurvey
             }
 
             this.txtCommander.Text = $"{game.Commander} (FID:{game.fid}, Odyssey:{game.cmdr.isOdyssey})";
+            if (Program.forceFid != null) this.txtCommander.Text += " (forced)";
             this.txtMode.Text = game.mode.ToString();
             if (game.mode == GameMode.Docked && game.systemStation != null)
                 this.txtMode.Text += ": " + game.systemStation.name;
@@ -623,7 +636,10 @@ namespace SrvSurvey
                 return;
             }
 
-            this.txtVehicle.Text = game.vehicle.ToString();
+            if (game.vehicle == ActiveVehicle.MainShip)
+                this.txtVehicle.Text = game.currentShip.name ?? game.currentShip.type;
+            else
+                this.txtVehicle.Text = game.vehicle.ToString();
 
             this.txtLocation.Text = game.systemBody?.name ?? $"{game.systemData?.name}" ?? "";
             btnCopyLocation.Enabled = !string.IsNullOrEmpty(this.txtLocation.Text);
@@ -1093,9 +1109,9 @@ namespace SrvSurvey
             {
                 // helper for ship cockpit offsets (from target lat/long)
                 var po = Util.getOffset(game.status.PlanetRadius, Game.settings.targetLatLong, game.status.Heading);
-                Game.log($"cockpit offset: {{ \"{game.shipType}\", new PointM({po.x}, {po.y}) }}");
-                CanonnStation.setShipOffset(game.shipType, po);
-                Clipboard.SetText($"{{ \"{game.shipType}\", new PointM({po.x}, {po.y}) }}, ");
+                Game.log($"cockpit offset: {{ \"{game.currentShip.type}\", new PointM({po.x}, {po.y}) }}");
+                CanonnStation.setShipOffset(game.currentShip.type, po);
+                Clipboard.SetText($"{{ \"{game.currentShip.type}\", new PointM({po.x}, {po.y}) }}, ");
             }
 
             if (game.systemStation != null)
@@ -1168,7 +1184,7 @@ namespace SrvSurvey
                     if (game.status.OnFootOutside)
                         changed = game.systemStation.inferFromFoot(game.status.Heading, game.status.Latitude, game.status.Longitude, (double)game.status.PlanetRadius);
                     else if (game.status.Docked)
-                        changed = game.systemStation.inferFromShip(game.status.Heading, game.status.Latitude, game.status.Longitude, game.shipType, (double)game.status.PlanetRadius, CalcMethod.AutoDock);
+                        changed = game.systemStation.inferFromShip(game.status.Heading, game.status.Latitude, game.status.Longitude, game.currentShip.type, (double)game.status.PlanetRadius, CalcMethod.AutoDock);
                     else
                         return;
 
@@ -1729,6 +1745,7 @@ namespace SrvSurvey
             "Pub_HumanSites",
             "Test_BioCriteria",
             "Build_BioCriteria",
+            "Query_Factions"
         };
 
         private void comboDev_SelectedIndexChanged(object sender, EventArgs e)
@@ -1753,6 +1770,7 @@ namespace SrvSurvey
                         case "Pub_HumanSites": Game.git.publishHumanSettlements(); break;
                         case "Test_BioCriteria": await BioPredictor.testSystemsAsync(); break;
                         case "Build_BioCriteria": CriteriaBuilder.buildWholeSet(); break;
+                        case "Query_Factions": await Game.spansh.queryMinorFactionSystems(); break;
 
                         default: Game.log("Unexpected!"); break;
                     }
@@ -1829,6 +1847,12 @@ namespace SrvSurvey
             BaseForm.show<FormBoxelSearch>();
         }
 
+        private void menuBuildProjects_Click(object sender, EventArgs e)
+        {
+            if (game?.cmdrColony != null)
+                BaseForm.show<FormBuildNew>();
+        }
+
         private void btnRamTah_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormRamTah>();
@@ -1837,6 +1861,25 @@ namespace SrvSurvey
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormCodexBingo>();
+            //Game.spansh.testColonizationRoute("Col 285 Sector MD-S d4-60");
+
+            //var mf = new SystemQuery.Markets();
+            //mf.Add(new SystemQuery.Market() { name = "Copper", supply = new Query.Market.Clause(100, 10_000_000) });
+
+            ////var mf = new SystemQuery.Market();
+            ////mf.name = "Copper";
+            ////mf.supply = new Query.Market.Clause(100, 10_000_000);
+
+            //var q = new SystemQuery
+            //{
+            //    page = 0,
+            //    size = 10,
+            //    filters = new() { { "market", mf } }
+            //};
+
+            //Game.spansh.queryStations(q);
+
+            //var tt = this.GetType();
         }
 
         private void btnLogs_Click(object sender, EventArgs e)
@@ -1865,6 +1908,7 @@ namespace SrvSurvey
             // */
         }
         private MainView mv;
+
     }
 }
 

@@ -61,6 +61,24 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alpha.
+        /// </summary>
+        internal static string Alpha {
+            get {
+                return ResourceManager.GetString("Alpha", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Beta.
+        /// </summary>
+        internal static string Beta {
+            get {
+                return ResourceManager.GetString("Beta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fighter.
         /// </summary>
         internal static string BluePrintFighter {
@@ -84,6 +102,15 @@ namespace SrvSurvey.Properties {
         internal static string BluePrintWeapon {
             get {
                 return ResourceManager.GetString("BluePrintWeapon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gamma.
+        /// </summary>
+        internal static string Gamma {
+            get {
+                return ResourceManager.GetString("Gamma", resourceCulture);
             }
         }
         
@@ -241,11 +268,74 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Component tower.
+        /// </summary>
+        internal static string POIType_Component {
+            get {
+                return ResourceManager.GetString("POIType_Component", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pylon.
+        /// </summary>
+        internal static string POIType_Pylon {
+            get {
+                return ResourceManager.GetString("POIType_Pylon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ruins.
         /// </summary>
         internal static string Ruins {
             get {
                 return ResourceManager.GetString("Ruins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to absent.
+        /// </summary>
+        internal static string SitePoiStatus_absent {
+            get {
+                return ResourceManager.GetString("SitePoiStatus_absent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to empty.
+        /// </summary>
+        internal static string SitePoiStatus_empty {
+            get {
+                return ResourceManager.GetString("SitePoiStatus_empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to present.
+        /// </summary>
+        internal static string SitePoiStatus_present {
+            get {
+                return ResourceManager.GetString("SitePoiStatus_present", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to unknown.
+        /// </summary>
+        internal static string SitePoiStatus_unknown {
+            get {
+                return ResourceManager.GetString("SitePoiStatus_unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to unknown.
+        /// </summary>
+        internal static string StatusUnknown {
+            get {
+                return ResourceManager.GetString("StatusUnknown", resourceCulture);
             }
         }
         

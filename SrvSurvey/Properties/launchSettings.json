@@ -3,13 +3,21 @@
     "SrvSurvey": {
       "commandName": "Project"
     },
+    "PostProcessOld (no FID)": {
+      "commandName": "Project",
+      "commandLineArgs": "-scan-old"
+    },
     "PostProcessOld": {
       "commandName": "Project",
       "commandLineArgs": "-scan-old F11133368"
     },
-    "PostProcessOld (no FID)": {
+    "Target FID 1": {
       "commandName": "Project",
-      "commandLineArgs": "-scan-old"
+      "commandLineArgs": "-fid F6985613"
+    },
+    "Target FID 2": {
+      "commandName": "Project",
+      "commandLineArgs": "-fid F10171085"
     }
   }
 }

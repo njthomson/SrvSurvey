@@ -20,6 +20,7 @@ namespace SrvSurvey.plotters
         private DateTime lastChanged;
         public bool didFirstPaint { get; set; } = true;
         public bool showing { get; set; }
+        public bool forceHide { get; set; }
 
         private PlotPulse()
         {
@@ -35,7 +36,7 @@ namespace SrvSurvey.plotters
             this.MaximizeBox = false;
             this.ControlBox = false;
             this.FormBorderStyle = FormBorderStyle.None;
-            this.Opacity = 0;
+            this.Opacity = 0; // ok
             this.DoubleBuffered = true;
             this.Size = Size.Empty;
 
@@ -66,9 +67,22 @@ namespace SrvSurvey.plotters
 
         public void reposition(Rectangle gameRect)
         {
-            this.Opacity = PlotPos.getOpacity(this);
+            this.setOpacity(PlotPos.getOpacity(this));
             if (gameRect != Rectangle.Empty)
                 PlotPos.reposition(this, gameRect);
+        }
+
+        /// <summary> Set opacity to the given value. </summary>
+        public void setOpacity(double newOpacity)
+        {
+            if (this.Opacity != newOpacity)
+                this.Opacity = newOpacity; // ok
+        }
+
+        /// <summary> Reset opacity to default it's value </summary>
+        public void resetOpacity()
+        {
+            setOpacity(PlotPos.getOpacity(this));
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -136,9 +150,9 @@ namespace SrvSurvey.plotters
             g.SmoothingMode = SmoothingMode.HighQuality;
 
             if (Game.activeGame?.isMode(GameMode.GalaxyMap, GameMode.SystemMap) == true)
-                this.Opacity = 0f;
+                this.setOpacity(0f);
             else
-                this.Opacity = PlotPos.getOpacity(this);
+                this.resetOpacity();
 
             g.FillRectangle(GameColors.brushGameOrange,
                 10, 27 - count,

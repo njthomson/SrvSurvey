@@ -150,7 +150,7 @@ namespace SrvSurvey.plotters
             if (this.Opacity > 0 && !PlotHumanSite.keepPlotter)
                 Program.closePlotter<PlotHumanSite>(true);
             else if (this.Opacity > 0 && !PlotHumanSite.allowPlotter)
-                this.Opacity = 0;
+                this.setOpacity(0);
             else if (this.Opacity == 0 && PlotHumanSite.keepPlotter)
                 this.reposition(Elite.getWindowRect());
 

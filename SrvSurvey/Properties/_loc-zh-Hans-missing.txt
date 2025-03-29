@@ -1,16 +1,24 @@
-/forms/ViewLogs.zh-Hans.resx
-	btnClear.Text
-	btnClose.Text
-	btnCopy.Text
-	btnOpenFolder.Text
-	$this.Text
-
-/plotters/PlotGuardianSystem.zh-Hans.resx
-	BluePrintLine
-
-/plotters/PlotSysStatus.zh-Hans.resx
-	NextSystem
-
-/Properties/Misc.zh-Hans.resx
-	NetSysData_Wars
-	FirewallBlocked
+/plotters/PlotGuardians.zh-Hans.resx
+	HeaderGeneral
+	HeaderNeedRelicTowerHeading
+	HeaderNeedRelicTowers
+	HeaderRuinsComplete
+	HeaderStructureComplete
+	HeadingSite
+	HeadingUnknown
+	IdentifyNoMap
+	IdentifySiteHeading
+	IdentifySiteType
+	IdentifyWithButtress
+	IdentifyWithPort
+	NoMapForType
+	ObliskFooter
+	RuinsFooter
+	StructureFooter
+	TrackLeft
+	TrackOriginFooter
+	TrackOriginHeaderPrefix
+	TrackOriginHeaderSuffix
+	TrackRight
+	ZoomLevel
+	ZoomLevelAuto

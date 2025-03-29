@@ -80,6 +80,8 @@ namespace SrvSurvey
             { KeyAction.copyNextBoxel, "CTRL C" },
             { KeyAction.showFssInfo, "ALT F" },
             { KeyAction.showBodyInfo, "ALT B" },
+            { KeyAction.showColonyShopping, "ALT S" },
+            { KeyAction.refreshColonyData, "ALT CTRL S" },
             { KeyAction.showSystemNotes, "CTRL SHIFT N" },
             { KeyAction.track1, "ALT CTRL F1" },
             { KeyAction.track2, "ALT CTRL F2" },
@@ -109,6 +111,8 @@ namespace SrvSurvey
                 case KeyAction.pasteGalMap: return pasteGalMap();
                 case KeyAction.showFssInfo: return toggleFSSInfo();
                 case KeyAction.showBodyInfo: return toggleBodyInfo();
+                case KeyAction.showColonyShopping: return toggleColonyShopping();
+                case KeyAction.refreshColonyData: return Game.activeGame?.cmdrColony.fetchLatest().justDoIt() ?? true;
                 case KeyAction.showSystemNotes: return showSystemNotes();
                 case KeyAction.track1: return trackLocation(1);
                 case KeyAction.track2: return trackLocation(2);
@@ -166,14 +170,27 @@ namespace SrvSurvey
                 var jumpInfo = Program.getPlotter<PlotJumpInfo>();
                 if (jumpInfo == null)
                 {
+                    // force show if no plotter
                     PlotJumpInfo.forceShow = true;
                     Program.showPlotter<PlotJumpInfo>();
                 }
                 else if (PlotJumpInfo.forceShow)
                 {
+                    // unforce (hide)
                     PlotJumpInfo.forceShow = false;
                     Program.closePlotter<PlotJumpInfo>();
                 }
+                else
+                {
+                    // the plotter exists and was not forced ... toggle forceHide on it
+                    jumpInfo.forceHide = !jumpInfo.forceHide;
+                    if (!jumpInfo.forceHide) PlotJumpInfo.forceShow = false;
+                }
+            }
+            else
+            {
+                // unforce if there's no route currently
+                PlotJumpInfo.forceShow = false;
             }
 
             return true;
@@ -233,13 +250,21 @@ namespace SrvSurvey
             var fssInfo = Program.getPlotter<PlotFSSInfo>();
             if (fssInfo == null)
             {
+                // force show if no plotter
                 PlotFSSInfo.forceShow = true;
                 Program.showPlotter<PlotFSSInfo>();
             }
             else if (PlotFSSInfo.forceShow)
             {
+                // unforce (hide)
                 PlotFSSInfo.forceShow = false;
                 Program.closePlotter<PlotFSSInfo>();
+            }
+            else
+            {
+                // the plotter exists and was not forced ... toggle forceHide on it
+                fssInfo.forceHide = !fssInfo.forceHide;
+                if (!fssInfo.forceHide) PlotFSSInfo.forceShow = false;
             }
 
             return true;
@@ -247,17 +272,57 @@ namespace SrvSurvey
 
         private static bool toggleBodyInfo()
         {
-            var bodyInfo = Program.getPlotter<PlotBodyInfo>();
+            // exit early if there's no relevant body
             var targetBody = Game.activeGame?.systemBody ?? Game.activeGame?.targetBody;
-            if (bodyInfo == null && targetBody != null)
+            if (targetBody == null)
             {
+                PlotBodyInfo.forceShow = false;
+                return true;
+            }
+
+            var bodyInfo = Program.getPlotter<PlotBodyInfo>();
+            if (bodyInfo == null)
+            {
+                // force show if no plotter
                 PlotBodyInfo.forceShow = true;
                 Program.showPlotter<PlotBodyInfo>();
             }
             else if (PlotBodyInfo.forceShow)
             {
+                // unforce (hide)
                 PlotBodyInfo.forceShow = false;
                 Program.closePlotter<PlotBodyInfo>();
+            }
+            else
+            {
+                // the plotter exists and was not forced ... toggle forceHide on it
+                bodyInfo.forceHide = !bodyInfo.forceHide;
+                if (!bodyInfo.forceHide) PlotBodyInfo.forceShow = false;
+            }
+
+            return true;
+        }
+
+        private static bool toggleColonyShopping()
+        {
+            var plotter = Program.getPlotter<PlotBuildCommodities>();
+            if (plotter == null)
+            {
+                // force show if no plotter
+                PlotBuildCommodities.forceShow = true;
+                Program.showPlotter<PlotBuildCommodities>();
+            }
+            else if (PlotBuildCommodities.forceShow)
+            {
+                // unforce (hide)
+                PlotBuildCommodities.forceShow = false;
+                Program.closePlotter<PlotBuildCommodities>();
+            }
+            else
+            {
+                // the plotter exists and was not forced ... toggle forceHide on it
+                plotter.forceHide = !plotter.forceHide;
+                if (!plotter.forceHide) PlotBuildCommodities.forceShow = false;
             }
 
             return true;
@@ -310,6 +375,10 @@ namespace SrvSurvey
         showBodyInfo,
         /// <summary> Make the system notes window appear </summary>
         showSystemNotes,
+        /// <summary> Make the PlotBuildNew appear </summary>
+        showColonyShopping,
+        /// <summary> Force refresh ColonyData  </summary>
+        refreshColonyData,
         /// <summary> Track the current location as #1 </summary>
         track1,
         /// <summary> Track the current location as #2 </summary>

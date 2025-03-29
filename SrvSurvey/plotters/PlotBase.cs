@@ -2,7 +2,6 @@
 using SrvSurvey.canonn;
 using SrvSurvey.forms;
 using SrvSurvey.game;
-using SrvSurvey.Properties;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.Diagnostics;
@@ -51,7 +50,7 @@ namespace SrvSurvey.plotters
             this.MaximizeBox = false;
             this.ControlBox = false;
             this.FormBorderStyle = FormBorderStyle.None;
-            this.Opacity = 0;
+            this.Opacity = 0; // ok
             this.DoubleBuffered = true;
             this.Name = this.GetType().Name;
             this.ResizeRedraw = true;
@@ -75,6 +74,8 @@ namespace SrvSurvey.plotters
             this.Text = this.Name;
         }
 
+        protected override bool ShowWithoutActivation => true;
+
         protected override CreateParams CreateParams
         {
             get
@@ -93,7 +94,7 @@ namespace SrvSurvey.plotters
 
         protected override void OnActivated(EventArgs e)
         {
-            Game.log($"!!!! OnActivated: {this.Name}. Mouse is:{Cursor.Position}");
+            //Game.log($"!!!! OnActivated: {this.Name}. Mouse is:{Cursor.Position}");
 
             // plotters are not suppose to receive focus - force it back onto the game if we do
             base.OnActivated(e);
@@ -179,7 +180,7 @@ namespace SrvSurvey.plotters
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            Game.log($"!!!! OnMouseDown: {this.Name}. Mouse is:{Cursor.Position}");
+            //Game.log($"!!!! OnMouseDown: {this.Name}. Mouse is:{Cursor.Position}");
             base.OnMouseDown(e);
 
             this.Invalidate();
@@ -188,17 +189,38 @@ namespace SrvSurvey.plotters
 
         #endregion
 
+        /// <summary> When true, forces zero Opacity </summary>
+        public bool forceHide {
+            get => this._forceHide;
+            set
+            {
+                this._forceHide = value;
+
+                if (this._forceHide)
+                    this.setOpacity(0);
+                else
+                    this.resetOpacity();
+
+                this.Invalidate();
+            }
+        }
+        private bool _forceHide;
+
         /// <summary> Reset opacity to default it's value </summary>
-        public void resetOpacity()
+        public virtual void resetOpacity()
         {
             setOpacity(PlotPos.getOpacity(this));
         }
 
         /// <summary> Set opacity to the given value. </summary>
-        public void setOpacity(double newOpacity)
+        public virtual void setOpacity(double newOpacity)
         {
+            // enforce zero opacity if we're force hiding
+            if (this.forceHide)
+                newOpacity = 0;
+
             if (this.Opacity != newOpacity)
-                this.Opacity = newOpacity;
+                this.Opacity = newOpacity; // ok
         }
 
         public virtual void reposition(Rectangle gameRect)
@@ -206,11 +228,7 @@ namespace SrvSurvey.plotters
             // do not attempt to reposition anything if the game window has been minimized
             //Game.log($"reposition:{this.Name}: opacity:{Opacity}, bounds:{this.Bounds}, gameRect:{gameRect}");
             if (gameRect.X < -30_000 || gameRect.Y < -30_000 || gameRect.Width == 0 || gameRect.Height == 0)
-            {
-                //Debugger.Break();
-                //this.Opacity = 0;
                 return;
-            }
 
             // restore opacity, reposition ourselves according to plotters.json rules, then re-render
             var newOpacity = PlotPos.getOpacity(this);
@@ -254,7 +272,7 @@ namespace SrvSurvey.plotters
             if (this.IsDisposed) return;
 
             if (this.Opacity > 0 && !this.allow)
-                this.Opacity = 0;
+                this.setOpacity(0);
             else if (this.Opacity == 0 && this.allow)
                 this.reposition(Elite.getWindowRect());
 
@@ -502,7 +520,7 @@ namespace SrvSurvey.plotters
                 var ship = Util.getOffset(game.systemBody.radius, shipLatLong, 180);
 
                 // adjust location by ship cockpit offset
-                var po = CanonnStation.getShipOffset(game.shipType);
+                var po = CanonnStation.getShipOffset(game.currentShip.type);
                 var pd = po.rotate(game.cmdr.lastTouchdownHeading);
                 ship += pd;
 
@@ -582,9 +600,9 @@ namespace SrvSurvey.plotters
             g.DrawString(Util.metersToString(dist), GameColors.fontSmall, brush, x, y);
         }
 
-        protected void drawHeaderText(string msg, Brush? brush = null)
+        protected SizeF drawHeaderText(string msg, Brush? brush = null)
         {
-            if (g == null) return;
+            if (g == null) return Size.Empty;
 
             // draw heading text (center bottom)
             g.ResetTransform();
@@ -592,15 +610,16 @@ namespace SrvSurvey.plotters
 
             var font = GameColors.fontMiddle;
             var sz = g.MeasureString(msg, font);
-            var tx = mid.Width - (sz.Width / 2);
+            var tx = Util.centerIn(this.Width, sz.Width);
             var ty = 5;
 
             g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);
+            return sz;
         }
 
-        protected void drawFooterText(string msg, Brush? brush = null, Font? font = null)
+        protected SizeF drawFooterText(string msg, Brush? brush = null, Font? font = null)
         {
-            if (g == null) return;
+            if (g == null) return Size.Empty;
 
             // draw heading text (center bottom)
             g.ResetTransform();
@@ -608,17 +627,18 @@ namespace SrvSurvey.plotters
 
             font = font ?? GameColors.fontMiddle;
             var sz = g.MeasureString(msg, font);
-            var tx = mid.Width - (sz.Width / 2);
+            var tx = Util.centerIn(this.Width, sz.Width);
             var ty = this.Height - sz.Height - 6;
 
             g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);
+            return sz;
         }
 
         protected void drawCenterMessage(string msg, Brush? brush = null)
         {
             var font = GameColors.fontMiddle;
             var sz = g.MeasureString(msg, font);
-            var tx = mid.Width - (sz.Width / 2);
+            var tx = Util.centerIn(this.Width, sz.Width);
             var ty = 34;
 
             g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);
@@ -1213,7 +1233,7 @@ namespace SrvSurvey.plotters
                 var ship = Util.getOffset(game.systemBody.radius, shipLatLong, 180);
 
                 // adjust location by ship cockpit offset
-                var po = CanonnStation.getShipOffset(game.shipType);
+                var po = CanonnStation.getShipOffset(game.currentShip.type);
                 var pd = po.rotate(game.cmdr.lastTouchdownHeading);
                 ship += pd;
 

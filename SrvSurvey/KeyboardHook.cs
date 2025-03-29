@@ -102,7 +102,7 @@ namespace SrvSurvey
 
         private IntPtr HookCallback(int nCode, IntPtr wParam, ref KBDLLHOOKSTRUCT lParam)
         {
-            if (Elite.focusElite)
+            if (Elite.focusElite || Elite.focusSrvSurvey)
             {
                 var keyUp = lParam.flags >= 128;
                 var keys = (Keys)lParam.vkCode;

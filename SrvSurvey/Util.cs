@@ -7,6 +7,7 @@ using SrvSurvey.plotters;
 using SrvSurvey.Properties;
 using SrvSurvey.units;
 using System.Diagnostics;
+using static SrvSurvey.game.GuardianSiteData;
 using static System.Windows.Forms.ListView;
 
 namespace SrvSurvey
@@ -514,7 +515,7 @@ namespace SrvSurvey
             }
         }
 
-        public static void fadeOpacity(Form form, float targetOpacity, float durationMs = 0)
+        public static void fadeOpacity(PlotterForm form, float targetOpacity, float durationMs = 0)
         {
             if (targetOpacity < 0 || targetOpacity > 1) throw new ArgumentOutOfRangeException(nameof(targetOpacity));
             //Debug.WriteLine($"!START! {form.Name} {form.Size} {durationMs}ms / {form.Opacity} => {targetOpacity}");
@@ -524,7 +525,7 @@ namespace SrvSurvey
 
             // don't animate if duration is zero
             if (durationMs == 0)
-                form.Opacity = targetOpacity;
+                form.setOpacity(targetOpacity);
             else
             {
                 var started = DateTime.Now.Ticks;
@@ -573,13 +574,13 @@ namespace SrvSurvey
             }
         }
 
-        private static void fadeNext(Form form, float targetOpacity, long lastTick, float delta)
+        private static void fadeNext(PlotterForm form, float targetOpacity, long lastTick, float delta)
         {
             if (form.IsDisposed) return;
-            if (!Elite.gameHasFocus)
+            if (!Elite.gameHasFocus || form.forceHide)
             {
-                // stop early and hide form if the game loses focus
-                form.Opacity = 0;
+                // stop early and hide form if the game loses focus, or the form is being forced hidden
+                form.setOpacity(0);
                 return;
             }
 
@@ -600,13 +601,13 @@ namespace SrvSurvey
                 if (wasSmaller != isSmaller || form.Opacity == targetOpacity)
                 {
                     if (form.Opacity != newOpacity)
-                        form.Opacity = targetOpacity;
+                        form.setOpacity(targetOpacity);
                     //Debug.WriteLine($"!STOP! {form.Name} {form.Size} {form.Opacity}");
                     form.Invalidate();
                     return;
                 }
 
-                form.Opacity = newOpacity;
+                form.setOpacity(newOpacity);
                 lastTick = DateTime.Now.Ticks;
                 // TODO: animate the location too, just a little?
             }
@@ -832,28 +833,107 @@ namespace SrvSurvey
             }
         }
 
+        public static string getLoc(Enum enumValue)
+        {
+            var enumName = enumValue.GetType().Name + $".{enumValue}";
+            return getLoc(enumName);
+        }
+
         /// <summary> Returns the localized string for something</summary>
         public static string getLoc(string name)
         {
             switch (name)
             {
-                // Guardian items for Ram Tah missions
-                case "casket": return Properties.Guardian.ItemCasket;
-                case "orb": return Properties.Guardian.ItemOrb;
-                case "relic": return Properties.Guardian.ItemRelic;
-                case "tablet": return Properties.Guardian.ItemTablet;
-                case "totem": return Properties.Guardian.ItemTotem;
-                case "urn": return Properties.Guardian.ItemUrn;
+                case nameof(SiteType.Alpha): return Properties.Guardian.Alpha;
+                case nameof(SiteType.Beta): return Properties.Guardian.Beta;
+                case nameof(SiteType.Gamma): return Properties.Guardian.Gamma;
+                // These are not localized - just use the given string
+                case "SiteType." + nameof(SiteType.Lacrosse): // Tiny
+                case "SiteType." + nameof(SiteType.Crossroads):
+                case "SiteType." + nameof(SiteType.Fistbump):
+                case "SiteType." + nameof(SiteType.Hammerbot): // Small
+                case "SiteType." + nameof(SiteType.Bear):
+                case "SiteType." + nameof(SiteType.Bowl):
+                case "SiteType." + nameof(SiteType.Turtle):
+                case "SiteType." + nameof(SiteType.Robolobster): // Medium
+                case "SiteType." + nameof(SiteType.Squid):
+                case "SiteType." + nameof(SiteType.Stickyhand):
+                    return name;
 
-                case "sensor": return Properties.Guardian.ItemSensor;
-                case "probe": return Properties.Guardian.ItemProbe;
-                case "link": return Properties.Guardian.ItemLink;
-                case "cyclops": return Properties.Guardian.ItemCyclops;
-                case "basilisk": return Properties.Guardian.ItemBasilisk;
-                case "medusa": return Properties.Guardian.ItemMedusa;
+                // Guardian items for Ram Tah missions
+                case $"{nameof(POIType)}.{nameof(ObeliskItem.casket)}":
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.casket)}":
+                case nameof(ObeliskItem.casket):
+                    return Properties.Guardian.ItemCasket;
+
+                case $"{nameof(POIType)}.{nameof(ObeliskItem.orb)}":
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.orb)}":
+                case nameof(ObeliskItem.orb):
+                    return Properties.Guardian.ItemOrb;
+
+                case $"{nameof(POIType)}.{nameof(ObeliskItem.relic)}":
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.relic)}":
+                case nameof(ObeliskItem.relic):
+                    return Properties.Guardian.ItemRelic;
+
+                case $"{nameof(POIType)}.{nameof(ObeliskItem.tablet)}":
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.tablet)}":
+                case nameof(ObeliskItem.tablet):
+                    return Properties.Guardian.ItemTablet;
+
+                case $"{nameof(POIType)}.{nameof(ObeliskItem.totem)}":
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.totem)}":
+                case nameof(ObeliskItem.totem):
+                    return Properties.Guardian.ItemTotem;
+
+                case $"{nameof(POIType)}.{nameof(ObeliskItem.urn)}":
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.urn)}":
+                case nameof(ObeliskItem.urn):
+                    return Properties.Guardian.ItemUrn;
+
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.sensor)}":
+                case nameof(ObeliskItem.sensor):
+                    return Properties.Guardian.ItemSensor;
+
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.probe)}":
+                case nameof(ObeliskItem.probe):
+                    return Properties.Guardian.ItemProbe;
+
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.link)}":
+                case nameof(ObeliskItem.link):
+                    return Properties.Guardian.ItemLink;
+
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.cyclops)}":
+                case nameof(ObeliskItem.cyclops):
+                    return Properties.Guardian.ItemCyclops;
+
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.basilisk)}":
+                case nameof(ObeliskItem.basilisk):
+                    return Properties.Guardian.ItemBasilisk;
+
+                case $"{nameof(ObeliskItem)}.{nameof(ObeliskItem.medusa)}":
+                case nameof(ObeliskItem.medusa):
+                    return Properties.Guardian.ItemMedusa;
+
+                case nameof(SitePoiStatus) + ".unknown": return Properties.Guardian.SitePoiStatus_unknown;
+                case nameof(SitePoiStatus) + ".present": return Properties.Guardian.SitePoiStatus_present;
+                case nameof(SitePoiStatus) + ".absent": return Properties.Guardian.SitePoiStatus_absent;
+                case nameof(SitePoiStatus) + ".empty":
+                    return Properties.Guardian.SitePoiStatus_empty;
+
+                case $"{nameof(POIType)}.{nameof(POIType.component)}":
+                    return Properties.Guardian.POIType_Component;
+
+                case $"{nameof(POIType)}.{nameof(POIType.pylon)}":
+                    return Properties.Guardian.POIType_Pylon;
+
+                case $"{nameof(POIType)}.{nameof(POIType.destructablePanel)}":
+                    return "Destructable Panel";
 
                 default:
-                    throw new Exception($"Unexpected localizable name: '{name}'");
+                    Game.log($"Unexpected localizable name: '{name}'");
+                    Debugger.Break();
+                    return name + "?";
             }
         }
 
@@ -1074,17 +1154,17 @@ namespace SrvSurvey
         public static string getReputationText(double reputation)
         {
             if (reputation <= -90)
-                return "Hostile";
+                return Properties.Reputation.Hostile;
             else if (reputation <= -35)
-                return "Unfriendly";
+                return Properties.Reputation.Unfriendly;
             else if (reputation <= +4)
-                return "Neutral";
+                return Properties.Reputation.Neutral;
             else if (reputation <= +35)
-                return "Cordial";
+                return Properties.Reputation.Cordial;
             else if (reputation <= +90)
-                return "Friendly";
+                return Properties.Reputation.Friendly;
             else
-                return "Allied";
+                return Properties.Reputation.Allied;
         }
 
         public static int stringWidth(Font? font, string? text)
@@ -1093,6 +1173,14 @@ namespace SrvSurvey
                 return 0;
 
             return TextRenderer.MeasureText(text, font, Size.Empty, textFlags).Width;
+        }
+
+        /// <summary>
+        /// Returns the max width of any of the given strings
+        /// </summary>
+        public static float maxWidth(Font font, IEnumerable<string> texts)
+        {
+            return maxWidth(font, texts.ToArray());
         }
 
         /// <summary>
@@ -1110,7 +1198,7 @@ namespace SrvSurvey
 
         /// <summary>
         /// Center the inner size within the outer size.
-        /// </summary>        
+        /// </summary>
         public static int centerIn(int outer, int inner)
         {
             return (int)Math.Ceiling((outer / 2f) - (inner / 2f));
@@ -1325,12 +1413,12 @@ namespace SrvSurvey
         /// <summary>
         /// Continues execution on the main thread only if the Task is successful and yields a non-null result, and the form has not been disposed
         /// </summary>
-        public static Task continueOnMain<T>(this Task<T> preTask, Form? form, Action<T> func)
+        public static Task continueOnMain<T>(this Task<T> preTask, Form? form, Action<T> func, bool allowNull = false)
         {
-            return continueOnSuccess(preTask, form, true, func);
+            return continueOnSuccess(preTask, form, true, func, allowNull);
         }
 
-        private static Task continueOnSuccess<T>(this Task<T> preTask, Form? form, bool onMainThread, Action<T> func)
+        private static Task continueOnSuccess<T>(this Task<T> preTask, Form? form, bool onMainThread, Action<T> func, bool allowNull = false)
         {
             return preTask.ContinueWith(postTask =>
             {
@@ -1339,7 +1427,7 @@ namespace SrvSurvey
                     Util.isFirewallProblem(postTask.Exception);
 
                 // exit early if the call did not succeed or returns a null
-                if (postTask.Exception != null || postTask.Result == null) return;
+                if (postTask.Exception != null || (!allowNull && postTask.Result == null)) return;
 
                 // of if we have a form but it's disposed
                 if (form?.IsDisposed == true) return;
@@ -1375,6 +1463,21 @@ namespace SrvSurvey
         }
 
         /// <summary>
+        /// Handle some task, logging errors but otherwise being silent
+        /// </summary>
+        public static bool justDoIt(this Task preTask)
+        {
+            preTask.ContinueWith(postTask =>
+            {
+                // check for firewall problems?
+                if (postTask.Exception != null || !postTask.IsCompletedSuccessfully)
+                    Util.isFirewallProblem(postTask.Exception);
+            });
+
+            return true;
+        }
+
+        /// <summary>
         /// Returns a string using local short date and 24 hour time
         /// </summary>
         public static string ToLocalShortDateTime24Hours(this DateTimeOffset dateTime)
@@ -1397,6 +1500,29 @@ namespace SrvSurvey
                 dictionary[key] = Activator.CreateInstance<TValue>();
 
             return dictionary[key];
+        }
+
+        public static TValue? GetValueOrDefault<TValue>(this Dictionary<string, TValue> dictionary, string key, StringComparison comparison)
+        {
+            // match a key based on string comparison
+            var matchKey = dictionary.Keys.FirstOrDefault(k => k.Equals(key, comparison));
+
+            if (matchKey == null)
+            {
+                // initialize dictionary entry if not found
+                return default;
+            }
+            else
+            {
+                return dictionary[matchKey];
+            }
+        }
+
+        public static SizeF widestColumn(this SizeF sz, int idx, Dictionary<int, float> columns)
+        {
+            columns.init(idx);
+            if (sz.Width > columns[idx]) columns[idx] = sz.Width;
+            return sz;
         }
     }
 

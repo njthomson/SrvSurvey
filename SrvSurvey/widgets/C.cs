@@ -40,6 +40,7 @@ namespace SrvSurvey.widgets
         public static Color redDark = c("redDark");
 
         public static Color yellow = c("yellow");
+        public static Color green = c("green");
 
         #endregion
 
@@ -54,6 +55,8 @@ namespace SrvSurvey.widgets
             public static Pen cyan1 = cyan.toPen(1);
 
             public static Pen cyanDark1 = cyanDark.toPen(1);
+
+            public static Pen black1 = Color.Black.toPen(1);
         }
 
         public static class Brushes

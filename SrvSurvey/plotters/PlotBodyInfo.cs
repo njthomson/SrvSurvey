@@ -23,10 +23,11 @@ namespace SrvSurvey.plotters
                     || (Game.activeGame.isMode(GameMode.SuperCruising, GameMode.GlideMode) && Game.activeGame.status.hasLatLong && Game.settings.autoShowPlotBodyInfoInOrbit)
                     || (Game.activeGame.isMode(GameMode.Flying, GameMode.Landed, GameMode.InSrv) && Game.activeGame.status.hasLatLong && Game.settings.autoShowPlotBodyInfoAtSurface && Game.activeGame.status.hudInAnalysisMode)
                     // or a keystroke forced it
-                    || PlotBodyInfo.forceShow
+                    || (PlotBodyInfo.forceShow && !Game.activeGame.fsdJumping)
                 );
         }
 
+        /// <summary> When true, makes the plotter become visible IF there is a valid body to show </summary>
         public static bool forceShow = false;
 
         private string lastDestination;
@@ -67,7 +68,7 @@ namespace SrvSurvey.plotters
             }
 
             if (!this.allow)
-                Program.defer(() => Program.closePlotter<PlotBodyInfo>());
+                Program.closePlotter<PlotBodyInfo>(true);
         }
 
         protected override void onPaintPlotter(PaintEventArgs e)
@@ -78,17 +79,17 @@ namespace SrvSurvey.plotters
             var body = Game.activeGame?.isMode(GameMode.SystemMap, GameMode.Orrery) == true || PlotBodyInfo.forceShow
                 ? game.targetBody
                 : game.systemBody;
+            
             if (body == null || !PlotBodyInfo.allowPlotter)
             {
-                Game.log($"Closing PlotBodyInfo");
-                Program.closePlotter<PlotBodyInfo>();
+                Game.log($"Closing PlotBodyInfo due to no valid target body");
+                this.setOpacity(0);
+                Program.closePlotter<PlotBodyInfo>(true);
                 return;
             }
 
             var temp = body.surfaceTemperature.ToString("N0");
             var gravity = (body.surfaceGravity / 10f).ToString("N3");
-
-            this.resetPlotter(e.Graphics);
 
             // body name
             var bodyName = body.wasDiscovered

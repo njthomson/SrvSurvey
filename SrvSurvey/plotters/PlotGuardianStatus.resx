@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AlignAndRise" xml:space="preserve">
+    <value>Align with site origin and rise to target altitude: {0}m</value>
+    <comment>Message shown when cmdr needs to rise up to a suitable altitude for aerial assistance mode
+{0} int, altitude in metres</comment>
+  </data>
+  <data name="AlignWithButtress" xml:space="preserve">
+    <value>Align with buttress</value>
+    <comment>Message shown when the site needs to be identified by aligning with a specific buttress</comment>
+  </data>
+  <data name="ChooseAbsent" xml:space="preserve">
+    <value>Absent</value>
+    <comment>Selectable option shown in a box, chosen by matching a fire-group</comment>
+  </data>
+  <data name="ChooseEmpty" xml:space="preserve">
+    <value>Empty</value>
+    <comment>Selectable option shown in a box, chosen by matching a fire-group</comment>
+  </data>
+  <data name="ChoosePresent" xml:space="preserve">
+    <value>Present</value>
+    <comment>Selectable option shown in a box, chosen by matching a fire-group</comment>
+  </data>
+  <data name="FooterActiveObeliskGroups" xml:space="preserve">
+    <value>Active obelisk groups: {0}</value>
+    <comment>Footer showing which obelisks groups are present
+{0} string, list of obelisk group names eg "C, D, Q, T"</comment>
+  </data>
+  <data name="FooterToggleModeOnce" xml:space="preserve">
+    <value>(toggle cockpit mode once to set)</value>
+    <comment>Footer hint telling cmdr how to take a measurement</comment>
+  </data>
+  <data name="FooterToggleModeTwice" xml:space="preserve">
+    <value>(toggle cockpit mode twice to set)</value>
+    <comment>Footer hint telling cmdr how to take a measurement</comment>
+  </data>
+  <data name="HeaderUnknownSiteType" xml:space="preserve">
+    <value>Site type unknown</value>
+    <comment>Header with site type is unknown</comment>
+  </data>
+  <data name="LineRamTahAcquired" xml:space="preserve">
+    <value>Log has been acquired</value>
+    <comment>Line shown when log has already been acquired for Ram Tah mission</comment>
+  </data>
+  <data name="LineRamTahNeeded" xml:space="preserve">
+    <value>Needed for Ram Tah mission</value>
+    <comment>Line shown when log is needed for Ram Tah mission</comment>
+  </data>
+  <data name="MatsFullOne" xml:space="preserve">
+    <value>(Guardian mats full - toggle cockpit mode again to mark scanned)</value>
+    <comment>Message hint shown when cmdrs Guardian mats are full</comment>
+  </data>
+  <data name="MatsFullTwo" xml:space="preserve">
+    <value>(Guardian mats full - toggle cockpit mode twice to mark scanned)</value>
+    <comment>Following up hint shown when cmdrs Guardian mats are full</comment>
+  </data>
+  <data name="NearObeliskHeader" xml:space="preserve">
+    <value>Obelisk {0}: {1}</value>
+    <comment>Header shown when cmdr is near an obeslisk
+{0} string, the id name of the obelisk, eg "G12"
+{1} string, the status of the obelisk, eg "Active"</comment>
+  </data>
+  <data name="NoNearPoiHeader" xml:space="preserve">
+    <value>Move within ~75m to inspect an item</value>
+    <comment>Header shown when cmdr is not near any POI</comment>
+  </data>
+  <data name="ObeliskActive" xml:space="preserve">
+    <value>Active</value>
+    <comment>The state of an obelisk</comment>
+  </data>
+  <data name="ObeliskBroken" xml:space="preserve">
+    <value>Broken</value>
+    <comment>The state of an obelisk</comment>
+  </data>
+  <data name="ObeliskInactive" xml:space="preserve">
+    <value>Inactive</value>
+    <comment>The state of an obelisk</comment>
+  </data>
+  <data name="OnApproachFooter" xml:space="preserve">
+    <value>( Don't forget to set 3 fire groups in ships and SRVs )</value>
+    <comment>Footer shown when on approach to a Guardian site</comment>
+  </data>
+  <data name="OnApproachHeaderRuins" xml:space="preserve">
+    <value>Approaching Guardian Ruins ...</value>
+    <comment>Header when approaching a Ruins</comment>
+  </data>
+  <data name="OnApproachHeaderStructure" xml:space="preserve">
+    <value>Approaching Guardian Structure ...</value>
+    <comment>Header when approaching a Structure</comment>
+  </data>
+  <data name="OnApproachMiddleRuins" xml:space="preserve">
+    <value>Ruins #{0} - {1}</value>
+    <comment>Middle text when approaching a Ruins
+{0} int, the 1 based index of the site
+{1} string, the type of Ruins, eg: Alpha, Beta or Gamma</comment>
+  </data>
+  <data name="OnApproachMiddleStructure" xml:space="preserve">
+    <value>{0} - blue print: {1}</value>
+    <comment>Middle text when approaching a Stucture
+{0} string, the structure type name, eg: Stickhand
+{1} string, which blue print is available</comment>
+  </data>
+  <data name="OnApproachMiddleStructureNoBluePrint" xml:space="preserve">
+    <value>{0} - no blue print</value>
+    <comment>Middle text when approaching a Stucture that does not provide blue prints
+{0} string, the structure type name, eg: Stickhand</comment>
+  </data>
+  <data name="RelicTowerFaceHint" xml:space="preserve">
+    <value>Face the side with a single large left facing triangle.</value>
+    <comment>Message hint for which side of a relic tower to measure from</comment>
+  </data>
+  <data name="RelicTowerFootHint" xml:space="preserve">
+    <value>(toggle weapon to force location update)</value>
+    <comment>Footer hint shown to remind cmdr's how to force an update when on foot</comment>
+  </data>
+  <data name="RelicTowerHeadingKnown" xml:space="preserve">
+    <value>Recorded heading: {0}°</value>
+    <comment>Message shown when relic tower heading is already known</comment>
+  </data>
+  <data name="RelicTowerNonToolHint" xml:space="preserve">
+    <value>Use Profile Analyser near Relic Towers for aiming assistance.
+Face the side with a single large left facing triangle.</value>
+    <comment>Message hint for which tool and side of a relic tower to use</comment>
+  </data>
+  <data name="RequiresPrefix" xml:space="preserve">
+    <value>Requires:</value>
+    <comment>Line header telling cmdr what items are required to scan this obelisk for Ram Tah mission</comment>
+  </data>
+  <data name="RequiresSuffix" xml:space="preserve">
+    <value>for {0}</value>
+    <comment>Line suffix telling cmdr what they get if they scan this obelisk during Ram Tah mission
+{0} string, name of some log</comment>
+  </data>
+  <data name="ToggleLightsUpdateHint" xml:space="preserve">
+    <value>(toggle lights to force update)</value>
+    <comment>Footer hint shown to remind cmdr's how to force an update</comment>
+  </data>
+  <data name="ToggleShieldsForRelicTower" xml:space="preserve">
+    <value>Toggle shields to set Relic Tower heading.</value>
+    <comment>Message shown to help taking relic tower headings</comment>
+  </data>
+  <data name="YouHaveNotScanned" xml:space="preserve">
+    <value>You have not scanned this obelisk</value>
+    <comment>Footer hint telling cmdr if they have scanned an obelisk</comment>
+  </data>
+  <data name="YouHaveScanned" xml:space="preserve">
+    <value>You have scanned this obelisk</value>
+    <comment>Footer hint telling cmdr if they have scanned an obelisk</comment>
+  </data>
+</root>

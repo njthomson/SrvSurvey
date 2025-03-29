@@ -160,7 +160,7 @@ namespace SrvSurvey.game
         {
             var game = Game.activeGame!;
             var radius = game.status.PlanetRadius;
-            var shipLatLong = Util.adjustForCockpitOffset(radius, Status.here, game.shipType, shipHeading);
+            var shipLatLong = Util.adjustForCockpitOffset(radius, Status.here, game.currentShip.type, shipHeading);
 
             foreach (var template in HumanSiteTemplate.templates)
             {

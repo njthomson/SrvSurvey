@@ -1269,7 +1269,7 @@ namespace SrvSurvey.game
             {
                 body = body,
                 name = $"$Ancient:#index={idx};",
-                displayText = $"{body.name.Replace(systemData.name, "")}: {Properties.Guardian.Ruins} #{idx} - {site.siteType}", // TODO: Localize Alpha, Beta, Gamma, etc?
+                displayText = $"{body.name.Replace(systemData.name, "")}: {Properties.Guardian.Ruins} #{idx} - {Util.getLoc(site.siteType)}",
             };
 
             // show survey status if not complete
@@ -1318,7 +1318,7 @@ namespace SrvSurvey.game
             {
                 body = body,
                 name = GuardianSiteData.mapSiteTypeToSettlementName[siteType] + ":#index=1;",
-                displayText = $"{body.name.Replace(systemData.name, "")}: {siteType}",
+                displayText = $"{body.name.Replace(systemData.name, "")}: {siteType}", // Structure names are NOT localized
             };
 
             // add blue print type

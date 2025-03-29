@@ -5,6 +5,7 @@ using SrvSurvey.net.EDSM;
 using SrvSurvey.plotters;
 using SrvSurvey.units;
 using System.Diagnostics;
+using static SrvSurvey.canonn.GRReports;
 
 namespace SrvSurvey.game
 {
@@ -34,6 +35,7 @@ namespace SrvSurvey.game
             spansh = new Spansh();
             edsm = new EDSM();
             git = new Git();
+            colony = new ColonyNet();
         }
 
         #region logging
@@ -106,6 +108,7 @@ namespace SrvSurvey.game
         public static Spansh spansh { get; private set; }
         public static EDSM edsm { get; private set; }
         public static Git git { get; private set; }
+        public static ColonyNet colony { get; private set; }
 
         public bool initialized { get; private set; }
 
@@ -125,7 +128,8 @@ namespace SrvSurvey.game
         public JournalWatcher? journals;
         public Status status { get; private set; }
         public NavRouteFile navRoute { get; private set; }
-        public CargoFile cargoFile { get; private set; }
+        public CargoFile2 cargoFile => CargoFile2.read(false);
+        public MarketFile marketFile => MarketFile.read(false);
         public bool guardianMatsFull;
         public bool processDockedOnNextStatusChange = false;
         public bool dockingInProgress = false;
@@ -135,8 +139,10 @@ namespace SrvSurvey.game
         public GuardianSiteData? systemSite;
         public CanonnStation? systemStation;
         public FSDTarget? fsdTarget;
-        public string shipType;
-        public float shipMaxJump;
+        public ShipData currentShip = new();
+        public Docked? lastDocked;
+        public Docked? lastEverDocked;
+        public Undocked? lastUndocked;
         public SettlementMatCollectionData? matStatsTracker;
         private string? lastDestination;
         public bool destinationNextRouteHop = false;
@@ -153,9 +159,11 @@ namespace SrvSurvey.game
         /// </summary>
         public CommanderSettings cmdr;
         public CommanderCodex cmdrCodex;
+        public ColonyData cmdrColony;
         public CommanderJourney? journey;
 
         public SystemPoi? canonnPoi = null;
+        public DockToDockTimer? dockTimer;
 
         /// <summary>
         /// Becomes True once the game has completed initializing
@@ -164,8 +172,18 @@ namespace SrvSurvey.game
 
         public Game(string? cmdr)
         {
-            log($"Game .ctor, targetCmdr: {cmdr}");
-            this.targetCmdr = cmdr;
+            if (Program.forceFid != null)
+            {
+                var fidCmdr = CommanderSettings.getAllCmdrs().GetValueOrDefault(Program.forceFid);
+                log($"Game .ctor, targetFID: {Program.forceFid} => {fidCmdr}");
+                if (fidCmdr != null)
+                    this.targetCmdr = fidCmdr;
+            }
+            else
+            {
+                log($"Game .ctor, targetCmdr: {cmdr}");
+                this.targetCmdr = cmdr;
+            }
 
             // track this instance as the active one
             Game.activeGame = this;
@@ -175,13 +193,12 @@ namespace SrvSurvey.game
             // track status file changes and force an immediate read
             this.status = new Status(true);
             this.navRoute = NavRouteFile.load(true);
-            this.cargoFile = CargoFile.load(true);
 
             // initialize from a journal file
-            var filepath = JournalFile.getSiblingCommanderJournal(cmdr, true, DateTime.MaxValue);
+            var filepath = JournalFile.getSiblingCommanderJournal(this.targetCmdr, true, DateTime.MaxValue);
             if (filepath == null)
             {
-                Game.log($"No journal files found for: {cmdr}");
+                Game.log($"No journal files found for: {this.targetCmdr}");
                 this.isShutdown = true;
                 return;
             }
@@ -291,6 +308,13 @@ namespace SrvSurvey.game
                 this._mode = newMode;
                 doUpdate = true;
             }
+
+            if (newMode != GameMode.StationServices)
+                this.marketEventSeen = false;
+
+            // show reminder message if we bought something on an FC but did not revisit the commodity market
+            if (Game.settings.allowNotifications.fcMarketPurchaseBugReminder && marketBuyOnFC && newMode != GameMode.StationServices)
+                PlotFloatie.showMessage("Don't forget to revisit the market when making buying at Fleet Carriers");
 
             if (status != null && landingGearDown != status.landingGearDown)
             {
@@ -581,8 +605,16 @@ namespace SrvSurvey.game
                 // How much does it matter that v4-live/Horizons acts just like Odyssey?
                 this.cmdr = CommanderSettings.Load(loadEntry.FID, journals.isOdyssey, loadEntry.Commander);
                 this.cmdrCodex = cmdr.loadCodex();
+                this.cmdrColony = ColonyData.Load(loadEntry.FID, loadEntry.Commander);
                 this.journey = cmdr.loadActiveJourney();
                 this.journey?.doCatchup(this.journals!);
+
+                if (Game.settings.buildProjects_TEST)
+                    this.cmdrColony.fetchLatest().ContinueWith(t =>
+                    {
+                        if (t.Exception != null || !t.IsCompletedSuccessfully)
+                            Util.isFirewallProblem(t.Exception);
+                    });
             }
 
             // if we have MainMenu music - we know we're not actively playing
@@ -687,8 +719,7 @@ namespace SrvSurvey.game
             var lastLoadout = journals.FindEntryByType<Loadout>(-1, true);
             if (lastLoadout != null)
             {
-                this.shipType = lastLoadout.Ship;
-                this.shipMaxJump = lastLoadout.MaxJumpRange;
+                this.currentShip = new(lastLoadout);
             }
 
             // clear old touchdown location but we're no longer on a planet
@@ -764,11 +795,8 @@ namespace SrvSurvey.game
             this.journals.walkDeep(true, (entry) =>
             {
                 var loadout = entry as Loadout;
-                if (loadout != null && this.shipType == null)
-                {
-                    this.shipType = loadout.Ship;
-                    this.shipMaxJump = loadout.MaxJumpRange;
-                }
+                if (loadout != null && this.currentShip == null)
+                    this.currentShip = new(loadout);
 
                 // keep the first Docked event we find, unless we touched down
                 var docked = entry as Docked;
@@ -809,11 +837,25 @@ namespace SrvSurvey.game
             if (lastApproachSettlement == null || lastApproachSettlement.BodyName != status.BodyName) return;
             if (Util.getDistance(lastApproachSettlement, Status.here, status.PlanetRadius) > 7_500) return;
 
-            // new ...
-
-            // we'll need a shipType first, which may be much earlier than we already walked
-            if (this.shipType == null) this.shipType = journals.FindEntryByType<Loadout>(-1, true)?.Ship!;
-            if (this.shipType == null) this.shipType = journals.FindEntryByType<LoadGame>(-1, true)?.Ship!;
+            // we'll need a shipType if not already found
+            if (this.currentShip == null)
+            {
+                Game.log("Didn't find ship details yet?");
+                journals.walk(-1, true, entry =>
+                {
+                    if (entry is Loadout)
+                    {
+                        this.currentShip = new((Loadout)entry);
+                        return true;
+                    }
+                    if (entry is LoadGame)
+                    {
+                        this.currentShip = new((LoadGame)entry);
+                        return true;
+                    }
+                    return false;
+                });
+            }
 
             onJournalEntry(lastApproachSettlement);
             if (lastDockingRequested != null) onJournalEntry(lastDockingRequested);
@@ -913,6 +955,14 @@ namespace SrvSurvey.game
                 if (SystemData.journalEventTypes.Contains(entry.@event))
                     playForwards.Add(entry);
 
+                var dockedEvent = entry as Docked;
+                if (dockedEvent != null && this.lastEverDocked == null)
+                {
+                    this.lastEverDocked = dockedEvent;
+                    if (status.Docked)
+                        this.lastDocked = dockedEvent;
+                }
+
                 return false;
             });
 
@@ -1008,7 +1058,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(LoadGame entry)
         {
-            this.shipType = entry.Ship;
+            this.currentShip = new(entry);
 
             if (this.Commander == null)
                 this.initializeFromJournal(entry);
@@ -1040,8 +1090,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Loadout entry)
         {
-            this.shipType = entry.Ship;
-            this.shipMaxJump = entry.MaxJumpRange;
+            this.currentShip = new(entry);
         }
 
         private void onJournalEntry(Died entry)
@@ -1055,6 +1104,14 @@ namespace SrvSurvey.game
             this.cmdr.lastOrganicScan = null;
             this.cmdr.currentMarketId = 0;
             this.cmdr.Save();
+
+            // forget these things
+            this.lastDocked = null;
+            if (this.dockTimer != null)
+            {
+                this.dockTimer.writeToFile();
+                this.dockTimer = null;
+            }
 
             this.Status_StatusChanged(false);
 
@@ -1104,7 +1161,7 @@ namespace SrvSurvey.game
             if (entry.JumpType == "Hyperspace")
             {
                 cmdr.countJumps += 1;
-                cmdr.Save();
+                cmdr.setMarketId(0); // (saves)
 
                 Program.defer(() => this.fsdJumping = true);
                 SystemData.Close(this.systemData);
@@ -1115,6 +1172,12 @@ namespace SrvSurvey.game
                 this.fetchedSystemData = null;
                 this.Status_StatusChanged(false);
 
+                // stop force showing these any time we change systems
+                PlotFSSInfo.forceShow = false;
+                PlotBodyInfo.forceShow = false;
+                Program.closePlotter<PlotFSSInfo>();
+                Program.closePlotter<PlotBodyInfo>();
+
                 // clear the nextSystem displayed when jumping to some other system
                 var form = Program.getPlotter<PlotSysStatus>();
                 if (form != null)
@@ -1123,11 +1186,15 @@ namespace SrvSurvey.game
                     form.Invalidate();
                 }
             }
+            else
+            {
+                // For SuperCruise ?
+            }
 
             // for either FSD type ...
+            dockTimer?.onJournalEntry(entry);
 
             // we are certainly no longer at any humanSite
-            this.cmdr.setMarketId(0);
             if (this.systemStation != null)
                 this.systemStation = null;
 
@@ -1164,6 +1231,8 @@ namespace SrvSurvey.game
 
             this.setLocations(entry);
 
+            dockTimer?.onJournalEntry(entry);
+
             // update boxel search?
             if (cmdr.boxelSearch?.active == true)
                 cmdr.boxelSearch.markComplete(entry.SystemAddress, entry.StarSystem, entry.StarPos);
@@ -1186,6 +1255,8 @@ namespace SrvSurvey.game
         {
             this.setLocations(entry);
             this.dropPoint = Status.here.clone();
+
+            dockTimer?.onJournalEntry(entry);
         }
 
         public void deferPredictSpecies(SystemBody? body)
@@ -1404,6 +1475,8 @@ namespace SrvSurvey.game
         private void onJournalEntry(CargoTransfer entry)
         {
             Game.log($"Updating inventory from transfer");
+            var saveColonyData = false;
+            var fcTrackedCargo = new Dictionary<string, int>();
             foreach (var transferItem in entry.Transfers)
             {
                 // TODO: check to / from ship?
@@ -1418,24 +1491,139 @@ namespace SrvSurvey.game
                 if ((this.vehicle == ActiveVehicle.SRV && transferItem.Direction == "toship") || (this.vehicle == ActiveVehicle.MainShip && transferItem.Direction == "tocarrier"))
                 {
                     inventoryItem.Count -= delta;
+
+                    // update linked FC?
+                    if (lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(lastDocked.MarketID))
+                    {
+                        Game.log($"Transferring {delta}x {transferItem.Type} to tracked marketId: {lastDocked.MarketID}");
+                        fcTrackedCargo.init(transferItem.Type);
+                        fcTrackedCargo[transferItem.Type] += delta;
+                    }
                 }
                 else if ((this.vehicle == ActiveVehicle.SRV && transferItem.Direction == "tosrv") || (this.vehicle == ActiveVehicle.MainShip && transferItem.Direction == "toship"))
                 {
+                    // update ship in-memory data
                     inventoryItem.Count += delta;
+
+                    // update linked FC?
+                    if (lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(lastDocked.MarketID))
+                    {
+                        Game.log($"Transferring {delta}x {transferItem.Type} from tracked marketId: {lastDocked.MarketID}");
+                        fcTrackedCargo.init(transferItem.Type);
+                        fcTrackedCargo[transferItem.Type] -= delta;
+                    }
                 }
             }
+
             Program.invalidateActivePlotters();
             log($"Game.CargoTransfer: Current cargo:\r\n  " + string.Join("\r\n  ", this.cargoFile.Inventory));
+
+
+            if (lastDocked != null && fcTrackedCargo.Count > 0)
+                Game.colony.supplyFC(lastDocked.MarketID, fcTrackedCargo).justDoIt();
+
+            if (saveColonyData)
+                cmdrColony.Save();
         }
 
         private void onJournalEntry(CargoDepot entry)
         {
             // if we just handed in some required cargo but have some remainder, show a message for what remains
-            if (Game.settings.autoShowFloatie_TEST && entry.UpdateType == "Deliver" && entry.ItemsDelivered < entry.TotalItemsToDeliver)
+            if (Game.settings.allowNotifications.cargoMissionRemaining && entry.UpdateType == "Deliver" && entry.ItemsDelivered < entry.TotalItemsToDeliver)
             {
                 var remaining = entry.TotalItemsToDeliver - entry.ItemsDelivered;
                 PlotFloatie.showMessage($"Deliver {entry.CargoType}: {remaining} units remaining");
             }
+        }
+
+        private void onJournalEntry(Cargo entry)
+        {
+            // force re-read the cargo file
+            CargoFile2.read(true);
+
+            if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST)
+            {
+                var timeSinceUndocked = DateTime.Now - lastUndocked?.timestamp;
+                Game.log($"timeSinceUndocked: {timeSinceUndocked?.TotalSeconds ?? '?'} seconds");
+                if (lastDocked != null && ColonyData.isConstructionSite(lastDocked))
+                {
+                    // if we are currently docked at a construction site ...
+                    var diff = this.cargoFile.getDiff();
+                    this.cmdrColony.supplyNeeds(lastDocked.SystemAddress, lastDocked.MarketID, diff);
+                }
+                else if (lastEverDocked != null && timeSinceUndocked?.TotalSeconds < 10 && ColonyData.isConstructionSite(lastEverDocked))
+                {
+                    // ... or we just undocked from one in the last 10 seconds
+                    var diff = this.cargoFile.getDiff();
+                    this.cmdrColony.supplyNeeds(lastEverDocked.SystemAddress, lastEverDocked.MarketID, diff);
+                }
+            }
+
+            Program.invalidate<PlotBuildCommodities>();
+        }
+
+        private void onJournalEntry(MarketBuy entry)
+        {
+            // add to cargo counts tracked in memory
+            var item = cargoFile.Inventory.Find(i => i.Name == entry.Type);
+            if (item == null)
+            {
+                // add if missing
+                item = new InventoryItem(entry.Type, entry.Type_Localised);
+                cargoFile.Inventory.Add(item);
+            }
+            item.Count += entry.Count;
+
+            // track purchases from linked FleetCarriers
+            if (lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(entry.MarketId))
+            {
+                Game.log($"Buying {entry.Count}x {entry.Type} from linked FC marketId: {entry.MarketId}");
+                Game.colony.supplyFC(entry.MarketId, entry.Type, -entry.Count).justDoIt();
+            }
+
+            Program.invalidate<PlotBuildCommodities>();
+
+            if (Game.settings.allowNotifications.fcMarketPurchaseBugReminder && this.fcMarketIds.Contains(entry.MarketId))
+                marketBuyOnFC = true;
+        }
+        private void onJournalEntry(MarketSell entry)
+        {
+            // tracked sales to linked FleetCarriers
+            if (lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(entry.MarketId))
+            {
+                Game.log($"Selling {entry.Count}x {entry.Type} to linked FC marketId: {entry.MarketId}");
+                Game.colony.supplyFC(entry.MarketId, entry.Type, entry.Count).justDoIt();
+                /*
+                cmdrColony.fcCommodities.init(entry.Type);
+                cmdrColony.fcCommodities[entry.Type] += entry.Count;
+                Game.log($"Adding {entry.Count}x {entry.Type} to colonyData.fcCommodities");
+                cmdrColony.Save();
+                */
+
+                Program.invalidate<PlotBuildCommodities>();
+            }
+        }
+
+        public bool marketBuyOnFC = false;
+        public bool marketEventSeen = false;
+        public HashSet<long> fcMarketIds = new();
+
+        private void onJournalEntry(Market entry)
+        {
+            marketEventSeen = true;
+
+            // force re-read the market file
+            MarketFile.read(true);
+
+            if (Game.settings.allowNotifications.fcMarketPurchaseBugReminder && entry.StationType == "FleetCarrier")
+            {
+                // remember if this is a FleetCarrier market - so we can help people avoid annoying not-yet-purchased bug
+                this.fcMarketIds.Add(entry.MarketId);
+                this.marketBuyOnFC = false;
+            }
+
+            if (PlotBuildCommodities.allowPlotter)
+                Program.showPlotter<PlotBuildCommodities>();
         }
 
         private static Dictionary<string, string> inventoryItemNameMap = new Dictionary<string, string>()
@@ -1496,18 +1684,17 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(MaterialCollected entry)
         {
-            // find the matching material
-            var match = this.materials.getMaterialEntry(entry.Category, entry.Name);
-            if (match == null)
+            if (Game.settings.allowNotifications.materialCountAfterPickup)
             {
-                Game.log("Why no material match??");
-                Debugger.Break();
-                return;
-            }
+                // add or adjust the count and show a message
+                var match = this.materials.getMaterialEntry(entry.Category, entry.Name);
+                if (match == null)
+                    match = this.materials.addEntry(entry);
+                else
+                    match.Count += entry.Count;
 
-            // adjust the count and show a message
-            match.Count += entry.Count;
-            PlotFloatie.showMessage($"Collected: {entry.Count}x {match.displayName}, new total {match.Count}"); // TODO: localize
+                PlotFloatie.showMessage($"Collected: {entry.Count}x {match.displayName}, new total {match.Count}"); // TODO: localize
+            }
         }
 
         private void onJournalEntry(MaterialTrade entry)
@@ -1538,7 +1725,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(TechnologyBroker entry)
         {
             // track adjustments to Materials from Tech Broker interactions
-            foreach(var mat in entry.Materials)
+            foreach (var mat in entry.Materials)
             {
                 var match = this.materials.getMaterialEntry(mat.Category, mat.Name);
                 if (match == null)
@@ -1829,6 +2016,8 @@ namespace SrvSurvey.game
 
         public void setLocations(Location entry, string? fid = null, string? cmdrName = null)
         {
+            if (cmdr == null) return;
+
             Game.log($"setLocations: from Location: {entry.StarSystem} / {entry.Body} ({entry.BodyType})");
 
             cmdr.currentSystem = entry.StarSystem;
@@ -2335,9 +2524,40 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Docked entry)
         {
+            this.lastDocked = entry;
+            this.lastEverDocked = entry;
+
             // store that we've docked here
             this.cmdr.setMarketId(entry.MarketID);
             this.dockingInProgress = false;
+
+            // end the dock-to-dock timer
+            if (Game.settings.logDockToDockTimes && dockTimer != null)
+                dockTimer.onJournalEntry(entry);
+
+            if (PlotBuildCommodities.forceShow)
+            {
+                // stop showing this - it's about to be wrong
+                PlotBuildCommodities.forceShow = false;
+                Program.closePlotter<PlotBuildCommodities>();
+            }
+
+            if (Game.settings.buildProjects_TEST)
+            {
+                // Auto update faction names if incorrect
+                var proj = cmdrColony.getProject(entry.SystemAddress, entry.MarketID);
+                if (proj != null && proj.factionName != entry.StationFaction.Name)
+                {
+                    Game.log($"Auto-update factionName: {proj.factionName} => {entry.StationFaction.Name}");
+                    Game.colony.update(new ProjectUpdate()
+                    {
+                        buildId = proj.buildId,
+                        factionName = entry.StationFaction.Name,
+                    }).justDoIt();
+                }
+            }
+
+            // stop here if we're not at an Odyssey settlement
             if (entry.StationType != StationType.OnFootSettlement || this.systemData == null) return;
 
             // new ...
@@ -2404,7 +2624,7 @@ namespace SrvSurvey.game
                 status.Heading,
                 this.status.Latitude,
                 this.status.Longitude,
-                inTaxi ? "taxi" : this.shipType,
+                inTaxi ? "taxi" : this.currentShip.type,
                 (double)status.PlanetRadius,
                 calcMethod);
 
@@ -2421,6 +2641,9 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Undocked entry)
         {
+            this.lastUndocked = entry;
+            this.lastDocked = null;
+            this.marketBuyOnFC = false;
             this.touchdownLocation = LatLong2.Empty;
 
             if (Game.settings.collectMatsCollectionStatsTest && this.matStatsTracker != null)
@@ -2428,6 +2651,10 @@ namespace SrvSurvey.game
                 // stop capturing stats once undocked
                 this.exitMats(true);
             }
+
+            // start the dock-to-dock timer
+            if (Game.settings.logDockToDockTimes)
+                dockTimer = new DockToDockTimer(this, entry, this.lastDocked);
         }
 
         public void initMats(CanonnStation station)
@@ -2779,6 +3006,11 @@ namespace SrvSurvey.game
             this.setSuitType(entry);
         }
 
+        private void onJournalEntry(Interdicted entry)
+        {
+            dockTimer?.onJournalEntry(entry);
+        }
+
         #endregion
 
         #region bookmarking
@@ -3042,5 +3274,44 @@ namespace SrvSurvey.game
         }
 
         #endregion
+    }
+
+    class ShipData
+    {
+        public long id;
+        public string name;
+        public string ident;
+        public string type;
+        public double maxJump;
+        public int cargoCapacity;
+
+        public ShipData()
+        {
+            this.id = -1; ;
+            this.name = "?";
+            this.ident = "?";
+            this.type = "?";
+            this.maxJump = -1;
+        }
+
+        public ShipData(Loadout entry)
+        {
+            this.id = entry.ShipID;
+            this.name = entry.Ship;
+            this.name = string.IsNullOrWhiteSpace(entry.ShipName) ? entry.Ship : entry.ShipName;
+            this.ident = entry.ShipIDent;
+            this.type = entry.Ship;
+            this.maxJump = entry.MaxJumpRange;
+            this.cargoCapacity = entry.CargoCapacity;
+        }
+
+        public ShipData(LoadGame entry)
+        {
+            this.id = entry.ShipID;
+            this.name = (string.IsNullOrWhiteSpace(entry.ShipName) ? entry.Ship_Localised : entry.ShipName) ?? "?";
+            this.ident = entry.ShipIdent;
+            this.type = entry.Ship;
+            this.maxJump = -1;
+        }
     }
 }

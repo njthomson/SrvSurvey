@@ -742,7 +742,9 @@ namespace SrvSurvey.widgets
             public static Font console_16 = new Font("Lucida Console", 16F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
 
             public static Font gothic_9 = new Font("Century Gothic", 9F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font gothic_9B = new Font("Century Gothic", 9F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
             public static Font gothic_10 = new Font("Century Gothic", 10F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font gothic_10B = new Font("Century Gothic", 10F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
             public static Font gothic_12 = new Font("Century Gothic", 12F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
             public static Font gothic_12B = new Font("Century Gothic", 12F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
             public static Font gothic_14B = new Font("Century Gothic", 14F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
