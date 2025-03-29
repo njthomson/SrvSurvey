@@ -61,7 +61,7 @@
   </resheader>
   <!--Localizable elements are below-->
   <data name="CountGenus">
-    <value>Родов: {0}</value>
+    <value>Био: {0}</value>
     <comment>Line prefix showing the count of genus on a body
 {0} int, count of genus</comment>
     <source>{0} Genus</source>

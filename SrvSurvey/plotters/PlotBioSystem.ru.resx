@@ -90,8 +90,7 @@
     <source>Geo signals: {0}</source>
   </data>
   <data name="NotPredicted">
-    <!--Machine translated-->
-    <value>Не прогнозировалось!</value>
+    <value>Не было предугадано!</value>
     <comment>Message shown when some bio signal is present and it was not predicted.</comment>
     <source>Not predicted!</source>
   </data>

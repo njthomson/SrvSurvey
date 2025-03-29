@@ -192,32 +192,27 @@
     <source>Terrorism</source>
   </data>
   <data name="Thargoid_Controlled">
-    <!--Machine translated-->
     <value>Под контролем таргоидов</value>
     <comment>Faction state Thargoid_Controlled</comment>
     <source>Thargoid Controlled</source>
   </data>
   <data name="Thargoid_Harvest">
-    <!--Machine translated-->
     <value>Вторжение таргоидов</value>
     <comment>Faction state Thargoid_Harvest</comment>
     <source>Thargoid Invasion</source>
   </data>
   <data name="Thargoid_Probing">
-    <!--Machine translated-->
-    <value>Тревога таргоидов</value>
+    <value>Присутствие таргоидов</value>
     <comment>Faction state Thargoid_Probing</comment>
     <source>Thargoid Alert</source>
   </data>
   <data name="Thargoid_Recovery">
-    <!--Machine translated-->
     <value>Восстановление после таргоидов</value>
     <comment>Faction state Thargoid_Recovery</comment>
     <source>Post-Thargoid Recovery</source>
   </data>
   <data name="Thargoid_Stronghold">
-    <!--Machine translated-->
-    <value>Таргоидский водоворот</value>
+    <value>Таргоидский титан</value>
     <comment>Faction state Thargoid_Stronghold</comment>
     <source>Thargoid Maelstrom</source>
   </data>

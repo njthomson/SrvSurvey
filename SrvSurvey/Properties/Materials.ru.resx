@@ -588,7 +588,7 @@
     <source>Shielding Sensors</source>
   </data>
   <data name="shieldpatternanalysis">
-    <value>	Анализ аномального поведения щита</value>
+    <value>Анализ аномального поведения щита</value>
     <comment>Material shieldpatternanalysis</comment>
     <source>Aberrant Shield Pattern Analysis</source>
   </data>
@@ -623,44 +623,37 @@
     <source>Tempered Alloys</source>
   </data>
   <data name="tg_abrasion01">
-    <!--Machine translated-->
-    <value>Образец для термического воздействия</value>
+    <value>Образец теплового воздействия</value>
     <comment>Material tg_abrasion01</comment>
     <source>Heat Exposure Specimen</source>
   </data>
   <data name="tg_abrasion02">
-    <!--Machine translated-->
-    <value>Фазирование остатка мембраны</value>
+    <value>Остаток фазирующей мембраны</value>
     <comment>Material tg_abrasion02</comment>
     <source>Phasing Membrane Residue</source>
   </data>
   <data name="tg_abrasion03">
-    <!--Machine translated-->
-    <value>Фрагменты затвердевшей поверхности</value>
+    <value>Окаменелые фрагменты поверхности</value>
     <comment>Material tg_abrasion03</comment>
     <source>Hardened Surface Fragments</source>
   </data>
   <data name="tg_biomechanicalconduits">
-    <!--Machine translated-->
-    <value>Биомеханические каналы таргоидов</value>
+    <value>Биомеханические энергопроводники</value>
     <comment>Material tg_biomechanicalconduits</comment>
     <source>Thargoid Bio-Mechanical Conduits</source>
   </data>
   <data name="tg_causticcrystal">
-    <!--Machine translated-->
     <value>Едкий кристалл</value>
     <comment>Material tg_causticcrystal</comment>
     <source>Caustic Crystal</source>
   </data>
   <data name="tg_causticgeneratorparts">
-    <!--Machine translated-->
-    <value>Коррозионные механизмы</value>
+    <value>Разъедающие механизмы</value>
     <comment>Material tg_causticgeneratorparts</comment>
     <source>Corrosive Mechanisms</source>
   </data>
   <data name="tg_causticshard">
-    <!--Machine translated-->
-    <value>Осколок каустика</value>
+    <value>Едкий осколок</value>
     <comment>Material tg_causticshard</comment>
     <source>Caustic Shard</source>
   </data>
@@ -670,8 +663,7 @@
     <source>Thargoid Material Composition Data</source>
   </data>
   <data name="tg_interdictiondata">
-    <!--Machine translated-->
-    <value>Таргоидская телеметрия перехвата</value>
+    <value>Телеметрия перехвата таргоидами</value>
     <comment>Material tg_interdictiondata</comment>
     <source>Thargoid Interdiction Telemetry</source>
   </data>
@@ -686,14 +678,12 @@
     <source>Thargoid Residue Data</source>
   </data>
   <data name="tg_shipflightdata">
-    <!--Machine translated-->
-    <value>Полетные данные судна</value>
+    <value>Полетные данные корабля</value>
     <comment>Material tg_shipflightdata</comment>
     <source>Ship Flight Data</source>
   </data>
   <data name="tg_shipsystemsdata">
-    <!--Machine translated-->
-    <value>Данные о судовых системах</value>
+    <value>Данные бортовых систем корабля</value>
     <comment>Material tg_shipsystemsdata</comment>
     <source>Ship Systems Data</source>
   </data>
@@ -743,7 +733,6 @@
     <source>Thargoid Carapace</source>
   </data>
   <data name="unknowncorechip">
-    <!--Machine translated-->
     <value>Чип тактического ядра</value>
     <comment>Material unknowncorechip</comment>
     <source>Tactical Core Chip</source>

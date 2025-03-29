@@ -246,8 +246,8 @@ Would you like to create it?</value>
     <comment>Suffix after an Engineer's name</comment>
   </data>
   <data name="FirewallBlocked" xml:space="preserve">
-    <value>It appears network calls for SrvSurvey are being blocked by a firewall. This is more likely when running SrvSurvey from within the Downloads folder. Adding the location of SrvSurvey to your file wall will solve this problem.\r\n\r\n{0}\r\n\r\nWould you like to copy that location to the clipboard?</value>
-    <comment>An error message shown when fire walls are causing problems
+    <value>It appears network calls for SrvSurvey are being blocked by a firewall. This is more likely when running SrvSurvey from within the Downloads folder. Adding the location of SrvSurvey to your firewall will solve this problem.\r\n\r\n{0}\r\n\r\nWould you like to copy that location to the clipboard?</value>
+    <comment>An error message shown when firewalls are causing problems
 {0} string, the folder path to SrvSurvey.exe</comment>
   </data>
   <data name="UnexpectedWentWrong" xml:space="preserve">

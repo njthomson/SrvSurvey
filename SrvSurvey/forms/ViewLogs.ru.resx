@@ -266,28 +266,23 @@
   </data>
   <!--Localizable elements are below-->
   <data name="btnClear.Text">
-    <!--Machine translated-->
     <value>&amp;Сброс</value>
     <source>&amp;Reset</source>
   </data>
   <data name="btnClose.Text">
-    <!--Machine translated-->
     <value>&amp;Закрыть</value>
     <source>&amp;Close</source>
   </data>
   <data name="btnCopy.Text">
-    <!--Machine translated-->
-    <value>C&amp;opy</value>
+    <value>К&amp;опировать</value>
     <source>C&amp;opy</source>
   </data>
   <data name="btnOpenFolder.Text">
-    <!--Machine translated-->
     <value>&amp;Открыть папку с логами</value>
     <source>&amp;Open logs folder</source>
   </data>
   <data name="$this.Text">
-    <!--Machine translated-->
-    <value>Журналы SrvSurvey</value>
+    <value>Журнал SrvSurvey</value>
     <source>SrvSurvey Logs</source>
   </data>
 </root>
