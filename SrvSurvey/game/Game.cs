@@ -1538,8 +1538,14 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Cargo entry)
         {
+            // TODO: Remove with confirmation that diff tracking behaves
+            //Game.log(this.cargoFile.Inventory.formatWithHeader($"BEFORE read: {cargoFile.timestamp} | {cargoFile.Count}", "\r\n\t"));
+
             // force re-read the cargo file
             CargoFile2.read(true);
+
+            // TODO: Remove with confirmation that diff tracking behaves
+            //Game.log(this.cargoFile.Inventory.formatWithHeader($"AFTER read: {cargoFile.timestamp} | {cargoFile.Count}", "\r\n\t"));
 
             if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST)
             {

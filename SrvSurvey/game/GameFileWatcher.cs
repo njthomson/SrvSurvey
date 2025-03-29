@@ -55,6 +55,9 @@ namespace SrvSurvey.game
                 this.value = this.parseFile() ?? Activator.CreateInstance<T>();
                 Game.log($"Initializing: {this.filename}");
 
+                // initialize things AFTER we've performed the first read
+                this.value.preRead();
+
                 this.watching = watch;
             }
 
@@ -100,7 +103,10 @@ namespace SrvSurvey.game
 
                 // only update our value if we got a new one
                 if (obj != null)
+                {
+                    this.value.preRead();
                     this.value = obj;
+                }
 
                 // Maybe?
                 // Program.invalidateActivePlotters();
@@ -146,8 +152,14 @@ namespace SrvSurvey.game
         }
     }
 
-    interface IWatchedFile { }
-    class WatchedFile : IWatchedFile { }
+    interface IWatchedFile
+    {
+        public void preRead();
+    }
+    class WatchedFile : IWatchedFile
+    {
+        public virtual void preRead() { /* no-op */ }
+    }
 
     class MarketFile : WatchedFile
     {
@@ -202,8 +214,19 @@ namespace SrvSurvey.game
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public List<InventoryItem> Inventory = new();
 
+        private static Dictionary<string, int> lastInventory = new();
 
-        private Dictionary<string, int> lastInventory = new();
+        public override void preRead()
+        {
+            // clone current inventory before reading
+            lastInventory.Clear();
+            if (this.Inventory != null)
+                foreach (var entry in this.Inventory)
+                    lastInventory[entry.Name] = entry.Count;
+
+            // TODO: Remove with confirmation that diff tracking behaves
+            Game.log(lastInventory.formatWithHeader($"**** preRead: (lastInventory.Count: {lastInventory.Count}", "\r\n\t"));
+        }
 
         public Dictionary<string, int> getDiff()
         {
@@ -216,7 +239,7 @@ namespace SrvSurvey.game
                     if (delta != 0) diffs[entry.Name] = delta;
                 }
 
-                foreach (var entry in this.lastInventory)
+                foreach (var entry in lastInventory)
                 {
                     if (!this.Inventory.Any(_ => _.Name == entry.Key))
                         diffs[entry.Key] = -entry.Value;
@@ -224,6 +247,8 @@ namespace SrvSurvey.game
 
             }
 
+            // TODO: Remove with confirmation that diff tracking behaves
+            Game.log(diffs.formatWithHeader("**** getDiff:", "\r\n\t"));
             return diffs;
         }
 
