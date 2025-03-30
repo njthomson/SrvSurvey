@@ -13,6 +13,14 @@ namespace SrvSurvey
         private static string approxNow = DateTimeOffset.Now.ToString("yyyy-MM-ddTHH:00:00Z");
 
         private static string? key = Environment.GetEnvironmentVariable("trans-srv");
+        private static bool canTranslate
+        {
+            get
+            {
+                return key != null;
+            }
+        }
+
         private static string endpoint = "https://api.cognitive.microsofttranslator.com";
         private static string location = "westus";
         private static XName ordinal = XName.Get("{urn:schemas-microsoft-com:xml-msdata}Ordinal");
@@ -44,8 +52,6 @@ namespace SrvSurvey
 
         public static async Task localize(bool pseudoOnly)
         {
-            if (key == null) throw new NotSupportedException("Secret not available");
-
             var targetLangs = supportedLanguages.Values
                 .Where(lang => lang != "en")
                 .ToList();
@@ -73,19 +79,31 @@ namespace SrvSurvey
             // generate reports, per language, of translations that are missing or need updating
             locUpdate.Remove("ps");
             foreach (var (lang, files) in locUpdate)
-                File.WriteAllText(
-                    Path.Combine(Git.srcRootFolder, "SrvSurvey", "Properties", $"_loc-{lang}-needed.txt"),
-                    string.Join("\r\n\r\n", files.Select(_ => _.Value.formatWithHeader(_.Key.Replace(".resx", $".{lang}.resx"), "\r\n\t"))) + "\r\n");
+            {
+                var locPath = Path.Combine(Git.srcRootFolder, "SrvSurvey", "Properties", $"_loc-{lang}-needed.txt");
+                File.Delete(locPath);
+                if (files.Count != 0)
+                    File.WriteAllText(
+                        locPath,
+                        string.Join("\r\n\r\n", files.Select(_ => _.Value.formatWithHeader(_.Key.Replace(".resx", $".{lang}.resx"), "\r\n\t"))) + "\r\n");
+            }
 
             locMissing.Remove("ps");
             foreach (var (lang, files) in locMissing)
-                File.WriteAllText(
-                    Path.Combine(Git.srcRootFolder, "SrvSurvey", "Properties", $"_loc-{lang}-missing.txt"),
-                    string.Join("\r\n\r\n", files.Select(_ => _.Value.formatWithHeader(_.Key.Replace(".resx", $".{lang}.resx"), "\r\n\t"))) + "\r\n");
+            {
+                var locPath = Path.Combine(Git.srcRootFolder, "SrvSurvey", "Properties", $"_loc-{lang}-missing.txt");
+                File.Delete(locPath);
+                if (files.Count != 0)
+                    File.WriteAllText(
+                        locPath,
+                        string.Join("\r\n\r\n", files.Select(_ => _.Value.formatWithHeader(_.Key.Replace(".resx", $".{lang}.resx"), "\r\n\t"))) + "\r\n");
+            }
         }
 
         private static async Task<string?> translateString(string textToTranslate, string targetLang)
         {
+            if (!canTranslate) throw new NotSupportedException("Secret not available");
+
             // Input and output languages are defined as parameters.
             var uri = new Uri($"{endpoint}/translate?api-version=3.0&from=en&to={targetLang}");
 
@@ -125,6 +143,9 @@ namespace SrvSurvey
         {
             if (!File.Exists(sourceFilepath)) throw new FileNotFoundException($"File not found: {sourceFilepath}");
 
+            locMissing.init(targetLang);
+            locUpdate.init(targetLang);
+
             // prep target .resx file
             var relativeSourceFilePath = sourceFilepath
                 .Replace(Path.GetFullPath(Git.srcRootFolder) + "\\SrvSurvey", "")
@@ -160,6 +181,7 @@ namespace SrvSurvey
             sourceElement.SetAttributeValue(ordinal, "3");
             commentElement.Parent?.Add(sourceElement);
 
+            var notTranslated = "Not translated";
             var machineTranslated = "Machine translated";
             var translateNeeded = "Update needed: " + targetLang.ToUpperInvariant();
             var count = 0;
@@ -193,7 +215,9 @@ namespace SrvSurvey
                 var sourceChanged = oldSource != null && oldSource != sourceText;
 
                 var oldFirstChildCommentNode = (oldTargetNode?.FirstNode as XComment);
-                var shouldTranslate = oldTargetNode == null || oldFirstChildCommentNode?.Value == machineTranslated;
+                var wasMachineTranslated = oldFirstChildCommentNode?.Value == machineTranslated;
+                var wasNotTranslated = oldFirstChildCommentNode?.Value == notTranslated;
+                var shouldTryTranslate = oldTargetNode == null || wasMachineTranslated || wasNotTranslated;
                 var needsUpdating = (oldTargetNode?.FirstNode as XComment)?.Value == translateNeeded;
 
                 //if (resourceName == "Rescue" && preLoc) Debugger.Break();
@@ -204,12 +228,13 @@ namespace SrvSurvey
                     targetNode.AddBeforeSelf(oldTargetNode.PreviousNode);
                 }
 
-                if (!shouldTranslate && (sourceChanged || needsUpdating))
+                if (!shouldTryTranslate && (sourceChanged || needsUpdating))
                 {
+                    // it was translated manually at some point, but the source changed either now or sometime in the past. track it as source-updated
                     locUpdate.init(targetLang).init(relativeSourceFilePath).Add(resourceName);
                     targetNode.AddFirst(new XComment(translateNeeded));
                 }
-                else if (oldFirstChildCommentNode != null && oldFirstChildCommentNode?.Value != machineTranslated)
+                else if (oldFirstChildCommentNode != null && !wasMachineTranslated && !wasNotTranslated)
                 {
                     // maintain ad-hoc comment within the <data /> element
                     targetNode.AddFirst(oldFirstChildCommentNode);
@@ -219,28 +244,47 @@ namespace SrvSurvey
                 if (oldTranslation != null) targetNode.SetElementValue("value", oldTranslation);
 
                 // skip anything we should not translate
-                if (!shouldTranslate) continue;
+                if (!shouldTryTranslate) continue;
 
-                // stamp resource as "Machine translated" and track
-                targetNode.AddFirst(new XComment(machineTranslated));
+                // track this as missing a manual translation
                 locMissing.init(targetLang).init(relativeSourceFilePath).Add(resourceName);
 
                 // skip anything where source has not changed
-                if (oldSource == sourceText && !string.IsNullOrEmpty(oldTranslation)) continue;
-
-                // presume translate to pseudo
-                var translation = preLoc ? oldTranslation : $"* {sourceText.ToUpperInvariant()} →→→!";
-
-                // or translate into a real language
-                if (targetLang != "ps")
+                if (oldSource == sourceText && !string.IsNullOrEmpty(oldTranslation))
                 {
+                    // but keep the comment
+                    targetNode.AddFirst(oldFirstChildCommentNode);
+                    continue;
+                }
+
+                // priority as follows: manual translation (with or without "updated") -> machine translation (even if the source is newer and we can't translate) -> not translated
+                // at this point if there ever was manual translation we already continue'd onto the next element, so
+
+                // if there is no suitable machine translation assume we can't translate it and use the source string
+                var translation = wasMachineTranslated ? oldTranslation : sourceText;
+                var translationComment = wasMachineTranslated ? machineTranslated : notTranslated;
+
+                if (targetLang == "ps")
+                {
+                    // or "machine" translate it to pseudo
+                    translation = $"* {sourceText.ToUpperInvariant()} →→→!";
+                    translationComment = machineTranslated;
+                }
+                else if (canTranslate)
+                {
+                    // or translate into a real language
                     translation = await translateString(sourceText, targetLang);
                     if (string.IsNullOrEmpty(translation))
                     {
                         Debugger.Break();
                         continue;
                     }
+                    else
+                        translationComment = machineTranslated;
                 }
+
+                // stamp resource as "Machine translated" or "Not translated"
+                targetNode.AddFirst(new XComment(translationComment));
 
                 targetNode.SetElementValue("value", translation);
 

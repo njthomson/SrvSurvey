@@ -66,10 +66,10 @@
   <!--Localizable elements are below-->
   <data name="FirewallBlocked">
     <!--Machine translated-->
-    <value>* IT APPEARS NETWORK CALLS FOR SRVSURVEY ARE BEING BLOCKED BY A FIREWALL. THIS IS MORE LIKELY WHEN RUNNING SRVSURVEY FROM WITHIN THE DOWNLOADS FOLDER. ADDING THE LOCATION OF SRVSURVEY TO YOUR FILE WALL WILL SOLVE THIS PROBLEM.\R\N\R\N{0}\R\N\R\NWOULD YOU LIKE TO COPY THAT LOCATION TO THE CLIPBOARD? →→→!</value>
-    <comment>An error message shown when fire walls are causing problems
+    <value>* IT APPEARS NETWORK CALLS FOR SRVSURVEY ARE BEING BLOCKED BY A FIREWALL. THIS IS MORE LIKELY WHEN RUNNING SRVSURVEY FROM WITHIN THE DOWNLOADS FOLDER. ADDING THE LOCATION OF SRVSURVEY TO YOUR FIREWALL WILL SOLVE THIS PROBLEM.\R\N\R\N{0}\R\N\R\NWOULD YOU LIKE TO COPY THAT LOCATION TO THE CLIPBOARD? →→→!</value>
+    <comment>An error message shown when firewalls are causing problems
 {0} string, the folder path to SrvSurvey.exe</comment>
-    <source>It appears network calls for SrvSurvey are being blocked by a firewall. This is more likely when running SrvSurvey from within the Downloads folder. Adding the location of SrvSurvey to your file wall will solve this problem.\r\n\r\n{0}\r\n\r\nWould you like to copy that location to the clipboard?</source>
+    <source>It appears network calls for SrvSurvey are being blocked by a firewall. This is more likely when running SrvSurvey from within the Downloads folder. Adding the location of SrvSurvey to your firewall will solve this problem.\r\n\r\n{0}\r\n\r\nWould you like to copy that location to the clipboard?</source>
   </data>
   <data name="FormBoxelSearch_Activate">
     <!--Machine translated-->
