@@ -416,62 +416,50 @@
   </data>
   <!--Localizable elements are below-->
   <data name="btnActive.Text">
-    <!--Machine translated-->
     <value>Маршрут активен</value>
     <source>Route active</source>
   </data>
   <data name="btnAutoCopy.Text">
-    <!--Machine translated-->
-    <value>Автокопирование в Gal-Map</value>
+    <value>Автокопирование в галактической карте</value>
     <source>Auto copy in Gal-Map</source>
   </data>
   <data name="btnImportSpanshUrl.Text">
-    <!--Machine translated-->
-    <value>URL маршрута spansh из буфера обмена</value>
+    <value>URL маршрута Spansh из буфера обмена</value>
     <source>Spansh route URL from clipboard</source>
   </data>
   <data name="btnNamesFromClipboard.Text">
-    <!--Machine translated-->
-    <value>Системные имена из буфера обмена</value>
+    <value>Имена систем из буфера обмена</value>
     <source>System names from clipboard</source>
   </data>
   <data name="btnNamesFromFile.Text">
-    <!--Machine translated-->
-    <value>Системные имена из файла</value>
+    <value>Имена систем из файла</value>
     <source>System names from file</source>
   </data>
   <data name="btnSave.Text">
-    <!--Machine translated-->
     <value>Сохранить изменения</value>
     <source>Save changes</source>
   </data>
   <data name="colDistance.Text">
-    <!--Machine translated-->
     <value>Расстояние</value>
     <source>Distance</source>
   </data>
   <data name="colNotes.Text">
-    <!--Machine translated-->
     <value>Примечания</value>
     <source>Notes</source>
   </data>
   <data name="colSystem.Text">
-    <!--Machine translated-->
     <value>Система</value>
     <source>System</source>
   </data>
   <data name="lblIntro.Text">
-    <!--Machine translated-->
-    <value>Используйте маршруты, чтобы вручную прокладывать свой путь по галактике. Начните с импорта маршрута, затем найдите указания в правом верхнем углу на карте Gal-Map.</value>
+    <value>Используйте маршруты, чтобы вручную прокладывать свой путь по галактике. Начните с импорта маршрута, затем найдите указания в правом верхнем углу на галактической карте.</value>
     <source>Use routes to manually plot your way across the galaxy. Begin by importing a route, then look for guidance in the top-right corner in the Gal-Map.</source>
   </data>
   <data name="$this.Text">
-    <!--Machine translated-->
     <value>Следуйте по маршруту</value>
     <source>Follow a route</source>
   </data>
   <data name="toolStripDropDownButton1.Text">
-    <!--Machine translated-->
     <value>Импорт...</value>
     <source>Import...</source>
   </data>

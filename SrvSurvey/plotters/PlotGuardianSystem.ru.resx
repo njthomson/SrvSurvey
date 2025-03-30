@@ -61,34 +61,29 @@
   </resheader>
   <!--Localizable elements are below-->
   <data name="BluePrintLine">
-    <!--Machine translated-->
-    <value>Чертеж: {0}</value>
+    <value>Чертёж: {0}</value>
     <comment>Line header shown if the site yields some blue print
 {0} string, the type of blue print</comment>
     <source>Blue print: {0}</source>
   </data>
   <data name="Header">
-    <!--Machine translated-->
-    <value>Охраняемые сайты: {0}</value>
+    <value>Места стражей: {0}</value>
     <comment>Header line
 {0} int, count of Guardian sites in this star system</comment>
     <source>Guardian sites: {0}</source>
   </data>
   <data name="SurveyIncomplete">
-    <!--Machine translated-->
-    <value>Неполный</value>
+    <value>Не завершено</value>
     <comment>When a Guardian site survey is incomplete</comment>
     <source>Incomplete</source>
   </data>
   <data name="SurveyLine">
-    <!--Machine translated-->
-    <value>Опрос: {0}</value>
+    <value>Исследование: {0}</value>
     <comment>Line header for the progress of a site's survey
 {0} string, "not started" or "incomplete"</comment>
     <source>Survey: {0}</source>
   </data>
   <data name="SurveyNotStarted">
-    <!--Machine translated-->
     <value>Не начато</value>
     <comment>When a Guardian site survey has not been started</comment>
     <source>Not started</source>

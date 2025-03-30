@@ -66,9 +66,9 @@
   <!--Localizable elements are below-->
   <data name="FirewallBlocked">
     <value>SrvSurvey的网络调用似乎被防火墙阻止了。当从 Downloads 文件夹中运行 SrvSurvey 时，这种情况更有可能发生。将 SrvSurvey 的位置添加到防火墙中可以解决此问题。\r\n\r\n{0}\r\n\r\n您想将该位置复制到剪贴板吗？</value>
-    <comment>An error message shown when fire walls are causing problems
+    <comment>An error message shown when firewalls are causing problems
 {0} string, the folder path to SrvSurvey.exe</comment>
-    <source>It appears network calls for SrvSurvey are being blocked by a firewall. This is more likely when running SrvSurvey from within the Downloads folder. Adding the location of SrvSurvey to your file wall will solve this problem.\r\n\r\n{0}\r\n\r\nWould you like to copy that location to the clipboard?</source>
+    <source>It appears network calls for SrvSurvey are being blocked by a firewall. This is more likely when running SrvSurvey from within the Downloads folder. Adding the location of SrvSurvey to your firewall will solve this problem.\r\n\r\n{0}\r\n\r\nWould you like to copy that location to the clipboard?</source>
   </data>
   <data name="FormBoxelSearch_Activate">
     <value>启用</value>

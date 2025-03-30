@@ -61,20 +61,17 @@
   </resheader>
   <!--Localizable elements are below-->
   <data name="Footer">
-    <!--Machine translated-->
     <value>Установите целевой обелиск с помощью '.to &lt;A01&gt;'</value>
     <comment>Footer message</comment>
     <source>Set target obelisk with '.to &lt;A01&gt;'</source>
   </data>
   <data name="Header">
-    <!--Machine translated-->
     <value>Неотсканированные журналы Ram Tah: {0}</value>
     <comment>{0} int, count of logs that could be acquired</comment>
     <source>Unscanned Ram Tah logs: {0}</source>
   </data>
   <data name="NoNewLogs">
-    <!--Machine translated-->
-    <value>Новые логи недоступны</value>
+    <value>Отсутствуют новые журналы</value>
     <comment>Message shown when there are no new logs to acquire</comment>
     <source>No new logs available</source>
   </data>

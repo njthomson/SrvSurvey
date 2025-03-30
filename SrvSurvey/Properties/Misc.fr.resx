@@ -67,9 +67,9 @@
   <data name="FirewallBlocked">
     <!--Machine translated-->
     <value>Il semble que les appels réseau pour SrvSurvey soient bloqués par un pare-feu. Cela est plus probable lors de l’exécution de SrvSurvey à partir du dossier Téléchargements. L’ajout de l’emplacement de SrvSurvey à votre mur de fichiers résoudra ce problème.\r\n\r\n{0}\r\n\r\nSouhaitez-vous copier cet emplacement dans le presse-papiers ?</value>
-    <comment>An error message shown when fire walls are causing problems
+    <comment>An error message shown when firewalls are causing problems
 {0} string, the folder path to SrvSurvey.exe</comment>
-    <source>It appears network calls for SrvSurvey are being blocked by a firewall. This is more likely when running SrvSurvey from within the Downloads folder. Adding the location of SrvSurvey to your file wall will solve this problem.\r\n\r\n{0}\r\n\r\nWould you like to copy that location to the clipboard?</source>
+    <source>It appears network calls for SrvSurvey are being blocked by a firewall. This is more likely when running SrvSurvey from within the Downloads folder. Adding the location of SrvSurvey to your firewall will solve this problem.\r\n\r\n{0}\r\n\r\nWould you like to copy that location to the clipboard?</source>
   </data>
   <data name="FormBoxelSearch_Activate">
     <!--Machine translated-->

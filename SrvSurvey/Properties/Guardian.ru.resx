@@ -61,194 +61,162 @@
   </resheader>
   <!--Localizable elements are below-->
   <data name="Alpha">
-    <!--Machine translated-->
     <value>Альфа</value>
     <comment>Guardian Ruins type</comment>
     <source>Alpha</source>
   </data>
   <data name="Beta">
-    <!--Machine translated-->
-    <value>Бета-версия</value>
+    <value>Бета</value>
     <comment>Guardian Ruins type</comment>
     <source>Beta</source>
   </data>
   <data name="BluePrintFighter">
-    <!--Machine translated-->
-    <value>Боец</value>
+    <value>Истребитель</value>
     <comment>Blue print for a Fighter</comment>
     <source>Fighter</source>
   </data>
   <data name="BluePrintModule">
-    <!--Machine translated-->
     <value>Модуль</value>
     <comment>Blue print for a Module</comment>
     <source>Module</source>
   </data>
   <data name="BluePrintWeapon">
-    <!--Machine translated-->
     <value>Оружие</value>
     <comment>Blue print for a Weapon</comment>
     <source>Weapon</source>
   </data>
   <data name="Gamma">
-    <!--Machine translated-->
     <value>Гамма</value>
     <comment>Guardian Ruins type</comment>
     <source>Gamma</source>
   </data>
   <data name="ItemBasilisk">
-    <!--Machine translated-->
     <value>Василиск</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Basilisk</source>
   </data>
   <data name="ItemCasket">
-    <!--Machine translated-->
-    <value>Гроб</value>
+    <value>Шкатулка</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Casket</source>
   </data>
   <data name="ItemCyclops">
-    <!--Machine translated-->
     <value>Циклоп</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Cyclops</source>
   </data>
   <data name="ItemLink">
-    <!--Machine translated-->
-    <value>Связь</value>
+    <value>Звено</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Link</source>
   </data>
   <data name="ItemMedusa">
-    <!--Machine translated-->
     <value>Медуза</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Medusa</source>
   </data>
   <data name="ItemOrb">
-    <!--Machine translated-->
-    <value>Шар</value>
+    <value>Сфера</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Orb</source>
   </data>
   <data name="ItemProbe">
-    <!--Machine translated-->
     <value>Зонд</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Probe</source>
   </data>
   <data name="ItemRelic">
-    <!--Machine translated-->
     <value>Реликвия</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Relic</source>
   </data>
   <data name="ItemSensor">
-    <!--Machine translated-->
-    <value>Датчик</value>
+    <value>Сенсор</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Sensor</source>
   </data>
   <data name="ItemTablet">
-    <!--Machine translated-->
-    <value>Таблетка</value>
+    <value>Табличка</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Tablet</source>
   </data>
   <data name="ItemTotem">
-    <!--Machine translated-->
     <value>Тотем</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Totem</source>
   </data>
   <data name="ItemUrn">
-    <!--Machine translated-->
     <value>Урна</value>
     <comment>An item to match obelisk symbols, needed for a Ram Tah mission</comment>
     <source>Urn</source>
   </data>
   <data name="LogBiology">
-    <!--Machine translated-->
     <value>Биология</value>
     <comment>A category of log received in the first Ram Tah mission.</comment>
     <source>Biology</source>
   </data>
   <data name="LogCulture">
-    <!--Machine translated-->
     <value>Культура</value>
     <comment>A category of log received in the first Ram Tah mission.</comment>
     <source>Culture</source>
   </data>
   <data name="LogHistory">
-    <!--Machine translated-->
     <value>История</value>
     <comment>A category of log received in the first Ram Tah mission.</comment>
     <source>History</source>
   </data>
   <data name="LogLanguage">
-    <!--Machine translated-->
     <value>Язык</value>
     <comment>A category of log received in the first Ram Tah mission.</comment>
     <source>Language</source>
   </data>
   <data name="LogTechnology">
-    <!--Machine translated-->
     <value>Технологии</value>
     <comment>A category of log received in the first Ram Tah mission.</comment>
     <source>Technology</source>
   </data>
   <data name="POIType_Component">
-    <!--Machine translated-->
-    <value>Компонентная башня</value>
+    <value>Башня с хрупкими панелями</value>
     <comment>Those towers with 3 blastable panels</comment>
     <source>Component tower</source>
   </data>
   <data name="POIType_Pylon">
-    <!--Machine translated-->
-    <value>Пилон</value>
+    <value>Электромачта</value>
     <comment>The things we shoot to charge up at Guardian structures</comment>
     <source>Pylon</source>
   </data>
   <data name="Ruins">
-    <!--Machine translated-->
-    <value>Развалины</value>
+    <value>Руины</value>
     <comment>As in a Guardian Ruins site</comment>
     <source>Ruins</source>
   </data>
   <data name="SitePoiStatus_absent">
-    <!--Machine translated-->
-    <value>отсутствующий</value>
+    <value>отсутствует</value>
     <comment>Display name for PoiSiteStatus enum</comment>
     <source>absent</source>
   </data>
   <data name="SitePoiStatus_empty">
-    <!--Machine translated-->
-    <value>пустой</value>
+    <value>пусто</value>
     <comment>Display name for PoiSiteStatus enum</comment>
     <source>empty</source>
   </data>
   <data name="SitePoiStatus_present">
-    <!--Machine translated-->
-    <value>присутствующий</value>
+    <value>присутствует</value>
     <comment>Display name for PoiSiteStatus enum</comment>
     <source>present</source>
   </data>
   <data name="SitePoiStatus_unknown">
-    <!--Machine translated-->
-    <value>неизвестный</value>
+    <value>неизвестно</value>
     <comment>Display name for PoiSiteStatus enum</comment>
     <source>unknown</source>
   </data>
   <data name="StatusUnknown">
-    <!--Machine translated-->
-    <value>неизвестный</value>
+    <value>неизвестно</value>
     <comment>The status of some site POI</comment>
     <source>unknown</source>
   </data>
   <data name="Structure">
-    <!--Machine translated-->
-    <value>Структура</value>
+    <value>Конструкция</value>
     <comment>As in a Guardian Structure site</comment>
     <source>Structure</source>
   </data>

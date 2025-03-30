@@ -65,8 +65,7 @@
   </data>
   <!--Localizable elements are below-->
   <data name="Header">
-    <!--Machine translated-->
-    <value>Осталось убитых в резне:</value>
+    <value>Осталось убийств в охоте:</value>
     <comment>Header line</comment>
     <source>Massacre kills remaining:</source>
   </data>

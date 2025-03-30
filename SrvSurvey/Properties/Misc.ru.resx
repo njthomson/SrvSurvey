@@ -65,11 +65,10 @@
   </data>
   <!--Localizable elements are below-->
   <data name="FirewallBlocked">
-    <!--Machine translated-->
-    <value>Похоже, что сетевые вызовы для SrvSurvey блокируются брандмауэром. Это более вероятно при запуске SrvSurvey из папки «Загрузки». Добавление местоположения SrvSurvey на стену файлов решит эту проблему.\r\n\r\n{0}\r\n\r\nХотели бы вы скопировать это местоположение в буфер обмена?</value>
-    <comment>An error message shown when fire walls are causing problems
+    <value>Похоже, что сетевые вызовы для SrvSurvey блокируются брандмауэром. Это наиболее вероятно при запуске SrvSurvey из папки «Загрузки». Добавление местоположения SrvSurvey в ваш брандмауэр решит эту проблему.\r\n\r\n{0}\r\n\r\nХотели бы вы скопировать это местоположение в буфер обмена?</value>
+    <comment>An error message shown when firewalls are causing problems
 {0} string, the folder path to SrvSurvey.exe</comment>
-    <source>It appears network calls for SrvSurvey are being blocked by a firewall. This is more likely when running SrvSurvey from within the Downloads folder. Adding the location of SrvSurvey to your file wall will solve this problem.\r\n\r\n{0}\r\n\r\nWould you like to copy that location to the clipboard?</source>
+    <source>It appears network calls for SrvSurvey are being blocked by a firewall. This is more likely when running SrvSurvey from within the Downloads folder. Adding the location of SrvSurvey to your firewall will solve this problem.\r\n\r\n{0}\r\n\r\nWould you like to copy that location to the clipboard?</source>
   </data>
   <data name="FormBoxelSearch_Activate">
     <value>Активировать</value>
@@ -230,8 +229,7 @@
 Would you like to create it?</source>
   </data>
   <data name="UnexpectedWentWrong">
-    <!--Machine translated-->
-    <value>Что-то неожиданное пошло не так, пожалуйста, поделитесь логами.\r\nРекомендуется перезапустить SrvSurvey.</value>
+    <value>Что-то пошло не так, пожалуйста, поделитесь логами.\r\nРекомендуется перезапустить SrvSurvey.</value>
     <comment>An error message shown when something unexpected went wrong</comment>
     <source>Something unexpected went wrong, please share the logs.\r\nIt is recommended to restart SrvSurvey.</source>
   </data>

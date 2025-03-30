@@ -61,97 +61,82 @@
   </resheader>
   <!--Localizable elements are below-->
   <data name="ArrivedAt">
-    <!--Machine translated-->
-    <value>Прибыл в хоп #{0} {1}</value>
+    <value>Прибытие в точку #{0} {1}</value>
     <comment>Footer label shown when arriving at a route hop system
 {0} int, the index of this system in the route
 {1} string, the name of this system</comment>
     <source>Arrived at hop #{0} {1}</source>
   </data>
   <data name="AutoCopyButton">
-    <!--Machine translated-->
-    <value>Автокопирование в Gal-Map</value>
+    <value>Автокопирование в галактической карте</value>
     <comment>Button text to toggle if we should auto copy to the clipboard when entering the gal-map</comment>
     <source>Auto copy in Gal-Map</source>
   </data>
   <data name="ImportedSystems">
-    <!--Machine translated-->
-    <value>Импортные системы {0}</value>
+    <value>Импортировано {0} систем</value>
     <comment>Footer message shown when importing system names has completed successfully
 {0} int, count of systems imported</comment>
     <source>Imported {0} systems</source>
   </data>
   <data name="ImportingSpansh">
-    <!--Machine translated-->
-    <value>Импорт по испанскому маршруту: «{0}» ...</value>
+    <value>Импорт маршрута Spansh: '{0}' ...</value>
     <comment>Shown in window footer when importing a Spansh route from a URL
 {0} string, the id (guid) of the route to import</comment>
     <source>Importing Spansh route: '{0}' ...</source>
   </data>
   <data name="ImportNames">
-    <!--Machine translated-->
-    <value>Импорт ~{0} имен...</value>
+    <value>Импортирование ~{0} имен...</value>
     <comment>Shown in window footer when importing names from clipboard
 {0} int, count of names to import</comment>
     <source>Importing ~{0} names...</source>
   </data>
   <data name="MsgNamesClipboard">
-    <!--Machine translated-->
-    <value>Чтобы продолжить: скопируйте в буфер обмена несколько системных имен, по одному системному в строке.</value>
+    <value>Чтобы продолжить: скопируйте в буфер обмена имена систем, по одной системе в строке.</value>
     <comment>Shown in a message box popup, instructing users how to proceed when importing system names from clipboard</comment>
     <source>To proceed: copy a number of system names to the clipboard, one system per line.</source>
   </data>
   <data name="MsgSpanshClipboard">
-    <!--Machine translated-->
     <value>Чтобы продолжить: скопируйте URL любого маршрута Spansh в буфер обмена</value>
     <comment>Shown in a message box popup, instructing users how to proceed when importing from a Spansh URL</comment>
     <source>To proceed: copy the URL of any Spansh route to the clipboard</source>
   </data>
   <data name="Neutron">
-    <!--Machine translated-->
-    <value>Нейтрон</value>
+    <value>Нейтронная</value>
     <comment>Route tag/reminder that this is a neutron system</comment>
     <source>Neutron</source>
   </data>
   <data name="OpenTextFileDialogTitle">
-    <!--Machine translated-->
-    <value>Выберите файл импорта</value>
+    <value>Выберите файл для импорта</value>
     <comment>Title used on open file dialog when importing a text file</comment>
     <source>Choose import file</source>
   </data>
   <data name="Refuel">
-    <!--Machine translated-->
-    <value>Дозаправлять</value>
+    <value>Дозаправка</value>
     <comment>Route tag/reminder to refuel</comment>
     <source>Refuel</source>
   </data>
   <data name="RouteActiveButton">
-    <!--Machine translated-->
     <value>Маршрут активен</value>
     <comment>Button text to toggle if route is active</comment>
     <source>Route active</source>
   </data>
   <data name="RouteComplete">
-    <!--Machine translated-->
     <value>Маршрут завершен</value>
     <comment>Footer label when route has been complete</comment>
     <source>Route complete</source>
   </data>
   <data name="RouteNotFound">
-    <!--Machine translated-->
     <value>Маршрут не найден: {0}</value>
     <comment>Footer warning when importing a route from Spansh did not succeed
 {0} string, the id (guid) of the route</comment>
     <source>Route not found: {0}</source>
   </data>
   <data name="RouteNotStarted">
-    <!--Machine translated-->
     <value>Маршрут не начат</value>
     <comment>Footer label when route has not been started</comment>
     <source>Route not started</source>
   </data>
   <data name="RouteProgress">
-    <!--Machine translated-->
     <value>Ход прохождения маршрута: #{0} из {1}</value>
     <comment>Footer label when route is in progress
 {0} int, the current hop
@@ -159,14 +144,12 @@
     <source>Route progress: #{0} of {1}</source>
   </data>
   <data name="SpanshImportSuccess">
-    <!--Machine translated-->
-    <value>Успешно импортировано {0} хмеля</value>
+    <value>Успешно импортировано {0} перелётов</value>
     <comment>Footer message shown when importing a Spansh route succeeds
 {0} int, count of route hops</comment>
     <source>Successfully imported {0} hops</source>
   </data>
   <data name="TextFiles">
-    <!--Machine translated-->
     <value>Текстовые файлы</value>
     <comment>Description of file type in lower right corner of file open dialog</comment>
     <source>Text files</source>

@@ -557,8 +557,7 @@
     <source>Star pos:</source>
   </data>
   <data name="label4.Text">
-    <!--Update needed: RU-->
-    <value>Сферический поиск помогает осуществлять навигацию к системам, находящимся на заданном расстоянии от центральной системы.</value>
+    <value>Сферические поиски помогают осуществлять навигацию вокруг заданного расстояния от центральной системы.</value>
     <source>Spherical searches help navigating around within a given distance of a central system.</source>
   </data>
   <data name="label5.Text">
@@ -570,8 +569,7 @@
     <source>Distance:</source>
   </data>
   <data name="$this.Text">
-    <!--Update needed: RU-->
-    <value>Сферический поиск</value>
+    <value>Сферический Поиск</value>
     <source>Spherical Search</source>
   </data>
 </root>
