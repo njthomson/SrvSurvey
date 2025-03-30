@@ -124,7 +124,7 @@ namespace SrvSurvey.forms
                 .ToList();
 
             // inject the untracked project at beginning of list
-            if (this.untrackedProject != null)
+            if (this.untrackedProject != null && !list.Any(p => p.marketId != untrackedProject.marketId))
                 list.Insert(0, untrackedProject);
 
             var dic = list.ToDictionary(p => p.buildId, p => p.buildId == "" ? "(new) " + p.ToString() : p.ToString());
