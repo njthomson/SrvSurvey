@@ -61,137 +61,115 @@
   </resheader>
   <!--Localizable elements are below-->
   <data name="AlignAndRise">
-    <!--Machine translated-->
-    <value>Согласование с исходной точкой и подъем на целевую высоту: {0} м</value>
+    <value>Выровняйтесь по объекту и взлетите на целевую высоту: {0} м</value>
     <comment>Message shown when cmdr needs to rise up to a suitable altitude for aerial assistance mode
 {0} int, altitude in metres</comment>
     <source>Align with site origin and rise to target altitude: {0}m</source>
   </data>
   <data name="AlignWithButtress">
-    <!--Machine translated-->
-    <value>Выравнивание с контрфорсом</value>
+    <value>Выровняйтесь с подпоркой</value>
     <comment>Message shown when the site needs to be identified by aligning with a specific buttress</comment>
     <source>Align with buttress</source>
   </data>
   <data name="ChooseAbsent">
-    <!--Machine translated-->
-    <value>Отсутствующий</value>
+    <value>Отсутствует</value>
     <comment>Selectable option shown in a box, chosen by matching a fire-group</comment>
     <source>Absent</source>
   </data>
   <data name="ChooseEmpty">
-    <!--Machine translated-->
-    <value>Пустой</value>
+    <value>Пусто</value>
     <comment>Selectable option shown in a box, chosen by matching a fire-group</comment>
     <source>Empty</source>
   </data>
   <data name="ChoosePresent">
-    <!--Machine translated-->
-    <value>Присутствующий</value>
+    <value>Присутствует</value>
     <comment>Selectable option shown in a box, chosen by matching a fire-group</comment>
     <source>Present</source>
   </data>
   <data name="FooterActiveObeliskGroups">
-    <!--Machine translated-->
     <value>Активные группы обелисков: {0}</value>
     <comment>Footer showing which obelisks groups are present
 {0} string, list of obelisk group names eg "C, D, Q, T"</comment>
     <source>Active obelisk groups: {0}</source>
   </data>
   <data name="FooterToggleModeOnce">
-    <!--Machine translated-->
-    <value>(Переключите режим кабины один раз, чтобы установить)</value>
+    <value>(переключите режим кабины один раз, чтобы установить)</value>
     <comment>Footer hint telling cmdr how to take a measurement</comment>
     <source>(toggle cockpit mode once to set)</source>
   </data>
   <data name="FooterToggleModeTwice">
-    <!--Machine translated-->
     <value>(переключите режим кабины дважды, чтобы установить)</value>
     <comment>Footer hint telling cmdr how to take a measurement</comment>
     <source>(toggle cockpit mode twice to set)</source>
   </data>
   <data name="HeaderUnknownSiteType">
-    <!--Machine translated-->
-    <value>Тип сайта неизвестен</value>
+    <value>Тип объекта неизвестен</value>
     <comment>Header with site type is unknown</comment>
     <source>Site type unknown</source>
   </data>
   <data name="LineRamTahAcquired">
-    <!--Machine translated-->
-    <value>Получен лог</value>
+    <value>Получен журнал</value>
     <comment>Line shown when log has already been acquired for Ram Tah mission</comment>
     <source>Log has been acquired</source>
   </data>
   <data name="LineRamTahNeeded">
-    <!--Machine translated-->
-    <value>Нужен для миссии Рам Та</value>
+    <value>Нужен для миссии Рэма Та</value>
     <comment>Line shown when log is needed for Ram Tah mission</comment>
     <source>Needed for Ram Tah mission</source>
   </data>
   <data name="MatsFullOne">
-    <!--Machine translated-->
-    <value>(Коврики стража заполнены - снова переключите режим кабины, чтобы отметить отсканированное)</value>
+    <value>(Материалы стражей заполнены - снова переключите режим кабины, чтобы отметить отсканированное)</value>
     <comment>Message hint shown when cmdrs Guardian mats are full</comment>
     <source>(Guardian mats full - toggle cockpit mode again to mark scanned)</source>
   </data>
   <data name="MatsFullTwo">
-    <!--Machine translated-->
-    <value>(Коврики Стража заполнены - дважды переключите режим кабины, чтобы отметить отсканированный)</value>
+    <value>(Материалы стражей заполнены - дважды переключите режим кабины, чтобы отметить отсканированное)</value>
     <comment>Following up hint shown when cmdrs Guardian mats are full</comment>
     <source>(Guardian mats full - toggle cockpit mode twice to mark scanned)</source>
   </data>
   <data name="NearObeliskHeader">
-    <!--Machine translated-->
-    <value>Обелиск {0}:{1}</value>
+    <value>Обелиск {0}: {1}</value>
     <comment>Header shown when cmdr is near an obeslisk
 {0} string, the id name of the obelisk, eg "G12"
 {1} string, the status of the obelisk, eg "Active"</comment>
     <source>Obelisk {0}: {1}</source>
   </data>
   <data name="NoNearPoiHeader">
-    <!--Machine translated-->
-    <value>Переместитесь в пределах ~75 м, чтобы осмотреть товар</value>
+    <value>Переместитесь в предел ~75 м, чтобы проверить предмет</value>
     <comment>Header shown when cmdr is not near any POI</comment>
     <source>Move within ~75m to inspect an item</source>
   </data>
   <data name="ObeliskActive">
-    <!--Machine translated-->
-    <value>Активный</value>
+    <value>Активен</value>
     <comment>The state of an obelisk</comment>
     <source>Active</source>
   </data>
   <data name="ObeliskBroken">
-    <!--Machine translated-->
-    <value>Разбитый</value>
+    <value>Разбит</value>
     <comment>The state of an obelisk</comment>
     <source>Broken</source>
   </data>
   <data name="ObeliskInactive">
-    <!--Machine translated-->
-    <value>Неактивный</value>
+    <value>Неактивен</value>
     <comment>The state of an obelisk</comment>
     <source>Inactive</source>
   </data>
   <data name="OnApproachFooter">
-    <!--Machine translated-->
-    <value>( Не забудьте поставить 3 огневые группы на кораблях и СР )</value>
+    <value>( Не забудьте поставить 3 огневые группы на кораблях и ТРП )</value>
     <comment>Footer shown when on approach to a Guardian site</comment>
     <source>( Don't forget to set 3 fire groups in ships and SRVs )</source>
   </data>
   <data name="OnApproachHeaderRuins">
-    <!--Machine translated-->
-    <value>Приближающиеся руины Стража...</value>
+    <value>Прибытие к Руинам Стражей...</value>
     <comment>Header when approaching a Ruins</comment>
     <source>Approaching Guardian Ruins ...</source>
   </data>
   <data name="OnApproachHeaderStructure">
-    <!--Machine translated-->
-    <value>Приближающаяся структура стража ...</value>
+    <value>Прибытие к Структуре Стражей...</value>
     <comment>Header when approaching a Structure</comment>
     <source>Approaching Guardian Structure ...</source>
   </data>
   <data name="OnApproachMiddleRuins">
-    <!--Machine translated-->
     <value>Руины #{0} - {1}</value>
     <comment>Middle text when approaching a Ruins
 {0} int, the 1 based index of the site
@@ -199,7 +177,6 @@
     <source>Ruins #{0} - {1}</source>
   </data>
   <data name="OnApproachMiddleStructure">
-    <!--Machine translated-->
     <value>{0} - чертеж: {1}</value>
     <comment>Middle text when approaching a Stucture
 {0} string, the structure type name, eg: Stickhand
@@ -207,32 +184,27 @@
     <source>{0} - blue print: {1}</source>
   </data>
   <data name="OnApproachMiddleStructureNoBluePrint">
-    <!--Machine translated-->
     <value>{0} - без чертежа</value>
     <comment>Middle text when approaching a Stucture that does not provide blue prints
 {0} string, the structure type name, eg: Stickhand</comment>
     <source>{0} - no blue print</source>
   </data>
   <data name="RelicTowerFaceHint">
-    <!--Machine translated-->
     <value>Повернитесь лицом к стороне одним большим треугольником, обращенным влево.</value>
     <comment>Message hint for which side of a relic tower to measure from</comment>
     <source>Face the side with a single large left facing triangle.</source>
   </data>
   <data name="RelicTowerFootHint">
-    <!--Machine translated-->
-    <value>(переключить оружие на обновление локации «Сила»)</value>
+    <value>(переключите оружие для принудительного обновления местоположения)</value>
     <comment>Footer hint shown to remind cmdr's how to force an update when on foot</comment>
     <source>(toggle weapon to force location update)</source>
   </data>
   <data name="RelicTowerHeadingKnown">
-    <!--Machine translated-->
     <value>Записанный курс: {0}°</value>
     <comment>Message shown when relic tower heading is already known</comment>
     <source>Recorded heading: {0}°</source>
   </data>
   <data name="RelicTowerNonToolHint">
-    <!--Machine translated-->
     <value>Используйте анализатор профиля рядом с башнями реликвий для помощи в прицеливании.
 Повернитесь лицом к стороне одним большим треугольником, обращенным влево.</value>
     <comment>Message hint for which tool and side of a relic tower to use</comment>
@@ -240,39 +212,33 @@
 Face the side with a single large left facing triangle.</source>
   </data>
   <data name="RequiresPrefix">
-    <!--Machine translated-->
     <value>Требует:</value>
     <comment>Line header telling cmdr what items are required to scan this obelisk for Ram Tah mission</comment>
     <source>Requires:</source>
   </data>
   <data name="RequiresSuffix">
-    <!--Machine translated-->
     <value>для {0}</value>
     <comment>Line suffix telling cmdr what they get if they scan this obelisk during Ram Tah mission
 {0} string, name of some log</comment>
     <source>for {0}</source>
   </data>
   <data name="ToggleLightsUpdateHint">
-    <!--Machine translated-->
-    <value>(переключите индикаторы для принудительного обновления)</value>
+    <value>(переключите свет для принудительного обновления)</value>
     <comment>Footer hint shown to remind cmdr's how to force an update</comment>
     <source>(toggle lights to force update)</source>
   </data>
   <data name="ToggleShieldsForRelicTower">
-    <!--Machine translated-->
-    <value>Переключите щиты, чтобы задать направление к Реликтовой башне.</value>
+    <value>Переключите щиты, чтобы задать направление к башне с реликвией.</value>
     <comment>Message shown to help taking relic tower headings</comment>
     <source>Toggle shields to set Relic Tower heading.</source>
   </data>
   <data name="YouHaveNotScanned">
-    <!--Machine translated-->
     <value>Вы не сканировали этот обелиск</value>
     <comment>Footer hint telling cmdr if they have scanned an obelisk</comment>
     <source>You have not scanned this obelisk</source>
   </data>
   <data name="YouHaveScanned">
-    <!--Machine translated-->
-    <value>Вы отсканировали этот обелиск</value>
+    <value>Вы сканировали этот обелиск</value>
     <comment>Footer hint telling cmdr if they have scanned an obelisk</comment>
     <source>You have scanned this obelisk</source>
   </data>

@@ -71,7 +71,7 @@
     <source>Unscanned Ram Tah logs: {0}</source>
   </data>
   <data name="NoNewLogs">
-    <value>Отсутствуют новые логи</value>
+    <value>Отсутствуют новые журналы</value>
     <comment>Message shown when there are no new logs to acquire</comment>
     <source>No new logs available</source>
   </data>

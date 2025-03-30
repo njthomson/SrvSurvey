@@ -61,14 +61,12 @@
   </resheader>
   <!--Localizable elements are below-->
   <data name="Alpha">
-    <!--Machine translated-->
     <value>Альфа</value>
     <comment>Guardian Ruins type</comment>
     <source>Alpha</source>
   </data>
   <data name="Beta">
-    <!--Machine translated-->
-    <value>Бета-версия</value>
+    <value>Бета</value>
     <comment>Guardian Ruins type</comment>
     <source>Beta</source>
   </data>
@@ -88,7 +86,6 @@
     <source>Weapon</source>
   </data>
   <data name="Gamma">
-    <!--Machine translated-->
     <value>Гамма</value>
     <comment>Guardian Ruins type</comment>
     <source>Gamma</source>
@@ -179,14 +176,12 @@
     <source>Technology</source>
   </data>
   <data name="POIType_Component">
-    <!--Machine translated-->
-    <value>Компонентная башня</value>
+    <value>Башня с хрупкими панелями</value>
     <comment>Those towers with 3 blastable panels</comment>
     <source>Component tower</source>
   </data>
   <data name="POIType_Pylon">
-    <!--Machine translated-->
-    <value>Пилон</value>
+    <value>Электромачта</value>
     <comment>The things we shoot to charge up at Guardian structures</comment>
     <source>Pylon</source>
   </data>
@@ -196,32 +191,27 @@
     <source>Ruins</source>
   </data>
   <data name="SitePoiStatus_absent">
-    <!--Machine translated-->
-    <value>отсутствующий</value>
+    <value>отсутствует</value>
     <comment>Display name for PoiSiteStatus enum</comment>
     <source>absent</source>
   </data>
   <data name="SitePoiStatus_empty">
-    <!--Machine translated-->
-    <value>пустой</value>
+    <value>пусто</value>
     <comment>Display name for PoiSiteStatus enum</comment>
     <source>empty</source>
   </data>
   <data name="SitePoiStatus_present">
-    <!--Machine translated-->
-    <value>присутствующий</value>
+    <value>присутствует</value>
     <comment>Display name for PoiSiteStatus enum</comment>
     <source>present</source>
   </data>
   <data name="SitePoiStatus_unknown">
-    <!--Machine translated-->
-    <value>неизвестный</value>
+    <value>неизвестно</value>
     <comment>Display name for PoiSiteStatus enum</comment>
     <source>unknown</source>
   </data>
   <data name="StatusUnknown">
-    <!--Machine translated-->
-    <value>неизвестный</value>
+    <value>неизвестно</value>
     <comment>The status of some site POI</comment>
     <source>unknown</source>
   </data>
