@@ -2561,10 +2561,18 @@ namespace SrvSurvey.game
                         factionName = entry.StationFaction.Name,
                     }).justDoIt();
                 }
+
+                // fetch fresh data if this is a market we are interested in
+                var match = this.cmdrColony.getProject(entry.SystemAddress, entry.MarketID);
+                if (match != null)
+                {
+                    Game.log($"Docked at a project market: {entry.MarketID} => buildId: {match.buildId}");
+                    this.cmdrColony.fetchLatest(match.buildId).justDoIt();
+                }
             }
 
             // stop here if we're not at an Odyssey settlement
-            if (entry.StationType != StationType.OnFootSettlement || this.systemData == null) return;
+            if (entry.StationType != StationType.OnFootSettlement || this.systemData == null || entry.StationServices?.Contains("colonisationcontribution") == true) return;
 
             // new ...
             if (this.systemStation == null || this.systemStation.marketId != entry.MarketID)

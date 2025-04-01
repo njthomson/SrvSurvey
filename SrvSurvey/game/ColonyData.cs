@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.plotters;
-using static SrvSurvey.plotters.PlotVerticalStripe;
 
 namespace SrvSurvey.game
 {
@@ -27,7 +26,7 @@ namespace SrvSurvey.game
             return data;
         }
 
-        public async Task fetchLatest()
+        public async Task fetchLatest(string? buildId = null)
         {
             var form = Program.getPlotter<PlotBuildCommodities>();
 
@@ -38,10 +37,23 @@ namespace SrvSurvey.game
                 form.Invalidate();
             }
 
-            var summary = await Game.colony.getCmdrSummary(this.cmdr);
-            this.primaryBuildId = summary.primaryBuildId;
-            // ACTIVE projects only
-            this.projects = summary.projects.Where(p => !p.complete).ToList();
+            if (buildId == null)
+            {
+                // fetch all projects
+                var summary = await Game.colony.getCmdrSummary(this.cmdr);
+                this.primaryBuildId = summary.primaryBuildId;
+
+                // keep ACTIVE projects only
+                this.projects = summary.projects.Where(p => !p.complete).ToList();
+            }
+            else
+            {
+                // fetch just the given project
+                var freshProject = await Game.colony.getProject(buildId);
+                var idx = this.projects.FindIndex(p => p.buildId == buildId);
+                if (idx >= 0)
+                    this.projects[idx] = freshProject;
+            }
 
             // extract all marketId's from linked FCs
             this.allLinkedFCs.Clear();
@@ -182,10 +194,46 @@ namespace SrvSurvey.game
             }
         }
 
+        /* TODO: coming soon ...
+        public Dictionary<string, int> sumProjectLinkedFC(Project proj)
+        {
+            var cargo = new Dictionary<string, int>();
+
+            foreach(var fc in this.allLinkedFCs.Values)
+            {
+                // skip unrelated FCs
+                if (proj.linkedFC.Any(_ => _.marketId == fc.marketId) == false) continue;
+
+            }
+
+            return cargo;
+        }
+        */
+
         public class Needs
         {
             public Dictionary<string, int> commodities = new();
             public HashSet<string> assigned = new();
+        }
+
+        public static Dictionary<string, string[]> mapCargoType = new Dictionary<string, string[]>()
+        {
+            { "Chemicals", new string[] { "liquidoxygen","pesticides","surfacestabilisers","water" } },
+            { "Consumer Items", new string[] { "evacuationshelter","survivalequipment","beer","liquor","wine" } },
+            { "Foods", new string[] { "animalmeat","coffee","fish","foodcartridges","fruitandvegetables","grain","tea" } },
+            { "Industrial Materials", new string[] { "ceramiccomposites","cmmcomposite","insulatingmembrane","polymers","semiconductors","superconductors" } },
+            { "Machinery", new string[] { "buildingfabricators","cropharvesters","emergencypowercells","geologicalequipment","microbialfurnaces","mineralextractors","powergenerators","thermalcoolingunits","waterpurifiers" } },
+            { "Medicines", new string[] { "agriculturalmedicines","basicmedicines","combatstabilisers" } },
+            { "Metals", new string[] { "aluminium","copper","steel","titanium" } },
+            { "Technology", new string[] { "advancedcatalysers","bioreducinglichen","computercomponents","hazardousenvironmentsuits","landenrichmentsystems","medicaldiagnosticequipment","microcontrollers","muonimager","resonatingseparators","robotics","structuralregulators" } },
+            { "Textiles", new string[] { "militarygradefabrics" } },
+            { "Waste", new string[] { "biowaste" } },
+            { "Weapons", new string[] { "battleweapons","nonlethalweapons","reactivearmour" } },
+        };
+
+        public static string getTypeForCargo(string name)
+        {
+            return mapCargoType.Keys.FirstOrDefault(key=> mapCargoType[key].Contains(name))!;
         }
     }
 }

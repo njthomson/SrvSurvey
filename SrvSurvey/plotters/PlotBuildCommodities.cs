@@ -60,12 +60,23 @@ namespace SrvSurvey.plotters
             var relevantProjects = colonyData.projects;
             var headerText = $"Commodities for {relevantProjects.Count} projects:";
             var projectNames = new HashSet<string>();
+            var dockedAtConstructionSite = game.lastDocked?.StationServices?.Contains("colonisationcontribution") == true;
 
             // if we are in a system to deliver supplies - show only those
             var effectiveAddress = -1L;
             var effectiveMarketId = -1L;
 
-            if (!string.IsNullOrWhiteSpace(colonyData.primaryBuildId))
+            if (game.lastDocked != null && dockedAtConstructionSite)
+            {
+                var proj = game.cmdrColony.getProject(game.lastDocked.SystemAddress, game.lastDocked.MarketID);
+                if (proj != null)
+                {
+                    effectiveAddress = proj.systemAddress;
+                    effectiveMarketId = proj.marketId;
+                    headerText = $"► {proj.buildName} ({proj.buildType})";
+                }
+            }
+            else if (!string.IsNullOrWhiteSpace(colonyData.primaryBuildId))
             {
                 var primaryProject = colonyData.getProject(colonyData.primaryBuildId);
                 if (primaryProject != null)
@@ -139,7 +150,47 @@ namespace SrvSurvey.plotters
                 dty += ten;
             }
 
-            var hasPin = drawNeeds(needs);
+            // prep 3 columns: first zero width (that will grow), last 2 large enough for a big number
+            var hasPin = needs.assigned.Count > 0;
+            var shipHasAnyCargo = game.cargoFile.Inventory.Count > 0;
+            var rightIndent = shipHasAnyCargo ? szBigNumbers.Width : 0;
+            var pinWidth = hasPin ? oneSix : 0;
+            var columns = new Dictionary<int, float>() {
+                { 0, 0 },
+                { 1, rightIndent },
+                { 2, rightIndent },
+            };
+
+            // render list headers: <commodity name>, <need>, <have>
+            var xNeed = this.Width - eight - rightIndent - pinWidth;
+            drawTextAt2(xNeed, "Need", C.orangeDark, null, true).widestColumn(1, columns);
+            if (shipHasAnyCargo) drawTextAt2(this.Width - eight, "Have", C.orangeDark, null, true).widestColumn(2, columns);
+            drawTextAt2(ten, "Commodity", C.orangeDark, null).widestColumn(0, columns);
+            newLine(true);
+
+            // draw cargo needs depending where we are
+            if (dockedAtConstructionSite)
+                drawNeedsAlpha(needs, columns, rightIndent, xNeed);
+            else
+                drawNeedsGrouped(needs, columns, rightIndent, xNeed);
+
+            // grow size of this plotter?
+            var formWidthNeeded = columns.Values.Sum() + pinWidth + ten;
+            if (this.formSize.Width < formWidthNeeded)
+                this.formSize.Width = formWidthNeeded;
+
+            // show how many runs remaining
+            dty += ten;
+
+            var sumNeed = needs.commodities.Values.Sum();
+            drawTextAt2(ten, $"► {sumNeed:N0} remaining");
+            newLine(true);
+            if (game.currentShip.cargoCapacity > 0)
+            {
+                var tripsNeeded = Math.Ceiling(sumNeed / (double)game.currentShip.cargoCapacity);
+                drawTextAt2(ten, $"► {tripsNeeded} trips in this ship");
+                newLine(true);
+            }
 
             if (pendingDiff != null)
             {
@@ -158,49 +209,28 @@ namespace SrvSurvey.plotters
             this.formAdjustSize(+ten, +ten);
         }
 
-        private bool drawNeeds(ColonyData.Needs needs)
+        private void drawNeedsAlpha(ColonyData.Needs needs, Dictionary<int, float> columns, float rightIndent, float xNeed)
         {
-            var hasLocalCargo = game.cargoFile.Inventory.Count > 0;
-            var needIndent = hasLocalCargo ? szBigNumbers.Width : 0;
-
-            // prep 3 columns of zero width
-            var columns = new Dictionary<int, float>() { { 0, 0 }, { 1, needIndent }, { 2, needIndent } };
-
-            // render list headers: need, have, commodity
-            drawTextAt2(this.Width - eight - needIndent, "Need", C.orangeDark, null, true).widestColumn(1, columns);
-            if (hasLocalCargo)
-                drawTextAt2(this.Width - eight, "Have", C.orangeDark, null, true).widestColumn(2, columns);
-
-            drawTextAt2(ten, "Commodity", C.orangeDark, null).widestColumn(0, columns);
-            newLine(true);
-
-            var localMarketItems = ColonyData.isConstructionSite(game.lastDocked)
-                ? new()
-                : game.marketFile.Items
-                    .Where(i => i.Stock > 0)
-                    .Select(_ => _.Name.Substring(1).Replace("_name;", ""))
-                    .ToHashSet();
+            // alpha sort commodity names if at construction site
+            var commodityNames = needs.commodities.Keys.Order();
 
             var flip = false;
-            var hasPin = false;
-            var sumNeed = 0;
-            foreach (var (name, count) in needs.commodities)
+            foreach (var name in commodityNames)
             {
+                var needCount = needs.commodities[name];
+                if (needCount == 0) continue;
+
+                var needTxt = needCount.ToString("N0");
+                var nameTxt = name;
+
                 if (flip) g.FillRectangle(brushBackgroundStripe, four, dty - one, this.Width - eight, szBigNumbers.Height + one);
+                flip = !flip;
+
                 var col = C.orange;
                 var ff = GameColors.Fonts.gothic_10;
 
-                sumNeed += count;
-                var nameTxt = name;
-                var cargoCount = hasLocalCargo ? game.cargoFile.getCount(name) : 0;
-                var inHold = game.cargoFile.Inventory.Find(i => i.Name == name) != null;
-                var needTxt = count.ToString("N0");
+                var cargoCount = game.cargoFile.getCount(name);
 
-                if (needs.assigned.Contains(name))
-                {
-                    nameTxt = name + " 📌";
-                    hasPin = true;
-                }
                 if (pendingDiff?.ContainsKey(name) == true)
                 {
                     // highlight what we just supplied
@@ -209,73 +239,164 @@ namespace SrvSurvey.plotters
                     nameTxt = "► " + name;
                     needTxt = "...";
                 }
-                else if (inHold)
+                else if (cargoCount > 0)
                 {
                     // highlight things in cargo hold
                     col = C.cyan;
                 }
-                if (count == 0)
+
+                /*if (needCount == 0)
                 {
                     col = C.orangeDark;
                     nameTxt += " ✔️";
                 }
-                else if (cargoCount > count)
+                else*/
+                if (cargoCount > needCount)
                 {
                     // warn if we have more than needed
-                    col = C.red;
+                    col = C.green;
                     nameTxt += " ✋";
                 }
-                else if (cargoCount == count)
+                else if (cargoCount == needCount)
                 {
                     col = C.green;
                     nameTxt += " ✔️";
                 }
-                else if (game.lastDocked?.timestamp < game.marketFile.timestamp && localMarketItems.Count > 0 && !localMarketItems.Contains(name))
-                {
-                    // make needed items missing in the current market dark red
-                    col = C.redDark;
-                    nameTxt += " ❌";
-                }
 
                 // render needed count
-                drawTextAt2(this.Width - eight - needIndent, needTxt, inHold ? C.cyan : col, ff, true)
+                var inHold = cargoCount > 0;
+                drawTextAt2(xNeed, needTxt, col, ff, true)
                     .widestColumn(1, columns);
 
                 // render cargo count
                 if (cargoCount > 0)
                 {
-                    drawTextAt2(this.Width - eight, cargoCount.ToString("N0"), inHold ? C.cyan : col, ff, true)
+                    drawTextAt2(this.Width - eight, cargoCount.ToString("N0"), col, ff, true)
                     .widestColumn(2, columns);
                 }
+
+                // warn if we have more than needed
+                if (cargoCount > needCount) col = C.red;
 
                 // render the name
                 var sz2 = drawTextAt2(ten, nameTxt, col, ff)
                     .widestColumn(0, columns);
 
-                if (count == 0 && false)
-                    strikeThrough(dtx + four, dty + one + Util.centerIn(szBigNumbers.Height, 0), -sz2.Width - six, true);
+                // draw assigned pin behind the need number
+                if (needs.assigned.Contains(name))
+                    drawTextAt2(xNeed, "📌", col, ff);
+
+                dtx = this.Width - 20;
 
                 newLine(true);
-                flip = !flip;
             }
+        }
 
-            var formWidthNeeded = columns.Values.Sum();
-            if (this.formSize.Width < formWidthNeeded)
-                this.formSize.Width = formWidthNeeded;
+        private void drawNeedsGrouped(ColonyData.Needs needs, Dictionary<int, float> columns, float rightIndent, float xNeed)
+        {
+            var localMarketItems = game.marketFile.Items
+                .Where(i => i.Stock > 0)
+                .Select(_ => _.Name.Substring(1).Replace("_name;", ""))
+                .ToHashSet();
 
-            // show how many runs remaining
-            dty += ten;
-
-            drawTextAt2(ten, $"► {sumNeed:N0} remaining");
-            newLine(true);
-            if (game.currentShip.cargoCapacity > 0)
+            foreach (var cargoType in ColonyData.mapCargoType.Keys)
             {
-                var foo = Math.Ceiling(sumNeed / (double)game.currentShip.cargoCapacity);
-                drawTextAt2(ten, $"► {foo} trips in this ship");
-                newLine(true);
-            }
+                // skip types with nothing needed
+                var sum = ColonyData.mapCargoType[cargoType].Sum(name => needs.commodities.GetValueOrDefault(name));
+                if (sum == 0) continue;
 
-            return hasPin;
+                // render the type name - with a line to the right
+                var sz1 = drawTextAt2(ten, cargoType, C.orangeDark, GameColors.Fonts.gothic_10);
+                var lx = (int)dtx + eight;
+                var ly = (int)dty + one + Util.centerIn(szBigNumbers.Height, 2);
+                g.DrawLine(C.Pens.orangeDark2, lx, ly, this.Width - four, ly);
+                newLine(true);
+
+                // then each commodity in the type
+                var flip = true;
+                foreach (var name in ColonyData.mapCargoType[cargoType])
+                {
+                    // skip anything not needed
+                    var needCount = needs.commodities.GetValueOrDefault(name);
+                    if (needCount == 0) continue;
+                    //if (!needs.commodities.ContainsKey(name)) continue;
+
+                    if (flip) g.FillRectangle(brushBackgroundStripe, four, dty - one, this.Width - eight, szBigNumbers.Height + one);
+                    flip = !flip;
+
+                    var needTxt = needCount.ToString("N0");
+                    var nameTxt = name;
+
+                    var cargoCount = game.cargoFile.getCount(name);
+
+                    var col = C.orange;
+                    var ff = GameColors.Fonts.gothic_10;
+
+
+                    if (pendingDiff?.ContainsKey(name) == true)
+                    {
+                        // highlight what we just supplied
+                        ff = GameColors.Fonts.gothic_10B;
+                        col = C.cyan;
+                        nameTxt = "► " + name;
+                        needTxt = "...";
+                    }
+                    else if (cargoCount > 0)
+                    {
+                        // highlight things in cargo hold
+                        col = C.cyan;
+                    }
+
+                    /*if (needCount == 0)
+                    {
+                        col = C.orangeDark;
+                        nameTxt += " ✔️";
+                    }
+                    else*/
+                    if (cargoCount > needCount)
+                    {
+                        // warn if we have more than needed
+                        col = C.green;
+                        nameTxt += " ✋";
+                    }
+                    else if (cargoCount == needCount)
+                    {
+                        col = C.green;
+                        nameTxt += " ✔️";
+                    }
+                    else if (game.lastDocked?.timestamp < game.marketFile.timestamp && localMarketItems.Count > 0 && !localMarketItems.Contains(name))
+                    {
+                        // make needed items missing in the current market red
+                        if (cargoCount == 0) col = C.red;
+                        nameTxt += " ❌";
+                    }
+
+                    // render needed count
+                    var inHold = cargoCount > 0;
+                    drawTextAt2(xNeed, needTxt, col, ff, true)
+                        .widestColumn(1, columns);
+
+                    // render cargo count
+                    if (cargoCount > 0)
+                    {
+                        drawTextAt2(this.Width - eight, cargoCount.ToString("N0"), col, ff, true)
+                        .widestColumn(2, columns);
+                    }
+
+                    // draw assigned pin behind the need number
+                    if (needs.assigned.Contains(name))
+                        drawTextAt2(xNeed, "📌", col, ff);
+
+                    // warn if we have more than needed
+                    if (cargoCount > needCount) col = C.red;
+
+                    // render the name
+                    var sz2 = drawTextAt2(twenty, nameTxt, col, ff)
+                    .widestColumn(0, columns);
+
+                    newLine(true);
+                }
+            }
         }
 
     }

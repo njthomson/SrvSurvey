@@ -163,6 +163,16 @@ namespace SrvSurvey.game
             return obj;
         }
 
+        public async Task<Project> getProject(string buildId)
+        {
+            Game.log($"Colony.getProject: {buildId}");
+
+            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/project/{buildId}");
+            var json = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<Project>(json)!;
+            return obj;
+        }
+
         public async Task<List<Project>> getCmdrProjects(string cmdr)
         {
             Game.log($"Colony.getCmdrProjects: {cmdr}");
