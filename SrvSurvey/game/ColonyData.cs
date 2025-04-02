@@ -107,6 +107,14 @@ namespace SrvSurvey.game
             return projects?.FirstOrDefault(p => p.systemAddress == id64 && p.marketId == marketId);
         }
 
+        public string? getBuildId(Docked? entry)
+        {
+            if (entry == null)
+                return null;
+            else
+                return projects?.FirstOrDefault(p => p.systemAddress == entry.SystemAddress && p.marketId == entry.MarketID)?.buildId;
+        }
+
         public string? getBuildId(long id64, long marketId)
         {
             return projects?.FirstOrDefault(p => p.systemAddress == id64 && p.marketId == marketId)?.buildId;

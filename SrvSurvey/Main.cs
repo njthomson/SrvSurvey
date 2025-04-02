@@ -86,8 +86,7 @@ namespace SrvSurvey
                     menuJourney.Items.RemoveAt(1);
             }
 
-            if (!Game.settings.buildProjects_TEST)
-                menuBuildProjects.Visible = false;
+            btnColonize.Enabled = Game.settings.buildProjects_TEST;
 
             Util.applyTheme(this);
         }
@@ -274,6 +273,7 @@ namespace SrvSurvey
 
                         foreach (Control ctrl in this.Controls) ctrl.Enabled = true;
                         btnCodexShow.Enabled = FormShowCodex.allow;
+                        btnColonize.Enabled = Game.settings.buildProjects_TEST;
 
                         this.timer1.Start();
 
@@ -339,6 +339,7 @@ namespace SrvSurvey
                 return;
             }
 
+            this.updateColonizationMenuItems();
             this.updateCommanderTexts();
             this.updateBioTexts();
             this.updateTrackTargetTexts();
@@ -346,8 +347,6 @@ namespace SrvSurvey
             this.updateSphereLimit();
 
             groupCodex.Invalidate();
-
-            menuBuildProjects.Enabled = Game.ready;
 
             // enable button only if this system has some bio signals
             btnPredictions.Enabled = Game.activeGame?.systemData?.bioSignalsTotal > 0;
@@ -452,7 +451,8 @@ namespace SrvSurvey
             var txt = game?.cmdrCodex?.completionProgress > 0
                 ? $"{Math.Floor(game.cmdrCodex.completionProgress * 100)}%" // truncate not round
                 : "?";
-            var r = new Rectangle(scaleBy(4), scaleBy(8), groupCodex.Width, scaleBy(40));
+            var r = new Rectangle(scaleBy(4), scaleBy(12), groupCodex.Width, scaleBy(40));
+
             TextRenderer.DrawText(e.Graphics, txt, lblBig.Font, r, Color.Black);
         }
 
@@ -594,6 +594,31 @@ namespace SrvSurvey
             }
         }
 
+        private void updateColonizationMenuItems()
+        {
+            if (!Game.settings.buildProjects_TEST) return;
+
+            menuRefreshProjects.Enabled = game?.cmdrColony != null;
+
+            var showMyProjects = (Game.settings.preferredCommander ?? Game.settings.lastCommander) != null;
+            menuMyProjects.Visible = showMyProjects;
+
+            // use where we are docked or the general primary
+            var localBuildId = game?.cmdrColony?.getBuildId(game.lastDocked);
+            var activeBuildId = localBuildId ?? game?.cmdrColony?.primaryBuildId;
+            var showCurrentProject = localBuildId != null && !string.IsNullOrEmpty(activeBuildId);
+            menuCurrentProject.Visible = showCurrentProject;
+
+            menuColonizeLine1.Visible = showCurrentProject || showMyProjects;
+
+            var showNewProject = localBuildId == null && game?.cmdrColony != null && ColonyData.isConstructionSite(game?.lastDocked);
+            menuNewProject.Visible = showNewProject;
+            menuColonizeLine2.Visible = showNewProject;
+
+            // highlight the outer button if we are docked
+            btnColonize.BackColor = localBuildId != null || showNewProject ? C.cyan : this.BackColor;
+        }
+
         private void updateCommanderTexts()
         {
             var gameIsActive = game != null && Elite.isGameRunning && game.Commander != null;
@@ -660,7 +685,7 @@ namespace SrvSurvey
             // exploration stats
             if (game == null)
             {
-                menuResetOldTrip.Enabled = false;
+                menuSetLatLong.Enabled = false;
                 txtExplorationValue.Text = "";
                 txtJumps.Text = "";
                 txtDistance.Text = "";
@@ -668,7 +693,7 @@ namespace SrvSurvey
             }
             else
             {
-                menuResetOldTrip.Enabled = true;
+                menuSetLatLong.Enabled = true;
                 txtExplorationValue.Text = Util.credits(game.cmdr.explRewards, true);
                 txtJumps.Text = game.cmdr.countJumps.ToString("N0");
                 txtDistance.Text = game.cmdr.distanceTravelled.ToString("N1") + " ly";
@@ -812,8 +837,8 @@ namespace SrvSurvey
         {
             if (game == null || game.atMainMenu || !Elite.isGameRunning || !game.initialized)
             {
-                lblGuardianCount.Text = "";
-                txtGuardianSite.Text = "";
+                //lblGuardianCount.Text = "";
+                //txtGuardianSite.Text = "";
                 Program.closePlotter<PlotGuardians>();
                 Program.closePlotter<PlotGuardianStatus>();
                 Program.closePlotter<PlotRamTah>();
@@ -823,8 +848,8 @@ namespace SrvSurvey
             }
             else if (game.systemSite == null || game.systemBody == null || game.systemBody.settlements?.Count == 0)
             {
-                lblGuardianCount.Text = game?.systemBody?.settlements?.Count.ToString() ?? "0";
-                txtGuardianSite.Text = "";
+                //lblGuardianCount.Text = game?.systemBody?.settlements?.Count.ToString() ?? "0";
+                //txtGuardianSite.Text = "";
                 Program.closePlotter<PlotGuardians>();
                 Program.closePlotter<PlotGuardianStatus>();
                 Program.closePlotter<PlotRamTah>();
@@ -833,13 +858,13 @@ namespace SrvSurvey
             }
             else if (Game.settings.enableGuardianSites)
             {
-                lblGuardianCount.Text = game.systemBody.settlements?.Count.ToString();
+                //lblGuardianCount.Text = game.systemBody.settlements?.Count.ToString();
                 if (this.game.systemSite != null)
                 {
-                    if (this.game.systemSite.isRuins)
-                        txtGuardianSite.Text = $"Ruins #{this.game.systemSite.index} - {this.game.systemSite.type}, {this.game.systemSite.siteHeading}°";
-                    else
-                        txtGuardianSite.Text = $"{this.game.systemSite.type}, {this.game.systemSite.siteHeading}°";
+                    //if (this.game.systemSite.isRuins)
+                    //    txtGuardianSite.Text = $"Ruins #{this.game.systemSite.index} - {this.game.systemSite.type}, {this.game.systemSite.siteHeading}°";
+                    //else
+                    //    txtGuardianSite.Text = $"{this.game.systemSite.type}, {this.game.systemSite.siteHeading}°";
 
                     if (PlotGuardians.allowPlotter)
                     {
@@ -1851,6 +1876,43 @@ namespace SrvSurvey
         {
             if (game?.cmdrColony != null)
                 BaseForm.show<FormBuildNew>();
+        }
+
+        private void menuMyProjects_Click(object sender, EventArgs e)
+        {
+            var cmdr = Game.settings.preferredCommander ?? Game.settings.lastCommander;
+            Util.openLink($"{ColonyNet.uxUri}/#cmdr={cmdr}");
+        }
+
+        private void menuCurrentProject_Click(object sender, EventArgs e)
+        {
+            // use where we are docked or the general primary
+            var localBuildId = game?.cmdrColony.getBuildId(game.lastDocked);
+            var activeBuildId = localBuildId ?? game?.cmdrColony?.primaryBuildId;
+
+            if (!string.IsNullOrEmpty(activeBuildId))
+                Util.openLink($"{ColonyNet.uxUri}/#build={activeBuildId}");
+        }
+
+        private void menuNewProject_Click(object sender, EventArgs e)
+        {
+            if (game?.cmdrColony != null)
+                BaseForm.show<FormNewProject>();
+        }
+
+        private void menuRefreshProjects_Click(object sender, EventArgs e)
+        {
+            if (game?.cmdrColony == null) return;
+
+            btnColonize.BackColor = this.BackColor;
+            btnColonize.Enabled = false;
+            Application.DoEvents();
+
+            game.cmdrColony.fetchLatest().continueOnMain(this, () =>
+            {
+                btnColonize.Enabled = true;
+                this.updateColonizationMenuItems();
+            });
         }
 
         private void btnRamTah_Click(object sender, EventArgs e)

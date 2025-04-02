@@ -68,18 +68,8 @@ namespace SrvSurvey
             btnSettings = new Button();
             linkLabel1 = new LinkLabel();
             lblFullScreen = new Label();
-            groupBox4 = new GroupBox();
-            btnGuardianThings = new Button();
-            btnRuins = new Button();
-            btnRuinsMap = new Button();
-            btnRuinsOrigin = new Button();
-            txtGuardianSite = new TextBox();
-            lblGuardianCount = new Label();
-            label5 = new Label();
             lblNotInstalled = new LinkLabel();
-            btnSphereLimit = new Button();
             linkLabel2 = new LinkLabel();
-            btnRamTah = new Button();
             checkTempHide = new CheckBox();
             groupBox5 = new GroupBox();
             txtExplorationValue = new TextBox();
@@ -96,25 +86,43 @@ namespace SrvSurvey
             menuSearchTools = new ButtonContextMenuStrip(components);
             menuSpherical = new ToolStripMenuItem();
             menuBoxel = new ToolStripMenuItem();
-            menuBuildProjects = new ToolStripMenuItem();
+            btnSearch = new FlatButton();
             lblBig = new Label();
             comboDev = new ComboBox();
             menuJourney = new ButtonContextMenuStrip(components);
-            menuResetOldTrip = new ToolStripMenuItem();
+            menuSetLatLong = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
             menuJourneyBegin = new ToolStripMenuItem();
             menuJourneyNotes = new ToolStripMenuItem();
             menuJourneyReview = new ToolStripMenuItem();
             toolStripSeparator2 = new ToolStripSeparator();
             menuFollowRoute = new ToolStripMenuItem();
+            btnTravel = new FlatButton();
+            btnColonize = new FlatButton();
+            btnGuardian = new FlatButton();
+            menuColonize = new ButtonContextMenuStrip(components);
+            menuRefreshProjects = new ToolStripMenuItem();
+            menuColonizeLine1 = new ToolStripSeparator();
+            menuMyProjects = new ToolStripMenuItem();
+            menuCurrentProject = new ToolStripMenuItem();
+            menuColonizeLine2 = new ToolStripSeparator();
+            menuNewProject = new ToolStripMenuItem();
+            menuGuardians = new ButtonContextMenuStrip(components);
+            btnGuardianThings = new ToolStripMenuItem();
+            btnRuins = new ToolStripMenuItem();
+            btnRamTah = new ToolStripMenuItem();
+            toolStripSeparator5 = new ToolStripSeparator();
+            btnRuinsMap = new ToolStripMenuItem();
+            btnRuinsOrigin = new ToolStripMenuItem();
             groupBox1.SuspendLayout();
             groupCmdr.SuspendLayout();
             groupBox3.SuspendLayout();
-            groupBox4.SuspendLayout();
             groupBox5.SuspendLayout();
             groupCodex.SuspendLayout();
             menuSearchTools.SuspendLayout();
             menuJourney.SuspendLayout();
+            menuColonize.SuspendLayout();
+            menuGuardians.SuspendLayout();
             SuspendLayout();
             // 
             // btnGroundTarget
@@ -134,12 +142,13 @@ namespace SrvSurvey
             // 
             // btnQuit2
             // 
+            btnQuit2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnQuit2.BackColor = SystemColors.ControlDark;
             btnQuit2.DialogResult = DialogResult.Cancel;
             btnQuit2.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnQuit2.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnQuit2.FlatStyle = FlatStyle.Flat;
-            btnQuit2.Location = new Point(350, 593);
+            btnQuit2.Location = new Point(350, 513);
             btnQuit2.Name = "btnQuit2";
             btnQuit2.Size = new Size(75, 23);
             btnQuit2.TabIndex = 16;
@@ -181,12 +190,13 @@ namespace SrvSurvey
             groupBox1.Controls.Add(btnClearTarget);
             groupBox1.Controls.Add(btnGroundTarget);
             groupBox1.Controls.Add(txtTargetLatLong);
-            groupBox1.Location = new Point(105, 433);
+            groupBox1.Location = new Point(430, 342);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(214, 78);
             groupBox1.TabIndex = 7;
             groupBox1.TabStop = false;
             groupBox1.Text = "Target lat/Long:";
+            groupBox1.Visible = false;
             // 
             // btnPasteLatLong
             // 
@@ -451,13 +461,14 @@ namespace SrvSurvey
             // 
             // btnCodexShow
             // 
+            btnCodexShow.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnCodexShow.BackColor = SystemColors.ControlDark;
             btnCodexShow.Enabled = false;
             btnCodexShow.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnCodexShow.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnCodexShow.FlatStyle = FlatStyle.Flat;
             btnCodexShow.Image = (Image)resources.GetObject("btnCodexShow.Image");
-            btnCodexShow.Location = new Point(379, 517);
+            btnCodexShow.Location = new Point(379, 437);
             btnCodexShow.Name = "btnCodexShow";
             btnCodexShow.Size = new Size(46, 36);
             btnCodexShow.TabIndex = 12;
@@ -471,12 +482,13 @@ namespace SrvSurvey
             // 
             // btnLogs
             // 
+            btnLogs.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnLogs.BackColor = SystemColors.ControlDark;
             btnLogs.DialogResult = DialogResult.Cancel;
             btnLogs.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnLogs.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnLogs.FlatStyle = FlatStyle.Flat;
-            btnLogs.Location = new Point(93, 593);
+            btnLogs.Location = new Point(93, 513);
             btnLogs.Name = "btnLogs";
             btnLogs.Size = new Size(75, 23);
             btnLogs.TabIndex = 14;
@@ -486,12 +498,13 @@ namespace SrvSurvey
             // 
             // btnSettings
             // 
+            btnSettings.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSettings.BackColor = SystemColors.ControlDark;
             btnSettings.DialogResult = DialogResult.Cancel;
             btnSettings.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnSettings.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnSettings.FlatStyle = FlatStyle.Flat;
-            btnSettings.Location = new Point(12, 593);
+            btnSettings.Location = new Point(12, 513);
             btnSettings.Name = "btnSettings";
             btnSettings.Size = new Size(75, 23);
             btnSettings.TabIndex = 13;
@@ -501,9 +514,10 @@ namespace SrvSurvey
             // 
             // linkLabel1
             // 
+            linkLabel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             linkLabel1.Font = new Font("Lucida Sans Typewriter", 9F);
             linkLabel1.LinkArea = new LinkArea(13, 12);
-            linkLabel1.Location = new Point(12, 541);
+            linkLabel1.Location = new Point(12, 461);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(415, 18);
             linkLabel1.TabIndex = 9;
@@ -528,111 +542,6 @@ namespace SrvSurvey
             lblFullScreen.TextAlign = ContentAlignment.TopCenter;
             lblFullScreen.Visible = false;
             // 
-            // groupBox4
-            // 
-            groupBox4.Controls.Add(btnGuardianThings);
-            groupBox4.Controls.Add(btnRuins);
-            groupBox4.Controls.Add(btnRuinsMap);
-            groupBox4.Controls.Add(btnRuinsOrigin);
-            groupBox4.Controls.Add(txtGuardianSite);
-            groupBox4.Controls.Add(lblGuardianCount);
-            groupBox4.Controls.Add(label5);
-            groupBox4.Location = new Point(12, 333);
-            groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(413, 94);
-            groupBox4.TabIndex = 5;
-            groupBox4.TabStop = false;
-            groupBox4.Text = "Guardian sites:";
-            // 
-            // btnGuardianThings
-            // 
-            btnGuardianThings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnGuardianThings.BackColor = SystemColors.ControlDark;
-            btnGuardianThings.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
-            btnGuardianThings.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
-            btnGuardianThings.FlatStyle = FlatStyle.Flat;
-            btnGuardianThings.Location = new Point(279, 15);
-            btnGuardianThings.Name = "btnGuardianThings";
-            btnGuardianThings.Size = new Size(127, 35);
-            btnGuardianThings.TabIndex = 5;
-            btnGuardianThings.Text = "All Guardian Sites";
-            btnGuardianThings.UseVisualStyleBackColor = false;
-            btnGuardianThings.Click += btnGuardianThings_Click;
-            // 
-            // btnRuins
-            // 
-            btnRuins.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnRuins.BackColor = SystemColors.ControlDark;
-            btnRuins.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
-            btnRuins.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
-            btnRuins.FlatStyle = FlatStyle.Flat;
-            btnRuins.Location = new Point(279, 55);
-            btnRuins.Name = "btnRuins";
-            btnRuins.Size = new Size(127, 35);
-            btnRuins.TabIndex = 6;
-            btnRuins.Text = "Survey Maps";
-            btnRuins.UseVisualStyleBackColor = false;
-            btnRuins.Click += btnRuins_Click;
-            // 
-            // btnRuinsMap
-            // 
-            btnRuinsMap.BackColor = SystemColors.ControlDark;
-            btnRuinsMap.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
-            btnRuinsMap.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
-            btnRuinsMap.FlatStyle = FlatStyle.Flat;
-            btnRuinsMap.Location = new Point(16, 57);
-            btnRuinsMap.Name = "btnRuinsMap";
-            btnRuinsMap.Size = new Size(93, 21);
-            btnRuinsMap.TabIndex = 3;
-            btnRuinsMap.Text = "Show map";
-            btnRuinsMap.UseVisualStyleBackColor = false;
-            btnRuinsMap.Click += btnRuinsMap_Click;
-            // 
-            // btnRuinsOrigin
-            // 
-            btnRuinsOrigin.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnRuinsOrigin.BackColor = SystemColors.ControlDark;
-            btnRuinsOrigin.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
-            btnRuinsOrigin.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
-            btnRuinsOrigin.FlatStyle = FlatStyle.Flat;
-            btnRuinsOrigin.Location = new Point(115, 57);
-            btnRuinsOrigin.Name = "btnRuinsOrigin";
-            btnRuinsOrigin.Size = new Size(115, 21);
-            btnRuinsOrigin.TabIndex = 4;
-            btnRuinsOrigin.Text = "Aerial assist";
-            btnRuinsOrigin.UseVisualStyleBackColor = false;
-            btnRuinsOrigin.Click += btnRuinsOrigin_Click;
-            // 
-            // txtGuardianSite
-            // 
-            txtGuardianSite.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtGuardianSite.BackColor = SystemColors.AppWorkspace;
-            txtGuardianSite.BorderStyle = BorderStyle.FixedSingle;
-            txtGuardianSite.Location = new Point(16, 31);
-            txtGuardianSite.Name = "txtGuardianSite";
-            txtGuardianSite.ReadOnly = true;
-            txtGuardianSite.Size = new Size(256, 20);
-            txtGuardianSite.TabIndex = 2;
-            txtGuardianSite.Text = "<Guardian site>";
-            // 
-            // lblGuardianCount
-            // 
-            lblGuardianCount.AutoSize = true;
-            lblGuardianCount.Location = new Point(88, 16);
-            lblGuardianCount.Name = "lblGuardianCount";
-            lblGuardianCount.Size = new Size(12, 12);
-            lblGuardianCount.TabIndex = 1;
-            lblGuardianCount.Text = "N";
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(14, 16);
-            label5.Name = "label5";
-            label5.Size = new Size(68, 12);
-            label5.TabIndex = 0;
-            label5.Text = "Detected:";
-            // 
             // lblNotInstalled
             // 
             lblNotInstalled.BackColor = Color.OrangeRed;
@@ -654,25 +563,12 @@ namespace SrvSurvey
             lblNotInstalled.Visible = false;
             lblNotInstalled.LinkClicked += lblNotInstalled_LinkClicked;
             // 
-            // btnSphereLimit
-            // 
-            btnSphereLimit.BackColor = SystemColors.ControlDark;
-            btnSphereLimit.Enabled = false;
-            btnSphereLimit.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
-            btnSphereLimit.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
-            btnSphereLimit.FlatStyle = FlatStyle.Flat;
-            btnSphereLimit.Location = new Point(325, 478);
-            btnSphereLimit.Name = "btnSphereLimit";
-            btnSphereLimit.Size = new Size(100, 33);
-            btnSphereLimit.TabIndex = 19;
-            btnSphereLimit.Text = "Search Space";
-            btnSphereLimit.UseVisualStyleBackColor = false;
-            // 
             // linkLabel2
             // 
+            linkLabel2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             linkLabel2.Font = new Font("Lucida Sans Typewriter", 9F);
             linkLabel2.LinkArea = new LinkArea(17, 22);
-            linkLabel2.Location = new Point(10, 561);
+            linkLabel2.Location = new Point(10, 481);
             linkLabel2.Name = "linkLabel2";
             linkLabel2.Size = new Size(417, 29);
             linkLabel2.TabIndex = 10;
@@ -681,23 +577,10 @@ namespace SrvSurvey
             linkLabel2.UseCompatibleTextRendering = true;
             linkLabel2.LinkClicked += linkLabel2_LinkClicked;
             // 
-            // btnRamTah
-            // 
-            btnRamTah.BackColor = SystemColors.ControlDark;
-            btnRamTah.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
-            btnRamTah.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
-            btnRamTah.FlatStyle = FlatStyle.Flat;
-            btnRamTah.Location = new Point(325, 438);
-            btnRamTah.Name = "btnRamTah";
-            btnRamTah.Size = new Size(100, 35);
-            btnRamTah.TabIndex = 18;
-            btnRamTah.Text = "Ram Tah Missions";
-            btnRamTah.UseVisualStyleBackColor = false;
-            btnRamTah.Click += btnRamTah_Click;
-            // 
             // checkTempHide
             // 
-            checkTempHide.Location = new Point(12, 517);
+            checkTempHide.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            checkTempHide.Location = new Point(12, 437);
             checkTempHide.Name = "checkTempHide";
             checkTempHide.Size = new Size(227, 16);
             checkTempHide.TabIndex = 8;
@@ -790,8 +673,9 @@ namespace SrvSurvey
             btnResetExploration.Name = "btnResetExploration";
             btnResetExploration.Size = new Size(53, 21);
             btnResetExploration.TabIndex = 5;
-            btnResetExploration.Text = "...";
+            btnResetExploration.Text = "Reset";
             btnResetExploration.UseVisualStyleBackColor = false;
+            btnResetExploration.Click += btnResetExploration_Click;
             // 
             // label1
             // 
@@ -834,9 +718,9 @@ namespace SrvSurvey
             // groupCodex
             // 
             groupCodex.Controls.Add(btnCodexBingo);
-            groupCodex.Location = new Point(12, 433);
+            groupCodex.Location = new Point(10, 334);
             groupCodex.Name = "groupCodex";
-            groupCodex.Size = new Size(87, 78);
+            groupCodex.Size = new Size(87, 92);
             groupCodex.TabIndex = 6;
             groupCodex.TabStop = false;
             groupCodex.Text = "Codex";
@@ -848,7 +732,7 @@ namespace SrvSurvey
             btnCodexBingo.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnCodexBingo.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnCodexBingo.FlatStyle = FlatStyle.Flat;
-            btnCodexBingo.Location = new Point(6, 51);
+            btnCodexBingo.Location = new Point(6, 65);
             btnCodexBingo.Name = "btnCodexBingo";
             btnCodexBingo.Size = new Size(75, 21);
             btnCodexBingo.TabIndex = 0;
@@ -858,12 +742,13 @@ namespace SrvSurvey
             // 
             // menuSearchTools
             // 
-            menuSearchTools.Font = new Font("Segoe UI", 18F);
-            menuSearchTools.Items.AddRange(new ToolStripItem[] { menuSpherical, menuBoxel, menuBuildProjects });
+            menuSearchTools.BackColor = SystemColors.ControlLight;
+            menuSearchTools.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            menuSearchTools.Items.AddRange(new ToolStripItem[] { menuSpherical, menuBoxel });
             menuSearchTools.Name = "menuSearchTools";
             menuSearchTools.RenderMode = ToolStripRenderMode.System;
-            menuSearchTools.Size = new Size(265, 188);
-            menuSearchTools.targetButton = btnSphereLimit;
+            menuSearchTools.Size = new Size(203, 112);
+            menuSearchTools.targetButton = btnSearch;
             // 
             // menuSpherical
             // 
@@ -871,7 +756,7 @@ namespace SrvSurvey
             menuSpherical.ImageScaling = ToolStripItemImageScaling.None;
             menuSpherical.ImageTransparentColor = Color.White;
             menuSpherical.Name = "menuSpherical";
-            menuSpherical.Size = new Size(264, 54);
+            menuSpherical.Size = new Size(202, 54);
             menuSpherical.Text = "Spherical";
             menuSpherical.ToolTipText = "Search within a spherical area of space, around a central location.";
             menuSpherical.Click += menuSpherical_Click;
@@ -882,23 +767,30 @@ namespace SrvSurvey
             menuBoxel.ImageScaling = ToolStripItemImageScaling.None;
             menuBoxel.ImageTransparentColor = Color.White;
             menuBoxel.Name = "menuBoxel";
-            menuBoxel.Size = new Size(264, 54);
+            menuBoxel.Size = new Size(202, 54);
             menuBoxel.Text = "Boxel";
             menuBoxel.ToolTipText = "Search every system within a named boxel.";
             menuBoxel.Click += menuBoxel_Click;
             // 
-            // menuBuildProjects
+            // btnSearch
             // 
-            menuBuildProjects.Name = "menuBuildProjects";
-            menuBuildProjects.Size = new Size(264, 54);
-            menuBuildProjects.Text = "Build Projects";
-            menuBuildProjects.Click += menuBuildProjects_Click;
+            btnSearch.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnSearch.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnSearch.Font = new Font("Segoe UI Emoji", 15.75F);
+            btnSearch.Location = new Point(114, 340);
+            btnSearch.Margin = new Padding(2, 4, 2, 4);
+            btnSearch.Name = "btnSearch";
+            btnSearch.Size = new Size(150, 40);
+            btnSearch.TabIndex = 22;
+            btnSearch.Text = "🔎 Search";
+            btnSearch.UseVisualStyleBackColor = false;
             // 
             // lblBig
             // 
+            lblBig.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblBig.AutoSize = true;
             lblBig.Font = new Font("Century Gothic", 21.75F, FontStyle.Bold);
-            lblBig.Location = new Point(300, 517);
+            lblBig.Location = new Point(300, 437);
             lblBig.Name = "lblBig";
             lblBig.Size = new Size(72, 36);
             lblBig.TabIndex = 11;
@@ -907,11 +799,11 @@ namespace SrvSurvey
             // 
             // comboDev
             // 
-            comboDev.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            comboDev.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             comboDev.DropDownStyle = ComboBoxStyle.DropDownList;
             comboDev.FlatStyle = FlatStyle.System;
             comboDev.FormattingEnabled = true;
-            comboDev.Location = new Point(174, 595);
+            comboDev.Location = new Point(174, 515);
             comboDev.Name = "comboDev";
             comboDev.Size = new Size(170, 20);
             comboDev.TabIndex = 15;
@@ -920,65 +812,227 @@ namespace SrvSurvey
             // 
             // menuJourney
             // 
-            menuJourney.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            menuJourney.Items.AddRange(new ToolStripItem[] { menuResetOldTrip, toolStripSeparator1, menuJourneyBegin, menuJourneyNotes, menuJourneyReview, toolStripSeparator2, menuFollowRoute });
+            menuJourney.BackColor = SystemColors.ControlLight;
+            menuJourney.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            menuJourney.Items.AddRange(new ToolStripItem[] { menuSetLatLong, toolStripSeparator1, menuJourneyBegin, menuJourneyNotes, menuJourneyReview, toolStripSeparator2, menuFollowRoute });
             menuJourney.Name = "menuJourney";
             menuJourney.RenderMode = ToolStripRenderMode.System;
-            menuJourney.Size = new Size(317, 196);
-            menuJourney.targetButton = btnResetExploration;
+            menuJourney.ShowImageMargin = false;
+            menuJourney.Size = new Size(203, 146);
+            menuJourney.targetButton = btnTravel;
             menuJourney.Opening += menuJourney_Opening;
             // 
-            // menuResetOldTrip
+            // menuSetLatLong
             // 
-            menuResetOldTrip.Name = "menuResetOldTrip";
-            menuResetOldTrip.Size = new Size(316, 36);
-            menuResetOldTrip.Text = "Reset trip counters";
-            menuResetOldTrip.Click += btnResetExploration_Click;
+            menuSetLatLong.Name = "menuSetLatLong";
+            menuSetLatLong.Size = new Size(202, 26);
+            menuSetLatLong.Text = "Target lat/long ...";
+            menuSetLatLong.ToolTipText = "Clear or set target lat/long co-ordinated";
+            menuSetLatLong.Click += btnGroundTarget_Click;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(313, 6);
+            toolStripSeparator1.Size = new Size(199, 6);
             // 
             // menuJourneyBegin
             // 
             menuJourneyBegin.Name = "menuJourneyBegin";
-            menuJourneyBegin.Size = new Size(316, 36);
+            menuJourneyBegin.Size = new Size(202, 26);
             menuJourneyBegin.Text = "Start a new journey ...";
             menuJourneyBegin.Click += menuJourneyBegin_Click;
             // 
             // menuJourneyNotes
             // 
             menuJourneyNotes.Name = "menuJourneyNotes";
-            menuJourneyNotes.Size = new Size(316, 36);
+            menuJourneyNotes.Size = new Size(202, 26);
             menuJourneyNotes.Text = "System Notes ...";
             menuJourneyNotes.Click += menuJourneyNotes_Click;
             // 
             // menuJourneyReview
             // 
             menuJourneyReview.Name = "menuJourneyReview";
-            menuJourneyReview.Size = new Size(316, 36);
+            menuJourneyReview.Size = new Size(202, 26);
             menuJourneyReview.Text = "View Journey ...";
             menuJourneyReview.Click += menuJourneyReview_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(313, 6);
+            toolStripSeparator2.Size = new Size(199, 6);
             // 
             // menuFollowRoute
             // 
             menuFollowRoute.Name = "menuFollowRoute";
-            menuFollowRoute.Size = new Size(316, 36);
+            menuFollowRoute.Size = new Size(202, 26);
             menuFollowRoute.Text = "Follow a route ...";
             menuFollowRoute.Click += menuFollowRoute_Click;
+            // 
+            // btnTravel
+            // 
+            btnTravel.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnTravel.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnTravel.Font = new Font("Segoe UI Emoji", 15.75F);
+            btnTravel.Location = new Point(114, 385);
+            btnTravel.Margin = new Padding(2, 4, 2, 4);
+            btnTravel.Name = "btnTravel";
+            btnTravel.Size = new Size(150, 40);
+            btnTravel.TabIndex = 24;
+            btnTravel.Text = "🚀 Travel";
+            btnTravel.UseVisualStyleBackColor = false;
+            // 
+            // btnColonize
+            // 
+            btnColonize.Enabled = false;
+            btnColonize.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnColonize.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnColonize.Font = new Font("Segoe UI Emoji", 15.75F);
+            btnColonize.Location = new Point(275, 386);
+            btnColonize.Margin = new Padding(2, 4, 2, 4);
+            btnColonize.Name = "btnColonize";
+            btnColonize.Size = new Size(150, 40);
+            btnColonize.TabIndex = 25;
+            btnColonize.Text = "🚧 Colonize";
+            btnColonize.UseVisualStyleBackColor = false;
+            // 
+            // btnGuardian
+            // 
+            btnGuardian.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnGuardian.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnGuardian.Font = new Font("Segoe UI Emoji", 15.75F);
+            btnGuardian.Location = new Point(275, 340);
+            btnGuardian.Margin = new Padding(2, 4, 2, 4);
+            btnGuardian.Name = "btnGuardian";
+            btnGuardian.Size = new Size(150, 40);
+            btnGuardian.TabIndex = 23;
+            btnGuardian.Text = "🗿 Guardian";
+            btnGuardian.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnGuardian.UseVisualStyleBackColor = true;
+            // 
+            // menuColonize
+            // 
+            menuColonize.BackColor = SystemColors.ControlLight;
+            menuColonize.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            menuColonize.Items.AddRange(new ToolStripItem[] { menuRefreshProjects, menuColonizeLine1, menuMyProjects, menuCurrentProject, menuColonizeLine2, menuNewProject });
+            menuColonize.Name = "menuColonize";
+            menuColonize.RenderMode = ToolStripRenderMode.System;
+            menuColonize.Size = new Size(229, 168);
+            menuColonize.targetButton = btnColonize;
+            // 
+            // menuRefreshProjects
+            // 
+            menuRefreshProjects.Name = "menuRefreshProjects";
+            menuRefreshProjects.Size = new Size(228, 38);
+            menuRefreshProjects.Text = "Refresh data";
+            menuRefreshProjects.ToolTipText = "Re-fetch colonization data";
+            menuRefreshProjects.Click += menuRefreshProjects_Click;
+            // 
+            // menuColonizeLine1
+            // 
+            menuColonizeLine1.Name = "menuColonizeLine1";
+            menuColonizeLine1.Size = new Size(225, 6);
+            // 
+            // menuMyProjects
+            // 
+            menuMyProjects.Image = Properties.ImageResources.rcc_32;
+            menuMyProjects.ImageScaling = ToolStripItemImageScaling.None;
+            menuMyProjects.Name = "menuMyProjects";
+            menuMyProjects.Size = new Size(228, 38);
+            menuMyProjects.Text = "My projects";
+            menuMyProjects.ToolTipText = "View all your current projects";
+            menuMyProjects.Click += menuMyProjects_Click;
+            // 
+            // menuCurrentProject
+            // 
+            menuCurrentProject.Image = Properties.ImageResources.ruler;
+            menuCurrentProject.ImageScaling = ToolStripItemImageScaling.None;
+            menuCurrentProject.Name = "menuCurrentProject";
+            menuCurrentProject.Size = new Size(228, 38);
+            menuCurrentProject.Text = "Current project";
+            menuCurrentProject.ToolTipText = "View the local or your primary project";
+            menuCurrentProject.Click += menuCurrentProject_Click;
+            // 
+            // menuColonizeLine2
+            // 
+            menuColonizeLine2.Name = "menuColonizeLine2";
+            menuColonizeLine2.Size = new Size(225, 6);
+            // 
+            // menuNewProject
+            // 
+            menuNewProject.Image = Properties.ImageResources.ruler;
+            menuNewProject.ImageScaling = ToolStripItemImageScaling.None;
+            menuNewProject.Name = "menuNewProject";
+            menuNewProject.Size = new Size(228, 38);
+            menuNewProject.Text = "New project ...";
+            menuNewProject.ToolTipText = "Create a new build project";
+            menuNewProject.Click += menuNewProject_Click;
+            // 
+            // menuGuardians
+            // 
+            menuGuardians.BackColor = SystemColors.ControlLight;
+            menuGuardians.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            menuGuardians.Items.AddRange(new ToolStripItem[] { btnGuardianThings, btnRuins, btnRamTah, toolStripSeparator5, btnRuinsMap, btnRuinsOrigin });
+            menuGuardians.Name = "menuGuardians";
+            menuGuardians.RenderMode = ToolStripRenderMode.System;
+            menuGuardians.Size = new Size(242, 200);
+            menuGuardians.targetButton = btnGuardian;
+            // 
+            // btnGuardianThings
+            // 
+            btnGuardianThings.Image = Properties.ImageResources.ticket;
+            btnGuardianThings.ImageScaling = ToolStripItemImageScaling.None;
+            btnGuardianThings.Name = "btnGuardianThings";
+            btnGuardianThings.Size = new Size(241, 38);
+            btnGuardianThings.Text = "Guardian Sites";
+            btnGuardianThings.Click += btnGuardianThings_Click;
+            // 
+            // btnRuins
+            // 
+            btnRuins.Image = Properties.ImageResources.maps;
+            btnRuins.ImageScaling = ToolStripItemImageScaling.None;
+            btnRuins.Name = "btnRuins";
+            btnRuins.Size = new Size(241, 38);
+            btnRuins.Text = "Survey Maps";
+            btnRuins.Click += btnRuins_Click;
+            // 
+            // btnRamTah
+            // 
+            btnRamTah.Image = Properties.ImageResources.moai;
+            btnRamTah.ImageScaling = ToolStripItemImageScaling.None;
+            btnRamTah.Name = "btnRamTah";
+            btnRamTah.Size = new Size(241, 38);
+            btnRamTah.Text = "Ram Tah Mission";
+            btnRamTah.Click += btnRamTah_Click;
+            // 
+            // toolStripSeparator5
+            // 
+            toolStripSeparator5.Name = "toolStripSeparator5";
+            toolStripSeparator5.Size = new Size(238, 6);
+            // 
+            // btnRuinsMap
+            // 
+            btnRuinsMap.Name = "btnRuinsMap";
+            btnRuinsMap.Size = new Size(241, 38);
+            btnRuinsMap.Text = "Show Map";
+            btnRuinsMap.Click += btnRuinsMap_Click;
+            // 
+            // btnRuinsOrigin
+            // 
+            btnRuinsOrigin.Name = "btnRuinsOrigin";
+            btnRuinsOrigin.Size = new Size(241, 38);
+            btnRuinsOrigin.Text = "Aerial Assist";
+            btnRuinsOrigin.Click += btnRuinsOrigin_Click;
             // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 12F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.AppWorkspace;
-            ClientSize = new Size(437, 628);
+            ClientSize = new Size(437, 548);
+            Controls.Add(btnColonize);
+            Controls.Add(btnTravel);
+            Controls.Add(btnGuardian);
+            Controls.Add(btnSearch);
             Controls.Add(comboDev);
             Controls.Add(lblBig);
             Controls.Add(groupCodex);
@@ -986,11 +1040,8 @@ namespace SrvSurvey
             Controls.Add(linkNewBuildAvailable);
             Controls.Add(groupBox5);
             Controls.Add(checkTempHide);
-            Controls.Add(btnRamTah);
             Controls.Add(linkLabel2);
-            Controls.Add(btnSphereLimit);
             Controls.Add(groupBox3);
-            Controls.Add(groupBox4);
             Controls.Add(linkLabel1);
             Controls.Add(btnSettings);
             Controls.Add(btnLogs);
@@ -1016,13 +1067,13 @@ namespace SrvSurvey
             groupCmdr.PerformLayout();
             groupBox3.ResumeLayout(false);
             groupBox3.PerformLayout();
-            groupBox4.ResumeLayout(false);
-            groupBox4.PerformLayout();
             groupBox5.ResumeLayout(false);
             groupBox5.PerformLayout();
             groupCodex.ResumeLayout(false);
             menuSearchTools.ResumeLayout(false);
             menuJourney.ResumeLayout(false);
+            menuColonize.ResumeLayout(false);
+            menuGuardians.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1046,10 +1097,6 @@ namespace SrvSurvey
         private Label lblTrackTargetStatus;
         private TextBox txtNearBody;
         private Label lblFullScreen;
-        private GroupBox groupBox4;
-        private Label lblGuardianCount;
-        private Label label5;
-        private TextBox txtGuardianSite;
         private LinkLabel lblNotInstalled;
         private TextBox txtBioRewards;
         private Label label4;
@@ -1060,14 +1107,8 @@ namespace SrvSurvey
         private TextBox txtSystemBioSignals;
         private Label labelSignalsAndRewards;
         private Label lblBodyBio;
-        private Button btnRuinsMap;
-        private Button btnRuinsOrigin;
-        private Button btnRuins;
-        private Button btnSphereLimit;
-        private Button btnGuardianThings;
         private LinkLabel linkLabel2;
         private CheckBox checkFirstFootFall;
-        private Button btnRamTah;
         private Button btnPasteLatLong;
         public CheckBox checkTempHide;
         private Button btnPredictions;
@@ -1094,10 +1135,28 @@ namespace SrvSurvey
         private ToolStripMenuItem menuJourneyBegin;
         private ToolStripMenuItem menuJourneyNotes;
         private ToolStripMenuItem menuJourneyReview;
-        private ToolStripMenuItem menuResetOldTrip;
+        private ToolStripMenuItem menuSetLatLong;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripMenuItem menuFollowRoute;
-        private ToolStripMenuItem menuBuildProjects;
+        private FlatButton btnColonize;
+        private FlatButton btnTravel;
+        private FlatButton btnGuardian;
+        private FlatButton flatButton7;
+        private FlatButton btnSearch;
+        private ButtonContextMenuStrip menuColonize;
+        private ToolStripMenuItem menuMyProjects;
+        private ToolStripMenuItem menuNewProject;
+        private ToolStripMenuItem menuCurrentProject;
+        private ToolStripSeparator menuColonizeLine2;
+        private ToolStripSeparator menuColonizeLine1;
+        private ToolStripMenuItem menuRefreshProjects;
+        private ButtonContextMenuStrip menuGuardians;
+        private ToolStripMenuItem btnGuardianThings;
+        private ToolStripMenuItem btnRuins;
+        private ToolStripMenuItem btnRamTah;
+        private ToolStripSeparator toolStripSeparator5;
+        private ToolStripMenuItem btnRuinsMap;
+        private ToolStripMenuItem btnRuinsOrigin;
     }
 }

@@ -337,6 +337,12 @@ namespace SrvSurvey.game
         public string displayName;
         public List<string> layouts;
         public Dictionary<string, int> cargo;
+
+        public override string ToString()
+        {
+            // Used by ComboBox's
+            return $"Tier {tier}: {displayName} ({string.Join(", ", layouts)})";
+        }
     }
 
     public class ProjectCore
