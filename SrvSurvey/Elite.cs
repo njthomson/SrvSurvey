@@ -19,6 +19,11 @@ namespace SrvSurvey
 
         public static Point gameCenter = Point.Empty;
 
+        /// <summary> True if we found a game process last time we checked </summary>
+        public static bool hadGameProc;
+        /// <summary> True if we found 2+ game process last time we checked </summary>
+        public static bool hadManyGameProcs;
+
         private static Process? _gameProc;
 
         private static Process? getGameProc()
@@ -41,12 +46,16 @@ namespace SrvSurvey
 
                     _gameProc = edProcs[_procIdx];
                 }
+
+                Elite.hadManyGameProcs = edProcs.Length > 1;
             }
 
+            Elite.hadGameProc = _gameProc != null;
             return _gameProc;
         }
 
         private static int _procIdx = 0;
+        public static int procIdx => _procIdx;
 
         public static void nextWindow()
         {
@@ -67,9 +76,10 @@ namespace SrvSurvey
         /// <summary>
         /// Set focus on Elite Dangerous
         /// </summary>
-        public static void setFocusED()
+        public static void setFocusED(IntPtr hwnd = 0)
         {
-            var hwnd = getWindowHandle();
+            if (hwnd == IntPtr.Zero)
+                hwnd = getWindowHandle();
 
             if (hwnd != IntPtr.Zero)
             {

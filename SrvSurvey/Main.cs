@@ -25,6 +25,7 @@ namespace SrvSurvey
         private Dictionary<string, Screenshot> pendingScreenshots = new Dictionary<string, Screenshot>();
         private bool wasWithinDssDuration;
         private bool gameHadFocus;
+        private FormMultiFloatie? multiFloatie;
 
         public static Main form;
         public KeyboardHook hook;
@@ -1319,7 +1320,9 @@ namespace SrvSurvey
                     Program.hideActivePlotters();
             }
             else if (forceOpen && rect.X < -30000)
+            {
                 Program.hideActivePlotters();
+            }
 
             // force plotters to appear if we just gained focus
             if (!gameHadFocus && Elite.gameHasFocus && game != null)
@@ -1327,11 +1330,20 @@ namespace SrvSurvey
 
             this.gameHadFocus = Elite.gameHasFocus;
 
+            if (Elite.hadManyGameProcs && this.multiFloatie == null && Elite.graphicsMode == GraphicsMode.Windowed)
+            {
+                btnNextWindow.Visible = true;
+                this.multiFloatie = FormMultiFloatie.create();
+            }
+            if (this.multiFloatie != null)
+                this.multiFloatie.Visible = Elite.focusElite;
+
             if (rect != this.lastWindowRect && Elite.gameHasFocus && rect.X > -30_000)
             {
                 Game.log($"EliteDangerous window reposition: {this.lastWindowRect} => {rect}");
                 this.lastWindowRect = rect;
                 Program.repositionPlotters(rect);
+                this.multiFloatie?.positionOverGame(rect);
             }
 
             // if the game process is NOT running, but we have an active game object processing journals ... append a fake shutdown entry and stop processing journal entries
@@ -1383,6 +1395,11 @@ namespace SrvSurvey
             {
                 btnSettings.Enabled = true;
             }
+        }
+
+        private void btnNextWindow_Click(object sender, EventArgs e)
+        {
+            FormMultiFloatie.useNextWindow();
         }
 
         private void linkNewBuildAvailable_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -1970,7 +1987,6 @@ namespace SrvSurvey
             // */
         }
         private MainView mv;
-
     }
 }
 

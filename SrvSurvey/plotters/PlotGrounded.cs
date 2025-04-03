@@ -139,7 +139,7 @@ namespace SrvSurvey.plotters
             if (game.systemBody == null)
             {
                 // TODO: still needed?
-                Debugger.Break();
+                //Debugger.Break();
                 Program.closePlotter<PlotGrounded>();
             }
         }

@@ -456,12 +456,7 @@ namespace SrvSurvey
 
         private void btnNextProc_Click(object sender, EventArgs e)
         {
-            Program.hideActivePlotters();
-
-            // increment process idx and make plotters adjust
-            Elite.nextWindow();
-            Application.DoEvents();
-            Elite.setFocusED();
+            FormMultiFloatie.useNextWindow();
         }
 
         private void btnClearUnclaimed_Click(object sender, EventArgs e)

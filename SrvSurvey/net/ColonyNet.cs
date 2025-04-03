@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace SrvSurvey.game
@@ -438,6 +439,12 @@ namespace SrvSurvey.game
 
     public class ProjectUpdate
     {
+        [SetsRequiredMembers]
+        public ProjectUpdate(string buildId)
+        {
+            this.buildId = buildId;
+        }
+
         public DateTimeOffset? Timestamp { get; set; }
         public string ETag { get; set; }
 
@@ -445,6 +452,9 @@ namespace SrvSurvey.game
 
         public string? buildType;
         public string? buildName;
+
+        public int? bodyNum;
+        public string? bodyName;
 
         public string? factionName;
         public string? architectName;

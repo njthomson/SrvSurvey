@@ -36,6 +36,11 @@ namespace SrvSurvey.game
             get => Game.activeGame?.cmdr?.fid ?? Game.settings.lastFid!;
         }
 
+        public static string? currentOrLastCmdrName
+        {
+            get => Game.activeGame?.cmdr?.commander ?? Game.settings.lastCommander;
+        }
+
         public static CommanderSettings LoadCurrentOrLast()
         {
             // use cmdr from active game if possible

@@ -622,6 +622,13 @@ namespace SrvSurvey.game
             if (lastMusic != null)
                 onJournalEntry(lastMusic);
 
+            // what ship are we in?
+            var lastLoadout = journals.FindEntryByType<Loadout>(-1, true);
+            if (lastLoadout != null)
+            {
+                this.currentShip = new(lastLoadout);
+            }
+
             // try to find a location from recent journal items
             if (this.cmdr != null)
             {
@@ -714,13 +721,6 @@ namespace SrvSurvey.game
             var lastMaterials = journals.FindEntryByType<Materials>(-1, true);
             if (lastMaterials != null)
                 onJournalEntry(lastMaterials);
-
-            // what ship are we in?
-            var lastLoadout = journals.FindEntryByType<Loadout>(-1, true);
-            if (lastLoadout != null)
-            {
-                this.currentShip = new(lastLoadout);
-            }
 
             // clear old touchdown location but we're no longer on a planet
             if (cmdr?.lastTouchdownLocation != null && !status.hasLatLong) cmdr.clearTouchdown();
@@ -931,6 +931,13 @@ namespace SrvSurvey.game
                 {
                     log($"Game.initSystemData: last location: '{locationEvent.StarSystem}' ({locationEvent.SystemAddress})");
                     lastLocation = locationEvent;
+
+                    if (locationEvent.Docked && this.lastEverDocked == null)
+                    {
+                        // fabricate a Docked event with what we have on this Location event
+                        this.lastEverDocked = locationEvent.asDocked(this.currentShip.type);
+                        this.lastDocked = this.lastEverDocked;
+                    }    
                     return false;
                 }
 
@@ -2441,6 +2448,7 @@ namespace SrvSurvey.game
             if (entry.StationServices == null
                 || entry.StationServices.Count == 0 // horizons old settlements are not compatible
                 || entry.StationServices.Contains("socialspace") // bigger settlements (Planetary ports) are not compatible
+                || entry.StationServices.Contains("colonisationcontribution") // Colonization construction sites are not compatible
                 || entry.StationGovernment == "$government_Engineer;" // Engineer's stations (with no socialspace) are also not compatible
             )
                 return;
@@ -2550,17 +2558,8 @@ namespace SrvSurvey.game
 
             if (Game.settings.buildProjects_TEST)
             {
-                // Auto update faction names if incorrect
-                var proj = cmdrColony.getProject(entry.SystemAddress, entry.MarketID);
-                if (proj != null && proj.factionName != entry.StationFaction.Name)
-                {
-                    Game.log($"Auto-update factionName: {proj.factionName} => {entry.StationFaction.Name}");
-                    Game.colony.update(new ProjectUpdate()
-                    {
-                        buildId = proj.buildId,
-                        factionName = entry.StationFaction.Name,
-                    }).justDoIt();
-                }
+                // Auto update project details if incorrect
+                cmdrColony.checkConstructionSiteUponDocking(entry, this.systemBody);
 
                 // fetch fresh data if this is a market we are interested in
                 var match = this.cmdrColony.getProject(entry.SystemAddress, entry.MarketID);

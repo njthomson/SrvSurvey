@@ -413,6 +413,16 @@ namespace SrvSurvey.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap next_window {
+            get {
+                object obj = ResourceManager.GetObject("next-window", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap osseus_18 {
             get {
                 object obj = ResourceManager.GetObject("osseus_18", resourceCulture);

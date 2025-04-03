@@ -91,6 +91,7 @@ namespace SrvSurvey
             { KeyAction.track6, "ALT CTRL F6" },
             { KeyAction.track7, "ALT CTRL F7" },
             { KeyAction.track8, "ALT CTRL F8" },
+            { KeyAction.nextWindow, "ALT CTRL W" },
         };
 
         public static bool doKeyAction(KeyAction keyAction)
@@ -122,6 +123,7 @@ namespace SrvSurvey
                 case KeyAction.track6: return trackLocation(6);
                 case KeyAction.track7: return trackLocation(7);
                 case KeyAction.track8: return trackLocation(8);
+                case KeyAction.nextWindow: return focusNextGameWindow();
 
                 default:
                     Game.log($"Unsupported key action: {keyAction}");
@@ -345,6 +347,12 @@ namespace SrvSurvey
 
             return true;
         }
+
+        private static bool focusNextGameWindow()
+        {
+            FormMultiFloatie.focusNextWindow();
+            return true;
+        }
     }
 
     /// <summary>
@@ -395,5 +403,7 @@ namespace SrvSurvey
         track7,
         /// <summary> Track the current location as #8 </summary>
         track8,
+        /// <summary> Set focus on the next game window </summary>
+        nextWindow,
     }
 }

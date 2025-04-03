@@ -381,13 +381,14 @@ namespace SrvSurvey.forms
             {
                 this.setEnabled(false);
                 Game.log($"Updating: {project.buildName} ({project.buildId})");
-                var updateProject = new ProjectUpdate
+                var updateProject = new ProjectUpdate(project.buildId)
                 {
-                    buildId = project.buildId,
                     buildName = txtName.Text,
                     architectName = txtArchitect.Text,
                     factionName = txtFaction.Text,
                     notes = txtNotes.Text,
+                    bodyName = game?.systemBody?.name,
+                    bodyNum = game?.systemBody?.id,
 
                     commodities = pendingCommodities
 

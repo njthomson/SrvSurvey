@@ -272,11 +272,11 @@ namespace SrvSurvey.plotters
                 if (cargoCount > 0)
                 {
                     drawTextAt2(this.Width - eight, cargoCount.ToString("N0"), col, ff, true)
-                    .widestColumn(2, columns);
+                        .widestColumn(2, columns);
                 }
 
                 // warn if we have more than needed
-                if (cargoCount > needCount) col = C.red;
+                //if (cargoCount > needCount) col = C.red;
 
                 // render the name
                 var sz2 = drawTextAt2(ten, nameTxt, col, ff)

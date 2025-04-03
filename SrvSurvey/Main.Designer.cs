@@ -44,6 +44,7 @@ namespace SrvSurvey
             btnPasteLatLong = new Button();
             lblTrackTargetStatus = new Label();
             groupCmdr = new GroupBox();
+            btnNextWindow = new Button();
             btnCopyLocation = new Button();
             txtCommander = new TextBox();
             txtNearBody = new TextBox();
@@ -225,6 +226,7 @@ namespace SrvSurvey
             // 
             // groupCmdr
             // 
+            groupCmdr.Controls.Add(btnNextWindow);
             groupCmdr.Controls.Add(btnCopyLocation);
             groupCmdr.Controls.Add(txtCommander);
             groupCmdr.Controls.Add(txtNearBody);
@@ -237,6 +239,23 @@ namespace SrvSurvey
             groupCmdr.TabIndex = 2;
             groupCmdr.TabStop = false;
             groupCmdr.Text = "Commander:";
+            // 
+            // btnNextWindow
+            // 
+            btnNextWindow.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnNextWindow.BackColor = SystemColors.ControlDark;
+            btnNextWindow.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnNextWindow.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnNextWindow.FlatStyle = FlatStyle.Flat;
+            btnNextWindow.Font = new Font("Segoe UI Emoji", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnNextWindow.Image = Properties.ImageResources.next_window;
+            btnNextWindow.Location = new Point(386, 19);
+            btnNextWindow.Name = "btnNextWindow";
+            btnNextWindow.Size = new Size(20, 20);
+            btnNextWindow.TabIndex = 6;
+            btnNextWindow.UseVisualStyleBackColor = false;
+            btnNextWindow.Visible = false;
+            btnNextWindow.Click += btnNextWindow_Click;
             // 
             // btnCopyLocation
             // 
@@ -777,7 +796,7 @@ namespace SrvSurvey
             btnSearch.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnSearch.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnSearch.Font = new Font("Segoe UI Emoji", 15.75F);
-            btnSearch.Location = new Point(114, 340);
+            btnSearch.Location = new Point(102, 340);
             btnSearch.Margin = new Padding(2, 4, 2, 4);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(150, 40);
@@ -873,7 +892,7 @@ namespace SrvSurvey
             btnTravel.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnTravel.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnTravel.Font = new Font("Segoe UI Emoji", 15.75F);
-            btnTravel.Location = new Point(114, 385);
+            btnTravel.Location = new Point(102, 384);
             btnTravel.Margin = new Padding(2, 4, 2, 4);
             btnTravel.Name = "btnTravel";
             btnTravel.Size = new Size(150, 40);
@@ -887,10 +906,10 @@ namespace SrvSurvey
             btnColonize.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnColonize.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnColonize.Font = new Font("Segoe UI Emoji", 15.75F);
-            btnColonize.Location = new Point(275, 386);
+            btnColonize.Location = new Point(256, 384);
             btnColonize.Margin = new Padding(2, 4, 2, 4);
             btnColonize.Name = "btnColonize";
-            btnColonize.Size = new Size(150, 40);
+            btnColonize.Size = new Size(169, 40);
             btnColonize.TabIndex = 25;
             btnColonize.Text = "🚧 Colonize";
             btnColonize.UseVisualStyleBackColor = false;
@@ -900,10 +919,10 @@ namespace SrvSurvey
             btnGuardian.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnGuardian.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnGuardian.Font = new Font("Segoe UI Emoji", 15.75F);
-            btnGuardian.Location = new Point(275, 340);
+            btnGuardian.Location = new Point(256, 340);
             btnGuardian.Margin = new Padding(2, 4, 2, 4);
             btnGuardian.Name = "btnGuardian";
-            btnGuardian.Size = new Size(150, 40);
+            btnGuardian.Size = new Size(169, 40);
             btnGuardian.TabIndex = 23;
             btnGuardian.Text = "🗿 Guardian";
             btnGuardian.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -1158,5 +1177,6 @@ namespace SrvSurvey
         private ToolStripSeparator toolStripSeparator5;
         private ToolStripMenuItem btnRuinsMap;
         private ToolStripMenuItem btnRuinsOrigin;
+        private Button btnNextWindow;
     }
 }

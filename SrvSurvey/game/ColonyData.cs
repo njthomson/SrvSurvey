@@ -202,6 +202,34 @@ namespace SrvSurvey.game
             }
         }
 
+        public void checkConstructionSiteUponDocking(Docked entry, SystemBody? body)
+        {
+            var proj = this.getProject(entry.SystemAddress, entry.MarketID);
+            if (proj == null) return;
+
+            ProjectUpdate? updatedProject = null;
+
+            // update faction name?
+            if (proj.factionName != entry.StationFaction.Name)
+            {
+                Game.log($"Auto-update factionName: {proj.factionName} => {entry.StationFaction.Name}");
+                updatedProject ??= new(proj.buildId);
+                updatedProject.factionName = entry.StationFaction.Name;
+            }
+
+            // update body name/num
+            if (body != null  && (proj.bodyNum != body.id || proj.bodyName != body.name))
+            {
+                Game.log($"Auto-update bodyName/bodyNum: {proj.bodyName} => {body.name} / {proj.bodyNum} => {body.id}");
+                updatedProject ??= new(proj.buildId);
+                updatedProject.bodyName = body.name;
+                updatedProject.bodyNum = body.id;
+            }
+
+            if (updatedProject != null)
+                Game.colony.update(updatedProject).justDoIt();
+        }
+
         /* TODO: coming soon ...
         public Dictionary<string, int> sumProjectLinkedFC(Project proj)
         {
@@ -241,7 +269,7 @@ namespace SrvSurvey.game
 
         public static string getTypeForCargo(string name)
         {
-            return mapCargoType.Keys.FirstOrDefault(key=> mapCargoType[key].Contains(name))!;
+            return mapCargoType.Keys.FirstOrDefault(key => mapCargoType[key].Contains(name))!;
         }
     }
 }

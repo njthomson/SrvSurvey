@@ -1111,6 +1111,52 @@ namespace SrvSurvey
             }
         }
 
+        public static Dictionary<string, string> mapShipPadSize = new()
+        {
+            { "sidewinder", "small" },
+            { "eagle", "small" },
+            { "hauler", "small" },
+            { "adder", "small" },
+            { "empire_eagle", "small" },
+            { "viper", "small" },
+            { "cobramkiii", "small" },
+            { "viper_mkiv", "small" },
+            { "diamondback", "small" },
+            { "cobramkiv", "small" },
+            { "type6", "medium" },
+            { "dolphin", "small" },
+            { "diamondbackxl", "small" },
+            { "empire_courier", "small" },
+            { "independant_trader", "medium" },
+            { "asp_scout", "medium" },
+            { "vulture", "small" },
+            { "asp", "medium" }, 
+            { "federation_dropship", "medium" },
+            { "type7", "large" },
+            { "typex", "large" }, 
+            { "federation_dropship_mkii", "medium" },
+            { "empire_trader", "large" },
+            { "typex_2", "medium" },
+            { "typex_3", "medium" },
+            { "federation_gunship", "medium" },
+            { "krait_light", "medium" },
+            { "krait_mkii", "medium" },
+            { "orca", "large" },
+            { "ferdelance", "medium" },
+            { "mamba", "medium" },
+            { "python", "medium" },
+            { "python_nx", "medium" },
+            { "type8", "medium" },
+            { "type9", "large" },
+            { "belugaliner", "large" },
+            { "type9_military", "large" },
+            { "anaconda", "large" },
+            { "federation_corvette", "large" },
+            { "cutter", "large" },
+            { "mandalay", "medium" },
+            { "cobramkv", "small" },
+        };
+
         public static void applyTheme(Control ctrl)
         {
             applyTheme(ctrl, Game.settings.darkTheme);

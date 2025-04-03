@@ -118,11 +118,8 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\copy.ico;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="stratum38" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\stratum38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="frutexa_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\frutexa-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="fungoida_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fungoida-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -130,17 +127,26 @@
   <data name="cactoida_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cactoida-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="amphora_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\amphora-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="bacterium_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bacterium-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="frutexa18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\frutexa18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="picture" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\picture.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="bacterium38" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bacterium38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ticket" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ticket2.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="concha_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\concha-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tubus38" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\tubus38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="frutexa38" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\frutexa38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -151,20 +157,20 @@
   <data name="fungoida18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fungoida18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="barkmound_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\barkmound-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\copy.ico;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="stratum18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\stratum18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="braintree_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\braintree-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="osseus_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\osseus-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="spherical_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\spherical_48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="tubus18" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\tubus18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="barkmound_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\barkmound-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="spansh_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\spansh-16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -184,17 +190,14 @@
   <data name="barnacle_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\barnacle-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="CodexEmpty" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CodexEmpty.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="tussock_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tussock-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="maps" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\maps1.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="tussock38" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\tussock38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="clypeus_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\clypeus-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="fungoida38" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fungoida38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -205,8 +208,8 @@
   <data name="tuber_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tuber-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ticket" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ticket2.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="tubus18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\tubus18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="fonticulua_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fonticulua-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -235,23 +238,23 @@
   <data name="rcc-32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\rcc-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="frutexa_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\frutexa-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="spherical_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\spherical_48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="electricae_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\electricae-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="clypeus_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\clypeus-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="CodexEmpty" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CodexEmpty.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="braintree_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\braintree-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="tussock38" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\tussock38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="bacterium18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bacterium18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="tussock18" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\tussock18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ruler" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ruler1.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="canonn_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\canonn-16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -259,17 +262,17 @@
   <data name="spire_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\spire-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="frutexa18" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\frutexa18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="stratum38" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stratum38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="tubus38" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\tubus38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="amphora_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\amphora-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="boxel_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\boxel_48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="concha_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\concha-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="tussock18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\tussock18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="coral_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\coral-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -289,7 +292,7 @@
   <data name="electricae38" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\electricae38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ruler" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ruler1.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="next-window" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\next-window.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

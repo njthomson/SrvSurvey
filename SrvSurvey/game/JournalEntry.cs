@@ -94,15 +94,46 @@ namespace SrvSurvey
         public StationType StationType;
 
         public long MarketID;
-        // StationFaction ?
+        public NamedFaction? StationFaction;
         public string? StationGovernment;
         public string? StationGovernment_Localised;
         public List<string>? StationServices;
         public string? StationEconomy;
         public string? StationEconomy_Localised;
         public List<SystemFaction>? Factions { get; set; }
-        // StationEconomies ?
-        public NamedFaction SystemFaction;
+        public List<StationEconomy>? StationEconomies;
+        public NamedFaction? SystemFaction;
+
+        public Docked asDocked(string? shipType)
+        {
+            // The location event does not have landing pad information - so we'll include 1 pad large enough to fit the current ship
+            var landingPads = new LandingPads();
+            switch (Util.mapShipPadSize.GetValueOrDefault(shipType ?? ""))
+            {
+                case "large": landingPads.Large = 1; break;
+                default:
+                case "medium": landingPads.Medium = 1; break;
+                case "small": landingPads.Small = 1; break;
+            }
+
+            return new Docked()
+            {
+                DistFromStarLS = DistFromStarLS,
+                StarSystem = StarSystem,
+                SystemAddress = SystemAddress,
+                StationName = StationName,
+                StationType = StationType,
+                MarketID = MarketID,
+                StationFaction = StationFaction!,
+                StationGovernment = StationGovernment,
+                StationGovernment_Localised = StationGovernment_Localised,
+                StationServices = StationServices,
+                StationEconomy = StationEconomy,
+                StationEconomy_Localised = StationEconomy_Localised,
+                StationEconomies = StationEconomies,
+                LandingPads = landingPads,
+            };
+        }
     }
 
     class Loadout : JournalEntry
@@ -150,7 +181,14 @@ namespace SrvSurvey
         public string? StationAllegiance;
         public string? StationEconomy;
         public string? StationEconomy_Localised;
-        // StationEconomies ?
+        public List<StationEconomy>? StationEconomies;
+    }
+
+    class StationEconomy
+    {
+        public string Name;
+        public string Name_Localised;
+        public double Proportion;
     }
 
     class NamedFaction
@@ -215,7 +253,7 @@ namespace SrvSurvey
         public List<string>? StationServices;
         public string? StationEconomy;
         public string? StationEconomy_Localised;
-        // StationEconomies ?
+        public List<StationEconomy>? StationEconomies;
         public double DistFromStarLS;
         public bool Wanted;
         public bool ActiveFine;
@@ -239,6 +277,7 @@ namespace SrvSurvey
         SurfaceStation,
         PlanetaryConstructionDepot,
         SpaceConstructionDepot,
+        GameplayPOI,
     }
 
     class Undocked : JournalEntry
@@ -504,7 +543,7 @@ namespace SrvSurvey
         public List<string> StationServices { get; set; }
         public string StationEconomy { get; set; }
         public string StationEconomy_Localised { get; set; }
-        // StationEconomies // TODO: [ { "Name":"$economy_Carrier;", "Name_Localised":"Private Enterprise", "Proportion":1.000000 } ],
+        public List<StationEconomy>? StationEconomies;
         public bool Taxi { get; set; }
         public bool Multicrew { get; set; }
         public string StarSystem { get; set; }
@@ -1346,7 +1385,7 @@ namespace SrvSurvey
         public string StarSystem;
     }
 
-    class Interdicted: JournalEntry
+    class Interdicted : JournalEntry
     {
         // { "timestamp":"2025-01-31T04:13:05Z", "event":"Interdicted", "Submitted":false, "Interdictor":"Geno Garon", "IsPlayer":true, "CombatRank":10 }
 
