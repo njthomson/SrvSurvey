@@ -139,7 +139,7 @@ namespace SrvSurvey
                 }
             }
 
-            Game.log($"CargoFile updated: {this.Count} items in: {this.Vessel}\r\n  " + string.Join("\r\n  ", this.Inventory));
+            Game.log($"CargoFile updated: {this.Count} items in: {this.Vessel}\r\n  " + string.Join("\r\n  ", this.Inventory ?? new()));
             Program.invalidateActivePlotters();
         }
 

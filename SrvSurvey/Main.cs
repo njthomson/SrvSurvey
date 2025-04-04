@@ -2003,7 +2003,7 @@ namespace SrvSurvey
             }
             // */
         }
-        private MainView mv;
+        //private MainView mv;
 
         private void btnColonize_Click(object sender, EventArgs e)
         {

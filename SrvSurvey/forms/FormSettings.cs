@@ -111,10 +111,12 @@ namespace SrvSurvey
             devices.Add(Guid.Empty, "(None)");
 
             var directInput = new DirectInput();
-            foreach (var device in directInput.GetDevices(DeviceType.Gamepad, DeviceEnumerationFlags.AllDevices))
-                devices.Add(device.InstanceGuid, device.InstanceName);
-            foreach (var device in directInput.GetDevices(DeviceType.Joystick, DeviceEnumerationFlags.AllDevices))
-                devices.Add(device.InstanceGuid, device.InstanceName);
+            // for diagnostics, list all devices and their types in logs, keeping a few specific types
+            var allDevices = directInput.GetDevices().OrderBy(d => d.InstanceName);
+            Game.log(allDevices.Select(d => $"> {d.Type} : {d.InstanceName}").formatWithHeader("All DirectInput devices found:", "\r\n\t"));
+            foreach (var device in allDevices)
+                if (device.Type == DeviceType.Gamepad || device.Type == DeviceType.Joystick || device.Type == DeviceType.Flight)
+                    devices[device.InstanceGuid] = device.InstanceName;
 
             comboDirectXDevice.DataSource = new BindingSource(devices, null);
             comboDirectXDevice.DisplayMember = "Value";

@@ -163,11 +163,11 @@ namespace SrvSurvey
                 newTargetDoc.Root.FirstNode.Remove();
 
             // maintain "Pre-loc from" comments at the top
-            var preLoc = false;
+            //var preLoc = false;
             var oldFirstNode = oldTargetDoc?.Root?.FirstNode as XComment;
             if (oldFirstNode?.NodeType == System.Xml.XmlNodeType.Comment && oldFirstNode.Value.Contains("Pre-loc from") == true)
             {
-                preLoc = true;
+                //preLoc = true;
                 newTargetDoc.Root!.AddFirst(oldFirstNode);
             }
 

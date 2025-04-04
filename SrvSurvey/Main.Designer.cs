@@ -1179,7 +1179,6 @@ namespace SrvSurvey
         private FlatButton btnColonize;
         private FlatButton btnTravel;
         private FlatButton btnGuardian;
-        private FlatButton flatButton7;
         private FlatButton btnSearch;
         private ButtonContextMenuStrip menuColonize;
         private ToolStripMenuItem menuMyProjects;

@@ -11,9 +11,7 @@ namespace SrvSurvey.forms
         private ColonyData colonyData;
 
         private Project project;
-        private bool dirty = false;
 
-        private string? key;
         private List<ColonyCost2> allCosts;
         private Font fontB;
         private Font lblFont;
@@ -202,7 +200,6 @@ namespace SrvSurvey.forms
             btnAccept.Text = project == this.untrackedProject
                 ? "Create Project"
                 : "Update Project";
-            dirty = false;
         }
 
         private void prepCommodityRows(Project proj)
@@ -532,7 +529,6 @@ namespace SrvSurvey.forms
             if (rslt == DialogResult.OK)
             {
                 listCmdrs.Items.Add(form.commander);
-                dirty = true;
             }
         }
 
@@ -544,7 +540,6 @@ namespace SrvSurvey.forms
             if (listCmdrs.Items.Contains(cmdr))
             {
                 listCmdrs.Items.Remove(cmdr);
-                dirty = true;
             }
         }
 

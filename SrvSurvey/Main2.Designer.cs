@@ -609,6 +609,5 @@
         private FlatButton flatButton9;
         private FlatButton flatButton10;
         private FlatButton flatButton11;
-        private MainView mainView1;
     }
 }

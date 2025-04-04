@@ -395,9 +395,6 @@
         private Label label1;
         private Label label2;
         private ComboBox comboBuildType;
-        private DataGridView dataGridView1;
-        private DataGridViewTextBoxColumn Commodity;
-        private DataGridViewTextBoxColumn Needed;
         private Button btnAccept;
         private Label label4;
         private TextBox txtName;

@@ -104,7 +104,6 @@
         #endregion
 
         private Label label3;
-        private Button btnRemove;
         private Button btnAdd;
         private TextBox txtCmdr;
         private Label label1;
