@@ -69,6 +69,10 @@ namespace SrvSurvey
             get
             {
                 if (Program.useLastIfShutdown) return true;
+
+                // we poll for the process 5 times a second - assume game is still running if that found a process
+                if (Elite.hadGameProc) return true;
+
                 return getGameProc() != null;
             }
         }
