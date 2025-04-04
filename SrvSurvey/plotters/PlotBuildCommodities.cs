@@ -85,6 +85,10 @@ namespace SrvSurvey.plotters
                     effectiveMarketId = primaryProject.marketId;
                     headerText = $"► {primaryProject.buildName} ({primaryProject.buildType})\r\n     ► {primaryProject.systemName}";
                 }
+                else
+                {
+                    Game.log($"Why no matching primaryBuildId?");
+                }
             }
             else
             {

@@ -47,7 +47,6 @@ namespace SrvSurvey
             {
                 // Human settlements aren't ready for App store yet
                 tabControl.Controls.Remove(tabSettlements);
-
                 btnSwapCache.Hide();
             }
 
@@ -76,6 +75,8 @@ namespace SrvSurvey
             checkBodyInfoMap.Enabled = checkBodyInfoOrbit.Enabled = checkBodyInfo.Checked;
 
             checkKeyChordsDirectX.Enabled = checkKeyChords.Checked;
+
+            groupColonization.setChildrenEnabled(Game.settings.buildProjects_TEST, checkColonization);
 
             if (game == null)
             {

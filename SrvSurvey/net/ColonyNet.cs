@@ -133,12 +133,13 @@ namespace SrvSurvey.game
 
         public async Task<Dictionary<string, int>> supply(string buildId, string cmdr, Dictionary<string, int> diff)
         {
-            //Game.log(diff.formatWithHeader($"Colony.supply: {buildId}", "\r\n\t"));
+            Game.log(diff.formatWithHeader($"Colony.supply: {buildId}", "\r\n\t"));
 
             var json1 = JsonConvert.SerializeObject(diff);
             var body = new StringContent(json1, Encoding.Default, "application/json");
             var url = $"{svcUri}/api/project/{buildId}/supply/{cmdr}";
             var response = await ColonyNet.client.PostAsync(url, body);
+            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             var json2 = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<Dictionary<string, int>>(json2)!;
@@ -158,6 +159,7 @@ namespace SrvSurvey.game
             var body = new StringContent(json1, Encoding.Default, "application/json");
             var url = $"{svcUri}/api/fc/{marketId}/cargo";
             var response = await ColonyNet.client.PatchAsync(url, body);
+            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             var json2 = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<Dictionary<string, int>>(json2)!;
@@ -191,6 +193,27 @@ namespace SrvSurvey.game
             var response = await ColonyNet.client.GetAsync($"{svcUri}/api/cmdr/{cmdr}/summary");
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<CmdrSummary>(json)!;
+            return obj;
+        }
+
+        public async Task<List<Project>> getCmdrActive(string cmdr)
+        {
+            Game.log($"Colony.getCmdrActive: {cmdr}");
+
+            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/cmdr/{cmdr}/active");
+            var json = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<List<Project>>(json)!;
+            return obj;
+        }
+
+        public async Task<string> getPrimary(string cmdr)
+        {
+            Game.log($"Colony.getPrimary: {cmdr}");
+
+            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/cmdr/{cmdr}/primary");
+            var json = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<string>(json)!;
+
             return obj;
         }
 

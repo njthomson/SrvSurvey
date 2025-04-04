@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.plotters;
+using System.Diagnostics;
 
 namespace SrvSurvey.game
 {
@@ -39,12 +40,17 @@ namespace SrvSurvey.game
 
             if (buildId == null)
             {
-                // fetch all projects
-                var summary = await Game.colony.getCmdrSummary(this.cmdr);
-                this.primaryBuildId = summary.primaryBuildId;
-
-                // keep ACTIVE projects only
-                this.projects = summary.projects.Where(p => !p.complete).ToList();
+                // fetch all ACTIVE projects and primaryBuildId
+                await Task.WhenAll(
+                    Game.colony.getPrimary(this.cmdr).continueOnMain(null, newPrimaryBuildId => this.primaryBuildId = newPrimaryBuildId, true),
+                    Game.colony.getCmdrActive(this.cmdr).continueOnMain(null, newProjects => this.projects = newProjects)
+                );
+                if (this.primaryBuildId != null && getProject(this.primaryBuildId) == null)
+                {
+                    Game.log($"Not found: primaryBuildId: ${primaryBuildId} ?");
+                    this.primaryBuildId = null;
+                    Debugger.Break();
+                }
             }
             else
             {
@@ -190,7 +196,7 @@ namespace SrvSurvey.game
                     Game.log(updatedCommodities.formatWithHeader($"Local updates applied:", "\r\n\t"));
 
                     // wait a bit then force plotter to re-render
-                    Task.Delay(1000).ContinueWith(t =>
+                    Task.Delay(500).ContinueWith(t =>
                     {
                         if (form != null && !form.IsDisposed)
                         {
@@ -218,7 +224,7 @@ namespace SrvSurvey.game
             }
 
             // update body name/num
-            if (body != null  && (proj.bodyNum != body.id || proj.bodyName != body.name))
+            if (body != null && (proj.bodyNum != body.id || proj.bodyName != body.name))
             {
                 Game.log($"Auto-update bodyName/bodyNum: {proj.bodyName} => {body.name} / {proj.bodyNum} => {body.id}");
                 updatedProject ??= new(proj.buildId);

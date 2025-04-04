@@ -87,17 +87,15 @@ namespace SrvSurvey
                     menuJourney.Items.RemoveAt(1);
             }
 
-            btnColonize.Enabled = Game.settings.buildProjects_TEST;
+            // disable colonization menu items if feature is disabled
+            if (!Game.settings.buildProjects_TEST) menuColonize.targetButton = null;
 
             Util.applyTheme(this);
         }
 
         private void Main_Load(object sender, EventArgs e)
         {
-            foreach (Control ctrl in this.Controls) ctrl.Enabled = false;
-            btnLogs.Enabled = true;
-            btnSettings.Enabled = true;
-            btnQuit2.Enabled = true;
+            this.setChildrenEnabled(false, btnLogs, btnSettings, btnQuit2);
             // toggling hide/show guarantee's we show in the OS taskbar
             this.Hide();
             this.Show();
@@ -274,7 +272,6 @@ namespace SrvSurvey
 
                         foreach (Control ctrl in this.Controls) ctrl.Enabled = true;
                         btnCodexShow.Enabled = FormShowCodex.allow;
-                        btnColonize.Enabled = Game.settings.buildProjects_TEST;
 
                         this.timer1.Start();
 
@@ -609,6 +606,7 @@ namespace SrvSurvey
             var activeBuildId = localBuildId ?? game?.cmdrColony?.primaryBuildId;
             var showCurrentProject = localBuildId != null && !string.IsNullOrEmpty(activeBuildId);
             menuCurrentProject.Visible = showCurrentProject;
+            menuPrimaryProject.Visible = showCurrentProject && (localBuildId == null || localBuildId != game?.cmdrColony.primaryBuildId);
 
             menuColonizeLine1.Visible = showCurrentProject || showMyProjects;
 
@@ -616,8 +614,11 @@ namespace SrvSurvey
             menuNewProject.Visible = showNewProject;
             menuColonizeLine2.Visible = showNewProject;
 
-            // highlight the outer button if we are docked
-            btnColonize.BackColor = localBuildId != null || showNewProject ? C.cyan : this.BackColor;
+            // highlight the outer button if we are docked at a project
+            if (localBuildId != null || showNewProject)
+                btnColonize.BackColor = C.cyan;
+            else
+                Util.applyTheme(btnColonize, Game.settings.darkTheme);
         }
 
         private void updateCommanderTexts()
@@ -1911,6 +1912,22 @@ namespace SrvSurvey
                 Util.openLink($"{ColonyNet.uxUri}/#build={activeBuildId}");
         }
 
+        private void menuPrimaryProject_Click(object sender, EventArgs e)
+        {
+            var localBuildId = game?.cmdrColony.getBuildId(game.lastDocked);
+            if (game == null || string.IsNullOrEmpty(localBuildId)) return;
+
+            btnColonize.Enabled = false;
+            Game.colony.setPrimary(game.cmdrColony.cmdr, localBuildId).continueOnMain(this, () =>
+            {
+                game.cmdrColony.primaryBuildId = localBuildId;
+                game.cmdrColony.Save();
+
+                this.btnColonize.Enabled = true;
+                this.updateColonizationMenuItems();
+            });
+        }
+
         private void menuNewProject_Click(object sender, EventArgs e)
         {
             if (game?.cmdrColony != null)
@@ -1921,13 +1938,13 @@ namespace SrvSurvey
         {
             if (game?.cmdrColony == null) return;
 
-            btnColonize.BackColor = this.BackColor;
+            Util.applyTheme(btnColonize, Game.settings.darkTheme);
             btnColonize.Enabled = false;
             Application.DoEvents();
 
             game.cmdrColony.fetchLatest().continueOnMain(this, () =>
             {
-                btnColonize.Enabled = true;
+                this.btnColonize.Enabled = true;
                 this.updateColonizationMenuItems();
             });
         }
@@ -1987,6 +2004,21 @@ namespace SrvSurvey
             // */
         }
         private MainView mv;
+
+        private void btnColonize_Click(object sender, EventArgs e)
+        {
+            // no-op if colonization is enabled
+            if (Game.settings.buildProjects_TEST) return;
+            var rslt = MessageBox.Show("Colonization features will track cargo supplied to construction sites that will be uploaded to\nhttps://ravencolonial.com\n\nThis can be disabled in Settings > External Data.\n\nEnabling this requires restarting SrvSurvey.\nWould you like to proceed?", "SrvSurvey", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (rslt == DialogResult.Yes)
+            {
+                Game.log("Enabling buildProjects_TEST and restarting");
+                Game.settings.buildProjects_TEST = true;
+                Game.settings.Save();
+                Program.forceRestart(Program.forceFid);
+            }
+        }
+
     }
 }
 

@@ -106,6 +106,7 @@ namespace SrvSurvey
             menuColonizeLine1 = new ToolStripSeparator();
             menuMyProjects = new ToolStripMenuItem();
             menuCurrentProject = new ToolStripMenuItem();
+            menuPrimaryProject = new ToolStripMenuItem();
             menuColonizeLine2 = new ToolStripSeparator();
             menuNewProject = new ToolStripMenuItem();
             menuGuardians = new ButtonContextMenuStrip(components);
@@ -115,6 +116,7 @@ namespace SrvSurvey
             toolStripSeparator5 = new ToolStripSeparator();
             btnRuinsMap = new ToolStripMenuItem();
             btnRuinsOrigin = new ToolStripMenuItem();
+            toolTip1 = new ToolTip(components);
             groupBox1.SuspendLayout();
             groupCmdr.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -253,6 +255,7 @@ namespace SrvSurvey
             btnNextWindow.Name = "btnNextWindow";
             btnNextWindow.Size = new Size(20, 20);
             btnNextWindow.TabIndex = 6;
+            toolTip1.SetToolTip(btnNextWindow, "Switch overlays to the next game window");
             btnNextWindow.UseVisualStyleBackColor = false;
             btnNextWindow.Visible = false;
             btnNextWindow.Click += btnNextWindow_Click;
@@ -270,6 +273,7 @@ namespace SrvSurvey
             btnCopyLocation.Name = "btnCopyLocation";
             btnCopyLocation.Size = new Size(20, 20);
             btnCopyLocation.TabIndex = 2;
+            toolTip1.SetToolTip(btnCopyLocation, "Copy current system/body name to clipboard");
             btnCopyLocation.UseVisualStyleBackColor = false;
             btnCopyLocation.Click += btnCopyLocation_Click;
             // 
@@ -364,6 +368,7 @@ namespace SrvSurvey
             btnPredictions.Size = new Size(93, 21);
             btnPredictions.TabIndex = 0;
             btnPredictions.Text = "Predictions";
+            toolTip1.SetToolTip(btnPredictions, "View which species are expected in the current system");
             btnPredictions.UseVisualStyleBackColor = false;
             btnPredictions.Click += btnPredictions_Click;
             // 
@@ -491,6 +496,7 @@ namespace SrvSurvey
             btnCodexShow.Name = "btnCodexShow";
             btnCodexShow.Size = new Size(46, 36);
             btnCodexShow.TabIndex = 12;
+            toolTip1.SetToolTip(btnCodexShow, "See stock images of species expected on this planet.");
             btnCodexShow.UseVisualStyleBackColor = false;
             btnCodexShow.Click += btnCodexShow_Click;
             // 
@@ -756,6 +762,7 @@ namespace SrvSurvey
             btnCodexBingo.Size = new Size(75, 21);
             btnCodexBingo.TabIndex = 0;
             btnCodexBingo.Text = "Bingo";
+            toolTip1.SetToolTip(btnCodexBingo, "See how much of everything you have scanned");
             btnCodexBingo.UseVisualStyleBackColor = false;
             btnCodexBingo.Click += btnCodexBingo_Click;
             // 
@@ -802,6 +809,7 @@ namespace SrvSurvey
             btnSearch.Size = new Size(150, 40);
             btnSearch.TabIndex = 22;
             btnSearch.Text = "🔎 Search";
+            toolTip1.SetToolTip(btnSearch, "Tools to search for systems in spheres or cubes of space");
             btnSearch.UseVisualStyleBackColor = false;
             // 
             // lblBig
@@ -898,11 +906,11 @@ namespace SrvSurvey
             btnTravel.Size = new Size(150, 40);
             btnTravel.TabIndex = 24;
             btnTravel.Text = "🚀 Travel";
+            toolTip1.SetToolTip(btnTravel, "Tools to navigate to specific locations, or keep records of a long journey or expedition");
             btnTravel.UseVisualStyleBackColor = false;
             // 
             // btnColonize
             // 
-            btnColonize.Enabled = false;
             btnColonize.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnColonize.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnColonize.Font = new Font("Segoe UI Emoji", 15.75F);
@@ -912,7 +920,9 @@ namespace SrvSurvey
             btnColonize.Size = new Size(169, 40);
             btnColonize.TabIndex = 25;
             btnColonize.Text = "🚧 Colonize";
+            toolTip1.SetToolTip(btnColonize, "Tools and features to help with system colonization");
             btnColonize.UseVisualStyleBackColor = false;
+            btnColonize.Click += btnColonize_Click;
             // 
             // btnGuardian
             // 
@@ -926,22 +936,23 @@ namespace SrvSurvey
             btnGuardian.TabIndex = 23;
             btnGuardian.Text = "🗿 Guardian";
             btnGuardian.TextImageRelation = TextImageRelation.ImageBeforeText;
+            toolTip1.SetToolTip(btnGuardian, "Tools to help find, navigate and survey Guardian sites");
             btnGuardian.UseVisualStyleBackColor = true;
             // 
             // menuColonize
             // 
             menuColonize.BackColor = SystemColors.ControlLight;
             menuColonize.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            menuColonize.Items.AddRange(new ToolStripItem[] { menuRefreshProjects, menuColonizeLine1, menuMyProjects, menuCurrentProject, menuColonizeLine2, menuNewProject });
+            menuColonize.Items.AddRange(new ToolStripItem[] { menuRefreshProjects, menuColonizeLine1, menuMyProjects, menuCurrentProject, menuPrimaryProject, menuColonizeLine2, menuNewProject });
             menuColonize.Name = "menuColonize";
             menuColonize.RenderMode = ToolStripRenderMode.System;
-            menuColonize.Size = new Size(229, 168);
+            menuColonize.Size = new Size(220, 206);
             menuColonize.targetButton = btnColonize;
             // 
             // menuRefreshProjects
             // 
             menuRefreshProjects.Name = "menuRefreshProjects";
-            menuRefreshProjects.Size = new Size(228, 38);
+            menuRefreshProjects.Size = new Size(219, 38);
             menuRefreshProjects.Text = "Refresh data";
             menuRefreshProjects.ToolTipText = "Re-fetch colonization data";
             menuRefreshProjects.Click += menuRefreshProjects_Click;
@@ -949,14 +960,14 @@ namespace SrvSurvey
             // menuColonizeLine1
             // 
             menuColonizeLine1.Name = "menuColonizeLine1";
-            menuColonizeLine1.Size = new Size(225, 6);
+            menuColonizeLine1.Size = new Size(216, 6);
             // 
             // menuMyProjects
             // 
             menuMyProjects.Image = Properties.ImageResources.rcc_32;
             menuMyProjects.ImageScaling = ToolStripItemImageScaling.None;
             menuMyProjects.Name = "menuMyProjects";
-            menuMyProjects.Size = new Size(228, 38);
+            menuMyProjects.Size = new Size(219, 38);
             menuMyProjects.Text = "My projects";
             menuMyProjects.ToolTipText = "View all your current projects";
             menuMyProjects.Click += menuMyProjects_Click;
@@ -966,22 +977,29 @@ namespace SrvSurvey
             menuCurrentProject.Image = Properties.ImageResources.ruler;
             menuCurrentProject.ImageScaling = ToolStripItemImageScaling.None;
             menuCurrentProject.Name = "menuCurrentProject";
-            menuCurrentProject.Size = new Size(228, 38);
-            menuCurrentProject.Text = "Current project";
+            menuCurrentProject.Size = new Size(219, 38);
+            menuCurrentProject.Text = "Local project";
             menuCurrentProject.ToolTipText = "View the local or your primary project";
             menuCurrentProject.Click += menuCurrentProject_Click;
+            // 
+            // menuPrimaryProject
+            // 
+            menuPrimaryProject.Name = "menuPrimaryProject";
+            menuPrimaryProject.Size = new Size(219, 38);
+            menuPrimaryProject.Text = "Set primary";
+            menuPrimaryProject.Click += menuPrimaryProject_Click;
             // 
             // menuColonizeLine2
             // 
             menuColonizeLine2.Name = "menuColonizeLine2";
-            menuColonizeLine2.Size = new Size(225, 6);
+            menuColonizeLine2.Size = new Size(216, 6);
             // 
             // menuNewProject
             // 
             menuNewProject.Image = Properties.ImageResources.ruler;
             menuNewProject.ImageScaling = ToolStripItemImageScaling.None;
             menuNewProject.Name = "menuNewProject";
-            menuNewProject.Size = new Size(228, 38);
+            menuNewProject.Size = new Size(219, 38);
             menuNewProject.Text = "New project ...";
             menuNewProject.ToolTipText = "Create a new build project";
             menuNewProject.Click += menuNewProject_Click;
@@ -1178,5 +1196,7 @@ namespace SrvSurvey
         private ToolStripMenuItem btnRuinsMap;
         private ToolStripMenuItem btnRuinsOrigin;
         private Button btnNextWindow;
+        private ToolTip toolTip1;
+        private ToolStripMenuItem menuPrimaryProject;
     }
 }

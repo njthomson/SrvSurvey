@@ -610,11 +610,7 @@ namespace SrvSurvey.game
                 this.journey?.doCatchup(this.journals!);
 
                 if (Game.settings.buildProjects_TEST)
-                    this.cmdrColony.fetchLatest().ContinueWith(t =>
-                    {
-                        if (t.Exception != null || !t.IsCompletedSuccessfully)
-                            Util.isFirewallProblem(t.Exception);
-                    });
+                    this.cmdrColony.fetchLatest().justDoIt();
             }
 
             // if we have MainMenu music - we know we're not actively playing
@@ -1500,7 +1496,7 @@ namespace SrvSurvey.game
                     inventoryItem.Count -= delta;
 
                     // update linked FC?
-                    if (lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(lastDocked.MarketID))
+                    if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(lastDocked.MarketID))
                     {
                         Game.log($"Transferring {delta}x {transferItem.Type} to tracked marketId: {lastDocked.MarketID}");
                         fcTrackedCargo.init(transferItem.Type);
@@ -1513,7 +1509,7 @@ namespace SrvSurvey.game
                     inventoryItem.Count += delta;
 
                     // update linked FC?
-                    if (lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(lastDocked.MarketID))
+                    if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(lastDocked.MarketID))
                     {
                         Game.log($"Transferring {delta}x {transferItem.Type} from tracked marketId: {lastDocked.MarketID}");
                         fcTrackedCargo.init(transferItem.Type);
@@ -1588,7 +1584,7 @@ namespace SrvSurvey.game
             item.Count += entry.Count;
 
             // track purchases from linked FleetCarriers
-            if (lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(entry.MarketId))
+            if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(entry.MarketId))
             {
                 Game.log($"Buying {entry.Count}x {entry.Type} from linked FC marketId: {entry.MarketId}");
                 Game.colony.supplyFC(entry.MarketId, entry.Type, -entry.Count).justDoIt();
@@ -1602,7 +1598,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(MarketSell entry)
         {
             // tracked sales to linked FleetCarriers
-            if (lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(entry.MarketId))
+            if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(entry.MarketId))
             {
                 Game.log($"Selling {entry.Count}x {entry.Type} to linked FC marketId: {entry.MarketId}");
                 Game.colony.supplyFC(entry.MarketId, entry.Type, entry.Count).justDoIt();
