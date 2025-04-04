@@ -1544,8 +1544,19 @@ namespace SrvSurvey.game
             // TODO: Remove with confirmation that diff tracking behaves
             //Game.log(this.cargoFile.Inventory.formatWithHeader($"BEFORE read: {cargoFile.timestamp} | {cargoFile.Count}", "\r\n\t"));
 
-            // force re-read the cargo file
-            CargoFile2.read(true);
+            if (entry.Count > 0 && entry.Inventory.Count > 0)
+            {
+                // use the inventory contained in this event
+                this.cargoFile.timestamp = entry.timestamp;
+                this.cargoFile.Vessel = entry.Vessel;
+                this.cargoFile.Count = entry.Count;
+                this.cargoFile.Inventory = entry.Inventory;
+            }
+            else
+            {
+                // force re-read the cargo file
+                CargoFile2.read(true);
+            }
 
             // TODO: Remove with confirmation that diff tracking behaves
             //Game.log(this.cargoFile.Inventory.formatWithHeader($"AFTER read: {cargoFile.timestamp} | {cargoFile.Count}", "\r\n\t"));
