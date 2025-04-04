@@ -13,11 +13,31 @@ namespace SrvSurvey.plotters
                 && Game.activeGame?.cmdrColony?.projects.Count > 0
                 && (
                     (PlotBuildCommodities.forceShow && !Game.activeGame.fsdJumping)
-                    || (Game.activeGame.isMode(GameMode.StationServices) && (
-                            Game.activeGame.marketEventSeen || Game.activeGame.cmdrColony.has(Game.activeGame.lastDocked))
+                    || (Game.activeGame.isMode(GameMode.StationServices)
+                        && (Game.activeGame.marketEventSeen || Game.activeGame.cmdrColony.has(Game.activeGame.lastDocked))
                     )
                 )
                 ;
+        }
+
+        public static void showButCleanFirst()
+        {
+            var form = Program.getPlotter<PlotBuildCommodities>();
+            if (form != null && PlotBuildCommodities.forceShow)
+            {
+                var isDockedAtConstructionSite = Game.activeGame?.lastDocked != null
+                    && ColonyData.isConstructionSite(Game.activeGame.lastDocked)
+                    && Game.activeGame?.isMode(GameMode.StationServices) == true;
+
+                // TODO: Is this really needed?
+                if (isDockedAtConstructionSite && form.localConstructionShipProjectTitle != null)
+                    form.localConstructionShipProjectTitle = null;
+            }
+            else
+            {
+                // just show the plotter
+                Program.showPlotter<PlotBuildCommodities>();
+            }
         }
 
         /// <summary> When true, makes the plotter become visible </summary>

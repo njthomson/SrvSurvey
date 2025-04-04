@@ -933,7 +933,7 @@ namespace SrvSurvey.game
                         // fabricate a Docked event with what we have on this Location event
                         this.lastEverDocked = locationEvent.asDocked(this.currentShip.type);
                         this.lastDocked = this.lastEverDocked;
-                    }    
+                    }
                     return false;
                 }
 
@@ -1632,7 +1632,7 @@ namespace SrvSurvey.game
             }
 
             if (PlotBuildCommodities.allowPlotter)
-                Program.showPlotter<PlotBuildCommodities>();
+                PlotBuildCommodities.showButCleanFirst();
         }
 
         private static Dictionary<string, string> inventoryItemNameMap = new Dictionary<string, string>()
@@ -2544,13 +2544,6 @@ namespace SrvSurvey.game
             // end the dock-to-dock timer
             if (Game.settings.logDockToDockTimes && dockTimer != null)
                 dockTimer.onJournalEntry(entry);
-
-            if (PlotBuildCommodities.forceShow)
-            {
-                // stop showing this - it's about to be wrong
-                PlotBuildCommodities.forceShow = false;
-                Program.closePlotter<PlotBuildCommodities>();
-            }
 
             if (Game.settings.buildProjects_TEST)
             {

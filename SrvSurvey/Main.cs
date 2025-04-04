@@ -414,7 +414,7 @@ namespace SrvSurvey
                 Program.closePlotter<PlotStationInfo>();
 
             if (gameIsActive && PlotBuildCommodities.allowPlotter)
-                Program.showPlotter<PlotBuildCommodities>();
+                PlotBuildCommodities.showButCleanFirst();
             else
                 Program.closePlotter<PlotBuildCommodities>();
 
