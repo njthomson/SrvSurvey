@@ -104,6 +104,16 @@ namespace SrvSurvey.plotters
                 Elite.setFocusED();
                 this.Invalidate();
             }
+            else if (Game.settings.forceRefocusOnPlotterActivate)
+            {
+                Program.defer (() =>
+                {
+                    Program.defer(() =>
+                    {
+                        Elite.setFocusED();
+                    });
+                });
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -190,7 +200,8 @@ namespace SrvSurvey.plotters
         #endregion
 
         /// <summary> When true, forces zero Opacity </summary>
-        public bool forceHide {
+        public bool forceHide
+        {
             get => this._forceHide;
             set
             {

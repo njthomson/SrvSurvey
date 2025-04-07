@@ -157,8 +157,14 @@ namespace SrvSurvey
 
             // exit early if the game does not have focus
             if (!Elite.focusElite && !Elite.focusSrvSurvey)
+            {
                 //if (!Debugger.IsAttached && (!Elite.focusElite || Elite.focusSrvSurvey)) // Maybe not "|| Elite.focusSrvSurvey" ?
-                return (T?)activePlotters.GetValueOrDefault(formType.Name);
+                T? match = (T?)activePlotters.GetValueOrDefault(formType.Name);
+                if (match != null && !match.IsDisposed)
+                    return match;
+                else if (match != null && match.IsDisposed)
+                    activePlotters.Remove(formType.Name);
+            }
 
             // remove tomb if present
             if (Game.settings.overlayTombs && tombs.ContainsKey(formType.Name))

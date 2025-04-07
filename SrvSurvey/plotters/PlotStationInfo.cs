@@ -20,6 +20,9 @@ namespace SrvSurvey.plotters
                 ;
         }
 
+        /// <summary> When true, makes the plotter become visible IF there is a valid body to show </summary>
+        public static bool forceShow = false;
+
         private PlotStationInfo() : base()
         {
             this.Size = Size.Empty;

@@ -80,6 +80,7 @@ namespace SrvSurvey
             { KeyAction.copyNextBoxel, "CTRL C" },
             { KeyAction.showFssInfo, "ALT F" },
             { KeyAction.showBodyInfo, "ALT B" },
+            { KeyAction.showStationInfo, "ALT P" },
             { KeyAction.showColonyShopping, "ALT S" },
             { KeyAction.refreshColonyData, "ALT CTRL S" },
             { KeyAction.showSystemNotes, "CTRL SHIFT N" },
@@ -112,6 +113,7 @@ namespace SrvSurvey
                 case KeyAction.pasteGalMap: return pasteGalMap();
                 case KeyAction.showFssInfo: return toggleFSSInfo();
                 case KeyAction.showBodyInfo: return toggleBodyInfo();
+                case KeyAction.showStationInfo: return toggleStationInfo();
                 case KeyAction.showColonyShopping: return toggleColonyShopping();
                 case KeyAction.refreshColonyData: return Game.activeGame?.cmdrColony.fetchLatest().justDoIt() ?? true;
                 case KeyAction.showSystemNotes: return showSystemNotes();
@@ -305,6 +307,31 @@ namespace SrvSurvey
             return true;
         }
 
+        private static bool toggleStationInfo()
+        {
+            var stationInfo = Program.getPlotter<PlotStationInfo>();
+            if (stationInfo == null)
+            {
+                // force show if no plotter
+                PlotStationInfo.forceShow = true;
+                Program.showPlotter<PlotStationInfo>();
+            }
+            else if (PlotStationInfo.forceShow)
+            {
+                // unforce (hide)
+                PlotStationInfo.forceShow = false;
+                Program.closePlotter<PlotStationInfo>();
+            }
+            else
+            {
+                // the plotter exists and was not forced ... toggle forceHide on it
+                stationInfo.forceHide = !stationInfo.forceHide;
+                if (!stationInfo.forceHide) PlotStationInfo.forceShow = false;
+            }
+
+            return true;
+        }
+
         private static bool toggleColonyShopping()
         {
             var plotter = Program.getPlotter<PlotBuildCommodities>();
@@ -381,6 +408,8 @@ namespace SrvSurvey
         showFssInfo,
         /// <summary> Force show PlotBodyInfo </summary>
         showBodyInfo,
+        /// <summary> Force show PlotStationInfo </summary>
+        showStationInfo,
         /// <summary> Make the system notes window appear </summary>
         showSystemNotes,
         /// <summary> Make the PlotBuildNew appear </summary>

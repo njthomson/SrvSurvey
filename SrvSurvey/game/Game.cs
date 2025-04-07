@@ -1544,7 +1544,7 @@ namespace SrvSurvey.game
             // TODO: Remove with confirmation that diff tracking behaves
             //Game.log(this.cargoFile.Inventory.formatWithHeader($"BEFORE read: {cargoFile.timestamp} | {cargoFile.Count}", "\r\n\t"));
 
-            if (entry.Count > 0 && entry.Inventory.Count > 0)
+            if (entry.Count > 0 && entry.Inventory?.Count > 0)
             {
                 // use the inventory contained in this event
                 this.cargoFile.timestamp = entry.timestamp;
@@ -3084,7 +3084,8 @@ namespace SrvSurvey.game
             this.systemData.Save();
 
             Program.showPlotter<PlotTrackers>()?.prepTrackers();
-            Program.showPlotter<PlotMiniTrack>();
+            if (PlotMiniTrack.hasQuickTrackers)
+                Program.showPlotter<PlotMiniTrack>();
         }
 
         public void clearAllBookmarks()

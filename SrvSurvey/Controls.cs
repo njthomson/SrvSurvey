@@ -386,7 +386,7 @@ namespace SrvSurvey
                 this.SelectedItem = Game.settings.preferredCommander;
             else if (!string.IsNullOrEmpty(Game.settings.lastCommander))
                 this.SelectedItem = Game.settings.lastCommander;
-            else
+            else if (this.Items.Count > 0)
                 this.SelectedIndex = 0;
         }
 

@@ -237,6 +237,8 @@ namespace SrvSurvey
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public Notifications allowNotifications = new();
 
+        public bool forceRefocusOnPlotterActivate = false;
+
         #region loading / saving
 
         static readonly string settingsPath = Path.Combine(Program.dataFolder, "settings.json");
