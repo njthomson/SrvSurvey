@@ -236,6 +236,36 @@ namespace SrvSurvey.game
                 Game.colony.update(updatedProject).justDoIt();
         }
 
+        public void updateNeeds(ColonisationConstructionDepot entry, long id64)
+        {
+            var proj = this.getProject(id64, entry.MarketID);
+            if (proj == null) return;
+
+            var needed = entry.ResourcesRequired.ToDictionary(
+                r => r.Name.Substring(1).Replace("_name;", ""),
+                r => r.RequiredAmount - r.ProvidedAmount
+            );
+            var totalDiff = needed.Keys
+                .Select(k => needed[k] - proj.commodities.GetValueOrDefault(k, 0)).Sum();
+            if (totalDiff != 0)
+            {
+                var foo = new ProjectUpdate(proj.buildId)
+                {
+                    commodities = needed,
+                };
+
+                Game.colony.update(foo).continueOnMain(null, updatedProj =>
+                {
+                    // update in-memrory track
+                    var idx = this.projects.FindIndex(p => p.buildId == updatedProj.buildId);
+                    this.projects[idx] = updatedProj;
+                    this.Save();
+
+                    Game.log(updatedProj);
+                }).justDoIt();
+            }
+        }
+
         /* TODO: coming soon ...
         public Dictionary<string, int> sumProjectLinkedFC(Project proj)
         {

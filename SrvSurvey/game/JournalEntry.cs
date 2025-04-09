@@ -1394,4 +1394,27 @@ namespace SrvSurvey
         public bool IsPlayer;
         public int CombatRank;
     }
+
+    class ColonisationConstructionDepot : JournalEntry
+    {
+        // { "timestamp":"2025-04-08T23:47:39Z", "event":"ColonisationConstructionDepot", "MarketID":3951663874, "ConstructionProgress":0.033023, "ConstructionComplete":false, "ConstructionFailed":false, "ResourcesRequired":[ { "Name":"$aluminium_name;", "Name_Localised":"Aluminium", "RequiredAmount":480, "ProvidedAmount":0, "Payment":3239 }, { "Name":"$ceramiccomposites_name;", "Name_Localised":"Ceramic Composites", "RequiredAmount":498, "ProvidedAmount":0, "Payment":724 }, { "Name":"$cmmcomposite_name;", "Name_Localised":"CMM Composite", "RequiredAmount":4518, "ProvidedAmount":0, "Payment":6788 }, { "Name":"$computercomponents_name;", "Name_Localised":"Computer Components", "RequiredAmount":61, "ProvidedAmount":0, "Payment":1112 }, { "Name":"$copper_name;", "Name_Localised":"Copper", "RequiredAmount":240, "ProvidedAmount":0, "Payment":1050 }, { "Name":"$foodcartridges_name;", "Name_Localised":"Food Cartridges", "RequiredAmount":91, "ProvidedAmount":0, "Payment":673 }, { "Name":"$fruitandvegetables_name;", "Name_Localised":"Fruit and Vegetables", "RequiredAmount":51, "ProvidedAmount":0, "Payment":865 }, { "Name":"$insulatingmembrane_name;", "Name_Localised":"Insulating Membrane", "RequiredAmount":341, "ProvidedAmount":0, "Payment":11788 }, { "Name":"$liquidoxygen_name;", "Name_Localised":"Liquid oxygen", "RequiredAmount":1865, "ProvidedAmount":0, "Payment":2260 }, { "Name":"$medicaldiagnosticequipment_name;", "Name_Localised":"Medical Diagnostic Equipment", "RequiredAmount":13, "ProvidedAmount":0, "Payment":3609 }, { "Name":"$nonlethalweapons_name;", "Name_Localised":"Non-Lethal Weapons", "RequiredAmount":13, "ProvidedAmount":0, "Payment":2503 }, { "Name":"$polymers_name;", "Name_Localised":"Polymers", "RequiredAmount":521, "ProvidedAmount":0, "Payment":682 }, { "Name":"$powergenerators_name;", "Name_Localised":"Power Generators", "RequiredAmount":19, "ProvidedAmount":0, "Payment":3072 }, { "Name":"$semiconductors_name;", "Name_Localised":"Semiconductors", "RequiredAmount":69, "ProvidedAmount":0, "Payment":1526 }, { "Name":"$steel_name;", "Name_Localised":"Steel", "RequiredAmount":6680, "ProvidedAmount":720, "Payment":5057 }, { "Name":"$superconductors_name;", "Name_Localised":"Superconductors", "RequiredAmount":116, "ProvidedAmount":0, "Payment":7657 }, { "Name":"$titanium_name;", "Name_Localised":"Titanium", "RequiredAmount":5471, "ProvidedAmount":0, "Payment":5360 }, { "Name":"$water_name;", "Name_Localised":"Water", "RequiredAmount":717, "ProvidedAmount":0, "Payment":662 }, { "Name":"$waterpurifiers_name;", "Name_Localised":"Water Purifiers", "RequiredAmount":39, "ProvidedAmount":0, "Payment":849 } ] }
+
+        public long MarketID;
+        public double ConstructionProgress;
+        public bool ConstructionComplete;
+        public bool ConstructionFailed;
+        public List<ResourceRequired> ResourcesRequired;
+    }
+
+    public class ResourceRequired
+    {
+        // { "Name":"$waterpurifiers_name;", "Name_Localised":"Water Purifiers", "RequiredAmount":39, "ProvidedAmount":0, "Payment":849 }
+
+        public string Name;
+        public string Name_Localised;
+        public int RequiredAmount;
+        public int ProvidedAmount;
+        public int Payment;
+    }
+
 }

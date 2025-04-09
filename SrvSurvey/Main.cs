@@ -38,6 +38,8 @@ namespace SrvSurvey
             if (Debugger.IsAttached) this.Text += " (dbg)";
             lblNotInstalled.BringToFront();
             lblFullScreen.BringToFront();
+            lblFullScreen.ForeColor = Color.White;
+            lblNotInstalled.ForeColor = Color.White;
             comboDev.Items.AddRange(comboDevItems);
             comboDev.SelectedIndex = 0;
             PlotPos.prepPlotterPositions();

@@ -1624,6 +1624,11 @@ namespace SrvSurvey.game
             }
         }
 
+        private void onJournalEntry(ColonisationConstructionDepot entry)
+        {
+            cmdrColony.updateNeeds(entry, systemData!.address);
+        }
+
         public bool marketBuyOnFC = false;
         public bool marketEventSeen = false;
         public HashSet<long> fcMarketIds = new();

@@ -1,14 +1,5 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.Properties;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SrvSurvey.forms
 {
@@ -82,6 +73,13 @@ namespace SrvSurvey.forms
                     // add current cmdrs
                     commanders = new() { { game.Commander!, new() } }
                 };
+
+                var lastDepot = game?.journals?.FindEntryByType<ColonisationConstructionDepot>(-1, true);
+                if (lastDepot != null && game?.lastDocked != null && lastDepot.MarketID == game.lastDocked.MarketID)
+                {
+                    var needed = lastDepot.ResourcesRequired.ToDictionary(r => r.Name.Substring(1).Replace("_name;", ""), r => r.RequiredAmount - r.ProvidedAmount);
+                    createProject.commodities = needed;
+                }
 
                 Game.log($"Creating: '{createProject.buildName}' in '{createProject.systemName}' ({createProject.systemAddress}/{createProject.marketId})");
 
