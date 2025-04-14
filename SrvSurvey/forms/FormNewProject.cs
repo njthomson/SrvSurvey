@@ -15,6 +15,7 @@ namespace SrvSurvey.forms
             var allCosts = Game.colony.loadDefaultCosts();
             var sourceCosts = allCosts
                 //.OrderBy(c => c.ToString())
+                .Where(r => (r.location == "orbital") == (game.status.PlanetRadius == 0))
                 .ToDictionary(c => c.buildType, c => c.ToString());
             this.comboBuildType.DataSource = new BindingSource(sourceCosts, null);
             this.comboBuildType.DisplayMember = "Value";
@@ -25,17 +26,7 @@ namespace SrvSurvey.forms
 
             var lastDocked = game.lastDocked;
             if (lastDocked != null)
-            {
-                var newName = lastDocked.StationName == ColonyData.SystemColonisationShip
-                    ? "Primary port"
-                    : lastDocked.StationName
-                        .Replace("Planetary Construction Site:", "")
-                        .Replace("Orbital Construction Site:", "")
-                        .Trim()
-                    ?? "";
-
-                txtName.Text = newName;
-            }
+                txtName.Text = ColonyData.getDefaultProjectName(lastDocked);
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -51,7 +42,15 @@ namespace SrvSurvey.forms
         private void createProject()
         {
             var lastDocked = game.lastDocked;
-            if (lastDocked == null) return;
+            if (lastDocked == null || game == null) return;
+
+            var lastDepot = game.lastColonisationConstructionDepot;
+            if (lastDepot == null)
+            {
+                Game.log("No game.lastColonisationConstructionDepot");
+                MessageBox.Show(this, "Required items not known. Please enter Construction Services and try again.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Question);
+                return;
+            }
 
             try
             {
@@ -74,11 +73,11 @@ namespace SrvSurvey.forms
                     commanders = new() { { game.Commander!, new() } }
                 };
 
-                var lastDepot = game?.journals?.FindEntryByType<ColonisationConstructionDepot>(-1, true);
-                if (lastDepot != null && game?.lastDocked != null && lastDepot.MarketID == game.lastDocked.MarketID)
+                if (lastDepot != null && game.lastDocked != null && lastDepot.MarketID == game.lastDocked.MarketID)
                 {
                     var needed = lastDepot.ResourcesRequired.ToDictionary(r => r.Name.Substring(1).Replace("_name;", ""), r => r.RequiredAmount - r.ProvidedAmount);
                     createProject.commodities = needed;
+                    createProject.maxNeed = lastDepot.ResourcesRequired.Sum(r => r.RequiredAmount);
                 }
 
                 Game.log($"Creating: '{createProject.buildName}' in '{createProject.systemName}' ({createProject.systemAddress}/{createProject.marketId})");

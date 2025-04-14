@@ -241,6 +241,7 @@ namespace SrvSurvey
         // { "timestamp":"2024-06-28T02:10:59Z", "event":"Docked", "StationName":"Crellin Genetics Installation", "StationType":"OnFootSettlement", "Taxi":false, "Multicrew":false, "StarSystem":"Lacaille 9352", "SystemAddress":11666070709673, "MarketID":3854458880, "StationFaction":{ "Name":"Quam Singulari" }, "StationGovernment":"$government_Democracy;", "StationGovernment_Localised":"Democracy", "StationAllegiance":"Federation", "StationServices":[ "dock", "autodock", "blackmarket", "commodities", "contacts", "exploration", "missions", "refuel", "repair", "engineer", "missionsgenerated", "facilitator", "flightcontroller", "stationoperations", "searchrescue", "stationMenu" ], "StationEconomy":"$economy_HighTech;", "StationEconomy_Localised":"High Tech", "StationEconomies":[ { "Name":"$economy_HighTech;", "Name_Localised":"High Tech", "Proportion":1.000000 } ], "DistFromStarLS":1062.028204, "Wanted":true, "ActiveFine":true, "LandingPads":{ "Small":1, "Medium":0, "Large":0 } }
 
         public string StationName;
+        public string? StationName_Localised;
         public StationType StationType;
         public bool Taxi;
         public bool Multicrew;
@@ -1409,7 +1410,6 @@ namespace SrvSurvey
     public class ResourceRequired
     {
         // { "Name":"$waterpurifiers_name;", "Name_Localised":"Water Purifiers", "RequiredAmount":39, "ProvidedAmount":0, "Payment":849 }
-
         public string Name;
         public string Name_Localised;
         public int RequiredAmount;
@@ -1417,4 +1417,18 @@ namespace SrvSurvey
         public int Payment;
     }
 
+    class ColonisationContribution : JournalEntry
+    {
+        // { "timestamp":"2025-04-14T03:25:34Z", "event":"ColonisationContribution", "MarketID":3955335426, "Contributions":[ { "Name":"$Water_name;", "Name_Localised":"Water", "Amount":1 } ] }
+        public long MarketID;
+        public List<Contribution> Contributions;
+    }
+
+    public class Contribution
+    {
+        // { "Name":"$Water_name;", "Name_Localised":"Water", "Amount":1 }
+        public string Name;
+        public string Name_Localised;
+        public int Amount;
+    }
 }

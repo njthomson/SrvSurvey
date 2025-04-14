@@ -16,7 +16,6 @@ namespace SrvSurvey.plotters
             get => Game.settings.autoShowPlotStationInfo_TEST
                 && Game.activeGame?.systemData != null
                 && Game.activeGame.isMode(GameMode.ExternalPanel)
-                // destination is a Station within the current system
                 ;
         }
 
@@ -74,6 +73,14 @@ namespace SrvSurvey.plotters
             this.Invalidate();
         }
 
+        public override void setOpacity(double newOpacity)
+        {
+            if (this.station == null)
+                newOpacity = 0;
+
+            base.setOpacity(newOpacity);
+        }
+
         protected override void onPaintPlotter(PaintEventArgs e)
         {
             if (this.IsDisposed) return;
@@ -89,8 +96,36 @@ namespace SrvSurvey.plotters
             newLine(true);
             drawTextAt2(indent, station.type, GameColors.Fonts.gothic_9);
             newLine(true);
-            drawTextAt2(indent, station.primaryEconomy, GameColors.Fonts.gothic_9);
-            newLine(+ten, true);
+            // largest pad
+            string? largestPad = null;
+            if (station.landingPads?.Large > 0) largestPad = "Large";
+            else if (station.landingPads?.Medium > 0) largestPad = "Medium";
+            else if (station.landingPads?.Small > 0) largestPad = "Small";
+            if (largestPad != null)
+            {
+                drawTextAt2(indent, $"Landing pads: {largestPad}", GameColors.Fonts.gothic_9);
+                newLine(true);
+            }
+
+            //if (station.economies.Count )
+            if (station.economies == null)
+            {
+                drawTextAt2(indent, station.primaryEconomy, GameColors.Fonts.gothic_9);
+                newLine(+ten, true);
+            }
+            else
+            {
+                dty += ten;
+                drawTextAt2(eight, $"Economy:");
+                newLine(true);
+
+                foreach (var entry in station.economies)
+                {
+                    drawTextAt2(indent, $"{entry.Key}: {entry.Value}%", GameColors.Fonts.gothic_9);
+                    newLine(true);
+                }
+                dty += 10;
+            }
 
             // faction
             if (station.controllingFaction != null)
@@ -100,27 +135,17 @@ namespace SrvSurvey.plotters
 
                 drawTextAt2(eight, $"Faction:");
                 newLine(true);
-                drawTextAt2(indent, station.controllingFaction);
+                drawTextAt2(indent, station.controllingFaction, GameColors.Fonts.gothic_9);
                 if (state != null && state != "None")
                 {
                     newLine(true);
-                    drawTextAt2(indent, $"State: {state}");
+                    drawTextAt2(indent, $"State: {state}", GameColors.Fonts.gothic_9);
                 }
                 newLine(true);
-                drawTextAt2(indent, $"Inf: {inf:P0} | Rep: {txtRep}");
+                drawTextAt2(indent, $"Inf: {inf:P0} | Rep: {txtRep}", GameColors.Fonts.gothic_9);
             }
 
 
-            // largest pad
-            string? largestPad = null;
-            if (station.landingPads?.Large > 0) largestPad = "Large";
-            else if (station.landingPads?.Medium > 0) largestPad = "Medium";
-            else if (station.landingPads?.Small > 0) largestPad = "Small";
-            if (largestPad != null)
-            {
-                newLine(+ten, true);
-                drawTextAt2(eight, $"Landing pads: {largestPad}");
-            }
 
 
             // relevant services

@@ -39,9 +39,9 @@ namespace SrvSurvey.game
 
         public async Task<Project> create(ProjectCreate row)
         {
-            Game.log($"Colony.create: {row}");
-
             var json1 = JsonConvert.SerializeObject(row);
+            Game.log($"Colony.create:\r\n{json1}");
+
             var body = new StringContent(json1, Encoding.Default, "application/json");
             var response = await ColonyNet.client.PutAsync($"{svcUri}/api/project/", body);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
@@ -131,6 +131,7 @@ namespace SrvSurvey.game
             }
         }
 
+        /*
         public async Task<Dictionary<string, int>> supply(string buildId, string cmdr, Dictionary<string, int> diff)
         {
             Game.log(diff.formatWithHeader($"Colony.supply: {buildId}", "\r\n\t"));
@@ -144,6 +145,18 @@ namespace SrvSurvey.game
             var json2 = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<Dictionary<string, int>>(json2)!;
             return obj;
+        }
+        */
+
+        public async Task contribute(string buildId, string cmdr, Dictionary<string, int> diff)
+        {
+            Game.log(diff.formatWithHeader($"Colony.contribute: {buildId}", "\r\n\t"));
+
+            var json1 = JsonConvert.SerializeObject(diff);
+            var body = new StringContent(json1, Encoding.Default, "application/json");
+            var url = $"{svcUri}/api/project/{buildId}/contribute/{cmdr}";
+            var response = await ColonyNet.client.PostAsync(url, body);
+            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
         }
 
         public async Task<Dictionary<string, int>> supplyFC(long marketId, string cargo, int delta)
@@ -484,7 +497,7 @@ namespace SrvSurvey.game
 
         public string? notes;
 
-        // Schema.ProjectCommodity
+        public int? maxNeed;
         public Dictionary<string, int>? commodities;
     }
 

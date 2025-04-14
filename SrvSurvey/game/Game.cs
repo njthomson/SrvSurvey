@@ -5,7 +5,6 @@ using SrvSurvey.net.EDSM;
 using SrvSurvey.plotters;
 using SrvSurvey.units;
 using System.Diagnostics;
-using static SrvSurvey.canonn.GRReports;
 
 namespace SrvSurvey.game
 {
@@ -143,6 +142,7 @@ namespace SrvSurvey.game
         public Docked? lastDocked;
         public Docked? lastEverDocked;
         public Undocked? lastUndocked;
+        public ColonisationConstructionDepot? lastColonisationConstructionDepot;
         public SettlementMatCollectionData? matStatsTracker;
         private string? lastDestination;
         public bool destinationNextRouteHop = false;
@@ -1561,23 +1561,6 @@ namespace SrvSurvey.game
             // TODO: Remove with confirmation that diff tracking behaves
             //Game.log(this.cargoFile.Inventory.formatWithHeader($"AFTER read: {cargoFile.timestamp} | {cargoFile.Count}", "\r\n\t"));
 
-            if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST)
-            {
-                var timeSinceUndocked = DateTime.Now - lastUndocked?.timestamp;
-                Game.log($"timeSinceUndocked: {timeSinceUndocked?.TotalSeconds ?? '?'} seconds");
-                if (lastDocked != null && ColonyData.isConstructionSite(lastDocked))
-                {
-                    // if we are currently docked at a construction site ...
-                    var diff = this.cargoFile.getDiff();
-                    this.cmdrColony.supplyNeeds(lastDocked.SystemAddress, lastDocked.MarketID, diff);
-                }
-                else if (lastEverDocked != null && timeSinceUndocked?.TotalSeconds < 10 && ColonyData.isConstructionSite(lastEverDocked))
-                {
-                    // ... or we just undocked from one in the last 10 seconds
-                    var diff = this.cargoFile.getDiff();
-                    this.cmdrColony.supplyNeeds(lastEverDocked.SystemAddress, lastEverDocked.MarketID, diff);
-                }
-            }
 
             Program.invalidate<PlotBuildCommodities>();
         }
@@ -1626,7 +1609,39 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(ColonisationConstructionDepot entry)
         {
-            cmdrColony.updateNeeds(entry, systemData!.address);
+            var changed = this.lastColonisationConstructionDepot == null
+                || entry.ConstructionProgress != lastColonisationConstructionDepot.ConstructionProgress
+                || entry.ResourcesRequired
+                    .Any(r => r.ProvidedAmount != lastColonisationConstructionDepot.ResourcesRequired.First(m => m.Name == r.Name).ProvidedAmount);
+
+            if (changed)
+            {
+                this.lastColonisationConstructionDepot = entry;
+                cmdrColony.updateNeeds(entry, systemData!.address);
+            }
+        }
+
+        private void onJournalEntry(ColonisationContribution entry)
+        {
+            if (lastDocked == null || !ColonyData.isConstructionSite(lastDocked)) return;
+
+            if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST)
+            {
+                // if we are currently docked at a construction site ... track this contribution in stats
+                var diff = entry.Contributions.ToDictionary(
+                    _ => _.Name.Substring(1).Replace("_name;", "").ToLowerInvariant(),
+                    _ => _.Amount);
+
+                // update cargo ahead of cargo event
+                foreach (var name in diff.Keys)
+                {
+                    var item = cargoFile.Inventory.Find(i => i.Name == name);
+                    if (item != null)
+                        item.Count -= diff[name];
+                }
+
+                this.cmdrColony.contributeNeeds(lastDocked.SystemAddress, lastDocked.MarketID, diff);
+            }
         }
 
         public bool marketBuyOnFC = false;
@@ -2661,6 +2676,7 @@ namespace SrvSurvey.game
         {
             this.lastUndocked = entry;
             this.lastDocked = null;
+            this.lastColonisationConstructionDepot = null;
             this.marketBuyOnFC = false;
             this.touchdownLocation = LatLong2.Empty;
 

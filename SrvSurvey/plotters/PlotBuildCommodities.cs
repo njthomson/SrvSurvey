@@ -16,6 +16,7 @@ namespace SrvSurvey.plotters
                     || (Game.activeGame.isMode(GameMode.StationServices)
                         && (Game.activeGame.marketEventSeen || Game.activeGame.cmdrColony.has(Game.activeGame.lastDocked))
                     )
+                    || (ColonyData.isConstructionSite(Game.activeGame.lastDocked))
                 )
                 ;
         }
@@ -85,15 +86,20 @@ namespace SrvSurvey.plotters
             // if we are in a system to deliver supplies - show only those
             var effectiveAddress = -1L;
             var effectiveMarketId = -1L;
+            Project? proj = null;
 
             if (game.lastDocked != null && dockedAtConstructionSite)
             {
-                var proj = game.cmdrColony.getProject(game.lastDocked.SystemAddress, game.lastDocked.MarketID);
+                proj = game.cmdrColony.getProject(game.lastDocked.SystemAddress, game.lastDocked.MarketID);
                 if (proj != null)
                 {
                     effectiveAddress = proj.systemAddress;
                     effectiveMarketId = proj.marketId;
                     headerText = $"► {proj.buildName} ({proj.buildType})";
+                }
+                else
+                {
+                    headerText = ColonyData.getDefaultProjectName(game.lastDocked);
                 }
             }
             else if (!string.IsNullOrWhiteSpace(colonyData.primaryBuildId))
@@ -173,6 +179,11 @@ namespace SrvSurvey.plotters
                 }
                 dty += ten;
             }
+            else if (dockedAtConstructionSite && proj == null)
+            {
+                drawTextAt2(ten, "► Untracked project", C.cyan, GameColors.Fonts.gothic_10B);
+                newLine(+ten, true);
+            }
 
             // prep 3 columns: first zero width (that will grow), last 2 large enough for a big number
             var hasPin = needs.assigned.Count > 0;
@@ -216,6 +227,12 @@ namespace SrvSurvey.plotters
                 newLine(true);
             }
 
+            if (game.lastDocked?.StationEconomy == "$economy_Carrier;" && !game.cmdrColony.allLinkedFCs.ContainsKey(game.lastDocked.MarketID))
+            {
+                drawTextAt2(ten, "► Untracked Fleet Carrier", C.cyan, GameColors.Fonts.gothic_10B);
+                newLine(+ten, true);
+            }
+
             if (pendingDiff != null)
             {
                 dty += six;
@@ -237,15 +254,18 @@ namespace SrvSurvey.plotters
         {
             // alpha sort commodity names if at construction site
             var commodityNames = needs.commodities.Keys.Order();
+            var required = game.lastColonisationConstructionDepot?.ResourcesRequired;
+            if (required == null) return;
 
             var flip = false;
-            foreach (var name in commodityNames)
+            foreach (var item in required)
             {
-                var needCount = needs.commodities[name];
+                var name = item.Name.Substring(1).Replace("_name;", "");
+                var needCount = item.RequiredAmount - item.ProvidedAmount;
                 if (needCount == 0) continue;
 
                 var needTxt = needCount.ToString("N0");
-                var nameTxt = name;
+                var nameTxt = item.Name_Localised;
 
                 if (flip) g.FillRectangle(brushBackgroundStripe, four, dty - one, this.Width - eight, szBigNumbers.Height + one);
                 flip = !flip;

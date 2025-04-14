@@ -7,10 +7,24 @@ namespace SrvSurvey.game
     class ColonyData : Data
     {
         public static string SystemColonisationShip = "System Colonisation Ship";
+        public static string ExtPanelColonisationShip = "$EXT_PANEL_ColonisationShip:#index=1;";
 
         public static bool isConstructionSite(Docked? entry)
         {
             return entry != null && entry.StationServices?.Contains("colonisationcontribution") == true;
+        }
+
+        public static string getDefaultProjectName(Docked lastDocked)
+        {
+            var defaultName = lastDocked.StationName == ColonyData.SystemColonisationShip || lastDocked.StationName == ColonyData.ExtPanelColonisationShip
+                ? $"Primary port: {lastDocked.StarSystem}"
+                : lastDocked.StationName
+                    .Replace("Planetary Construction Site:", "")
+                    .Replace("Orbital Construction Site:", "")
+                    .Trim()
+                ?? "";
+
+            return defaultName;
         }
 
         public static ColonyData Load(string fid, string cmdr)
@@ -49,7 +63,7 @@ namespace SrvSurvey.game
                 {
                     Game.log($"Not found: primaryBuildId: ${primaryBuildId} ?");
                     this.primaryBuildId = null;
-                    Debugger.Break();
+                    //Debugger.Break();
                 }
             }
             else
@@ -165,10 +179,8 @@ namespace SrvSurvey.game
             return needs;
         }
 
-        public void supplyNeeds(long systemAddress, long marketId, Dictionary<string, int> diff)
+        public void contributeNeeds(long systemAddress, long marketId, Dictionary<string, int> diff)
         {
-            foreach (var name in diff.Keys) diff[name] *= -1;
-
             var localProject = this.getProject(systemAddress, marketId);
             if (localProject == null)
             {
@@ -187,14 +199,8 @@ namespace SrvSurvey.game
                     form.Invalidate();
                 }
 
-                Game.colony.supply(localProject.buildId, this.cmdr, diff).continueOnMain(null, updatedCommodities =>
+                Game.colony.contribute(localProject.buildId, this.cmdr, diff).continueOnMain(null, () =>
                 {
-                    // update local numbers
-                    foreach (var (name, count) in updatedCommodities)
-                        localProject.commodities[name] = count;
-
-                    Game.log(updatedCommodities.formatWithHeader($"Local updates applied:", "\r\n\t"));
-
                     // wait a bit then force plotter to re-render
                     Task.Delay(500).ContinueWith(t =>
                     {
@@ -241,6 +247,13 @@ namespace SrvSurvey.game
             var proj = this.getProject(id64, entry.MarketID);
             if (proj == null) return;
 
+            var form = Program.getPlotter<PlotBuildCommodities>();
+            if (form != null)
+            {
+                form.pendingDiff = new();
+                form.Invalidate();
+            }
+
             var needed = entry.ResourcesRequired.ToDictionary(
                 r => r.Name.Substring(1).Replace("_name;", ""),
                 r => r.RequiredAmount - r.ProvidedAmount
@@ -252,16 +265,23 @@ namespace SrvSurvey.game
                 var foo = new ProjectUpdate(proj.buildId)
                 {
                     commodities = needed,
+                    maxNeed = entry.ResourcesRequired.Sum(r => r.RequiredAmount),
                 };
 
                 Game.colony.update(foo).continueOnMain(null, updatedProj =>
                 {
-                    // update in-memrory track
+                    // update in-memory track
                     var idx = this.projects.FindIndex(p => p.buildId == updatedProj.buildId);
                     this.projects[idx] = updatedProj;
                     this.Save();
 
                     Game.log(updatedProj);
+
+                    if (form != null)
+                    {
+                        form.pendingDiff = null;
+                        form.Invalidate();
+                    }
                 }).justDoIt();
             }
         }
