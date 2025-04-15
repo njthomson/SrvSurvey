@@ -32,8 +32,8 @@ namespace SrvSurvey.plotters
 
         protected override void OnLoad(EventArgs e)
         {
-            this.Width = scaled(200);
-            this.Height = scaled(200);
+            this.Width = scaled(300);
+            this.Height = scaled(1000);
 
             base.OnLoad(e);
 
@@ -75,8 +75,9 @@ namespace SrvSurvey.plotters
 
         public override void setOpacity(double newOpacity)
         {
-            if (this.station == null)
-                newOpacity = 0;
+            // toggle visibility based on if we have a valid station of not
+            if (this.Visible != (this.station != null))
+                this.Visible = this.station != null;
 
             base.setOpacity(newOpacity);
         }
@@ -178,9 +179,9 @@ namespace SrvSurvey.plotters
             }
 
             newLine(+ten, true);
-            drawTextAt2(eight, "Data: Spansh.co.uk", C.orangeDark);
+            drawTextAt2(eight, "Data: Spansh.co.uk", C.orangeDark, GameColors.Fonts.gothic_9);
             newLine(true);
-            drawTextAt2(eight, $"Updated: {station.updateTime.LocalDateTime.ToShortDateString()}", C.orangeDark);
+            drawTextAt2(eight, $"Updated: {station.updateTime.LocalDateTime.ToShortDateString()}", C.orangeDark, GameColors.Fonts.gothic_9);
             newLine(true);
 
             this.formAdjustSize(+eight, +eight);
