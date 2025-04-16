@@ -1,17 +1,30 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.plotters;
-using System.Diagnostics;
 
 namespace SrvSurvey.game
 {
     class ColonyData : Data
     {
+        public static Project? localUntrackedProject;
+
         public static string SystemColonisationShip = "System Colonisation Ship";
         public static string ExtPanelColonisationShip = "$EXT_PANEL_ColonisationShip:#index=1;";
+        public static string PlanetaryConstructionSite = "Planetary Construction Site:";
+        public static string OrbitalConstructionSite = "Orbital Construction Site:";
 
         public static bool isConstructionSite(Docked? entry)
         {
-            return entry != null && entry.StationServices?.Contains("colonisationcontribution") == true;
+            return entry != null && isConstructionSite(entry.StationName, entry.StationServices);
+        }
+
+        public static bool isConstructionSite(string stationName, List<string>? stationServices)
+        {
+            return stationName != null && stationServices != null && stationServices.Contains("colonisationcontribution") == true &&
+            (
+                stationName.StartsWith(PlanetaryConstructionSite, StringComparison.OrdinalIgnoreCase)
+                || stationName.StartsWith(OrbitalConstructionSite, StringComparison.OrdinalIgnoreCase)
+                || stationName.Equals(ExtPanelColonisationShip, StringComparison.OrdinalIgnoreCase)
+            );
         }
 
         public static string getDefaultProjectName(Docked lastDocked)
@@ -19,8 +32,8 @@ namespace SrvSurvey.game
             var defaultName = lastDocked.StationName == ColonyData.SystemColonisationShip || lastDocked.StationName == ColonyData.ExtPanelColonisationShip
                 ? $"Primary port: {lastDocked.StarSystem}"
                 : lastDocked.StationName
-                    .Replace("Planetary Construction Site:", "")
-                    .Replace("Orbital Construction Site:", "")
+                    .Replace(PlanetaryConstructionSite, "")
+                    .Replace(OrbitalConstructionSite, "")
                     .Trim()
                 ?? "";
 
@@ -43,53 +56,61 @@ namespace SrvSurvey.game
 
         public async Task fetchLatest(string? buildId = null)
         {
-            var form = Program.getPlotter<PlotBuildCommodities>();
-
-            // set an empty dictionary to make it render "updating..."
-            if (form != null)
+            // Make plotter it render "updating..."
+            Program.getPlotter<PlotBuildCommodities>()?.startPending();
+            try
             {
-                form.pendingDiff = new();
-                form.Invalidate();
-            }
-
-            if (buildId == null)
-            {
-                // fetch all ACTIVE projects and primaryBuildId
-                await Task.WhenAll(
-                    Game.colony.getPrimary(this.cmdr).continueOnMain(null, newPrimaryBuildId => this.primaryBuildId = newPrimaryBuildId, true),
-                    Game.colony.getCmdrActive(this.cmdr).continueOnMain(null, newProjects => this.projects = newProjects)
-                );
-                if (this.primaryBuildId != null && getProject(this.primaryBuildId) == null)
+                if (buildId == null)
                 {
-                    Game.log($"Not found: primaryBuildId: ${primaryBuildId} ?");
-                    this.primaryBuildId = null;
-                    //Debugger.Break();
+                    // fetch all ACTIVE projects and primaryBuildId
+                    await Task.WhenAll(
+                        Game.colony.getPrimary(this.cmdr).continueOnMain(null, newPrimaryBuildId => this.primaryBuildId = newPrimaryBuildId, true),
+                        Game.colony.getCmdrActive(this.cmdr).continueOnMain(null, newProjects => this.projects = newProjects)
+                    );
+                    if (this.primaryBuildId != null && getProject(this.primaryBuildId) == null)
+                    {
+                        Game.log($"Not found: primaryBuildId: ${primaryBuildId} ?");
+                        this.primaryBuildId = null;
+                        //Debugger.Break();
+                    }
                 }
+                else
+                {
+                    // fetch just the given project
+                    var freshProject = await Game.colony.getProject(buildId);
+                    var idx = this.projects.FindIndex(p => p.buildId == buildId);
+                    if (idx >= 0 && freshProject != null)
+                        this.projects[idx] = freshProject;
+                }
+
+                // request data for all cmdr linked FCs
+                var allFCs = await Game.colony.getAllCmdrFCs(this.cmdr)!;
+                this.linkedFCs = allFCs.ToDictionary(fc => fc.marketId, fc => fc);
+
+                // sum their respective cargo
+                var sumCargo = new Dictionary<string, int>();
+                foreach (var fc in allFCs)
+                {
+                    foreach (var (commodity, need) in fc.cargo)
+                    {
+                        sumCargo.init(commodity);
+                        sumCargo[commodity] += need;
+                    }
+                }
+                this.sumCargoLinkedFCs = sumCargo;
+
+                this.prepNeeds();
+
+                //Game.log(this.colonySummary?.buildIds.formatWithHeader($"loadAllBuildProjects: loading: {this.colonySummary?.buildIds.Count} ...", "\r\n\t"));
+
+                Game.log(this.projects.Select(p => $"{p.buildId} : {p.buildName}").formatWithHeader($"colonySummary.builds: {this.projects.Count}", "\r\n\t"));
+                Game.log(this.linkedFCs.Select(fc => $"{fc.Value.displayName} ({fc.Value.name})").formatWithHeader($"colonySummary.linkedFCs: {this.linkedFCs.Count}", "\r\n\t"));
+
+                this.Save();
             }
-            else
+            finally
             {
-                // fetch just the given project
-                var freshProject = await Game.colony.getProject(buildId);
-                var idx = this.projects.FindIndex(p => p.buildId == buildId);
-                if (idx >= 0)
-                    this.projects[idx] = freshProject;
-            }
-
-            // extract all marketId's from linked FCs
-            this.allLinkedFCs.Clear();
-            this.projects.ForEach(p => p.linkedFC.ForEach(fc => this.allLinkedFCs[fc.marketId] = fc));
-
-            this.prepNeeds();
-
-            //Game.log(this.colonySummary?.buildIds.formatWithHeader($"loadAllBuildProjects: loading: {this.colonySummary?.buildIds.Count} ...", "\r\n\t"));
-
-            Game.log(this.projects.Select(p => p.buildId).formatWithHeader($"colonySummary.buildIds: {this.projects.Count}", "\r\n\t"));
-            this.Save();
-
-            if (form != null)
-            {
-                form.pendingDiff = null;
-                form.Invalidate();
+                Program.getPlotter<PlotBuildCommodities>()?.endPending();
             }
         }
 
@@ -103,7 +124,10 @@ namespace SrvSurvey.game
         public Dictionary<string, int> fcCommodities = new();
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public Dictionary<long, ProjectFC> allLinkedFCs = new();
+        public Dictionary<long, FleetCarrier> linkedFCs = new();
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public Dictionary<string, int> sumCargoLinkedFCs = new();
 
         #endregion
 
@@ -116,7 +140,7 @@ namespace SrvSurvey.game
             Game.log("ColonyData.prepNeeds: done");
         }
 
-        public Project? getProject(string buildId)
+        public Project? getProject(string? buildId)
         {
             if (buildId == null) return null;
             return projects?.FirstOrDefault(p => p.buildId == buildId);
@@ -138,6 +162,11 @@ namespace SrvSurvey.game
         public string? getBuildId(long id64, long marketId)
         {
             return projects?.FirstOrDefault(p => p.systemAddress == id64 && p.marketId == marketId)?.buildId;
+        }
+
+        public bool has(string? buildId)
+        {
+            return getProject(buildId) != null;
         }
 
         public bool has(Docked? docked)
@@ -191,25 +220,12 @@ namespace SrvSurvey.game
             else
             {
                 Game.log(diff.formatWithHeader($"Supplying commodities for: {localProject.buildId} ({systemAddress}/{marketId})", "\r\n\t"));
-
-                var form = Program.getPlotter<PlotBuildCommodities>();
-                if (form != null)
-                {
-                    form.pendingDiff = diff;
-                    form.Invalidate();
-                }
+                Program.getPlotter<PlotBuildCommodities>()?.startPending(diff);
 
                 Game.colony.contribute(localProject.buildId, this.cmdr, diff).continueOnMain(null, () =>
                 {
                     // wait a bit then force plotter to re-render
-                    Task.Delay(500).ContinueWith(t =>
-                    {
-                        if (form != null && !form.IsDisposed)
-                        {
-                            form.pendingDiff = null;
-                            form.Invalidate();
-                        }
-                    });
+                    Task.Delay(500).ContinueWith(t => Program.getPlotter<PlotBuildCommodities>()?.endPending());
                 });
             }
         }
@@ -217,7 +233,16 @@ namespace SrvSurvey.game
         public void checkConstructionSiteUponDocking(Docked entry, SystemBody? body)
         {
             var proj = this.getProject(entry.SystemAddress, entry.MarketID);
-            if (proj == null) return;
+            if (proj == null)
+            {
+                // it's possible someone else might be tracking it?
+                Game.colony.getProject(entry.SystemAddress, entry.MarketID).continueOnMain(null, otherProj =>
+                {
+                    Game.log($"Found local project untracked by cmdr: {otherProj?.buildName} ({otherProj?.buildId})");
+                    ColonyData.localUntrackedProject = otherProj;
+                });
+                return;
+            }
 
             ProjectUpdate? updatedProject = null;
 
@@ -247,60 +272,34 @@ namespace SrvSurvey.game
             var proj = this.getProject(id64, entry.MarketID);
             if (proj == null) return;
 
-            var form = Program.getPlotter<PlotBuildCommodities>();
-            if (form != null)
-            {
-                form.pendingDiff = new();
-                form.Invalidate();
-            }
-
             var needed = entry.ResourcesRequired.ToDictionary(
                 r => r.Name.Substring(1).Replace("_name;", ""),
                 r => r.RequiredAmount - r.ProvidedAmount
             );
             var totalDiff = needed.Keys
                 .Select(k => needed[k] - proj.commodities.GetValueOrDefault(k, 0)).Sum();
+
             if (totalDiff != 0)
             {
-                var foo = new ProjectUpdate(proj.buildId)
+                Program.getPlotter<PlotBuildCommodities>()?.startPending();
+                var updateProj = new ProjectUpdate(proj.buildId)
                 {
                     commodities = needed,
                     maxNeed = entry.ResourcesRequired.Sum(r => r.RequiredAmount),
                 };
 
-                Game.colony.update(foo).continueOnMain(null, updatedProj =>
+                Game.colony.update(updateProj).continueOnMain(null, savedProj =>
                 {
                     // update in-memory track
-                    var idx = this.projects.FindIndex(p => p.buildId == updatedProj.buildId);
-                    this.projects[idx] = updatedProj;
+                    var idx = this.projects.FindIndex(p => p.buildId == savedProj.buildId);
+                    this.projects[idx] = savedProj;
                     this.Save();
 
-                    Game.log(updatedProj);
-
-                    if (form != null)
-                    {
-                        form.pendingDiff = null;
-                        form.Invalidate();
-                    }
+                    Game.log(savedProj);
+                    Program.getPlotter<PlotBuildCommodities>()?.endPending();
                 }).justDoIt();
             }
         }
-
-        /* TODO: coming soon ...
-        public Dictionary<string, int> sumProjectLinkedFC(Project proj)
-        {
-            var cargo = new Dictionary<string, int>();
-
-            foreach(var fc in this.allLinkedFCs.Values)
-            {
-                // skip unrelated FCs
-                if (proj.linkedFC.Any(_ => _.marketId == fc.marketId) == false) continue;
-
-            }
-
-            return cargo;
-        }
-        */
 
         public class Needs
         {

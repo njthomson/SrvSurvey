@@ -643,5 +643,6 @@ namespace SrvSurvey
         /// <summary> A flag true immediately about the time we begin showing a window </summary>
         bool showing { get; set; }
         bool forceHide { get; set; }
+        bool fading { get; set; }
     }
 }

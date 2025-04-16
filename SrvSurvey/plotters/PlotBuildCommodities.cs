@@ -1,9 +1,10 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.widgets;
+using System.Diagnostics;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(200, 80)]
+    [ApproxSize(200, 400)]
     internal class PlotBuildCommodities : PlotBase, PlotterForm
     {
         public static bool allowPlotter
@@ -26,13 +27,7 @@ namespace SrvSurvey.plotters
             var form = Program.getPlotter<PlotBuildCommodities>();
             if (form != null && PlotBuildCommodities.forceShow)
             {
-                var isDockedAtConstructionSite = Game.activeGame?.lastDocked != null
-                    && ColonyData.isConstructionSite(Game.activeGame.lastDocked)
-                    && Game.activeGame?.isMode(GameMode.StationServices) == true;
-
-                // TODO: Is this really needed?
-                if (isDockedAtConstructionSite && form.localConstructionShipProjectTitle != null)
-                    form.localConstructionShipProjectTitle = null;
+                form.setHeaderTextAndNeeds();
             }
             else
             {
@@ -47,8 +42,13 @@ namespace SrvSurvey.plotters
         private static Brush brushBackgroundStripe = new SolidBrush(Color.FromArgb(255, 12, 12, 12));
         private static Size szBigNumbers;
 
-        public Dictionary<string, int>? pendingDiff;
+        private int pendingUpdates = 0;
+        private Dictionary<string, int> pendingDiff = new();
         private string? localConstructionShipProjectTitle;
+
+        private string? headerText;
+        private ColonyData.Needs? needs;
+        private HashSet<string> projectNames = new();
 
         private PlotBuildCommodities() : base()
         {
@@ -56,7 +56,7 @@ namespace SrvSurvey.plotters
             this.Font = GameColors.Fonts.gothic_10;
 
             if (szBigNumbers == Size.Empty)
-                szBigNumbers = TextRenderer.MeasureText(12345.ToString("N0"), this.Font, Size.Empty);
+                szBigNumbers = TextRenderer.MeasureText(123456.ToString("N0"), this.Font, Size.Empty);
         }
 
         public override bool allow { get => PlotBuildCommodities.allowPlotter; }
@@ -72,106 +72,140 @@ namespace SrvSurvey.plotters
             this.reposition(Elite.getWindowRect(true));
         }
 
-        protected override void onPaintPlotter(PaintEventArgs e)
+        public void startPending(Dictionary<string, int>? diff = null)
+        {
+            this.pendingUpdates++;
+            if (diff != null) this.pendingDiff = diff;
+
+            if (!this.IsDisposed) this.Invalidate();
+        }
+
+        public void endPending()
+        {
+            this.pendingUpdates--;
+            if (this.pendingUpdates < 0) this.pendingUpdates = 0;
+
+            if (!this.IsDisposed)
+            {
+                this.Invalidate();
+                this.setHeaderTextAndNeeds();
+            }
+        }
+
+        public void setHeaderTextAndNeeds()
+        {
+            var isDockedAtConstructionSite = Game.activeGame?.lastDocked != null
+                && ColonyData.isConstructionSite(Game.activeGame.lastDocked)
+                && Game.activeGame?.isMode(GameMode.StationServices) == true;
+
+            setHeaderTextAndNeeds(isDockedAtConstructionSite);
+        }
+
+        private void setHeaderTextAndNeeds(bool dockedAtConstructionSite)
         {
             var colonyData = game.cmdrColony;
             if (this.IsDisposed || colonyData == null || game.systemData == null) return;
 
-            var localMarketId = game.lastDocked?.MarketID ?? -1;
-            var relevantProjects = colonyData.projects;
-            var headerText = $"Commodities for {relevantProjects.Count} projects:";
-            var projectNames = new HashSet<string>();
-            var dockedAtConstructionSite = game.lastDocked?.StationServices?.Contains("colonisationcontribution") == true;
-
-            // if we are in a system to deliver supplies - show only those
             var effectiveAddress = -1L;
             var effectiveMarketId = -1L;
-            Project? proj = null;
+            List<Project>? relevantProjects = null;
 
             if (game.lastDocked != null && dockedAtConstructionSite)
             {
-                proj = game.cmdrColony.getProject(game.lastDocked.SystemAddress, game.lastDocked.MarketID);
+                effectiveAddress = game.lastDocked.SystemAddress;
+                effectiveMarketId = game.lastDocked.MarketID;
+
+                // use project name, or default name if not tracked
+                var proj = game.cmdrColony.getProject(game.lastDocked.SystemAddress, game.lastDocked.MarketID);
                 if (proj != null)
-                {
-                    effectiveAddress = proj.systemAddress;
-                    effectiveMarketId = proj.marketId;
-                    headerText = $"► {proj.buildName} ({proj.buildType})";
-                }
+                    headerText = $"{proj.buildName} ({proj.buildType})";
                 else
-                {
                     headerText = ColonyData.getDefaultProjectName(game.lastDocked);
-                }
+                relevantProjects = new();
             }
             else if (!string.IsNullOrWhiteSpace(colonyData.primaryBuildId))
             {
                 var primaryProject = colonyData.getProject(colonyData.primaryBuildId);
                 if (primaryProject != null)
                 {
-                    effectiveAddress = primaryProject.systemAddress;
-                    effectiveMarketId = primaryProject.marketId;
-                    headerText = $"► {primaryProject.buildName} ({primaryProject.buildType})\r\n     ► {primaryProject.systemName}";
+                    relevantProjects = new() { primaryProject };
+                    headerText = $"{primaryProject.buildName} ({primaryProject.buildType})";
                 }
                 else
                 {
                     Game.log($"Why no matching primaryBuildId?");
                 }
             }
-            else
+
+            if (relevantProjects == null)
             {
                 var localProjects = colonyData.projects.Where(p => p.systemAddress == game.systemData.address).ToList();
                 if (localProjects.Any())
                 {
-                    // show name/type of projects in this system ...
-                    projectNames = localProjects.Select((p, n) => $"{p.buildName} ({p.buildType} #{n})").ToHashSet();
-                    headerText = "Local projects:";
-
-                    // ... but if we are docked at a colonization ship - use the corresponding project name/type
-                    if (ColonyData.isConstructionSite(game.lastDocked))
-                    {
-                        if (this.localConstructionShipProjectTitle == null)
-                        {
-                            // get name/type of projects in this system
-                            var localProject = localProjects.FirstOrDefault(p => p.marketId == localMarketId);
-                            if (localProject != null)
-                            {
-                                var idx = localProjects.IndexOf(localProject);
-                                // remember this for future renders
-                                if (idx < projectNames.Count)
-                                    this.localConstructionShipProjectTitle = "► " + projectNames.ToList()[idx];
-                            }
-                        }
-
-                        if (this.localConstructionShipProjectTitle != null)
-                        {
-                            headerText = this.localConstructionShipProjectTitle;
-                            projectNames.Clear();
-                            effectiveAddress = game.lastDocked?.SystemAddress ?? -1;
-                            effectiveMarketId = localMarketId;
-                        }
-                    }
-                    else
-                    {
-                        // TODO: sum for multiple local projects
-                        effectiveAddress = game.lastDocked?.SystemAddress ?? -1;
-                    }
+                    // show only local projects, when there are some in the current system
+                    effectiveAddress = localProjects.First().systemAddress;
+                    relevantProjects = localProjects;
+                    headerText = $"{localProjects.Count} local projects:";
                 }
                 else
                 {
-                    // show system names for all projects
-                    projectNames = colonyData.projects.Select(p => $"{p.systemName}").ToHashSet();
+                    // otherwise show all projects anywhere
+                    relevantProjects = colonyData.projects;
+                    headerText = $"{relevantProjects.Count} total projects:";
                 }
             }
 
-            var needs = colonyData.getLocalNeeds(effectiveAddress, effectiveMarketId);
+            projectNames.Clear();
+            if (relevantProjects.Count == 1)
+            {
+                // if there is only 1 project - treat it as primary
+                var onlyProject = colonyData.projects.First();
+                effectiveAddress = onlyProject.systemAddress;
+                effectiveMarketId = onlyProject.marketId;
+                headerText = $"{onlyProject.buildName} ({onlyProject.buildType})";
+
+                // include system name if not local (and not already in the name)
+                if (game.systemData.address != onlyProject.systemAddress && !onlyProject.buildName.Contains(onlyProject.systemName, StringComparison.OrdinalIgnoreCase)) headerText += $"\r\n     ► {onlyProject.systemName}";
+            }
+            else if (relevantProjects.Any())
+            {
+                projectNames = relevantProjects.Select(p => $"{p.buildName} ({p.buildType})").ToHashSet();
+            }
+
+            // calculate effective needs
+            Game.log($"Get effective needs from: {effectiveAddress} / {effectiveMarketId}");
+            this.needs = colonyData.getLocalNeeds(effectiveAddress, effectiveMarketId);
+        }
+
+        protected override void onPaintPlotter(PaintEventArgs e)
+        {
+            var colonyData = game.cmdrColony;
+            if (this.IsDisposed || colonyData == null || game.systemData == null) return;
+
+            var localMarketId = game.lastDocked?.MarketID ?? -1;
+            var dockedAtConstructionSite = ColonyData.isConstructionSite(game.lastDocked);
+
+            // calculate header text and needs only when needed
+            if (this.headerText == null || this.needs == null || ((projectNames.Count > 0) == dockedAtConstructionSite))
+                this.setHeaderTextAndNeeds(dockedAtConstructionSite);
+
+            // exit early if we failed to populate things correctly
+            if (this.headerText == null || this.needs == null)
+            {
+                Debugger.Break();
+                drawTextAt2(ten, "Oops!", GameColors.Fonts.gothic_12B);
+                newLine(+ten, true);
+                return;
+            }
 
 
             // start rendering...
             drawTextAt2(ten, headerText, GameColors.Fonts.gothic_12B);
             newLine(+ten, true);
 
-            // show relevant project names
             if (projectNames.Any())
             {
+                // show relevant project names
                 foreach (var name in projectNames)
                 {
                     drawTextAt2(twenty, "► " + name);
@@ -179,35 +213,73 @@ namespace SrvSurvey.plotters
                 }
                 dty += ten;
             }
-            else if (dockedAtConstructionSite && proj == null)
+
+            // show warning if docked at untracked project
+            if (dockedAtConstructionSite && !colonyData.has(game.lastDocked))
             {
-                drawTextAt2(ten, "► Untracked project", C.cyan, GameColors.Fonts.gothic_10B);
+                var msg = ColonyData.localUntrackedProject == null
+                    ? "⚠️ Untracked project"
+                    : "⚠️ Not a member of this project";
+                drawTextAt2(ten, msg, C.yellow, GameColors.Fonts.gothic_10);
+                newLine(+ten, true);
+            }
+
+            // show warning if docked at an untracked FC
+            if (game.lastDocked?.StationEconomy == "$economy_Carrier;" && !game.cmdrColony.linkedFCs.ContainsKey(game.lastDocked.MarketID))
+            {
+                drawTextAt2(ten, "⚠️ Untracked Fleet Carrier", C.yellow, GameColors.Fonts.gothic_10);
                 newLine(+ten, true);
             }
 
             // prep 3 columns: first zero width (that will grow), last 2 large enough for a big number
-            var hasPin = needs.assigned.Count > 0;
-            var shipHasAnyCargo = game.cargoFile.Inventory.Count > 0;
-            var rightIndent = shipHasAnyCargo ? szBigNumbers.Width : 0;
+            var hasPin = needs!.assigned.Count > 0;
+            var haveAnyCargo = game.cargoFile.Inventory.Count > 0;
+            var showFCs = Game.settings.buildProjectsShowSumFC_TEST && colonyData.sumCargoLinkedFCs.Count > 0;
+            if (showFCs && Game.settings.buildProjectsInlineSumFC_TEST) haveAnyCargo |= colonyData.sumCargoLinkedFCs.Count > 0;
+
+            var rightIndent = haveAnyCargo ? szBigNumbers.Width : 0;
             var pinWidth = hasPin ? oneSix : 0;
             var columns = new Dictionary<int, float>() {
-                { 0, 0 },
-                { 1, rightIndent },
-                { 2, rightIndent },
+                { 0, 0 },           // name of the commodity
+                { 1, rightIndent }, // Need column
+                { 2, rightIndent }, // FCs column
+                { 3, rightIndent }, // Have column
             };
 
             // render list headers: <commodity name>, <need>, <have>
             var xNeed = this.Width - eight - rightIndent - pinWidth;
+            var xFC = 0f;
+            if (showFCs)
+            {
+                if (Game.settings.buildProjectsInlineSumFC_TEST)
+                {
+                    xFC = this.Width - eight;
+                }
+                else
+                {
+                    xFC = xNeed;
+                    xNeed = xFC - szBigNumbers.Width;
+                }
+            }
+
             drawTextAt2(xNeed, "Need", C.orangeDark, null, true).widestColumn(1, columns);
-            if (shipHasAnyCargo) drawTextAt2(this.Width - eight, "Have", C.orangeDark, null, true).widestColumn(2, columns);
+            if (showFCs && !Game.settings.buildProjectsInlineSumFC_TEST) drawTextAt2(xFC, "FCs", C.orangeDark, null, true).widestColumn(2, columns);
+            if (haveAnyCargo) drawTextAt2(this.Width - eight, "Have", C.orangeDark, null, true).widestColumn(3, columns);
             drawTextAt2(ten, "Commodity", C.orangeDark, null).widestColumn(0, columns);
             newLine(true);
 
             // draw cargo needs depending where we are
+            var sumNeed = 0;
             if (dockedAtConstructionSite)
-                drawNeedsAlpha(needs, columns, rightIndent, xNeed);
+            {
+                drawNeedsAlpha(needs, columns, rightIndent, xNeed, xFC);
+                sumNeed = game.lastColonisationConstructionDepot?.ResourcesRequired.Sum(r => r.RequiredAmount - r.ProvidedAmount) ?? 0;
+            }
             else
-                drawNeedsGrouped(needs, columns, rightIndent, xNeed);
+            {
+                drawNeedsGrouped(needs, columns, rightIndent, xNeed, xFC);
+                sumNeed = needs.commodities.Values.Sum();
+            }
 
             // grow size of this plotter?
             var formWidthNeeded = columns.Values.Sum() + pinWidth + ten;
@@ -217,23 +289,17 @@ namespace SrvSurvey.plotters
             // show how many runs remaining
             dty += ten;
 
-            var sumNeed = needs.commodities.Values.Sum();
             drawTextAt2(ten, $"► {sumNeed:N0} remaining");
             newLine(true);
             if (game.currentShip.cargoCapacity > 0)
             {
                 var tripsNeeded = Math.Ceiling(sumNeed / (double)game.currentShip.cargoCapacity);
-                drawTextAt2(ten, $"► {tripsNeeded} trips in this ship");
+                drawTextAt2(ten, $"► {tripsNeeded:N0} trips in this ship");
                 newLine(true);
             }
 
-            if (game.lastDocked?.StationEconomy == "$economy_Carrier;" && !game.cmdrColony.allLinkedFCs.ContainsKey(game.lastDocked.MarketID))
-            {
-                drawTextAt2(ten, "► Untracked Fleet Carrier", C.cyan, GameColors.Fonts.gothic_10B);
-                newLine(+ten, true);
-            }
-
-            if (pendingDiff != null)
+            // show footer if we are actively updating against the service
+            if (this.pendingUpdates > 0)
             {
                 dty += six;
                 drawTextAt2(ten, "► Updating...", C.cyan, GameColors.Fonts.gothic_10B);
@@ -250,7 +316,7 @@ namespace SrvSurvey.plotters
             this.formAdjustSize(+ten, +ten);
         }
 
-        private void drawNeedsAlpha(ColonyData.Needs needs, Dictionary<int, float> columns, float rightIndent, float xNeed)
+        private void drawNeedsAlpha(ColonyData.Needs needs, Dictionary<int, float> columns, float rightIndent, float xNeed, float xFC)
         {
             // alpha sort commodity names if at construction site
             var commodityNames = needs.commodities.Keys.Order();
@@ -275,7 +341,7 @@ namespace SrvSurvey.plotters
 
                 var cargoCount = game.cargoFile.getCount(name);
 
-                if (pendingDiff?.ContainsKey(name) == true)
+                if (pendingUpdates > 0 && pendingDiff.ContainsKey(name))
                 {
                     // highlight what we just supplied
                     ff = GameColors.Fonts.gothic_10B;
@@ -316,7 +382,24 @@ namespace SrvSurvey.plotters
                 if (cargoCount > 0)
                 {
                     drawTextAt2(this.Width - eight, cargoCount.ToString("N0"), col, ff, true)
-                        .widestColumn(2, columns);
+                        .widestColumn(3, columns);
+                }
+
+                // (skip FC numbers if sharing 2nd column and we already rendered there)
+                if (xFC > 0 && Game.settings.buildProjectsShowSumFC_TEST && (!Game.settings.buildProjectsInlineSumFC_TEST || cargoCount > 0))
+                {
+                    // show amount on all FCs in same column?
+                    var fcAmount = game.cmdrColony.sumCargoLinkedFCs.GetValueOrDefault(name, -1);
+                    if (fcAmount > -1)
+                    {
+                        var diff = (fcAmount - needCount);
+                        var diffTxt = diff.ToString("N0");
+                        if (diffTxt[0] != '-' && diffTxt[0] != '0') diffTxt = '+' + diffTxt;
+                        var cc = diff > 0 ? C.greenDark : C.orangeDark;
+
+                        drawTextAt2(xFC, diffTxt, cc, ff, true)
+                            .widestColumn(2, columns);
+                    }
                 }
 
                 // warn if we have more than needed
@@ -324,7 +407,7 @@ namespace SrvSurvey.plotters
 
                 // render the name
                 var sz2 = drawTextAt2(ten, nameTxt, col, ff)
-                    .widestColumn(0, columns);
+                .widestColumn(0, columns);
 
                 // draw assigned pin behind the need number
                 if (needs.assigned.Contains(name))
@@ -336,7 +419,7 @@ namespace SrvSurvey.plotters
             }
         }
 
-        private void drawNeedsGrouped(ColonyData.Needs needs, Dictionary<int, float> columns, float rightIndent, float xNeed)
+        private void drawNeedsGrouped(ColonyData.Needs needs, Dictionary<int, float> columns, float rightIndent, float xNeed, float xFC)
         {
             var localMarketItems = game.marketFile.Items
                 .Where(i => i.Stock > 0)
@@ -376,8 +459,7 @@ namespace SrvSurvey.plotters
                     var col = C.orange;
                     var ff = GameColors.Fonts.gothic_10;
 
-
-                    if (pendingDiff?.ContainsKey(name) == true)
+                    if (pendingUpdates > 0 && pendingDiff.ContainsKey(name))
                     {
                         // highlight what we just supplied
                         ff = GameColors.Fonts.gothic_10B;
@@ -424,7 +506,24 @@ namespace SrvSurvey.plotters
                     if (cargoCount > 0)
                     {
                         drawTextAt2(this.Width - eight, cargoCount.ToString("N0"), col, ff, true)
-                        .widestColumn(2, columns);
+                            .widestColumn(3, columns);
+                    }
+
+                    // (skip FC numbers if sharing 2nd column and we already rendered there)
+                    if (xFC > 0 && Game.settings.buildProjectsShowSumFC_TEST && (!Game.settings.buildProjectsInlineSumFC_TEST || cargoCount > 0))
+                    {
+                        // show amount on all FCs in same column?
+                        var fcAmount = game.cmdrColony.sumCargoLinkedFCs.GetValueOrDefault(name, -1);
+                        if (fcAmount > -1)
+                        {
+                            var diff = (fcAmount - needCount);
+                            var diffTxt = diff.ToString("N0");
+                            if (diffTxt[0] != '-' && diffTxt[0] != '0') diffTxt = '+' + diffTxt;
+                            var cc = diff > 0 ? C.green : C.red;
+
+                            drawTextAt2(xFC, diffTxt, cc, ff, true)
+                                .widestColumn(2, columns);
+                        }
                     }
 
                     // draw assigned pin behind the need number
@@ -432,7 +531,7 @@ namespace SrvSurvey.plotters
                         drawTextAt2(xNeed, "📌", col, ff);
 
                     // warn if we have more than needed
-                    if (cargoCount > needCount) col = C.red;
+                    //if (cargoCount > needCount) col = C.red;
 
                     // render the name
                     var sz2 = drawTextAt2(twenty, nameTxt, col, ff)

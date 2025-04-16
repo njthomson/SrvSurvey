@@ -158,9 +158,9 @@ namespace SrvSurvey.game
             this.Save();
         }
 
-        public void setMarketId(long newMarketId)
+        public void setMarketId(long newMarketId, string text)
         {
-            Game.log($"setMarketId: {newMarketId}");
+            Game.log($"setMarketId: {newMarketId} ({text})");
             this.currentMarketId = newMarketId;
             this.Save();
         }

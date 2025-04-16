@@ -576,6 +576,7 @@ namespace SrvSurvey
 
         private static void fadeNext(PlotterForm form, float targetOpacity, long lastTick, float delta)
         {
+            form.fading = false;
             if (form.IsDisposed) return;
             if (!Elite.gameHasFocus || form.forceHide)
             {
@@ -583,6 +584,7 @@ namespace SrvSurvey
                 form.setOpacity(0);
                 return;
             }
+            form.fading = true;
 
             var wasOpacity = form.Opacity;
             var wasSmaller = form.Opacity < targetOpacity;
@@ -600,6 +602,7 @@ namespace SrvSurvey
                 // end animation when we reach target
                 if (wasSmaller != isSmaller || form.Opacity == targetOpacity)
                 {
+                    form.fading = false;
                     if (form.Opacity != newOpacity)
                         form.setOpacity(targetOpacity);
                     //Debug.WriteLine($"!STOP! {form.Name} {form.Size} {form.Opacity}");
@@ -616,7 +619,7 @@ namespace SrvSurvey
                 //Debug.WriteLine($"~ delta:{delta}, junk.Opacity:{wasOpacity}, this.targetOpacity:{targetOpacity}, skip! {lastTick} // {nextTick} < {DateTime.Now.Ticks}");
             }
 
-            Program.control.BeginInvoke(() => fadeNext(form, targetOpacity, lastTick, delta));
+            Program.defer(() => fadeNext(form, targetOpacity, lastTick, delta));
         }
 
         public static bool isOdyssey = Game.activeGame?.journals == null || Game.activeGame.journals.isOdyssey;

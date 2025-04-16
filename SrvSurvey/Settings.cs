@@ -11,6 +11,8 @@ namespace SrvSurvey
     {
         public bool buildProjects_TEST = true;
         public bool trackConstructionContributions_TEST = true;
+        public bool buildProjectsShowSumFC_TEST = true;
+        public bool buildProjectsInlineSumFC_TEST = false;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string? buildProjectsUrl_TEST = null;
         public Color defaultOrange = GameColors.Defaults.Orange;

@@ -604,11 +604,12 @@ namespace SrvSurvey
             menuMyProjects.Visible = showMyProjects;
 
             // use where we are docked or the general primary
-            var localBuildId = game?.cmdrColony?.getBuildId(game.lastDocked);
+            var localBuildId = game?.cmdrColony?.getBuildId(game.lastDocked) ?? ColonyData.localUntrackedProject?.buildId;
             var activeBuildId = localBuildId ?? game?.cmdrColony?.primaryBuildId;
             var showCurrentProject = localBuildId != null && !string.IsNullOrEmpty(activeBuildId);
             menuCurrentProject.Visible = showCurrentProject;
-            menuPrimaryProject.Visible = showCurrentProject && (localBuildId == null || localBuildId != game?.cmdrColony.primaryBuildId);
+            menuPrimaryProject.Visible = localBuildId != null && ColonyData.localUntrackedProject == null;
+            menuPrimaryProject.Text = localBuildId == game?.cmdrColony.primaryBuildId ? "Clear primary" : "Set primary";
 
             menuColonizeLine1.Visible = showCurrentProject || showMyProjects;
 
@@ -1221,7 +1222,7 @@ namespace SrvSurvey
                         game.systemData.Save();
 
                     Program.showPlotter<PlotHumanSite>();
-                    game.cmdr.setMarketId(game.systemStation.marketId);
+                    game.cmdr.setMarketId(game.systemStation.marketId, $"inferSiteFromHeading: {game.systemStation}");
                 }
             }
         }
@@ -1907,7 +1908,7 @@ namespace SrvSurvey
         private void menuCurrentProject_Click(object sender, EventArgs e)
         {
             // use where we are docked or the general primary
-            var localBuildId = game?.cmdrColony.getBuildId(game.lastDocked);
+            var localBuildId = game?.cmdrColony?.getBuildId(game.lastDocked) ?? ColonyData.localUntrackedProject?.buildId;
             var activeBuildId = localBuildId ?? game?.cmdrColony?.primaryBuildId;
 
             if (!string.IsNullOrEmpty(activeBuildId))
@@ -1918,6 +1919,10 @@ namespace SrvSurvey
         {
             var localBuildId = game?.cmdrColony.getBuildId(game.lastDocked);
             if (game == null || string.IsNullOrEmpty(localBuildId)) return;
+
+            // clear if local is already the primary
+            if (game.cmdrColony.primaryBuildId == localBuildId)
+                localBuildId = null;
 
             btnColonize.Enabled = false;
             Game.colony.setPrimary(game.cmdrColony.cmdr, localBuildId).continueOnMain(this, () =>
@@ -1983,6 +1988,8 @@ namespace SrvSurvey
         private void btnLogs_Click(object sender, EventArgs e)
         {
             BaseForm.show<ViewLogs>();
+
+            //game.cmdrColony.checkConstructionSiteUponDocking(game.lastDocked, game.systemBody);
 
             /*
             if (this.mv != null)

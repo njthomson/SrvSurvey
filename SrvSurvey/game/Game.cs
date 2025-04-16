@@ -861,7 +861,7 @@ namespace SrvSurvey.game
             if (lastDocked != null && status.Docked && systemStation?.heading == -1)
             {
                 onJournalEntry(lastDocked);
-                cmdr.setMarketId(lastDocked.MarketID);
+                cmdr.setMarketId(lastDocked.MarketID, $"initHumanSite: {lastDocked}");
             }
 
             // or if we touched down near a site
@@ -1110,6 +1110,8 @@ namespace SrvSurvey.game
 
             // forget these things
             this.lastDocked = null;
+            this.marketBuyOnFC = false;
+            ColonyData.localUntrackedProject = null;
             if (this.dockTimer != null)
             {
                 this.dockTimer.writeToFile();
@@ -1133,7 +1135,12 @@ namespace SrvSurvey.game
                 this.fsdJumping = false;
                 this.Status_StatusChanged(false);
                 if (this.atMainMenu)
+                {
+                    this.lastDocked = null;
+                    this.marketBuyOnFC = false;
+                    ColonyData.localUntrackedProject = null;
                     this.exitMats();
+                }
             }
 
             var newCarrierMgmt = entry.MusicTrack == "FleetCarrier_Managment";
@@ -1164,7 +1171,7 @@ namespace SrvSurvey.game
             if (entry.JumpType == "Hyperspace")
             {
                 cmdr.countJumps += 1;
-                cmdr.setMarketId(0); // (saves)
+                cmdr.setMarketId(0, "-"); // (saves)
 
                 Program.defer(() => this.fsdJumping = true);
                 SystemData.Close(this.systemData);
@@ -1496,7 +1503,7 @@ namespace SrvSurvey.game
                     inventoryItem.Count -= delta;
 
                     // update linked FC?
-                    if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(lastDocked.MarketID))
+                    if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID))
                     {
                         Game.log($"Transferring {delta}x {transferItem.Type} to tracked marketId: {lastDocked.MarketID}");
                         fcTrackedCargo.init(transferItem.Type);
@@ -1509,7 +1516,7 @@ namespace SrvSurvey.game
                     inventoryItem.Count += delta;
 
                     // update linked FC?
-                    if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(lastDocked.MarketID))
+                    if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID))
                     {
                         Game.log($"Transferring {delta}x {transferItem.Type} from tracked marketId: {lastDocked.MarketID}");
                         fcTrackedCargo.init(transferItem.Type);
@@ -1578,7 +1585,7 @@ namespace SrvSurvey.game
             item.Count += entry.Count;
 
             // track purchases from linked FleetCarriers
-            if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(entry.MarketId))
+            if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
             {
                 Game.log($"Buying {entry.Count}x {entry.Type} from linked FC marketId: {entry.MarketId}");
                 Game.colony.supplyFC(entry.MarketId, entry.Type, -entry.Count).justDoIt();
@@ -1587,12 +1594,12 @@ namespace SrvSurvey.game
             Program.invalidate<PlotBuildCommodities>();
 
             if (Game.settings.allowNotifications.fcMarketPurchaseBugReminder && this.fcMarketIds.Contains(entry.MarketId))
-                marketBuyOnFC = true;
+                this.marketBuyOnFC = true;
         }
         private void onJournalEntry(MarketSell entry)
         {
             // tracked sales to linked FleetCarriers
-            if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.allLinkedFCs.ContainsKey(entry.MarketId))
+            if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
             {
                 Game.log($"Selling {entry.Count}x {entry.Type} to linked FC marketId: {entry.MarketId}");
                 Game.colony.supplyFC(entry.MarketId, entry.Type, entry.Count).justDoIt();
@@ -1619,6 +1626,8 @@ namespace SrvSurvey.game
                 this.lastColonisationConstructionDepot = entry;
                 cmdrColony.updateNeeds(entry, systemData!.address);
             }
+
+            Program.invalidate<PlotBuildCommodities>();
         }
 
         private void onJournalEntry(ColonisationContribution entry)
@@ -2474,8 +2483,8 @@ namespace SrvSurvey.game
 
             if (entry.StationServices == null
                 || entry.StationServices.Count == 0 // horizons old settlements are not compatible
-                || entry.StationServices.Contains("socialspace") // bigger settlements (Planetary ports) are not compatible
-                || entry.StationServices.Contains("colonisationcontribution") // Colonization construction sites are not compatible
+                || entry.StationServices.Contains("socialspace") // bigger settlements (Planetary ports) are not compatible // !
+                || ColonyData.isConstructionSite(entry.Name, entry.StationServices) // Colonization construction sites are not compatible
                 || entry.StationGovernment == "$government_Engineer;" // Engineer's stations (with no socialspace) are also not compatible
             )
                 return;
@@ -2569,7 +2578,7 @@ namespace SrvSurvey.game
             this.lastEverDocked = entry;
 
             // store that we've docked here
-            this.cmdr.setMarketId(entry.MarketID);
+            this.cmdr.setMarketId(entry.MarketID, entry.ToString());
             this.dockingInProgress = false;
 
             // end the dock-to-dock timer
@@ -2591,7 +2600,7 @@ namespace SrvSurvey.game
             }
 
             // stop here if we're not at an Odyssey settlement
-            if (entry.StationType != StationType.OnFootSettlement || this.systemData == null || entry.StationServices?.Contains("colonisationcontribution") == true) return;
+            if (entry.StationType != StationType.OnFootSettlement || this.systemData == null || ColonyData.isConstructionSite(entry)) return;
 
             // new ...
             if (this.systemStation == null || this.systemStation.marketId != entry.MarketID)
@@ -2678,6 +2687,7 @@ namespace SrvSurvey.game
             this.lastDocked = null;
             this.lastColonisationConstructionDepot = null;
             this.marketBuyOnFC = false;
+            ColonyData.localUntrackedProject = null;
             this.touchdownLocation = LatLong2.Empty;
 
             if (Game.settings.collectMatsCollectionStatsTest && this.matStatsTracker != null)

@@ -21,7 +21,7 @@ namespace SrvSurvey.plotters
         public bool didFirstPaint { get; set; } = true;
         public bool showing { get; set; }
         public bool forceHide { get; set; }
-
+        public bool fading { get; set; }
         private PlotPulse()
         {
             InitializeComponent();

@@ -76,12 +76,7 @@ namespace SrvSurvey.forms
                         }
                         else if (ColonyData.isConstructionSite(game.lastDocked))
                         {
-                            var newName = game.lastDocked.StationName == ColonyData.SystemColonisationShip
-                            ? "Primary port"
-                            : game.lastDocked.StationName
-                                .Replace("Planetary Construction Site:", "")
-                                .Replace("Orbital Construction Site:", "")
-                            ?? "";
+                            var newName = ColonyData.getDefaultProjectName(game.lastDocked) ?? "";
 
                             // is not tracked by anyone
                             this.untrackedProject = new()

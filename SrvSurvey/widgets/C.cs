@@ -41,6 +41,7 @@ namespace SrvSurvey.widgets
 
         public static Color yellow = c("yellow");
         public static Color green = c("green");
+        public static Color greenDark = c("greenDark");
 
         #endregion
 

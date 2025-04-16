@@ -57,7 +57,7 @@ namespace SrvSurvey.game
 
             var json1 = JsonConvert.SerializeObject(row);
             var body = new StringContent(json1, Encoding.Default, "application/json");
-            var response = await ColonyNet.client.PostAsync($"{svcUri}/api/project/{row.buildId}", body);
+            var response = await ColonyNet.client.PostAsync($"{svcUri}/api/project/{Uri.EscapeDataString(row.buildId)}", body);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             var json2 = await response.Content.ReadAsStringAsync();
@@ -69,7 +69,7 @@ namespace SrvSurvey.game
         {
             Game.log($"Colony.link: {cmdr} => {buildId}");
 
-            var response = await ColonyNet.client.PutAsync($"{svcUri}/api/project/{buildId}/link/{cmdr}", null);
+            var response = await ColonyNet.client.PutAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/link/{Uri.EscapeDataString(cmdr)}", null);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             await response.Content.ReadAsStringAsync();
@@ -79,7 +79,7 @@ namespace SrvSurvey.game
         {
             Game.log($"Colony.link: {cmdr} => {buildId}");
 
-            var response = await ColonyNet.client.DeleteAsync($"{svcUri}/api/project/{buildId}/link/{cmdr}");
+            var response = await ColonyNet.client.DeleteAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/link/{Uri.EscapeDataString(cmdr)}");
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             await response.Content.ReadAsStringAsync();
@@ -89,7 +89,7 @@ namespace SrvSurvey.game
         {
             Game.log($"Colony.link: {cmdr} => {commodity}=> {buildId}");
 
-            var response = await ColonyNet.client.PutAsync($"{svcUri}/api/project/{buildId}/assign/{cmdr}/{commodity}", null);
+            var response = await ColonyNet.client.PutAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/assign/{Uri.EscapeDataString(cmdr)}/{Uri.EscapeDataString(commodity)}", null);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             var txt = await response.Content.ReadAsStringAsync();
@@ -100,7 +100,7 @@ namespace SrvSurvey.game
         {
             Game.log($"Colony.link: {cmdr} => {commodity}=> {buildId}");
 
-            var response = await ColonyNet.client.DeleteAsync($"{svcUri}/api/project/{buildId}/assign/{cmdr}/{commodity}");
+            var response = await ColonyNet.client.DeleteAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/assign/{Uri.EscapeDataString(cmdr)}/{Uri.EscapeDataString(commodity)}");
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             var txt = await response.Content.ReadAsStringAsync();
@@ -112,7 +112,7 @@ namespace SrvSurvey.game
             Game.log($"Colony.load: {id64}/{marketId}");
             try
             {
-                var url = $"{svcUri}/api/system/{id64}/{marketId}";
+                var url = $"{svcUri}/api/system/{Uri.EscapeDataString(id64.ToString())}/{Uri.EscapeDataString(marketId.ToString())}";
                 Game.log($"Colony.load: {url}");
 
                 var response = await ColonyNet.client.GetAsync(url);
@@ -154,7 +154,7 @@ namespace SrvSurvey.game
 
             var json1 = JsonConvert.SerializeObject(diff);
             var body = new StringContent(json1, Encoding.Default, "application/json");
-            var url = $"{svcUri}/api/project/{buildId}/contribute/{cmdr}";
+            var url = $"{svcUri}/api/project/{buildId}/contribute/{Uri.EscapeDataString(cmdr)}";
             var response = await ColonyNet.client.PostAsync(url, body);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
         }
@@ -170,7 +170,7 @@ namespace SrvSurvey.game
 
             var json1 = JsonConvert.SerializeObject(diff);
             var body = new StringContent(json1, Encoding.Default, "application/json");
-            var url = $"{svcUri}/api/fc/{marketId}/cargo";
+            var url = $"{svcUri}/api/fc/{Uri.EscapeDataString(marketId.ToString())}/cargo";
             var response = await ColonyNet.client.PatchAsync(url, body);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
@@ -179,21 +179,57 @@ namespace SrvSurvey.game
             return obj;
         }
 
-        public async Task<Project> getProject(string buildId)
+        public async Task<FleetCarrier> getFC(long marketId)
+        {
+            Game.log($"Colony.getFC: {marketId}");
+
+            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/fc/{Uri.EscapeDataString(marketId.ToString())}");
+            var json = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<FleetCarrier>(json)!;
+            return obj;
+        }
+
+        public async Task<FleetCarrier[]> getAllCmdrFCs(string cmdr)
+        {
+            Game.log($"Colony.getCmdrFCAll: {cmdr}");
+
+            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/fc/all");
+            var json = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<FleetCarrier[]>(json)!;
+            return obj;
+        }
+
+        public async Task<Project?> getProject(string buildId)
         {
             Game.log($"Colony.getProject: {buildId}");
 
-            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/project/{buildId}");
+            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}");
             var json = await response.Content.ReadAsStringAsync();
-            var obj = JsonConvert.DeserializeObject<Project>(json)!;
-            return obj;
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                return JsonConvert.DeserializeObject<Project>(json)!;
+            else
+                return null;
+        }
+
+        public async Task<Project?> getProject(long id64, long marketId)
+        {
+            Game.log($"Colony.getProject: {id64}/{marketId}");
+
+            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/system/{Uri.EscapeDataString(id64.ToString())}/{Uri.EscapeDataString(marketId.ToString())}");
+            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
+
+            var json = await response.Content.ReadAsStringAsync();
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                return JsonConvert.DeserializeObject<Project>(json)!;
+            else
+                return null;
         }
 
         public async Task<List<Project>> getCmdrProjects(string cmdr)
         {
             Game.log($"Colony.getCmdrProjects: {cmdr}");
 
-            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/cmdr/{cmdr}");
+            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}");
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<List<Project>>(json)!;
             return obj;
@@ -203,7 +239,7 @@ namespace SrvSurvey.game
         {
             Game.log($"Colony.getCmdrProjects: {cmdr}");
 
-            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/cmdr/{cmdr}/summary");
+            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/summary");
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<CmdrSummary>(json)!;
             return obj;
@@ -213,7 +249,7 @@ namespace SrvSurvey.game
         {
             Game.log($"Colony.getCmdrActive: {cmdr}");
 
-            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/cmdr/{cmdr}/active");
+            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/active");
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<List<Project>>(json)!;
             return obj;
@@ -223,18 +259,20 @@ namespace SrvSurvey.game
         {
             Game.log($"Colony.getPrimary: {cmdr}");
 
-            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/cmdr/{cmdr}/primary");
+            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/primary");
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<string>(json)!;
 
             return obj;
         }
 
-        public async Task setPrimary(string cmdr, string buildId)
+        public async Task setPrimary(string cmdr, string? buildId)
         {
             Game.log($"Colony.setPrimary: {cmdr} => {buildId}");
 
-            var response = await ColonyNet.client.PostAsync($"{svcUri}/api/cmdr/{cmdr}/primary/{buildId}", null);
+            var response = buildId == null
+                    ? await ColonyNet.client.DeleteAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/primary/")
+                    : await ColonyNet.client.PostAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/primary/{Uri.EscapeDataString(buildId ?? "")}", null);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
         }
 
@@ -499,6 +537,14 @@ namespace SrvSurvey.game
 
         public int? maxNeed;
         public Dictionary<string, int>? commodities;
+    }
+
+    public class FleetCarrier
+    {
+        public long marketId;
+        public string name;
+        public string displayName;
+        public Dictionary<string, int> cargo;
     }
 
 }

@@ -37,6 +37,7 @@ namespace SrvSurvey.plotters
         public bool didFirstPaint { get; set; }
         private bool forceRepaint;
         public bool showing { get; set; }
+        public bool fading { get; set; }
 
         protected PlotBase()
         {

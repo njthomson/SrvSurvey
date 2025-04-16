@@ -259,6 +259,11 @@ namespace SrvSurvey
         public bool Wanted;
         public bool ActiveFine;
         public LandingPads LandingPads;
+
+        public override string ToString()
+        {
+            return $"{StationName} ({StationType}/{MarketID}/{StarSystem})";
+        }
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
