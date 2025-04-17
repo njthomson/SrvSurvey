@@ -117,6 +117,7 @@ namespace SrvSurvey
             btnRuinsMap = new ToolStripMenuItem();
             btnRuinsOrigin = new ToolStripMenuItem();
             toolTip1 = new ToolTip(components);
+            notifyIcon = new NotifyIcon(components);
             groupBox1.SuspendLayout();
             groupCmdr.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -1060,6 +1061,12 @@ namespace SrvSurvey
             btnRuinsOrigin.Text = "Aerial Assist";
             btnRuinsOrigin.Click += btnRuinsOrigin_Click;
             // 
+            // notifyIcon
+            // 
+            notifyIcon.Icon = (Icon)resources.GetObject("notifyIcon.Icon");
+            notifyIcon.Text = "SrvSurvey\r\nDouble click to restore";
+            notifyIcon.DoubleClick += notifyIcon_DoubleClick;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 12F);
@@ -1197,5 +1204,6 @@ namespace SrvSurvey
         private Button btnNextWindow;
         private ToolTip toolTip1;
         private ToolStripMenuItem menuPrimaryProject;
+        private NotifyIcon notifyIcon;
     }
 }

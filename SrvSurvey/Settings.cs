@@ -26,6 +26,7 @@ namespace SrvSurvey
         public string watchedJournalFolder = JournalFile.journalFolder;
         public bool hideJournalWriteTimer = false;
         public string? lang;
+        public bool minimizeToTray = false;
 
         public LatLong2 targetLatLong = LatLong2.Empty;
         public bool targetLatLongActive = false;

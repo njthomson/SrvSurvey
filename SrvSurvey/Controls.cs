@@ -351,7 +351,8 @@ namespace SrvSurvey
     /// </summary>
     public class ComboCmdr : ComboBox
     {
-        public Dictionary<string, string>? allCmdrs { get; private set; }
+        /// <summary> Fid => Commander </summary>
+        public Dictionary<string, string> allCmdrs { get; private set; } = new();
 
         public ComboCmdr() : base()
         {
@@ -363,7 +364,7 @@ namespace SrvSurvey
         {
             base.OnHandleCreated(e);
 
-            if (allCmdrs == null)
+            if (allCmdrs.Count == 0)
                 this.loadCmdrs();
         }
 
@@ -371,7 +372,7 @@ namespace SrvSurvey
         {
             if (this.DesignMode) return;
 
-            if (this.allCmdrs == null)
+            if (this.allCmdrs.Count == 0)
                 this.allCmdrs = CommanderSettings.getAllCmdrs();
 
             var cmdrs = this.allCmdrs
@@ -382,7 +383,9 @@ namespace SrvSurvey
             this.Items.Clear();
             this.Items.AddRange(cmdrs);
 
-            if (!string.IsNullOrEmpty(Game.settings.preferredCommander))
+            if (Program.forceFid != null)
+                this.SelectedItem = allCmdrs.GetValueOrDefault(Program.forceFid);
+            else if (!string.IsNullOrEmpty(Game.settings.preferredCommander))
                 this.SelectedItem = Game.settings.preferredCommander;
             else if (!string.IsNullOrEmpty(Game.settings.lastCommander))
                 this.SelectedItem = Game.settings.lastCommander;
@@ -394,14 +397,14 @@ namespace SrvSurvey
 
         public string? cmdrFid
         {
-            get => this.allCmdrs?.First(_ => _.Value == (this.SelectedItem as string)).Key;
+            get => this.allCmdrs.FirstOrDefault(_ => _.Value == (this.SelectedItem as string)).Key;
             set
             {
                 if (!string.IsNullOrEmpty(value) && !this.DesignMode)
                 {
-                    if (allCmdrs == null) this.loadCmdrs();
+                    if (allCmdrs.Count == 0) this.loadCmdrs();
 
-                    var newItem = this.allCmdrs?.GetValueOrDefault(value);
+                    var newItem = this.allCmdrs.GetValueOrDefault(value);
                     if (newItem != null)
                         this.SelectedItem = newItem;
                 }

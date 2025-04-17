@@ -31,29 +31,26 @@ namespace SrvSurvey
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            ListViewItem listViewItem16 = new ListViewItem("Materials count after pickup");
-            ListViewItem listViewItem17 = new ListViewItem("Mission remaining cargo count");
-            ListViewItem listViewItem18 = new ListViewItem("Boxel search status");
-            ListViewItem listViewItem19 = new ListViewItem("Next boxel to search");
-            ListViewItem listViewItem20 = new ListViewItem("Buying bug at FCs");
+            ListViewItem listViewItem1 = new ListViewItem("Materials count after pickup");
+            ListViewItem listViewItem2 = new ListViewItem("Mission remaining cargo count");
+            ListViewItem listViewItem3 = new ListViewItem("Boxel search status");
+            ListViewItem listViewItem4 = new ListViewItem("Next boxel to search");
+            ListViewItem listViewItem5 = new ListViewItem("Buying bug at FCs");
             panel1 = new Panel();
-            btnNextProc = new FlatButton();
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
             tabPage1 = new TabPage();
+            checkBox45 = new CheckBox();
             checkBox35 = new CheckBox();
-            checkBox38 = new CheckBox();
             linkJournalFolder = new LinkLabel();
             linkResetWatchFolder = new LinkLabel();
             checkHidePlottersFromDominator = new CheckBox();
             checkHidePlottersFromMaverick = new CheckBox();
             pictureBox6 = new PictureBox();
-            checkBox33 = new CheckBox();
             btnAdjustOverlays = new FlatButton();
             label27 = new Label();
             comboLang = new ComboBox();
             numOpacity = new NumericUpDown();
-            numGravityWarningLevel = new NumericUpDown();
             checkFocusAfterFsdJump = new CheckBox();
             label3 = new Label();
             panelTheme2 = new Panel();
@@ -66,8 +63,6 @@ namespace SrvSurvey
             comboOverlayScale = new ComboBox();
             btnResetOverlays = new FlatButton();
             comboCmdr = new ComboBox();
-            label12 = new Label();
-            checkBox13 = new CheckBox();
             checkHideJournalTimer = new CheckBox();
             btnChooseJournalFolder = new FlatButton();
             label11 = new Label();
@@ -186,6 +181,7 @@ namespace SrvSurvey
             checkBox4 = new CheckBox();
             tabPage7 = new TabPage();
             groupColonization = new GroupBox();
+            checkBox44 = new CheckBox();
             checkBox43 = new CheckBox();
             checkBox39 = new CheckBox();
             checkColonization = new CheckBox();
@@ -235,6 +231,11 @@ namespace SrvSurvey
             label28 = new Label();
             checkKeyChords = new CheckBox();
             tabPage8 = new TabPage();
+            numGravityWarningLevel = new NumericUpDown();
+            label12 = new Label();
+            checkBox13 = new CheckBox();
+            checkBox38 = new CheckBox();
+            checkBox33 = new CheckBox();
             checkBox40 = new CheckBox();
             listView1 = new ListView();
             checkBox42 = new CheckBox();
@@ -248,12 +249,10 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
-            checkBox44 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackOpacity).BeginInit();
             tabControl.SuspendLayout();
             tabPage4.SuspendLayout();
@@ -302,13 +301,13 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).BeginInit();
             tabKeyChords.SuspendLayout();
             tabPage8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
             tabPage2.SuspendLayout();
             menuCodexImages.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
             // 
-            panel1.Controls.Add(btnNextProc);
             panel1.Controls.Add(btnSave);
             panel1.Controls.Add(btnCancel);
             panel1.Dock = DockStyle.Bottom;
@@ -317,17 +316,6 @@ namespace SrvSurvey
             panel1.Name = "panel1";
             panel1.Size = new Size(707, 48);
             panel1.TabIndex = 1;
-            // 
-            // btnNextProc
-            // 
-            btnNextProc.Location = new Point(4, 14);
-            btnNextProc.Name = "btnNextProc";
-            btnNextProc.Size = new Size(243, 27);
-            btnNextProc.TabIndex = 0;
-            btnNextProc.Text = "Use alternate EliteDangerous window";
-            btnNextProc.UseVisualStyleBackColor = true;
-            btnNextProc.Visible = false;
-            btnNextProc.Click += btnNextProc_Click;
             // 
             // btnSave
             // 
@@ -356,19 +344,17 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(checkBox45);
             tabPage1.Controls.Add(checkBox35);
-            tabPage1.Controls.Add(checkBox38);
             tabPage1.Controls.Add(linkJournalFolder);
             tabPage1.Controls.Add(linkResetWatchFolder);
             tabPage1.Controls.Add(checkHidePlottersFromDominator);
             tabPage1.Controls.Add(checkHidePlottersFromMaverick);
             tabPage1.Controls.Add(pictureBox6);
-            tabPage1.Controls.Add(checkBox33);
             tabPage1.Controls.Add(btnAdjustOverlays);
             tabPage1.Controls.Add(label27);
             tabPage1.Controls.Add(comboLang);
             tabPage1.Controls.Add(numOpacity);
-            tabPage1.Controls.Add(numGravityWarningLevel);
             tabPage1.Controls.Add(checkFocusAfterFsdJump);
             tabPage1.Controls.Add(label3);
             tabPage1.Controls.Add(panelTheme2);
@@ -381,8 +367,6 @@ namespace SrvSurvey
             tabPage1.Controls.Add(comboOverlayScale);
             tabPage1.Controls.Add(btnResetOverlays);
             tabPage1.Controls.Add(comboCmdr);
-            tabPage1.Controls.Add(label12);
-            tabPage1.Controls.Add(checkBox13);
             tabPage1.Controls.Add(checkHideJournalTimer);
             tabPage1.Controls.Add(btnChooseJournalFolder);
             tabPage1.Controls.Add(label11);
@@ -403,6 +387,19 @@ namespace SrvSurvey
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
             // 
+            // checkBox45
+            // 
+            checkBox45.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            checkBox45.AutoSize = true;
+            checkBox45.FlatStyle = FlatStyle.System;
+            checkBox45.Location = new Point(10, 204);
+            checkBox45.Name = "checkBox45";
+            checkBox45.Size = new Size(158, 20);
+            checkBox45.TabIndex = 38;
+            checkBox45.Tag = "minimizeToTray";
+            checkBox45.Text = "Minimize to system tray";
+            checkBox45.UseVisualStyleBackColor = true;
+            // 
             // checkBox35
             // 
             checkBox35.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -414,18 +411,6 @@ namespace SrvSurvey
             checkBox35.Tag = "hideOverlaysFromMouseInFSS_TEST";
             checkBox35.Text = "Hide overlays from mouse cursor";
             checkBox35.UseVisualStyleBackColor = true;
-            // 
-            // checkBox38
-            // 
-            checkBox38.AutoSize = true;
-            checkBox38.FlatStyle = FlatStyle.System;
-            checkBox38.Location = new Point(461, 390);
-            checkBox38.Name = "checkBox38";
-            checkBox38.Size = new Size(180, 20);
-            checkBox38.TabIndex = 36;
-            checkBox38.Tag = "autoShowPlotMiniTrack_TEST";
-            checkBox38.Text = "Mini trackers (Experimental)";
-            checkBox38.UseVisualStyleBackColor = true;
             // 
             // linkJournalFolder
             // 
@@ -487,23 +472,11 @@ namespace SrvSurvey
             // 
             pictureBox6.BackgroundImage = (Image)resources.GetObject("pictureBox6.BackgroundImage");
             pictureBox6.BackgroundImageLayout = ImageLayout.None;
-            pictureBox6.Location = new Point(271, 204);
+            pictureBox6.Location = new Point(271, 294);
             pictureBox6.Name = "pictureBox6";
             pictureBox6.Size = new Size(56, 41);
             pictureBox6.TabIndex = 24;
             pictureBox6.TabStop = false;
-            // 
-            // checkBox33
-            // 
-            checkBox33.AutoSize = true;
-            checkBox33.FlatStyle = FlatStyle.System;
-            checkBox33.Location = new Point(412, 231);
-            checkBox33.Name = "checkBox33";
-            checkBox33.Size = new Size(241, 20);
-            checkBox33.TabIndex = 35;
-            checkBox33.Tag = "autoShowPlotMassacre_TEST";
-            checkBox33.Text = "Massacre mission helper (Experimental)";
-            checkBox33.UseVisualStyleBackColor = true;
             // 
             // btnAdjustOverlays
             // 
@@ -548,19 +521,6 @@ namespace SrvSurvey
             numOpacity.TabIndex = 3;
             numOpacity.Tag = "plotterOpacity";
             numOpacity.ValueChanged += numOpacity_ValueChanged;
-            // 
-            // numGravityWarningLevel
-            // 
-            numGravityWarningLevel.DecimalPlaces = 2;
-            numGravityWarningLevel.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
-            numGravityWarningLevel.Location = new Point(199, 312);
-            numGravityWarningLevel.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
-            numGravityWarningLevel.Name = "numGravityWarningLevel";
-            numGravityWarningLevel.Size = new Size(50, 23);
-            numGravityWarningLevel.TabIndex = 17;
-            numGravityWarningLevel.Tag = "highGravityWarningLevel";
-            numGravityWarningLevel.TextAlign = HorizontalAlignment.Right;
-            numGravityWarningLevel.Value = new decimal(new int[] { 50, 0, 0, 0 });
             // 
             // checkFocusAfterFsdJump
             // 
@@ -696,38 +656,13 @@ namespace SrvSurvey
             comboCmdr.Size = new Size(629, 23);
             comboCmdr.TabIndex = 1;
             // 
-            // label12
-            // 
-            label12.AutoSize = true;
-            label12.FlatStyle = FlatStyle.System;
-            label12.Location = new Point(31, 314);
-            label12.Name = "label12";
-            label12.Size = new Size(156, 15);
-            label12.TabIndex = 16;
-            label12.Text = "When body gravity is above:";
-            // 
-            // checkBox13
-            // 
-            checkBox13.AutoSize = true;
-            checkBox13.Checked = true;
-            checkBox13.CheckState = CheckState.Checked;
-            checkBox13.FlatStyle = FlatStyle.System;
-            checkBox13.Location = new Point(10, 292);
-            checkBox13.Margin = new Padding(4, 3, 4, 3);
-            checkBox13.Name = "checkBox13";
-            checkBox13.Size = new Size(143, 20);
-            checkBox13.TabIndex = 15;
-            checkBox13.Tag = "autoShowFlightWarnings";
-            checkBox13.Text = "Show flight warnings";
-            checkBox13.UseVisualStyleBackColor = true;
-            // 
             // checkHideJournalTimer
             // 
             checkHideJournalTimer.AutoSize = true;
             checkHideJournalTimer.Checked = true;
             checkHideJournalTimer.CheckState = CheckState.Checked;
             checkHideJournalTimer.FlatStyle = FlatStyle.System;
-            checkHideJournalTimer.Location = new Point(10, 204);
+            checkHideJournalTimer.Location = new Point(10, 294);
             checkHideJournalTimer.Margin = new Padding(4, 3, 4, 3);
             checkHideJournalTimer.Name = "checkHideJournalTimer";
             checkHideJournalTimer.Size = new Size(265, 20);
@@ -2300,6 +2235,19 @@ namespace SrvSurvey
             groupColonization.TabStop = false;
             groupColonization.Text = "Colonization: (experimental)";
             // 
+            // checkBox44
+            // 
+            checkBox44.AutoSize = true;
+            checkBox44.CheckAlign = ContentAlignment.TopLeft;
+            checkBox44.FlatStyle = FlatStyle.System;
+            checkBox44.Location = new Point(36, 100);
+            checkBox44.Name = "checkBox44";
+            checkBox44.Size = new Size(228, 20);
+            checkBox44.TabIndex = 36;
+            checkBox44.Tag = "buildProjectsInlineSumFC_TEST";
+            checkBox44.Text = "Share column with ship cargo counts";
+            checkBox44.UseVisualStyleBackColor = true;
+            // 
             // checkBox43
             // 
             checkBox43.AutoSize = true;
@@ -2344,7 +2292,7 @@ namespace SrvSurvey
             // 
             numPriorScanMinValue.Increment = new decimal(new int[] { 100000, 0, 0, 0 });
             numPriorScanMinValue.Location = new Point(248, 83);
-            numPriorScanMinValue.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
+            numPriorScanMinValue.Maximum = new decimal(new int[] { 20000000, 0, 0, 0 });
             numPriorScanMinValue.Name = "numPriorScanMinValue";
             numPriorScanMinValue.Size = new Size(80, 23);
             numPriorScanMinValue.TabIndex = 4;
@@ -2902,6 +2850,11 @@ namespace SrvSurvey
             // 
             tabPage8.BackColor = SystemColors.Control;
             tabPage8.BorderStyle = BorderStyle.Fixed3D;
+            tabPage8.Controls.Add(numGravityWarningLevel);
+            tabPage8.Controls.Add(label12);
+            tabPage8.Controls.Add(checkBox13);
+            tabPage8.Controls.Add(checkBox38);
+            tabPage8.Controls.Add(checkBox33);
             tabPage8.Controls.Add(checkBox40);
             tabPage8.Controls.Add(listView1);
             tabPage8.Controls.Add(checkBox42);
@@ -2912,6 +2865,69 @@ namespace SrvSurvey
             tabPage8.Size = new Size(699, 448);
             tabPage8.TabIndex = 9;
             tabPage8.Text = "More";
+            // 
+            // numGravityWarningLevel
+            // 
+            numGravityWarningLevel.DecimalPlaces = 2;
+            numGravityWarningLevel.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
+            numGravityWarningLevel.Location = new Point(204, 141);
+            numGravityWarningLevel.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
+            numGravityWarningLevel.Name = "numGravityWarningLevel";
+            numGravityWarningLevel.Size = new Size(50, 23);
+            numGravityWarningLevel.TabIndex = 44;
+            numGravityWarningLevel.Tag = "highGravityWarningLevel";
+            numGravityWarningLevel.TextAlign = HorizontalAlignment.Right;
+            numGravityWarningLevel.Value = new decimal(new int[] { 50, 0, 0, 0 });
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.FlatStyle = FlatStyle.System;
+            label12.Location = new Point(36, 143);
+            label12.Name = "label12";
+            label12.Size = new Size(156, 15);
+            label12.TabIndex = 43;
+            label12.Text = "When body gravity is above:";
+            // 
+            // checkBox13
+            // 
+            checkBox13.AutoSize = true;
+            checkBox13.Checked = true;
+            checkBox13.CheckState = CheckState.Checked;
+            checkBox13.FlatStyle = FlatStyle.System;
+            checkBox13.Location = new Point(12, 120);
+            checkBox13.Margin = new Padding(4, 3, 4, 3);
+            checkBox13.Name = "checkBox13";
+            checkBox13.Size = new Size(143, 20);
+            checkBox13.TabIndex = 42;
+            checkBox13.Tag = "autoShowFlightWarnings";
+            checkBox13.Text = "Show flight warnings";
+            checkBox13.UseVisualStyleBackColor = true;
+            checkBox13.CheckedChanged += checkBox13_CheckedChanged;
+            // 
+            // checkBox38
+            // 
+            checkBox38.AutoSize = true;
+            checkBox38.FlatStyle = FlatStyle.System;
+            checkBox38.Location = new Point(12, 94);
+            checkBox38.Name = "checkBox38";
+            checkBox38.Size = new Size(180, 20);
+            checkBox38.TabIndex = 41;
+            checkBox38.Tag = "autoShowPlotMiniTrack_TEST";
+            checkBox38.Text = "Mini trackers (Experimental)";
+            checkBox38.UseVisualStyleBackColor = true;
+            // 
+            // checkBox33
+            // 
+            checkBox33.AutoSize = true;
+            checkBox33.FlatStyle = FlatStyle.System;
+            checkBox33.Location = new Point(12, 68);
+            checkBox33.Name = "checkBox33";
+            checkBox33.Size = new Size(241, 20);
+            checkBox33.TabIndex = 40;
+            checkBox33.Tag = "autoShowPlotMassacre_TEST";
+            checkBox33.Text = "Massacre mission helper (Experimental)";
+            checkBox33.UseVisualStyleBackColor = true;
             // 
             // checkBox40
             // 
@@ -2929,17 +2945,17 @@ namespace SrvSurvey
             // listView1
             // 
             listView1.CheckBoxes = true;
-            listViewItem16.StateImageIndex = 0;
-            listViewItem16.Tag = "materialCountAfterPickup";
-            listViewItem17.StateImageIndex = 0;
-            listViewItem17.Tag = "cargoMissionRemaining";
-            listViewItem18.StateImageIndex = 0;
-            listViewItem18.Tag = "currentBoxelSearchStatus";
-            listViewItem19.StateImageIndex = 0;
-            listViewItem19.Tag = "showNextBoxelToSearch";
-            listViewItem20.StateImageIndex = 0;
-            listViewItem20.Tag = "fcMarketPurchaseBugReminder";
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem16, listViewItem17, listViewItem18, listViewItem19, listViewItem20 });
+            listViewItem1.StateImageIndex = 0;
+            listViewItem1.Tag = "materialCountAfterPickup";
+            listViewItem2.StateImageIndex = 0;
+            listViewItem2.Tag = "cargoMissionRemaining";
+            listViewItem3.StateImageIndex = 0;
+            listViewItem3.Tag = "currentBoxelSearchStatus";
+            listViewItem4.StateImageIndex = 0;
+            listViewItem4.Tag = "showNextBoxelToSearch";
+            listViewItem5.StateImageIndex = 0;
+            listViewItem5.Tag = "fcMarketPurchaseBugReminder";
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5 });
             listView1.Location = new Point(12, 331);
             listView1.Name = "listView1";
             listView1.Size = new Size(400, 107);
@@ -3049,19 +3065,6 @@ namespace SrvSurvey
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
             // 
-            // checkBox44
-            // 
-            checkBox44.AutoSize = true;
-            checkBox44.CheckAlign = ContentAlignment.TopLeft;
-            checkBox44.FlatStyle = FlatStyle.System;
-            checkBox44.Location = new Point(36, 100);
-            checkBox44.Name = "checkBox44";
-            checkBox44.Size = new Size(228, 20);
-            checkBox44.TabIndex = 36;
-            checkBox44.Tag = "buildProjectsInlineSumFC_TEST";
-            checkBox44.Text = "Share column with ship cargo counts";
-            checkBox44.UseVisualStyleBackColor = true;
-            // 
             // FormSettings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -3083,7 +3086,6 @@ namespace SrvSurvey
             tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
             ((System.ComponentModel.ISupportInitialize)numOpacity).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackOpacity).EndInit();
             tabControl.ResumeLayout(false);
             tabPage4.ResumeLayout(false);
@@ -3145,6 +3147,7 @@ namespace SrvSurvey
             tabKeyChords.PerformLayout();
             tabPage8.ResumeLayout(false);
             tabPage8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).EndInit();
             tabPage2.ResumeLayout(false);
             menuCodexImages.ResumeLayout(false);
             ResumeLayout(false);
@@ -3166,7 +3169,6 @@ namespace SrvSurvey
         private LinkLabel linkAboutTwo;
         private TabPage tabPage3;
         private CheckBox checkEnableGuardianFeatures;
-        private FlatButton btnNextProc;
         private CheckBox checkRuinsMeasurementGrid;
         private CheckBox checkHidePlottersFromMaverick;
         private TabPage tabPage4;
@@ -3233,9 +3235,6 @@ namespace SrvSurvey
         private RadioButton radioUseSmall;
         private PictureBox pictureBox9;
         private PictureBox pictureBox8;
-        private Label label12;
-        private NumericUpDown numGravityWarningLevel;
-        private CheckBox checkBox13;
         private CheckBox checkHideMyOwnCanonnSignals;
         private CheckBox checkBox14;
         private CheckBox checkBox15;
@@ -3333,7 +3332,6 @@ namespace SrvSurvey
         private ColumnHeader colDesc;
         private Label label28;
         private FlatButton btnAdjustOverlays;
-        private CheckBox checkBox33;
         private FlatButton btnSwapCache;
         private CheckBox checkBox34;
         private GroupBox groupCodexImages;
@@ -3351,7 +3349,6 @@ namespace SrvSurvey
         private Label label29;
         private CheckBox checkBox36;
         private CheckBox checkBox37;
-        private CheckBox checkBox38;
         private CheckBox checkBox35;
         private CheckBox checkJumpInfoIfDestination;
         private CheckBox checkColonization;
@@ -3364,5 +3361,11 @@ namespace SrvSurvey
         private CheckBox checkBox39;
         private CheckBox checkBox43;
         private CheckBox checkBox44;
+        private CheckBox checkBox45;
+        private NumericUpDown numGravityWarningLevel;
+        private Label label12;
+        private CheckBox checkBox13;
+        private CheckBox checkBox38;
+        private CheckBox checkBox33;
     }
 }

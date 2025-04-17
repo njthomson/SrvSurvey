@@ -26,6 +26,7 @@ namespace SrvSurvey
         private bool wasWithinDssDuration;
         private bool gameHadFocus;
         private FormMultiFloatie? multiFloatie;
+        private DateTime lastProcCheck;
 
         public static Main form;
         public KeyboardHook hook;
@@ -327,6 +328,148 @@ namespace SrvSurvey
 
         }
 
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            // a periodic timer to check the location of the game window, repositioning plotters if needed
+            var rect = Elite.getWindowRect();
+            var hasFocus = rect != Rectangle.Empty && rect.X > -30_000 && Elite.gameHasFocus;
+            var forceOpen = Game.settings.keepOverlays || Debugger.IsAttached;
+
+            // show/hide plotters if game has changed focus state
+            if (gameHadFocus != hasFocus)
+            {
+                //Game.log($"gameHadFocus:{gameHadFocus}, hasFocus:{hasFocus}, forceOpen:{forceOpen}, rect:{rect}");
+                if (hasFocus || forceOpen)
+                    Program.showActivePlotters();
+                else
+                    Program.hideActivePlotters();
+            }
+            else if (forceOpen && rect.X < -30000)
+            {
+                Program.hideActivePlotters();
+            }
+
+            // force plotters to appear if we just gained focus
+            if (!gameHadFocus && Elite.gameHasFocus && game != null)
+                game.fireUpdate(true);
+
+            this.gameHadFocus = Elite.gameHasFocus;
+
+            // every ~5 seconds - force a process check
+            if ((DateTime.Now - lastProcCheck).TotalSeconds > 5)
+            {
+                lastProcCheck = DateTime.Now;
+                var procs = Process.GetProcessesByName("EliteDangerous64");
+                Elite.hadManyGameProcs = procs.Length > 1;
+            }
+
+            // handle single/multiple processes
+            btnNextWindow.Visible = Elite.hadManyGameProcs;
+            if (this.multiFloatie == null) { this.multiFloatie = FormMultiFloatie.create(); btnNextWindow.BackColor = C.cyanDark; }
+            if (this.multiFloatie != null && !Elite.hadManyGameProcs) { this.multiFloatie.Close(); this.multiFloatie = null; }
+            if (this.multiFloatie != null) this.multiFloatie.Visible = Elite.focusElite || FormStartNewCmdr.active;
+
+            // reposition plotters if game window has moved
+            if (rect != this.lastWindowRect && Elite.gameHasFocus && rect.X > -30_000)
+            {
+                Game.log($"EliteDangerous window reposition: {this.lastWindowRect} => {rect}");
+                this.lastWindowRect = rect;
+                Program.repositionPlotters(rect);
+                this.multiFloatie?.positionOverGame(rect);
+            }
+
+            // if the game process is NOT running, but we have an active game object processing journals ... append a fake shutdown entry and stop processing journal entries
+            if (!Elite.isGameRunning && game != null && !game.isShutdown && game.journals != null)
+            {
+                Game.log($"EliteDangerous process died?!");
+                game.journals.fakeShutdown();
+                this.removeGame();
+            }
+
+            // check/clear the systemBody reference we're holding onto for some duration after a DSS scan completes
+            if (game != null)
+            {
+                var isWithinDssDuration = SystemData.isWithinLastDssDuration();
+                if (isWithinDssDuration)
+                {
+                    this.wasWithinDssDuration = true;
+                }
+                else if (this.wasWithinDssDuration && !isWithinDssDuration)
+                {
+                    game.fireUpdate(true);
+                    this.wasWithinDssDuration = false;
+                }
+            }
+
+            // poke the current journal file, combatting batched file writes by the game
+            if (game?.journals != null) game.journals.poke();
+        }
+
+        private void removeGame()
+        {
+            Game.log($"Main.removeGame, has old game: {this.game != null}");
+            Program.closeAllPlotters();
+            this.hook?.stopDirectX();
+
+            if (this.game != null)
+            {
+                Game.update -= Game_modeChanged;
+                if (this.game.journals != null)
+                    this.game.journals.onJournalEntry -= Journals_onJournalEntry;
+                if (this.game.status != null)
+                    this.game.status.StatusChanged -= Status_StatusChanged;
+                this.game.Dispose();
+            }
+            this.game = null;
+
+            this.updateAllControls();
+        }
+
+        private void newGame()
+        {
+            Game.log($"Main.newGame: has old game:{this.game != null} ");
+
+            if (this.game != null)
+            {
+                this.removeGame();
+                Application.DoEvents();
+            }
+
+            var newGame = new Game(Game.settings.preferredCommander);
+            if (newGame.isShutdown || !Elite.isGameRunning)
+            {
+                newGame.Dispose();
+                return;
+            }
+
+            this.game = newGame;
+
+            Game.update += Game_modeChanged;
+            this.game.journals!.onJournalEntry += Journals_onJournalEntry;
+            this.game.status.StatusChanged += Status_StatusChanged;
+
+            if (!Game.settings.hideJournalWriteTimer)
+                Program.showPlotter<PlotPulse>();
+
+            this.updateAllControls();
+            this.hook?.startDirectX(Game.settings.hookDirectXDeviceId_TEST);
+
+            Game.log($"migratedScannedOrganicsInEntryId: {newGame.cmdr?.migratedScannedOrganicsInEntryId}, migratedNonSystemDataOrganics: {newGame.cmdr?.migratedNonSystemDataOrganics}");
+            if (newGame?.cmdr != null && (!newGame.cmdr.migratedScannedOrganicsInEntryId || !newGame.cmdr.migratedNonSystemDataOrganics))
+            {
+                Task.Run(new Action(() =>
+                {
+                    if (!newGame.cmdr.migratedScannedOrganicsInEntryId)
+                        BodyDataOld.migrate_ScannedOrganics_Into_ScannedBioEntryIds(newGame.cmdr);
+
+                    if (!newGame.cmdr.migratedNonSystemDataOrganics)
+                        SystemData.migrate_BodyData_Into_SystemData(newGame.cmdr).ConfigureAwait(false);
+
+                    Game.log($"Cmdr migrations complete!");
+                }));
+            }
+        }
+
         private void updateAllControls(GameMode? newMode = null)
         {
             //Game.log("** ** ** updateAllControls ** ** **");
@@ -482,71 +625,6 @@ namespace SrvSurvey
             });
         }
 
-        private void removeGame()
-        {
-            Game.log($"Main.removeGame, has old game: {this.game != null}");
-            Program.closeAllPlotters();
-            this.hook?.stopDirectX();
-
-            if (this.game != null)
-            {
-                Game.update -= Game_modeChanged;
-                if (this.game.journals != null)
-                    this.game.journals.onJournalEntry -= Journals_onJournalEntry;
-                if (this.game.status != null)
-                    this.game.status.StatusChanged -= Status_StatusChanged;
-                this.game.Dispose();
-            }
-            this.game = null;
-
-            this.updateAllControls();
-        }
-
-        private void newGame()
-        {
-            Game.log($"Main.newGame: has old game:{this.game != null} ");
-
-            if (this.game != null)
-            {
-                this.removeGame();
-                Application.DoEvents();
-            }
-
-            var newGame = new Game(Game.settings.preferredCommander);
-            if (newGame.isShutdown || !Elite.isGameRunning)
-            {
-                newGame.Dispose();
-                return;
-            }
-
-            this.game = newGame;
-
-            Game.update += Game_modeChanged;
-            this.game.journals!.onJournalEntry += Journals_onJournalEntry;
-            this.game.status.StatusChanged += Status_StatusChanged;
-
-            if (!Game.settings.hideJournalWriteTimer)
-                Program.showPlotter<PlotPulse>();
-
-            this.updateAllControls();
-            this.hook?.startDirectX(Game.settings.hookDirectXDeviceId_TEST);
-
-            Game.log($"migratedScannedOrganicsInEntryId: {newGame.cmdr?.migratedScannedOrganicsInEntryId}, migratedNonSystemDataOrganics: {newGame.cmdr?.migratedNonSystemDataOrganics}");
-            if (newGame?.cmdr != null && (!newGame.cmdr.migratedScannedOrganicsInEntryId || !newGame.cmdr.migratedNonSystemDataOrganics))
-            {
-                Task.Run(new Action(() =>
-                {
-                    if (!newGame.cmdr.migratedScannedOrganicsInEntryId)
-                        BodyDataOld.migrate_ScannedOrganics_Into_ScannedBioEntryIds(newGame.cmdr);
-
-                    if (!newGame.cmdr.migratedNonSystemDataOrganics)
-                        SystemData.migrate_BodyData_Into_SystemData(newGame.cmdr).ConfigureAwait(false);
-
-                    Game.log($"Cmdr migrations complete!");
-                }));
-            }
-        }
-
         private void Status_StatusChanged(bool blink)
         {
             // show some plotters based on changing status values?
@@ -637,6 +715,7 @@ namespace SrvSurvey
                 else
                     this.txtCommander.Text = Game.settings.lastCommander + " ?";
 
+                this.notifyIcon.Text = $"SrvSurvey: {Program.forceFid} ?\nDouble click to restore";
                 this.txtVehicle.Text = "";
                 this.txtNearBody.Text = "";
                 this.txtLocation.Text = Game.settings.lastFid != null ? CommanderSettings.LoadCurrentOrLast()?.currentSystem ?? "" : "";
@@ -654,6 +733,9 @@ namespace SrvSurvey
 
             this.txtCommander.Text = $"{game.Commander} (FID:{game.fid}, Odyssey:{game.cmdr.isOdyssey})";
             if (Program.forceFid != null) this.txtCommander.Text += " (forced)";
+            this.notifyIcon.Text = $"SrvSurvey: {game.Commander}\nDouble click to restore";
+            if (this.multiFloatie != null && game.Commander != null && multiFloatie.cmdr != game.Commander) multiFloatie.setCmdr(game.Commander);
+
             this.txtMode.Text = game.mode.ToString();
             if (game.mode == GameMode.Docked && game.systemStation != null)
                 this.txtMode.Text += ": " + game.systemStation.name;
@@ -1308,75 +1390,6 @@ namespace SrvSurvey
             Elite.setFocusED();
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            // a periodic timer to check the location of the game window, repositioning plotters if needed
-            var rect = Elite.getWindowRect();
-            var hasFocus = rect != Rectangle.Empty && rect.X > -30_000 && Elite.gameHasFocus;
-            var forceOpen = Game.settings.keepOverlays || Debugger.IsAttached;
-
-            if (gameHadFocus != hasFocus)
-            {
-                //Game.log($"gameHadFocus:{gameHadFocus}, hasFocus:{hasFocus}, forceOpen:{forceOpen}, rect:{rect}");
-                if (hasFocus || forceOpen)
-                    Program.showActivePlotters();
-                else
-                    Program.hideActivePlotters();
-            }
-            else if (forceOpen && rect.X < -30000)
-            {
-                Program.hideActivePlotters();
-            }
-
-            // force plotters to appear if we just gained focus
-            if (!gameHadFocus && Elite.gameHasFocus && game != null)
-                game.fireUpdate(true);
-
-            this.gameHadFocus = Elite.gameHasFocus;
-
-            if (Elite.hadManyGameProcs && this.multiFloatie == null && Elite.graphicsMode == GraphicsMode.Windowed)
-            {
-                btnNextWindow.Visible = true;
-                this.multiFloatie = FormMultiFloatie.create();
-            }
-            if (this.multiFloatie != null)
-                this.multiFloatie.Visible = Elite.focusElite;
-
-            if (rect != this.lastWindowRect && Elite.gameHasFocus && rect.X > -30_000)
-            {
-                Game.log($"EliteDangerous window reposition: {this.lastWindowRect} => {rect}");
-                this.lastWindowRect = rect;
-                Program.repositionPlotters(rect);
-                this.multiFloatie?.positionOverGame(rect);
-            }
-
-            // if the game process is NOT running, but we have an active game object processing journals ... append a fake shutdown entry and stop processing journal entries
-            if (!Elite.isGameRunning && game != null && !game.isShutdown && game.journals != null)
-            {
-                Game.log($"EliteDangerous process died?!");
-                game.journals.fakeShutdown();
-                this.removeGame();
-            }
-
-            // check/clear the systemBody reference we're holding onto for some duration after a DSS scan completes
-            if (game != null)
-            {
-                var isWithinDssDuration = SystemData.isWithinLastDssDuration();
-                if (isWithinDssDuration)
-                {
-                    this.wasWithinDssDuration = true;
-                }
-                else if (this.wasWithinDssDuration && !isWithinDssDuration)
-                {
-                    game.fireUpdate(true);
-                    this.wasWithinDssDuration = false;
-                }
-            }
-
-            // poke the current journal file, combatting batched file writes by the game
-            if (game?.journals != null) game.journals.poke();
-        }
-
         private void btnSettings_Click(object sender, EventArgs e)
         {
             try
@@ -1403,6 +1416,23 @@ namespace SrvSurvey
 
         private void btnNextWindow_Click(object sender, EventArgs e)
         {
+            // if there are more game processes than SrvSurvey processes ... 
+            var gameProcs = Process.GetProcessesByName("EliteDangerous64");
+            var surveyProcs = Process.GetProcessesByName("SrvSurvey");
+            if (surveyProcs.Length < gameProcs.Length)
+            {
+                // ... show a form asking which commander to launch?
+                var fid = Program.forceFid ?? CommanderSettings.currentOrLastFid;
+                if (fid != null)
+                {
+                    multiFloatie?.Show();
+                    var form = new FormStartNewCmdr(fid);
+                    form.ShowDialog(this);
+                    return;
+                }
+            }
+
+            Util.applyTheme(btnNextWindow);
             FormMultiFloatie.useNextWindow();
         }
 
@@ -1431,6 +1461,14 @@ namespace SrvSurvey
             {
                 Game.log($"Main.Minimized, focusing on game...");
                 Elite.setFocusED();
+            }
+
+            if (Game.settings.minimizeToTray)
+            {
+                // make sys tray icon visible upon minimizing
+                notifyIcon.Visible = this.WindowState == FormWindowState.Minimized;
+                this.ShowInTaskbar = !notifyIcon.Visible;
+                this.BringToFront();
             }
         }
 
@@ -1773,6 +1811,11 @@ namespace SrvSurvey
 
         //#endregion
 
+        private void notifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+                this.WindowState = FormWindowState.Normal;
+        }
 
         private void btnPredictions_Click(object sender, EventArgs e)
         {
@@ -2027,7 +2070,6 @@ namespace SrvSurvey
                 Program.forceRestart(Program.forceFid);
             }
         }
-
     }
 }
 

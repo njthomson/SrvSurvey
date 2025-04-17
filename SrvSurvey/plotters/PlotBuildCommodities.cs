@@ -44,7 +44,6 @@ namespace SrvSurvey.plotters
 
         private int pendingUpdates = 0;
         private Dictionary<string, int> pendingDiff = new();
-        private string? localConstructionShipProjectTitle;
 
         private string? headerText;
         private ColonyData.Needs? needs;
@@ -407,15 +406,15 @@ namespace SrvSurvey.plotters
 
                 // render the name
                 var sz2 = drawTextAt2(ten, nameTxt, col, ff)
-                .widestColumn(0, columns);
+                    .widestColumn(0, columns);
 
                 // draw assigned pin behind the need number
                 if (needs.assigned.Contains(name))
                     drawTextAt2(xNeed, "📌", col, ff);
 
-                dtx = this.Width - 20;
+                dtx = this.Width - twenty;
 
-                newLine(true);
+                newLine(+one, true);
             }
         }
 

@@ -37,12 +37,15 @@ namespace SrvSurvey.forms
         }
 
         private Label lbl;
+        public string cmdr;
 
         public FormMultiFloatie()
         {
+            this.cmdr = Game.activeGame?.Commander ?? Program.forceFid ?? "?";
+
             this.lbl = new Label()
             {
-                Text = "cmdr: ?",
+                Text = cmdr,
                 AutoSize = true,
                 Padding = new Padding(20, 0, 20, 0),
             };
@@ -82,12 +85,23 @@ namespace SrvSurvey.forms
             //TextRenderer.DrawText(e.Graphics, cmdrName, this.Font, new Point(x, 0), Color.Black);
         }
 
+        public void setCmdr(string cmdr)
+        {
+            this.cmdr = cmdr;
+            this.lbl.Text = " ~ " + this.cmdr + " ~ ";
+        }
+
         public void positionOverGame(Rectangle rect)
         {
-            this.lbl.Text = " ~ " + CommanderSettings.currentOrLastCmdrName?.Trim() + " ~ ";
+            this.lbl.Text = " ~ " + this.cmdr + " ~ ";
 
             this.Left = rect.Left + Util.centerIn(rect.Width, this.Width);
-            this.Top = rect.Top - this.Height - 2;
+
+            // Windows => above in the title bar / Borderless => match the top
+            if (Elite.graphicsMode == GraphicsMode.Windowed)
+                this.Top = rect.Top - this.Height - 2;
+            else
+                this.Top = rect.Top;
         }
 
         public static void useNextWindow()

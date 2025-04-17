@@ -34,9 +34,6 @@ namespace SrvSurvey
             foreach (var fieldInfo in typeof(Settings).GetRuntimeFields())
                 this.map.Add(fieldInfo.Name, fieldInfo);
 
-            // only show this button if there are multiple copies of EliteDangerous running at the same time
-            var procED = Process.GetProcessesByName("EliteDangerous64");
-            btnNextProc.Visible = procED.Length > 1;
             this.Text += $" ({Program.releaseVersion})";
 
             var osScaleFactor = (this.DeviceDpi / 96f * 100).ToString("0");
@@ -75,6 +72,8 @@ namespace SrvSurvey
             checkBodyInfoMap.Enabled = checkBodyInfoOrbit.Enabled = checkBodyInfo.Checked;
 
             checkKeyChordsDirectX.Enabled = checkKeyChords.Checked;
+
+            this.numGravityWarningLevel.Enabled = label12.Enabled = checkBox13.Checked;
 
             groupColonization.setChildrenEnabled(Game.settings.buildProjects_TEST, checkColonization);
 
@@ -901,6 +900,11 @@ namespace SrvSurvey
         private void checkColonization_CheckedChanged(object sender, EventArgs e)
         {
             disableEverythingElse(sender as CheckBox);
+        }
+
+        private void checkBox13_CheckedChanged(object sender, EventArgs e)
+        {
+            this.numGravityWarningLevel.Enabled = label12.Enabled = checkBox13.Checked;
         }
     }
 }
