@@ -609,7 +609,7 @@ namespace SrvSurvey
             var showCurrentProject = localBuildId != null && !string.IsNullOrEmpty(activeBuildId);
             menuCurrentProject.Visible = showCurrentProject;
             menuPrimaryProject.Visible = localBuildId != null && ColonyData.localUntrackedProject == null;
-            menuPrimaryProject.Text = localBuildId == game?.cmdrColony.primaryBuildId ? "Clear primary" : "Set primary";
+            menuPrimaryProject.Text = localBuildId == game?.cmdrColony?.primaryBuildId ? "Clear primary" : "Set primary";
 
             menuColonizeLine1.Visible = showCurrentProject || showMyProjects;
 
