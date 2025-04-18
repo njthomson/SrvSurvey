@@ -323,10 +323,14 @@ namespace SrvSurvey.game
             var newCargo = new Dictionary<string, int>();
             foreach(var entry in marketFile.Items)
             {
-                if (!entry.Producer) continue;
                 var key = entry.Name.Substring(1).Replace("_name;", "");
-                if (!fc.cargo.ContainsKey(key) || fc.cargo.GetValueOrDefault(key) != entry.Stock)
+                if (entry.Producer && (!fc.cargo.ContainsKey(key) || fc.cargo.GetValueOrDefault(key) != entry.Stock))
+                { 
+                        newCargo[key] = entry.Stock;
+                }
+                else if (!entry.Producer && !entry.Consumer && fc.cargo.GetValueOrDefault(key) > 0)
                 {
+                    // I think this means the item could be purchased but it ran out of stock
                     newCargo[key] = entry.Stock;
                 }
             }

@@ -194,6 +194,7 @@ namespace SrvSurvey.game
             public int Stock;
             public int Demand;
             public bool Producer;
+            public bool Consumer;
             public bool Rare;
         }
     }

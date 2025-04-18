@@ -365,7 +365,7 @@ namespace SrvSurvey
 
             // handle single/multiple processes
             btnNextWindow.Visible = Elite.hadManyGameProcs;
-            if (this.multiFloatie == null) { this.multiFloatie = FormMultiFloatie.create(); btnNextWindow.BackColor = C.cyanDark; }
+            if (this.multiFloatie == null && Elite.hadManyGameProcs) { this.multiFloatie = FormMultiFloatie.create(); btnNextWindow.BackColor = C.cyanDark; }
             if (this.multiFloatie != null && !Elite.hadManyGameProcs) { this.multiFloatie.Close(); this.multiFloatie = null; }
             if (this.multiFloatie != null) this.multiFloatie.Visible = Elite.focusElite || FormStartNewCmdr.active;
 

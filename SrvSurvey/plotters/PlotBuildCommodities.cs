@@ -158,7 +158,7 @@ namespace SrvSurvey.plotters
             if (relevantProjects.Count == 1)
             {
                 // if there is only 1 project - treat it as primary
-                var onlyProject = colonyData.projects.First();
+                var onlyProject = relevantProjects.First();
                 effectiveAddress = onlyProject.systemAddress;
                 effectiveMarketId = onlyProject.marketId;
                 headerText = $"{onlyProject.buildName} ({onlyProject.buildType})";
@@ -211,6 +211,13 @@ namespace SrvSurvey.plotters
                     newLine(true);
                 }
                 dty += ten;
+            }
+
+            // show warning if docked at an untracked FC
+            if (dockedAtConstructionSite)
+            {
+                drawTextAt2(ten, "🚧 Docked at construction site", C.yellow, GameColors.Fonts.gothic_10);
+                newLine(+ten, true);
             }
 
             // show warning if docked at untracked project
