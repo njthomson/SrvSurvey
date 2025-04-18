@@ -1664,11 +1664,19 @@ namespace SrvSurvey.game
             // force re-read the market file
             MarketFile.read(true);
 
-            if (Game.settings.allowNotifications.fcMarketPurchaseBugReminder && entry.StationType == "FleetCarrier")
+            if (entry.StationType == "FleetCarrier")
             {
-                // remember if this is a FleetCarrier market - so we can help people avoid annoying not-yet-purchased bug
-                this.fcMarketIds.Add(entry.MarketId);
-                this.marketBuyOnFC = false;
+                if (Game.settings.allowNotifications.fcMarketPurchaseBugReminder)
+                {
+                    // remember if this is a FleetCarrier market - so we can help people avoid annoying not-yet-purchased bug
+                    this.fcMarketIds.Add(entry.MarketId);
+                    this.marketBuyOnFC = false;
+                }
+
+                if (cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
+                {
+                    cmdrColony.updateFromMarketFC(this.marketFile).justDoIt();
+                }
             }
 
             if (PlotBuildCommodities.allowPlotter)

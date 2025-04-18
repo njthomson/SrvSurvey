@@ -92,6 +92,11 @@ namespace SrvSurvey
             cancelPollingTask = true;
         }
 
+        public void resetChord()
+        {
+            this.pressed.Clear();
+        }
+
         public void Dispose()
         {
             cancelPollingTask = true;
@@ -165,7 +170,7 @@ namespace SrvSurvey
 
                     foreach (var state in device.GetBufferedData())
                     {
-                        //Debug.WriteLine(state); // dbg
+                        Debug.WriteLine(state); // dbg
 
                         var isButton = state.Offset >= JoystickOffset.Buttons0 && state.Offset <= JoystickOffset.Buttons127;
                         if (isButton)

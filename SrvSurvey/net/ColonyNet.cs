@@ -131,26 +131,10 @@ namespace SrvSurvey.game
             }
         }
 
-        /*
-        public async Task<Dictionary<string, int>> supply(string buildId, string cmdr, Dictionary<string, int> diff)
-        {
-            Game.log(diff.formatWithHeader($"Colony.supply: {buildId}", "\r\n\t"));
-
-            var json1 = JsonConvert.SerializeObject(diff);
-            var body = new StringContent(json1, Encoding.Default, "application/json");
-            var url = $"{svcUri}/api/project/{buildId}/supply/{cmdr}";
-            var response = await ColonyNet.client.PostAsync(url, body);
-            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
-
-            var json2 = await response.Content.ReadAsStringAsync();
-            var obj = JsonConvert.DeserializeObject<Dictionary<string, int>>(json2)!;
-            return obj;
-        }
-        */
 
         public async Task contribute(string buildId, string cmdr, Dictionary<string, int> diff)
         {
-            Game.log(diff.formatWithHeader($"Colony.contribute: {buildId}", "\r\n\t"));
+            Game.log(diff.formatWithHeader($"Colony.contribute: {buildId}"));
 
             var json1 = JsonConvert.SerializeObject(diff);
             var body = new StringContent(json1, Encoding.Default, "application/json");
@@ -166,12 +150,27 @@ namespace SrvSurvey.game
 
         public async Task<Dictionary<string, int>> supplyFC(long marketId, Dictionary<string, int> diff)
         {
-            Game.log(diff.formatWithHeader($"Colony.supplyFC: {marketId}", "\r\n\t"));
+            Game.log(diff.formatWithHeader($"Colony.supplyFC: {marketId}"));
 
             var json1 = JsonConvert.SerializeObject(diff);
             var body = new StringContent(json1, Encoding.Default, "application/json");
             var url = $"{svcUri}/api/fc/{Uri.EscapeDataString(marketId.ToString())}/cargo";
             var response = await ColonyNet.client.PatchAsync(url, body);
+            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
+
+            var json2 = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<Dictionary<string, int>>(json2)!;
+            return obj;
+        }
+
+        public async Task<Dictionary<string, int>> updateCargoFC(long marketId, Dictionary<string, int> cargo)
+        {
+            Game.log(cargo.formatWithHeader($"Colony.updateCargoFC: {marketId}"));
+
+            var json1 = JsonConvert.SerializeObject(cargo);
+            var body = new StringContent(json1, Encoding.Default, "application/json");
+            var url = $"{svcUri}/api/fc/{Uri.EscapeDataString(marketId.ToString())}/cargo";
+            var response = await ColonyNet.client.PostAsync(url, body);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             var json2 = await response.Content.ReadAsStringAsync();

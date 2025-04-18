@@ -62,8 +62,8 @@ namespace SrvSurvey.plotters
 
         protected override void OnLoad(EventArgs e)
         {
-            this.Width = scaled(300);
-            this.Height = scaled(600);
+            this.Width = scaled(500);
+            this.Height = scaled(1000);
 
             base.OnLoad(e);
 
@@ -263,7 +263,7 @@ namespace SrvSurvey.plotters
 
             drawTextAt2(xNeed, "Need", C.orangeDark, null, true).widestColumn(1, columns);
             if (showFCs && !Game.settings.buildProjectsInlineSumFC_TEST) drawTextAt2(xFC, "FCs", C.orangeDark, null, true).widestColumn(2, columns);
-            if (haveAnyCargo) drawTextAt2(this.Width - eight, "Have", C.orangeDark, null, true).widestColumn(3, columns);
+            if (haveAnyCargo) drawTextAt2(this.Width - eight, Game.settings.buildProjectsInlineSumFC_TEST ? "Have" : "Ship", C.orangeDark, null, true).widestColumn(3, columns);
             drawTextAt2(ten, "Commodity", C.orangeDark, null).widestColumn(0, columns);
             newLine(true);
 
@@ -391,13 +391,35 @@ namespace SrvSurvey.plotters
                     var fcAmount = game.cmdrColony.sumCargoLinkedFCs.GetValueOrDefault(name, -1);
                     if (fcAmount > -1)
                     {
-                        var diff = (fcAmount - needCount);
-                        var diffTxt = diff.ToString("N0");
-                        if (diffTxt[0] != '-' && diffTxt[0] != '0') diffTxt = '+' + diffTxt;
-                        var cc = diff > 0 ? C.greenDark : C.orangeDark;
+                        if (Game.settings.buildProjectsShowSumFCDelta_TEST)
+                        {
+                            // show delta amount?
+                            var diff = (fcAmount - needCount);
+                            var diffTxt = diff.ToString("N0");
+                            if (diffTxt[0] != '-' && diffTxt[0] != '0') diffTxt = '+' + diffTxt;
+                            var cc = diff > 0 ? C.green : C.red;
 
-                        drawTextAt2(xFC, diffTxt, cc, ff, true)
-                            .widestColumn(2, columns);
+                            // if sharing a column ... make FC counts darker
+                            if (Game.settings.buildProjectsInlineSumFC_TEST)
+                                cc = cc = diff > 0 ? C.greenDark : C.redDark;
+
+                            drawTextAt2(xFC, diffTxt, cc, ff, true)
+                                .widestColumn(2, columns);
+                        }
+                        else
+                        {
+                            // show sum total
+                            var diff = fcAmount;
+                            var diffTxt = diff.ToString("N0");
+                            var cc = fcAmount > needCount ? C.green : C.red;
+
+                            // if sharing a column ... make FC counts darker
+                            if (Game.settings.buildProjectsInlineSumFC_TEST)
+                                cc = fcAmount > needCount ? C.greenDark : C.redDark;
+
+                            drawTextAt2(xFC, diffTxt, cc, ff, true)
+                                .widestColumn(2, columns);
+                        }
                     }
                 }
 
@@ -509,19 +531,41 @@ namespace SrvSurvey.plotters
                     }
 
                     // (skip FC numbers if sharing 2nd column and we already rendered there)
-                    if (xFC > 0 && Game.settings.buildProjectsShowSumFC_TEST && (!Game.settings.buildProjectsInlineSumFC_TEST || cargoCount > 0))
+                    if (xFC > 0 && Game.settings.buildProjectsShowSumFC_TEST && (!Game.settings.buildProjectsInlineSumFC_TEST || cargoCount == 0))
                     {
                         // show amount on all FCs in same column?
                         var fcAmount = game.cmdrColony.sumCargoLinkedFCs.GetValueOrDefault(name, -1);
                         if (fcAmount > -1)
                         {
-                            var diff = (fcAmount - needCount);
-                            var diffTxt = diff.ToString("N0");
-                            if (diffTxt[0] != '-' && diffTxt[0] != '0') diffTxt = '+' + diffTxt;
-                            var cc = diff > 0 ? C.green : C.red;
+                            if (Game.settings.buildProjectsShowSumFCDelta_TEST)
+                            {
+                                // show delta amount?
+                                var diff = (fcAmount - needCount);
+                                var diffTxt = diff.ToString("N0");
+                                if (diffTxt[0] != '-' && diffTxt[0] != '0') diffTxt = '+' + diffTxt;
+                                var cc = diff > 0 ? C.green : C.red;
 
-                            drawTextAt2(xFC, diffTxt, cc, ff, true)
-                                .widestColumn(2, columns);
+                                // if sharing a column ... make FC counts darker
+                                if (Game.settings.buildProjectsInlineSumFC_TEST)
+                                    cc = diff > 0 ? C.greenDark : C.redDark;
+
+                                drawTextAt2(xFC, diffTxt, cc, ff, true)
+                                    .widestColumn(2, columns);
+                            }
+                            else
+                            {
+                                // show sum total
+                                var diff = fcAmount;
+                                var diffTxt = diff.ToString("N0");
+                                var cc = fcAmount > needCount ? C.green : C.red;
+
+                                // if sharing a column ... make FC counts darker
+                                if (Game.settings.buildProjectsInlineSumFC_TEST)
+                                    cc = fcAmount > needCount ? C.greenDark : C.redDark;
+
+                                drawTextAt2(xFC, diffTxt, cc, ff, true)
+                                    .widestColumn(2, columns);
+                            }
                         }
                     }
 

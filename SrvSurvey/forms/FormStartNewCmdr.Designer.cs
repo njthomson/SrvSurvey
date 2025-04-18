@@ -45,7 +45,7 @@
             comboCmdr.Location = new Point(12, 83);
             comboCmdr.Name = "comboCmdr";
             comboCmdr.Size = new Size(426, 23);
-            comboCmdr.TabIndex = 3;
+            comboCmdr.TabIndex = 1;
             comboCmdr.SelectedIndexChanged += comboCmdr_SelectedIndexChanged;
             // 
             // label1
@@ -54,7 +54,7 @@
             label1.Location = new Point(12, 63);
             label1.Name = "label1";
             label1.Size = new Size(297, 15);
-            label1.TabIndex = 2;
+            label1.TabIndex = 0;
             label1.Text = "Choose commander for the next instance of SrvSurvey:";
             // 
             // btnStart
@@ -62,7 +62,7 @@
             btnStart.Location = new Point(282, 120);
             btnStart.Name = "btnStart";
             btnStart.Size = new Size(75, 23);
-            btnStart.TabIndex = 4;
+            btnStart.TabIndex = 2;
             btnStart.Text = "&Start";
             btnStart.UseVisualStyleBackColor = true;
             btnStart.Click += btnStart_Click;
@@ -72,7 +72,7 @@
             btnCancel.Location = new Point(363, 120);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(75, 23);
-            btnCancel.TabIndex = 5;
+            btnCancel.TabIndex = 3;
             btnCancel.Text = "&Close";
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
@@ -82,7 +82,7 @@
             btnToggleWindow.Location = new Point(12, 120);
             btnToggleWindow.Name = "btnToggleWindow";
             btnToggleWindow.Size = new Size(114, 23);
-            btnToggleWindow.TabIndex = 6;
+            btnToggleWindow.TabIndex = 4;
             btnToggleWindow.Text = "&Next window";
             btnToggleWindow.UseVisualStyleBackColor = true;
             btnToggleWindow.Click += btnToggleWindow_Click;
@@ -93,7 +93,7 @@
             label2.Location = new Point(12, 9);
             label2.Name = "label2";
             label2.Size = new Size(118, 15);
-            label2.TabIndex = 0;
+            label2.TabIndex = 5;
             label2.Text = "Current commander:";
             // 
             // txtCmdr
@@ -102,7 +102,7 @@
             txtCmdr.Name = "txtCmdr";
             txtCmdr.ReadOnly = true;
             txtCmdr.Size = new Size(426, 23);
-            txtCmdr.TabIndex = 1;
+            txtCmdr.TabIndex = 6;
             // 
             // FormStartNewCmdr
             // 

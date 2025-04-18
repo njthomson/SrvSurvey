@@ -30,6 +30,7 @@ namespace SrvSurvey
         {
             base.OnLoad(e);
             KeyboardHook.redirect = true;
+            Main.form.hook.resetChord();
         }
 
         protected override void OnClosing(CancelEventArgs e)

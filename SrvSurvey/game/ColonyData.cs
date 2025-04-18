@@ -88,15 +88,7 @@ namespace SrvSurvey.game
                 this.linkedFCs = allFCs.ToDictionary(fc => fc.marketId, fc => fc);
 
                 // sum their respective cargo
-                var sumCargo = new Dictionary<string, int>();
-                foreach (var fc in allFCs)
-                {
-                    foreach (var (commodity, need) in fc.cargo)
-                    {
-                        sumCargo.init(commodity);
-                        sumCargo[commodity] += need;
-                    }
-                }
+                var sumCargo = getSumCargoFC(allFCs);
                 this.sumCargoLinkedFCs = sumCargo;
 
                 this.prepNeeds();
@@ -112,6 +104,22 @@ namespace SrvSurvey.game
             {
                 Program.getPlotter<PlotBuildCommodities>()?.endPending();
             }
+        }
+
+        public static Dictionary<string, int> getSumCargoFC(IEnumerable<FleetCarrier> FCs)
+        {
+            // sum their respective cargo
+            var sumCargo = new Dictionary<string, int>();
+            foreach (var fc in FCs)
+            {
+                foreach (var (commodity, need) in fc.cargo)
+                {
+                    sumCargo.init(commodity);
+                    sumCargo[commodity] += need;
+                }
+            }
+
+            return sumCargo;
         }
 
         #region instance data
@@ -299,6 +307,47 @@ namespace SrvSurvey.game
                     Program.getPlotter<PlotBuildCommodities>()?.endPending();
                 }).justDoIt();
             }
+        }
+
+        public async Task updateFromMarketFC(MarketFile marketFile)
+        {
+            if (!linkedFCs.ContainsKey(marketFile.MarketId)) return;
+
+            Program.getPlotter<PlotBuildCommodities>()?.startPending();
+
+            // fetch latest numbers first
+            var fc = await Game.colony.getFC(marketFile.MarketId);
+            Game.log($"updateFromMarketFC: Checking FC cargo against market: {fc.marketId} : {fc.displayName} ({fc.name})");
+
+            // if the FC has something for sale with a different count than we think ... update it
+            var newCargo = new Dictionary<string, int>();
+            foreach(var entry in marketFile.Items)
+            {
+                if (!entry.Producer) continue;
+                var key = entry.Name.Substring(1).Replace("_name;", "");
+                if (!fc.cargo.ContainsKey(key) || fc.cargo.GetValueOrDefault(key) != entry.Stock)
+                {
+                    newCargo[key] = entry.Stock;
+                }
+            }
+
+            if (newCargo.Count > 0)
+            {
+                Program.getPlotter<PlotBuildCommodities>()?.endPending();
+                Program.getPlotter<PlotBuildCommodities>()?.startPending(newCargo);
+
+                var updatedCargo = await Game.colony.updateCargoFC(fc.marketId, newCargo);
+                // apply new numbers and save
+                linkedFCs[fc.marketId].cargo = updatedCargo;
+
+                var sumCargo = getSumCargoFC(linkedFCs.Values);
+                this.sumCargoLinkedFCs = sumCargo;
+
+                this.Save();
+            }
+
+            await Task.Delay(500);
+            Program.getPlotter<PlotBuildCommodities>()?.endPending();
         }
 
         public class Needs

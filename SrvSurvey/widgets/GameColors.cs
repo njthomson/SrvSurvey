@@ -734,7 +734,6 @@ namespace SrvSurvey.widgets
             public static Font wingdings2_8 = new Font("Wingdings 2", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
             public static Font wingdings2_6 = new Font("Wingdings 2", 6F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
             public static Font wingdings2_4 = new Font("Wingdings 2", 4F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            public static Font fontSmallFonts = new Font("Small Fonts", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
 
             public static Font console_7 = new Font("Lucida Console", 7F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
             public static Font console_8 = new Font("Lucida Console", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
