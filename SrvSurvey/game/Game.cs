@@ -1530,7 +1530,21 @@ namespace SrvSurvey.game
 
 
             if (lastDocked != null && fcTrackedCargo.Count > 0)
-                Game.colony.supplyFC(lastDocked.MarketID, fcTrackedCargo).justDoIt();
+            {
+                Program.getPlotter<PlotBuildCommodities>()?.startPending(fcTrackedCargo);
+                Game.colony.supplyFC(lastDocked.MarketID, fcTrackedCargo).continueOnMain(null, updatedCargo =>
+                {
+                    Game.log(updatedCargo);
+                    var fc = cmdrColony.linkedFCs.GetValueOrDefault(lastDocked.MarketID);
+                    if (fc != null)
+                    {
+                        fc.cargo = updatedCargo;
+                        cmdrColony.sumCargoLinkedFCs = ColonyData.getSumCargoFC(cmdrColony.linkedFCs.Values);
+                        cmdrColony.Save();
+                        Program.getPlotter<PlotBuildCommodities>()?.endPending();
+                    }
+                });
+            }
 
             if (saveColonyData)
                 cmdrColony.Save();
