@@ -55,8 +55,10 @@ namespace SrvSurvey.widgets
             public static Pen orangeDark2 = orangeDark.toPen(2);
 
             public static Pen cyan1 = cyan.toPen(1);
+            public static Pen cyan2 = cyan.toPen(2);
 
             public static Pen cyanDark1 = cyanDark.toPen(1);
+            public static Pen cyanDark2 = cyanDark.toPen(2);
 
             public static Pen black1 = Color.Black.toPen(1);
         }

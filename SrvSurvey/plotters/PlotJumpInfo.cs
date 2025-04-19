@@ -355,7 +355,15 @@ namespace SrvSurvey.plotters
                 // (before drawing line parts, if not too close together) draw a DOT for each system
                 if (pixelsPerLY > limitPixelsPerLY)
                 {
-                    g.FillEllipse(n < nextHopIdx ? GameColors.brushGameOrangeDim : GameColors.brushGameOrange, r);
+                    if (n < nextHopIdx-1)
+                    {
+                        g.FillEllipse(C.Brushes.black, r);
+                        g.DrawEllipse(C.Pens.orangeDark2, r);
+                    }
+                    else if (n >= nextHopIdx)
+                    {
+                        g.FillEllipse(GameColors.brushGameOrange, r);
+                    }
 
                     // and render a little arc above scoopable stars
                     if (hopScoops[n])
@@ -393,9 +401,19 @@ namespace SrvSurvey.plotters
 
             // draw the left most the starting dot/tick
             if (this.totalDistance > limitExcessDistance)
+            {
                 g.DrawLine(GameColors.penGameOrange1, x - 1, y - four, x - 1, y + four);
-            else
-                g.FillEllipse(nextHopIdx == 0 ? GameColors.brushCyan : GameColors.brushGameOrangeDim, r);
+            }
+            else if (nextHopIdx == 0)
+            {
+                g.FillEllipse(C.Brushes.cyanDark, r);
+                g.DrawEllipse(C.Pens.cyan2, r);
+            }
+            else if (nextHopIdx > 0)
+            {
+                g.FillEllipse(C.Brushes.black, r);
+                g.DrawEllipse(C.Pens.orangeDark2, r);
+            }
 
 
             // finally redraw dot for next jump, as it got clipped by prior rendering
@@ -406,7 +424,8 @@ namespace SrvSurvey.plotters
             else if (nextHopIdx > 0)
             {
                 r.X = xNow - dotRadius;
-                g.FillEllipse(GameColors.brushCyan, r);
+                g.FillEllipse(C.Brushes.cyanDark, r);
+                g.DrawEllipse(C.Pens.cyan2, r);
             }
 
             newLine(+four);

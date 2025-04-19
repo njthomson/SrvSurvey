@@ -810,17 +810,18 @@ namespace SrvSurvey
             }
 
             // update system bio numbers
-            var systemTotal = game.systemData.bodies.Sum(_ => _.bioSignalCount);
-            var systemScanned = game.systemData.bodies.Sum(_ => _.countAnalyzedBioSignals);
+            var bodies = game.systemData.bodies.ToList();
+            var systemTotal = bodies.Sum(_ => _.bioSignalCount);
+            var systemScanned = bodies.Sum(_ => _.countAnalyzedBioSignals);
             txtSystemBioSignals.Text = $"{systemScanned} of {systemTotal}";
 
-            var sysEstimate = game.systemData.bodies.Sum(body => body.firstFootFall ? body.maxBioRewards * 5 : body.maxBioRewards);
-            var sysActual = game.systemData.bodies.Sum(body => body.sumAnalyzed);
+            var sysEstimate = bodies.Sum(body => body.firstFootFall ? body.maxBioRewards * 5 : body.maxBioRewards);
+            var sysActual = bodies.Sum(body => body.sumAnalyzed);
             txtSystemBioValues.Text = $" {Util.credits(sysActual, true)} of {Util.credits(sysEstimate, true)}";
             if (game.systemData.bodies.Any(_ => _.bioSignalCount > 0 && _.organisms?.All(o => o.species != null) != true))
                 txtSystemBioValues.Text += "?";
 
-            var countFirstFootFall = game.systemData.bodies.Count(_ => _.firstFootFall && _.bioSignalCount > 0);
+            var countFirstFootFall = bodies.Count(_ => _.firstFootFall && _.bioSignalCount > 0);
             if (countFirstFootFall > 0)
                 txtSystemBioValues.Text += $" (FF: {countFirstFootFall})";
 

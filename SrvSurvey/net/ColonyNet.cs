@@ -37,7 +37,7 @@ namespace SrvSurvey.game
             return data;
         }
 
-        public async Task<Project> create(ProjectCreate row)
+        public async Task<Project?> create(ProjectCreate row)
         {
             var json1 = JsonConvert.SerializeObject(row);
             Game.log($"Colony.create:\r\n{json1}");
@@ -47,8 +47,16 @@ namespace SrvSurvey.game
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             var json2 = await response.Content.ReadAsStringAsync();
-            var obj = JsonConvert.DeserializeObject<Project>(json2)!;
-            return obj;
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return JsonConvert.DeserializeObject<Project>(json2)!;
+            }
+            else
+            {
+                Game.log($"Colony.create: failed:\n\t{json2}");
+                return null;
+            }
         }
 
         public async Task<Project> update(ProjectUpdate row)
@@ -207,7 +215,10 @@ namespace SrvSurvey.game
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 return JsonConvert.DeserializeObject<Project>(json)!;
             else
+            {
+                Game.log($"Colony.getProject: failed:\n\t{json}");
                 return null;
+            }
         }
 
         public async Task<Project?> getProject(long id64, long marketId)
@@ -221,7 +232,10 @@ namespace SrvSurvey.game
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 return JsonConvert.DeserializeObject<Project>(json)!;
             else
+            {
+                Game.log($"Colony.getProject: failed:\n\t{json}");
                 return null;
+            }
         }
 
         public async Task<List<Project>> getCmdrProjects(string cmdr)

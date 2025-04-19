@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.Properties;
+using SrvSurvey.widgets;
 
 namespace SrvSurvey.forms
 {
@@ -14,13 +15,13 @@ namespace SrvSurvey.forms
 
             var allCosts = Game.colony.loadDefaultCosts();
             var sourceCosts = allCosts
-                //.OrderBy(c => c.ToString())
                 .Where(r => (r.location == "orbital") == (game.status.PlanetRadius == 0))
                 .ToDictionary(c => c.buildType, c => c.ToString());
             this.comboBuildType.DataSource = new BindingSource(sourceCosts, null);
             this.comboBuildType.DisplayMember = "Value";
             this.comboBuildType.ValueMember = "Key";
             this.comboBuildType.Enabled = true;
+            this.comboBuildType.DropDownWidth = N.s(500);
 
             txtArchitect.Text = game.Commander;
 
@@ -86,6 +87,16 @@ namespace SrvSurvey.forms
 
                 Game.colony.create(createProject).continueOnMain(this, newProject =>
                 {
+                    if (newProject == null)
+                    {
+                        // fetch latest - maybe someone just created the project before us?
+                        game.cmdrColony.fetchLatest().justDoIt();
+
+                        MessageBox.Show(this, "Project creation did not succeed. See logs for more details", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        this.Close();
+                        return;
+                    }
+
                     Game.log($"New build created: {newProject.buildId}");
 
                     // open edit page in browser
@@ -95,7 +106,7 @@ namespace SrvSurvey.forms
                     {
                         this.Close();
                     });
-                });
+                }, true);
             }
             catch (Exception ex)
             {

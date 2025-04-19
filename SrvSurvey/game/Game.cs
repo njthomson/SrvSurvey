@@ -2499,13 +2499,12 @@ namespace SrvSurvey.game
                 return;
             }
 
-            // new ...
             if (this.systemStation != null && systemStation.marketId != entry.MarketID) Debugger.Break(); // Would this ever happen?
             if (this.systemData == null) return;
 
             if (entry.StationServices == null
                 || entry.StationServices.Count == 0 // horizons old settlements are not compatible
-                || entry.StationServices.Contains("socialspace") // bigger settlements (Planetary ports) are not compatible // !
+                || entry.StationServices.Contains("socialspace") // bigger settlements (Planetary ports) are not compatible
                 || ColonyData.isConstructionSite(entry.Name, entry.StationServices) // Colonization construction sites are not compatible
                 || entry.StationGovernment == "$government_Engineer;" // Engineer's stations (with no socialspace) are also not compatible
             )

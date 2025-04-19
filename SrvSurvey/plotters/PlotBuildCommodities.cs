@@ -199,7 +199,10 @@ namespace SrvSurvey.plotters
 
 
             // start rendering...
-            drawTextAt2(ten, headerText, GameColors.Fonts.gothic_12B);
+            dtx = 10;
+            if (dockedAtConstructionSite) drawTextAt2("🚧  ", C.yellow, GameColors.Fonts.gothic_10);
+            drawTextAt2(headerText, GameColors.Fonts.gothic_12B);
+            if (dockedAtConstructionSite) drawTextAt2("  🚧", C.yellow, GameColors.Fonts.gothic_10);
             newLine(+ten, true);
 
             if (projectNames.Any())
@@ -211,13 +214,6 @@ namespace SrvSurvey.plotters
                     newLine(true);
                 }
                 dty += ten;
-            }
-
-            // show warning if docked at an untracked FC
-            if (dockedAtConstructionSite)
-            {
-                drawTextAt2(ten, "🚧 Docked at construction site", C.yellow, GameColors.Fonts.gothic_10);
-                newLine(+ten, true);
             }
 
             // show warning if docked at untracked project
@@ -288,7 +284,7 @@ namespace SrvSurvey.plotters
             }
 
             // grow size of this plotter?
-            var formWidthNeeded = columns.Values.Sum() + pinWidth + ten;
+            var formWidthNeeded = columns.Values.Sum() + pinWidth + twenty;
             if (this.formSize.Width < formWidthNeeded)
                 this.formSize.Width = formWidthNeeded;
 
