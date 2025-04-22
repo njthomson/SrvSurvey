@@ -414,11 +414,11 @@ namespace SrvSurvey.plotters
                             // show sum total
                             var diff = fcAmount;
                             var diffTxt = diff.ToString("N0");
-                            var cc = fcAmount > needCount ? C.green : C.red;
+                            var cc = fcAmount >= needCount ? C.green : C.red;
 
                             // if sharing a column ... make FC counts darker
                             if (Game.settings.buildProjectsInlineSumFC_TEST)
-                                cc = fcAmount > needCount ? C.greenDark : C.redDark;
+                                cc = fcAmount >= needCount ? C.greenDark : C.redDark;
 
                             drawTextAt2(xFC, diffTxt, cc, ff, true)
                                 .widestColumn(2, columns);
@@ -560,11 +560,11 @@ namespace SrvSurvey.plotters
                                 // show sum total
                                 var diff = fcAmount;
                                 var diffTxt = diff.ToString("N0");
-                                var cc = fcAmount > needCount ? C.green : C.red;
+                                var cc = fcAmount >= needCount ? C.green : C.red;
 
                                 // if sharing a column ... make FC counts darker
                                 if (Game.settings.buildProjectsInlineSumFC_TEST)
-                                    cc = fcAmount > needCount ? C.greenDark : C.redDark;
+                                    cc = fcAmount >= needCount ? C.greenDark : C.redDark;
 
                                 drawTextAt2(xFC, diffTxt, cc, ff, true)
                                     .widestColumn(2, columns);

@@ -2611,12 +2611,10 @@ namespace SrvSurvey.game
                 // Auto update project details if incorrect
                 cmdrColony.checkConstructionSiteUponDocking(entry, this.systemBody);
 
-                // fetch fresh data if this is a market we are interested in
-                var match = this.cmdrColony.getProject(entry.SystemAddress, entry.MarketID);
-                if (match != null)
+                // fetch fresh data if we have any projects on the go
+                if (this.cmdrColony.projects.Any())
                 {
-                    Game.log($"Docked at a project market: {entry.MarketID} => buildId: {match.buildId}");
-                    this.cmdrColony.fetchLatest(match.buildId).justDoIt();
+                    this.cmdrColony.fetchLatest().justDoIt();
                 }
             }
 
