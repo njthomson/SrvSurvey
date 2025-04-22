@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.forms;
 using SrvSurvey.units;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SrvSurvey.game
@@ -287,7 +288,12 @@ namespace SrvSurvey.game
 
             var sysData = SystemData.Load(currentSystem.starRef.name, currentSystem.starRef.id64, this.fid, false);
             var body = sysData?.bodies.Find(b => b.id == entry.BodyID);
-            if (sysData == null || body == null) throw new Exception("Why no body?");
+            if (sysData == null || body == null)
+            {
+                Debugger.Break();
+                Game.log($"Body not found - skipping SAAScanComplete: {entry.BodyName} ({entry.BodyID})");
+                return;
+            }
 
             // increment by difference between the FSS and DSS reward (and we are going to assume they FSS'd first)
             var rewardFss = Util.GetBodyValue(body, false, false);

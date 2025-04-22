@@ -259,7 +259,7 @@ namespace SrvSurvey.canonn
                             species = new List<BioSpecies>(),
                         };
                         this.genus.Add(genusRef);
-                    };
+                    }
 
                     // match or create the Species
                     var speciesRef = genusRef.species.FirstOrDefault(_ => _.name == speciesName);
@@ -274,7 +274,7 @@ namespace SrvSurvey.canonn
                             variants = new List<BioVariant>(),
                         };
                         genusRef.species.Add(speciesRef);
-                    };
+                    }
 
                     // match or create the variant
                     var variantRef = speciesRef.variants.FirstOrDefault(_ => _.name == variantName);
@@ -289,7 +289,7 @@ namespace SrvSurvey.canonn
                             imageCmdr = thing.image_cmdr,
                         };
                         speciesRef.variants.Add(variantRef);
-                    };
+                    }
                 }
 
                 // special case for Legacy Genus names
@@ -474,7 +474,7 @@ namespace SrvSurvey.canonn
             // StellarPOIs
             if (!File.Exists(nebulaePath) || reset)
             {
-                Game.log("prepNebulae: from network ...");
+                Game.log($"prepNebulae: from network ... (reset: {reset})");
 
                 var csv = await new HttpClient().GetStringAsync("https://edastro.b-cdn.net/mapcharts/files/nebulae-coordinates.csv");
                 this.allNebula = csv.Split("\n", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
