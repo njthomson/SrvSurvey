@@ -1602,7 +1602,19 @@ namespace SrvSurvey.game
             if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
             {
                 Game.log($"Buying {entry.Count}x {entry.Type} from linked FC marketId: {entry.MarketId}");
-                Game.colony.supplyFC(entry.MarketId, entry.Type, -entry.Count).justDoIt();
+                Program.getPlotter<PlotBuildCommodities>()?.startPending();
+                Game.colony.supplyFC(entry.MarketId, entry.Type, -entry.Count).continueOnMain(null, updatedCargo =>
+                {
+                    Game.log(updatedCargo);
+                    var fc = cmdrColony.linkedFCs.GetValueOrDefault(lastDocked.MarketID);
+                    if (fc != null)
+                    {
+                        fc.cargo = updatedCargo;
+                        cmdrColony.sumCargoLinkedFCs = ColonyData.getSumCargoFC(cmdrColony.linkedFCs.Values);
+                        cmdrColony.Save();
+                        Program.getPlotter<PlotBuildCommodities>()?.endPending();
+                    }
+                });
             }
 
             Program.invalidate<PlotBuildCommodities>();
@@ -1616,7 +1628,19 @@ namespace SrvSurvey.game
             if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
             {
                 Game.log($"Selling {entry.Count}x {entry.Type} to linked FC marketId: {entry.MarketId}");
-                Game.colony.supplyFC(entry.MarketId, entry.Type, entry.Count).justDoIt();
+                Program.getPlotter<PlotBuildCommodities>()?.startPending();
+                Game.colony.supplyFC(entry.MarketId, entry.Type, entry.Count).continueOnMain(null, updatedCargo =>
+                {
+                    Game.log(updatedCargo);
+                    var fc = cmdrColony.linkedFCs.GetValueOrDefault(lastDocked.MarketID);
+                    if (fc != null)
+                    {
+                        fc.cargo = updatedCargo;
+                        cmdrColony.sumCargoLinkedFCs = ColonyData.getSumCargoFC(cmdrColony.linkedFCs.Values);
+                        cmdrColony.Save();
+                        Program.getPlotter<PlotBuildCommodities>()?.endPending();
+                    }
+                });
                 /*
                 cmdrColony.fcCommodities.init(entry.Type);
                 cmdrColony.fcCommodities[entry.Type] += entry.Count;

@@ -392,7 +392,7 @@ namespace SrvSurvey.plotters
                 {
                     // show amount on all FCs in same column?
                     var fcAmount = game.cmdrColony.sumCargoLinkedFCs.GetValueOrDefault(name, -1);
-                    if (fcAmount > -1)
+                    if (fcAmount > 0)
                     {
                         if (Game.settings.buildProjectsShowSumFCDelta_TEST)
                         {
@@ -538,7 +538,7 @@ namespace SrvSurvey.plotters
                     {
                         // show amount on all FCs in same column?
                         var fcAmount = game.cmdrColony.sumCargoLinkedFCs.GetValueOrDefault(name, -1);
-                        if (fcAmount > -1)
+                        if (fcAmount > 0)
                         {
                             if (Game.settings.buildProjectsShowSumFCDelta_TEST)
                             {
