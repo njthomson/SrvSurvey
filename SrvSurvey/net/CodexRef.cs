@@ -470,39 +470,52 @@ namespace SrvSurvey.canonn
                 Game.log("prepNebulae: from memory ...");
                 return this.allNebula;
             }
+            var fileExists = File.Exists(nebulaePath);
 
             // StellarPOIs
-            if (!File.Exists(nebulaePath) || reset)
+            if (!fileExists || reset)
             {
                 Game.log($"prepNebulae: from network ... (reset: {reset})");
 
-                var csv = await new HttpClient().GetStringAsync("https://edastro.b-cdn.net/mapcharts/files/nebulae-coordinates.csv");
-                this.allNebula = csv.Split("\n", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
-                    .Skip(1)
-                    .Select(line =>
-                    {
-                        var parts = line.Split(',');
-                        return new double[3]
+                try
+                {
+                    var csv = await new HttpClient().GetStringAsync("https://edastro.b-cdn.net/mapcharts/files/nebulae-coordinates.csv");
+                    this.allNebula = csv.Split("\n", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+                        .Skip(1)
+                        .Select(line =>
                         {
+                            var parts = line.Split(',');
+                            return new double[3]
+                            {
                             // Columns are: Name, System, X, Y, Z, Type
                             double.Parse(parts[2], CultureInfo.InvariantCulture), // x
                             double.Parse(parts[3], CultureInfo.InvariantCulture), // y
                             double.Parse(parts[4], CultureInfo.InvariantCulture), // z
-                        };
-                    })
-                    .ToList();
-                File.WriteAllText(nebulaePath, JsonConvert.SerializeObject(this.allNebula));
+                            };
+                        })
+                        .ToList();
+                    File.WriteAllText(nebulaePath, JsonConvert.SerializeObject(this.allNebula));
 
-                Game.log("prepNebulae: complete");
-                return this.allNebula;
+                    Game.log("prepNebulae: complete");
+                    return this.allNebula;
+                }
+                catch (HttpRequestException ex)
+                {
+                    Game.log($"prepNebulae: (fileExists: {fileExists}) {ex}");
+                    if (!fileExists)
+                    {
+                        // ignore these errors, but set an list or we'll keep retrying
+                        this.allNebula = new();
+                        return this.allNebula;
+                    }
+                }
             }
-            else
-            {
-                Game.log("prepNebulae: from disk ...");
-                var json = File.ReadAllText(nebulaePath);
-                this.allNebula = JsonConvert.DeserializeObject<List<double[]>>(json)!;
-                return this.allNebula;
-            }
+
+            // Still here, just read from disk
+            Game.log("prepNebulae: from disk ...");
+            var json = File.ReadAllText(nebulaePath);
+            this.allNebula = JsonConvert.DeserializeObject<List<double[]>>(json)!;
+            return this.allNebula;
         }
 
         private async Task<Tuple<string, string>> getPoiUrlDetails()
@@ -539,6 +552,10 @@ namespace SrvSurvey.canonn
             }
 
             var vectors = await prepNebulae(false);
+
+            // exit early with large number if we have no nebulae data
+            if (vectors.Count == 0) return double.MaxValue;
+
             var nebularDist = vectors.Min(v => Util.getSystemDistance(systemPos, v));
             return nebularDist;
         }

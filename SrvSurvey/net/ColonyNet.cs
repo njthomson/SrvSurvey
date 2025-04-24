@@ -285,7 +285,7 @@ namespace SrvSurvey.game
 
             var response = buildId == null
                     ? await ColonyNet.client.DeleteAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/primary/")
-                    : await ColonyNet.client.PostAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/primary/{Uri.EscapeDataString(buildId ?? "")}", null);
+                    : await ColonyNet.client.PutAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/primary/{Uri.EscapeDataString(buildId ?? "")}", null);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
         }
 

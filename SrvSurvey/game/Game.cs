@@ -1535,6 +1535,7 @@ namespace SrvSurvey.game
                 Game.colony.supplyFC(lastDocked.MarketID, fcTrackedCargo).continueOnMain(null, updatedCargo =>
                 {
                     Game.log(updatedCargo);
+                    if (cmdrColony == null || lastDocked == null) return;
                     var fc = cmdrColony.linkedFCs.GetValueOrDefault(lastDocked.MarketID);
                     if (fc != null)
                     {
@@ -1606,6 +1607,7 @@ namespace SrvSurvey.game
                 Game.colony.supplyFC(entry.MarketId, entry.Type, -entry.Count).continueOnMain(null, updatedCargo =>
                 {
                     Game.log(updatedCargo);
+                    if (cmdrColony == null || lastDocked == null) return;
                     var fc = cmdrColony.linkedFCs.GetValueOrDefault(lastDocked.MarketID);
                     if (fc != null)
                     {
@@ -1632,6 +1634,7 @@ namespace SrvSurvey.game
                 Game.colony.supplyFC(entry.MarketId, entry.Type, entry.Count).continueOnMain(null, updatedCargo =>
                 {
                     Game.log(updatedCargo);
+                    if (cmdrColony == null || lastDocked == null) return;
                     var fc = cmdrColony.linkedFCs.GetValueOrDefault(lastDocked.MarketID);
                     if (fc != null)
                     {
