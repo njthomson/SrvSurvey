@@ -5,6 +5,7 @@ using System.ComponentModel;
 
 namespace SrvSurvey
 {
+    [Draggable]
     internal partial class FormPostProcess : FixedForm
     {
         public static FormPostProcess? activeForm;
@@ -15,10 +16,19 @@ namespace SrvSurvey
 
         private bool processingFiles = false;
         private bool processingSystems = false;
-        private bool cancelprocessing = false;
+        private bool cancelProcessing = false;
 
         public long lastSystemAddress;
         public int? lastBodyId;
+
+        private int countCargoCollected;
+        private int countCargoBought;
+        private int countCargoSold;
+        private int countCargoTransferred;
+        private int countCargoContributed;
+        private int countDocked;
+        private int countTouchdown;
+        private int countDied;
 
         public FormPostProcess(string? fid)
         {
@@ -92,6 +102,7 @@ namespace SrvSurvey
                 dateTimePicker.Enabled = false;
                 btnLongAgo.Enabled = false;
                 btnSystems.Enabled = false;
+                checkTrailblazers.Enabled = false;
                 btnStart.Text = "Stop";
                 btnClose.Enabled = false;
 
@@ -99,7 +110,7 @@ namespace SrvSurvey
             }
             else
             {
-                this.cancelprocessing = true;
+                this.cancelProcessing = true;
                 btnStart.Text = "Stopping";
                 btnStart.Enabled = false;
             }
@@ -115,7 +126,7 @@ namespace SrvSurvey
             }
             else
             {
-                this.cancelprocessing = true;
+                this.cancelProcessing = true;
             }
         }
 
@@ -145,6 +156,56 @@ namespace SrvSurvey
             var countBodies = 0;
             var countOrganisms = 0;
             var startTime = DateTime.Now;
+
+            countCargoBought = 0;
+            countCargoSold = 0;
+            countCargoTransferred = 0;
+            countCargoCollected = 0;
+            countCargoContributed = 0;
+            countDocked = 0;
+            countTouchdown = 0;
+            countDied = 0;
+
+            var firstEvent = DateTimeOffset.MinValue;
+            var countCargoBoughtTB = 0;
+            var countCargoSoldTB = 0;
+            var countCargoTransferredTB = 0;
+
+            var trailblazersReleaseDate = new DateTime(2025, 2, 26);
+
+            var isAllTime = this.targetStartTime == new DateTime(2014, 12, 15);
+            var isBeforeTrailblazers = this.targetStartTime < trailblazersReleaseDate;
+            Game.log($"postProcessJournals: starting from: {targetStartTime}, isAllTime: {isAllTime}");
+
+            var showStats = (int n, int countFiles) =>
+            {
+                var elapsed = DateTime.Now - startTime;
+                lblProgress.Text = $"Processing #{n} of {countFiles} journal files ... (from: {lastDate}, elapsed: {elapsed.ToString("mm\\:ss")})";
+                progress.Maximum = countFiles;
+                progress.Value = n;
+
+                if (listStats.Items[0].SubItems[1].Text != countJumps.ToString("N0"))
+                {
+                    listStats.BeginUpdate();
+                    Application.DoEvents();
+                    listStats.Visible = false;
+                    listStats.Items[0].SubItems[1].Text = countJumps.ToString("N0");
+                    listStats.Items[1].SubItems[1].Text = countDistance.ToString("N0");
+                    listStats.Items[2].SubItems[1].Text = countBodies.ToString("N0");
+                    listStats.Items[3].SubItems[1].Text = countOrganisms.ToString("N0");
+                    listStats.Items[4].SubItems[1].Text = countCargoBought.ToString("N0");
+                    listStats.Items[5].SubItems[1].Text = countCargoSold.ToString("N0");
+                    listStats.Items[6].SubItems[1].Text = countCargoTransferred.ToString("N0");
+                    listStats.Items[7].SubItems[1].Text = countCargoCollected.ToString("N0");
+                    listStats.Items[8].SubItems[1].Text = countCargoContributed.ToString("N0");
+                    listStats.Items[9].SubItems[1].Text = countDocked.ToString("N0");
+                    listStats.Items[10].SubItems[1].Text = countTouchdown.ToString("N0");
+                    listStats.Items[11].SubItems[1].Text = countDied.ToString("N0");
+                    listStats.Visible = true;
+                    listStats.EndUpdate();
+                }
+            };
+
             try
             {
                 // get list of files to process, date filtered and ordered oldest first
@@ -156,52 +217,48 @@ namespace SrvSurvey
                 var cmdr = CommanderSettings.Load(this.targetCmdrFid!, true, this.targetCmdrName!);
                 var cmdrCodex = cmdr.loadCodex();
 
-                this.Invoke(new Action(() =>
+                this.Invoke(() =>
                 {
-                    lblProgress.Text = $"Processing #{0} of {files.Length} journal files ... (from: ?, elapsed: )";
-                    txtJumpCount.Text = countJumps.ToString("N0");
-                    txtDistance.Text = countDistance.ToString("N0");
-                    txtBodyCount.Text = countBodies.ToString("N0");
-                    txtOrgCount.Text = countOrganisms.ToString("N0");
-
+                    showStats(0, files.Length);
                     progress.Maximum = files.Length;
                     progress.Value = 0;
                     Data.suppressLoadingMsg = true;
-                }));
+                });
 
                 // read each journal file...
                 for (var n = 0; n < files.Length; n++)
                 {
-                    if (this.cancelprocessing) break;
-                    this.Invoke(new Action(() =>
+                    if (this.cancelProcessing) break;
+                    this.Invoke(() =>
                     {
-                        var elapsed = DateTime.Now - startTime;
-                        lblProgress.Text = $"Processing #{n} of {files.Length} journal files ... (from: {lastDate}, elapsed: {elapsed.ToString("mm\\:ss")})";
-                        txtJumpCount.Text = countJumps.ToString("N0");
-                        txtDistance.Text = countDistance.ToString("N0");
-                        txtBodyCount.Text = countBodies.ToString("N0");
-                        txtOrgCount.Text = countOrganisms.ToString("N0");
-                        progress.Maximum = files.Length;
-                        progress.Value = n;
-
-                        if (this.cancelprocessing)
+                        showStats(n, files.Length);
+                        if (this.cancelProcessing)
                             lblProgress.Text = "Stopped. " + lblProgress.Text;
-                    }));
-
-
-                    // skip if wrong cmdr
-                    var filepath = files[n];
+                    });
 
                     // skip if before timestamp
+                    var filepath = files[n];
                     var lastWriteTime = File.GetLastWriteTime(filepath);
                     if (lastWriteTime < this.targetStartTime) continue;
 
                     var journal = new JournalFile(filepath, this.targetCmdrName);
                     if (journal.cmdrName != this.targetCmdrName) continue;
+
                     // ignore files that are not shutdown, unless they were opened more than 2 days ago - we will process those                    
                     if (!journal.isShutdown && journal.timestamp > DateTime.Now.AddDays(-2)) continue;
 
+                    if (firstEvent == DateTimeOffset.MinValue) firstEvent = journal.Entries.First().timestamp;
+
                     lastDate = journal.timestamp.ToShortDateString();
+                    if (isBeforeTrailblazers && journal.Entries.First().timestamp > trailblazersReleaseDate)
+                    {
+                        // crossing Trailblazers release date
+                        isBeforeTrailblazers = false;
+                        Game.log($"At launch of Trailblazers: countCargo: countCargoBought: {countCargoBought:N0}, countCargoSold: {countCargoSold:N0}, countCargoTransferred: {countCargoTransferred:N0}");
+                        countCargoBoughtTB = countCargoBought;
+                        countCargoSoldTB = countCargoSold;
+                        countCargoTransferredTB = countCargoTransferred;
+                    }
 
                     if (journal.isOdyssey)
                     {
@@ -209,7 +266,7 @@ namespace SrvSurvey
                         SystemData? sysData = null;
                         foreach (var entry in journal.Entries)
                         {
-                            if (this.cancelprocessing) break;
+                            if (this.cancelProcessing) break;
 
                             if (entry.@event == nameof(FSDJump))
                             {
@@ -224,9 +281,11 @@ namespace SrvSurvey
                             {
                                 if (sysData != null)
                                 {
+                                    Game.log($"postProcessJournals: saving: '{sysData.filepath.Replace(Program.dataFolder, "")}'");
                                     sysData.Save();
                                 }
 
+                                Game.log($"postProcessJournals: got event: '{starterEvent.@event}' - changing system to: '{starterEvent.StarSystem}' ({starterEvent.SystemAddress})");
                                 sysData = SystemData.From(starterEvent, this.targetCmdrFid, this.targetCmdrName);
                             }
 
@@ -252,6 +311,9 @@ namespace SrvSurvey
 
                                 cmdrCodex.trackCodex(codexEntry.Name_Localised, codexEntry.EntryID, codexEntry.timestamp, codexEntry.SystemAddress, codexEntry.BodyID, galacticRegionId);
                             }
+
+                            // and run it through our own entry processors
+                            this.Journals_onJournalEntry(entry);
                         }
                     }
                     else
@@ -261,7 +323,7 @@ namespace SrvSurvey
                         var lastBodyId = 0;
                         foreach (var entry in journal.Entries)
                         {
-                            if (this.cancelprocessing) break;
+                            if (this.cancelProcessing) break;
 
                             if (entry.@event == nameof(FSDJump))
                             {
@@ -302,30 +364,54 @@ namespace SrvSurvey
                                 cmdrCodex.trackCodex(codexEntry.Name_Localised, codexEntry.EntryID, codexEntry.timestamp, codexEntry.SystemAddress, codexEntry.BodyID ?? lastBodyId, galacticRegionId);
                             }
 
+                            // and run it through our own entry processors
+                            this.Journals_onJournalEntry(entry);
                         }
                     }
 
                     SystemData.CloseAll();
                 }
+
+                if (this.targetStartTime < trailblazersReleaseDate && !cancelProcessing)
+                {
+                    this.Invoke(() =>
+                    {
+                        var daysBefore = (trailblazersReleaseDate - firstEvent).TotalDays;
+                        var daysAfter = (DateTimeOffset.Now - trailblazersReleaseDate).TotalDays;
+
+                        var boughtAfter = countCargoBought - countCargoBoughtTB;
+                        var soldAfter = countCargoSold - countCargoSoldTB;
+                        var transferredAfter = countCargoTransferred - countCargoTransferredTB;
+
+                        var finalTally = $"Comparing cargo transaction before and after Trailblazers was released on Feb 26th 2025:\n\n" +
+                            $"Duration (days) before: {daysBefore:N0} vs after: {daysAfter:N0}\n\n" +
+                            $"Cargo: Bought / Sold / Transferred\n\n" +
+                            $"Before: {countCargoBoughtTB:N0} / {countCargoSoldTB:N0} / {countCargoTransferredTB:N0}\n\n" +
+                            $"After: {boughtAfter:N0} / {soldAfter:N0} / {transferredAfter:N0}\n\n" +
+                            $"Difference: {(boughtAfter - countCargoBoughtTB):N0} / {(soldAfter - countCargoSoldTB):N0} / {(transferredAfter - countCargoTransferredTB):N0}\n\n"+
+                            $"Cargo contributed to construction sites: {countCargoContributed:N0}";
+
+                        MessageBox.Show(this, finalTally, $"SrvSurvey: {targetCmdrName}");
+                        Game.log(finalTally);
+                    });
+                }
             }
             finally
             {
                 this.processingFiles = false;
-                this.cancelprocessing = false;
+                this.cancelProcessing = false;
 
                 this.BeginInvoke(new Action(() =>
                 {
+                    showStats(0, 0);
                     var elapsed = DateTime.Now - startTime;
                     lblProgress.Text = $"Final entry: from: {lastDate}, elapsed: {elapsed.ToString("mm\\:ss")}";
-                    txtJumpCount.Text = countJumps.ToString("N0");
-                    txtDistance.Text = countDistance.ToString("N0");
-                    txtBodyCount.Text = countBodies.ToString("N0");
-                    txtOrgCount.Text = countOrganisms.ToString("N0");
 
                     btnStart.Text = "Begin";
                     btnStart.Enabled = true;
                     btnClose.Enabled = true;
                     btnSystems.Enabled = true;
+                    checkTrailblazers.Enabled = true;
                     progress.Value = progress.Maximum;
                     comboCmdr.Enabled = true;
                     dateTimePicker.Enabled = true;
@@ -355,7 +441,7 @@ namespace SrvSurvey
                 // read each system file...
                 for (var n = 0; n < files.Length; n++)
                 {
-                    if (this.cancelprocessing) break;
+                    if (this.cancelProcessing) break;
                     this.BeginInvoke(new Action(() =>
                     {
                         if (this.IsDisposed) return;
@@ -423,7 +509,7 @@ namespace SrvSurvey
             finally
             {
                 this.processingSystems = false;
-                this.cancelprocessing = false;
+                this.cancelProcessing = false;
 
                 this.BeginInvoke(new Action(() =>
                 {
@@ -448,6 +534,55 @@ namespace SrvSurvey
         {
             this.Close();
         }
+
+        private void Journals_onJournalEntry(IJournalEntry entry)
+        {
+            this.onJournalEntry((dynamic)entry);
+        }
+
+        private void onJournalEntry(JournalEntry entry) { /* ignore */ }
+
+        private void onJournalEntry(CollectCargo entry)
+        {
+            this.countCargoCollected++;
+        }
+
+        private void onJournalEntry(CargoTransfer entry)
+        {
+            var sum = entry.Transfers.Sum(t => t.Count);
+            this.countCargoTransferred += sum;
+        }
+
+        private void onJournalEntry(MarketBuy entry)
+        {
+            this.countCargoBought += entry.Count;
+        }
+
+        private void onJournalEntry(MarketSell entry)
+        {
+            this.countCargoSold += entry.Count;
+        }
+
+        private void onJournalEntry(ColonisationContribution entry)
+        {
+            var sum = entry.Contributions.Sum(c => c.Amount);
+            this.countCargoContributed += sum;
+        }
+
+        private void onJournalEntry(Docked entry)
+        {
+            this.countDocked++;
+        }
+
+        private void onJournalEntry(Touchdown entry)
+        {
+            this.countTouchdown++;
+        }
+        private void onJournalEntry(Died entry)
+        {
+            this.countDied++;
+        }
+
     }
 
     class SpeciesSummary

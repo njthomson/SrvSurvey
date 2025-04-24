@@ -119,7 +119,7 @@ namespace SrvSurvey.game
 
         public static void CloseAll()
         {
-            Game.log($"Closing and saving {cache.Count} entries");
+            Game.log($"Closing and saving {cache.Count} files");
             lock (cache)
             {
                 // ensure data is saved then remove from the cache
@@ -598,7 +598,7 @@ namespace SrvSurvey.game
 
         public bool onJournalEntry(FSSDiscoveryScan entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {entry.SystemName}"); return false; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! FSSDiscoveryScan Expected: `{this.name}`, got: {entry.SystemName}"); return false; }
 
             // Discovery scan a.k.a. honk
             this.honked = true;
@@ -610,7 +610,7 @@ namespace SrvSurvey.game
 
         public bool onJournalEntry(FSSAllBodiesFound entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! FSSAllBodiesFound Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
 
             if (this.bodyCount < entry.Count) this.bodyCount = entry.Count;
 
@@ -631,7 +631,7 @@ namespace SrvSurvey.game
 
         public bool onJournalEntry(Scan entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {entry.StarSystem}"); return false; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Scan Expected: `{this.name}`, got: {entry.StarSystem}"); return false; }
             var body = this.findOrCreate(entry.Bodyname, entry.BodyID);
 
             // update fields
@@ -717,7 +717,7 @@ namespace SrvSurvey.game
 
         public bool onJournalEntry(ScanBaryCentre entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {entry.StarSystem}"); return false; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! ScanBaryCentre Expected: `{this.name}`, got: {entry.StarSystem}"); return false; }
             var body = this.findOrCreate($"{this.name} barycentre {entry.BodyID}", entry.BodyID);
 
             // update fields
@@ -771,7 +771,7 @@ namespace SrvSurvey.game
         public bool onJournalEntry(SAAScanComplete entry)
         {
             // DSS complete
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! SAAScanComplete Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
             var body = this.findOrCreate(entry.BodyName, entry.BodyID);
 
             // update fields
@@ -809,7 +809,11 @@ namespace SrvSurvey.game
 
         public bool onJournalEntry(FSSSignalDiscovered entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
+            if (entry.SystemAddress != this.address) {
+                // NOT tracing this as it is common for FSSSignalDiscovered to be logged ahead of FSDJump events - hence we still think we're in the previous system
+                //Game.log($"Unmatched system! FSSSignalDiscovered Expected: `{this.address}`, got: {entry.SystemAddress}"); 
+                return false; 
+            }
 
             this.discoveredSignals[entry.SignalName] = entry;
 
@@ -818,7 +822,7 @@ namespace SrvSurvey.game
 
         public bool onJournalEntry(FSSBodySignals entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! FSSBodySignals Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
             var body = this.findOrCreate(entry.Bodyname, entry.BodyID);
 
             // update fields
@@ -842,7 +846,7 @@ namespace SrvSurvey.game
         public bool onJournalEntry(SAASignalsFound entry)
         {
             // DSS complete
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! SAASignalsFound Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
             var body = this.findOrCreate(entry.BodyName, entry.BodyID);
             body.organisms ??= new List<SystemOrganism>();
 
@@ -882,7 +886,7 @@ namespace SrvSurvey.game
 
         public bool onJournalEntry(ApproachBody entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! ApproachBody Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
             var body = this.findOrCreate(entry.Body, entry.BodyID);
 
             // update fields
@@ -893,7 +897,7 @@ namespace SrvSurvey.game
 
         public bool onJournalEntry(Touchdown entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Touchdown Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
             // ignore landing on stations
             if (!entry.OnPlanet) return false;
 
@@ -922,7 +926,7 @@ namespace SrvSurvey.game
                 Game.activeGame.cmdrCodex.trackCodex(entry.Name_Localised, entry.EntryID, entry.timestamp, entry.SystemAddress, entry.BodyID, galacticRegion.Id);
             }
 
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! CodexEntry Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
 
             var body = this.bodies.FirstOrDefault(_ => _.id == entry.BodyID);
             if (body == null) return false;
@@ -999,7 +1003,7 @@ namespace SrvSurvey.game
 
         public bool onJournalEntry(ScanOrganic entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! ScanOrganic Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
             var body = this.bodies.FirstOrDefault(_ => _.id == entry.Body);
             if (body!.organisms == null) body.organisms = new List<SystemOrganism>();
 
@@ -1079,7 +1083,7 @@ namespace SrvSurvey.game
 
         public bool onJournalEntry(ApproachSettlement entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! ApproachSettlement Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
             var body = this.findOrCreate(entry.BodyName, entry.BodyID);
 
             if (entry.Name.StartsWith("$Ancient") && Game.activeGame != null)
@@ -1103,7 +1107,7 @@ namespace SrvSurvey.game
 
         public void onCanonnPoiData(SystemPoi canonnPoi)
         {
-            if (canonnPoi.system != this.name) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {canonnPoi.system}"); return; }
+            if (canonnPoi.system != this.name) { Game.log($"Unmatched system! SystemPoi Expected: `{this.name}`, got: {canonnPoi.system}"); return; }
             if (!Game.settings.useExternalData || !Game.settings.useExternalBioData) return;
 
             // update count of bio signals in bodies
@@ -1208,7 +1212,7 @@ namespace SrvSurvey.game
 
         public void onEdsmResponse(EdsmSystem edsmSystem)
         {
-            if (edsmSystem.id64 != this.address) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {edsmSystem.name}"); return; }
+            if (edsmSystem.id64 != this.address) { Game.log($"Unmatched system! EdsmSystem Expected: `{this.name}`, got: {edsmSystem.name}"); return; }
             if (!Game.settings.useExternalData) return;
 
             // update bodies from response
@@ -1321,7 +1325,7 @@ namespace SrvSurvey.game
 
         public void onSpanshResponse(ApiSystemDump.System spanshSystem)
         {
-            if (spanshSystem.id64 != this.address) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {spanshSystem.name}"); return; }
+            if (spanshSystem.id64 != this.address) { Game.log($"Unmatched system! ApiSystemDump Expected: `{this.name}`, got: {spanshSystem.name}"); return; }
             if (!Game.settings.useExternalData) return;
 
             var shouldPredictBios = false;

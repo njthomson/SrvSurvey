@@ -478,7 +478,7 @@ namespace SrvSurvey.forms
                 setEnabled(false);
                 Game.colony.create(createProject).continueOnMain(this, saved =>
                 {
-                    processServerResponse(saved);
+                    processServerResponse(saved!);
                     //Game.log($"New build created: {saved.buildId}");
                     //Game.log(saved);
 

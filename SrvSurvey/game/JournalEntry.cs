@@ -1165,6 +1165,7 @@ namespace SrvSurvey
     class CargoTransfer : JournalEntry
     {
         // { "timestamp":"2023-08-17T23:31:00Z", "event":"CargoTransfer", "Transfers":[ { "Type":"ancienttablet", "Type_Localised":"Guardian Tablet", "Count":1, "Direction":"toship" }, { "Type":"ancientrelic", "Type_Localised":"Guardian Relic", "Count":2, "Direction":"toship" }, { "Type":"ancienttotem", "Type_Localised":"Guardian Totem", "Count":1, "Direction":"toship" } ] }
+        // { "timestamp":"2025-04-24T04:54:42Z", "event":"CargoTransfer", "Transfers":[ { "Type":"cmmcomposite", "Type_Localised":"CMM Composite", "Count":784, "Direction":"tocarrier" } ] }
         public List<TransferItem> Transfers;
     }
 

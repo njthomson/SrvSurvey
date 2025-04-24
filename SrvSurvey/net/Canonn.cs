@@ -2009,7 +2009,7 @@ namespace SrvSurvey.canonn
                     // add a new entry, though we don't know the date or location
                     Game.log($"importCanonnChallenge: Importing {challengeEntry.Value.hud_category}/{foundType}");
                     count++;
-                    cmdrCodex.codexFirsts[entryId] = new CodexFirst(DateTime.MaxValue, -1, -1);
+                    cmdrCodex.codexFirsts[entryId] = new CodexFirst(DateTime.Now, -1, -1);
                 }
             }
             Game.log($"importCanonnChallenge: complete, added {count} new entries");

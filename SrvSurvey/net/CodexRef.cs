@@ -479,7 +479,9 @@ namespace SrvSurvey.canonn
 
                 try
                 {
-                    var csv = await new HttpClient().GetStringAsync("https://edastro.b-cdn.net/mapcharts/files/nebulae-coordinates.csv");
+                    // https://edastro.b-cdn.net/mapcharts/files/nebulae-coordinates.csv
+                    // https://edastro.com/mapcharts/files/nebulae-coordinates.csv
+                    var csv = await new HttpClient().GetStringAsync("https://edastro.com/mapcharts/files/nebulae-coordinates.csv");
                     this.allNebula = csv.Split("\n", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
                         .Skip(1)
                         .Select(line =>

@@ -29,6 +29,18 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPostProcess));
+            ListViewItem listViewItem1 = new ListViewItem(new string[] { "FSD Jumps:", "-" }, -1);
+            ListViewItem listViewItem2 = new ListViewItem(new string[] { "Distance travelled (ly):", "-" }, -1);
+            ListViewItem listViewItem3 = new ListViewItem(new string[] { "Bodies approached:", "-" }, -1);
+            ListViewItem listViewItem4 = new ListViewItem(new string[] { "Organisms scanned:", "-" }, -1);
+            ListViewItem listViewItem5 = new ListViewItem(new string[] { "Cargo bought:", "-" }, -1);
+            ListViewItem listViewItem6 = new ListViewItem(new string[] { "Cargo sold:", "-" }, -1);
+            ListViewItem listViewItem7 = new ListViewItem(new string[] { "Cargo transferred:", "-" }, -1);
+            ListViewItem listViewItem8 = new ListViewItem(new string[] { "Cargo collected:", "-" }, -1);
+            ListViewItem listViewItem9 = new ListViewItem(new string[] { "Cargo contributed:", "-" }, -1);
+            ListViewItem listViewItem10 = new ListViewItem(new string[] { "Docked:", "-" }, -1);
+            ListViewItem listViewItem11 = new ListViewItem(new string[] { "Touchdown:", "-" }, -1);
+            ListViewItem listViewItem12 = new ListViewItem(new string[] { "Died:", "-" }, -1);
             btnStart = new FlatButton();
             progress = new ProgressBar();
             lblProgress = new Label();
@@ -39,22 +51,17 @@
             lblStartDate = new Label();
             dateTimePicker = new DateTimePicker();
             comboCmdr = new ComboCmdr();
-            label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
-            label4 = new Label();
-            txtJumpCount = new TextBox();
-            txtDistance = new TextBox();
-            txtBodyCount = new TextBox();
-            txtOrgCount = new TextBox();
             btnLongAgo = new FlatButton();
             btnClose = new FlatButton();
+            listStats = new ListView();
+            colName = new ColumnHeader();
+            colValue = new ColumnHeader();
+            checkTrailblazers = new CheckBox();
             SuspendLayout();
             // 
             // btnStart
             // 
-            btnStart.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnStart.Location = new Point(94, 197);
+            btnStart.Location = new Point(95, 261);
             btnStart.Name = "btnStart";
             btnStart.Size = new Size(293, 25);
             btnStart.TabIndex = 7;
@@ -64,17 +71,15 @@
             // 
             // progress
             // 
-            progress.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            progress.Location = new Point(12, 253);
+            progress.Location = new Point(12, 232);
             progress.Name = "progress";
             progress.Size = new Size(481, 23);
             progress.TabIndex = 10;
             // 
             // lblProgress
             // 
-            lblProgress.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblProgress.AutoSize = true;
-            lblProgress.Location = new Point(12, 227);
+            lblProgress.Location = new Point(12, 206);
             lblProgress.Name = "lblProgress";
             lblProgress.Size = new Size(130, 15);
             lblProgress.TabIndex = 9;
@@ -82,9 +87,8 @@
             // 
             // btnSystems
             // 
-            btnSystems.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSystems.Enabled = false;
-            btnSystems.Location = new Point(12, 316);
+            btnSystems.Location = new Point(452, 109);
             btnSystems.Name = "btnSystems";
             btnSystems.Size = new Size(41, 23);
             btnSystems.TabIndex = 19;
@@ -95,7 +99,6 @@
             // 
             // lblDesc
             // 
-            lblDesc.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lblDesc.Location = new Point(12, 9);
             lblDesc.Name = "lblDesc";
             lblDesc.Size = new Size(481, 97);
@@ -115,7 +118,6 @@
             // 
             // lblCmdr
             // 
-            lblCmdr.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblCmdr.AutoSize = true;
             lblCmdr.Location = new Point(12, 142);
             lblCmdr.Name = "lblCmdr";
@@ -125,7 +127,6 @@
             // 
             // lblStartDate
             // 
-            lblStartDate.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblStartDate.AutoSize = true;
             lblStartDate.Location = new Point(29, 171);
             lblStartDate.Name = "lblStartDate";
@@ -135,7 +136,6 @@
             // 
             // dateTimePicker
             // 
-            dateTimePicker.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             dateTimePicker.Location = new Point(95, 168);
             dateTimePicker.MinDate = new DateTime(2014, 12, 15, 0, 0, 0, 0);
             dateTimePicker.Name = "dateTimePicker";
@@ -145,7 +145,7 @@
             // 
             // comboCmdr
             // 
-            comboCmdr.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            comboCmdr.cmdrFid = null;
             comboCmdr.DropDownStyle = ComboBoxStyle.DropDownList;
             comboCmdr.FlatStyle = FlatStyle.System;
             comboCmdr.FormattingEnabled = true;
@@ -154,97 +154,8 @@
             comboCmdr.Size = new Size(398, 23);
             comboCmdr.TabIndex = 3;
             // 
-            // label1
-            // 
-            label1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            label1.AutoSize = true;
-            label1.Location = new Point(93, 285);
-            label1.Name = "label1";
-            label1.Size = new Size(67, 15);
-            label1.TabIndex = 11;
-            label1.Text = "FSD Jumps:";
-            // 
-            // label2
-            // 
-            label2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            label2.AutoSize = true;
-            label2.Location = new Point(290, 285);
-            label2.Name = "label2";
-            label2.Size = new Size(126, 15);
-            label2.TabIndex = 15;
-            label2.Text = "Distance travelled (LY):";
-            // 
-            // label3
-            // 
-            label3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            label3.AutoSize = true;
-            label3.Location = new Point(93, 314);
-            label3.Name = "label3";
-            label3.Size = new Size(111, 15);
-            label3.TabIndex = 13;
-            label3.Text = "Bodies approached:";
-            // 
-            // label4
-            // 
-            label4.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            label4.AutoSize = true;
-            label4.Location = new Point(290, 314);
-            label4.Name = "label4";
-            label4.Size = new Size(114, 15);
-            label4.TabIndex = 17;
-            label4.Text = "Organisms scanned:";
-            // 
-            // txtJumpCount
-            // 
-            txtJumpCount.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            txtJumpCount.BorderStyle = BorderStyle.FixedSingle;
-            txtJumpCount.Location = new Point(213, 282);
-            txtJumpCount.Name = "txtJumpCount";
-            txtJumpCount.ReadOnly = true;
-            txtJumpCount.Size = new Size(71, 23);
-            txtJumpCount.TabIndex = 12;
-            txtJumpCount.Text = "0";
-            txtJumpCount.TextAlign = HorizontalAlignment.Center;
-            // 
-            // txtDistance
-            // 
-            txtDistance.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            txtDistance.BorderStyle = BorderStyle.FixedSingle;
-            txtDistance.Location = new Point(422, 282);
-            txtDistance.Name = "txtDistance";
-            txtDistance.ReadOnly = true;
-            txtDistance.Size = new Size(71, 23);
-            txtDistance.TabIndex = 16;
-            txtDistance.Text = "0";
-            txtDistance.TextAlign = HorizontalAlignment.Center;
-            // 
-            // txtBodyCount
-            // 
-            txtBodyCount.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            txtBodyCount.BorderStyle = BorderStyle.FixedSingle;
-            txtBodyCount.Location = new Point(213, 311);
-            txtBodyCount.Name = "txtBodyCount";
-            txtBodyCount.ReadOnly = true;
-            txtBodyCount.Size = new Size(71, 23);
-            txtBodyCount.TabIndex = 14;
-            txtBodyCount.Text = "0";
-            txtBodyCount.TextAlign = HorizontalAlignment.Center;
-            // 
-            // txtOrgCount
-            // 
-            txtOrgCount.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            txtOrgCount.BorderStyle = BorderStyle.FixedSingle;
-            txtOrgCount.Location = new Point(422, 311);
-            txtOrgCount.Name = "txtOrgCount";
-            txtOrgCount.ReadOnly = true;
-            txtOrgCount.Size = new Size(71, 23);
-            txtOrgCount.TabIndex = 18;
-            txtOrgCount.Text = "0";
-            txtOrgCount.TextAlign = HorizontalAlignment.Center;
-            // 
             // btnLongAgo
             // 
-            btnLongAgo.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnLongAgo.Location = new Point(324, 167);
             btnLongAgo.Name = "btnLongAgo";
             btnLongAgo.Size = new Size(169, 25);
@@ -255,8 +166,7 @@
             // 
             // btnClose
             // 
-            btnClose.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnClose.Location = new Point(393, 197);
+            btnClose.Location = new Point(394, 261);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(100, 25);
             btnClose.TabIndex = 8;
@@ -264,21 +174,48 @@
             btnClose.UseVisualStyleBackColor = true;
             btnClose.Click += btnClose_Click;
             // 
+            // listStats
+            // 
+            listStats.Columns.AddRange(new ColumnHeader[] { colName, colValue });
+            listStats.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7, listViewItem8, listViewItem9, listViewItem10, listViewItem11, listViewItem12 });
+            listStats.Location = new Point(510, 9);
+            listStats.Name = "listStats";
+            listStats.Size = new Size(228, 258);
+            listStats.TabIndex = 21;
+            listStats.UseCompatibleStateImageBehavior = false;
+            listStats.View = View.Details;
+            // 
+            // colName
+            // 
+            colName.Text = "Statistic";
+            colName.Width = 140;
+            // 
+            // colValue
+            // 
+            colValue.Text = "Value";
+            colValue.TextAlign = HorizontalAlignment.Right;
+            // 
+            // checkTrailblazers
+            // 
+            checkTrailblazers.AutoSize = true;
+            checkTrailblazers.Checked = true;
+            checkTrailblazers.CheckState = CheckState.Checked;
+            checkTrailblazers.Location = new Point(585, 273);
+            checkTrailblazers.Name = "checkTrailblazers";
+            checkTrailblazers.Size = new Size(153, 19);
+            checkTrailblazers.TabIndex = 22;
+            checkTrailblazers.Text = "Compare for Trailblazers";
+            checkTrailblazers.UseVisualStyleBackColor = true;
+            // 
             // FormPostProcess
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(505, 351);
+            ClientSize = new Size(751, 297);
+            Controls.Add(checkTrailblazers);
+            Controls.Add(listStats);
             Controls.Add(btnClose);
             Controls.Add(btnLongAgo);
-            Controls.Add(txtOrgCount);
-            Controls.Add(txtBodyCount);
-            Controls.Add(txtDistance);
-            Controls.Add(txtJumpCount);
-            Controls.Add(label4);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(label1);
             Controls.Add(comboCmdr);
             Controls.Add(dateTimePicker);
             Controls.Add(lblStartDate);
@@ -311,15 +248,11 @@
         private Label lblStartDate;
         private DateTimePicker dateTimePicker;
         private ComboCmdr comboCmdr;
-        private Label label1;
-        private Label label2;
-        private Label label3;
-        private Label label4;
-        private TextBox txtJumpCount;
-        private TextBox txtDistance;
-        private TextBox txtBodyCount;
-        private TextBox txtOrgCount;
         private FlatButton btnLongAgo;
         private FlatButton btnClose;
+        private ListView listStats;
+        private ColumnHeader colName;
+        private ColumnHeader colValue;
+        private CheckBox checkTrailblazers;
     }
 }
