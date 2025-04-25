@@ -1,4 +1,5 @@
-﻿using SharpDX.DirectInput;
+﻿using Newtonsoft.Json;
+using SharpDX.DirectInput;
 using SrvSurvey.game;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -25,6 +26,7 @@ namespace SrvSurvey
 
         public static bool redirect = false;
         public static event HookFired? buttonsPressed;
+        private static int taskCount = 0;
 
         public Guid activeDeviceId { get; private set; }
 
@@ -51,6 +53,11 @@ namespace SrvSurvey
 
         public void startDirectX(Guid? newDeviceId)
         {
+            startDirectX(newDeviceId, false);
+        }
+
+        private void startDirectX(Guid? newDeviceId, bool retrying)
+        {
             // exit early if the device isn't changing
             if (this.activeDeviceId == newDeviceId || newDeviceId == null) // && this.taskDirectX != null)
                 return;
@@ -61,6 +68,9 @@ namespace SrvSurvey
                 cancelPollingTask = false;
                 this.taskDirectX = Task.Factory.StartNew(async () =>
                 {
+                    taskCount++;
+                    Game.log($"startDirectX ({taskCount})");
+
                     try
                     {
                         if (newDeviceId == Guid.Empty)
@@ -73,6 +83,8 @@ namespace SrvSurvey
                     }
                     finally
                     {
+                        taskCount--;
+                        Game.log($"DirectX hook concluded for: {newDeviceId} ({taskCount})");
                         this.taskDirectX = null;
                         this.activeDeviceId = Guid.Empty;
                     }
@@ -80,15 +92,28 @@ namespace SrvSurvey
 
                 Game.log($"DirectX hook activated: {newDeviceId}");
             }
+            else if (!retrying && this.activeDeviceId == Guid.Empty && newDeviceId != Guid.Empty)
+            {
+                Game.log($"DirectX task still running. current: {this.activeDeviceId}, new: {newDeviceId}, taskCount: {taskCount}");
+                cancelPollingTask = true;
+
+                // signal to stop existing thread that is waiting for non-connected device and start over with new one
+                Task.Delay(1000).ContinueWith((tt) =>
+                {
+                    Game.log($"DirectX task was running. Starting retry ... (current: {this.activeDeviceId}, new: {newDeviceId}, taskCount: {taskCount})");
+                    startDirectX(newDeviceId, true);
+                });
+            }
             else
             {
-                Game.log($"Why is DirectX task still running? ({newDeviceId})");
+                Game.log($"Why is DirectX task still running? (current: {this.activeDeviceId}, new: {newDeviceId}, taskCount: {taskCount})");
                 Debugger.Break();
             }
         }
 
         public void stopDirectX()
         {
+            Game.log($"DirectX hook request stop (current: {this.activeDeviceId})");
             cancelPollingTask = true;
         }
 
@@ -143,29 +168,71 @@ namespace SrvSurvey
             {
                 try
                 {
-                    if (cancelPollingTask)
+                    if (cancelPollingTask || newDeviceId == Guid.Empty)
                     {
                         Game.log("DirectX hook disabled");
+                        gamepad = null;
+                        gamepadCapabilities = null;
                         return;
                     }
 
                     // do we have a device ready to use?
                     if (device == null)
                     {
-                        device = new Joystick(directInput, newDeviceId);
-
-                        // Show the device we found
-                        Game.log($"Using {device.Capabilities.Type} device '{device.Properties.InstanceName}' by ID: {newDeviceId}");
-                        this.activeDeviceId = newDeviceId;
-                        device.Properties.BufferSize = 128;
-                        Program.control.Invoke(() =>
+                        if (!directInput.IsDeviceAttached(newDeviceId))
                         {
-                            device.SetCooperativeLevel(Main.form.Handle, CooperativeLevel.NonExclusive | CooperativeLevel.Background);
-                        });
-                        device.Acquire();
+                            // try again in +1 seconds?
+                            await Task.Delay(1_000);
+                            continue;
+                        }
+
+                        device = new Joystick(directInput, newDeviceId);
+                        gamepad = null;
+                        gamepadCapabilities = null;
+
+                        if (device.Capabilities.Type == DeviceType.Gamepad && !Game.settings.hookDirectXNotXInput_TEST)
+                        {
+                            // start with use the index from devices ... this helps when there are multiples. However suppose #0 powers down, it will disappear but we still need to use #1 below ... this is why we have that while loop
+                            var gamePads = directInput.GetDevices(DeviceType.Gamepad, DeviceEnumerationFlags.AllDevices);
+                            var idx = gamePads.ToList().FindIndex(d => d.InstanceGuid == device.Information.InstanceGuid);
+                            while (gamepad?.IsConnected != true && idx < 5)
+                                gamepad = new SharpDX.XInput.Controller((SharpDX.XInput.UserIndex)idx++);
+
+                            if (gamepad?.IsConnected == true)
+                            {
+                                // we found something
+                                gamepadCapabilities = gamepad.GetCapabilities(SharpDX.XInput.DeviceQueryType.Any);
+                                Game.log($"initXInput: UserIndex: {gamepad.UserIndex} / IsConnected: {gamepad.IsConnected} (assumed deviceId: {newDeviceId})\nCapabilities: {JsonConvert.SerializeObject(gamepadCapabilities)}");
+                                this.activeDeviceId = newDeviceId;
+                            }
+                            else
+                            {
+                                gamepad = null;
+                                Game.log($"initXInput: Failed to find an XInput connected gamepad. Falling back to DirectInput...");
+                            }
+                        }
+
+                        if (gamepad == null)
+                        {
+                            // Show the device we found
+                            Game.log($"Using {device.Capabilities.Type}/{device.Capabilities.Subtype} device '{device.Properties.InstanceName}' by ID: {newDeviceId}");
+                            this.activeDeviceId = newDeviceId;
+                            device.Properties.BufferSize = 128;
+                            Program.control.Invoke(() =>
+                            {
+                                device.SetCooperativeLevel(Main.form.Handle, CooperativeLevel.NonExclusive | CooperativeLevel.Background);
+                            });
+                            device.Acquire();
+                        }
                     }
 
                     await Task.Delay(1);
+                    // use XInput instead?
+                    if (gamepad != null)
+                    {
+                        this.pollXInput();
+                        continue;
+                    }
                     device.Poll();
 
                     foreach (var state in device.GetBufferedData())
@@ -203,7 +270,6 @@ namespace SrvSurvey
 
                     // wait 1 second then try again
                     await Task.Delay(1000);
-
                 }
             }
         }
@@ -331,6 +397,113 @@ namespace SrvSurvey
             }
         }
         private string? lastTrigger;
+
+        // --- XInput relates code ---
+
+        private SharpDX.XInput.Controller? gamepad;
+        private SharpDX.XInput.Capabilities? gamepadCapabilities;
+        private SharpDX.XInput.State lastState;
+
+        private void pollXInput()
+        {
+            if (gamepad == null) return;
+            if (!gamepad.GetState(out var state)) return;
+
+            // skip if no changes from before
+            if (state.PacketNumber == lastState.PacketNumber) return;
+
+            //Debug.WriteLine(JsonConvert.SerializeObject(state, Formatting.Indented));  // dbg
+
+            // process buttons
+            if (lastState.Gamepad.Buttons != state.Gamepad.Buttons)
+            {
+                foreach (var btn in buttonsForXInput)
+                {
+                    var wasPressed = lastState.Gamepad.Buttons.HasFlag(btn);
+                    var isPressed = state.Gamepad.Buttons.HasFlag(btn);
+                    if (wasPressed == isPressed) continue;
+
+                    var name = mapXInputNames[btn.ToString()];
+                    //Debug.WriteLine($"{name}: {wasPressed} / {isPressed}"); // dbg
+
+                    if (isPressed)
+                    {
+                        pressed.Add(name);
+
+                        if (!pendingButtonsRelease)
+                            fire(false);
+                    }
+                    else if (pressed.Contains(name))
+                    {
+                        if (!pendingButtonsRelease || !redirect)
+                            this.processButtonChord();
+
+                        pressed.Remove(name);
+
+                        if (!pendingButtonsRelease)
+                            fire(false);
+                    }
+                }
+            }
+
+            // check trigger axis
+            processGamePadAxis("LT", lastState.Gamepad.LeftTrigger, state.Gamepad.LeftTrigger);
+            processGamePadAxis("RT", lastState.Gamepad.RightTrigger, state.Gamepad.RightTrigger);
+
+            // TODO: It's viable to support thumb axis ... but skipping as we didn't previously
+
+            if (pendingButtonsRelease)
+                pendingButtonsRelease = pressed.Count > 0;
+
+            lastState = state;
+        }
+
+        private void processGamePadAxis(string name, byte last, byte current)
+        {
+            if (last == current) return;
+
+            //Debug.WriteLine($"{name}: {last} v {current}"); // bdg
+
+            var triggered = current >= 250; // allow with 5 to trigger
+            if (triggered)
+            {
+                pressed.Add(name);
+
+                if (!pendingButtonsRelease)
+                    fire(false);
+            }
+            else if (pressed.Contains(name))
+            {
+                if (!pendingButtonsRelease || !redirect)
+                    this.processButtonChord();
+
+                pressed.Remove(name);
+
+                if (!pendingButtonsRelease)
+                    fire(false);
+            }
+        }
+
+        private static IEnumerable<SharpDX.XInput.GamepadButtonFlags> buttonsForXInput = Enum.GetValues<SharpDX.XInput.GamepadButtonFlags>().Skip(1);
+        private static Dictionary<string, string> mapXInputNames = new Dictionary<string, string>()
+        {
+            { "DPadUp", "PovU" },
+            { "DPadDown", "PovD" },
+            { "DPadLeft", "PovL" },
+            { "DPadRight", "PovR" },
+            { "Start", "B8" },
+            { "Back", "B7" },
+            { "LeftThumb", "B9" },
+            { "RightThumb", "B10" },
+            { "LeftShoulder", "B5" },
+            { "RightShoulder", "B6" },
+            { "A", "B1" },
+            { "B", "B2" },
+            { "X", "B3" },
+            { "Y", "B4" },
+            { "LeftTrigger", "LT" },
+            { "RightTrigger", "RT" },
+        };
 
         #region native methods
 

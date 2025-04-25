@@ -48,6 +48,8 @@ namespace SrvSurvey.plotters
         private string? headerText;
         private ColonyData.Needs? needs;
         private HashSet<string> projectNames = new();
+        private List<FleetCarrier> cargoLinkedFCs = new();
+        private Dictionary<string, int> sumCargoLinkedFCs = new();
 
         private PlotBuildCommodities() : base()
         {
@@ -108,18 +110,30 @@ namespace SrvSurvey.plotters
             var effectiveAddress = -1L;
             var effectiveMarketId = -1L;
             List<Project>? relevantProjects = null;
+            var relevantFCs = new HashSet<long>();
 
             if (game.lastDocked != null && dockedAtConstructionSite)
             {
+                // docked at a construction site
                 effectiveAddress = game.lastDocked.SystemAddress;
                 effectiveMarketId = game.lastDocked.MarketID;
 
                 // use project name, or default name if not tracked
                 var proj = game.cmdrColony.getProject(game.lastDocked.SystemAddress, game.lastDocked.MarketID);
                 if (proj != null)
+                {
+                    // is tracked
                     headerText = $"{proj.buildName} ({proj.buildType})";
+                    // use only FCs linked to this project
+                    relevantFCs = proj.linkedFC.Select(fc => fc.marketId).ToHashSet();
+                }
                 else
+                {
+                    // not tracked
                     headerText = ColonyData.getDefaultProjectName(game.lastDocked);
+                    // use any and all FCs
+                    relevantFCs = colonyData.linkedFCs.Keys.ToHashSet();
+                }
                 relevantProjects = new();
             }
             else if (!string.IsNullOrWhiteSpace(colonyData.primaryBuildId))
@@ -129,6 +143,7 @@ namespace SrvSurvey.plotters
                 {
                     relevantProjects = new() { primaryProject };
                     headerText = $"{primaryProject.buildName} ({primaryProject.buildType})";
+                    relevantFCs = primaryProject.linkedFC.Select(fc => fc.marketId).ToHashSet();
                 }
                 else
                 {
@@ -152,6 +167,9 @@ namespace SrvSurvey.plotters
                     relevantProjects = colonyData.projects;
                     headerText = $"{relevantProjects.Count} total projects:";
                 }
+
+                // use only FCs linked to any of the projects
+                relevantFCs = relevantProjects.SelectMany(p => p.linkedFC.Select(fc => fc.marketId)).ToHashSet();
             }
 
             projectNames.Clear();
@@ -174,6 +192,10 @@ namespace SrvSurvey.plotters
             // calculate effective needs
             Game.log($"Get effective needs from: {effectiveAddress} / {effectiveMarketId}");
             this.needs = colonyData.getLocalNeeds(effectiveAddress, effectiveMarketId);
+
+            // sum cargo across related FCs and keep references to them
+            this.cargoLinkedFCs = colonyData.linkedFCs.Values.Where(fc => relevantFCs.Contains(fc.marketId)).ToList();
+            this.sumCargoLinkedFCs = ColonyData.getSumCargoFC(cargoLinkedFCs);
         }
 
         protected override void onPaintPlotter(PaintEventArgs e)
@@ -185,7 +207,7 @@ namespace SrvSurvey.plotters
             var dockedAtConstructionSite = ColonyData.isConstructionSite(game.lastDocked);
 
             // calculate header text and needs only when needed
-            if (this.headerText == null || this.needs == null || ((projectNames.Count > 0) == dockedAtConstructionSite))
+            if (this.headerText == null || this.needs == null || (colonyData.primaryBuildId == null && ((projectNames.Count > 0) == dockedAtConstructionSite)))
                 this.setHeaderTextAndNeeds(dockedAtConstructionSite);
 
             // exit early if we failed to populate things correctly
@@ -236,8 +258,8 @@ namespace SrvSurvey.plotters
             // prep 3 columns: first zero width (that will grow), last 2 large enough for a big number
             var hasPin = needs!.assigned.Count > 0;
             var haveAnyCargo = game.cargoFile.Inventory.Count > 0;
-            var showFCs = Game.settings.buildProjectsShowSumFC_TEST && colonyData.sumCargoLinkedFCs.Count > 0;
-            if (showFCs && Game.settings.buildProjectsInlineSumFC_TEST) haveAnyCargo |= colonyData.sumCargoLinkedFCs.Count > 0;
+            var showFCs = Game.settings.buildProjectsShowSumFC_TEST && this.sumCargoLinkedFCs.Count > 0;
+            if (showFCs && Game.settings.buildProjectsInlineSumFC_TEST) haveAnyCargo |= this.sumCargoLinkedFCs.Count > 0;
 
             var rightIndent = haveAnyCargo ? szBigNumbers.Width : 0;
             var pinWidth = hasPin ? oneSix : 0;
@@ -288,9 +310,16 @@ namespace SrvSurvey.plotters
             if (this.formSize.Width < formWidthNeeded)
                 this.formSize.Width = formWidthNeeded;
 
-            // show how many runs remaining
             dty += ten;
 
+            // show relevant FCs
+            if (cargoLinkedFCs.Count > 0)
+            {
+                drawTextAt2(ten, $"► {cargoLinkedFCs.Count} FCs: " + string.Join(", ", cargoLinkedFCs.Select(fc => fc.name)));
+                newLine(true);
+            }
+
+            // show how many runs remaining
             drawTextAt2(ten, $"► {sumNeed:N0} remaining");
             newLine(true);
             if (game.currentShip.cargoCapacity > 0)
@@ -380,7 +409,7 @@ namespace SrvSurvey.plotters
                 drawTextAt2(xNeed, needTxt, col, ff, true)
                     .widestColumn(1, columns);
 
-                // render cargo count
+                // render SHIP cargo count
                 if (cargoCount > 0)
                 {
                     drawTextAt2(this.Width - eight, cargoCount.ToString("N0"), col, ff, true)
@@ -391,7 +420,7 @@ namespace SrvSurvey.plotters
                 if (xFC > 0 && Game.settings.buildProjectsShowSumFC_TEST && (!Game.settings.buildProjectsInlineSumFC_TEST || cargoCount > 0))
                 {
                     // show amount on all FCs in same column?
-                    var fcAmount = game.cmdrColony.sumCargoLinkedFCs.GetValueOrDefault(name, -1);
+                    var fcAmount = this.sumCargoLinkedFCs.GetValueOrDefault(name, -1);
                     if (fcAmount > 0)
                     {
                         if (Game.settings.buildProjectsShowSumFCDelta_TEST)
@@ -526,7 +555,7 @@ namespace SrvSurvey.plotters
                     drawTextAt2(xNeed, needTxt, col, ff, true)
                         .widestColumn(1, columns);
 
-                    // render cargo count
+                    // render SHIP cargo count
                     if (cargoCount > 0)
                     {
                         drawTextAt2(this.Width - eight, cargoCount.ToString("N0"), col, ff, true)
@@ -537,7 +566,7 @@ namespace SrvSurvey.plotters
                     if (xFC > 0 && Game.settings.buildProjectsShowSumFC_TEST && (!Game.settings.buildProjectsInlineSumFC_TEST || cargoCount == 0))
                     {
                         // show amount on all FCs in same column?
-                        var fcAmount = game.cmdrColony.sumCargoLinkedFCs.GetValueOrDefault(name, -1);
+                        var fcAmount = this.sumCargoLinkedFCs.GetValueOrDefault(name, -1);
                         if (fcAmount > 0)
                         {
                             if (Game.settings.buildProjectsShowSumFCDelta_TEST)

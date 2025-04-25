@@ -337,7 +337,7 @@ namespace SrvSurvey.plotters
         protected override void onJournalEntry(DockingGranted entry)
         {
             base.onJournalEntry(entry);
-            Task.Delay(1500).ContinueWith(t => this.BeginInvoke(() =>
+            Task.Delay(1500).ContinueWith(t => Program.defer(() =>
             {
                 this.dockingState = DockingState.approved;
                 this.grantedPad = entry.LandingPad;
@@ -350,7 +350,7 @@ namespace SrvSurvey.plotters
             base.onJournalEntry(entry);
             this.deniedReason = entry.Reason;
 
-            Task.Delay(1500).ContinueWith(t => this.BeginInvoke(() =>
+            Task.Delay(1500).ContinueWith(t => Program.defer(() =>
             {
                 this.dockingState = DockingState.denied;
                 this.Invalidate();
@@ -378,7 +378,7 @@ namespace SrvSurvey.plotters
             this.hasLanded = true;
             this.dockingState = DockingState.landed;
             // invalidate from game.cs?
-            //this.BeginInvoke(() =>
+            //Program.defer(() =>
             //{
             //    this.siteHeading = site.heading;
             //    this.Invalidate();

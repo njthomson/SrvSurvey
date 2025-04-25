@@ -94,6 +94,7 @@ namespace SrvSurvey
             if (!Game.settings.buildProjects_TEST) menuColonize.targetButton = null;
 
             Util.applyTheme(this);
+            btnNextWindow.BackColor = C.cyanDark;
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -365,9 +366,12 @@ namespace SrvSurvey
 
             // handle single/multiple processes
             btnNextWindow.Visible = Elite.hadManyGameProcs;
-            if (this.multiFloatie == null && Elite.hadManyGameProcs) { this.multiFloatie = FormMultiFloatie.create(); btnNextWindow.BackColor = C.cyanDark; }
-            if (this.multiFloatie != null && !Elite.hadManyGameProcs) { this.multiFloatie.Close(); this.multiFloatie = null; }
-            if (this.multiFloatie != null) this.multiFloatie.Visible = Elite.focusElite || FormStartNewCmdr.active;
+            if (!Game.settings.hideMultiFloatie)
+            {
+                if (this.multiFloatie == null && Elite.hadManyGameProcs) this.multiFloatie = FormMultiFloatie.create();
+                if (this.multiFloatie != null && !Elite.hadManyGameProcs) { this.multiFloatie.Close(); this.multiFloatie = null; }
+                if (this.multiFloatie != null) this.multiFloatie.Visible = Elite.focusElite || FormStartNewCmdr.active;
+            }
 
             // reposition plotters if game window has moved
             if (rect != this.lastWindowRect && Elite.gameHasFocus && rect.X > -30_000)
@@ -715,11 +719,13 @@ namespace SrvSurvey
                 else
                     this.txtCommander.Text = Game.settings.lastCommander + " ?";
 
-                this.notifyIcon.Text = $"SrvSurvey: {Program.forceFid} ?\nDouble click to restore";
+                this.notifyIcon.Text = $"SrvSurvey: {Program.forceFid} ?\nDouble click to show";
+                this.menuNotifyCmdr.Text = $"Cmdr: {Program.forceFid} ?";
                 this.txtVehicle.Text = "";
                 this.txtNearBody.Text = "";
                 this.txtLocation.Text = Game.settings.lastFid != null ? CommanderSettings.LoadCurrentOrLast()?.currentSystem ?? "" : "";
                 btnCopyLocation.Enabled = !string.IsNullOrEmpty(this.txtLocation.Text);
+                menuNotifyCopy.Visible = false;
 
                 if (game?.mode == GameMode.MainMenu)
                     this.txtMode.Text = "MainMenu";
@@ -733,7 +739,8 @@ namespace SrvSurvey
 
             this.txtCommander.Text = $"{game.Commander} (FID:{game.fid}, Odyssey:{game.cmdr.isOdyssey})";
             if (Program.forceFid != null) this.txtCommander.Text += " (forced)";
-            this.notifyIcon.Text = $"SrvSurvey: {game.Commander}\nDouble click to restore";
+            this.notifyIcon.Text = $"SrvSurvey: {game.Commander}\nDouble click to show";
+            this.menuNotifyCmdr.Text = $"Cmdr: {game.Commander}";
             if (this.multiFloatie != null && game.Commander != null && multiFloatie.cmdr != game.Commander) multiFloatie.setCmdr(game.Commander);
 
             this.txtMode.Text = game.mode.ToString();
@@ -755,6 +762,8 @@ namespace SrvSurvey
 
             this.txtLocation.Text = game.systemBody?.name ?? $"{game.systemData?.name}" ?? "";
             btnCopyLocation.Enabled = !string.IsNullOrEmpty(this.txtLocation.Text);
+            menuNotifyCopy.Visible = btnCopyLocation.Enabled;
+            menuNotifyCopy.Text = "Copy: " + txtLocation.Text;
 
             if (game.fsdJumping)
             {
@@ -1417,23 +1426,30 @@ namespace SrvSurvey
 
         private void btnNextWindow_Click(object sender, EventArgs e)
         {
-            // if there are more game processes than SrvSurvey processes ... 
-            var gameProcs = Process.GetProcessesByName("EliteDangerous64");
-            var surveyProcs = Process.GetProcessesByName("SrvSurvey");
-            if (surveyProcs.Length < gameProcs.Length)
+            // ... show a form asking which commander to launch or switch windows
+            var fid = Program.forceFid ?? CommanderSettings.currentOrLastFid;
+            if (fid != null)
             {
-                // ... show a form asking which commander to launch?
-                var fid = Program.forceFid ?? CommanderSettings.currentOrLastFid;
-                if (fid != null)
-                {
-                    multiFloatie?.Show();
-                    var form = new FormStartNewCmdr(fid);
-                    form.ShowDialog(this);
-                    return;
-                }
+                multiFloatie?.Show();
+                var form = new FormStartNewCmdr(fid);
+                form.ShowDialog(this);
             }
+            else
+            {
+                Game.log($"btnNextWindow_Click: no FID?");
+            }
+        }
 
-            Util.applyTheme(btnNextWindow);
+        private void menuNotifyShowMain_Click(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+                this.WindowState = FormWindowState.Normal;
+
+            this.Activate();
+        }
+
+        private void menuNotifyNextWindow_Click(object sender, EventArgs e)
+        {
             FormMultiFloatie.useNextWindow();
         }
 
@@ -1467,9 +1483,8 @@ namespace SrvSurvey
             if (Game.settings.minimizeToTray)
             {
                 // make sys tray icon visible upon minimizing
-                notifyIcon.Visible = this.WindowState == FormWindowState.Minimized;
-                this.ShowInTaskbar = !notifyIcon.Visible;
-                this.BringToFront();
+                this.ShowInTaskbar = this.WindowState != FormWindowState.Minimized;
+                this.Activate();
             }
         }
 
@@ -1811,12 +1826,6 @@ namespace SrvSurvey
         //}
 
         //#endregion
-
-        private void notifyIcon_DoubleClick(object sender, EventArgs e)
-        {
-            if (this.WindowState == FormWindowState.Minimized)
-                this.WindowState = FormWindowState.Normal;
-        }
 
         private void btnPredictions_Click(object sender, EventArgs e)
         {

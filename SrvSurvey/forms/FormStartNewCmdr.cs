@@ -15,13 +15,35 @@ namespace SrvSurvey.forms
 
             this.Load += (s, e) =>
             {
+                // show current cmdr in top box
                 var cmdr = comboCmdr.allCmdrs.GetValueOrDefault(fid);
                 txtCmdr.Text = cmdr;
 
-                // remove the current Commander
-                Game.log(comboCmdr.allCmdrs.formatWithHeader($"FormStartNewCmdr: removing: '{cmdr}' from:", "\n\t"));
-                comboCmdr.Items.Remove(cmdr);
-                btnStart.Enabled = false;
+                Program.defer(() =>
+                {
+                    // enable controls to spawn another SrvSurvey only if there are more game processes than SrvSurvey processes
+                    var gameProcs = Process.GetProcessesByName("EliteDangerous64");
+                    var surveyProcs = Process.GetProcessesByName("SrvSurvey");
+
+                    if (surveyProcs.Length < gameProcs.Length)
+                    {
+                        // remove the current Commander from dropdown
+                        Game.log(comboCmdr.allCmdrs.formatWithHeader($"FormStartNewCmdr: removing: '{cmdr}' from:", "\n\t"));
+                        comboCmdr.Items.Remove(cmdr);
+                        if (comboCmdr.Items.Count > 1) comboCmdr.SelectedIndex = 0;
+
+                        btnStart.Enabled = true;
+                        comboCmdr.Enabled = true;
+                    }
+
+                    btnToggleWindow.Focus();
+
+                    // give focus to the game, then ourselves
+                    Application.DoEvents();
+                    Elite.setFocusED();
+                    Application.DoEvents();
+                    this.Activate();
+                });
             };
         }
 
@@ -38,7 +60,7 @@ namespace SrvSurvey.forms
 
         private void comboCmdr_SelectedIndexChanged(object sender, EventArgs e)
         {
-            btnStart.Enabled = !string.IsNullOrWhiteSpace(comboCmdr.Text);
+            btnStart.Enabled = comboCmdr.Enabled && !string.IsNullOrWhiteSpace(comboCmdr.Text);
         }
 
         private void btnStart_Click(object sender, EventArgs e)

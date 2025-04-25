@@ -118,6 +118,16 @@ namespace SrvSurvey
             btnRuinsOrigin = new ToolStripMenuItem();
             toolTip1 = new ToolTip(components);
             notifyIcon = new NotifyIcon(components);
+            menuNotify = new ContextMenuStrip(components);
+            menuNotifyCmdr = new ToolStripMenuItem();
+            menuNotifyNextWindow = new ToolStripMenuItem();
+            toolStripSeparator4 = new ToolStripSeparator();
+            menuNotifyCopy = new ToolStripMenuItem();
+            menuNotifyShowMain = new ToolStripMenuItem();
+            menuNotifyLogs = new ToolStripMenuItem();
+            menuNotifySettings = new ToolStripMenuItem();
+            toolStripSeparator3 = new ToolStripSeparator();
+            menuNotifyClose = new ToolStripMenuItem();
             groupBox1.SuspendLayout();
             groupCmdr.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -127,6 +137,7 @@ namespace SrvSurvey
             menuJourney.SuspendLayout();
             menuColonize.SuspendLayout();
             menuGuardians.SuspendLayout();
+            menuNotify.SuspendLayout();
             SuspendLayout();
             // 
             // btnGroundTarget
@@ -1063,9 +1074,83 @@ namespace SrvSurvey
             // 
             // notifyIcon
             // 
+            notifyIcon.ContextMenuStrip = menuNotify;
             notifyIcon.Icon = (Icon)resources.GetObject("notifyIcon.Icon");
             notifyIcon.Text = "SrvSurvey\r\nDouble click to restore";
-            notifyIcon.DoubleClick += notifyIcon_DoubleClick;
+            notifyIcon.Visible = true;
+            notifyIcon.DoubleClick += menuNotifyShowMain_Click;
+            // 
+            // menuNotify
+            // 
+            menuNotify.Items.AddRange(new ToolStripItem[] { menuNotifyCmdr, menuNotifyNextWindow, toolStripSeparator4, menuNotifyCopy, menuNotifyShowMain, menuNotifyLogs, menuNotifySettings, toolStripSeparator3, menuNotifyClose });
+            menuNotify.Name = "menuNotify";
+            menuNotify.Size = new Size(145, 170);
+            // 
+            // menuNotifyCmdr
+            // 
+            menuNotifyCmdr.Enabled = false;
+            menuNotifyCmdr.Name = "menuNotifyCmdr";
+            menuNotifyCmdr.Size = new Size(144, 22);
+            menuNotifyCmdr.Text = "Cmdr: xxx";
+            menuNotifyCmdr.ToolTipText = "Commander tracked by this SrvSurvey";
+            // 
+            // menuNotifyNextWindow
+            // 
+            menuNotifyNextWindow.Name = "menuNotifyNextWindow";
+            menuNotifyNextWindow.Size = new Size(144, 22);
+            menuNotifyNextWindow.Text = "Next window";
+            menuNotifyNextWindow.ToolTipText = "When there are multiple game windows - shift overlays to the next game window";
+            menuNotifyNextWindow.Visible = false;
+            menuNotifyNextWindow.Click += menuNotifyNextWindow_Click;
+            // 
+            // toolStripSeparator4
+            // 
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new Size(141, 6);
+            // 
+            // menuNotifyCopy
+            // 
+            menuNotifyCopy.Name = "menuNotifyCopy";
+            menuNotifyCopy.Size = new Size(144, 22);
+            menuNotifyCopy.Text = "Copy current";
+            menuNotifyCopy.ToolTipText = "Copy current system/body name to clipboard";
+            menuNotifyCopy.Visible = false;
+            menuNotifyCopy.Click += btnCopyLocation_Click;
+            // 
+            // menuNotifyShowMain
+            // 
+            menuNotifyShowMain.Name = "menuNotifyShowMain";
+            menuNotifyShowMain.Size = new Size(144, 22);
+            menuNotifyShowMain.Text = "Show ...";
+            menuNotifyShowMain.ToolTipText = "Show SrvSurvey main window";
+            menuNotifyShowMain.Click += menuNotifyShowMain_Click;
+            // 
+            // menuNotifyLogs
+            // 
+            menuNotifyLogs.Name = "menuNotifyLogs";
+            menuNotifyLogs.Size = new Size(144, 22);
+            menuNotifyLogs.Text = "Logs ...";
+            menuNotifyLogs.Click += btnLogs_Click;
+            // 
+            // menuNotifySettings
+            // 
+            menuNotifySettings.Name = "menuNotifySettings";
+            menuNotifySettings.Size = new Size(144, 22);
+            menuNotifySettings.Text = "Settings ...";
+            menuNotifySettings.Click += btnSettings_Click;
+            // 
+            // toolStripSeparator3
+            // 
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new Size(141, 6);
+            // 
+            // menuNotifyClose
+            // 
+            menuNotifyClose.Name = "menuNotifyClose";
+            menuNotifyClose.Size = new Size(144, 22);
+            menuNotifyClose.Text = "Close";
+            menuNotifyClose.ToolTipText = "Close SrvSurvey";
+            menuNotifyClose.Click += btnQuit_Click;
             // 
             // Main
             // 
@@ -1118,6 +1203,7 @@ namespace SrvSurvey
             menuJourney.ResumeLayout(false);
             menuColonize.ResumeLayout(false);
             menuGuardians.ResumeLayout(false);
+            menuNotify.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1205,5 +1291,15 @@ namespace SrvSurvey
         private ToolTip toolTip1;
         private ToolStripMenuItem menuPrimaryProject;
         private NotifyIcon notifyIcon;
+        private ContextMenuStrip menuNotify;
+        private ToolStripMenuItem menuNotifyClose;
+        private ToolStripMenuItem menuNotifyShowMain;
+        private ToolStripMenuItem menuNotifyCopy;
+        private ToolStripMenuItem menuNotifyCmdr;
+        private ToolStripSeparator toolStripSeparator4;
+        private ToolStripSeparator toolStripSeparator3;
+        private ToolStripMenuItem menuNotifyNextWindow;
+        private ToolStripMenuItem menuNotifyLogs;
+        private ToolStripMenuItem menuNotifySettings;
     }
 }

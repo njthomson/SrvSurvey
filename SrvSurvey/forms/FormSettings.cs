@@ -112,7 +112,7 @@ namespace SrvSurvey
             var directInput = new DirectInput();
             // for diagnostics, list all devices and their types in logs, keeping a few specific types
             var allDevices = directInput.GetDevices().OrderBy(d => d.InstanceName);
-            Game.log(allDevices.Select(d => $"> {d.Type} : {d.InstanceName}").formatWithHeader("All DirectInput devices found:", "\r\n\t"));
+            Game.log(allDevices.Select(d => $"> {d.Type} : {d.InstanceName} ({d.ProductGuid})").formatWithHeader("All DirectInput devices found:", "\r\n\t"));
             foreach (var device in allDevices)
                 if (device.Type == DeviceType.Gamepad || device.Type == DeviceType.Joystick || device.Type == DeviceType.FirstPerson)
                     devices[device.InstanceGuid] = device.InstanceName;
@@ -438,8 +438,9 @@ namespace SrvSurvey
                 Main.form.stopHooks();
 
             // ensure DirectX hooks are in the correct state
-            if (Game.settings.hookDirectX_TEST && Game.settings.keyhook_TEST && Game.activeGame != null)
-                Main.form.hook.startDirectX(comboDirectXDevice.SelectedValue as Guid?);
+            var newDeviceId = comboDirectXDevice.SelectedValue as Guid?;
+            if (Game.settings.hookDirectX_TEST && Game.settings.keyhook_TEST && Game.activeGame != null && newDeviceId != Guid.Empty)
+                Main.form.hook.startDirectX(newDeviceId);
             else
                 Main.form.hook?.stopDirectX();
         }
@@ -892,8 +893,11 @@ namespace SrvSurvey
             if (Main.form.hook.activeDeviceId != newDeviceId)
             {
                 Main.form.hook.stopDirectX();
-                Task.Delay(100)
-                    .ContinueWith(t => Main.form.hook.startDirectX(newDeviceId));
+                if (newDeviceId != Guid.Empty && checkKeyChordsDirectX.Checked)
+                {
+                    Task.Delay(100)
+                        .ContinueWith(t => Main.form.hook.startDirectX(newDeviceId));
+                }
             }
         }
 

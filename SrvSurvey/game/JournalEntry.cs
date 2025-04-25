@@ -1411,6 +1411,11 @@ namespace SrvSurvey
         public bool ConstructionComplete;
         public bool ConstructionFailed;
         public List<ResourceRequired> ResourcesRequired;
+
+        [JsonIgnore]
+        public int sumRequired => this.ResourcesRequired.Sum(r => r.RequiredAmount);
+        [JsonIgnore]
+        public int sumProvided => this.ResourcesRequired.Sum(r => r.ProvidedAmount);
     }
 
     public class ResourceRequired

@@ -377,7 +377,10 @@ namespace SrvSurvey
 
         private static bool focusNextGameWindow()
         {
+            Application.DoEvents();
             FormMultiFloatie.focusNextWindow();
+            Application.DoEvents();
+
             return true;
         }
     }

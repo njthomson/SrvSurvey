@@ -126,9 +126,11 @@ namespace SrvSurvey.forms
             var edProcs = Process.GetProcessesByName("EliteDangerous64");
             var nextIdx = Elite.procIdx + 1;
             if (nextIdx >= edProcs.Length) nextIdx = 0;
-            var gameProc = edProcs[nextIdx];
+            var nextGameProc = edProcs[nextIdx];
 
-            Elite.setFocusED(gameProc.MainWindowHandle);
+            Game.log($"focusNextWindow: #{nextGameProc.MainWindowHandle} (vs #{edProcs[Elite.procIdx].MainWindowHandle})");
+
+            Elite.setFocusED(nextGameProc.MainWindowHandle);
         }
 
     }

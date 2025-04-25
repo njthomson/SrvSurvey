@@ -218,7 +218,8 @@ namespace SrvSurvey.plotters
         {
             Game.log("Stop watching FSS pixels");
             this.watching = false;
-            this.watchState = State.None;
+            if (this.watchState != State.Yellow)
+                this.watchState = State.None;
 
             Task.Delay(300).ContinueWith(t =>
             {
@@ -326,10 +327,12 @@ namespace SrvSurvey.plotters
                     dbgSaveGrab(grab, watchArea, $"countWhite: {countWhite} / countYellow: {countYellow}");
 
                 // set state if we found enough coloured pixels
+                //var whiteRatio = (float)(countWhite * countWhite) / (watchArea.Width * watchArea.Height);
+                //Game.log($"countYellow: {countYellow}, countWhite: {countWhite}, whiteRatio: {whiteRatio} ({watchArea.Size})");
                 var newState = this.watchState;
-                if (countYellow > 100)
+                if (countYellow > countWhite)
                     newState = State.Yellow;
-                else if (countWhite > 100)
+                else if (countWhite > 25)
                     newState = State.White;
 
                 //Debug.WriteLine($"countWhite: {countWhite} / countYellow: {countYellow} | {this.watchState} => {newState}");

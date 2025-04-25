@@ -219,6 +219,7 @@ namespace SrvSurvey
         public bool keyhook_TEST = false;
         public bool hookDirectX_TEST = false;
         public Guid hookDirectXDeviceId_TEST;
+        public bool hookDirectXNotXInput_TEST;
 
         public Dictionary<KeyAction, string>? keyActions_TEST = KeyChords.defaultKeys;
         /// <summary>
@@ -242,6 +243,9 @@ namespace SrvSurvey
         public Notifications allowNotifications = new();
 
         public bool forceRefocusOnPlotterActivate = false;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool hideMultiFloatie = false;
 
         #region loading / saving
 
