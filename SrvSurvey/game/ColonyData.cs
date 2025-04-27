@@ -19,7 +19,12 @@ namespace SrvSurvey.game
 
         public static bool isConstructionSite(string stationName, List<string>? stationServices)
         {
-            return stationName != null && stationServices != null && stationServices.Contains("colonisationcontribution") == true &&
+            return isConstructionSite(stationName) && stationServices != null && stationServices.Contains("colonisationcontribution") == true;
+        }
+
+        public static bool isConstructionSite(string stationName)
+        {
+            return stationName != null &&
             (
                 stationName.StartsWith(PlanetaryConstructionSite, StringComparison.OrdinalIgnoreCase)
                 || stationName.StartsWith(OrbitalConstructionSite, StringComparison.OrdinalIgnoreCase)
@@ -337,9 +342,6 @@ namespace SrvSurvey.game
 
             if (newCargo.Count > 0)
             {
-                Program.getPlotter<PlotBuildCommodities>()?.endPending();
-                Program.getPlotter<PlotBuildCommodities>()?.startPending(newCargo);
-
                 var updatedCargo = await Game.colony.updateCargoFC(fc.marketId, newCargo);
                 // apply new numbers and save
                 linkedFCs[fc.marketId].cargo = updatedCargo;

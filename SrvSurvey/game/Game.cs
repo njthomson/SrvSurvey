@@ -736,6 +736,13 @@ namespace SrvSurvey.game
             if (lastMissions != null)
                 this.onJournalEntry(lastMissions);
 
+            if (Elite.hadManyGameProcs)
+            {
+                Game.log("Ignoring CargoFile contents as there are many game processes running");
+                this.cargoFile.Count = 0;
+                this.cargoFile.Inventory.Clear();
+            }
+
             log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{cmdr?.currentSystem}, systemLocation:{cmdr?.lastSystemLocation}, systemBody:{this.systemBody}, journals.Count:{journals.Count}");
             this.initialized = Game.activeGame == this && this.Commander != null;
             this.checkModeChange();
@@ -919,6 +926,7 @@ namespace SrvSurvey.game
             var playForwards = new List<IJournalEntry>();
 
             Location? lastLocation = null;
+            Undocked? lastUndocked = null;
             this.journals.walkDeep(true, (entry) =>
             {
                 // record last location event, in case ...
@@ -958,11 +966,15 @@ namespace SrvSurvey.game
                 if (SystemData.journalEventTypes.Contains(entry.@event))
                     playForwards.Add(entry);
 
+                var undockedEvent = entry as Undocked;
+                if (undockedEvent != null && lastUndocked == null)
+                    lastUndocked = undockedEvent;
+
                 var dockedEvent = entry as Docked;
                 if (dockedEvent != null && this.lastEverDocked == null)
                 {
                     this.lastEverDocked = dockedEvent;
-                    if (status.Docked)
+                    if (status.Docked || lastUndocked == null || status.GuiFocus == GuiFocus.StationServices)
                         this.lastDocked = dockedEvent;
                 }
 
@@ -1286,7 +1298,7 @@ namespace SrvSurvey.game
         public void predictSystemSpecies()
         {
             Game.log("predictSystemSpecies");
-            if (this.systemData == null) return;
+            if (this.systemData == null || !Game.ready) return;
 
             // re-predict everything in the current system
             foreach (var body in this.systemData.bodies.ToList())
@@ -1436,14 +1448,6 @@ namespace SrvSurvey.game
         #endregion
 
         #region Cargo handling
-
-        private static readonly List<string> cargoJournalEventTypes = new List<string>()
-        {
-            nameof(Cargo),
-            nameof(CollectCargo),
-            nameof(EjectCargo),
-            nameof(CargoTransfer),
-        };
 
         private void onJournalEntry(DockSRV entry)
         {
@@ -2601,8 +2605,13 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(DockingGranted entry)
         {
-            // stop here if not an Odyssey settlement
             this.dockingInProgress = true;
+
+            // fetch fresh data if we have any projects on the go or this is a construction site
+            if (Game.settings.buildProjects_TEST && (this.cmdrColony.projects.Any() || ColonyData.isConstructionSite(entry.StationName)))
+                Task.Delay(4000).ContinueWith((t) => this.cmdrColony.fetchLatest()).justDoIt();
+
+            // stop here if not an Odyssey settlement
             if (entry.StationType != StationType.OnFootSettlement || systemData == null) return;
             if (this.systemStation == null || this.systemStation.marketId != entry.MarketID) { return; }
 
@@ -2633,16 +2642,10 @@ namespace SrvSurvey.game
             if (Game.settings.logDockToDockTimes && dockTimer != null)
                 dockTimer.onJournalEntry(entry);
 
-            if (Game.settings.buildProjects_TEST)
+            if (Game.settings.buildProjects_TEST && ColonyData.isConstructionSite(entry))
             {
                 // Auto update project details if incorrect
                 cmdrColony.checkConstructionSiteUponDocking(entry, this.systemBody);
-
-                // fetch fresh data if we have any projects on the go
-                if (this.cmdrColony.projects.Any())
-                {
-                    this.cmdrColony.fetchLatest().justDoIt();
-                }
             }
 
             // stop here if we're not at an Odyssey settlement
@@ -2745,6 +2748,9 @@ namespace SrvSurvey.game
             // start the dock-to-dock timer
             if (Game.settings.logDockToDockTimes)
                 dockTimer = new DockToDockTimer(this, entry, this.lastDocked);
+
+            if (PlotBuildCommodities.allowPlotter)
+                PlotBuildCommodities.showButCleanFirst();
         }
 
         public void initMats(CanonnStation station)

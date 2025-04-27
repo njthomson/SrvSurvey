@@ -85,6 +85,8 @@ namespace SrvSurvey
             if (hwnd == IntPtr.Zero)
                 hwnd = getWindowHandle();
 
+            Game.log($"setFocusED: hwnd: {hwnd}");
+
             if (hwnd != IntPtr.Zero)
             {
                 var isIconic = IsIconic(hwnd); // is it minimized?

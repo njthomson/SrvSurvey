@@ -181,6 +181,7 @@ namespace SrvSurvey
             checkBox4 = new CheckBox();
             tabPage7 = new TabPage();
             groupColonization = new GroupBox();
+            checkBox46 = new CheckBox();
             checkBox44 = new CheckBox();
             checkBox43 = new CheckBox();
             checkBox39 = new CheckBox();
@@ -249,7 +250,7 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
-            checkBox46 = new CheckBox();
+            checkBox47 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -2225,17 +2226,31 @@ namespace SrvSurvey
             // 
             // groupColonization
             // 
+            groupColonization.Controls.Add(checkBox47);
             groupColonization.Controls.Add(checkBox46);
             groupColonization.Controls.Add(checkBox44);
             groupColonization.Controls.Add(checkBox43);
             groupColonization.Controls.Add(checkBox39);
             groupColonization.Controls.Add(checkColonization);
-            groupColonization.Location = new Point(355, 264);
+            groupColonization.Location = new Point(362, 260);
             groupColonization.Name = "groupColonization";
-            groupColonization.Size = new Size(332, 150);
+            groupColonization.Size = new Size(332, 178);
             groupColonization.TabIndex = 34;
             groupColonization.TabStop = false;
             groupColonization.Text = "Colonization: (experimental)";
+            // 
+            // checkBox46
+            // 
+            checkBox46.AutoSize = true;
+            checkBox46.CheckAlign = ContentAlignment.TopLeft;
+            checkBox46.FlatStyle = FlatStyle.System;
+            checkBox46.Location = new Point(36, 124);
+            checkBox46.Name = "checkBox46";
+            checkBox46.Size = new Size(130, 20);
+            checkBox46.TabIndex = 37;
+            checkBox46.Tag = "buildProjectsShowSumFCDelta_TEST";
+            checkBox46.Text = "Show delta vs sum";
+            checkBox46.UseVisualStyleBackColor = true;
             // 
             // checkBox44
             // 
@@ -3067,18 +3082,18 @@ namespace SrvSurvey
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
             // 
-            // checkBox46
+            // checkBox47
             // 
-            checkBox46.AutoSize = true;
-            checkBox46.CheckAlign = ContentAlignment.TopLeft;
-            checkBox46.FlatStyle = FlatStyle.System;
-            checkBox46.Location = new Point(36, 124);
-            checkBox46.Name = "checkBox46";
-            checkBox46.Size = new Size(130, 20);
-            checkBox46.TabIndex = 37;
-            checkBox46.Tag = "buildProjectsShowSumFCDelta_TEST";
-            checkBox46.Text = "Show delta vs sum";
-            checkBox46.UseVisualStyleBackColor = true;
+            checkBox47.AutoSize = true;
+            checkBox47.CheckAlign = ContentAlignment.TopLeft;
+            checkBox47.FlatStyle = FlatStyle.System;
+            checkBox47.Location = new Point(36, 150);
+            checkBox47.Name = "checkBox47";
+            checkBox47.Size = new Size(289, 20);
+            checkBox47.TabIndex = 38;
+            checkBox47.Tag = "buildProjectsHighlightAlmostFC_TEST";
+            checkBox47.Text = "Highlight with 🏁 if ship can load enough on FCs";
+            checkBox47.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -3383,5 +3398,6 @@ namespace SrvSurvey
         private CheckBox checkBox38;
         private CheckBox checkBox33;
         private CheckBox checkBox46;
+        private CheckBox checkBox47;
     }
 }

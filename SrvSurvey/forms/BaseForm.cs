@@ -107,6 +107,9 @@ namespace SrvSurvey.forms
 
         private void saveLocation()
         {
+            // don't save anything if we are minimized
+            if (this.WindowState == FormWindowState.Minimized) return;
+
             var savedRect = Game.settings.formLocations.GetValueOrDefault(this.Name);
 
             var rect = new Rectangle(this.Location, this.Size);

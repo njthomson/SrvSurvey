@@ -28,6 +28,7 @@ namespace SrvSurvey.plotters
             if (form != null && PlotBuildCommodities.forceShow)
             {
                 form.setHeaderTextAndNeeds();
+                form.Invalidate();
             }
             else
             {
@@ -76,7 +77,7 @@ namespace SrvSurvey.plotters
         public void startPending(Dictionary<string, int>? diff = null)
         {
             this.pendingUpdates++;
-            if (diff != null) this.pendingDiff = diff;
+            this.pendingDiff = diff ?? new();
 
             if (!this.IsDisposed) this.Invalidate();
         }
@@ -219,7 +220,6 @@ namespace SrvSurvey.plotters
                 return;
             }
 
-
             // start rendering...
             dtx = 10;
             if (dockedAtConstructionSite) drawTextAt2("🚧  ", C.yellow, GameColors.Fonts.gothic_10);
@@ -287,7 +287,7 @@ namespace SrvSurvey.plotters
             }
 
             drawTextAt2(xNeed, "Need", C.orangeDark, null, true).widestColumn(1, columns);
-            if (showFCs && !Game.settings.buildProjectsInlineSumFC_TEST) drawTextAt2(xFC, "FCs", C.orangeDark, null, true).widestColumn(2, columns);
+            if (showFCs && !Game.settings.buildProjectsInlineSumFC_TEST) drawTextAt2(xFC, $"{cargoLinkedFCs.Count} FCs", C.orangeDark, null, true).widestColumn(2, columns);
             if (haveAnyCargo) drawTextAt2(this.Width - eight, Game.settings.buildProjectsInlineSumFC_TEST ? "Have" : "Ship", C.orangeDark, null, true).widestColumn(3, columns);
             drawTextAt2(ten, "Commodity", C.orangeDark, null).widestColumn(0, columns);
             newLine(true);
@@ -315,19 +315,19 @@ namespace SrvSurvey.plotters
             // show relevant FCs
             if (cargoLinkedFCs.Count > 0)
             {
-                drawTextAt2(ten, $"► {cargoLinkedFCs.Count} FCs: " + string.Join(", ", cargoLinkedFCs.Select(fc => fc.name)));
+                drawTextAt2b(ten, $"► {cargoLinkedFCs.Count} FCs:  " + string.Join("  ", cargoLinkedFCs.Select(fc => fc.name)));
                 newLine(true);
             }
 
             // show how many runs remaining
-            drawTextAt2(ten, $"► {sumNeed:N0} remaining");
-            newLine(true);
+            var remainingTxt = $"► {sumNeed:N0} remaining";
             if (game.currentShip.cargoCapacity > 0)
             {
                 var tripsNeeded = Math.Ceiling(sumNeed / (double)game.currentShip.cargoCapacity);
-                drawTextAt2(ten, $"► {tripsNeeded:N0} trips in this ship");
-                newLine(true);
+                remainingTxt += $" ► {tripsNeeded:N0} trips in this ship";
             }
+            drawTextAt2(ten, remainingTxt);
+            newLine(true);
 
             // show footer if we are actively updating against the service
             if (this.pendingUpdates > 0)
@@ -380,11 +380,11 @@ namespace SrvSurvey.plotters
                     nameTxt = "► " + name;
                     needTxt = "...";
                 }
-                else if (cargoCount > 0)
-                {
-                    // highlight things in cargo hold
-                    col = C.cyan;
-                }
+                //else if (cargoCount > 0)
+                //{
+                //    // highlight things in cargo hold
+                //    col = C.cyan;
+                //}
 
                 /*if (needCount == 0)
                 {
@@ -474,7 +474,9 @@ namespace SrvSurvey.plotters
 
         private void drawNeedsGrouped(ColonyData.Needs needs, Dictionary<int, float> columns, float rightIndent, float xNeed, float xFC)
         {
-            var localMarketItems = game.marketFile.Items
+            var isDocked = game.lastDocked != null;
+            var localMarketValid = game.marketFile.MarketId == game.lastDocked?.MarketID && game.marketFile.timestamp > game.lastDocked.timestamp;
+            var localMarketItems = !localMarketValid ? new() : game.marketFile.Items
                 .Where(i => i.Stock > 0)
                 .Select(_ => _.Name.Substring(1).Replace("_name;", ""))
                 .ToHashSet();
@@ -506,11 +508,13 @@ namespace SrvSurvey.plotters
 
                     var needTxt = needCount.ToString("N0");
                     var nameTxt = name;
+                    var haveEnough = false;
 
                     var cargoCount = game.cargoFile.getCount(name);
 
                     var col = C.orange;
                     var ff = GameColors.Fonts.gothic_10;
+                    var inLocalMarket = localMarketValid && localMarketItems.Contains(name);
 
                     if (pendingUpdates > 0 && pendingDiff.ContainsKey(name))
                     {
@@ -520,18 +524,12 @@ namespace SrvSurvey.plotters
                         nameTxt = "► " + name;
                         needTxt = "...";
                     }
-                    else if (cargoCount > 0)
-                    {
-                        // highlight things in cargo hold
-                        col = C.cyan;
-                    }
+                    //else if (cargoCount > 0)
+                    //{
+                    //    // highlight things in cargo hold
+                    //    col = C.cyan;
+                    //}
 
-                    /*if (needCount == 0)
-                    {
-                        col = C.orangeDark;
-                        nameTxt += " ✔️";
-                    }
-                    else*/
                     if (cargoCount > needCount)
                     {
                         // warn if we have more than needed
@@ -541,13 +539,14 @@ namespace SrvSurvey.plotters
                     else if (cargoCount == needCount)
                     {
                         col = C.green;
-                        nameTxt += " ✔️";
+                        haveEnough = true;
                     }
-                    else if (game.lastDocked?.timestamp < game.marketFile.timestamp && localMarketItems.Count > 0 && !localMarketItems.Contains(name))
+                    else if (isDocked && localMarketValid && localMarketItems.Count > 0 && !inLocalMarket)
                     {
                         // make needed items missing in the current market red
-                        if (cargoCount == 0) col = C.red;
-                        nameTxt += " ❌";
+                        //if (cargoCount == 0) col = C.red;
+                        col = C.orangeDark;
+                        //nameTxt += " ❌";
                     }
 
                     // render needed count
@@ -562,6 +561,9 @@ namespace SrvSurvey.plotters
                             .widestColumn(3, columns);
                     }
 
+                    var almost = false;
+                    var colAlmost = C.yellow;
+
                     // (skip FC numbers if sharing 2nd column and we already rendered there)
                     if (xFC > 0 && Game.settings.buildProjectsShowSumFC_TEST && (!Game.settings.buildProjectsInlineSumFC_TEST || cargoCount == 0))
                     {
@@ -569,7 +571,22 @@ namespace SrvSurvey.plotters
                         var fcAmount = this.sumCargoLinkedFCs.GetValueOrDefault(name, -1);
                         if (fcAmount > 0)
                         {
-                            if (Game.settings.buildProjectsShowSumFCDelta_TEST)
+                            var showDelta = Game.settings.buildProjectsShowSumFCDelta_TEST;
+
+                            if (Game.settings.buildProjectsHighlightAlmostFC_TEST && isDocked && !this.cargoLinkedFCs.Any(fc => fc.marketId == game.lastDocked?.MarketID))
+                            {
+                                // highlight if we could get enough on our ship such that FCs then have enough
+                                var deficit = needCount - fcAmount;
+                                if (inLocalMarket && fcAmount < needCount && game.currentShip.cargoCapacity > deficit)
+                                {
+                                    showDelta = true;
+                                    almost = true;
+                                    if (cargoCount >= deficit) colAlmost = C.green;
+                                    col = colAlmost;
+                                }
+                            }
+
+                            if (showDelta)
                             {
                                 // show delta amount?
                                 var diff = (fcAmount - needCount);
@@ -581,7 +598,10 @@ namespace SrvSurvey.plotters
                                 if (Game.settings.buildProjectsInlineSumFC_TEST)
                                     cc = diff > 0 ? C.greenDark : C.redDark;
 
-                                drawTextAt2(xFC, diffTxt, cc, ff, true)
+                                // highlight and make and bold if almost there
+                                if (almost) cc = colAlmost;
+
+                                drawTextAt2(xFC, diffTxt, cc, almost ? GameColors.Fonts.gothic_10B : ff, true)
                                     .widestColumn(2, columns);
                             }
                             else
@@ -589,11 +609,13 @@ namespace SrvSurvey.plotters
                                 // show sum total
                                 var diff = fcAmount;
                                 var diffTxt = diff.ToString("N0");
-                                var cc = fcAmount >= needCount ? C.green : C.red;
-
                                 // if sharing a column ... make FC counts darker
-                                if (Game.settings.buildProjectsInlineSumFC_TEST)
-                                    cc = fcAmount >= needCount ? C.greenDark : C.redDark;
+                                var cc = Game.settings.buildProjectsInlineSumFC_TEST ? C.redDark : C.red;
+                                if (fcAmount >= needCount)
+                                {
+                                    cc = Game.settings.buildProjectsInlineSumFC_TEST ? C.greenDark : C.green;
+                                    haveEnough = true;
+                                }
 
                                 drawTextAt2(xFC, diffTxt, cc, ff, true)
                                     .widestColumn(2, columns);
@@ -608,9 +630,15 @@ namespace SrvSurvey.plotters
                     // warn if we have more than needed
                     //if (cargoCount > needCount) col = C.red;
 
+                    // show a tick if we have enough (on ship or in FCs)
+                    if (haveEnough && !nameTxt.EndsWith("❌"))
+                        nameTxt += " ✔️";
+                    else if (almost)
+                        nameTxt += " 🏁";
+
                     // render the name
                     var sz2 = drawTextAt2(twenty, nameTxt, col, ff)
-                    .widestColumn(0, columns);
+                            .widestColumn(0, columns);
 
                     newLine(true);
                 }

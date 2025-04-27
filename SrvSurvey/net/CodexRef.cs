@@ -612,7 +612,7 @@ namespace SrvSurvey.canonn
         {
             if (!File.Exists(codexNotFoundPath) || reset)
             {
-                Game.log("prepCodexNotFounds: preparing from network ...");
+                Game.log($"prepCodexNotFounds: preparing from network ... (reset: {reset})");
                 var csv = await new HttpClient().GetStringAsync("https://docs.google.com/spreadsheets/d/1TpPZUFd61KUQWy1sV8VhScZiVbRWJ435wTN8xjN0Qv0/gviz/tq?tqx=out:csv&sheet=Individual+Items");
 
                 this.codexNotFound = parseNotFountCsv(csv);
@@ -639,7 +639,7 @@ namespace SrvSurvey.canonn
                 .Skip(1)
                 .Select(line => CodexNotFoundRow.parse(line))
                 // Found==0,NotExpectedToBeFound==0
-                .Where(entry => !entry.Found && !entry.NotExpectedToBeFound);
+                .Where(entry => entry != null && !entry.Found && !entry.NotExpectedToBeFound);
 
             var data = new Dictionary<string, List<CodexNotFound>>();
             foreach (var entry in parsed)
@@ -719,7 +719,7 @@ namespace SrvSurvey.canonn
             public string Name;
             public string Varient;
 
-            public static CodexNotFoundRow parse(string line)
+            public static CodexNotFoundRow? parse(string line)
             {
                 try
                 {
@@ -731,6 +731,8 @@ namespace SrvSurvey.canonn
                     if (string.IsNullOrEmpty(parts[5]))
                     {
                         var match = Game.codexRef.matchFromVariantDisplayName(parts[2])!;
+                        if (match == null) return null;
+
                         entryId = match.entryId;
                         name = match.variant.name;
                     }
@@ -756,9 +758,7 @@ namespace SrvSurvey.canonn
                 catch (Exception ex)
                 {
                     Game.log($"Failed to parse: {ex.Message}\r\n{line}");
-#pragma warning disable CA2200 // Rethrow to preserve stack details
-                    throw ex;
-#pragma warning restore CA2200 // Rethrow to preserve stack details
+                    throw;
                 }
             }
 
