@@ -65,7 +65,7 @@ namespace SrvSurvey.plotters
 
         protected override void OnLoad(EventArgs e)
         {
-            this.Width = scaled(500);
+            this.Width = scaled(300);
             this.Height = scaled(1000);
 
             base.OnLoad(e);

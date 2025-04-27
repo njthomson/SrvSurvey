@@ -83,12 +83,6 @@ namespace SrvSurvey
 
             comboDev.Visible = Debugger.IsAttached;
 
-            // keep these hidden from official app-store builds for now
-            if (Program.isAppStoreBuild)
-            {
-                while (menuJourney.Items.Count > 1)
-                    menuJourney.Items.RemoveAt(1);
-            }
 
             // disable colonization menu items if feature is disabled
             if (!Game.settings.buildProjects_TEST) menuColonize.targetButton = null;
@@ -104,6 +98,11 @@ namespace SrvSurvey
             this.Hide();
             this.Show();
             Application.DoEvents();
+
+            Program.defer(() =>
+            {
+                this.MinimumSize = this.Size;
+            });
 
             if (!Path.Exists(Elite.displaySettingsFolder))
             {
@@ -1047,47 +1046,6 @@ namespace SrvSurvey
         {
             if (entry.ScanType == ScanType.Analyse)
                 Program.defer(() => this.updateAllControls());
-
-            //FormShowCodex.update();
-            // Flicker? FormCodexBingo.activeForm?.calcCompletions();
-        }
-
-        private void onJournalEntry(CodexEntry entry)
-        {
-            /*
-            if (entry.Name == "$Codex_Ent_Guardian_Beacons_Name;")
-            {
-                // Scanned a Guardian Beacon
-                Game.log($"Scanned Guardian Beacon in: {entry.System}");
-                Program.showPlotter<PlotGuardianBeaconStatus>();
-            }
-            */
-
-            // FormCodexBingo.activeForm?.calcCompletions();
-        }
-
-        private void onJournalEntry(SupercruiseDestinationDrop entry)
-        {
-            /*
-            if (entry.Type == "Guardian Beacon")
-            {
-                // Arrived  Guardian Beacon
-                Game.log($"Arrived at Guardian Beacon in: {game?.cmdr.currentSystem}");
-                Program.showPlotter<PlotGuardianBeaconStatus>();
-            }
-            */
-        }
-
-        private void onJournalEntry(DataScanned entry)
-        {
-            /*
-            if (entry.Type == "$Datascan_AncientPylon;")
-            {
-                // A Guardian Beacon
-                Game.log($"Scanned data from Guardian Beacon in: {game?.cmdr.currentSystem}");
-                Program.showPlotter<PlotGuardianBeaconStatus>();
-            }
-            */
         }
 
         private void onJournalEntry(SupercruiseEntry entry)

@@ -483,7 +483,7 @@
       "battleweapons": 30,
       "reactivearmour": 30,
       "basicmedicines": 24,
-      "combatstabilizers": 48,
+      "combatstabilisers": 48,
       "militarygradefabrics": 36
     }
   },
@@ -511,7 +511,7 @@
       "powergenerators": 13,
       "waterpurifiers": 19,
       "battleweapons": 19,
-      "combatstabilizers": 25,
+      "combatstabilisers": 25,
       "militarygradefabrics": 19
     }
   },
@@ -565,7 +565,7 @@
       "waterpurifiers": 38,
       "hazardousenvironmentsuits": 25,
       "basicmedicines": 50,
-      "combatstabilizers": 19
+      "combatstabilisers": 19
     }
   },
   {
@@ -1103,7 +1103,7 @@
       "battleweapons": 24,
       "reactivearmour": 24,
       "basicmedicines": 36,
-      "combatstabilizers": 36,
+      "combatstabilisers": 36,
       "militarygradefabrics": 24
     }
   },
@@ -1135,7 +1135,7 @@
       "battleweapons": 48,
       "reactivearmour": 48,
       "basicmedicines": 72,
-      "combatstabilizers": 72,
+      "combatstabilisers": 72,
       "militarygradefabrics": 48
     }
   },
@@ -1167,7 +1167,7 @@
       "battleweapons": 72,
       "reactivearmour": 72,
       "basicmedicines": 108,
-      "combatstabilizers": 108,
+      "combatstabilisers": 108,
       "militarygradefabrics": 72
     }
   },
@@ -1536,7 +1536,7 @@
       "battleweapons": 42,
       "reactivearmour": 42,
       "basicmedicines": 109,
-      "combatstabilizers": 25,
+      "combatstabilisers": 25,
       "militarygradefabrics": 42
     }
   },
