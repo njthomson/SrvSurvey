@@ -193,4 +193,24 @@
     <value>Paste clipboard text when in Gal-Map</value>
     <comment>A description of a key-chord setting</comment>
   </data>
+  <data name="collapseColonyData" xml:space="preserve">
+    <value>Toggle collapsing cargo groups when enough on FCs.</value>
+    <comment>A description of a key-chord setting</comment>
+  </data>
+  <data name="nextWindow" xml:space="preserve">
+    <value>Set focus on a different game window.</value>
+    <comment>A description of a key-chord setting</comment>
+  </data>
+  <data name="refreshColonyData" xml:space="preserve">
+    <value>Immediately refresh of Colonization data.</value>
+    <comment>A description of a key-chord setting</comment>
+  </data>
+  <data name="showColonyShopping" xml:space="preserve">
+    <value>Force show the Colonization shopping list overlay.</value>
+    <comment>A description of a key-chord setting</comment>
+  </data>
+  <data name="showStationInfo" xml:space="preserve">
+    <value>Force show the Station Info overlay.</value>
+    <comment>A description of a key-chord setting</comment>
+  </data>
 </root>

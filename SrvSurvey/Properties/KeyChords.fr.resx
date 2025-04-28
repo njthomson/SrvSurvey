@@ -60,6 +60,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <!--Localizable elements are below-->
+  <data name="collapseColonyData">
+    <!--Machine translated-->
+    <value>Basculez l’effondrement des groupes de chargement lorsqu’il y en a assez sur les FC.</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Toggle collapsing cargo groups when enough on FCs.</source>
+  </data>
   <data name="copyNextBoxel">
     <!--Machine translated-->
     <value>Dans gal-map, copiez le système de recherche de boxel suivant dans le presse-papiers.</value>
@@ -90,17 +96,35 @@
     <comment>A description of a key-chord setting</comment>
     <source>Zoom out on maps at Human and Guardian sites.</source>
   </data>
+  <data name="nextWindow">
+    <!--Machine translated-->
+    <value>Placez le focus sur une autre fenêtre de jeu.</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Set focus on a different game window.</source>
+  </data>
   <data name="pasteGalMap">
     <!--Machine translated-->
     <value>Coller le texte du presse-papiers dans Gal-Map</value>
     <comment>A description of a key-chord setting</comment>
     <source>Paste clipboard text when in Gal-Map</source>
   </data>
+  <data name="refreshColonyData">
+    <!--Machine translated-->
+    <value>Actualisation immédiate des données de colonisation.</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Immediately refresh of Colonization data.</source>
+  </data>
   <data name="showBodyInfo">
     <!--Machine translated-->
     <value>Forcez l’affichage de la superposition d’informations sur le corps.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force show the Body info overlay.</source>
+  </data>
+  <data name="showColonyShopping">
+    <!--Machine translated-->
+    <value>Forcez l’affichage de la superposition de la liste de courses Colonisation.</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Force show the Colonization shopping list overlay.</source>
   </data>
   <data name="showFssInfo">
     <!--Machine translated-->
@@ -113,6 +137,12 @@
     <value>Forcez le basculement de la superposition de saut FSD sans commencer à sauter.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force toggle the FSD jump overlay without starting to jump.</source>
+  </data>
+  <data name="showStationInfo">
+    <!--Machine translated-->
+    <value>Forcez l’affichage de la superposition d’informations sur la station.</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Force show the Station Info overlay.</source>
   </data>
   <data name="showSystemNotes">
     <!--Machine translated-->

@@ -83,6 +83,7 @@ namespace SrvSurvey
             { KeyAction.showStationInfo, "ALT P" },
             { KeyAction.showColonyShopping, "ALT S" },
             { KeyAction.refreshColonyData, "ALT CTRL S" },
+            { KeyAction.collapseColonyData, "ALT SHIFT S" },
             { KeyAction.showSystemNotes, "CTRL SHIFT N" },
             { KeyAction.track1, "ALT CTRL F1" },
             { KeyAction.track2, "ALT CTRL F2" },
@@ -116,6 +117,7 @@ namespace SrvSurvey
                 case KeyAction.showStationInfo: return toggleStationInfo();
                 case KeyAction.showColonyShopping: return toggleColonyShopping();
                 case KeyAction.refreshColonyData: return Game.activeGame?.cmdrColony.fetchLatest().justDoIt() ?? true;
+                case KeyAction.collapseColonyData: return toggleCollapseColonyRows();
                 case KeyAction.showSystemNotes: return showSystemNotes();
                 case KeyAction.track1: return trackLocation(1);
                 case KeyAction.track2: return trackLocation(2);
@@ -375,6 +377,21 @@ namespace SrvSurvey
             return true;
         }
 
+        private static bool toggleCollapseColonyRows()
+        {
+            if (game == null) return true;
+
+            // only toggle if the plotter is active
+            var plotter = Program.getPlotter<PlotBuildCommodities>();
+            if (plotter != null)
+            {
+                PlotBuildCommodities.toggleCollapse = !PlotBuildCommodities.toggleCollapse;
+                plotter.Invalidate();
+            }
+
+            return true;
+        }
+
         private static bool showSystemNotes()
         {
             if (game == null) return true;
@@ -438,8 +455,10 @@ namespace SrvSurvey
         showSystemNotes,
         /// <summary> Make the PlotBuildNew appear </summary>
         showColonyShopping,
-        /// <summary> Force refresh ColonyData  </summary>
+        /// <summary> Force refresh ColonyData </summary>
         refreshColonyData,
+        /// <summary> Collapse ColonyData rows if enough on FCs </summary>
+        collapseColonyData,
         /// <summary> Track the current location as #1 </summary>
         track1,
         /// <summary> Track the current location as #2 </summary>

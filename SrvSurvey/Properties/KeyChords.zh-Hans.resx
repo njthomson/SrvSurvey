@@ -60,6 +60,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <!--Localizable elements are below-->
+  <data name="collapseColonyData">
+    <!--Machine translated-->
+    <value>在 FC 上足够时切换折叠的货物组。</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Toggle collapsing cargo groups when enough on FCs.</source>
+  </data>
   <data name="copyNextBoxel">
     <value>在银河地图时，将下一个boxel搜索星系名复制到剪贴板</value>
     <comment>A description of a key-chord setting</comment>
@@ -85,15 +91,33 @@
     <comment>A description of a key-chord setting</comment>
     <source>Zoom out on maps at Human and Guardian sites.</source>
   </data>
+  <data name="nextWindow">
+    <!--Machine translated-->
+    <value>将焦点设置在其他游戏窗口上。</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Set focus on a different game window.</source>
+  </data>
   <data name="pasteGalMap">
     <value>在银河地图画面时粘贴剪贴板文字</value>
     <comment>A description of a key-chord setting</comment>
     <source>Paste clipboard text when in Gal-Map</source>
   </data>
+  <data name="refreshColonyData">
+    <!--Machine translated-->
+    <value>立即刷新 Colonization 数据。</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Immediately refresh of Colonization data.</source>
+  </data>
   <data name="showBodyInfo">
     <value>强制切换显示Body(天体)信息覆盖层.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force show the Body info overlay.</source>
+  </data>
+  <data name="showColonyShopping">
+    <!--Machine translated-->
+    <value>强制显示 Colonization 购物清单叠加层。</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Force show the Colonization shopping list overlay.</source>
   </data>
   <data name="showFssInfo">
     <value>强制切换显示FSS信息覆盖层</value>
@@ -104,6 +128,12 @@
     <value>强制切换显示FSD跳跃信息而不是跳跃时才显示</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force toggle the FSD jump overlay without starting to jump.</source>
+  </data>
+  <data name="showStationInfo">
+    <!--Machine translated-->
+    <value>强制显示 Station Info 叠加层。</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Force show the Station Info overlay.</source>
   </data>
   <data name="showSystemNotes">
     <value>打开星系笔记窗口</value>

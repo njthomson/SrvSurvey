@@ -291,7 +291,7 @@ namespace SrvSurvey
 
         public void startHooks()
         {
-            if (this.hook == null && Game.settings.keyhook_TEST && Game.settings.keyActions_TEST != null)
+            if (Game.settings.keyActions_TEST != null && this.hook == null && (Game.settings.keyhook_TEST || Game.settings.hookDirectX_TEST))
                 this.hook = new KeyboardHook();
         }
 
@@ -1968,6 +1968,11 @@ namespace SrvSurvey
                 this.btnColonize.Enabled = true;
                 this.updateColonizationMenuItems();
             });
+        }
+
+        private void menuColonizeWiki_Click(object sender, EventArgs e)
+        {
+            Util.openLink("https://github.com/njthomson/SrvSurvey/wiki/Colonization");
         }
 
         private void btnRamTah_Click(object sender, EventArgs e)

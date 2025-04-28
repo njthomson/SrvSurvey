@@ -107,7 +107,7 @@ namespace SrvSurvey.plotters
             }
             else if (Game.settings.forceRefocusOnPlotterActivate)
             {
-                Program.defer (() =>
+                Program.defer(() =>
                 {
                     Program.defer(() =>
                     {
@@ -231,8 +231,14 @@ namespace SrvSurvey.plotters
             if (this.forceHide)
                 newOpacity = 0;
 
-            if (this.Opacity != newOpacity)
-                this.Opacity = newOpacity; // ok
+            if (this.Opacity != newOpacity || (newOpacity == 1 && this.Opacity != 0.9999f))
+            {
+                // for reasons unknown ... an opacity of `1` sometimes means the window is not visible, even though it thinks it is :/
+                if (newOpacity == 1)
+                    this.Opacity = 0.9999f; // ok
+                else
+                    this.Opacity = newOpacity; // ok
+            }
         }
 
         public virtual void reposition(Rectangle gameRect)

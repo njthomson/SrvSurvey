@@ -22,3 +22,10 @@
 	TrackRight
 	ZoomLevel
 	ZoomLevelAuto
+
+/Properties/KeyChords.zh-Hans.resx
+	collapseColonyData
+	nextWindow
+	refreshColonyData
+	showColonyShopping
+	showStationInfo

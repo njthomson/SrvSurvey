@@ -427,7 +427,7 @@
       "resonatingseparators": 22,
       "bioreducinglichen": 172,
       "geologicalequipment": 26,
-      "muonimager": 43
+      "mutomimager": 43
     }
   },
   {
@@ -596,7 +596,7 @@
       "microcontrollers": 13,
       "hazardousenvironmentsuits": 32,
       "geologicalequipment": 26,
-      "muonimager": 38,
+      "mutomimager": 38,
       "basicmedicines": 13,
       "advancedcatalysers": 44
     }
@@ -910,7 +910,7 @@
       "robotics": 59,
       "bioreducinglichen": 162,
       "geologicalequipment": 52,
-      "muonimager": 45
+      "mutomimager": 45
     }
   },
   {
@@ -940,7 +940,7 @@
       "robotics": 118,
       "bioreducinglichen": 324,
       "geologicalequipment": 104,
-      "muonimager": 90
+      "mutomimager": 90
     }
   },
   {
@@ -970,7 +970,7 @@
       "robotics": 177,
       "bioreducinglichen": 486,
       "geologicalequipment": 156,
-      "muonimager": 135
+      "mutomimager": 135
     }
   },
   {
@@ -997,7 +997,7 @@
       "survivalequipment": 28,
       "microcontrollers": 28,
       "thermalcoolingunits": 28,
-      "microbialfurnaces": 164,
+      "heliostaticfurnaces": 164,
       "mineralextractors": 328,
       "hazardousenvironmentsuits": 28,
       "robotics": 110,
@@ -1032,7 +1032,7 @@
       "survivalequipment": 56,
       "microcontrollers": 56,
       "thermalcoolingunits": 56,
-      "microbialfurnaces": 328,
+      "heliostaticfurnaces": 328,
       "mineralextractors": 656,
       "hazardousenvironmentsuits": 56,
       "robotics": 220,
@@ -1067,7 +1067,7 @@
       "survivalequipment": 84,
       "microcontrollers": 84,
       "thermalcoolingunits": 84,
-      "microbialfurnaces": 492,
+      "heliostaticfurnaces": 492,
       "mineralextractors": 984,
       "hazardousenvironmentsuits": 84,
       "robotics": 330,
@@ -1200,7 +1200,7 @@
       "microcontrollers": 14,
       "hazardousenvironmentsuits": 27,
       "geologicalequipment": 27,
-      "muonimager": 95,
+      "mutomimager": 95,
       "basicmedicines": 14,
       "advancedcatalysers": 95
     }
@@ -1234,7 +1234,7 @@
       "microcontrollers": 28,
       "hazardousenvironmentsuits": 54,
       "geologicalequipment": 54,
-      "muonimager": 190,
+      "mutomimager": 190,
       "basicmedicines": 28,
       "advancedcatalysers": 190
     }
@@ -1268,7 +1268,7 @@
       "microcontrollers": 42,
       "hazardousenvironmentsuits": 81,
       "geologicalequipment": 81,
-      "muonimager": 285,
+      "mutomimager": 285,
       "basicmedicines": 42,
       "advancedcatalysers": 285
     }
@@ -1392,7 +1392,7 @@
       "robotics": 252,
       "bioreducinglichen": 714,
       "geologicalequipment": 210,
-      "muonimager": 160
+      "mutomimager": 160
     }
   },
   {
@@ -1503,7 +1503,7 @@
       "microcontrollers": 49,
       "hazardousenvironmentsuits": 156,
       "geologicalequipment": 401,
-      "muonimager": 107,
+      "mutomimager": 107,
       "basicmedicines": 72,
       "advancedcatalysers": 170
     }
@@ -1628,7 +1628,7 @@
       "survivalequipment": 25,
       "microcontrollers": 50,
       "thermalcoolingunits": 117,
-      "microbialfurnaces": 415,
+      "heliostaticfurnaces": 415,
       "mineralextractors": 415,
       "hazardousenvironmentsuits": 83,
       "robotics": 332

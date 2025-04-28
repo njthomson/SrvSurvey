@@ -1,2 +1,9 @@
+/Properties/KeyChords.ru.resx
+	collapseColonyData
+	nextWindow
+	refreshColonyData
+	showColonyShopping
+	showStationInfo
+
 /Properties/Materials.ru.resx
 	searchrescuevoucher

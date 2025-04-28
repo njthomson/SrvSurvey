@@ -32,7 +32,7 @@ namespace SrvSurvey
 
         public KeyboardHook()
         {
-            hookProcessor = new HookHandlerDelegate(HookCallback);
+            hookProcessor = new HookHandlerDelegate(hookCallback);
 
             using (var mainModule = Process.GetCurrentProcess().MainModule)
             {
@@ -130,9 +130,9 @@ namespace SrvSurvey
             NativeMethods.UnhookWindowsHookEx(hookId);
         }
 
-        private IntPtr HookCallback(int nCode, IntPtr wParam, ref KBDLLHOOKSTRUCT lParam)
+        private IntPtr hookCallback(int nCode, IntPtr wParam, ref KBDLLHOOKSTRUCT lParam)
         {
-            if (Elite.focusElite || Elite.focusSrvSurvey)
+            if (Game.settings.keyhook_TEST && (Elite.focusElite || Elite.focusSrvSurvey))
             {
                 var keyUp = lParam.flags >= 128;
                 var keys = (Keys)lParam.vkCode;

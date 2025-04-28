@@ -496,6 +496,11 @@
 	track7
 	track8
 	pasteGalMap
+	collapseColonyData
+	nextWindow
+	refreshColonyData
+	showColonyShopping
+	showStationInfo
 
 /Properties/Misc.de.resx
 	NetSysData_Bodies

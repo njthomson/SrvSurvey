@@ -71,8 +71,6 @@ namespace SrvSurvey
 
             checkBodyInfoMap.Enabled = checkBodyInfoOrbit.Enabled = checkBodyInfo.Checked;
 
-            checkKeyChordsDirectX.Enabled = checkKeyChords.Checked;
-
             this.numGravityWarningLevel.Enabled = label12.Enabled = checkBox13.Checked;
 
             groupColonization.setChildrenEnabled(Game.settings.buildProjects_TEST, checkColonization);
@@ -162,7 +160,7 @@ namespace SrvSurvey
             listKeys.Columns[0].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
             listKeys.Columns[1].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
             listKeys.Columns[2].Width = listKeys.Width - listKeys.Columns[0].Width - listKeys.Columns[1].Width - SystemInformation.VerticalScrollBarWidth;
-            listKeys.Enabled = Game.settings.keyhook_TEST;
+            listKeys.Enabled = Game.settings.keyhook_TEST || Game.settings.hookDirectX_TEST;
         }
 
         private void updateFormFromSettings(Control parentControl)
@@ -432,7 +430,7 @@ namespace SrvSurvey
             base.OnClosed(e);
 
             // ensure basic keyboard hooks are in the correct state
-            var keyHookSettingsValid = Game.settings.keyhook_TEST && Game.settings.keyActions_TEST != null;
+            var keyHookSettingsValid = Game.settings.keyActions_TEST != null && (Game.settings.keyhook_TEST || Game.settings.hookDirectX_TEST);
             if (keyHookSettingsValid)
                 Main.form.startHooks();
             else
@@ -440,7 +438,7 @@ namespace SrvSurvey
 
             // ensure DirectX hooks are in the correct state
             var newDeviceId = comboDirectXDevice.SelectedValue as Guid?;
-            if (Game.settings.hookDirectX_TEST && Game.settings.keyhook_TEST && Game.activeGame != null && newDeviceId != Guid.Empty)
+            if (Game.settings.hookDirectX_TEST && Game.activeGame != null && newDeviceId != Guid.Empty)
                 Main.form.hook.startDirectX(newDeviceId);
             else
                 Main.form.hook?.stopDirectX();
@@ -826,17 +824,17 @@ namespace SrvSurvey
         {
             if (!checkKeyChords.Visible) return;
 
-            listKeys.Enabled = checkKeyChords.Checked;
-            checkKeyChordsDirectX.Enabled = checkKeyChords.Checked;
-
-            checkKeyChordsDirectX_CheckedChanged(sender, e);
+            listKeys.Enabled = checkKeyChords.Checked || checkKeyChordsDirectX.Checked;
         }
 
         private void checkKeyChordsDirectX_CheckedChanged(object sender, EventArgs e)
         {
             if (!checkKeyChordsDirectX.Visible) return;
 
-            if (checkKeyChords.Checked && checkKeyChordsDirectX.Checked)
+            listKeys.Enabled = checkKeyChords.Checked || checkKeyChordsDirectX.Checked;
+            comboDirectXDevice.Enabled = checkKeyChordsDirectX.Checked;
+
+            if (checkKeyChordsDirectX.Checked)
             {
                 Main.form.hook ??= new KeyboardHook();
                 Main.form.hook.startDirectX(comboDirectXDevice.SelectedValue as Guid?);
@@ -910,6 +908,11 @@ namespace SrvSurvey
         private void checkBox13_CheckedChanged(object sender, EventArgs e)
         {
             this.numGravityWarningLevel.Enabled = label12.Enabled = checkBox13.Checked;
+        }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Util.openLink("https://github.com/njthomson/SrvSurvey/wiki/Colonization#colonization-settings");
         }
     }
 }

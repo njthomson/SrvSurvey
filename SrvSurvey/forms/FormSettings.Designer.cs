@@ -31,11 +31,11 @@ namespace SrvSurvey
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            ListViewItem listViewItem6 = new ListViewItem("Materials count after pickup");
-            ListViewItem listViewItem7 = new ListViewItem("Mission remaining cargo count");
-            ListViewItem listViewItem8 = new ListViewItem("Boxel search status");
-            ListViewItem listViewItem9 = new ListViewItem("Next boxel to search");
-            ListViewItem listViewItem10 = new ListViewItem("Buying bug at FCs");
+            ListViewItem listViewItem1 = new ListViewItem("Materials count after pickup");
+            ListViewItem listViewItem2 = new ListViewItem("Mission remaining cargo count");
+            ListViewItem listViewItem3 = new ListViewItem("Boxel search status");
+            ListViewItem listViewItem4 = new ListViewItem("Next boxel to search");
+            ListViewItem listViewItem5 = new ListViewItem("Buying bug at FCs");
             panel1 = new Panel();
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
@@ -181,6 +181,9 @@ namespace SrvSurvey
             checkBox4 = new CheckBox();
             tabPage7 = new TabPage();
             groupColonization = new GroupBox();
+            linkLabel2 = new LinkLabel();
+            checkBox48 = new CheckBox();
+            checkBox47 = new CheckBox();
             checkBox46 = new CheckBox();
             checkBox44 = new CheckBox();
             checkBox43 = new CheckBox();
@@ -250,7 +253,6 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
-            checkBox47 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -2226,18 +2228,59 @@ namespace SrvSurvey
             // 
             // groupColonization
             // 
+            groupColonization.Controls.Add(linkLabel2);
+            groupColonization.Controls.Add(checkBox48);
             groupColonization.Controls.Add(checkBox47);
             groupColonization.Controls.Add(checkBox46);
             groupColonization.Controls.Add(checkBox44);
             groupColonization.Controls.Add(checkBox43);
             groupColonization.Controls.Add(checkBox39);
             groupColonization.Controls.Add(checkColonization);
-            groupColonization.Location = new Point(362, 260);
+            groupColonization.Location = new Point(362, 195);
             groupColonization.Name = "groupColonization";
-            groupColonization.Size = new Size(332, 178);
+            groupColonization.Size = new Size(332, 243);
             groupColonization.TabIndex = 34;
             groupColonization.TabStop = false;
             groupColonization.Text = "Colonization: (experimental)";
+            // 
+            // linkLabel2
+            // 
+            linkLabel2.AutoSize = true;
+            linkLabel2.LinkArea = new LinkArea(0, 100);
+            linkLabel2.Location = new Point(277, 19);
+            linkLabel2.Name = "linkLabel2";
+            linkLabel2.Size = new Size(48, 21);
+            linkLabel2.TabIndex = 40;
+            linkLabel2.TabStop = true;
+            linkLabel2.Text = "See wiki";
+            linkLabel2.UseCompatibleTextRendering = true;
+            linkLabel2.LinkClicked += linkLabel2_LinkClicked;
+            // 
+            // checkBox48
+            // 
+            checkBox48.AutoSize = true;
+            checkBox48.CheckAlign = ContentAlignment.TopLeft;
+            checkBox48.FlatStyle = FlatStyle.System;
+            checkBox48.Location = new Point(36, 176);
+            checkBox48.Name = "checkBox48";
+            checkBox48.Size = new Size(265, 20);
+            checkBox48.TabIndex = 39;
+            checkBox48.Tag = "buildProjectsCollapseGroupsWithFCEnough_TEST";
+            checkBox48.Text = "Collapse cargo groups when enough on FCs";
+            checkBox48.UseVisualStyleBackColor = true;
+            // 
+            // checkBox47
+            // 
+            checkBox47.AutoSize = true;
+            checkBox47.CheckAlign = ContentAlignment.TopLeft;
+            checkBox47.FlatStyle = FlatStyle.System;
+            checkBox47.Location = new Point(36, 150);
+            checkBox47.Name = "checkBox47";
+            checkBox47.Size = new Size(289, 20);
+            checkBox47.TabIndex = 38;
+            checkBox47.Tag = "buildProjectsHighlightAlmostFC_TEST";
+            checkBox47.Text = "Highlight with 🏁 if ship can load enough on FCs";
+            checkBox47.UseVisualStyleBackColor = true;
             // 
             // checkBox46
             // 
@@ -2343,7 +2386,7 @@ namespace SrvSurvey
             // radioUseRadius
             // 
             radioUseRadius.CheckAlign = ContentAlignment.TopLeft;
-            radioUseRadius.Location = new Point(196, 243);
+            radioUseRadius.Location = new Point(176, 241);
             radioUseRadius.Name = "radioUseRadius";
             radioUseRadius.Size = new Size(153, 21);
             radioUseRadius.TabIndex = 9;
@@ -2354,7 +2397,7 @@ namespace SrvSurvey
             // radioUseSmall
             // 
             radioUseSmall.CheckAlign = ContentAlignment.TopLeft;
-            radioUseSmall.Location = new Point(50, 243);
+            radioUseSmall.Location = new Point(30, 241);
             radioUseSmall.Name = "radioUseSmall";
             radioUseSmall.Size = new Size(128, 21);
             radioUseSmall.TabIndex = 8;
@@ -2368,7 +2411,7 @@ namespace SrvSurvey
             checkShowCanonnOnRadar.AutoSize = true;
             checkShowCanonnOnRadar.CheckAlign = ContentAlignment.TopLeft;
             checkShowCanonnOnRadar.FlatStyle = FlatStyle.System;
-            checkShowCanonnOnRadar.Location = new Point(28, 197);
+            checkShowCanonnOnRadar.Location = new Point(8, 195);
             checkShowCanonnOnRadar.Name = "checkShowCanonnOnRadar";
             checkShowCanonnOnRadar.Size = new Size(261, 20);
             checkShowCanonnOnRadar.TabIndex = 6;
@@ -2436,7 +2479,7 @@ namespace SrvSurvey
             // 
             checkHideMyOwnCanonnSignals.AutoSize = true;
             checkHideMyOwnCanonnSignals.FlatStyle = FlatStyle.System;
-            checkHideMyOwnCanonnSignals.Location = new Point(50, 218);
+            checkHideMyOwnCanonnSignals.Location = new Point(30, 216);
             checkHideMyOwnCanonnSignals.Name = "checkHideMyOwnCanonnSignals";
             checkHideMyOwnCanonnSignals.Size = new Size(334, 20);
             checkHideMyOwnCanonnSignals.TabIndex = 7;
@@ -2448,7 +2491,7 @@ namespace SrvSurvey
             // 
             pictureBox9.BackgroundImage = (Image)resources.GetObject("pictureBox9.BackgroundImage");
             pictureBox9.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox9.Location = new Point(50, 264);
+            pictureBox9.Location = new Point(30, 262);
             pictureBox9.Name = "pictureBox9";
             pictureBox9.Size = new Size(128, 150);
             pictureBox9.TabIndex = 32;
@@ -2458,7 +2501,7 @@ namespace SrvSurvey
             // 
             pictureBox8.BackgroundImage = (Image)resources.GetObject("pictureBox8.BackgroundImage");
             pictureBox8.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox8.Location = new Point(196, 264);
+            pictureBox8.Location = new Point(176, 262);
             pictureBox8.Name = "pictureBox8";
             pictureBox8.Size = new Size(128, 150);
             pictureBox8.TabIndex = 31;
@@ -2962,17 +3005,17 @@ namespace SrvSurvey
             // listView1
             // 
             listView1.CheckBoxes = true;
-            listViewItem6.StateImageIndex = 0;
-            listViewItem6.Tag = "materialCountAfterPickup";
-            listViewItem7.StateImageIndex = 0;
-            listViewItem7.Tag = "cargoMissionRemaining";
-            listViewItem8.StateImageIndex = 0;
-            listViewItem8.Tag = "currentBoxelSearchStatus";
-            listViewItem9.StateImageIndex = 0;
-            listViewItem9.Tag = "showNextBoxelToSearch";
-            listViewItem10.StateImageIndex = 0;
-            listViewItem10.Tag = "fcMarketPurchaseBugReminder";
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem6, listViewItem7, listViewItem8, listViewItem9, listViewItem10 });
+            listViewItem1.StateImageIndex = 0;
+            listViewItem1.Tag = "materialCountAfterPickup";
+            listViewItem2.StateImageIndex = 0;
+            listViewItem2.Tag = "cargoMissionRemaining";
+            listViewItem3.StateImageIndex = 0;
+            listViewItem3.Tag = "currentBoxelSearchStatus";
+            listViewItem4.StateImageIndex = 0;
+            listViewItem4.Tag = "showNextBoxelToSearch";
+            listViewItem5.StateImageIndex = 0;
+            listViewItem5.Tag = "fcMarketPurchaseBugReminder";
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5 });
             listView1.Location = new Point(12, 331);
             listView1.Name = "listView1";
             listView1.Size = new Size(400, 107);
@@ -3081,19 +3124,6 @@ namespace SrvSurvey
             menuClearCodexCache.Text = "Clear cached images";
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
-            // 
-            // checkBox47
-            // 
-            checkBox47.AutoSize = true;
-            checkBox47.CheckAlign = ContentAlignment.TopLeft;
-            checkBox47.FlatStyle = FlatStyle.System;
-            checkBox47.Location = new Point(36, 150);
-            checkBox47.Name = "checkBox47";
-            checkBox47.Size = new Size(289, 20);
-            checkBox47.TabIndex = 38;
-            checkBox47.Tag = "buildProjectsHighlightAlmostFC_TEST";
-            checkBox47.Text = "Highlight with 🏁 if ship can load enough on FCs";
-            checkBox47.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -3399,5 +3429,7 @@ namespace SrvSurvey
         private CheckBox checkBox33;
         private CheckBox checkBox46;
         private CheckBox checkBox47;
+        private CheckBox checkBox48;
+        private LinkLabel linkLabel2;
     }
 }

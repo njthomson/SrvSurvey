@@ -122,6 +122,13 @@
 	POIType_Component
 	POIType_Pylon
 
+/Properties/KeyChords.es.resx
+	collapseColonyData
+	nextWindow
+	refreshColonyData
+	showColonyShopping
+	showStationInfo
+
 /Properties/Materials.es.resx
 	tg_biomechanicalconduits
 	tg_shipflightdata

@@ -226,6 +226,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CodexShort.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\CommodityCategories.Designer.cs">
+      <DependentUpon>CommodityCategories.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\Commodities.Designer.cs">
+      <DependentUpon>Commodities.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="Properties\Economies.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -384,6 +394,16 @@
     <EmbeddedResource Update="Properties\CodexShort.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>CodexShort.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\CommodityCategories.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>CommodityCategories.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Commodities.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>Commodities.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Economies.resx">
       <Generator>ResXFileCodeGenerator</Generator>

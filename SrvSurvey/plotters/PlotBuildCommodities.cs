@@ -40,6 +40,9 @@ namespace SrvSurvey.plotters
         /// <summary> When true, makes the plotter become visible </summary>
         public static bool forceShow = false;
 
+        /// <summary> Manual toggle to force collapsing (or not) rows when FCs have enough </summary>
+        public static bool toggleCollapse = false;
+
         private static Brush brushBackgroundStripe = new SolidBrush(Color.FromArgb(255, 12, 12, 12));
         private static Size szBigNumbers;
 
@@ -59,6 +62,9 @@ namespace SrvSurvey.plotters
 
             if (szBigNumbers == Size.Empty)
                 szBigNumbers = TextRenderer.MeasureText(123456.ToString("N0"), this.Font, Size.Empty);
+
+            Properties.Commodities.ResourceManager.IgnoreCase = true;
+            Properties.CommodityCategories.ResourceManager.IgnoreCase = true;
         }
 
         public override bool allow { get => PlotBuildCommodities.allowPlotter; }
@@ -232,7 +238,7 @@ namespace SrvSurvey.plotters
                 // show relevant project names
                 foreach (var name in projectNames)
                 {
-                    drawTextAt2(twenty, "► " + name);
+                    drawTextAt2(twenty, "► " + name, GameColors.Fonts.gothic_9);
                     newLine(true);
                 }
                 dty += ten;
@@ -481,18 +487,35 @@ namespace SrvSurvey.plotters
                 .Select(_ => _.Name.Substring(1).Replace("_name;", ""))
                 .ToHashSet();
 
+            var canCollapse = Game.settings.buildProjectsShowSumFC_TEST && Game.settings.buildProjectsCollapseGroupsWithFCEnough_TEST != toggleCollapse;
+
             foreach (var cargoType in ColonyData.mapCargoType.Keys)
             {
                 // skip types with nothing needed
                 var sum = ColonyData.mapCargoType[cargoType].Sum(name => needs.commodities.GetValueOrDefault(name));
                 if (sum == 0) continue;
 
+                // when allowed, see if we have enough of everything in this group
+                var groupHasEnough = canCollapse && ColonyData.mapCargoType[cargoType].All(name =>
+                {
+                    var needCount = needs.commodities.GetValueOrDefault(name);
+                    var onFCs = this.sumCargoLinkedFCs.GetValueOrDefault(name);
+                    return onFCs >= needCount;
+                });
+
                 // render the type name - with a line to the right
-                var sz1 = drawTextAt2(ten, cargoType, C.orangeDark, GameColors.Fonts.gothic_10);
+                var cargoTypeTxt = Properties.CommodityCategories.ResourceManager.GetString(cargoType) ?? cargoType;
+                drawTextAt2(ten, cargoTypeTxt, groupHasEnough ? C.greenDark : C.orangeDark, GameColors.Fonts.gothic_10);
+
+                if (groupHasEnough)
+                    drawTextAt2("  ✔️", C.greenDark, GameColors.Fonts.gothic_10);
+
                 var lx = (int)dtx + eight;
                 var ly = (int)dty + one + Util.centerIn(szBigNumbers.Height, 2);
                 g.DrawLine(C.Pens.orangeDark2, lx, ly, this.Width - four, ly);
                 newLine(true);
+
+                if (groupHasEnough) continue;
 
                 // then each commodity in the type
                 var flip = true;
@@ -507,19 +530,20 @@ namespace SrvSurvey.plotters
                     flip = !flip;
 
                     var needTxt = needCount.ToString("N0");
-                    var nameTxt = name;
+                    var nameTxt = Properties.Commodities.ResourceManager.GetString(name) ?? name;
+
                     var haveEnough = false;
 
                     var cargoCount = game.cargoFile.getCount(name);
 
                     var col = C.orange;
-                    var ff = GameColors.Fonts.gothic_10;
+                    var ff = GameColors.Fonts.gothic_9;
                     var inLocalMarket = localMarketValid && localMarketItems.Contains(name);
 
                     if (pendingUpdates > 0 && pendingDiff.ContainsKey(name))
                     {
                         // highlight what we just supplied
-                        ff = GameColors.Fonts.gothic_10B;
+                        ff = GameColors.Fonts.gothic_9B;
                         col = C.cyan;
                         nameTxt = "► " + name;
                         needTxt = "...";

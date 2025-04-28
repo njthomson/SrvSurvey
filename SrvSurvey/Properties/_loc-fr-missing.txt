@@ -506,6 +506,11 @@
 	track7
 	track8
 	pasteGalMap
+	collapseColonyData
+	nextWindow
+	refreshColonyData
+	showColonyShopping
+	showStationInfo
 
 /Properties/Materials.fr.resx
 	tg_biomechanicalconduits

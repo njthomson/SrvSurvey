@@ -103,6 +103,7 @@ namespace SrvSurvey
             btnGuardian = new FlatButton();
             menuColonize = new ButtonContextMenuStrip(components);
             menuRefreshProjects = new ToolStripMenuItem();
+            menuColonizeWiki = new ToolStripMenuItem();
             menuColonizeLine1 = new ToolStripSeparator();
             menuMyProjects = new ToolStripMenuItem();
             menuCurrentProject = new ToolStripMenuItem();
@@ -128,6 +129,7 @@ namespace SrvSurvey
             menuNotifySettings = new ToolStripMenuItem();
             toolStripSeparator3 = new ToolStripSeparator();
             menuNotifyClose = new ToolStripMenuItem();
+            toolStripSeparator6 = new ToolStripSeparator();
             groupBox1.SuspendLayout();
             groupCmdr.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -955,10 +957,10 @@ namespace SrvSurvey
             // 
             menuColonize.BackColor = SystemColors.ControlLight;
             menuColonize.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            menuColonize.Items.AddRange(new ToolStripItem[] { menuRefreshProjects, menuColonizeLine1, menuMyProjects, menuCurrentProject, menuPrimaryProject, menuColonizeLine2, menuNewProject });
+            menuColonize.Items.AddRange(new ToolStripItem[] { menuRefreshProjects, menuColonizeLine1, menuMyProjects, menuCurrentProject, menuPrimaryProject, menuColonizeLine2, menuNewProject, toolStripSeparator6, menuColonizeWiki });
             menuColonize.Name = "menuColonize";
             menuColonize.RenderMode = ToolStripRenderMode.System;
-            menuColonize.Size = new Size(220, 206);
+            menuColonize.Size = new Size(220, 272);
             menuColonize.targetButton = btnColonize;
             // 
             // menuRefreshProjects
@@ -968,6 +970,13 @@ namespace SrvSurvey
             menuRefreshProjects.Text = "Refresh data";
             menuRefreshProjects.ToolTipText = "Re-fetch colonization data";
             menuRefreshProjects.Click += menuRefreshProjects_Click;
+            // 
+            // menuColonizeWiki
+            // 
+            menuColonizeWiki.Name = "menuColonizeWiki";
+            menuColonizeWiki.Size = new Size(219, 38);
+            menuColonizeWiki.Text = "See the wiki";
+            menuColonizeWiki.Click += menuColonizeWiki_Click;
             // 
             // menuColonizeLine1
             // 
@@ -1152,6 +1161,11 @@ namespace SrvSurvey
             menuNotifyClose.ToolTipText = "Close SrvSurvey";
             menuNotifyClose.Click += btnQuit_Click;
             // 
+            // toolStripSeparator6
+            // 
+            toolStripSeparator6.Name = "toolStripSeparator6";
+            toolStripSeparator6.Size = new Size(216, 6);
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 12F);
@@ -1301,5 +1315,7 @@ namespace SrvSurvey
         private ToolStripMenuItem menuNotifyNextWindow;
         private ToolStripMenuItem menuNotifyLogs;
         private ToolStripMenuItem menuNotifySettings;
+        private ToolStripMenuItem menuColonizeWiki;
+        private ToolStripSeparator toolStripSeparator6;
     }
 }

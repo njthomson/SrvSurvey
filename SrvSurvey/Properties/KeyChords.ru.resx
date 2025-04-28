@@ -60,6 +60,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <!--Localizable elements are below-->
+  <data name="collapseColonyData">
+    <!--Machine translated-->
+    <value>Переключайте сворачивающиеся грузовые группы, когда достаточно на FC.</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Toggle collapsing cargo groups when enough on FCs.</source>
+  </data>
   <data name="copyNextBoxel">
     <value>На экране галактической карты, копирует в буфер обмена следующую систему поиска в подсекторе.</value>
     <comment>A description of a key-chord setting</comment>
@@ -85,15 +91,33 @@
     <comment>A description of a key-chord setting</comment>
     <source>Zoom out on maps at Human and Guardian sites.</source>
   </data>
+  <data name="nextWindow">
+    <!--Machine translated-->
+    <value>Сфокусируйтесь на другом игровом окне.</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Set focus on a different game window.</source>
+  </data>
   <data name="pasteGalMap">
     <value>На экране галактической карты, вставляет текста из буфера обмена</value>
     <comment>A description of a key-chord setting</comment>
     <source>Paste clipboard text when in Gal-Map</source>
   </data>
+  <data name="refreshColonyData">
+    <!--Machine translated-->
+    <value>Немедленно обновите данные о колонизации.</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Immediately refresh of Colonization data.</source>
+  </data>
   <data name="showBodyInfo">
     <value>Принудительно отображает наложение с информацией о теле.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force show the Body info overlay.</source>
+  </data>
+  <data name="showColonyShopping">
+    <!--Machine translated-->
+    <value>Принудительно показать наложение списка покупок «Колонизация».</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Force show the Colonization shopping list overlay.</source>
   </data>
   <data name="showFssInfo">
     <value>Принудительно отображает наложение с информацией о FSS.</value>
@@ -104,6 +128,12 @@
     <value>Принудительно переключает наложение прыжка FSD, не начиная прыжок.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force toggle the FSD jump overlay without starting to jump.</source>
+  </data>
+  <data name="showStationInfo">
+    <!--Machine translated-->
+    <value>С усилием отобразите наложение «Информация о станции».</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Force show the Station Info overlay.</source>
   </data>
   <data name="showSystemNotes">
     <value>Делает окно системных заметок видимым.</value>

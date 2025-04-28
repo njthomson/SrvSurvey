@@ -61,6 +61,15 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Toggle collapsing cargo groups when enough on FCs..
+        /// </summary>
+        internal static string collapseColonyData {
+            get {
+                return ResourceManager.GetString("collapseColonyData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In gal-map, copy the next boxel search system to clipboard..
         /// </summary>
         internal static string copyNextBoxel {
@@ -106,6 +115,15 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set focus on a different game window..
+        /// </summary>
+        internal static string nextWindow {
+            get {
+                return ResourceManager.GetString("nextWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Paste clipboard text when in Gal-Map.
         /// </summary>
         internal static string pasteGalMap {
@@ -115,11 +133,29 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Immediately refresh of Colonization data..
+        /// </summary>
+        internal static string refreshColonyData {
+            get {
+                return ResourceManager.GetString("refreshColonyData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Force show the Body info overlay..
         /// </summary>
         internal static string showBodyInfo {
             get {
                 return ResourceManager.GetString("showBodyInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Force show the Colonization shopping list overlay..
+        /// </summary>
+        internal static string showColonyShopping {
+            get {
+                return ResourceManager.GetString("showColonyShopping", resourceCulture);
             }
         }
         
@@ -138,6 +174,15 @@ namespace SrvSurvey.Properties {
         internal static string showJumpInfo {
             get {
                 return ResourceManager.GetString("showJumpInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Force show the Station Info overlay..
+        /// </summary>
+        internal static string showStationInfo {
+            get {
+                return ResourceManager.GetString("showStationInfo", resourceCulture);
             }
         }
         
