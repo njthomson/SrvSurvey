@@ -1488,8 +1488,8 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(CargoTransfer entry)
         {
-            Game.log($"Updating inventory from transfer");
-            var saveColonyData = false;
+            Game.log($"Updating inventory from cargo transfer");
+
             var fcTrackedCargo = new Dictionary<string, int>();
             foreach (var transferItem in entry.Transfers)
             {
@@ -1538,7 +1538,7 @@ namespace SrvSurvey.game
                 Program.getPlotter<PlotBuildCommodities>()?.startPending(fcTrackedCargo);
                 Game.colony.supplyFC(lastDocked.MarketID, fcTrackedCargo).continueOnMain(null, updatedCargo =>
                 {
-                    Game.log(updatedCargo);
+                    Game.log(updatedCargo.formatWithHeader("updatedCargo after supplyFC:"));
                     if (cmdrColony == null || lastDocked == null) return;
                     var fc = cmdrColony.linkedFCs.GetValueOrDefault(lastDocked.MarketID);
                     if (fc != null)
@@ -1550,9 +1550,6 @@ namespace SrvSurvey.game
                     }
                 });
             }
-
-            if (saveColonyData)
-                cmdrColony.Save();
         }
 
         private void onJournalEntry(CargoDepot entry)

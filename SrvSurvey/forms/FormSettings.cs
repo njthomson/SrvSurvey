@@ -42,8 +42,6 @@ namespace SrvSurvey
             // keep these hidden from official app-store builds for now
             if (Program.isAppStoreBuild)
             {
-                // Human settlements aren't ready for App store yet
-                tabControl.Controls.Remove(tabSettlements);
                 btnSwapCache.Hide();
             }
 
@@ -52,6 +50,8 @@ namespace SrvSurvey
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
+            Game.log("FormSettings.FormSettings_Load");
+
             this.findDevices(Game.settings.hookDirectXDeviceId_TEST);
             updateFormFromSettings(this);
 
@@ -338,6 +338,7 @@ namespace SrvSurvey
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            Game.log("FormSettings.btnSave_Click");
             var sameCmdr = (string.IsNullOrWhiteSpace(Game.settings.preferredCommander) && comboCmdr.SelectedIndex == 0)
                 || (comboCmdr.Text == Game.settings.preferredCommander);
 

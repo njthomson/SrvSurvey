@@ -644,7 +644,7 @@ namespace SrvSurvey.canonn
             var data = new Dictionary<string, List<CodexNotFound>>();
             foreach (var entry in parsed)
             {
-                var regionName = GalacticRegions.getNameFromIdx(entry.RegionID);
+                var regionName = GalacticRegions.getNameFromIdx(entry!.RegionID);
                 if (!data.ContainsKey(regionName)) data[regionName] = new List<CodexNotFound>();
                 data[regionName].Add(new CodexNotFound() { entryId = entry.EntryID, variant = entry.Varient });
             }

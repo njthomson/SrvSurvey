@@ -72,9 +72,9 @@ namespace SrvSurvey.game
                         Game.colony.getPrimary(this.cmdr).continueOnMain(null, newPrimaryBuildId => this.primaryBuildId = newPrimaryBuildId, true),
                         Game.colony.getCmdrActive(this.cmdr).continueOnMain(null, newProjects => this.projects = newProjects)
                     );
-                    if (this.primaryBuildId != null && getProject(this.primaryBuildId) == null)
+                    if (!string.IsNullOrEmpty(this.primaryBuildId) && getProject(this.primaryBuildId) == null)
                     {
-                        Game.log($"Not found: primaryBuildId: ${primaryBuildId} ?");
+                        Game.log($"Not found: primaryBuildId: {primaryBuildId} ?");
                         this.primaryBuildId = null;
                         //Debugger.Break();
                     }
@@ -326,12 +326,12 @@ namespace SrvSurvey.game
 
             // if the FC has something for sale with a different count than we think ... update it
             var newCargo = new Dictionary<string, int>();
-            foreach(var entry in marketFile.Items)
+            foreach (var entry in marketFile.Items)
             {
                 var key = entry.Name.Substring(1).Replace("_name;", "");
                 if (entry.Producer && (!fc.cargo.ContainsKey(key) || fc.cargo.GetValueOrDefault(key) != entry.Stock))
-                { 
-                        newCargo[key] = entry.Stock;
+                {
+                    newCargo[key] = entry.Stock;
                 }
                 else if (!entry.Producer && !entry.Consumer && fc.cargo.GetValueOrDefault(key) > 0)
                 {

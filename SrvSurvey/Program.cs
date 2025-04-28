@@ -155,7 +155,7 @@ namespace SrvSurvey
         {
             var formType = typeof(T);
 
-            // exit early if the game does not have focus
+            // exit early if the game does not have focus, but return a reference if we already have one
             if (!Elite.focusElite && !Elite.focusSrvSurvey)
             {
                 //if (!Debugger.IsAttached && (!Elite.focusElite || Elite.focusSrvSurvey)) // Maybe not "|| Elite.focusSrvSurvey" ?
@@ -174,10 +174,11 @@ namespace SrvSurvey
             }
 
             // only create if missing
+            var created = "";
             T form;
             if (!activePlotters.ContainsKey(formType.Name))
             {
-                Game.log($"Program.Creating plotter: {formType.Name}");
+                created = " (created)";
 
                 // Get the public instance constructor that takes zero parameters
                 ConstructorInfo ctor = formType.GetConstructor(
@@ -208,7 +209,7 @@ namespace SrvSurvey
             // show form if not visible
             if (!form.Visible)
             {
-                Game.log($"Program.Showing plotter: {formType.Name}");
+                Game.log($"Program.Showing{created} plotter: {formType.Name}");
                 gameRect ??= Elite.getWindowRect();
                 form.reposition(gameRect.Value);
 
@@ -216,6 +217,16 @@ namespace SrvSurvey
                 try
                 {
                     form.Show();
+                }
+                catch (Exception ex)
+                {
+                    Game.log($"Program.ShowPlotter: form.show failed:\r\n{ex}");
+
+                    // untrack and force close the form
+                    if (!activePlotters.ContainsKey(formType.Name)) activePlotters.Remove(formType.Name);
+                    try { form.Close(); } catch { /* swallow */ }
+
+                    return default(T);
                 }
                 finally
                 {
@@ -303,7 +314,7 @@ namespace SrvSurvey
 
         public static void closeAllPlotters(bool exceptPlotPulse = false, bool exceptJumpInfo = false)
         {
-            Game.log($"Program.CloseAllPlotters");
+            Game.log($"Program.CloseAllPlotters (exceptPlotPulse: {exceptPlotPulse}, exceptJumpInfo: {exceptJumpInfo})");
 
             var names = Program.activePlotters.Keys.ToArray();
             foreach (string name in names)
@@ -396,6 +407,7 @@ namespace SrvSurvey
                 // make a .zip backup of everything before beginning
                 var datepart = DateTime.Now.ToString("yyyyMMdd_HHmmss");
                 var zipBackupPath = Path.GetFullPath(Path.Combine(dataRootFolder, "..", $"pre-migration-backup-{datepart}.zip"));
+                Game.log($"Creating pre migration backup: {zipBackupPath}");
                 ZipFile.CreateFromDirectory(dataRootFolder, zipBackupPath, CompressionLevel.SmallestSize, false);
 
                 Game.log($"migrateToNewDataFolder: old data into common folder: {Program.dataFolder} ...");

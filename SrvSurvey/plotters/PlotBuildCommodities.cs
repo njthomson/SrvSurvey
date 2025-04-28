@@ -631,14 +631,21 @@ namespace SrvSurvey.plotters
                     //if (cargoCount > needCount) col = C.red;
 
                     // show a tick if we have enough (on ship or in FCs)
-                    if (haveEnough && !nameTxt.EndsWith("❌"))
-                        nameTxt += " ✔️";
-                    else if (almost)
+                    //if (haveEnough && !nameTxt.EndsWith("❌"))
+                    //    nameTxt += " ✔️";
+                    //else
+                    if (almost)
                         nameTxt += " 🏁";
 
                     // render the name
                     var sz2 = drawTextAt2(twenty, nameTxt, col, ff)
                             .widestColumn(0, columns);
+
+                    if (haveEnough && !nameTxt.EndsWith("❌"))
+                    {
+                        var sz3 = drawTextAt2(" ✔️", col == C.green ? C.green : C.greenDark, ff);
+                        (sz2 + sz3).widestColumn(0, columns);
+                    }
 
                     newLine(true);
                 }

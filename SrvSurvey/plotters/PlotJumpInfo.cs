@@ -171,7 +171,7 @@ namespace SrvSurvey.plotters
                     netData.special[Res.SpecialGuardian] = list;
             }
 
-            if (game.cmdr.route.active && game.cmdr.route.nextHop?.id64 == next.SystemAddress)
+            if (game?.cmdr != null && game.cmdr.route.active && game.cmdr.route.nextHop?.id64 == next.SystemAddress)
             {
                 var set = netData.special.init(Res.SpecialRouteHop);
                 set.Add(Res.SpecialHopInfo.format(game.cmdr.route.last + 1, game.cmdr.route.hops.Count));
@@ -355,7 +355,7 @@ namespace SrvSurvey.plotters
                 // (before drawing line parts, if not too close together) draw a DOT for each system
                 if (pixelsPerLY > limitPixelsPerLY)
                 {
-                    if (n < nextHopIdx-1)
+                    if (n < nextHopIdx - 1)
                     {
                         g.FillEllipse(C.Brushes.black, r);
                         g.DrawEllipse(C.Pens.orangeDark2, r);

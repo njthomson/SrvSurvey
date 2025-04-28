@@ -143,15 +143,12 @@ namespace SrvSurvey.forms
             if (plotter == null)
             {
                 createFakePlotter(targetName);
-                return;
             }
             else if (fake != null)
             {
                 fake.Close();
                 fake = null;
             }
-
-            var pt = PlotPos.getPlotterLocation(targetName, plotter.Size, er);
 
             numX.Value = pp.x;
             numY.Value = pp.y;
@@ -206,6 +203,13 @@ namespace SrvSurvey.forms
             Program.invalidateActivePlotters();
         }
 
+        private void repositionPlotters()
+        {
+            Program.repositionPlotters();
+            if (fake != null)
+                fake.Location = PlotPos.getPlotterLocation(fake.Name, fake.Size, Rectangle.Empty);
+        }
+
         private void checkIfMe(CheckBox sender, params CheckBox[] boxes)
         {
             if (changing) return;
@@ -235,7 +239,9 @@ namespace SrvSurvey.forms
 
             pp.h = Enum.Parse<PlotPos.Horiz>(box.Tag?.ToString()!);
 
-            Program.repositionPlotters();
+            this.repositionPlotters();
+            if (fake != null)
+                fake.Location = PlotPos.getPlotterLocation(fake.Name, fake.Size, Rectangle.Empty);
         }
 
         private void checkVertical_CheckedChanged(object sender, EventArgs e)
@@ -250,7 +256,9 @@ namespace SrvSurvey.forms
 
             pp.v = Enum.Parse<PlotPos.Vert>(box.Tag?.ToString()!);
 
-            Program.repositionPlotters();
+            this.repositionPlotters();
+            if (fake != null)
+                fake.Location = PlotPos.getPlotterLocation(fake.Name, fake.Size, Rectangle.Empty);
         }
 
         private void num_ValueChanged(object sender, EventArgs e)
@@ -263,7 +271,7 @@ namespace SrvSurvey.forms
             pp.x = (int)numX.Value;
             pp.y = (int)numY.Value;
 
-            Program.repositionPlotters();
+            this.repositionPlotters();
         }
 
         private void btnReset_Click(object sender, EventArgs e)
@@ -279,7 +287,7 @@ namespace SrvSurvey.forms
             PlotPos.resetToDefault(targetName);
             selectPlotter();
 
-            Program.repositionPlotters();
+            this.repositionPlotters();
 
             groupBox1.Enabled = true;
             changing = false;
@@ -295,7 +303,7 @@ namespace SrvSurvey.forms
         {
             PlotPos.restore();
 
-            Program.repositionPlotters();
+            this.repositionPlotters();
             Program.invalidateActivePlotters();
 
             this.Close();
@@ -319,7 +327,7 @@ namespace SrvSurvey.forms
                 pp.opacity = null;
             }
 
-            Program.repositionPlotters();
+            this.repositionPlotters();
         }
 
         private void numOpacity_ValueChanged(object sender, EventArgs e)
@@ -331,7 +339,7 @@ namespace SrvSurvey.forms
 
             pp.opacity = (float)numOpacity.Value / 100f;
 
-            Program.repositionPlotters();
+            this.repositionPlotters();
         }
 
         private void checkShowAll_CheckedChanged(object sender, EventArgs e)

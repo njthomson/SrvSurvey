@@ -340,7 +340,10 @@ namespace SrvSurvey
             {
                 //Game.log($"gameHadFocus:{gameHadFocus}, hasFocus:{hasFocus}, forceOpen:{forceOpen}, rect:{rect}");
                 if (hasFocus || forceOpen)
+                {
                     Program.showActivePlotters();
+                    if (!forceOpen) Program.repositionPlotters(rect);
+                }
                 else
                     Program.hideActivePlotters();
             }
@@ -410,7 +413,7 @@ namespace SrvSurvey
 
         private void removeGame()
         {
-            Game.log($"Main.removeGame, has old game: {this.game != null}");
+            Game.log($"Main.removeGame, has old game: {this.game != null} (cmdr: {this.game?.Commander})");
             Program.closeAllPlotters();
             this.hook?.stopDirectX();
 

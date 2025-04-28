@@ -138,6 +138,8 @@ namespace SrvSurvey
 
         private static bool adjustMapZooms(bool zoomIn)
         {
+            if (game == null) return true;
+
             Program.getPlotter<PlotHumanSite>()?.adjustZoom(zoomIn);
             Program.getPlotter<PlotGuardians>()?.adjustZoom(zoomIn);
             return true;
@@ -145,12 +147,14 @@ namespace SrvSurvey
 
         private static bool adjustMapAutoZoom()
         {
-            if (game != null && Program.isPlotter<PlotHumanSite>())
+            if (game == null) return true;
+
+            if (Program.isPlotter<PlotHumanSite>())
             {
                 PlotHumanSite.autoZoom = true;
                 Program.getPlotter<PlotHumanSite>()?.setZoom(game.mode);
             }
-            if (game != null && Program.isPlotter<PlotGuardians>())
+            if (Program.isPlotter<PlotGuardians>())
             {
                 PlotGuardians.autoZoom = true;
                 Program.getPlotter<PlotGuardians>()?.setMapScale();
@@ -160,6 +164,8 @@ namespace SrvSurvey
 
         private static bool adjustMapHugeness()
         {
+            if (game == null) return true;
+
             PlotHumanSite.toggleHugeness();
 
             // TODO: Handle Guardian maps?
@@ -168,8 +174,10 @@ namespace SrvSurvey
 
         private static bool toggleJumpInfo()
         {
+            if (game == null) return true;
+
             // we need a route for this to work
-            if (game?.navRoute.Route.Count > 0)
+            if (game.navRoute.Route.Count > 0)
             {
                 var jumpInfo = Program.getPlotter<PlotJumpInfo>();
                 if (jumpInfo == null)
@@ -202,8 +210,10 @@ namespace SrvSurvey
 
         private static bool copyNextBoxelSystem()
         {
-            var nextSystem = Game.activeGame?.cmdr.boxelSearch?.nextSystem;
-            if (Game.activeGame?.mode == GameMode.GalaxyMap && nextSystem != null)
+            if (game == null) return true;
+
+            var nextSystem = game.cmdr.boxelSearch?.nextSystem;
+            if (game.mode == GameMode.GalaxyMap && nextSystem != null)
             {
                 Game.log($"Setting next boxel search system to clipboard: {nextSystem}");
                 Clipboard.SetText(nextSystem);
@@ -215,11 +225,11 @@ namespace SrvSurvey
 
         private static bool pasteGalMap()
         {
-            if (Game.activeGame?.mode != GameMode.GalaxyMap) return true;
+            if (game?.mode != GameMode.GalaxyMap) return true;
 
             string? keysToSend = null;
 
-            var cmdr = Game.activeGame.cmdr;
+            var cmdr = game.cmdr;
 
             // use next hop in route?
             if (keysToSend == null && cmdr?.route?.active == true)
@@ -251,6 +261,8 @@ namespace SrvSurvey
 
         private static bool toggleFSSInfo()
         {
+            if (game == null) return true;
+
             var fssInfo = Program.getPlotter<PlotFSSInfo>();
             if (fssInfo == null)
             {
@@ -276,8 +288,10 @@ namespace SrvSurvey
 
         private static bool toggleBodyInfo()
         {
+            if (game == null) return true;
+
             // exit early if there's no relevant body
-            var targetBody = Game.activeGame?.systemBody ?? Game.activeGame?.targetBody;
+            var targetBody = game?.systemBody ?? game?.targetBody;
             if (targetBody == null)
             {
                 PlotBodyInfo.forceShow = false;
@@ -309,6 +323,8 @@ namespace SrvSurvey
 
         private static bool toggleStationInfo()
         {
+            if (game == null) return true;
+
             var stationInfo = Program.getPlotter<PlotStationInfo>();
             if (stationInfo == null)
             {
@@ -334,6 +350,8 @@ namespace SrvSurvey
 
         private static bool toggleColonyShopping()
         {
+            if (game == null) return true;
+
             var plotter = Program.getPlotter<PlotBuildCommodities>();
             if (plotter == null)
             {
@@ -359,7 +377,9 @@ namespace SrvSurvey
 
         private static bool showSystemNotes()
         {
-            if (Game.activeGame?.isShutdown == false && Game.activeGame.fsdJumping == false && Game.activeGame.systemData != null)
+            if (game == null) return true;
+
+            if (game?.isShutdown == false && game.fsdJumping == false && game.systemData != null)
             {
                 Program.defer(() => BaseForm.show<FormSystemNotes>().Activate());
             }
@@ -369,8 +389,9 @@ namespace SrvSurvey
 
         private static bool trackLocation(int n)
         {
-            if (Game.activeGame != null)
-                Game.activeGame.toggleBookmark($"#{n}", Status.here.clone());
+            if (game == null) return true;
+
+            game.toggleBookmark($"#{n}", Status.here.clone());
 
             return true;
         }
