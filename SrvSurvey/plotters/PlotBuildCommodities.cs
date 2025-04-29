@@ -374,14 +374,14 @@ namespace SrvSurvey.plotters
                 flip = !flip;
 
                 var col = C.orange;
-                var ff = GameColors.Fonts.gothic_10;
+                var ff = GameColors.Fonts.gothic_9;
 
                 var cargoCount = game.cargoFile.getCount(name);
 
                 if (pendingUpdates > 0 && pendingDiff.ContainsKey(name))
                 {
                     // highlight what we just supplied
-                    ff = GameColors.Fonts.gothic_10B;
+                    ff = GameColors.Fonts.gothic_9B;
                     col = C.cyan;
                     nameTxt = "► " + name;
                     needTxt = "...";
@@ -481,13 +481,14 @@ namespace SrvSurvey.plotters
         private void drawNeedsGrouped(ColonyData.Needs needs, Dictionary<int, float> columns, float rightIndent, float xNeed, float xFC)
         {
             var isDocked = game.lastDocked != null;
+            var dockedAtLinkedFC = game.lastDocked != null && game.cmdrColony.linkedFCs.Keys.Contains(game.lastDocked.MarketID);
             var localMarketValid = game.marketFile.MarketId == game.lastDocked?.MarketID && game.marketFile.timestamp > game.lastDocked.timestamp;
             var localMarketItems = !localMarketValid ? new() : game.marketFile.Items
                 .Where(i => i.Stock > 0)
                 .Select(_ => _.Name.Substring(1).Replace("_name;", ""))
                 .ToHashSet();
 
-            var canCollapse = Game.settings.buildProjectsShowSumFC_TEST && Game.settings.buildProjectsCollapseGroupsWithFCEnough_TEST != toggleCollapse;
+            var canCollapse = Game.settings.buildProjectsShowSumFC_TEST && !dockedAtLinkedFC && Game.settings.buildProjectsCollapseGroupsWithFCEnough_TEST != toggleCollapse;
 
             foreach (var cargoType in ColonyData.mapCargoType.Keys)
             {
@@ -496,18 +497,19 @@ namespace SrvSurvey.plotters
                 if (sum == 0) continue;
 
                 // when allowed, see if we have enough of everything in this group
-                var groupHasEnough = canCollapse && ColonyData.mapCargoType[cargoType].All(name =>
+                var collapseGroup = canCollapse && ColonyData.mapCargoType[cargoType].All(name =>
                 {
                     var needCount = needs.commodities.GetValueOrDefault(name);
                     var onFCs = this.sumCargoLinkedFCs.GetValueOrDefault(name);
-                    return onFCs >= needCount;
+                    var inShipCargo = game.cargoFile.Inventory.Any(inv => inv.Name == name);
+                    return onFCs >= needCount && !inShipCargo;
                 });
 
                 // render the type name - with a line to the right
                 var cargoTypeTxt = Properties.CommodityCategories.ResourceManager.GetString(cargoType) ?? cargoType;
-                drawTextAt2(ten, cargoTypeTxt, groupHasEnough ? C.greenDark : C.orangeDark, GameColors.Fonts.gothic_10);
+                drawTextAt2(ten, cargoTypeTxt, collapseGroup ? C.greenDark : C.orangeDark, GameColors.Fonts.gothic_10);
 
-                if (groupHasEnough)
+                if (collapseGroup)
                     drawTextAt2("  ✔️", C.greenDark, GameColors.Fonts.gothic_10);
 
                 var lx = (int)dtx + eight;
@@ -515,7 +517,7 @@ namespace SrvSurvey.plotters
                 g.DrawLine(C.Pens.orangeDark2, lx, ly, this.Width - four, ly);
                 newLine(true);
 
-                if (groupHasEnough) continue;
+                if (collapseGroup) continue;
 
                 // then each commodity in the type
                 var flip = true;
