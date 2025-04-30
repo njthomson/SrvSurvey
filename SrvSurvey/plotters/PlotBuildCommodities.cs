@@ -646,6 +646,10 @@ namespace SrvSurvey.plotters
                                 drawTextAt2(xFC, diffTxt, cc, ff, true)
                                     .widestColumn(2, columns);
                             }
+
+                            // keep the green check if we have enough on our ship and FCs
+                            if (fcAmount + cargoCount >= needCount)
+                                haveEnough = true;
                         }
                     }
 

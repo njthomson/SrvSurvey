@@ -460,7 +460,7 @@ namespace SrvSurvey.game
     public class ProjectCreate : ProjectCore
     {
         // Schema.ProjectCommodity
-        public Dictionary<string, int>? commodities;
+        public Dictionary<string, int> commodities;
     }
 
     public class Project : ProjectCore
