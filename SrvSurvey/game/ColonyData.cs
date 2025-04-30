@@ -362,16 +362,27 @@ namespace SrvSurvey.game
             public HashSet<string> assigned = new();
         }
 
+        /** Prior mistakes and corrections in the cargo names:
+         * 
+         *  From > To
+         * 
+         *  microbialfurnaces > heliostaticfurnaces
+         *  landenrichmentsystems > terrainenrichmentsystems
+         *  muonimager > mutomimager
+         *  combatstabilizers > combatstabilisers
+         * 
+         **/
+
         public static Dictionary<string, string[]> mapCargoType = new Dictionary<string, string[]>()
         {
             { "Chemicals", new string[] { "liquidoxygen","pesticides","surfacestabilisers","water" } },
             { "Consumer Items", new string[] { "evacuationshelter","survivalequipment","beer","liquor","wine" } },
             { "Foods", new string[] { "animalmeat","coffee","fish","foodcartridges","fruitandvegetables","grain","tea" } },
             { "Industrial Materials", new string[] { "ceramiccomposites","cmmcomposite","insulatingmembrane","polymers","semiconductors","superconductors" } },
-            { "Machinery", new string[] { "buildingfabricators","cropharvesters","emergencypowercells","geologicalequipment","microbialfurnaces","mineralextractors","powergenerators","thermalcoolingunits","waterpurifiers" } },
-            { "Medicines", new string[] { "agriculturalmedicines","basicmedicines","combatstabilisers" } },
+            { "Machinery", new string[] { "buildingfabricators","cropharvesters","emergencypowercells","geologicalequipment", "microbialfurnaces", "heliostaticfurnaces", "mineralextractors","powergenerators","thermalcoolingunits","waterpurifiers" } },
+            { "Medicines", new string[] { "agriculturalmedicines","basicmedicines","combatstabilisers", "combatstabilizers" } },
             { "Metals", new string[] { "aluminium","copper","steel","titanium" } },
-            { "Technology", new string[] { "advancedcatalysers","bioreducinglichen","computercomponents","hazardousenvironmentsuits","landenrichmentsystems","medicaldiagnosticequipment","microcontrollers","muonimager","resonatingseparators","robotics","structuralregulators" } },
+            { "Technology", new string[] { "advancedcatalysers","bioreducinglichen","computercomponents","hazardousenvironmentsuits","landenrichmentsystems", "terrainenrichmentsystems", "medicaldiagnosticequipment","microcontrollers", "muonimager", "mutomimager", "resonatingseparators","robotics","structuralregulators" } },
             { "Textiles", new string[] { "militarygradefabrics" } },
             { "Waste", new string[] { "biowaste" } },
             { "Weapons", new string[] { "battleweapons","nonlethalweapons","reactivearmour" } },
