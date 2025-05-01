@@ -273,9 +273,14 @@ namespace SrvSurvey.plotters
 
             this.BackgroundImage = GameGraphics.getBackgroundImage(this);
 
-            Game.update += Game_modeChanged;
-            game.status!.StatusChanged += Status_StatusChanged;
-            game.journals!.onJournalEntry += Journals_onJournalEntry;
+            if (game != null)
+            {
+                Game.update += Game_modeChanged;
+                if (game.status != null)
+                    game.status.StatusChanged += Status_StatusChanged;
+                if (game.journals != null)
+                    game.journals!.onJournalEntry += Journals_onJournalEntry;
+            }
 
             this.Status_StatusChanged(false);
         }

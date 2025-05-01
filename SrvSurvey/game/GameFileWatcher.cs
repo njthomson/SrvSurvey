@@ -226,7 +226,7 @@ namespace SrvSurvey.game
                     lastInventory[entry.Name] = entry.Count;
 
             // TODO: Remove with confirmation that diff tracking behaves
-            Game.log(lastInventory.formatWithHeader($"**** preRead: (lastInventory.Count: {lastInventory.Count}", "\r\n\t"));
+            Game.log(lastInventory.formatWithHeader($"**** preRead: (lastInventory.Count: {lastInventory.Count})", "\r\n\t"));
         }
 
         public Dictionary<string, int> getDiff()

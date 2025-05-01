@@ -8,7 +8,7 @@ namespace SrvSurvey.game
         public static Project? localUntrackedProject;
 
         public static string SystemColonisationShip = "System Colonisation Ship";
-        public static string ExtPanelColonisationShip = "$EXT_PANEL_ColonisationShip:#index=1;";
+        public static string ExtPanelColonisationShip = "$EXT_PANEL_ColonisationShip";
         public static string PlanetaryConstructionSite = "Planetary Construction Site:";
         public static string OrbitalConstructionSite = "Orbital Construction Site:";
 
@@ -28,13 +28,13 @@ namespace SrvSurvey.game
             (
                 stationName.StartsWith(PlanetaryConstructionSite, StringComparison.OrdinalIgnoreCase)
                 || stationName.StartsWith(OrbitalConstructionSite, StringComparison.OrdinalIgnoreCase)
-                || stationName.Equals(ExtPanelColonisationShip, StringComparison.OrdinalIgnoreCase)
+                || stationName.StartsWith(ExtPanelColonisationShip, StringComparison.OrdinalIgnoreCase)
             );
         }
 
         public static string getDefaultProjectName(Docked lastDocked)
         {
-            var defaultName = lastDocked.StationName == ColonyData.SystemColonisationShip || lastDocked.StationName == ColonyData.ExtPanelColonisationShip
+            var defaultName = (lastDocked.StationName == ColonyData.SystemColonisationShip || lastDocked.StationName.StartsWith(ColonyData.ExtPanelColonisationShip, StringComparison.OrdinalIgnoreCase))
                 ? $"Primary port: {lastDocked.StarSystem}"
                 : lastDocked.StationName
                     .Replace(PlanetaryConstructionSite, "")

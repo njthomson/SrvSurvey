@@ -17,7 +17,7 @@ namespace SrvSurvey.plotters
                     || (Game.activeGame.isMode(GameMode.StationServices)
                         && (Game.activeGame.marketEventSeen || Game.activeGame.cmdrColony.has(Game.activeGame.lastDocked))
                     )
-                    || (ColonyData.isConstructionSite(Game.activeGame.lastDocked))
+                    || (ColonyData.isConstructionSite(Game.activeGame.lastDocked) && !Game.activeGame.isMode(GameMode.GalaxyMap))
                 )
                 ;
         }
@@ -250,7 +250,7 @@ namespace SrvSurvey.plotters
                 var msg = ColonyData.localUntrackedProject == null
                     ? "⚠️ Untracked project"
                     : "⚠️ Not a member of this project";
-                drawTextAt2(ten, msg, C.yellow, GameColors.Fonts.gothic_10);
+                drawTextAt2(ten, msg, C.cyan, GameColors.Fonts.gothic_10B);
                 newLine(+ten, true);
             }
 
