@@ -298,6 +298,9 @@ namespace SrvSurvey
                     menuEDAstro.Visible = hasGenus;
                     menuCanonnSeparator.Visible = hasEntryId || hasSpecies || hasGenus;
 
+                    menuPreScannedSeperator.Visible = hasEntryId;
+                    menuPreScanned.Visible = hasEntryId;
+
                     // some special cases for ED Astro links
                     if (edAstroLinks.Keys.Any(k => node.Name.matches(k)))
                         menuEDAstro.Visible = true;
@@ -448,6 +451,50 @@ namespace SrvSurvey
             }
         }
 
+        private void menuPreScanned_Click(object sender, EventArgs e)
+        {
+            var codexTag = getSelectedNodeCodexTag();
+            if (codexTag?.entry == null) return;
+
+            var rslt = MessageBox.Show(
+                this,
+                "This is a manual override for when you no longer have journal files to prove something has been scanned." +
+                $"\n\nCan you confirm you have scanned the following?" +
+                $"\n\n{codexTag.text} (#{codexTag.entry.entryid})",
+                "SrvSurvey",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            var entryId = long.Parse(codexTag.entry.entryid);
+            var priorEntry = cmdrCodex.codexFirsts.GetValueOrDefault(entryId);
+
+            var dirty = false;
+            if (rslt == DialogResult.Yes)
+            {
+                // mark this entry as Scanned but without a location
+                if (priorEntry == null)
+                {
+                    cmdrCodex.codexFirsts[entryId] = new CodexFirst(DateTime.Now, -1, -1);
+                    cmdrCodex.Save();
+                    dirty = true;
+                }
+            }
+            else if (rslt == DialogResult.No)
+            {
+                if (priorEntry != null && priorEntry.address == -1)
+                {
+                    // remove the entry
+                    cmdrCodex.codexFirsts.Remove(entryId);
+                    cmdrCodex.Save();
+                    dirty = true;
+                }
+            }
+
+            // re-calculate completions
+            if (dirty)
+                Program.defer(() => this.calcCompletions());
+        }
+
         private void toolBodyName_Click(object sender, EventArgs e)
         {
             var url = toolBodyName.Tag as string;
@@ -477,7 +524,7 @@ namespace SrvSurvey
                 // data imported from Canonn Challenge - not much we can do with this
                 toolBodyName.IsLink = false;
                 toolBodyName.Text = "?";
-                toolRegionName.Text = "Imported from Canonn Challenge";
+                toolRegionName.Text = "Unknown location";
                 toolDiscoveryDate.Text = "?";
                 return;
             }
@@ -598,7 +645,7 @@ namespace SrvSurvey
             this.Enabled = false;
             Game.canonn.importCanonnChallenge(this.cmdrCodex).ContinueWith(t =>
             {
-                this.BeginInvoke(() =>
+                Program.defer(() =>
                 {
                     // re-calculate completions
                     this.calcCompletions();

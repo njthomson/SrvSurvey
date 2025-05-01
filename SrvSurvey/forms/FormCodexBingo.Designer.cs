@@ -47,6 +47,8 @@
             toolImport = new ToolStripDropDownButton();
             toolCanonnChallenge = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
+            toolUndiscovered = new ToolStripMenuItem();
+            toolStripSeparator2 = new ToolStripSeparator();
             toolImportFromCanonn = new ToolStripMenuItem();
             toolImportFromJournal = new ToolStripMenuItem();
             tree = new TreeView();
@@ -66,8 +68,8 @@
             menuNearestSeparator = new ToolStripSeparator();
             menuFindNearest = new ToolStripMenuItem();
             menuSpanshNearest = new ToolStripMenuItem();
-            toolUndiscovered = new ToolStripMenuItem();
-            toolStripSeparator2 = new ToolStripSeparator();
+            menuPreScannedSeperator = new ToolStripSeparator();
+            menuPreScanned = new ToolStripMenuItem();
             statusStrip1.SuspendLayout();
             panel1.SuspendLayout();
             contextMenu.SuspendLayout();
@@ -147,6 +149,19 @@
             toolStripSeparator1.Name = "toolStripSeparator1";
             toolStripSeparator1.Size = new Size(265, 6);
             // 
+            // toolUndiscovered
+            // 
+            toolUndiscovered.Image = Properties.ImageResources.canonn_16x16;
+            toolUndiscovered.Name = "toolUndiscovered";
+            toolUndiscovered.Size = new Size(268, 22);
+            toolUndiscovered.Text = "View undiscovered map";
+            toolUndiscovered.Click += toolUndiscovered_Click;
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(265, 6);
+            // 
             // toolImportFromCanonn
             // 
             toolImportFromCanonn.Name = "toolImportFromCanonn";
@@ -220,6 +235,7 @@
             // comboCmdr
             // 
             comboCmdr.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            comboCmdr.cmdrFid = null;
             comboCmdr.DropDownStyle = ComboBoxStyle.DropDownList;
             comboCmdr.FormattingEnabled = true;
             comboCmdr.Location = new Point(86, 4);
@@ -261,9 +277,9 @@
             // 
             // contextMenu
             // 
-            contextMenu.Items.AddRange(new ToolStripItem[] { menuCopyName, menuCopyEntryId, menuCanonnSeparator, menuCanonnResearch, menuCanonnBioforge, menuEDAstro, menuNearestSeparator, menuFindNearest, menuSpanshNearest });
+            contextMenu.Items.AddRange(new ToolStripItem[] { menuCopyName, menuCopyEntryId, menuCanonnSeparator, menuCanonnResearch, menuCanonnBioforge, menuEDAstro, menuNearestSeparator, menuFindNearest, menuSpanshNearest, menuPreScannedSeperator, menuPreScanned });
             contextMenu.Name = "contextMenuStrip";
-            contextMenu.Size = new Size(269, 170);
+            contextMenu.Size = new Size(269, 220);
             // 
             // menuCopyName
             // 
@@ -331,18 +347,17 @@
             menuSpanshNearest.Visible = false;
             menuSpanshNearest.Click += menuSpanshNearest_Click;
             // 
-            // toolUndiscovered
+            // menuPreScannedSeperator
             // 
-            toolUndiscovered.Image = Properties.ImageResources.canonn_16x16;
-            toolUndiscovered.Name = "toolUndiscovered";
-            toolUndiscovered.Size = new Size(268, 22);
-            toolUndiscovered.Text = "View undiscovered map";
-            toolUndiscovered.Click += toolUndiscovered_Click;
+            menuPreScannedSeperator.Name = "menuPreScannedSeperator";
+            menuPreScannedSeperator.Size = new Size(265, 6);
             // 
-            // toolStripSeparator2
+            // menuPreScanned
             // 
-            toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(265, 6);
+            menuPreScanned.Name = "menuPreScanned";
+            menuPreScanned.Size = new Size(268, 22);
+            menuPreScanned.Text = "I have scanned this before ...";
+            menuPreScanned.Click += menuPreScanned_Click;
             // 
             // FormCodexBingo
             // 
@@ -396,5 +411,7 @@
         private ToolStripMenuItem menuSpanshNearest;
         private ToolStripMenuItem toolUndiscovered;
         private ToolStripSeparator toolStripSeparator2;
+        private ToolStripSeparator menuPreScannedSeperator;
+        private ToolStripMenuItem menuPreScanned;
     }
 }
