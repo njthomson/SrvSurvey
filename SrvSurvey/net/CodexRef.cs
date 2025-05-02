@@ -21,7 +21,7 @@ namespace SrvSurvey.canonn
         private List<double[]>? allNebula;
         private double[] lastNebulaPos;
         public int codexRefCount { get; private set; }
-        public Dictionary<string, List<CodexNotFound>> codexNotFound;
+        public Dictionary<string, List<CodexNotFound>> codexNotFound = new();
 
         public async Task init(bool reset)
         {
