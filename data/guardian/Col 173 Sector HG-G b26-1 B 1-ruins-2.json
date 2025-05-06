@@ -1,0 +1,21 @@
+{
+  "sid": "GR545",
+  "idx": 2,
+  "sh": -1,
+  "t": "Gamma",
+  "rh": -1,
+  "og": "BGIJKLO",
+  "ao": [
+    "B04-ur,to-B18-",
+    "B22-ur,to-B18-",
+    "G13-or,to-T19-",
+    "I15-ur,to-B18-",
+    "I16-ur,or-B17-",
+    "J05-ca,ta-H20-",
+    "K04-or-T14-",
+    "K05-or,re-T20-",
+    "L08-or,ta-T18-",
+    "L14-or,re-T20-",
+    "O05-ca,to-H17-"
+  ]
+}

@@ -1731,7 +1731,7 @@ namespace SrvSurvey
             Game.canonn.init(true);
 
             Game.git.publishLocalData(); // 1st: for updating publish data from local surveys
-            Game.canonn.readXmlSheetRuins2(); // 2nd: for updating allRuins.json and reading from Excel data
+            await Game.canonn.readXmlSheetRuins2(); // 2nd: for updating allRuins.json and reading from Excel data
             await Game.canonn.readXmlSheetRuins3(); // 3rd: for updating allStructures.json and reading from Excel data
 
             Game.log("\r\n****\r\n**** Publishing all complete\r\n****");

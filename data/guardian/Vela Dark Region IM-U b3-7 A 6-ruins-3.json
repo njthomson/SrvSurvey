@@ -1,0 +1,25 @@
+{
+  "sid": "GR532",
+  "idx": 3,
+  "sh": -1,
+  "t": "Alpha",
+  "rh": -1,
+  "og": "EFGIJKLOQ",
+  "ao": [
+    "E05-ca,to-H6-",
+    "F19-ur,or-B5-",
+    "F21-ur,to-B6-",
+    "G02-ca,ur-H3-",
+    "I01-ur,re-B1-",
+    "I08-ur,ur-B2-",
+    "J05-ca,ta-H4-",
+    "K19-to,ur-C4-",
+    "K21-to,or-C6-",
+    "L05-ca,to-H6-",
+    "O07-or-T1-",
+    "O10-or,ur-T4-",
+    "Q16-ta,or-L5-",
+    "Q24-ta,ur-L4-",
+    "Q27-ta,re-L7-"
+  ]
+}

@@ -2884,5 +2884,157 @@
     "siteHeading": -1,
     "idx": 1,
     "surveyComplete": false
+  },
+  {
+    "siteID": 209,
+    "systemName": "Col 173 Sector XG-K b25-3",
+    "systemAddress": 7280103597417,
+    "bodyName": "B 2",
+    "bodyId": 16,
+    "distanceToArrival": 1506.0,
+    "starPos": [
+      896.21875,
+      -81.90625,
+      -159.0625
+    ],
+    "siteType": "Turtle",
+    "latitude": 46.019592,
+    "longitude": -18.272928,
+    "siteHeading": -1,
+    "idx": 1,
+    "surveyComplete": false
+  },
+  {
+    "siteID": 203,
+    "systemName": "NGC 2451A Sector MX-U c2-1",
+    "systemAddress": 359938265762,
+    "bodyName": "B 1",
+    "bodyId": 22,
+    "distanceToArrival": 17137.0,
+    "starPos": [
+      721.71875,
+      -146.9375,
+      -249.34375
+    ],
+    "siteType": "Crossroads",
+    "latitude": -53.092567,
+    "longitude": 79.52636,
+    "siteHeading": -1,
+    "idx": 1,
+    "surveyComplete": false
+  },
+  {
+    "siteID": 206,
+    "systemName": "NGC 2451A Sector IW-W c1-10",
+    "systemAddress": 2833973678746,
+    "bodyName": "B 4",
+    "bodyId": 21,
+    "distanceToArrival": 4861.0,
+    "starPos": [
+      779.03125,
+      -111.15625,
+      -302.375
+    ],
+    "siteType": "Crossroads",
+    "latitude": -10.356405,
+    "longitude": -39.289055,
+    "siteHeading": -1,
+    "idx": 1,
+    "surveyComplete": false
+  },
+  {
+    "siteID": 208,
+    "systemName": "Col 173 Sector YC-G c12-17",
+    "systemAddress": 4758454637234,
+    "bodyName": "B 8 a",
+    "bodyId": 69,
+    "distanceToArrival": 55000.0,
+    "starPos": [
+      990.875,
+      -62.375,
+      -173.71875
+    ],
+    "siteType": "Crossroads",
+    "latitude": 19.578655,
+    "longitude": 106.872337,
+    "siteHeading": -1,
+    "idx": 1,
+    "surveyComplete": false
+  },
+  {
+    "siteID": 207,
+    "systemName": "Wregoe JM-L c21-5",
+    "systemAddress": 1459584242362,
+    "bodyName": "A 1",
+    "bodyId": 5,
+    "distanceToArrival": 425.0,
+    "starPos": [
+      779.53125,
+      -1.65625,
+      -143.71875
+    ],
+    "siteType": "Lacrosse",
+    "latitude": 33.686405,
+    "longitude": -128.231308,
+    "siteHeading": -1,
+    "idx": 1,
+    "surveyComplete": false
+  },
+  {
+    "siteID": 205,
+    "systemName": "NGC 2451A Sector OI-S b4-7",
+    "systemAddress": 16074317571393,
+    "bodyName": "A 1",
+    "bodyId": 3,
+    "distanceToArrival": 72.0,
+    "starPos": [
+      763.8125,
+      -84.1875,
+      -256.3125
+    ],
+    "siteType": "Lacrosse",
+    "latitude": -54.465458,
+    "longitude": -156.092178,
+    "siteHeading": -1,
+    "idx": 1,
+    "surveyComplete": false
+  },
+  {
+    "siteID": 202,
+    "systemName": "NGC 2451A Sector EB-X c1-18",
+    "systemAddress": 5032862749338,
+    "bodyName": "C 2",
+    "bodyId": 70,
+    "distanceToArrival": 51254.0,
+    "starPos": [
+      731.03125,
+      -86.5,
+      -280.90625
+    ],
+    "siteType": "Hammerbot",
+    "latitude": -25.6188,
+    "longitude": -33.7918,
+    "siteHeading": -1,
+    "idx": 1,
+    "surveyComplete": false
+  },
+  {
+    "siteID": 204,
+    "systemName": "NGC 2451A Sector UJ-Q b5-7",
+    "systemAddress": 16074317505865,
+    "bodyName": "B 2",
+    "bodyId": 13,
+    "distanceToArrival": 374.0,
+    "starPos": [
+      758.09375,
+      -90.75,
+      -226.34375
+    ],
+    "siteType": "Hammerbot",
+    "latitude": -3.147438,
+    "longitude": 159.473068,
+    "siteHeading": -1,
+    "idx": 1,
+    "surveyComplete": false
   }
 ]

@@ -347,5 +347,14 @@ namespace SrvSurvey.Properties {
                 return ResourceManager.GetString("Structure", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        internal static string Unknown {
+            get {
+                return ResourceManager.GetString("Unknown", resourceCulture);
+            }
+        }
     }
 }

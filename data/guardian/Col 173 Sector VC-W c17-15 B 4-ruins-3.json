@@ -1,0 +1,27 @@
+{
+  "sid": "GR552",
+  "idx": 3,
+  "sh": -1,
+  "t": "Gamma",
+  "rh": -1,
+  "og": "BCFGHJLM",
+  "ao": [
+    "B13-ur,to-B18-",
+    "B21-ur,re-B19-",
+    "C09-to,ur-C17-",
+    "C13-to,re-C20-",
+    "F13-or,ca-T16-",
+    "F14-or,or-T15-",
+    "G12-or,re-T20-",
+    "H15-ta,or-L19-",
+    "H31-ta,ta-L16-",
+    "H40-ta,ta-L16-",
+    "H46-ta,to-L20-",
+    "H55-ta,ta-L16-",
+    "J07-ca,or-H21-",
+    "L09-or,to-T19-",
+    "L12-or,ta-T18-",
+    "M05-to-C14-",
+    "M13-to,to-C15-"
+  ]
+}

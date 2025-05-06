@@ -1,0 +1,35 @@
+{
+  "sid": "GR523",
+  "idx": 2,
+  "sh": -1,
+  "t": "Alpha",
+  "rh": -1,
+  "ll": {
+    "lat": 6.9912,
+    "long": -152.966049
+  },
+  "og": "BCDEGIJKNOPQ",
+  "ao": [
+    "B04-to,ca-C3-",
+    "B15-to,ur-C4-",
+    "C11-to,or-C6-",
+    "C13-to,re-C1-",
+    "D11-to,or-C6-",
+    "D13-or,to-T6-",
+    "E09-ca-H1-",
+    "G01-ca,ca-H2-",
+    "I04-ur,re-B1-",
+    "I15-ur,or-B5-",
+    "J06-ca,or-H5-",
+    "K10-ca,or-H5-",
+    "K22-to,or-C6-",
+    "N09-ca-H1-",
+    "O06-or,to-T6-",
+    "O18-or,ta-T5-",
+    "P04-or,ta-T5-",
+    "P10-or,or-T2-",
+    "Q01-ta,ta-L2-",
+    "Q13-ta,ta-L2-",
+    "Q23-ta,ca-L3-"
+  ]
+}

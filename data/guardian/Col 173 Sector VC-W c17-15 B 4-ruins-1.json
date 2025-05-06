@@ -1,0 +1,25 @@
+{
+  "sid": "GR550",
+  "idx": 1,
+  "sh": -1,
+  "t": "Gamma",
+  "rh": -1,
+  "og": "BEGIJKNPQS",
+  "ao": [
+    "B08-ur,ur-B14-",
+    "B18-ur-B13-",
+    "E05-ca,ta-H20-",
+    "G14-or,ta-T18-",
+    "I07-ur,ur-B14-",
+    "I13-ur-B13-",
+    "J08-ca,to-H17-",
+    "K02-or,ca-T16-",
+    "K11-or,ur-T17-",
+    "N05-or-T14-",
+    "N13-or,ur-T17-",
+    "P08-to,to-C15-",
+    "P18-to-C14-",
+    "Q06-ca,ca-H18-",
+    "S02-ca,ca-H18-"
+  ]
+}

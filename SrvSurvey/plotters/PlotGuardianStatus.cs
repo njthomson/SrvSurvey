@@ -406,6 +406,8 @@ namespace SrvSurvey.plotters
                 else
                     msg = Res.OnApproachMiddleStructureNoBluePrint.format(site.type);
 
+                // TODO: Highlight if the obelisk groups are not known?
+
                 drawCenterMessage(msg, GameColors.brushCyan);
             }
             sz = drawFooterText(Res.OnApproachFooter);

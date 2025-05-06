@@ -227,7 +227,6 @@ namespace SrvSurvey.game
         public string commander;
         public DateTimeOffset firstVisited;
         public DateTimeOffset lastVisited;
-        [JsonConverter(typeof(StringEnumConverter))]
         public SiteType type;
         public int index;
         public LatLong2 location;
@@ -242,11 +241,11 @@ namespace SrvSurvey.game
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool legacy = false;
 
-        public Dictionary<string, bool> confirmedPOI = new Dictionary<string, bool>();
-        public Dictionary<string, SitePoiStatus> poiStatus = new Dictionary<string, SitePoiStatus>();
-        public Dictionary<string, int> relicHeadings = new Dictionary<string, int>();
-        public Dictionary<string, ActiveObelisk> activeObelisks = new Dictionary<string, ActiveObelisk>();
-        public HashSet<char> obeliskGroups = new HashSet<char>();
+        public Dictionary<string, bool> confirmedPOI = new();
+        public Dictionary<string, SitePoiStatus> poiStatus = new();
+        public Dictionary<string, int> relicHeadings = new();
+        public Dictionary<string, ActiveObelisk> activeObelisks = new();
+        public HashSet<char> obeliskGroups = new();
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public Dictionary<string, Components>? components;
         public List<SitePOI>? rawPoi;
@@ -557,7 +556,10 @@ namespace SrvSurvey.game
         {
             this.loadPub();
             var status = new SurveyCompletionStatus();
-            var template = GuardianSiteTemplate.sites[this.type];
+            var template = GuardianSiteTemplate.sites.GetValueOrDefault(this.type);
+
+            // exit early if site type is unknown
+            if (template == null) return status;
 
             // process all POIs from template and raw
             var poiToProcess = this.rawPoi == null

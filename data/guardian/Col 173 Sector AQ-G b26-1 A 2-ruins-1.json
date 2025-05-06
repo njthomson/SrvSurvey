@@ -1,0 +1,27 @@
+{
+  "sid": "GR534",
+  "idx": 1,
+  "sh": -1,
+  "t": "Alpha",
+  "rh": -1,
+  "og": "BCEGHIKNPQ",
+  "ao": [
+    "B04-to,ca-C3-",
+    "B21-to,re-C1-",
+    "C02-to,ur-C4-",
+    "C11-to,or-C6-",
+    "E02-ca,ta-H4-",
+    "G02-ca,ur-H3-",
+    "H03-ca,ur-H3-",
+    "I05-ur,ur-B2-",
+    "I15-ur,or-B5-",
+    "K05-or,or-T2-",
+    "K22-to,or-C6-",
+    "N02-ca,ta-H4-",
+    "P03-or,to-T6-",
+    "P04-or,ta-T5-",
+    "Q23-ta,ca-L3-",
+    "Q24-ta,ur-L4-",
+    "Q29-ta,ur-L4-"
+  ]
+}

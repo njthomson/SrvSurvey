@@ -1,0 +1,33 @@
+{
+  "sid": "GR522",
+  "idx": 1,
+  "sh": -1,
+  "t": "Alpha",
+  "rh": -1,
+  "ll": {
+    "lat": -41.6117,
+    "long": 66.677055
+  },
+  "og": "BDEGHIJKLNOQ",
+  "ao": [
+    "B12-to,ur-C4-",
+    "B16-to,ca-C3-",
+    "D03-or,ur-T4-",
+    "D12-to,ta-C5-",
+    "E07-ca,to-H6-",
+    "G01-ca,ca-H2-",
+    "H05-ca-H1-",
+    "I10-ur,ta-B4-",
+    "I12-ur,to-B6-",
+    "J07-ca,ca-H2-",
+    "K06-or,or-T2-",
+    "K16-ca,ta-H4-",
+    "L07-ca,to-H6-",
+    "N07-ca,to-H6-",
+    "O08-or,or-T2-",
+    "O12-or,to-T6-",
+    "Q01-ta,ta-L2-",
+    "Q19-ta,re-L7-",
+    "Q21-ta,ta-L2-"
+  ]
+}

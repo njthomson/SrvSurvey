@@ -39,7 +39,7 @@ namespace EliteDangerousRegionMap
             "Aquila's Halo",
             "Errant Marches",
             "Perseus Arm",
-            "Formidine Rift",
+            "The Formidine Rift",
             "Vulcan Gate",
             "Elysian Shore",
             "Sanguineous Rim",

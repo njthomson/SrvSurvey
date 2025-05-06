@@ -1,0 +1,22 @@
+{
+  "sid": "GR538",
+  "idx": 3,
+  "sh": -1,
+  "t": "Gamma",
+  "rh": -1,
+  "og": "BCGJNPQS",
+  "ao": [
+    "B08-ur,ur-B14-",
+    "B24-ur,ta-B16-",
+    "C04-to,ur-C17-",
+    "C10-to,to-C15-",
+    "G04-or,to-T19-",
+    "J09-ca,ur-H19-",
+    "N05-or-T14-",
+    "N11-or,or-T15-",
+    "P08-to,to-C15-",
+    "P24-to,ur-C17-",
+    "Q04-ca,ur-H19-",
+    "S07-ca,ta-H20-"
+  ]
+}

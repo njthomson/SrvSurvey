@@ -414,7 +414,7 @@ namespace SrvSurvey.game
 
             // is destination the next hop on the route?
             destinationNextRouteHop = false;
-            if (this.status.Destination?.System > 0)
+            if (this.status.Destination?.System > 0 && this.navRoute.Route != null)
             {
                 var currentHop = this.navRoute.Route.FirstOrDefault(r => r.SystemAddress == this.systemData?.address);
                 if (currentHop != null)

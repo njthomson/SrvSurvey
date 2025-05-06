@@ -1,0 +1,32 @@
+{
+  "sid": "GR547",
+  "idx": 2,
+  "sh": -1,
+  "t": "Alpha",
+  "rh": -1,
+  "og": "ACDFGHJKNOPQ",
+  "ao": [
+    "A11-to,ca-C3-",
+    "A12-to,ur-C4-",
+    "A20-or,ur-T4-",
+    "C01-to,ur-C4-",
+    "C13-to,re-C1-",
+    "D01-to,or-C6-",
+    "D13-or,to-T6-",
+    "F07-ur,ur-B2-",
+    "F14-ur,ca-B3-",
+    "G01-ca,ca-H2-",
+    "H05-ca-H1-",
+    "J06-ca,or-H5-",
+    "K07-or,ca-T3-",
+    "K14-ca,or-H5-",
+    "N09-ca-H1-",
+    "O04-or,ur-T4-",
+    "O20-or,to-T6-",
+    "P01-or,to-T6-",
+    "P05-or,ta-T5-",
+    "Q14-ta,ca-L3-",
+    "Q15-ta,ur-L4-",
+    "Q22-ta,ta-L2-"
+  ]
+}

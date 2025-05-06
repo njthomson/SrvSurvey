@@ -1,0 +1,24 @@
+{
+  "sid": "GR535",
+  "idx": 2,
+  "sh": -1,
+  "t": "Alpha",
+  "rh": -1,
+  "og": "DEFGHIKLP",
+  "ao": [
+    "D03-or,ur-T4-",
+    "D06-to,or-C6-",
+    "E05-ca,to-H6-",
+    "F06-ur,ur-B2-",
+    "F08-ur,ur-B2-",
+    "G02-ca,ur-H3-",
+    "H03-ca,ur-H3-",
+    "I06-ur,ca-B3-",
+    "I20-ur,to-B6-",
+    "K06-or,or-T2-",
+    "K08-or,ca-T3-",
+    "L05-ca,to-H6-",
+    "P06-or,ca-T3-",
+    "P07-or,ca-T3-"
+  ]
+}

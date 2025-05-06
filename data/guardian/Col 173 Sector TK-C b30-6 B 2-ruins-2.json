@@ -1,0 +1,25 @@
+{
+  "sid": "GR557",
+  "idx": 2,
+  "sh": -1,
+  "t": "Alpha",
+  "rh": -1,
+  "og": "CGHILMNOP",
+  "ao": [
+    "C11-to,or-C6-",
+    "C12-to,or-C6-",
+    "G03-ca,or-H5-",
+    "H03-ca,ur-H3-",
+    "I14-ur,or-B5-",
+    "I16-ur,to-B6-",
+    "L06-ca,re-H7-",
+    "M01-ta-L1-",
+    "M13-ta,or-L5-",
+    "M21-ta,or-L5-",
+    "N06-ca,re-H7-",
+    "O02-or,or-T2-",
+    "O18-or,ta-T5-",
+    "P08-or,ur-T4-",
+    "P09-or,ur-T4-"
+  ]
+}

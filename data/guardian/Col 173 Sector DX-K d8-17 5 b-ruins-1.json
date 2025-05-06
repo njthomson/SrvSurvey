@@ -1,0 +1,29 @@
+{
+  "sid": "GR521",
+  "idx": 1,
+  "sh": -1,
+  "t": "Alpha",
+  "rh": -1,
+  "ll": {
+    "lat": -8.763789,
+    "long": -122.239967
+  },
+  "og": "BDEJKLMQ",
+  "ao": [
+    "B16-to,ca-C3-",
+    "B18-to,re-C1-",
+    "D07-to,ta-C5-",
+    "D12-to,ta-C5-",
+    "E03-ca,or-H5-",
+    "J02-ca,re-H7-",
+    "K09-ca-H1-",
+    "K16-ca,ta-H4-",
+    "L03-ca,or-H5-",
+    "M01-ta-L1-",
+    "M09-ta-L1-",
+    "M13-ta,or-L5-",
+    "Q07-ta,ta-L6-",
+    "Q18-ta,re-L7-",
+    "Q23-ta,ca-L3-"
+  ]
+}

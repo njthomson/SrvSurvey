@@ -1152,9 +1152,9 @@ namespace SrvSurvey.canonn
 
         #region parse LilacLight sheets
 
-        public void readXmlSheetRuins2()
+        public async Task readXmlSheetRuins2()
         {
-            var doc = XDocument.Load(@"d:\code\Guardian Ruin Survey.xml");
+            var doc = XDocument.Load(@"d:\code\SrvSurvey\Guardian Ruin Survey.xml");
 
             var obeliskGroupings = new Dictionary<string, string>();
             parseRuinObeliskGroupings(doc, "Alpha - Groups", obeliskGroupings);
@@ -1200,13 +1200,23 @@ namespace SrvSurvey.canonn
                 var completionStatus = site.getCompletionStatus();
                 ruinSummary.surveyProgress = completionStatus.progress;
 
-                if (ruinSummary.bodyId == -1)
+                if (ruinSummary.systemAddress <= 0)
                 {
-                    throw new NotImplementedException("TODO?");
+                    var sysRef = await Game.spansh.getSystemRef(ruinSummary.systemName);
+                    if (sysRef == null)
+                        throw new NotImplementedException("TODO?");
+
+                    ruinSummary.systemAddress = sysRef.id64;
                 }
-                if (ruinSummary.systemAddress == -1)
+
+                if (ruinSummary.bodyId <= 0)
                 {
-                    throw new NotImplementedException("TODO?");
+                    var sysDump = await Game.spansh.getSystemDump(ruinSummary.systemAddress);
+                    var bodyMatch = sysDump?.bodies.Find(b => b.name.EndsWith(ruinSummary.bodyName));
+                    if (bodyMatch == null)
+                        throw new NotImplementedException("TODO?");
+
+                    ruinSummary.bodyId = bodyMatch.bodyId;
                 }
             }
 
@@ -1221,7 +1231,7 @@ namespace SrvSurvey.canonn
             var sites = new List<GuardianSitePub>();
 
             var table = doc.Root?.Elements().Where(_ => _.Name.LocalName == "Worksheet" && _.FirstAttribute?.Value == "Ruins").First().Elements()!;
-            var rows = table.Elements(XName.Get("Row", "urn:schemas-microsoft-com:office:spreadsheet")).Skip(2);
+            var rows = table.Elements(XName.Get("Row", "urn:schemas-microsoft-com:office:spreadsheet")).Skip(1);
 
             GuardianSitePub site = null!;
 
@@ -1231,13 +1241,13 @@ namespace SrvSurvey.canonn
                 try
                 {
                     // start a new site?
-                    var siteId = cells[1].Value;
+                    var siteId = cells[0].Value;
                     if (!string.IsNullOrEmpty(siteId))
                     {
                         siteId = siteId.Substring(0, 5);
-                        var systemName = cells[3].Value;
+                        var systemName = cells[2].Value;
                         var bodyName = cells[10].Value;
-                        var idx = int.Parse(cells[21].Value);
+                        var idx = int.Parse(cells[23].Value);
 
                         var pubPath = Path.Combine(@"D:\code\SrvSurvey\data\guardian", $"{systemName} {bodyName}-ruins-{idx}.json");
                         if (File.Exists(pubPath))
@@ -1249,8 +1259,8 @@ namespace SrvSurvey.canonn
                             site.systemName = systemName;
                             site.bodyName = bodyName;
                             if (site.idx == 0) site.idx = idx;
-                            if (site.t == SiteType.Unknown) site.t = Enum.Parse<SiteType>(cells[22].Value, true);
-                            if (string.IsNullOrWhiteSpace(site.og)) site.og = obeliskGroupings[siteId].Replace(" ", "").Replace(",", "");
+                            if (site.t == SiteType.Unknown) site.t = Enum.Parse<SiteType>(cells[24].Value, true);
+                            if (string.IsNullOrWhiteSpace(site.og)) site.og = obeliskGroupings.GetValueOrDefault(siteId)?.Replace(" ", "").Replace(",", "") ?? "";
                             if (site.ao == null) site.ao = new HashSet<ActiveObelisk>();
                         }
                         else
@@ -1261,8 +1271,8 @@ namespace SrvSurvey.canonn
                                 systemName = systemName,
                                 bodyName = bodyName,
                                 idx = idx,
-                                t = Enum.Parse<SiteType>(cells[22].Value, true),
-                                og = obeliskGroupings[siteId].Replace(" ", "").Replace(",", ""),
+                                t = Enum.Parse<SiteType>(cells[24].Value, true),
+                                og = obeliskGroupings.GetValueOrDefault(siteId)?.Replace(" ", "").Replace(",", "") ?? "",
                                 ao = new HashSet<ActiveObelisk>(),
                             };
                         }
@@ -1293,23 +1303,23 @@ namespace SrvSurvey.canonn
                         {
                             ruinSummary.starPos = new double[3]
                             {
+                                double.Parse(cells[4].Value, CultureInfo.InvariantCulture),
                                 double.Parse(cells[5].Value, CultureInfo.InvariantCulture),
                                 double.Parse(cells[6].Value, CultureInfo.InvariantCulture),
-                                double.Parse(cells[7].Value, CultureInfo.InvariantCulture),
                             };
                         }
                         // update legacy lat/long if missing
                         if (double.IsNaN(ruinSummary.legacyLatitude) || double.IsNaN(ruinSummary.legacyLongitude))
                         {
-                            ruinSummary.legacyLatitude = double.Parse(cells[17].Value, CultureInfo.InvariantCulture);
-                            ruinSummary.legacyLongitude = double.Parse(cells[18].Value, CultureInfo.InvariantCulture);
+                            ruinSummary.legacyLatitude = double.Parse(cells[16].Value, CultureInfo.InvariantCulture);
+                            ruinSummary.legacyLongitude = double.Parse(cells[17].Value, CultureInfo.InvariantCulture);
                         }
                         // update live lat/long if missing
-                        if (site.ll == null && cells[19].Value != "" && cells[20].Value != "")
+                        if (site.ll == null && cells[20].Value != "" && cells[21].Value != "")
                         {
                             site.ll = new LatLong2(
-                                double.Parse(cells[19].Value, CultureInfo.InvariantCulture),
-                                double.Parse(cells[20].Value, CultureInfo.InvariantCulture)
+                                double.Parse(cells[20].Value, CultureInfo.InvariantCulture),
+                                double.Parse(cells[21].Value, CultureInfo.InvariantCulture)
                             );
                         }
                         if (site.ll != null && (double.IsNaN(ruinSummary.latitude) || double.IsNaN(ruinSummary.longitude)))
@@ -1321,21 +1331,21 @@ namespace SrvSurvey.canonn
                         continue;
                     }
 
-                    var bank = cells[26].Value;
+                    var bank = cells[28].Value;
                     if (string.IsNullOrEmpty(bank))
                     {
                         Game.log($"Empty bank. Skipping row:" + string.Join(", ", cells.Select(_ => _.Value)));
                         continue;
                     }
-                    var bankIdx = cells[27].Value;
+                    var bankIdx = cells[29].Value;
                     if (bankIdx == "19*B")
                     {
                         Game.log($"Ignore rows about 19*B. Skipping row:" + string.Join(", ", cells.Select(_ => _.Value)));
                         continue;
                     }
-                    var item1 = cells[28].Value;
-                    var item2 = cells[29].Value;
-                    var correctCombo = cells[35].Value;
+                    var item1 = cells[30].Value;
+                    var item2 = cells[31].Value;
+                    var correctCombo = cells[37].Value;
                     if (!string.IsNullOrEmpty(correctCombo) && correctCombo.StartsWith("Correct Combo:"))
                     {
                         Game.log($"Using 'Correct Combo:' => '{correctCombo}' replacing: '{item1}' / '{item2}' on row:" + string.Join(", ", cells.Select(_ => _.Value)));
@@ -1351,14 +1361,14 @@ namespace SrvSurvey.canonn
                         continue;
                     }
 
-                    var msgType = cells[31].Value;
+                    var msgType = cells[32].Value;
                     if (msgType.EndsWith("?"))
                     {
                         // skip rows without items
                         Game.log($"Uncertain msgType. Skipping row:" + string.Join(", ", cells.Select(_ => _.Value)));
                         continue;
                     }
-                    var msgNum = int.Parse(cells[32].Value);
+                    var msgNum = int.Parse(cells[33].Value);
 
                     var activeObelisk = new ActiveObelisk()
                     {
@@ -1373,6 +1383,9 @@ namespace SrvSurvey.canonn
 
                     if (!site.ao.Any(_ => _.ToString() == activeObelisk.ToString()))
                         site.ao.Add(activeObelisk);
+
+                    if (!site.og.Contains(bank))
+                        site.og = string.Join("", (site.og + bank).ToList().Order());
                 }
                 catch (Exception ex)
                 {
@@ -1402,7 +1415,7 @@ namespace SrvSurvey.canonn
 
         public async Task readXmlSheetRuins3()
         {
-            var doc = XDocument.Load(@"d:\code\Guardian Structure Survey.xml");
+            var doc = XDocument.Load(@"d:\code\SrvSurvey\Guardian Structure Survey.xml");
 
             var obeliskGroupings = new Dictionary<string, string>();
 
@@ -1490,7 +1503,7 @@ namespace SrvSurvey.canonn
             var sites = new List<GuardianSitePub>();
 
             var table = doc.Root?.Elements().Where(_ => _.Name.LocalName == "Worksheet" && _.FirstAttribute?.Value == "Structures").First().Elements()!;
-            var rows = table.Elements(XName.Get("Row", "urn:schemas-microsoft-com:office:spreadsheet")).Skip(2);
+            var rows = table.Elements(XName.Get("Row", "urn:schemas-microsoft-com:office:spreadsheet")).Skip(1);
 
             GuardianSitePub site = null!;
 
@@ -1500,17 +1513,18 @@ namespace SrvSurvey.canonn
                 try
                 {
                     // start a new site?
-                    var siteId = cells[1].Value;
+                    var siteId = cells[0].Value;
                     if (!string.IsNullOrEmpty(siteId))
                     {
                         siteId = siteId.Replace(" ", "").Substring(0, 5);
                         var systemName = cells[2].Value;
-                        var bodyName = cells[9].Value;
+                        var bodyName = cells[10].Value;
                         var idx = 1;
-                        var siteTypeCell = cells[17].Value;
-                        var siteType = siteTypeCell.Split('-', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Last();
-                        var latitude = double.Parse(cells[15].Value, CultureInfo.InvariantCulture);
-                        var longitude = double.Parse(cells[16].Value, CultureInfo.InvariantCulture);
+                        var siteType = cells[24].Value;
+                        var latitudeTxt = string.IsNullOrEmpty(cells[20].Value) ? cells[16].Value : cells[20].Value;
+                        var longitudeTxt = string.IsNullOrEmpty(cells[21].Value) ? cells[17].Value : cells[21].Value;
+                        var latitude = double.Parse(latitudeTxt, CultureInfo.InvariantCulture);
+                        var longitude = double.Parse(longitudeTxt, CultureInfo.InvariantCulture);
 
                         var pubPath = Path.Combine(@"D:\code\SrvSurvey\data\guardian", $"{systemName} {bodyName}-structure-{idx}.json");
                         if (File.Exists(pubPath))
@@ -1552,11 +1566,11 @@ namespace SrvSurvey.canonn
                                 // siteID is below
                                 systemName = site.systemName,
                                 bodyName = site.bodyName,
-                                distanceToArrival = double.Parse(cells[10].Value, CultureInfo.InvariantCulture),
+                                distanceToArrival = double.Parse(cells[11].Value, CultureInfo.InvariantCulture),
                                 siteType = site.t.ToString(),
                                 idx = site.idx,
-                                latitude = double.Parse(cells[15].Value, CultureInfo.InvariantCulture),
-                                longitude = double.Parse(cells[16].Value, CultureInfo.InvariantCulture),
+                                latitude = latitude,
+                                longitude = longitude,
 
                                 // populated from pubData file ...
                                 //   siteHeading
@@ -1571,9 +1585,9 @@ namespace SrvSurvey.canonn
                         {
                             siteSummary.starPos = new double[3]
                             {
-                                double.Parse(cells[3].Value, CultureInfo.InvariantCulture),
                                 double.Parse(cells[4].Value, CultureInfo.InvariantCulture),
                                 double.Parse(cells[5].Value, CultureInfo.InvariantCulture),
+                                double.Parse(cells[6].Value, CultureInfo.InvariantCulture),
                             };
                         }
 
@@ -1581,16 +1595,16 @@ namespace SrvSurvey.canonn
                     }
 
                     // collect obelisk items and logs
-                    var bank = cells[18].Value;
+                    var bank = cells[28].Value;
                     if (string.IsNullOrEmpty(bank))
                     {
                         Game.log($"Empty bank. Skipping row:" + string.Join(", ", cells.Select(_ => _.Value)));
                         continue;
                     }
-                    var bankIdx = cells[19].Value;
+                    var bankIdx = cells[29].Value;
 
-                    var item1 = cells[20].Value;
-                    var item2 = cells[21].Value;
+                    var item1 = cells[30].Value;
+                    var item2 = cells[31].Value;
                     if (string.IsNullOrEmpty(item1) || item1 == "-")
                     {
                         // skip rows without items
@@ -1598,7 +1612,7 @@ namespace SrvSurvey.canonn
                         continue;
                     }
 
-                    var msgNum = int.Parse(cells[22].Value);
+                    var msgNum = int.Parse(cells[32].Value.Replace("?", ""));
 
                     var activeObelisk = new ActiveObelisk()
                     {

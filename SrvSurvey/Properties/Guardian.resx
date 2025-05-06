@@ -245,4 +245,8 @@
     <value>Pylon</value>
     <comment>The things we shoot to charge up at Guardian structures</comment>
   </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unknown</value>
+    <comment>Guardian site type is unknown</comment>
+  </data>
 </root>

@@ -1,0 +1,32 @@
+{
+  "sid": "GR536",
+  "idx": 1,
+  "sh": -1,
+  "t": "Gamma",
+  "rh": -1,
+  "og": "ABDEFGIJKLMNPQ",
+  "ao": [
+    "A19-ur,ur-B14-",
+    "A27-ur-B13-",
+    "B19-ur,to-B18-",
+    "B27-ur-B13-",
+    "D01-ca,or-H21-",
+    "E03-ca,or-H21-",
+    "F06-or,ta-T18-",
+    "F08-or,ca-T16-",
+    "G05-or,ta-T18-",
+    "I01-ur,ca-B15-",
+    "I05-ur,re-B19-",
+    "J04-ca,ca-H18-",
+    "K08-or,or-T15-",
+    "K11-or,ur-T17-",
+    "L02-or,ur-T17-",
+    "L03-or,ta-T18-",
+    "M01-to,re-C20-",
+    "M03-to,ur-C17-",
+    "N12-or,ca-T16-",
+    "N13-or,ur-T17-",
+    "P27-to-C14-",
+    "Q03-ca,or-H21-"
+  ]
+}

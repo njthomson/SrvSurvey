@@ -1,0 +1,29 @@
+{
+  "sid": "GR527",
+  "idx": 1,
+  "sh": -1,
+  "t": "Alpha",
+  "rh": -1,
+  "og": "BDEGIJLMNOQ",
+  "ao": [
+    "B03-to,re-C1-",
+    "B07-to,or-C6-",
+    "D04-or,ca-T3-",
+    "D08-or,ta-T5-",
+    "E08-ca,ca-H2-",
+    "G01-ca,ca-H2-",
+    "I09-ur,or-B5-",
+    "I11-ur,ta-B4-",
+    "J07-ca,ca-H2-",
+    "L08-ca,ca-H2-",
+    "M03-ta,ca-L3-",
+    "M09-ta-L1-",
+    "M21-ta,or-L5-",
+    "N08-ca,ca-H2-",
+    "O11-or,ta-T5-",
+    "O17-or,ur-T4-",
+    "Q06-ta,or-L5-",
+    "Q08-ta,re-L7-",
+    "Q25-ta,or-L5-"
+  ]
+}
