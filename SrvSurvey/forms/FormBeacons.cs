@@ -600,7 +600,7 @@ namespace SrvSurvey
 
             var siteData = GuardianSiteData.Load($"{entry.systemName} {entry.bodyName}", entry.idx, entry.isRuins);
 
-            if (siteData == null)
+            if (siteData == null && !double.IsNaN(entry.latitude) && !double.IsNaN(entry.longitude))
             {
                 // construct a new siteData from what we have here and it's pubData
                 var siteType = Enum.Parse<SiteType>(entry.siteType);
