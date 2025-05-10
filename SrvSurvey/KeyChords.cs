@@ -418,6 +418,10 @@ namespace SrvSurvey
             Application.DoEvents();
             FormMultiFloatie.focusNextWindow();
             Application.DoEvents();
+            FormMultiFloatie.focusNextWindow();
+            Application.DoEvents();
+            FormMultiFloatie.focusNextWindow();
+            Application.DoEvents();
 
             return true;
         }
@@ -459,6 +463,8 @@ namespace SrvSurvey
         refreshColonyData,
         /// <summary> Collapse ColonyData rows if enough on FCs </summary>
         collapseColonyData,
+        /// <summary> Set focus on the next game window </summary>
+        nextWindow,
         /// <summary> Track the current location as #1 </summary>
         track1,
         /// <summary> Track the current location as #2 </summary>
@@ -475,7 +481,5 @@ namespace SrvSurvey
         track7,
         /// <summary> Track the current location as #8 </summary>
         track8,
-        /// <summary> Set focus on the next game window </summary>
-        nextWindow,
     }
 }

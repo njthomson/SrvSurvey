@@ -312,10 +312,6 @@ namespace SrvSurvey.game
             if (newMode != GameMode.StationServices)
                 this.marketEventSeen = false;
 
-            // show reminder message if we bought something on an FC but did not revisit the commodity market
-            if (Game.settings.allowNotifications.fcMarketPurchaseBugReminder && marketBuyOnFC && newMode != GameMode.StationServices)
-                PlotFloatie.showMessage("Don't forget to revisit the market when making buying at Fleet Carriers");
-
             if (status != null && landingGearDown != status.landingGearDown)
             {
                 // TODO: one day ... move this type of logic into status
@@ -1122,7 +1118,6 @@ namespace SrvSurvey.game
 
             // forget these things
             this.lastDocked = null;
-            this.marketBuyOnFC = false;
             ColonyData.localUntrackedProject = null;
             if (this.dockTimer != null)
             {
@@ -1149,7 +1144,6 @@ namespace SrvSurvey.game
                 if (this.atMainMenu)
                 {
                     this.lastDocked = null;
-                    this.marketBuyOnFC = false;
                     ColonyData.localUntrackedProject = null;
                     this.exitMats();
                 }
@@ -1622,8 +1616,6 @@ namespace SrvSurvey.game
 
             Program.invalidate<PlotBuildCommodities>();
 
-            if (Game.settings.allowNotifications.fcMarketPurchaseBugReminder && this.fcMarketIds.Contains(entry.MarketId))
-                this.marketBuyOnFC = true;
         }
         private void onJournalEntry(MarketSell entry)
         {
@@ -1695,9 +1687,7 @@ namespace SrvSurvey.game
             }
         }
 
-        public bool marketBuyOnFC = false;
         public bool marketEventSeen = false;
-        public HashSet<long> fcMarketIds = new();
 
         private void onJournalEntry(Market entry)
         {
@@ -1708,12 +1698,6 @@ namespace SrvSurvey.game
 
             if (entry.StationType == "FleetCarrier")
             {
-                if (Game.settings.allowNotifications.fcMarketPurchaseBugReminder)
-                {
-                    // remember if this is a FleetCarrier market - so we can help people avoid annoying not-yet-purchased bug
-                    this.fcMarketIds.Add(entry.MarketId);
-                    this.marketBuyOnFC = false;
-                }
 
                 if (cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
                 {
@@ -2732,7 +2716,6 @@ namespace SrvSurvey.game
             this.lastUndocked = entry;
             this.lastDocked = null;
             this.lastColonisationConstructionDepot = null;
-            this.marketBuyOnFC = false;
             ColonyData.localUntrackedProject = null;
             this.touchdownLocation = LatLong2.Empty;
 

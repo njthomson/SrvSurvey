@@ -35,7 +35,6 @@ namespace SrvSurvey
             ListViewItem listViewItem2 = new ListViewItem("Mission remaining cargo count");
             ListViewItem listViewItem3 = new ListViewItem("Boxel search status");
             ListViewItem listViewItem4 = new ListViewItem("Next boxel to search");
-            ListViewItem listViewItem5 = new ListViewItem("Buying bug at FCs");
             panel1 = new Panel();
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
@@ -393,13 +392,12 @@ namespace SrvSurvey
             // 
             // checkBox45
             // 
-            checkBox45.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             checkBox45.AutoSize = true;
             checkBox45.FlatStyle = FlatStyle.System;
             checkBox45.Location = new Point(10, 204);
             checkBox45.Name = "checkBox45";
             checkBox45.Size = new Size(158, 20);
-            checkBox45.TabIndex = 38;
+            checkBox45.TabIndex = 10;
             checkBox45.Tag = "minimizeToTray";
             checkBox45.Text = "Minimize to system tray";
             checkBox45.UseVisualStyleBackColor = true;
@@ -411,7 +409,7 @@ namespace SrvSurvey
             checkBox35.Location = new Point(434, 367);
             checkBox35.Name = "checkBox35";
             checkBox35.Size = new Size(201, 19);
-            checkBox35.TabIndex = 37;
+            checkBox35.TabIndex = 0;
             checkBox35.Tag = "hideOverlaysFromMouseInFSS_TEST";
             checkBox35.Text = "Hide overlays from mouse cursor";
             checkBox35.UseVisualStyleBackColor = true;
@@ -423,7 +421,7 @@ namespace SrvSurvey
             linkJournalFolder.Location = new Point(39, 253);
             linkJournalFolder.Name = "linkJournalFolder";
             linkJournalFolder.Size = new Size(600, 35);
-            linkJournalFolder.TabIndex = 14;
+            linkJournalFolder.TabIndex = 31;
             linkJournalFolder.TabStop = true;
             linkJournalFolder.Tag = "watchedJournalFolder";
             linkJournalFolder.Text = "C:\\xxx\\Pictures\\Frontier Developments\\Elite Dangerous\\";
@@ -452,7 +450,7 @@ namespace SrvSurvey
             checkHidePlottersFromDominator.Margin = new Padding(4, 3, 4, 3);
             checkHidePlottersFromDominator.Name = "checkHidePlottersFromDominator";
             checkHidePlottersFromDominator.Size = new Size(111, 20);
-            checkHidePlottersFromDominator.TabIndex = 22;
+            checkHidePlottersFromDominator.TabIndex = 20;
             checkHidePlottersFromDominator.Tag = "hidePlottersFromCombatSuits";
             checkHidePlottersFromDominator.Text = "Dominator suit";
             checkHidePlottersFromDominator.UseVisualStyleBackColor = true;
@@ -467,7 +465,7 @@ namespace SrvSurvey
             checkHidePlottersFromMaverick.Margin = new Padding(4, 3, 4, 3);
             checkHidePlottersFromMaverick.Name = "checkHidePlottersFromMaverick";
             checkHidePlottersFromMaverick.Size = new Size(102, 20);
-            checkHidePlottersFromMaverick.TabIndex = 21;
+            checkHidePlottersFromMaverick.TabIndex = 19;
             checkHidePlottersFromMaverick.Tag = "hidePlottersFromMaverickSuits";
             checkHidePlottersFromMaverick.Text = "Maverick suit";
             checkHidePlottersFromMaverick.UseVisualStyleBackColor = true;
@@ -489,7 +487,7 @@ namespace SrvSurvey
             btnAdjustOverlays.Location = new Point(440, 329);
             btnAdjustOverlays.Name = "btnAdjustOverlays";
             btnAdjustOverlays.Size = new Size(201, 32);
-            btnAdjustOverlays.TabIndex = 34;
+            btnAdjustOverlays.TabIndex = 33;
             btnAdjustOverlays.Text = "Adjust active overlay positions";
             btnAdjustOverlays.UseVisualStyleBackColor = true;
             btnAdjustOverlays.Click += btnAdjustOverlays_Click;
@@ -501,7 +499,7 @@ namespace SrvSurvey
             label27.Location = new Point(10, 419);
             label27.Name = "label27";
             label27.Size = new Size(62, 15);
-            label27.TabIndex = 33;
+            label27.TabIndex = 21;
             label27.Text = "Language:";
             // 
             // comboLang
@@ -513,7 +511,7 @@ namespace SrvSurvey
             comboLang.Location = new Point(78, 416);
             comboLang.Name = "comboLang";
             comboLang.Size = new Size(226, 23);
-            comboLang.TabIndex = 32;
+            comboLang.TabIndex = 22;
             comboLang.Tag = "lang";
             // 
             // numOpacity
@@ -549,7 +547,7 @@ namespace SrvSurvey
             label3.Margin = new Padding(0);
             label3.Name = "label3";
             label3.Size = new Size(181, 15);
-            label3.TabIndex = 20;
+            label3.TabIndex = 18;
             label3.Text = "Disable overlays when on foot in:";
             // 
             // panelTheme2
@@ -559,7 +557,7 @@ namespace SrvSurvey
             panelTheme2.Location = new Point(604, 182);
             panelTheme2.Name = "panelTheme2";
             panelTheme2.Size = new Size(32, 32);
-            panelTheme2.TabIndex = 28;
+            panelTheme2.TabIndex = 29;
             // 
             // btnTheme2
             // 
@@ -567,7 +565,7 @@ namespace SrvSurvey
             btnTheme2.Location = new Point(478, 181);
             btnTheme2.Name = "btnTheme2";
             btnTheme2.Size = new Size(119, 45);
-            btnTheme2.TabIndex = 27;
+            btnTheme2.TabIndex = 28;
             btnTheme2.Text = "Change secondary color";
             btnTheme2.UseVisualStyleBackColor = true;
             btnTheme2.Click += btnTheme2_Click;
@@ -592,7 +590,7 @@ namespace SrvSurvey
             btnPostProcess.Location = new Point(478, 412);
             btnPostProcess.Name = "btnPostProcess";
             btnPostProcess.Size = new Size(163, 29);
-            btnPostProcess.TabIndex = 31;
+            btnPostProcess.TabIndex = 1;
             btnPostProcess.Text = "Scan all old journal files";
             btnPostProcess.UseVisualStyleBackColor = true;
             btnPostProcess.Click += btnPostProcess_Click;
@@ -645,7 +643,7 @@ namespace SrvSurvey
             btnResetOverlays.Location = new Point(440, 291);
             btnResetOverlays.Name = "btnResetOverlays";
             btnResetOverlays.Size = new Size(199, 32);
-            btnResetOverlays.TabIndex = 30;
+            btnResetOverlays.TabIndex = 32;
             btnResetOverlays.Text = "Reset all custom overlay positions";
             btnResetOverlays.UseVisualStyleBackColor = true;
             btnResetOverlays.Click += btnResetOverlays_Click;
@@ -670,7 +668,7 @@ namespace SrvSurvey
             checkHideJournalTimer.Margin = new Padding(4, 3, 4, 3);
             checkHideJournalTimer.Name = "checkHideJournalTimer";
             checkHideJournalTimer.Size = new Size(265, 20);
-            checkHideJournalTimer.TabIndex = 10;
+            checkHideJournalTimer.TabIndex = 15;
             checkHideJournalTimer.Tag = "hideJournalWriteTimer";
             checkHideJournalTimer.Text = "Hide 5 second journal file write timer ➟➟➟";
             checkHideJournalTimer.UseVisualStyleBackColor = true;
@@ -718,7 +716,7 @@ namespace SrvSurvey
             checkHideOverlayOnMouseOver.Location = new Point(10, 372);
             checkHideOverlayOnMouseOver.Name = "checkHideOverlayOnMouseOver";
             checkHideOverlayOnMouseOver.Size = new Size(252, 20);
-            checkHideOverlayOnMouseOver.TabIndex = 19;
+            checkHideOverlayOnMouseOver.TabIndex = 17;
             checkHideOverlayOnMouseOver.Tag = "hideOverlaysFromMouse";
             checkHideOverlayOnMouseOver.Text = "Prevent mouse entering overlay windows.";
             checkHideOverlayOnMouseOver.UseVisualStyleBackColor = true;
@@ -729,7 +727,7 @@ namespace SrvSurvey
             label4.Location = new Point(6, 338);
             label4.Name = "label4";
             label4.Size = new Size(358, 34);
-            label4.TabIndex = 18;
+            label4.TabIndex = 16;
             label4.Text = "Players using mouse and keyboard have reported some issues with overlay windows trapping focus from the game.";
             // 
             // checkFocusOnMinimize
@@ -789,7 +787,7 @@ namespace SrvSurvey
             linkResetTheme2.Location = new Point(601, 213);
             linkResetTheme2.Name = "linkResetTheme2";
             linkResetTheme2.Size = new Size(39, 21);
-            linkResetTheme2.TabIndex = 29;
+            linkResetTheme2.TabIndex = 30;
             linkResetTheme2.TabStop = true;
             linkResetTheme2.Text = "(reset)";
             linkResetTheme2.UseCompatibleTextRendering = true;
@@ -802,7 +800,7 @@ namespace SrvSurvey
             linkResetTheme.Location = new Point(600, 155);
             linkResetTheme.Name = "linkResetTheme";
             linkResetTheme.Size = new Size(39, 21);
-            linkResetTheme.TabIndex = 26;
+            linkResetTheme.TabIndex = 27;
             linkResetTheme.TabStop = true;
             linkResetTheme.Text = "(reset)";
             linkResetTheme.UseCompatibleTextRendering = true;
@@ -3013,9 +3011,7 @@ namespace SrvSurvey
             listViewItem3.Tag = "currentBoxelSearchStatus";
             listViewItem4.StateImageIndex = 0;
             listViewItem4.Tag = "showNextBoxelToSearch";
-            listViewItem5.StateImageIndex = 0;
-            listViewItem5.Tag = "fcMarketPurchaseBugReminder";
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5 });
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4 });
             listView1.Location = new Point(12, 331);
             listView1.Name = "listView1";
             listView1.Size = new Size(400, 107);

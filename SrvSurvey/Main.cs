@@ -1403,6 +1403,9 @@ namespace SrvSurvey
 
         private void menuNotifyShowMain_Click(object sender, EventArgs e)
         {
+            if (!this.Visible)
+                this.Show();
+
             if (this.WindowState == FormWindowState.Minimized)
                 this.WindowState = FormWindowState.Normal;
 
@@ -1445,7 +1448,7 @@ namespace SrvSurvey
             {
                 // make sys tray icon visible upon minimizing
                 this.ShowInTaskbar = this.WindowState != FormWindowState.Minimized;
-                this.Activate();
+                this.Visible = this.ShowInTaskbar;
             }
         }
 

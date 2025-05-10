@@ -331,6 +331,8 @@ namespace SrvSurvey.plotters
 
         protected virtual void onJournalEntry(Touchdown entry)
         {
+            if (game.systemBody == null) return;
+
             // TODO: retire
             if (this.touchdownLocation0 == null)
             {

@@ -321,7 +321,6 @@ namespace SrvSurvey
             public bool cargoMissionRemaining = true;
             public bool currentBoxelSearchStatus = true;
             public bool showNextBoxelToSearch = true;
-            public bool fcMarketPurchaseBugReminder = true;
         }
     }
 }
