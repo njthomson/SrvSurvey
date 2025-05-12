@@ -92,7 +92,7 @@ namespace SrvSurvey
         public bool collectMatsCollectionStatsTest = false;
 
         public bool skipGasGiantDSS = true;
-        public bool skipRingsDSS = false;
+        public bool skipRingsDSS = true;
         public bool skipLowValueDSS = true;
         public int skipLowValueAmount = 1_000_000;
         public int hideFssLowValueAmount = 10_000;

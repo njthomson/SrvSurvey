@@ -41,7 +41,8 @@ namespace SrvSurvey.plotters
                 foreach (var body in bodies)
                 {
                     if (body.type == SystemBodyType.Asteroid || scans.Any(_ => _.body == body)) continue;
-                    if (body.bioSignalCount == 0 && body.reward < Game.settings.hideFssLowValueAmount) continue;
+                    var isInteresting = body.terraformable || body.planetClass?.StartsWith("Water ") == true || body.planetClass?.StartsWith("Ammonia ") == true || body.planetClass?.StartsWith("Earthlike ") == true;
+                    if (!isInteresting && body.bioSignalCount == 0 && (body.geoSignalCount == 0 || Game.settings.hideGeoCountInFssInfo) && body.reward < Game.settings.hideFssLowValueAmount) continue;
 
                     var newScan = new FssEntry
                     {
@@ -86,7 +87,8 @@ namespace SrvSurvey.plotters
                 dssReward = Util.GetBodyValue(entry, true),
             };
 
-            if (body.bioSignalCount == 0 && (body.geoSignalCount == 0 || Game.settings.hideGeoCountInFssInfo) && newScan.reward < Game.settings.hideFssLowValueAmount && newScan.dssReward < Game.settings.hideFssLowValueAmount) return;
+            var isInteresting = body.terraformable || body.planetClass?.StartsWith("Water ") == true || body.planetClass?.StartsWith("Ammonia ") == true || body.planetClass?.StartsWith("Earthlike ") == true;
+            if (!isInteresting && body.bioSignalCount == 0 && (body.geoSignalCount == 0 || Game.settings.hideGeoCountInFssInfo) && Math.Max(newScan.reward, newScan.dssReward) < Game.settings.hideFssLowValueAmount) return;
 
             // show this body already present - pull it to the top
             var existingScan = scans.Find(s => s.body == body);
