@@ -107,19 +107,19 @@ namespace SrvSurvey.net
             });
         }
 
-        public async Task<SystemResponse> getBoxelSystems(string systemName, StarRef? from = null)
+        public async Task<SystemsResponse> getBoxelSystems(string systemName, StarRef? from = null)
         {
             var cacheKey = $"{systemName}{from}";
             return await NetCache.query(cacheKey, async () =>
             {
                 Game.log($"getBoxelSystems: {systemName}");
 
-                var q = new SystemQuery
+                var q = new SearchQuery
                 {
                     page = 0,
                     size = 50,
                     sort = new() { new("name", SortOrder.asc) },
-                    filters = new() { { "name", new SystemQuery.Value(systemName) } }
+                    filters = new() { { "name", new SearchQuery.Value(systemName) } }
                 };
 
                 if (from != null) q.reference_coords = from;

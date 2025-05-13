@@ -331,7 +331,7 @@ namespace SrvSurvey.game
             return dirty;
         }
 
-        private bool findSystemsFromSpansh(Spansh.SystemResponse response)
+        private bool findSystemsFromSpansh(Spansh.SystemsResponse response)
         {
             var dirty = false;
             foreach (var result in response.results)

@@ -2,14 +2,8 @@
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using static SrvSurvey.net.Spansh;
-using static SrvSurvey.widgets.GameColors;
 
 namespace SrvSurvey.net
 {
@@ -126,14 +120,14 @@ namespace SrvSurvey.net
         {
             // find nearest systems to start from
             // TODO: really this should be a search for stations owned by the faction
-            var q = new SystemQuery
+            var q = new SearchQuery
             {
                 page = 0,
                 size = 2,
                 reference_system = targetSystem,
                 sort = new() { new("distance", SortOrder.asc) },
                 filters = new() {
-                    { "minor_faction_presences", new SystemQuery.Values("Raven Colonial Corporation") },
+                    { "minor_faction_presences", new SearchQuery.Values("Raven Colonial Corporation") },
                 }
             };
             var response = await this.querySystems(q);

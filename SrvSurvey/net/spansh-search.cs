@@ -9,7 +9,7 @@ namespace SrvSurvey.net
 {
     partial class Spansh
     {
-        public async Task<SystemResponse> querySystems(SystemQuery query)
+        public async Task<SystemsResponse> querySystems(SearchQuery query)
         {
             var queryJson = JsonConvert.SerializeObject(query, Formatting.None);
             Game.log($"Spansh.querySystems:\r\n{queryJson}");
@@ -24,11 +24,11 @@ namespace SrvSurvey.net
                 throw new Exception("Bad Spansh request: " + json);
             }
 
-            var obj = JsonConvert.DeserializeObject<SystemResponse>(json)!;
+            var obj = JsonConvert.DeserializeObject<SystemsResponse>(json)!;
             return obj;
         }
 
-        public async Task<SystemResponse> queryStations(SystemQuery query)
+        public async Task<StationsResponse> queryStations(SearchQuery query)
         {
             var queryJson = JsonConvert.SerializeObject(query, Formatting.None);
             Game.log($"Spansh.querySystems:\r\n{queryJson}");
@@ -43,7 +43,7 @@ namespace SrvSurvey.net
                 throw new Exception("Bad Spansh request: " + json);
             }
 
-            var obj = JsonConvert.DeserializeObject<SystemResponse>(json)!;
+            var obj = JsonConvert.DeserializeObject<StationsResponse>(json)!;
             return obj;
         }
 
@@ -178,7 +178,7 @@ namespace SrvSurvey.net
         }
         */
 
-        internal class SystemQuery : Query
+        internal class SearchQuery : Query
         {
             public List<Sort> sort;
 
@@ -210,7 +210,7 @@ namespace SrvSurvey.net
 
         #region Respose
 
-        internal class SystemResponse
+        internal class SearchResponse<T>
         {
             /// <summary> Total row count </summary>
             public int count;
@@ -221,8 +221,16 @@ namespace SrvSurvey.net
             public string search_reference;
             /// <summary> Size of this page </summary>
             public int size;
-            public List<Result> results;
+            public List<T> results;
 
+            public override string ToString()
+            {
+                return $"(count:{results.Count}, size:{size}, from:{from})";
+            }
+        }
+
+        internal class SystemsResponse : SearchResponse<SystemsResponse.Result>
+        {
             public class Result : StarRef
             {
                 public string id;
@@ -264,11 +272,108 @@ namespace SrvSurvey.net
                     public string type;
                 }
             }
+        }
 
-            public override string ToString()
+        internal class StationsResponse : SearchResponse<StationsResponse.Result>
+        {
+            public class Result
             {
-                return $"(count:{results.Count}, size:{size}, from:{from})";
+                public string id;
+                public string name;
+                public string market_id;
+                public string type;
+                public bool is_planetary;
+
+                public string? controlling_minor_faction;
+                public double distance;
+                public double distance_to_arrival;
+
+                public string system_name;
+                public long system_id64;
+                public string system_primary_economy;
+                public string system_secondary_economy;
+                public double system_x;
+                public double system_y;
+                public double system_z;
+                public bool system_is_colonised;
+                // system_power ??
+
+                public List<MarketEntry> market;
+
+                public string primary_economy;
+                public string secondary_economy;
+                public List<Economy> economies;
+                // export_commodities ??
+                // import_commodities ??
+
+
+                public List<Ship> ships;
+                public List<Module> modules; 
+                public List<Service> services; 
+
+                public DateTimeOffset market_updated_at;
+                public DateTimeOffset outfitting_updated_at;
+                public DateTimeOffset shipyard_updated_at;
+                public DateTimeOffset updated_at;
+
+                public string government;
+
+                public bool has_large_pad;
+                public bool has_market;
+                public bool has_outfitting;
+                public bool has_shipyard;
+
+                public int large_pads;
+                public int medium_pads;
+                public int small_pads;
+
+
+                public override string ToString()
+                {
+                    return $"{name} ({market_id}/{type})";
+                }
+
+                public class Economy
+                {
+                    public string name;
+                    public float share;
+                }
+
+                public class MarketEntry
+                {
+                    public string commodity;
+                    public string category;
+                    public int buy_price;
+                    public int demand;
+                    public int sell_price;
+                    public int supply;
+                }
+
+                public class Module
+                {
+                    public string name;
+                    public string category;
+                    public int @class;
+                    public string ed_symbol;
+                    public string rating;
+                    public string ship;
+                }
+
+                public class Service
+                {
+                    public string name;
+                }
+
+                public class Ship
+                {
+                    public string name;
+                    public int price;
+                    public string symbol;
+                }
+
+
             }
+
         }
 
         #endregion

@@ -1,11 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SrvSurvey.net
 {
@@ -17,12 +13,12 @@ namespace SrvSurvey.net
             Game.log($"getFactionSystems:");
 
             // get controlled systems 
-            var q1 = new SystemQuery
+            var q1 = new SearchQuery
             {
                 page = 0,
                 size = 50,
                 sort = new() { new("name", SortOrder.asc) },
-                filters = new() { { "minor_faction_presences", new SystemQuery.Value(targetFaction) } }
+                filters = new() { { "minor_faction_presences", new SearchQuery.Value(targetFaction) } }
             };
             var response = await this.querySystems(q1);
             var factionSystems = response.results.Select(s => s.name);
@@ -37,12 +33,12 @@ namespace SrvSurvey.net
             Game.log($"getRavenColonizeTargets:");
 
             // get controlled systems 
-            var q1 = new SystemQuery
+            var q1 = new SearchQuery
             {
                 page = 0,
                 size = 50,
                 sort = new() { new("name", SortOrder.asc) },
-                filters = new() { { "controlling_minor_faction", new SystemQuery.Value("Raven Colonial Corporation") } }
+                filters = new() { { "controlling_minor_faction", new SearchQuery.Value("Raven Colonial Corporation") } }
             };
             var controlledSystems = await this.querySystems(q1);
             var factionSystems = controlledSystems.results.ToDictionary(r => r.name, r => r);
@@ -56,15 +52,15 @@ namespace SrvSurvey.net
              * "sort":[
              * {"distance":{"direction":"asc"}}],"size":10,"page":0,"reference_system":"Kwatyri"}
              */
-            var q2 = new SystemQuery
+            var q2 = new SearchQuery
             {
                 page = 0,
                 size = 50,
                 sort = new() { new("name", SortOrder.asc) },
                 reference_system = "Kwatyri", // <-- !!
                 filters = new() {
-                    { "distance", new SystemQuery.MinMax("0", "10") },
-                    { "population", new SystemQuery.Comparison(0, 0) },
+                    { "distance", new SearchQuery.MinMax("0", "10") },
+                    { "population", new SearchQuery.Comparison(0, 0) },
                 }
             };
 

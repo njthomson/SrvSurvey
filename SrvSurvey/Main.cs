@@ -1988,53 +1988,31 @@ namespace SrvSurvey
             BaseForm.show<FormCodexBingo>();
             //Game.spansh.testColonizationRoute("Col 285 Sector MD-S d4-60");
 
-            //var mf = new SystemQuery.Markets();
-            //mf.Add(new SystemQuery.Market() { name = "Copper", supply = new Query.Market.Clause(100, 10_000_000) });
-
-            ////var mf = new SystemQuery.Market();
-            ////mf.name = "Copper";
-            ////mf.supply = new Query.Market.Clause(100, 10_000_000);
-
-            //var q = new SystemQuery
+            //var filterMarket = new Spansh.SearchQuery.Markets();
+            //filterMarket.Add(new Spansh.SearchQuery.Market() { name = "Copper", supply = new Spansh.Query.Market.Clause(100, 10_000_000) });
+            //var filterType = new Spansh.SearchQuery.Values("Asteroid base", "Coriolis Starport", "Dockable Planet Station", "GameplayPOI", "Mega ship", "Ocellus Starport", "Orbis Starport", "Outpost", "Planetary Outpost", "Planetary Port", "Settlement", "Surface Settlement");
+            //var q = new Spansh.SearchQuery
             //{
             //    page = 0,
             //    size = 10,
-            //    filters = new() { { "market", mf } }
+            //    sort = new() { new("distance", net.SortOrder.asc) },
+            //    reference_system = "IC 2391 Sector LH-V b2-5",
+            //    filters = new() {
+            //        { "market", filterMarket },
+            //        { "type", filterType },
+            //    },
             //};
 
-            //Game.spansh.queryStations(q);
-
-            //var tt = this.GetType();
+            //Game.spansh.queryStations(q).continueOnMain(this, rslt =>
+            //{
+            //    Game.log(rslt);
+            //});
         }
 
         private void btnLogs_Click(object sender, EventArgs e)
         {
             BaseForm.show<ViewLogs>();
-
-            //game.cmdrColony.checkConstructionSiteUponDocking(game.lastDocked, game.systemBody);
-
-            /*
-            if (this.mv != null)
-            {
-                this.Controls.Remove(mv);
-                mv = null!;
-            }
-            else
-            {
-                mv = new MainView()
-                {
-                    Left = 5,
-                    Top = 5,
-                    Width = this.ClientSize.Width - 10,
-                    Height = btnLogs.Bottom - 10,
-                    Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom,
-                };
-                this.Controls.Add(mv);
-                mv.BringToFront();
-            }
-            // */
         }
-        //private MainView mv;
 
         private void btnColonize_Click(object sender, EventArgs e)
         {
