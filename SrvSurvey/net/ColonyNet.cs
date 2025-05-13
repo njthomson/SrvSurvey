@@ -449,6 +449,9 @@ namespace SrvSurvey.game
         public string? factionName;
         public string? architectName;
         public int maxNeed;
+        public string? discordLink;
+        //public DateTimeOffset? timeDue;
+        public bool isPrimaryPort;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public Dictionary<string, HashSet<string>> commanders = new();
@@ -461,6 +464,7 @@ namespace SrvSurvey.game
     {
         // Schema.ProjectCommodity
         public Dictionary<string, int> commodities;
+        public ColonisationConstructionDepot? colonisationConstructionDepot;
     }
 
     public class Project : ProjectCore
@@ -550,6 +554,7 @@ namespace SrvSurvey.game
 
         public int? maxNeed;
         public Dictionary<string, int>? commodities;
+        public ColonisationConstructionDepot? colonisationConstructionDepot;
     }
 
     public class FleetCarrier

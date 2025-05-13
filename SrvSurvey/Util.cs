@@ -1484,7 +1484,7 @@ namespace SrvSurvey
 
                 // invoke back on main UX thread?
                 if (onMainThread)
-                    Program.defer(() => func(postTask.Result));
+                    Program.control.Invoke(() => func(postTask.Result));
                 else
                     func(postTask.Result);
             });
@@ -1508,20 +1508,23 @@ namespace SrvSurvey
                 if (form?.IsDisposed == true) return;
 
                 // invoke back on main UX thread?
-                Program.defer(() => func());
+                Program.control.Invoke(() => func());
             });
         }
 
         /// <summary>
         /// Handle some task, logging errors but otherwise being silent
         /// </summary>
-        public static bool justDoIt(this Task preTask)
+        public static bool justDoIt(this Task preTask, Action? postTask = null)
         {
-            preTask.ContinueWith(postTask =>
+            preTask.ContinueWith(afterTask =>
             {
                 // check for firewall problems?
-                if (postTask.Exception != null || !postTask.IsCompletedSuccessfully)
-                    Util.isFirewallProblem(postTask.Exception);
+                if (afterTask.Exception != null || !afterTask.IsCompletedSuccessfully)
+                    Util.isFirewallProblem(afterTask.Exception);
+
+                if (postTask != null)
+                    postTask();
             });
 
             return true;

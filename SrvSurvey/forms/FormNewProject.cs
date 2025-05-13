@@ -62,6 +62,7 @@ namespace SrvSurvey.forms
                     architectName = txtArchitect.Text,
                     factionName = lastDocked.StationFaction.Name ?? "",
                     notes = txtNotes.Text,
+                    isPrimaryPort = lastDocked.StationName.StartsWith(ColonyData.ExtPanelColonisationShip),
 
                     marketId = lastDocked.MarketID,
                     systemAddress = lastDocked.SystemAddress,
@@ -70,8 +71,10 @@ namespace SrvSurvey.forms
                     bodyNum = game.systemBody?.id,
                     bodyName = game.systemBody?.name,
 
+                    colonisationConstructionDepot = lastDepot,
+
                     // add current cmdrs
-                    commanders = new() { { game.Commander!, new() } }
+                    commanders = new() { { game.Commander!, new() } },                    
                 };
 
                 if (lastDepot != null && game.lastDocked != null && lastDepot.MarketID == game.lastDocked.MarketID)
@@ -114,7 +117,5 @@ namespace SrvSurvey.forms
                 return;
             }
         }
-
-
     }
 }

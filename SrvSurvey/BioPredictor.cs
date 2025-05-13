@@ -167,7 +167,7 @@ namespace BioCriterias
             species = criteria.species ?? species;
             variant = criteria.variant ?? variant;
 
-            //if (species?.Contains("Divisa") == true) Debugger.Break();
+            //if (species?.Contains("Tectonicas") == true) Debugger.Break();
 
             if (targetVariant == null)
             {
@@ -185,7 +185,7 @@ namespace BioCriterias
             var failures = testQuery(criteria.query, $"{genus} {species} {variant}".Trim());
             var targetMatch = false;
 
-            //if (this.bodyName.Contains(" 6") && currentName?.Contains("Stabitis") == true) Debugger.Break();
+            //if (this.bodyName.Contains("BC 2") && currentName?.Contains("Tectonicas") == true) Debugger.Break();
             //if (currentName.Contains("Cornibus -") == true) Debugger.Break();
 
             //if (genus != null && species != null && variant != null) Debugger.Break();
@@ -196,8 +196,10 @@ namespace BioCriterias
                 targetMatch = targetVariant == currentName;
 
                 if (targetVariant == null || targetVariant == currentName)
+                {
+                    //if (this.bodyName.Contains("BC 2") && currentName?.Contains("Tectonicas") == true) Debugger.Break();
                     this.predictions.Add(currentName);
-
+                }
             }
 
             // continue into children
@@ -206,9 +208,13 @@ namespace BioCriterias
             {
                 foreach (var child in children)
                 {
+                    //if (this.bodyName.Contains("BC 2") && currentName?.EndsWith("Tectonicas -") == true) Debugger.Break();
                     var childMatch = predict(child, genus, species, variant, commonChildren);
                     if (childMatch && criteria.query?.Count > 0)
+                    {
+                        //if (this.bodyName.Contains("BC 2") && currentName?.Contains("Tectonicas") == true) Debugger.Break();
                         targetClauses.AddRange(criteria.query);
+                    }
                 }
             }
 
@@ -653,6 +659,8 @@ namespace BioCriterias
 
                 //353504315603, // Oochody YF-L d9-10 // consistently wrong star choice?
                 49786130467, // Eock Flyao XY-S d3-1 // single star system
+
+                // 113053059083, // Slegi AV-Y d3 // Not Predicted: Stratum Tectonicas Green / Due to a Neutron being deemed the hottest but it should have been the local M stars
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");

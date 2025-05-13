@@ -34,9 +34,10 @@ namespace SrvSurvey.game
 
         public static string getDefaultProjectName(Docked lastDocked)
         {
-            var defaultName = (lastDocked.StationName == ColonyData.SystemColonisationShip || lastDocked.StationName.StartsWith(ColonyData.ExtPanelColonisationShip, StringComparison.OrdinalIgnoreCase))
+            var defaultName = lastDocked.StationName == ColonyData.SystemColonisationShip
                 ? $"Primary port: {lastDocked.StarSystem}"
                 : lastDocked.StationName
+                    .Replace(ColonyData.ExtPanelColonisationShip+ "; ", "")
                     .Replace(PlanetaryConstructionSite, "")
                     .Replace(OrbitalConstructionSite, "")
                     .Trim()
@@ -299,6 +300,8 @@ namespace SrvSurvey.game
                 {
                     commodities = needed,
                     maxNeed = entry.ResourcesRequired.Sum(r => r.RequiredAmount),
+
+                    colonisationConstructionDepot = entry, // <-- temp for a few weeks (making up for lost time)
                 };
 
                 Game.colony.update(updateProj).continueOnMain(null, savedProj =>
@@ -309,8 +312,10 @@ namespace SrvSurvey.game
                     this.Save();
 
                     Game.log(savedProj);
+                }).justDoIt(() =>
+                {
                     Program.getPlotter<PlotBuildCommodities>()?.endPending();
-                }).justDoIt();
+                });
             }
         }
 
