@@ -92,9 +92,14 @@ namespace SrvSurvey.game
 
                 File.AppendAllText(filePath, string.Join(",", this.csvData.Values) + "\r\n");
             }
-            catch (Exception ex)
+            catch (UnauthorizedAccessException ex)
             {
                 // Excel annoyingly locks files open - swallow any such exceptions / IOException
+                Game.log($"Cannot write to .csv file:\n{ex.Message}\n\n{ex.StackTrace}");
+            }
+            catch (Exception ex)
+            {
+                // show the Oops dialog for anything else
                 FormErrorSubmit.Show(ex);
             }
         }

@@ -854,7 +854,7 @@ namespace SrvSurvey.forms
 
                     case 1:
                         // Tag type is Double
-                        return ((double)leftItem?.SubItems[column].Tag!).CompareTo((double)rightItem?.SubItems[column].Tag!);
+                        return ((double)(leftItem?.SubItems[column].Tag ??0)).CompareTo((double)(rightItem?.SubItems[column].Tag ?? 0));
                     case 2:
                     case 3:
                         // Tag type is DateTimeOffset
