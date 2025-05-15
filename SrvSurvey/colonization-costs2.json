@@ -1305,12 +1305,12 @@
     }
   },
   {
-    "buildType": "comos",
+    "buildType": "comus",
     "category": "Tourism Tier 1",
     "tier": 2,
     "location": "surface",
     "displayName": "Tourism Settlement - Medium",
-    "layouts": [ "Comos", "Gelos" ],
+    "layouts": [ "Comus", "Gelos" ],
     "cargo": {
       "liquidoxygen": 454,
       "ceramiccomposites": 86,
