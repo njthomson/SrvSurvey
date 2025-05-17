@@ -352,7 +352,7 @@ namespace SrvSurvey
 
         private static bool toggleColonyShopping()
         {
-            if (game == null) return true;
+            if (game == null || !Game.settings.autoShowPlotBuildCommodities) return true;
 
             var plotter = Program.getPlotter<PlotBuildCommodities>();
             if (plotter == null)

@@ -106,7 +106,7 @@
     <!--Machine translated-->
     <value>Actualización inmediata de los datos de colonización.</value>
     <comment>A description of a key-chord setting</comment>
-    <source>Immediately refresh of Colonization data.</source>
+    <source>Immediately refresh of Colonisation data.</source>
   </data>
   <data name="showBodyInfo">
     <value>Fuerza la visualización de la superposición de información del Cuerpo.</value>
@@ -117,7 +117,7 @@
     <!--Machine translated-->
     <value>Forzar la visualización de la superposición de la lista de compras de colonización.</value>
     <comment>A description of a key-chord setting</comment>
-    <source>Force show the Colonization shopping list overlay.</source>
+    <source>Force show the Colonisation shopping list overlay.</source>
   </data>
   <data name="showFssInfo">
     <value>Fuerza la visualización de la superposición de información del ECS.</value>

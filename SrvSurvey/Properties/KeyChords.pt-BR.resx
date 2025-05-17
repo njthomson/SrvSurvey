@@ -112,7 +112,7 @@
     <!--Machine translated-->
     <value>Atualização imediata dos dados de colonização.</value>
     <comment>A description of a key-chord setting</comment>
-    <source>Immediately refresh of Colonization data.</source>
+    <source>Immediately refresh of Colonisation data.</source>
   </data>
   <data name="showBodyInfo">
     <!--Machine translated-->
@@ -122,9 +122,9 @@
   </data>
   <data name="showColonyShopping">
     <!--Machine translated-->
-    <value>Force mostrar a sobreposição da lista de compras de colonização.</value>
+    <value>Force mostrar a sobreposição da lista de compras da colonização.</value>
     <comment>A description of a key-chord setting</comment>
-    <source>Force show the Colonization shopping list overlay.</source>
+    <source>Force show the Colonisation shopping list overlay.</source>
   </data>
   <data name="showFssInfo">
     <!--Machine translated-->

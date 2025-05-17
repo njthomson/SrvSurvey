@@ -106,7 +106,7 @@
     <!--Machine translated-->
     <value>Немедленно обновите данные о колонизации.</value>
     <comment>A description of a key-chord setting</comment>
-    <source>Immediately refresh of Colonization data.</source>
+    <source>Immediately refresh of Colonisation data.</source>
   </data>
   <data name="showBodyInfo">
     <value>Принудительно отображает наложение с информацией о теле.</value>
@@ -115,9 +115,9 @@
   </data>
   <data name="showColonyShopping">
     <!--Machine translated-->
-    <value>Принудительно показать наложение списка покупок «Колонизация».</value>
+    <value>Принудительно показать наложение списка покупок Колонизации.</value>
     <comment>A description of a key-chord setting</comment>
-    <source>Force show the Colonization shopping list overlay.</source>
+    <source>Force show the Colonisation shopping list overlay.</source>
   </data>
   <data name="showFssInfo">
     <value>Принудительно отображает наложение с информацией о FSS.</value>

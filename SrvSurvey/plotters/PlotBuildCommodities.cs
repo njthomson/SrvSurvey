@@ -11,6 +11,7 @@ namespace SrvSurvey.plotters
         {
             // show in any mode, so long as we have some messages so show
             get => Game.settings.buildProjects_TEST
+                && Game.settings.autoShowPlotBuildCommodities
                 && Game.activeGame?.cmdrColony?.projects.Count > 0
                 && (
                     (PlotBuildCommodities.forceShow && !Game.activeGame.fsdJumping)

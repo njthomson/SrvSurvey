@@ -485,6 +485,7 @@
 	Structure
 	POIType_Component
 	POIType_Pylon
+	Unknown
 
 /Properties/KeyChords.fr.resx
 	toggleAllVisibility

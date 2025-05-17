@@ -1,3 +1,6 @@
+/Properties/Guardian.ru.resx
+	Unknown
+
 /Properties/KeyChords.ru.resx
 	collapseColonyData
 	nextWindow

@@ -110,9 +110,9 @@
   </data>
   <data name="refreshColonyData">
     <!--Machine translated-->
-    <value>Actualisation immédiate des données de colonisation.</value>
+    <value>Actualisation immédiate des données de Colonisation.</value>
     <comment>A description of a key-chord setting</comment>
-    <source>Immediately refresh of Colonization data.</source>
+    <source>Immediately refresh of Colonisation data.</source>
   </data>
   <data name="showBodyInfo">
     <!--Machine translated-->
@@ -124,7 +124,7 @@
     <!--Machine translated-->
     <value>Forcez l’affichage de la superposition de la liste de courses Colonisation.</value>
     <comment>A description of a key-chord setting</comment>
-    <source>Force show the Colonization shopping list overlay.</source>
+    <source>Force show the Colonisation shopping list overlay.</source>
   </data>
   <data name="showFssInfo">
     <!--Machine translated-->

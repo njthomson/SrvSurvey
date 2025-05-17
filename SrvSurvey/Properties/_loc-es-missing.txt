@@ -121,6 +121,7 @@
 	Structure
 	POIType_Component
 	POIType_Pylon
+	Unknown
 
 /Properties/KeyChords.es.resx
 	collapseColonyData

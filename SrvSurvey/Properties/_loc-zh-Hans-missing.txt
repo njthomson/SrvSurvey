@@ -23,6 +23,9 @@
 	ZoomLevel
 	ZoomLevelAuto
 
+/Properties/Guardian.zh-Hans.resx
+	Unknown
+
 /Properties/KeyChords.zh-Hans.resx
 	collapseColonyData
 	nextWindow

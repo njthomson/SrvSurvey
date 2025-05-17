@@ -2018,7 +2018,7 @@ namespace SrvSurvey
         {
             // no-op if colonization is enabled
             if (Game.settings.buildProjects_TEST) return;
-            var rslt = MessageBox.Show("Colonization features will track cargo supplied to construction sites that will be uploaded to\nhttps://ravencolonial.com\n\nThis can be disabled in Settings > External Data.\n\nEnabling this requires restarting SrvSurvey.\nWould you like to proceed?", "SrvSurvey", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var rslt = MessageBox.Show("Colonisation features will track cargo supplied to construction sites that will be uploaded to\nhttps://ravencolonial.com\n\nThis can be disabled in Settings > External Data.\n\nEnabling this requires restarting SrvSurvey.\nWould you like to proceed?", "SrvSurvey", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (rslt == DialogResult.Yes)
             {
                 Game.log("Enabling buildProjects_TEST and restarting");

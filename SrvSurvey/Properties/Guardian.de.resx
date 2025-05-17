@@ -252,4 +252,10 @@
     <comment>As in a Guardian Structure site</comment>
     <source>Structure</source>
   </data>
+  <data name="Unknown">
+    <!--Machine translated-->
+    <value>Unbekannt</value>
+    <comment>Guardian site type is unknown</comment>
+    <source>Unknown</source>
+  </data>
 </root>

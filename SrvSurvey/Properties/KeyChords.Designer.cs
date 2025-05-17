@@ -133,7 +133,7 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Immediately refresh of Colonization data..
+        ///   Looks up a localized string similar to Immediately refresh of Colonisation data..
         /// </summary>
         internal static string refreshColonyData {
             get {
@@ -151,7 +151,7 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Force show the Colonization shopping list overlay..
+        ///   Looks up a localized string similar to Force show the Colonisation shopping list overlay..
         /// </summary>
         internal static string showColonyShopping {
             get {

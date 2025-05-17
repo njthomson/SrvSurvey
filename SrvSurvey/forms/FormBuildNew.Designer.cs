@@ -111,7 +111,7 @@
             label4.Name = "label4";
             label4.Size = new Size(462, 41);
             label4.TabIndex = 4;
-            label4.Text = "Add or edit a build project when docked at the Colonization ship. Numbers will need to be checked when creating. Follow the link to track progress online.";
+            label4.Text = "Add or edit a build project when docked at the Colonisation ship. Numbers will need to be checked when creating. Follow the link to track progress online.";
             // 
             // txtName
             // 

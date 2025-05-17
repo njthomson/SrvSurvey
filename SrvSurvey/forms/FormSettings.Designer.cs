@@ -180,6 +180,7 @@ namespace SrvSurvey
             checkBox4 = new CheckBox();
             tabPage7 = new TabPage();
             groupColonization = new GroupBox();
+            checkBox49 = new CheckBox();
             linkLabel2 = new LinkLabel();
             checkBox48 = new CheckBox();
             checkBox47 = new CheckBox();
@@ -2226,6 +2227,7 @@ namespace SrvSurvey
             // 
             // groupColonization
             // 
+            groupColonization.Controls.Add(checkBox49);
             groupColonization.Controls.Add(linkLabel2);
             groupColonization.Controls.Add(checkBox48);
             groupColonization.Controls.Add(checkBox47);
@@ -2239,7 +2241,20 @@ namespace SrvSurvey
             groupColonization.Size = new Size(332, 243);
             groupColonization.TabIndex = 34;
             groupColonization.TabStop = false;
-            groupColonization.Text = "Colonization: (experimental)";
+            groupColonization.Text = "Colonisation: (experimental)";
+            // 
+            // checkBox49
+            // 
+            checkBox49.AutoSize = true;
+            checkBox49.CheckAlign = ContentAlignment.TopLeft;
+            checkBox49.FlatStyle = FlatStyle.System;
+            checkBox49.Location = new Point(19, 202);
+            checkBox49.Name = "checkBox49";
+            checkBox49.Size = new Size(198, 20);
+            checkBox49.TabIndex = 41;
+            checkBox49.Tag = "autoShowPlotBuildCommodities";
+            checkBox49.Text = "Auto show colonisation overlay";
+            checkBox49.UseVisualStyleBackColor = true;
             // 
             // linkLabel2
             // 
@@ -2342,7 +2357,7 @@ namespace SrvSurvey
             checkColonization.Size = new Size(180, 20);
             checkColonization.TabIndex = 33;
             checkColonization.Tag = "buildProjects_TEST";
-            checkColonization.Text = "Enable colonization features";
+            checkColonization.Text = "Enable colonisation features";
             checkColonization.UseVisualStyleBackColor = true;
             checkColonization.CheckedChanged += checkColonization_CheckedChanged;
             // 
@@ -3427,5 +3442,6 @@ namespace SrvSurvey
         private CheckBox checkBox47;
         private CheckBox checkBox48;
         private LinkLabel linkLabel2;
+        private CheckBox checkBox49;
     }
 }

@@ -202,11 +202,11 @@
     <comment>A description of a key-chord setting</comment>
   </data>
   <data name="refreshColonyData" xml:space="preserve">
-    <value>Immediately refresh of Colonization data.</value>
+    <value>Immediately refresh of Colonisation data.</value>
     <comment>A description of a key-chord setting</comment>
   </data>
   <data name="showColonyShopping" xml:space="preserve">
-    <value>Force show the Colonization shopping list overlay.</value>
+    <value>Force show the Colonisation shopping list overlay.</value>
     <comment>A description of a key-chord setting</comment>
   </data>
   <data name="showStationInfo" xml:space="preserve">

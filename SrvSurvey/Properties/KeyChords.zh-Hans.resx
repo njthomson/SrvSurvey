@@ -104,9 +104,9 @@
   </data>
   <data name="refreshColonyData">
     <!--Machine translated-->
-    <value>立即刷新 Colonization 数据。</value>
+    <value>立即刷新 Colonisation 数据。</value>
     <comment>A description of a key-chord setting</comment>
-    <source>Immediately refresh of Colonization data.</source>
+    <source>Immediately refresh of Colonisation data.</source>
   </data>
   <data name="showBodyInfo">
     <value>强制切换显示Body(天体)信息覆盖层.</value>
@@ -115,9 +115,9 @@
   </data>
   <data name="showColonyShopping">
     <!--Machine translated-->
-    <value>强制显示 Colonization 购物清单叠加层。</value>
+    <value>强制显示 Colonisation 购物清单叠加层。</value>
     <comment>A description of a key-chord setting</comment>
-    <source>Force show the Colonization shopping list overlay.</source>
+    <source>Force show the Colonisation shopping list overlay.</source>
   </data>
   <data name="showFssInfo">
     <value>强制切换显示FSS信息覆盖层</value>
