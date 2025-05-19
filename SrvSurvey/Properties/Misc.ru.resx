@@ -64,6 +64,18 @@
     <value>True</value>
   </data>
   <!--Localizable elements are below-->
+  <data name="Cancel">
+    <!--Machine translated-->
+    <value>&amp;Отмена</value>
+    <comment>Button text for cancelling some window operation, eg: FormBoxelSearch</comment>
+    <source>&amp;Cancel</source>
+  </data>
+  <data name="Close">
+    <!--Machine translated-->
+    <value>&amp;Закрыть</value>
+    <comment>Button text for closing some window, eg: FormBoxelSearch</comment>
+    <source>&amp;Close</source>
+  </data>
   <data name="FirewallBlocked">
     <value>Похоже, что сетевые вызовы для SrvSurvey блокируются брандмауэром. Это наиболее вероятно при запуске SrvSurvey из папки «Загрузки». Добавление местоположения SrvSurvey в ваш брандмауэр решит эту проблему.\r\n\r\n{0}\r\n\r\nХотели бы вы скопировать это местоположение в буфер обмена?</value>
     <comment>An error message shown when firewalls are causing problems

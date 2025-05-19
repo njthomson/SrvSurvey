@@ -16,6 +16,7 @@ namespace SrvSurvey.forms
         private bool updatingList = false;
         private bool configValid;
         private Font fontHighlightCurrentRow;
+        private bool closeNotCancel;
 
         private BoxelSearch bs { get => cmdr.boxelSearch!; }
 
@@ -60,6 +61,9 @@ namespace SrvSurvey.forms
             else
             {
                 prepForm();
+                // make the cancel button say close if opening into this mode
+                btnConfigCancel.Text = Properties.Misc.Close;
+                this.closeNotCancel = true;
                 btnConfig_Click(null!, null!);
             }
 
@@ -123,12 +127,21 @@ namespace SrvSurvey.forms
 
         private void btnConfigCancel_Click(object sender, EventArgs e)
         {
-            closeConfig(false, Boxel.parse(txtConfigBoxel.Text));
+            if (this.closeNotCancel)
+                this.Close();
+            else
+                closeConfig(false, Boxel.parse(txtConfigBoxel.Text));
         }
 
         private void closeConfig(bool save, Boxel? bx)
         {
             // exit early if we don't have a valid boxel
+            if (bx == null)
+            {
+                this.Close();
+                return;
+            }
+
             if (bx != null && save)
             {
                 // populate from inline-dialog
@@ -140,12 +153,17 @@ namespace SrvSurvey.forms
 
                 bs.activate(bx);
             }
-            if (bx == null || bs.boxel == null || bs.current == null)
+
+            if (bs.boxel == null || bs.current == null)
             {
                 // we cannot continue if there is no boxel
                 this.Close();
                 return;
             }
+
+            // make the cancel button say cancel again
+            btnConfigCancel.Text = Properties.Misc.Cancel;
+            this.closeNotCancel = false;
 
             // start finding systems...
             bs.active = true;
@@ -854,7 +872,7 @@ namespace SrvSurvey.forms
 
                     case 1:
                         // Tag type is Double
-                        return ((double)(leftItem?.SubItems[column].Tag ??0)).CompareTo((double)(rightItem?.SubItems[column].Tag ?? 0));
+                        return ((double)(leftItem?.SubItems[column].Tag ?? 0)).CompareTo((double)(rightItem?.SubItems[column].Tag ?? 0));
                     case 2:
                     case 3:
                         // Tag type is DateTimeOffset

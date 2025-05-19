@@ -64,6 +64,18 @@
     <value>True</value>
   </data>
   <!--Localizable elements are below-->
+  <data name="Cancel">
+    <!--Machine translated-->
+    <value>&amp;Annuler</value>
+    <comment>Button text for cancelling some window operation, eg: FormBoxelSearch</comment>
+    <source>&amp;Cancel</source>
+  </data>
+  <data name="Close">
+    <!--Machine translated-->
+    <value>&amp;Fermer</value>
+    <comment>Button text for closing some window, eg: FormBoxelSearch</comment>
+    <source>&amp;Close</source>
+  </data>
   <data name="FirewallBlocked">
     <!--Machine translated-->
     <value>Il semble que les appels réseau pour SrvSurvey soient bloqués par un pare-feu. Cela est plus probable lors de l’exécution de SrvSurvey à partir du dossier Téléchargements. L’ajout de l’emplacement de SrvSurvey à votre mur de fichiers résoudra ce problème.\r\n\r\n{0}\r\n\r\nSouhaitez-vous copier cet emplacement dans le presse-papiers ?</value>

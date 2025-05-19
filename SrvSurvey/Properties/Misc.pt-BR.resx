@@ -64,6 +64,18 @@
     <value>True</value>
   </data>
   <!--Localizable elements are below-->
+  <data name="Cancel">
+    <!--Machine translated-->
+    <value>&amp;Cancelar</value>
+    <comment>Button text for cancelling some window operation, eg: FormBoxelSearch</comment>
+    <source>&amp;Cancel</source>
+  </data>
+  <data name="Close">
+    <!--Machine translated-->
+    <value>&amp;Fechar</value>
+    <comment>Button text for closing some window, eg: FormBoxelSearch</comment>
+    <source>&amp;Close</source>
+  </data>
   <data name="FirewallBlocked">
     <!--Machine translated-->
     <value>Parece que as chamadas de rede para SrvSurvey estão sendo bloqueadas por um firewall. Isso é mais provável ao executar o SrvSurvey de dentro da pasta Downloads. Adicionar o local do SrvSurvey à parede de arquivos resolverá esse problema.\r\n\r\n{0}\r\n\r\nGostaria de copiar esse local para a área de transferência?</value>

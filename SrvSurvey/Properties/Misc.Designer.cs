@@ -61,6 +61,24 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &amp;Cancel.
+        /// </summary>
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Close.
+        /// </summary>
+        internal static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to It appears network calls for SrvSurvey are being blocked by a firewall. This is more likely when running SrvSurvey from within the Downloads folder. Adding the location of SrvSurvey to your firewall will solve this problem.\r\n\r\n{0}\r\n\r\nWould you like to copy that location to the clipboard?.
         /// </summary>
         internal static string FirewallBlocked {
@@ -336,177 +354,6 @@ namespace SrvSurvey.Properties {
         internal static string NetSysData_Wars {
             get {
                 return ResourceManager.GetString("NetSysData_Wars", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0}x Genus.
-        /// </summary>
-        internal static string PlotGalMap_CountGenus {
-            get {
-                return ResourceManager.GetString("PlotGalMap_CountGenus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Current:.
-        /// </summary>
-        internal static string PlotGalMap_Current {
-            get {
-                return ResourceManager.GetString("PlotGalMap_Current", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Data from: EDSM + Spansh + Canonn.
-        /// </summary>
-        internal static string PlotGalMap_DataFrom {
-            get {
-                return ResourceManager.GetString("PlotGalMap_DataFrom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Destination:.
-        /// </summary>
-        internal static string PlotGalMap_Destination {
-            get {
-                return ResourceManager.GetString("PlotGalMap_Destination", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to By {0}, {1}.
-        /// </summary>
-        internal static string PlotGalMap_DiscoveredBy {
-            get {
-                return ResourceManager.GetString("PlotGalMap_DiscoveredBy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Last updated: {0}.
-        /// </summary>
-        internal static string PlotGalMap_LastUpdated {
-            get {
-                return ResourceManager.GetString("PlotGalMap_LastUpdated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Next jump:.
-        /// </summary>
-        internal static string PlotGalMap_NextJump {
-            get {
-                return ResourceManager.GetString("PlotGalMap_NextJump", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No route set.
-        /// </summary>
-        internal static string PlotGalMap_NoRouteSet {
-            get {
-                return ResourceManager.GetString("PlotGalMap_NoRouteSet", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total: ► {0} jumps ► Distance: {1} ly.
-        /// </summary>
-        internal static string PlotGalMap_RouteFooter {
-            get {
-                return ResourceManager.GetString("PlotGalMap_RouteFooter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Selected:.
-        /// </summary>
-        internal static string PlotGalMap_Selected {
-            get {
-                return ResourceManager.GetString("PlotGalMap_Selected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to | {0}x Bio signals on: .
-        /// </summary>
-        internal static string PlotSysStatus_BioSignals {
-            get {
-                return ResourceManager.GetString("PlotSysStatus_BioSignals", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to  {0}x bodies: .
-        /// </summary>
-        internal static string PlotSysStatus_DssRemaining {
-            get {
-                return ResourceManager.GetString("PlotSysStatus_DssRemaining", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to FSS {0}% complete.
-        /// </summary>
-        internal static string PlotSysStatus_FssCompleteLong {
-            get {
-                return ResourceManager.GetString("PlotSysStatus_FssCompleteLong", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to FSS {0}%.
-        /// </summary>
-        internal static string PlotSysStatus_FssCompleteShort {
-            get {
-                return ResourceManager.GetString("PlotSysStatus_FssCompleteShort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to FSS not started.
-        /// </summary>
-        internal static string PlotSysStatus_FssNotStarted {
-            get {
-                return ResourceManager.GetString("PlotSysStatus_FssNotStarted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DSS survey: .
-        /// </summary>
-        internal static string PlotSysStatus_Header {
-            get {
-                return ResourceManager.GetString("PlotSysStatus_Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Next system:.
-        /// </summary>
-        internal static string PlotSysStatus_NextSystem {
-            get {
-                return ResourceManager.GetString("PlotSysStatus_NextSystem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to None.
-        /// </summary>
-        internal static string PlotSysStatus_NoDssMeet {
-            get {
-                return ResourceManager.GetString("PlotSysStatus_NoDssMeet", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ► {0} non-body signals.
-        /// </summary>
-        internal static string PlotSysStatus_NonBodySignals {
-            get {
-                return ResourceManager.GetString("PlotSysStatus_NonBodySignals", resourceCulture);
             }
         }
         

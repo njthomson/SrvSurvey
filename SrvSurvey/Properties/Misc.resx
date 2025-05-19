@@ -254,4 +254,12 @@ Would you like to create it?</value>
     <value>Something unexpected went wrong, please share the logs.\r\nIt is recommended to restart SrvSurvey.</value>
     <comment>An error message shown when something unexpected went wrong</comment>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>&amp;Cancel</value>
+    <comment>Button text for cancelling some window operation, eg: FormBoxelSearch</comment>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>&amp;Close</value>
+    <comment>Button text for closing some window, eg: FormBoxelSearch</comment>
+  </data>
 </root>

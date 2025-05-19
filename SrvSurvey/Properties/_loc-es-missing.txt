@@ -147,3 +147,5 @@
 /Properties/Misc.es.resx
 	FirewallBlocked
 	UnexpectedWentWrong
+	Cancel
+	Close

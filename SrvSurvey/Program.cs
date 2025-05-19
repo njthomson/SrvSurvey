@@ -46,7 +46,7 @@ namespace SrvSurvey
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
+            //ApplicationConfiguration.Initialize();
 
             try
             {
@@ -57,8 +57,8 @@ namespace SrvSurvey
                 }
 
                 Application.EnableVisualStyles();
-                Application.SetHighDpiMode(HighDpiMode.PerMonitor);
-                Application.SetCompatibleTextRenderingDefault(true);
+                Application.SetHighDpiMode(HighDpiMode.DpiUnawareGdiScaled);
+                Application.SetCompatibleTextRenderingDefault(false);
                 Application.ThreadException += Application_ThreadException;
 
                 // create some control for invoking back onto the UI thread

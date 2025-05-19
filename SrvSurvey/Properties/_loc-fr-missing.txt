@@ -561,6 +561,8 @@
 	NetSysData_Engineer
 	FirewallBlocked
 	UnexpectedWentWrong
+	Cancel
+	Close
 
 /Properties/Reputation.fr.resx
 	Hostile

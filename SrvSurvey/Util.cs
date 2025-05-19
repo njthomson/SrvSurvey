@@ -380,7 +380,7 @@ namespace SrvSurvey
 
         public static double getSystemDistance(double[] here, double[]? there)
         {
-            if (there == null) return -1;
+            if (here == null || there == null) return -1;
 
             var dist = Math.Sqrt(
                 Math.Pow(here[0] - there[0], 2)

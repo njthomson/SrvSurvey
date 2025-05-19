@@ -639,10 +639,8 @@ namespace SrvSurvey
             if (game.isMode(GameMode.SystemMap, GameMode.Flying, GameMode.Landed, GameMode.InSrv) && PlotBodyInfo.allowPlotter)
                 Program.showPlotter<PlotBodyInfo>();
 
-            if (PlotJumpInfo.allowPlotter)
-                Program.showPlotter<PlotJumpInfo>();
-            else
-                Program.closePlotter<PlotJumpInfo>();
+            //Debug.WriteLine($"Flags: {game.status.Flags}");
+            //Debug.WriteLine($"Flags2: {game.status.Flags2}");
         }
 
         private void Game_modeChanged(GameMode newMode, bool force)

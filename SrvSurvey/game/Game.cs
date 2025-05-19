@@ -383,10 +383,6 @@ namespace SrvSurvey.game
             // set or clear 'systemSite' // TODO: Does this *really* need to be here?
             this.setCurrentSite();
 
-            //if (FormGenus.activeForm != null && FormGenus.activeForm.targetBody != this.targetBody)
-            //    FormGenus.activeForm.populateGenus();
-            // TODO: we could avoid flicker by updating the colors on labels, rather than destroying and recreating them.
-
             if (this.processDockedOnNextStatusChange)
             {
                 this.processDockedOnNextStatusChange = false;
@@ -399,6 +395,15 @@ namespace SrvSurvey.game
             {
                 this.statusDestinationChanged();
                 this.lastDestination = destinationHash;
+            }
+
+            // Make JumpInfo appear or close as needed.
+            if (isMode(GameMode.Flying, GameMode.SuperCruising))
+            {
+                if (status.FsdChargingJump && !Program.isPlotter<PlotJumpInfo>() && PlotJumpInfo.allowPlotter)
+                    Program.showPlotter<PlotJumpInfo>();
+                else if (!status.FsdChargingJump && Program.isPlotter<PlotJumpInfo>() && !PlotJumpInfo.allowPlotter)
+                    Program.closePlotter<PlotJumpInfo>();
             }
 
             this.checkModeChange();
@@ -1256,6 +1261,19 @@ namespace SrvSurvey.game
             // update route progress?
             if (cmdr.route?.active == true)
                 cmdr.route.setNextHop(StarRef.from(entry));
+
+            // If PlotJumpInfo is open, close it but re-open again if forced (making it update to the next jump)
+            if (Program.isPlotter<PlotJumpInfo>())
+            {
+                var recreate = PlotJumpInfo.forceShow;
+                Util.deferAfter(1000, () =>
+                {
+                    Program.closePlotter<PlotJumpInfo>();
+
+                    if (recreate)
+                        Program.defer(() => Program.showPlotter<PlotJumpInfo>());
+                });
+            }
         }
 
         private void onJournalEntry(CarrierJump entry)
@@ -2614,6 +2632,7 @@ namespace SrvSurvey.game
         {
             this.lastDocked = entry;
             this.lastEverDocked = entry;
+            this.lastColonisationConstructionDepot = null;
 
             // store that we've docked here
             this.cmdr.setMarketId(entry.MarketID, entry.ToString());

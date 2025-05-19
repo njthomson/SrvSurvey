@@ -26,7 +26,7 @@ namespace SrvSurvey
             if (targetStarPos != null)
             {
                 txtStarPos.Text = targetStarPos.ToString();
-                var dist = Util.getSystemDistance(cmdr.starPos, targetStarPos).ToString("N2");
+                var dist = Util.getSystemDistance(cmdr.starPos ?? StarPos.Sol, targetStarPos).ToString("N2");
                 txtCurrentDistance.Text = $"{dist}ly";
             }
             else

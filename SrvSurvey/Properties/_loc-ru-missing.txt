@@ -10,3 +10,7 @@
 
 /Properties/Materials.ru.resx
 	searchrescuevoucher
+
+/Properties/Misc.ru.resx
+	Cancel
+	Close
