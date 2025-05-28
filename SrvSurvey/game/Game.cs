@@ -1670,6 +1670,7 @@ namespace SrvSurvey.game
         {
             var changed = this.lastColonisationConstructionDepot == null
                 || entry.ConstructionProgress != lastColonisationConstructionDepot.ConstructionProgress
+                || entry.ResourcesRequired.Count != lastColonisationConstructionDepot.ResourcesRequired.Count
                 || entry.ResourcesRequired
                     .Any(r => r.ProvidedAmount != lastColonisationConstructionDepot.ResourcesRequired.First(m => m.Name == r.Name).ProvidedAmount);
 
@@ -2344,8 +2345,13 @@ namespace SrvSurvey.game
         {
             if (this.systemData == null || this.systemBody == null || this.canonnPoi?.codex == null) return false;
 
-            var hasSignals = this.canonnPoi.codex.Any(_ => _.body?.Replace(" ", "") == this.systemBody.shortName && _.hud_category == "Biology" && _.latitude != null && _.longitude != null && (!Game.settings.hideMyOwnCanonnSignals || _.scanned == false));
-            return hasSignals;
+            var hasSignals = this.canonnPoi.codex.Where(_ => _.hud_category == "Biology"
+                && _.latitude != null && _.longitude != null
+                && _.body?.Replace(" ", "") == this.systemBody.shortName
+                && (!Game.settings.hideMyOwnCanonnSignals || this.systemBody.organisms?.Any(o => o.entryId == _.entryid && o.scanned) != true)
+                && (!Game.settings.hideMyOwnCanonnSignals || _.scanned == false)
+                );
+            return hasSignals.Any();
         }
 
         //public void showPriorScans()
@@ -3297,6 +3303,13 @@ namespace SrvSurvey.game
             var count = 0;
             tim.Elapsed += (o, s) =>
             {
+                if (Program.control.InvokeRequired)
+                {
+                    Game.log($"Stop counting - on wrong thread?");
+                    tim.Stop();
+                    return;
+                }
+
                 if (count++ > frames)
                 {
                     tim.Stop();

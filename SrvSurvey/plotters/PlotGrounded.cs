@@ -358,16 +358,16 @@ namespace SrvSurvey.plotters
 
             foreach (var signal in form.signals)
             {
-                var analyzed = game.systemBody.organisms?.FirstOrDefault(_ => _.genus == signal.genusName)?.analyzed == true;
-                var isActive = (game.cmdr.scanOne?.genus == null && !analyzed) || game.cmdr.scanOne?.genus == signal.genusName;
+                var analyzed = game.systemBody.organisms?.FirstOrDefault(_ => _.species == signal.match.species.name)?.analyzed == true;
+                var isActive = (game.cmdr.scanOne?.genus == null && !analyzed) || game.cmdr.scanOne?.species == signal.match.species.name;
 
                 // default range to 50m unless name matches a Genus
-                var radius = BioGenus.getRange(signal.genusName);
+                var radius = signal.match.genus.dist;
 
                 // draw radar circles for this group, and lines
                 foreach (var tt in signal.trackers)
                 {
-                    if (Util.isCloseToScan(tt.Target, signal.genusName) || analyzed) continue;
+                    if (Util.isCloseToScan(tt.Target, signal.match.species.name) || analyzed) continue;
 
                     var b = isActive ? GameColors.PriorScans.Active.brush : GameColors.PriorScans.Inactive.brush;
 

@@ -390,14 +390,14 @@ namespace SrvSurvey
             return dist;
         }
 
-        public static bool isCloseToScan(LatLong2 location, string? genusName)
+        public static bool isCloseToScan(LatLong2 location, string? speciesName)
         {
-            if (Game.activeGame?.cmdr == null || Game.activeGame.systemBody == null || genusName == null) return false;
+            if (Game.activeGame?.cmdr == null || Game.activeGame.systemBody == null || speciesName == null) return false;
             var minDist = (decimal)Math.Min(PlotTrackers.highlightDistance, Game.activeGame.cmdr.scanOne?.radius ?? int.MaxValue);
 
             if (Game.activeGame.cmdr.scanOne != null)
             {
-                if (Game.activeGame.cmdr.scanOne.genus != genusName) return false;
+                if (Game.activeGame.cmdr.scanOne.species != speciesName) return false;
 
                 var dist = Util.getDistance(location, Game.activeGame.cmdr.scanOne.location, Game.activeGame.systemBody!.radius);
                 if (dist < minDist)

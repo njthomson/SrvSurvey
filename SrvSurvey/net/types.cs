@@ -109,9 +109,9 @@ namespace SrvSurvey.canonn
     {
         public long entryId;
         public string displayName;
-        public string genusName;
         public string credits;
         public long reward;
+        public BioMatch match;
         public List<TrackingDelta> trackers = new List<TrackingDelta>();
     }
 

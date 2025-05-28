@@ -436,11 +436,11 @@ namespace SrvSurvey.plotters
                             var diff = (fcAmount - needCount);
                             var diffTxt = diff.ToString("N0");
                             if (diffTxt[0] != '-' && diffTxt[0] != '0') diffTxt = '+' + diffTxt;
-                            var cc = diff > 0 ? C.green : C.red;
+                            var cc = diff >= 0 ? C.green : C.red;
 
                             // if sharing a column ... make FC counts darker
                             if (Game.settings.buildProjectsInlineSumFC_TEST)
-                                cc = cc = diff > 0 ? C.greenDark : C.redDark;
+                                cc = cc = diff >= 0 ? C.greenDark : C.redDark;
 
                             drawTextAt2(xFC, diffTxt, cc, ff, true)
                                 .widestColumn(2, columns);
@@ -619,11 +619,11 @@ namespace SrvSurvey.plotters
                                 var diff = (fcAmount - needCount);
                                 var diffTxt = diff.ToString("N0");
                                 if (diffTxt[0] != '-' && diffTxt[0] != '0') diffTxt = '+' + diffTxt;
-                                var cc = diff > 0 ? C.green : C.red;
+                                var cc = diff >= 0 ? C.green : C.red;
 
                                 // if sharing a column ... make FC counts darker
                                 if (Game.settings.buildProjectsInlineSumFC_TEST)
-                                    cc = diff > 0 ? C.greenDark : C.redDark;
+                                    cc = diff >= 0 ? C.greenDark : C.redDark;
 
                                 // highlight and make and bold if almost there
                                 if (almost) cc = colAlmost;

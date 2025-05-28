@@ -153,43 +153,36 @@ namespace SrvSurvey.plotters
                     if (Game.settings.skipPriorScansLowValue && reward < Game.settings.skipPriorScansLowValueAmount)
                         continue;
 
-                    // extract genus name 
-                    var name = poi.english_name;
-                    var nameParts = name.Split(' ', 2);
-                    var genusName = match.genus.locName;
-
                     // skip things we've already analyzed
-                    //var organism = game.systemBody.organisms?.FirstOrDefault(_ => _.genus == genusName);
-                    //if (organism?.analyzed == true) continue;
+                    if (Game.settings.hideMyOwnCanonnSignals && game.systemBody.organisms?.FirstOrDefault(_ => _.entryId == poi.entryid)?.analyzed == true)
+                        continue;
 
                     // skip anything too close to our own scans or or own trackers
                     var location = new LatLong2((double)poi.latitude, (double)poi.longitude);
 
-                    // TODO: handle Brain Tree's
-                    if (Game.settings.hideMyOwnCanonnSignals && game.systemBody.bioScans?.Any(_ => _.status != BioScan.Status.Died && _.genus == genusName && Util.getDistance(_.location, location, game.systemBody.radius) < PlotTrackers.highlightDistance) == true)
+                    if (Game.settings.hideMyOwnCanonnSignals && game.systemBody.bioScans != null && game.systemBody.bioScans.Any(_ => _.status != BioScan.Status.Died && _.species == match.species.name && Util.getDistance(_.location, location, game.systemBody.radius) < PlotTrackers.highlightDistance))
                         continue;
-                    if (Util.isCloseToScan(location, genusName))
+                    if (Util.isCloseToScan(location, match.species.name))
                         continue;
-                    // TODO: fix this + make it honour the setting
-                    //if (game.systemBody.organisms?.FirstOrDefault(_ => _.entryId == poi.entryid)?.analyzed == true)
-                    //    continue;
 
                     // create group and TrackingDelta's for each location
                     var signal = this.signals.FirstOrDefault(_ => _.entryId == poi.entryid);
                     if (signal == null)
                     {
-                        // for pre-Odyssey bio's
-                        if (!name.Contains("-"))
-                            genusName = BioScan.genusNames.FirstOrDefault(_ => _.Value.Equals(nameParts[1], StringComparison.OrdinalIgnoreCase)).Key;
 
                         signal = new SystemBioSignal
                         {
+                            match = match,
                             entryId = poi.entryid.Value,
                             displayName = match.variant.locName,
-                            genusName = genusName,
                             credits = Util.credits(reward),
                             reward = reward,
                         };
+
+                        // for pre-Odyssey bio's
+                        if (!match.genus.odyssey)
+                            signal.displayName = $"{match.genus.locName} - {match.variant.locColorName}";
+
                         this.signals.Add(signal);
                     }
 
@@ -231,13 +224,14 @@ namespace SrvSurvey.plotters
             // TODO: revisit for Brain Trees
 
             // remove any tracked locations that are close enough to what we scanned
-            var match = this.signals.FirstOrDefault(_ => _.genusName == entry.Genus);
+            var match = this.signals.FirstOrDefault(_ => _.match.species.name == entry.Species);
             if (match != null)
             {
+                Application.DoEvents();
                 match.trackers.RemoveAll(_ => _.distance < PlotTrackers.highlightDistance);
 
                 // remove the whole group if empty or we finished analyzing this species
-                if (match.trackers.Count == 0 || entry.ScanType == ScanType.Analyse)
+                if (Game.settings.hideMyOwnCanonnSignals && match.trackers.Count == 0 || entry.ScanType == ScanType.Analyse)
                 {
                     this.signals.Remove(match);
                     this.setNewHeight();
@@ -274,8 +268,8 @@ namespace SrvSurvey.plotters
             var sortedSignals = this.signals.OrderByDescending(_ => _.reward);
             foreach (var signal in sortedSignals)
             {
-                var analyzed = game.systemBody?.organisms?.FirstOrDefault(_ => _.genus == signal.genusName)?.analyzed == true;
-                var isActive = (game.cmdr.scanOne?.genus == signal.genusName && game.cmdr.scanOne?.body == game.systemBody?.name) || (game.cmdr.scanOne?.genus == null);
+                var analyzed = game.systemBody?.organisms?.FirstOrDefault(_ => _.species == signal.match.species.name)?.analyzed == true;
+                var isActive = (game.cmdr.scanOne?.species == signal.match.species.name && game.cmdr.scanOne?.body == game.systemBody?.name) || (game.cmdr.scanOne?.genus == null);
                 Brush brush;
 
                 // keep this y value for the label below
@@ -287,16 +281,20 @@ namespace SrvSurvey.plotters
                 var isClose = false;
 
                 var r = new Rectangle(scaled(8), 0, this.Width - scaled(16), scaled(14));
+
                 foreach (var dd in signal.trackers)
                 {
                     if (dtx + bearingWidth > this.Width - 8)
                     {
+                        if (analyzed)
+                            g.DrawLine(GameColors.PriorScans.Analyzed.pen, indent, dty + four, dtx, dty + four);
+
                         // render next tracker on a new line if need be
                         this.dtx = indent;
                         this.dty += rowHeight;
                     }
 
-                    var isTooCloseToScan = Util.isCloseToScan(dd.Target, signal.genusName);
+                    var isTooCloseToScan = Util.isCloseToScan(dd.Target, signal.match.species.name);
 
                     isClose |= dd.distance < highlightDistance && !analyzed && !isTooCloseToScan;
                     var deg = dd.angle - game.status!.Heading;
@@ -336,6 +334,9 @@ namespace SrvSurvey.plotters
                     dtx += bearingWidth;
                 }
 
+                if (analyzed)
+                    g.DrawLine(GameColors.PriorScans.Analyzed.pen, indent, dty + four, dtx, dty + four);
+
                 // draw label above trackers - color depending on if any of them are close
                 brush = GameColors.brushGameOrangeDim;
                 if (isActive) brush = GameColors.PriorScans.CloseActive.brush;
@@ -350,9 +351,10 @@ namespace SrvSurvey.plotters
                 TextRenderer.DrawText(g, signal.credits, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Right);
 
                 // strike-through if already analyzed
-                // ??
+                if (analyzed)
+                    g.DrawLine(GameColors.PriorScans.Analyzed.pen, r.Left, r.Top + five, r.Right, r.Top + five);
 
-                if (game.status.Altitude > 500) //game.isMode(GameMode.SuperCruising, GameMode.GlideMode))
+                if (game.status.Altitude > 500)
                 {
                     // calculate angle of decline for the nearest location
                     r.Y += rowHeight;

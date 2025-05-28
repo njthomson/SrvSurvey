@@ -415,20 +415,21 @@ namespace SrvSurvey
 
         private static bool focusNextGameWindow()
         {
-            var doForceNextWindow = new Action<int>(async (int n) =>
+            var doForceNextWindow = new Action<int>(async (int count) =>
             {
-                Application.DoEvents();
-                FormMultiFloatie.focusNextWindow();
-                Application.DoEvents();
-
-                n--;
-                if (n > 0)
+                while (--count > 0)
                 {
-                    await Task.Delay(40);
+                    Application.DoEvents();
+                    Application.DoEvents();
+                    FormMultiFloatie.focusNextWindow();
+                    Application.DoEvents();
+                    Application.DoEvents();
+
+                    await Task.Delay(20);
                 }
             });
 
-            doForceNextWindow(4);
+            doForceNextWindow(8);
 
             return true;
         }

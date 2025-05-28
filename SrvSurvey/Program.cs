@@ -58,7 +58,7 @@ namespace SrvSurvey
 
                 Application.EnableVisualStyles();
                 Application.SetHighDpiMode(HighDpiMode.DpiUnawareGdiScaled);
-                Application.SetCompatibleTextRenderingDefault(false);
+                Application.SetCompatibleTextRenderingDefault(true);
                 Application.ThreadException += Application_ThreadException;
 
                 // create some control for invoking back onto the UI thread
