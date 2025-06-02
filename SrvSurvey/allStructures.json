@@ -745,7 +745,8 @@
     "siteType": "Squid",
     "latitude": -46.799656,
     "longitude": -132.282379,
-    "siteHeading": -1,
+    "siteHeading": 36,
+    "surveyProgress": 70,
     "surveyComplete": false
   },
   {

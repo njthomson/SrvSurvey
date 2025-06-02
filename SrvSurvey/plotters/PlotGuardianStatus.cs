@@ -282,10 +282,12 @@ namespace SrvSurvey.plotters
             var nextStatus = (SitePoiStatus)(game.status.FireGroup % 3) + 1;
             var highlightIdx = poiStatus == SitePoiStatus.unknown || (nextStatus != poiStatus) ? game.status.FireGroup % 3 : -1;
 
+            // only things in puddles can be empty
+            var allowEmpty = poi.type == POIType.orb || poi.type == POIType.casket || poi.type == POIType.tablet || poi.type == POIType.totem || poi.type == POIType.urn;
             drawOptions(
                 Res.ChoosePresent,
                 Res.ChooseAbsent,
-                poi.type != POIType.relic ? Res.ChooseEmpty : null,
+                allowEmpty ? Res.ChooseEmpty : null,
                 highlightIdx
             );
         }

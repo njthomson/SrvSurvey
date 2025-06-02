@@ -453,4 +453,8 @@
 
   <ProjectExtensions><VisualStudio><UserProperties theme_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="cmd.exe /c &quot;copy ..\data.json ..\docs\data.json&quot;" />
+  </Target>
+
 </Project>

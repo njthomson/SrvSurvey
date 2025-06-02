@@ -1154,7 +1154,7 @@ namespace SrvSurvey.canonn
 
         public async Task readXmlSheetRuins2()
         {
-            var doc = XDocument.Load(@"d:\code\SrvSurvey\Guardian Ruin Survey.xml");
+            var doc = XDocument.Load(@"d:\code\SrvSurvey\..\Guardian Ruin Survey.xml");
 
             var obeliskGroupings = new Dictionary<string, string>();
             parseRuinObeliskGroupings(doc, "Alpha - Groups", obeliskGroupings);
@@ -1415,7 +1415,7 @@ namespace SrvSurvey.canonn
 
         public async Task readXmlSheetRuins3()
         {
-            var doc = XDocument.Load(@"d:\code\SrvSurvey\Guardian Structure Survey.xml");
+            var doc = XDocument.Load(@"d:\code\SrvSurvey\..\Guardian Structure Survey.xml");
 
             var obeliskGroupings = new Dictionary<string, string>();
 

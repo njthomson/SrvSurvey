@@ -33,7 +33,7 @@ namespace SrvSurvey.net
             Game.log($"updatePubData ...");
             try
             {
-                var json = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/data.json");
+                var json = await Git.client.GetStringAsync($"https://njthomson.github.io/SrvSurvey/data.json");
                 var pubData = JsonConvert.DeserializeObject<GitDataIndex>(json)!;
 
                 var hadNoPubFolder = !Directory.Exists(pubDataFolder);
@@ -161,9 +161,11 @@ namespace SrvSurvey.net
             // allow calling code to manipulate
             func(pubData);
 
-            // write
+            // write into both locations
             var newPubJson = JsonConvert.SerializeObject(pubData, Formatting.Indented);
             File.WriteAllText(devGitDataFilepath, newPubJson);
+            var docsPath = Path.Combine(srcRootFolder, "docs", "data.json");
+            File.WriteAllText(docsPath, newPubJson);
         }
 
         private void updateRawPoiAfterRefresh()
