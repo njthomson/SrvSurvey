@@ -120,7 +120,7 @@ namespace SrvSurvey.plotters
                 drawTextAt2(eight, $"Economy:");
                 newLine(true);
 
-                foreach (var entry in station.economies)
+                foreach (var entry in station.economies.OrderByDescending(kv => kv.Value))
                 {
                     drawTextAt2(indent, $"{entry.Key}: {entry.Value}%", GameColors.Fonts.gothic_9);
                     newLine(true);

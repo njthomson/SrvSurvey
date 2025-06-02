@@ -37,7 +37,7 @@ namespace SrvSurvey.game
             var defaultName = lastDocked.StationName == ColonyData.SystemColonisationShip
                 ? $"Primary port: {lastDocked.StarSystem}"
                 : lastDocked.StationName
-                    .Replace(ColonyData.ExtPanelColonisationShip+ "; ", "")
+                    .Replace(ColonyData.ExtPanelColonisationShip + "; ", "")
                     .Replace(PlanetaryConstructionSite, "")
                     .Replace(OrbitalConstructionSite, "")
                     .Trim()

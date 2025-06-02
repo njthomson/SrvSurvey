@@ -198,7 +198,7 @@ namespace SrvSurvey.plotters
             }
 
             // calculate effective needs
-            Game.log($"Get effective needs from: {effectiveAddress} / {effectiveMarketId}");
+            //Game.log($"Get effective needs from: {effectiveAddress} / {effectiveMarketId}");
             this.needs = colonyData.getLocalNeeds(effectiveAddress, effectiveMarketId);
 
             // sum cargo across related FCs and keep references to them
