@@ -1,11 +1,11 @@
 [
   {
-    "buildType": "no truss",
+    "buildType": "no_truss",
     "category": "Coriolis",
     "tier": 2,
     "location": "orbital",
     "displayName": "Coriolis Starport",
-    "layouts": [ "Coriolis", "No Truss", "Dual Truss", "Quad Truss" ],
+    "layouts": [ "no_truss", "dual_truss", "quad_truss" ],
     "cargo": {
       "liquidoxygen": 3781,
       "water": 1609,

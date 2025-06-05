@@ -26,16 +26,21 @@ namespace SrvSurvey.units
 
         public StarPos(double[]? pos, string? systemName = null, long? address = null)
         {
-            if (pos != null)
+            if (pos == null)
+            {
+                this.systemName = "Sol";
+                this.address = 10477373803;
+            }
+            else
             {
                 this.x = pos[0];
                 this.y = pos[1];
                 this.z = pos[2];
-            }
-            this.systemName = systemName;
+                this.systemName = systemName;
 
-            if (address.HasValue)
-                this.address = address.Value;
+                if (address.HasValue)
+                    this.address = address.Value;
+            }
         }
 
         public StarPos(double x, double y, double z, string? systemName = null, long? address = null)
@@ -124,11 +129,20 @@ namespace SrvSurvey.units
 
         public StarRef(double[] pos, string systemName, long address)
         {
-            this.x = pos[0];
-            this.y = pos[1];
-            this.z = pos[2];
-            this.name = systemName;
-            this.id64 = address;
+            if (pos == null)
+            {
+                this.name = "Sol";
+                this.id64 = 10477373803;
+            }
+            else
+            {
+                this.x = pos[0];
+                this.y = pos[1];
+                this.z = pos[2];
+
+                this.name = systemName;
+                this.id64 = address;
+            }
         }
 
         public StarRef(double x, double y, double z, string systemName, long address)

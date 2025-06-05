@@ -319,6 +319,20 @@ namespace SrvSurvey.game
             }
         }
 
+        public async Task updateComplete(ColonisationConstructionDepot entry)
+        {
+            Game.log($"Is completed marketId: {entry.MarketID} known?");
+            var match = this.projects.Find(p => p.marketId == entry.MarketID);
+            if (match?.complete == false)
+            {
+                await Game.colony.markComplete(match.buildId);
+                match.complete = true;
+                this.Save();
+                Program.closePlotter<PlotBuildCommodities>();
+                await this.fetchLatest();
+            }
+        }
+
         public async Task updateFromMarketFC(MarketFile marketFile)
         {
             if (!linkedFCs.ContainsKey(marketFile.MarketId)) return;
@@ -396,6 +410,43 @@ namespace SrvSurvey.game
         public static string getTypeForCargo(string name)
         {
             return mapCargoType.Keys.FirstOrDefault(key => mapCargoType[key].Contains(name))!;
+        }
+
+        public static string matchByCargo(Dictionary<string, int> cargo)
+        {
+            var mapFinal = new Dictionary<string, double>();
+            foreach (var name in cargo.Keys) mapFinal.init(name);
+
+            var allCosts = Game.colony.loadDefaultCosts();
+            foreach (var site in allCosts)
+            {
+                var map = new Dictionary<string, double>();
+                foreach (var name in cargo.Keys) map.init(name);
+                foreach (var name in site.cargo.Keys) map.init(name);
+
+                var sum1 = 0d;
+                foreach (var name in map.Keys)
+                {
+                    var cargoNeed = cargo.GetValueOrDefault(name);
+                    var siteNeed = site.cargo.GetValueOrDefault(name);
+                    var n1 = siteNeed - cargoNeed;
+                    var n2 = n1 * n1;
+                    sum1 += n2;
+                }
+                var sum2 = Math.Sqrt(sum1);
+
+                //var vector = Math.Sqrt(site.cargo.Values.Sum(n => (double)(n * n)));
+                Game.log($"{site.buildType}: {sum2}");
+                mapFinal[site.buildType] = sum2;
+            }
+
+            var matches = mapFinal
+                .Where(kv => kv.Value > 0)
+                .OrderBy(kv => kv.Value);
+
+            Game.log(matches.Take(5).Select(kv => $"{kv.Key}: {kv.Value}").formatWithHeader($"matchByCargo: top 5"));
+            var bestMatch = matches.First();
+            return bestMatch.Key;
         }
     }
 }

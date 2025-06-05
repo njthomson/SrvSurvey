@@ -1986,6 +1986,15 @@ namespace SrvSurvey
             BaseForm.show<FormCodexBingo>();
             //Game.spansh.testColonizationRoute("Col 285 Sector MD-S d4-60");
 
+            //var folly = game!.cmdrColony.getProject("a4da9c2f-5bcc-4b55-a15e-c13f6c68a9d4")!;
+            //var match = ColonyData.matchByCargo(folly.commodities);
+            //Game.log($"folly match: {match}");
+
+            //var json = "";
+            //var entry = JsonConvert.DeserializeObject<ColonisationConstructionDepot>(json)!;
+            //var match = ColonyData.matchByCargo(entry.ResourcesRequired.ToDictionary(r => r.Name.Substring(1).Replace("_name;", ""), r => r.RequiredAmount));
+            //Game.log($"Entry match: {match}");
+
             //var filterMarket = new Spansh.SearchQuery.Markets();
             //filterMarket.Add(new Spansh.SearchQuery.Market() { name = "Copper", supply = new Spansh.Query.Market.Clause(100, 10_000_000) });
             //var filterType = new Spansh.SearchQuery.Values("Asteroid base", "Coriolis Starport", "Dockable Planet Station", "GameplayPOI", "Mega ship", "Ocellus Starport", "Orbis Starport", "Outpost", "Planetary Outpost", "Planetary Port", "Settlement", "Surface Settlement");

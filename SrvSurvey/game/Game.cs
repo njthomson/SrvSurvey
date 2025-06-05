@@ -1668,16 +1668,24 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(ColonisationConstructionDepot entry)
         {
-            var changed = this.lastColonisationConstructionDepot == null
-                || entry.ConstructionProgress != lastColonisationConstructionDepot.ConstructionProgress
-                || entry.ResourcesRequired.Count != lastColonisationConstructionDepot.ResourcesRequired.Count
-                || entry.ResourcesRequired
-                    .Any(r => r.ProvidedAmount != lastColonisationConstructionDepot.ResourcesRequired.First(m => m.Name == r.Name).ProvidedAmount);
-
-            if (changed)
+            if (entry.ConstructionComplete)
             {
-                this.lastColonisationConstructionDepot = entry;
-                cmdrColony.updateNeeds(entry, systemData!.address);
+                // mark current project as complete?
+                cmdrColony.updateComplete(entry).justDoIt();
+            }
+            else
+            {
+                var changed = this.lastColonisationConstructionDepot == null
+                    || entry.ConstructionProgress != lastColonisationConstructionDepot.ConstructionProgress
+                    || entry.ResourcesRequired.Count != lastColonisationConstructionDepot.ResourcesRequired.Count
+                    || entry.ResourcesRequired
+                        .Any(r => r.ProvidedAmount != lastColonisationConstructionDepot.ResourcesRequired.First(m => m.Name == r.Name).ProvidedAmount);
+
+                if (changed)
+                {
+                    this.lastColonisationConstructionDepot = entry;
+                    cmdrColony.updateNeeds(entry, systemData!.address);
+                }
             }
 
             Program.invalidate<PlotBuildCommodities>();

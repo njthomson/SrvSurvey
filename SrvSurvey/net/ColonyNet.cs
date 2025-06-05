@@ -73,6 +73,16 @@ namespace SrvSurvey.game
             return obj;
         }
 
+        public async Task markComplete(string buildId)
+        {
+            Game.log($"Colony.markComplete: {buildId}");
+
+            var response = await ColonyNet.client.PostAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/complete", null);
+            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
+
+            await response.Content.ReadAsStringAsync();
+        }
+
         public async Task linkCmdr(string buildId, string cmdr)
         {
             Game.log($"Colony.link: {cmdr} => {buildId}");
