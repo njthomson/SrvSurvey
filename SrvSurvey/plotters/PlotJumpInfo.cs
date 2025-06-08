@@ -50,8 +50,7 @@ namespace SrvSurvey.plotters
             this.reposition(Elite.getWindowRect(true));
 
             // determine next system
-            if (game.fsdTarget != null || game.navRoute.Route.Count > 1)
-                this.initFromRoute();
+            this.initFromRoute();
 
             // make sure these are closed
             Program.closePlotter<PlotBioStatus>();
@@ -104,6 +103,7 @@ namespace SrvSurvey.plotters
             if (this.netData == null)
             {
                 Game.log($"Why no next name of address?");
+                this.setOpacity(0);
                 Debugger.Break();
                 return;
             }
@@ -187,8 +187,6 @@ namespace SrvSurvey.plotters
                 if (nextRegion.Name != GalacticRegions.current)
                     netData.special.init(Res.SpecialNowEntering).Add(nextRegion.Name);
             }
-            else
-                Debugger.Break();
         }
 
         private void calcHopDistances(List<RouteEntry> route)

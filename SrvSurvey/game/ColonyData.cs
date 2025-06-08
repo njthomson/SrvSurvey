@@ -225,11 +225,15 @@ namespace SrvSurvey.game
         public void contributeNeeds(long systemAddress, long marketId, Dictionary<string, int> diff)
         {
             var localProject = this.getProject(systemAddress, marketId);
+            if (localProject == null && marketId == ColonyData.localUntrackedProject?.marketId)
+            {
+                Game.log(diff.formatWithHeader($"Supplying commodities for untracked project: {systemAddress}/{marketId}", "\r\n\t"));
+                localProject = ColonyData.localUntrackedProject;
+            }
+
             if (localProject == null)
             {
-                Game.log(diff.formatWithHeader($"TODO! Supplying commodities for untracked project: {systemAddress}/{marketId}", "\r\n\t"));
-                // TODO: call the API but do no tracking
-                return;
+                Game.log($"Why no project of any kind?");
             }
             else
             {
@@ -284,6 +288,11 @@ namespace SrvSurvey.game
         public void updateNeeds(ColonisationConstructionDepot entry, long id64)
         {
             var proj = this.getProject(id64, entry.MarketID);
+
+            // update local untracked project, if it matches
+            if (proj == null && entry.MarketID == ColonyData.localUntrackedProject?.marketId)
+                proj = ColonyData.localUntrackedProject;
+
             if (proj == null) return;
 
             var needed = entry.ResourcesRequired.ToDictionary(
@@ -308,8 +317,16 @@ namespace SrvSurvey.game
                 {
                     // update in-memory track
                     var idx = this.projects.FindIndex(p => p.buildId == savedProj.buildId);
-                    this.projects[idx] = savedProj;
-                    this.Save();
+                    if (idx >= 0)
+                    {
+                        this.projects[idx] = savedProj;
+                        this.Save();
+                    }
+                    else
+                    {
+                        // we need to re-fetch everything as the cmdr should now have been added to the project
+                        this.fetchLatest().justDoIt();
+                    }
 
                     Game.log(savedProj);
                 }).justDoIt(() =>

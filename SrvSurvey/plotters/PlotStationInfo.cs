@@ -55,8 +55,17 @@ namespace SrvSurvey.plotters
         {
             if (game.systemData == null || game.status.Destination?.System != game.systemData.address) return;
 
-            // is a local station selected?
-            this.station = game.systemData.spanshStations?.FirstOrDefault(s => s.name == game.status.Destination.Name);
+            // disregard construction sites
+            if (ColonyData.isConstructionSite(game.status.Destination.Name))
+            {
+                this.station = null;
+            }
+            else
+            {
+                // is a local station selected?
+                this.station = game.systemData.spanshStations?.FirstOrDefault(s => s.name == game.status.Destination.Name);
+            }
+
             if (station == null)
             {
                 // it is not

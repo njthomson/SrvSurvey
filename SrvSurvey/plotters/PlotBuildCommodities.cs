@@ -12,7 +12,7 @@ namespace SrvSurvey.plotters
             // show in any mode, so long as we have some messages so show
             get => Game.settings.buildProjects_TEST
                 && Game.settings.autoShowPlotBuildCommodities
-                && Game.activeGame?.cmdrColony?.projects.Count > 0
+                && Game.activeGame != null
                 && (
                     (PlotBuildCommodities.forceShow && !Game.activeGame.fsdJumping)
                     || (Game.activeGame.isMode(GameMode.StationServices)
@@ -249,9 +249,11 @@ namespace SrvSurvey.plotters
             if (dockedAtConstructionSite && !colonyData.has(game.lastDocked))
             {
                 var msg = ColonyData.localUntrackedProject == null
-                    ? "⚠️ Untracked project"
-                    : "⚠️ Not a member of this project";
-                drawTextAt2(ten, msg, C.cyan, GameColors.Fonts.gothic_10B);
+                    ? "Untracked project"
+                    : "Not a member of this project";
+                drawTextAt2(ten, "⚠️ ", C.yellow, GameColors.Fonts.gothic_10);
+                drawTextAt2(msg, C.cyan, GameColors.Fonts.gothic_10);
+                drawTextAt2(" ⚠️", C.yellow, GameColors.Fonts.gothic_10);
                 newLine(+ten, true);
             }
 
@@ -595,8 +597,8 @@ namespace SrvSurvey.plotters
                     if (xFC > 0 && Game.settings.buildProjectsShowSumFC_TEST && (!Game.settings.buildProjectsInlineSumFC_TEST || cargoCount == 0))
                     {
                         // show amount on all FCs in same column?
-                        var fcAmount = this.sumCargoLinkedFCs.GetValueOrDefault(name, -1);
-                        if (fcAmount > 0)
+                        var fcAmount = this.sumCargoLinkedFCs.GetValueOrDefault(name, 0);
+                        if (fcAmount >= 0)
                         {
                             var showDelta = Game.settings.buildProjectsShowSumFCDelta_TEST;
 
@@ -643,6 +645,8 @@ namespace SrvSurvey.plotters
                                     cc = Game.settings.buildProjectsInlineSumFC_TEST ? C.greenDark : C.green;
                                     haveEnough = true;
                                 }
+
+                                if (fcAmount == 0) cc = C.redDark;
 
                                 drawTextAt2(xFC, diffTxt, cc, ff, true)
                                     .widestColumn(2, columns);
