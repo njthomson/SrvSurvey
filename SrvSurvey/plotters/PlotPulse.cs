@@ -40,6 +40,15 @@ namespace SrvSurvey.plotters
             this.DoubleBuffered = true;
             this.Size = Size.Empty;
 
+            // replace the Orange from the bitmap with a themed colour
+            var bb = new Bitmap(this.BackgroundImage!);
+            var or = Color.FromArgb(255, 127, 39);
+            for (int x = 0; x < bb.Width; x++)
+                for (int y = 0; y < bb.Height; y++)
+                    if (bb.GetPixel(x, y) == or)
+                        bb.SetPixel(x, y, C.orangeDark);
+            this.BackgroundImage = bb;
+
             // Does this cause windows to become visible when alt-tabbing?
             this.Text = this.Name;
         }
@@ -154,7 +163,7 @@ namespace SrvSurvey.plotters
             else
                 this.resetOpacity();
 
-            g.FillRectangle(GameColors.brushGameOrange,
+            g.FillRectangle(C.Brushes.orange,
                 10, 27 - count,
                 10, count);
 
