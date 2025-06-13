@@ -5,6 +5,7 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{24930DE3-46FC-4CFF-83B0-6399FF0CCEA6}"
 	ProjectSection(SolutionItems) = preProject
+		docs\data.json = docs\data.json
 		docs\index.md = docs\index.md
 		docs\privacy.html = docs\privacy.html
 		docs\raven.html = docs\raven.html
