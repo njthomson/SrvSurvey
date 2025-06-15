@@ -425,6 +425,7 @@ namespace SrvSurvey.canonn
             { "cutter", new PointM(0, -78.975049073498041219641152452) }, // Imperial Cutter
             { "mandalay", new PointM(-0.0705413346267133158511499042, -19.309309902605600094877688881) }, // Mandalay
             { "cobramkv", new PointM(0.0636393912343842402361905178, -13.024934562983767191348622878) }, // Cobra mk5
+            { "corsair", new PointM(-0.3444149294353525786023712730, -28.231793406095248466923617346) }, // Corsair
 
             { "foot", new PointM(0d, 0d) }, // No offset applied when on foot
             { "taxi", new PointM(-0.9996653405051110150258470637, -11.913859432190865089645580760) }, // Taxi is an Adder but matching seat #2
