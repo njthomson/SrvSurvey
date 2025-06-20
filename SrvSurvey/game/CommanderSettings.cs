@@ -63,6 +63,14 @@ namespace SrvSurvey.game
         {
             var cmdrs = new Dictionary<string, string>();
             var files = Directory.GetFiles(Program.dataFolder, "F*-live.json");
+
+            if (files.Length == 0)
+            {
+                // if we have zero files, try seeding them from journals and try reading again
+                seedCommanderSettings();
+                files = Directory.GetFiles(Program.dataFolder, "F*-live.json");
+            }
+
             foreach (var file in files)
             {
                 var cmdr = JsonConvert.DeserializeObject<CommanderSettings>(File.ReadAllText(file));
@@ -76,6 +84,32 @@ namespace SrvSurvey.game
         public CommanderCodex loadCodex()
         {
             return CommanderCodex.Load(this.fid, this.commander);
+        }
+
+        /// <summary>
+        /// Seeds Commander settings by opening the newest Journal files
+        /// </summary>
+        private static void seedCommanderSettings()
+        {
+            var journalFiles = new DirectoryInfo(Game.settings.watchedJournalFolder)
+                .EnumerateFiles("*.log", SearchOption.TopDirectoryOnly)
+                .OrderByDescending(_ => _.LastWriteTimeUtc)
+                .Select(_ => _.FullName);
+
+            if (journalFiles.Count() == 0) return;
+
+            journalFiles.FirstOrDefault((filepath) =>
+            {
+                var journal = new JournalFile(filepath);
+                if (journal.isOdyssey && !string.IsNullOrEmpty(journal.cmdrName) && !string.IsNullOrEmpty(journal.cmdrFid))
+                {
+                    // create and save settings for this Cmdr
+                    var cmdrSettings = CommanderSettings.Load(journal.cmdrFid, journal.isOdyssey, journal.cmdrName);
+                    cmdrSettings.Save();
+                    return true;
+                }
+                return false;
+            });
         }
 
         #endregion

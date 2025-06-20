@@ -383,6 +383,14 @@ namespace SrvSurvey
             this.Items.Clear();
             this.Items.AddRange(cmdrs);
 
+            if (this.Items.Count == 0)
+            {
+                this.Items.Add("No Commanders found");
+                this.SelectedIndex = 0;
+                this.Enabled = false;
+                return;
+            }
+
             if (Program.forceFid != null)
                 this.SelectedItem = allCmdrs.GetValueOrDefault(Program.forceFid);
             else if (!string.IsNullOrEmpty(Game.settings.preferredCommander))

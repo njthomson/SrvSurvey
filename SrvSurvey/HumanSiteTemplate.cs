@@ -107,6 +107,10 @@ namespace SrvSurvey
 
         public Economy economy;
         public int subType;
+        /// <summary>
+        /// The name, according to Colonisation
+        /// </summary>
+        public string? name;
 
         /// <summary>
         /// Approx angle and distance each pad is from the site origin

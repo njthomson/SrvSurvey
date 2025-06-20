@@ -21,7 +21,6 @@ namespace SrvSurvey
 
         protected Game game = Game.activeGame!;
         public CanonnStation station;
-        public HumanSiteTemplate template;
 
         public Building2 building = new Building2();
 

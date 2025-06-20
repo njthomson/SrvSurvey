@@ -2630,21 +2630,29 @@ namespace SrvSurvey.game
             if (this.entryId == 0) return;
 
             // look-up species name if we don't already know it
+            BioMatch? match = null;
             if (this.species == null)
             {
-                var match = Game.codexRef.matchFromEntryId(this.entryId).species;
-                this.species = match.name;
-                this.speciesLocalized = match.englishName;
+                // Sometimes the entryId is only 5 digits, but we will use what ever we can get
+                match = Game.codexRef.matchFromEntryId(this.entryId, true, true);
+                if (match?.species != null)
+                {
+                    this.species = match.species.name;
+                    this.speciesLocalized = match.species.englishName;
 
-                if (this.reward == 0)
-                    this.reward = match.reward;
+                    if (this.reward == 0)
+                        this.reward = match.species.reward;
+                }
             }
 
             // look-up variant name if we don't already know it
             if (this.variantLocalized == null)
             {
-                var match = Game.codexRef.matchFromEntryId(this.entryId).variant;
-                this.variantLocalized = match.englishName;
+                if (match == null)
+                    match = Game.codexRef.matchFromEntryId(this.entryId, true);
+
+                if (match?.variant != null)
+                    this.variantLocalized = match.variant.englishName;
             }
         }
 

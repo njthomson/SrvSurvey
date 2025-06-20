@@ -153,6 +153,7 @@
             comboCmdr.Name = "comboCmdr";
             comboCmdr.Size = new Size(398, 23);
             comboCmdr.TabIndex = 3;
+            comboCmdr.SelectedIndexChanged += comboCmdr_SelectedIndexChanged;
             // 
             // btnLongAgo
             // 

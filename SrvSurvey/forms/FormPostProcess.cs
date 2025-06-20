@@ -55,8 +55,8 @@ namespace SrvSurvey
             {
                 Game.codexRef.init(false).ContinueWith(t => this.BeginInvoke(() =>
                 {
-                    btnStart.Enabled = true;
-                    btnStart.Focus();
+                    btnStart.Enabled = comboCmdr.Enabled && !string.IsNullOrEmpty(comboCmdr.Text);
+                    comboCmdr.Focus();
                 }));
             });
         }
@@ -92,6 +92,8 @@ namespace SrvSurvey
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+            if (!comboCmdr.Enabled) return;
+
             if (!this.processingFiles)
             {
                 // set cmdr details first
@@ -388,7 +390,7 @@ namespace SrvSurvey
                             $"Cargo: Bought / Sold / Transferred\n\n" +
                             $"Before: {countCargoBoughtTB:N0} / {countCargoSoldTB:N0} / {countCargoTransferredTB:N0}\n\n" +
                             $"After: {boughtAfter:N0} / {soldAfter:N0} / {transferredAfter:N0}\n\n" +
-                            $"Difference: {(boughtAfter - countCargoBoughtTB):N0} / {(soldAfter - countCargoSoldTB):N0} / {(transferredAfter - countCargoTransferredTB):N0}\n\n"+
+                            $"Difference: {(boughtAfter - countCargoBoughtTB):N0} / {(soldAfter - countCargoSoldTB):N0} / {(transferredAfter - countCargoTransferredTB):N0}\n\n" +
                             $"Cargo contributed to construction sites: {countCargoContributed:N0}";
 
                         MessageBox.Show(this, finalTally, $"SrvSurvey: {targetCmdrName}");
@@ -583,6 +585,10 @@ namespace SrvSurvey
             this.countDied++;
         }
 
+        private void comboCmdr_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnStart.Enabled = comboCmdr.Enabled && !string.IsNullOrEmpty(comboCmdr.Text);
+        }
     }
 
     class SpeciesSummary

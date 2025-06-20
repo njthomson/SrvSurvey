@@ -209,7 +209,7 @@ namespace SrvSurvey
         public void calcCompletions()
         {
             // re-calculate completions
-            if (!this.IsDisposed && tree.Nodes.Count > 0)
+            if (!this.IsDisposed && tree.Nodes.Count > 0 && this.cmdrCodex != null)
             {
                 var root = calcNodeCompletion(tree.Nodes[0]);
                 this.Text = "Codex Bingo - " + root.completion.ToString("p2");

@@ -321,12 +321,12 @@ namespace SrvSurvey.canonn
             }
         }
 
-        public BioMatch matchFromEntryId(long entryId, bool allowNull = false)
+        public BioMatch matchFromEntryId(long entryId, bool allowNull = false, bool allowPartial = false)
         {
             return matchFromEntryId(entryId.ToString(), allowNull);
         }
 
-        public BioMatch matchFromEntryId(string entryId, bool allowNull = false)
+        public BioMatch matchFromEntryId(string entryId, bool allowNull = false, bool allowPartial = false)
         {
             if (entryId == null) return null!;
             if (this.genus == null || this.genus.Count == 0) throw new Exception($"BioRef is not loaded.");
@@ -336,11 +336,22 @@ namespace SrvSurvey.canonn
             var entryIdSuffix = entryId.Substring(5);
 
             foreach (var genusRef in this.genus)
+            {
                 foreach (var speciesRef in genusRef.species)
+                {
                     if (speciesRef.entryIdPrefix == entryIdPrefix)
+                    {
                         foreach (var variantRef in speciesRef.variants)
                             if (variantRef.entryIdSuffix == entryIdSuffix)
                                 return new BioMatch(genusRef, speciesRef, variantRef);
+
+                        // Still here? Sometimes the entryId is only 5 digits - need to confirm if this is coming from poor data submitted to Canonn/Spansh/etc
+                        // However, we can at least provide partial information for what we found
+                        if (allowPartial)
+                            return new BioMatch(genusRef, speciesRef, null!);
+                    }
+                }
+            }
 
             if (allowNull) return null!;
             throw new Exception($"Unexpected entryId: '{entryId}'");

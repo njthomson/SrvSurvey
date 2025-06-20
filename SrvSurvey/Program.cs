@@ -324,7 +324,7 @@ namespace SrvSurvey
             }
 
             // we want to reset this plotter, so create it again
-            if (exceptPlotPulse && !Game.settings.hideJournalWriteTimer)
+            if (exceptPlotPulse && !Game.settings.hideJournalWriteTimer && Elite.isGameRunning)
                 Program.showPlotter<PlotPulse>();
         }
 

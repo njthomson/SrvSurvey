@@ -46,6 +46,7 @@ namespace SrvSurvey.forms
             this.pathBackup = Path.Combine(folderGameData, fidNum, "backup-" + cacheFilename);
             btnRestore.Visible = File.Exists(this.pathBackup);
             btnRestore.Enabled = false;
+            btnYes.Enabled = false;
 
             comboSystem.SelectedIndexChanged += (sender, e) =>
             {
@@ -77,7 +78,7 @@ namespace SrvSurvey.forms
         {
             var gameIsRunning = Elite.isGameRunning;
 
-            btnYes.Enabled = !gameIsRunning;
+            btnYes.Enabled = !gameIsRunning && comboCmdrs.Enabled;
             btnRestore.Enabled = !gameIsRunning;
             lblCloseWarning.Visible = gameIsRunning;
         }

@@ -130,6 +130,14 @@ namespace SrvSurvey
                 .Order()
                 .ToArray();
 
+            if (cmdrs.Length == 0)
+            {
+                comboCmdr.Items.Add("No Commanders found");
+                comboCmdr.SelectedIndex = 0;
+                comboCmdr.Enabled = false;
+                return;
+            }
+
             comboCmdr.Items.Clear();
             comboCmdr.Items.Add("(no preference)");
             comboCmdr.Items.AddRange(cmdrs);
@@ -338,7 +346,8 @@ namespace SrvSurvey
         {
             Game.log("FormSettings.btnSave_Click");
             var sameCmdr = (string.IsNullOrWhiteSpace(Game.settings.preferredCommander) && comboCmdr.SelectedIndex == 0)
-                || (comboCmdr.Text == Game.settings.preferredCommander);
+                || (comboCmdr.Text == Game.settings.preferredCommander)
+                || !comboCmdr.Enabled;
 
             var langChanged = Game.settings.lang != Localize.codeFromName(comboLang.Text);
 
@@ -355,7 +364,8 @@ namespace SrvSurvey
             updateAllSettingsFromForm();
 
             // special case for comboCmdrs
-            Game.settings.preferredCommander = comboCmdr.SelectedIndex > 0 ? comboCmdr.Text : null;
+            if (comboCmdr.Enabled)
+                Game.settings.preferredCommander = comboCmdr.SelectedIndex > 0 ? comboCmdr.Text : null;
             Game.settings.screenshotBannerColor = colorScreenshotBanner;
 
             if (themeChanged)

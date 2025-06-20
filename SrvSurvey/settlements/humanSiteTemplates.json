@@ -2,6 +2,7 @@
   {
     "economy": "Agriculture",
     "subType": 1,
+    "name": "Picumnus",
     "landingPads": [
       { "size": "Small", "offset": { "X": 149.1648, "Y": -122.47405 } },
       { "size": "Large", "offset": { "X": -146.62398, "Y": 52.40464 } }
@@ -102,6 +103,7 @@
   {
     "economy": "Agriculture",
     "subType": 2,
+    "name": "Consus",
     "landingPads": [
       { "size": "Small", "offset": { "X": -33.89066, "Y": -47.390007 } }
     ],
@@ -162,6 +164,7 @@
   {
     "economy": "Agriculture",
     "subType": 3,
+    "name": "Ceres",
     "landingPads": [
       { "size": "Large", "offset": { "X": 31.830925, "Y": -211.53532 } },
       { "size": "Small", "offset": { "X": -270.2276, "Y": 155.97383 }, "rot": 347 }
@@ -259,6 +262,7 @@
   {
     "economy": "Agriculture",
     "subType": 4,
+    "name": "Fornax",
     "landingPads": [
       { "size": "Large", "offset": { "X": -180.02107, "Y": -0.12953937 } },
       { "size": "Small", "offset": { "X": 153.05417, "Y": 104.60946 }, "rot": 240 },
@@ -371,6 +375,7 @@
   {
     "economy": "Agriculture",
     "subType": 5,
+    "name": "Annona",
     "landingPads": [
       { "size": "Small", "offset": { "X": 73.089195, "Y": -31.00687 } }
     ],
@@ -422,6 +427,7 @@
   {
     "economy": "Military",
     "subType": 1,
+    "name": "Ioke",
     "landingPads": [
       { "size": "Medium", "offset": { "X": 4.25958, "Y": 162.38762 } }
     ],
@@ -492,6 +498,7 @@
   {
     "economy": "Military",
     "subType": 2,
+    "name": "Minerva",
     "landingPads": [
       { "size": "Small", "offset": { "X": 2.386416, "Y": 140.44467 } },
       { "size": "Large", "offset": { "X": 9.86343, "Y": -114.56022 }, "rot": 90 },
@@ -570,6 +577,7 @@
   {
     "economy": "Military",
     "subType": 3,
+    "name": "Polemos",
     "landingPads": [
       { "size": "Medium", "offset": { "X": 5.5507936, "Y": -203.4646 } },
       { "size": "Small", "offset": { "X": 8.659301, "Y": 169.24953 }, "rot": 180 }
@@ -666,6 +674,7 @@
   {
     "economy": "Military",
     "subType": 4,
+    "name": "Bellona",
     "landingPads": [
       { "size": "Small", "offset": { "X": -5.1464043, "Y": -36.96821 } }
     ],
@@ -714,6 +723,7 @@
   {
     "economy": "Military",
     "subType": 5,
+    "name": "Enyo",
     "landingPads": [
       { "size": "Medium", "offset": { "X": 45.697353, "Y": -121.225655 } },
       { "size": "Small", "offset": { "X": -82.05029, "Y": 105.92611 }, "rot": 270 }
@@ -797,6 +807,7 @@
   {
     "economy": "Extraction",
     "subType": 1,
+    "name": "Erebus",
     "landingPads": [
       { "size": "Small", "offset": { "X": -159.42699, "Y": -59.51028 } },
       { "size": "Large", "offset": { "X": 50.31549, "Y": 51.459305 }, "rot": 135 }
@@ -910,6 +921,7 @@
   {
     "economy": "Extraction",
     "subType": 2,
+    "name": "Orcus",
     "landingPads": [
       { "size": "Small", "offset": { "X": 118.047325, "Y": 119.497856 } },
       { "size": "Large", "offset": { "X": -162.12138, "Y": 98.40302 } }
@@ -1043,6 +1055,7 @@
   {
     "economy": "Extraction",
     "subType": 3,
+    "name": "Aerecura",
     "landingPads": [
       { "size": "Large", "offset": { "X": 140.43349, "Y": -52.624954 } }
     ],
@@ -1130,6 +1143,7 @@
   {
     "economy": "Extraction",
     "subType": 4,
+    "name": "Mantus",
     "landingPads": [
       { "size": "Medium", "offset": { "X": 71.99514, "Y": -194.52705 } }
     ],
@@ -1226,6 +1240,7 @@
   {
     "economy": "Extraction",
     "subType": 5,
+    "name": "Ourea",
     "landingPads": [
       { "size": "Small", "offset": { "X": -58.965805, "Y": 2.9790258 } }
     ],
@@ -1282,6 +1297,7 @@
   {
     "economy": "Industrial",
     "subType": 1,
+    "name": "Fontus",
     "landingPads": [
       { "size": "Small", "offset": { "X": -48.166897, "Y": -1.0763369 } }
     ],
@@ -1344,6 +1360,7 @@
   {
     "economy": "Industrial",
     "subType": 2,
+    "name": "Metope",
     "landingPads": [
       { "size": "Large", "offset": { "X": 79.78324, "Y": 12.651707 } }
     ],
@@ -1428,6 +1445,7 @@
   {
     "economy": "Industrial",
     "subType": 3,
+    "name": "Minthe",
     "landingPads": [
       { "size": "Medium", "offset": { "X": 0.37367627, "Y": -72.72724 } }
     ],
@@ -1489,6 +1507,7 @@
   {
     "economy": "Industrial",
     "subType": 4,
+    "name": "Gaea",
     "landingPads": [
       { "size": "Small", "offset": { "X": -130.5007, "Y": -59.44336 } },
       { "size": "Large", "offset": { "X": 46.835117, "Y": 87.1446 }, "rot": 270 }
@@ -1581,6 +1600,7 @@
   {
     "economy": "Industrial",
     "subType": 5,
+    "name": "Palici",
     "landingPads": [
       { "size": "Large", "offset": { "X": -138.9936, "Y": -69.43095 } }
     ],
@@ -1672,6 +1692,7 @@
   {
     "economy": "HighTech",
     "subType": 1,
+    "name": "Chronos",
     "landingPads": [
       { "size": "Small", "offset": { "X": -57.24269, "Y": 158.29129 } },
       { "size": "Large", "offset": { "X": 22.386408, "Y": -132.13667 }, "rot": 90 }
@@ -1785,6 +1806,7 @@
   {
     "economy": "HighTech",
     "subType": 2,
+    "name": "Pheobe",
     "landingPads": [
       { "size": "Small", "offset": { "X": -113.89136, "Y": -53.61541 } }
     ],
@@ -1846,6 +1868,7 @@
   {
     "economy": "HighTech",
     "subType": 3,
+    "name": "Asteria",
     "landingPads": [
       { "size": "Small", "offset": { "X": 139.24341, "Y": -2.6053946 } }
     ],
@@ -1902,6 +1925,7 @@
   {
     "economy": "HighTech",
     "subType": 4,
+    "name": "Caerus",
     "landingPads": [
       { "size": "Small", "offset": { "X": -0.69542545, "Y": -119.85904 } },
       { "size": "Small", "offset": { "X": -93.55897, "Y": -88.11868 }, "rot": 35 },
@@ -1983,6 +2007,7 @@
   {
     "economy": "Tourist",
     "subType": 1,
+    "name": "Fufluns",
     "landingPads": [
       { "size": "Small", "offset": { "X": -45.08745, "Y": 106.69099 } },
       { "size": "Small", "offset": { "X": 53.154995, "Y": 117.620346 } },
@@ -2072,6 +2097,7 @@
   {
     "economy": "Tourist",
     "subType": 2,
+    "name": "Aergia",
     "landingPads": [
       { "size": "Medium", "offset": { "X": -28.39047, "Y": -6.575995 } }
     ],
@@ -2168,6 +2194,7 @@
   {
     "economy": "Tourist",
     "subType": 3,
+    "name": "Comus",
     "landingPads": [
       { "size": "Small", "offset": { "X": -40.21696, "Y": -75.531075 } },
       { "size": "Small", "offset": { "X": -39.99462, "Y": 54.074284 }, "rot": 180 },
@@ -2273,6 +2300,7 @@
   {
     "economy": "Tourist",
     "subType": 4,
+    "name": "Gelos",
     "landingPads": [
       { "size": "Large", "offset": { "X": -11.851735, "Y": -114.42889 } },
       { "size": "Small", "offset": { "X": 114.9895, "Y": 177.71727 }, "rot": 270 }

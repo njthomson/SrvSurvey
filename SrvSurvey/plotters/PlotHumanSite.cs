@@ -78,7 +78,7 @@ namespace SrvSurvey.plotters
                 this.dockingState = DockingState.landed;
                 this.hasLanded = true;
             }
-
+            
             game.initMats(this.station);
         }
 
@@ -526,9 +526,7 @@ namespace SrvSurvey.plotters
             // first, draw headers and footers (before we start clipping)
 
             // header - left
-            var economyTxt = this.getLocalizedEconomy();
-            var headerTxt = $"{station.name} - {economyTxt} ";
-            headerTxt += station.subType == 0 ? "?" : $"#{station.subType}";
+            var headerTxt = station.name;
             if (station.government == "$government_Anarchy;")
                 headerTxt = "🏴‍☠️ " + headerTxt;
 
@@ -577,9 +575,9 @@ namespace SrvSurvey.plotters
             // TODO: improve this?
 
             // footer - cmdr's location heading RELATIVE TO SITE
-            var aaa = game.status.Heading - siteHeading; // TODO: replace `aaa` with `cmdrHeading`
-            if (aaa < 0) aaa += 360;
-            var footerTxt = $"x: {Util.metersToString(cmdrOffset.X, true)}, y: {Util.metersToString(cmdrOffset.Y, true)}, {aaa}°";
+            var cmdrHeading = game.status.Heading - siteHeading;
+            if (cmdrHeading < 0) cmdrHeading += 360;
+            var footerTxt = $"{this.station.template?.name} x: {Util.metersToString(cmdrOffset.X, true)}, y: {Util.metersToString(cmdrOffset.Y, true)}, {cmdrHeading}°";
 
             // are we inside a building?
             var currentBld = station.template?.getCurrentBld(cmdrOffset, this.siteHeading);
@@ -923,7 +921,13 @@ namespace SrvSurvey.plotters
             else if (station.heading == -1)
                 drawApproachText("❓", Res.UnkownHeading, GameColors.Cyan);
             else if (!this.hasLanded)
-                drawApproachText("►", Res.KnownSettlement, GameColors.LimeIsh);
+            {
+                // Include extra lines with the economy/subType AND colonisation name (if known)
+                var txt = $"\n{getLocalizedEconomy()} #{station.subType}";
+                if (!string.IsNullOrEmpty(this.station.template?.name))
+                    txt += $"\n{this.station.template.name}";
+                drawApproachText("►", Res.KnownSettlement + txt, GameColors.LimeIsh);
+            }
 
             if (!this.hasLanded)
             {
