@@ -45,7 +45,6 @@
     <None Remove="allRuins.json" />
     <None Remove="allStructures.json" />
     <None Remove="bio-criteria\*.json" />
-    <None Remove="colonization-costs.json" />
     <None Remove="guardianSiteTemplates.json" />
     <None Remove="humanSiteTemplates.json" />
     <None Remove="images\*.png" />
@@ -67,9 +66,6 @@
     </Content>
     <Content Include="bio-criteria\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="colonization-costs.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="colonization-costs2.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -180,6 +176,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>PlotJumpInfo.resx</DependentUpon>
+    </Compile>
+    <Compile Update="plotters\PlotFootCombat.Designer.cs">
+      <DependentUpon>PlotFootCombat.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="plotters\PlotMassacre.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -351,6 +352,17 @@
       <CustomToolNamespace>Loc</CustomToolNamespace>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PlotJumpInfo.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotFootCombat.ps.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotFootCombat.resx">
+      <CustomToolNamespace>Loc</CustomToolNamespace>
+      <LastGenOutput>PlotFootCombat.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="plotters\PlotFootCombat.zh-Hans.resx">
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Update="plotters\PlotMassacre.resx">
       <Generator>ResXFileCodeGenerator</Generator>
