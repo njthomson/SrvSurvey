@@ -569,6 +569,9 @@ namespace SrvSurvey
             else
                 Program.closePlotter<PlotBuildCommodities>();
 
+            if (gameIsActive && PlotFootCombat.allowPlotter)
+                Program.showPlotter<PlotFootCombat>();
+
             // show high gravity warning
             var isLandableAndHighGravity = game?.systemBody?.type == SystemBodyType.LandableBody && game.systemBody.surfaceGravity >= Game.settings.highGravityWarningLevel * 10;
             if (Game.settings.autoShowFlightWarnings && game?.systemBody != null && isLandableAndHighGravity && game.isMode(GameMode.Landed, GameMode.SuperCruising, GameMode.GlideMode, GameMode.Flying, GameMode.InFighter, GameMode.InSrv))

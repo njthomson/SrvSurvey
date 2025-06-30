@@ -142,6 +142,7 @@ namespace SrvSurvey.game
         public Docked? lastDocked;
         public Docked? lastEverDocked;
         public Undocked? lastUndocked;
+        public ApproachSettlement? lastApproachSettlement;
         public ColonisationConstructionDepot? lastColonisationConstructionDepot;
         public SettlementMatCollectionData? matStatsTracker;
         private string? lastDestination;
@@ -979,6 +980,10 @@ namespace SrvSurvey.game
                         this.lastDocked = dockedEvent;
                 }
 
+                var approachSettlementEvent = entry as ApproachSettlement;
+                if (approachSettlementEvent != null && this.lastApproachSettlement == null)
+                    this.lastApproachSettlement = approachSettlementEvent;
+
                 return false;
             });
 
@@ -1149,6 +1154,9 @@ namespace SrvSurvey.game
                 if (this.atMainMenu)
                 {
                     this.lastDocked = null;
+                    this.lastApproachSettlement = null;
+                    this.lastColonisationConstructionDepot = null;
+
                     ColonyData.localUntrackedProject = null;
                     this.exitMats();
                 }
@@ -2525,6 +2533,8 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(ApproachSettlement entry)
         {
+            this.lastApproachSettlement = entry;
+
             if (entry.Name.StartsWith("$Ancient"))
             {
                 // Guardian site

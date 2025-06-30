@@ -235,6 +235,7 @@ namespace SrvSurvey
             label28 = new Label();
             checkKeyChords = new CheckBox();
             tabPage8 = new TabPage();
+            checkBox50 = new CheckBox();
             numGravityWarningLevel = new NumericUpDown();
             label12 = new Label();
             checkBox13 = new CheckBox();
@@ -2923,6 +2924,7 @@ namespace SrvSurvey
             // 
             tabPage8.BackColor = SystemColors.Control;
             tabPage8.BorderStyle = BorderStyle.Fixed3D;
+            tabPage8.Controls.Add(checkBox50);
             tabPage8.Controls.Add(numGravityWarningLevel);
             tabPage8.Controls.Add(label12);
             tabPage8.Controls.Add(checkBox13);
@@ -2938,6 +2940,18 @@ namespace SrvSurvey
             tabPage8.Size = new Size(699, 448);
             tabPage8.TabIndex = 9;
             tabPage8.Text = "More";
+            // 
+            // checkBox50
+            // 
+            checkBox50.AutoSize = true;
+            checkBox50.FlatStyle = FlatStyle.System;
+            checkBox50.Location = new Point(12, 170);
+            checkBox50.Name = "checkBox50";
+            checkBox50.Size = new Size(234, 20);
+            checkBox50.TabIndex = 45;
+            checkBox50.Tag = "hideMultiFloatie";
+            checkBox50.Text = "Hide multi-game Commander overlay";
+            checkBox50.UseVisualStyleBackColor = true;
             // 
             // numGravityWarningLevel
             // 
@@ -3443,5 +3457,6 @@ namespace SrvSurvey
         private CheckBox checkBox48;
         private LinkLabel linkLabel2;
         private CheckBox checkBox49;
+        private CheckBox checkBox50;
     }
 }

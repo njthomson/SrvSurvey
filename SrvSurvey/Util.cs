@@ -1,5 +1,4 @@
 ﻿using DecimalMath;
-using SharpDX.DirectInput;
 using SrvSurvey.canonn;
 using SrvSurvey.forms;
 using SrvSurvey.game;
@@ -42,14 +41,14 @@ namespace SrvSurvey
 
         public static double lsToM(double ls)
         {
-            // 149597870691 M per LS
-            return 149_597_870_691d * ls;
+            // 299_792_458 M per LS
+            return 299_792_458d * ls;
         }
 
-        public static double mToLS(double ls)
+        public static double mToLS(double m)
         {
-            // 149597870691 M per LS
-            return ls / 149_597_870_691d;
+            // 299_792_458 M per LS
+            return m / 299_792_458d;
         }
 
         public static double auToM(double ls)
@@ -139,9 +138,17 @@ namespace SrvSurvey
             var trimmedLink = link.Substring(0, Math.Min(200, link.Length));
             Game.log($"Opening link: (length: {link.Length})\r\n{trimmedLink}\r\n");
 
-            var info = new ProcessStartInfo(link);
-            info.UseShellExecute = true;
-            Process.Start(info);
+            try
+            {
+                var info = new ProcessStartInfo(link);
+                info.UseShellExecute = true;
+                Process.Start(info);
+            }
+            catch
+            {
+                // fallback to an alternative method if necessary
+                Process.Start(new ProcessStartInfo("cmd", $"/c start {link}") { CreateNoWindow = true });
+            }
         }
 
         public static string credits(long credits, bool hideUnits = false)
@@ -1134,10 +1141,10 @@ namespace SrvSurvey
             { "independant_trader", "medium" },
             { "asp_scout", "medium" },
             { "vulture", "small" },
-            { "asp", "medium" }, 
+            { "asp", "medium" },
             { "federation_dropship", "medium" },
             { "type7", "large" },
-            { "typex", "large" }, 
+            { "typex", "large" },
             { "federation_dropship_mkii", "medium" },
             { "empire_trader", "large" },
             { "typex_2", "medium" },

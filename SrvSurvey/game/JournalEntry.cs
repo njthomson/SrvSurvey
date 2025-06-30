@@ -1443,4 +1443,13 @@ namespace SrvSurvey
         public string Name_Localised;
         public int Amount;
     }
+
+    class FactionKillBond : JournalEntry
+    {
+        // { "timestamp":"2025-06-23T02:10:04Z", "event":"FactionKillBond", "Reward":17361, "AwardingFaction":"Youbee Dominion", "VictimFaction":"Kumo Council" }
+        public long Reward;
+        public string AwardingFaction;
+        public string VictimFaction;
+    }
+
 }

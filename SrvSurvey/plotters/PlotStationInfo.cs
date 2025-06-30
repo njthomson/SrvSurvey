@@ -104,8 +104,20 @@ namespace SrvSurvey.plotters
             // title
             drawTextAt2(eight, station.name, GameColors.Fonts.gothic_12B);
             newLine(true);
-            drawTextAt2(indent, station.type, GameColors.Fonts.gothic_9);
-            newLine(true);
+
+            // settlement type?
+            var match = game.systemData?.stations?.Find(s => s.marketId == station.id);
+            if (match != null)
+            {
+                drawTextAt2(indent, $"{station.type}: {match.economy} #{match.subType}", GameColors.Fonts.gothic_9);
+                newLine(true);
+            }
+            else
+            {
+                drawTextAt2(indent, station.type, GameColors.Fonts.gothic_9);
+                newLine(true);
+            }
+
             // largest pad
             string? largestPad = null;
             if (station.landingPads?.Large > 0) largestPad = "Large";

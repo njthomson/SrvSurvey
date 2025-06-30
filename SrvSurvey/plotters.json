@@ -32,5 +32,6 @@
   "PlotMiniTrack": "right: 8, top:8",
   "PlotStationInfo": "left: 8, middle:0",
   "PlotFloatie": "center: 0, bottom:24",
-  "PlotBuildCommodities": "right:8, top:8"
+  "PlotBuildCommodities": "right:8, top:8",
+  "PlotFootCombat": "left:8, top: 8"
 }

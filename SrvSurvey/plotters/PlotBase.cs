@@ -394,6 +394,7 @@ namespace SrvSurvey.plotters
         protected virtual void onJournalEntry(Docked entry) { /* overridden as necessary */ }
         protected virtual void onJournalEntry(MaterialCollected entry) { /* overridden as necessary */ }
         protected virtual void onJournalEntry(Music entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(FactionKillBond entry) { /* overridden as necessary */ }       
 
         #endregion
 
