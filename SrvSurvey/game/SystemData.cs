@@ -91,6 +91,10 @@ namespace SrvSurvey.game
                 }
             }
 
+            // Remove any stations that got tracked during colonisation. Anything with economy of "Colony" is guaranteed to fail to match
+            if (systemData.stations?.Any(s => s.economy == Economy.Colony) == true)
+                systemData.stations = systemData.stations.Where(s => s.economy != Economy.Colony).ToList();
+
             // make predictions based on what we know - after everything else
             if (Game.ready && Game.activeGame?.fid == fid && !skipPredictSpecies)
                 foreach (var body in systemData.bodies)
@@ -809,10 +813,11 @@ namespace SrvSurvey.game
 
         public bool onJournalEntry(FSSSignalDiscovered entry)
         {
-            if (entry.SystemAddress != this.address) {
+            if (entry.SystemAddress != this.address)
+            {
                 // NOT tracing this as it is common for FSSSignalDiscovered to be logged ahead of FSDJump events - hence we still think we're in the previous system
                 //Game.log($"Unmatched system! FSSSignalDiscovered Expected: `{this.address}`, got: {entry.SystemAddress}"); 
-                return false; 
+                return false;
             }
 
             this.discoveredSignals[entry.SignalName] = entry;
@@ -1201,8 +1206,9 @@ namespace SrvSurvey.game
             {
                 var match = this.stations.Find(s => s.marketId == newStation.marketId);
 
-                // add if not seen before
-                if (match == null)
+                // add if not seen before (but not if it has "Colony" economy - these are guaranteed not to match)
+
+                if (match == null || newStation.economy == Economy.Colony)
                     this.stations.Add(newStation);
 
                 //TODO: merge or replace if CalcMethod is better?

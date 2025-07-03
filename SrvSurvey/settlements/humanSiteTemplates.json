@@ -1360,7 +1360,7 @@
   {
     "economy": "Industrial",
     "subType": 2,
-    "name": "Metope",
+    "name": "Meteope",
     "landingPads": [
       { "size": "Large", "offset": { "X": 79.78324, "Y": 12.651707 } }
     ],

@@ -3315,16 +3315,36 @@ namespace SrvSurvey.game
             var frames = duration * fps;
             Game.log($"Start counting - fps: {fps} for {duration} seconds ...");
 
+            try
+            {
+                Game.log($"## Before: InvokeRequired: {Program.control.InvokeRequired}, IsAlive: {Thread.CurrentThread.IsAlive}, IsBackground: {Thread.CurrentThread.IsBackground}, IsThreadPoolThread: {Thread.CurrentThread.IsThreadPoolThread}, ApartmentState: {Thread.CurrentThread.ApartmentState}");
+            }
+            catch { }
+
             float maxBlueCount = 0;
 
             var tim = new System.Timers.Timer(1000f / fps);
             var count = 0;
             tim.Elapsed += (o, s) =>
             {
+                if (count == 0)
+                {
+                    try
+                    {
+                        Game.log($"## {count} First: InvokeRequired: {Program.control.InvokeRequired}, IsAlive: {Thread.CurrentThread.IsAlive}, IsBackground: {Thread.CurrentThread.IsBackground}, IsThreadPoolThread: {Thread.CurrentThread.IsThreadPoolThread}, ApartmentState: {Thread.CurrentThread.ApartmentState}");
+                    }
+                    catch { }
+                }
+
                 if (Program.control.InvokeRequired)
                 {
-                    Game.log($"Stop counting - on wrong thread?");
                     tim.Stop();
+                    Game.log($"Stop counting - on wrong thread?");
+                    try
+                    {
+                        Game.log($"## {count} Last: InvokeRequired: {Program.control.InvokeRequired}, IsAlive: {Thread.CurrentThread.IsAlive}, IsBackground: {Thread.CurrentThread.IsBackground}, IsThreadPoolThread: {Thread.CurrentThread.IsThreadPoolThread}, ApartmentState: {Thread.CurrentThread.ApartmentState}");
+                    }
+                    catch { }
                     return;
                 }
 
@@ -3332,6 +3352,11 @@ namespace SrvSurvey.game
                 {
                     tim.Stop();
                     Game.log($"Stop counting - fps: {fps} for {duration} seconds. (Max observed: {maxBlueCount.ToString("N5")})");
+                    try
+                    {
+                        Game.log($"## {count} Last: InvokeRequired: {Program.control.InvokeRequired}, IsAlive: {Thread.CurrentThread.IsAlive}, IsBackground: {Thread.CurrentThread.IsBackground}, IsThreadPoolThread: {Thread.CurrentThread.IsThreadPoolThread}, ApartmentState: {Thread.CurrentThread.ApartmentState}");
+                    }
+                    catch { }
                 }
 
                 var blueCount = this.getBlueCount();
@@ -3342,6 +3367,12 @@ namespace SrvSurvey.game
                     Game.log($"Setting first footfall on: '{systemBody.name}' ({systemBody.id})");
                     this.systemBody.firstFootFall = true;
                     this.systemData?.Save();
+                    try
+                    {
+                        Game.log($"## {count} Last: InvokeRequired: {Program.control.InvokeRequired}, IsAlive: {Thread.CurrentThread.IsAlive}, IsBackground: {Thread.CurrentThread.IsBackground}, IsThreadPoolThread: {Thread.CurrentThread.IsThreadPoolThread}, ApartmentState: {Thread.CurrentThread.ApartmentState}");
+                    }
+                    catch { }
+
                     this.fireUpdate(true);
                 }
                 maxBlueCount = Math.Max(maxBlueCount, blueCount);

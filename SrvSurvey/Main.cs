@@ -449,6 +449,7 @@ namespace SrvSurvey
             }
 
             this.game = newGame;
+            if (!game.cmdr.isOdyssey) this.Text += " LEGACY MODE";
 
             Game.update += Game_modeChanged;
             this.game.journals!.onJournalEntry += Journals_onJournalEntry;
@@ -740,7 +741,7 @@ namespace SrvSurvey
                 return;
             }
 
-            this.txtCommander.Text = $"{game.Commander} (FID:{game.fid}, Odyssey:{game.cmdr.isOdyssey})";
+            this.txtCommander.Text = game.Commander;
             if (Program.forceFid != null) this.txtCommander.Text += " (forced)";
             this.notifyIcon.Text = $"SrvSurvey: {game.Commander}\nDouble click to show";
             this.menuNotifyCmdr.Text = $"Cmdr: {game.Commander}";
@@ -759,7 +760,7 @@ namespace SrvSurvey
             }
 
             if (game.vehicle == ActiveVehicle.MainShip)
-                this.txtVehicle.Text = game.currentShip.name ?? game.currentShip.type;
+                this.txtVehicle.Text = Util.pascal(game.currentShip.name ?? game.currentShip.type);
             else
                 this.txtVehicle.Text = game.vehicle.ToString();
 
