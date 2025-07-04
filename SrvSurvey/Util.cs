@@ -2,6 +2,7 @@
 using SrvSurvey.canonn;
 using SrvSurvey.forms;
 using SrvSurvey.game;
+using SrvSurvey.net;
 using SrvSurvey.plotters;
 using SrvSurvey.Properties;
 using SrvSurvey.units;
@@ -1303,6 +1304,27 @@ namespace SrvSurvey
                 || filename.Contains('>')
                 || filename.Contains('|')
                 ;
+        }
+
+        public static void makeColonyImageThumbnails()
+        {
+            var folder = Path.Combine(Git.srcRootFolder, "docs", "colony");
+            var files = Directory.GetFiles(folder, "*.jpg")
+                .Where(f => !Path.GetFileNameWithoutExtension(f).EndsWith("-thumb"))
+                .ToList();
+
+            Game.log($"Making thumbnails for {files.Count} images...");
+            foreach (var filepath in files)
+            {
+                var img = Image.FromFile(filepath);
+                var w = 200;
+                var h = (int)Math.Round(200d / (double)img.Width * (double)img.Height);
+                var thumb = new Bitmap(img, w, h);
+
+                var filename = Path.GetFileNameWithoutExtension(filepath);
+                var thumbFilename = Path.GetFullPath(filepath.Replace(filename, filename + "-thumb"));
+                thumb.Save(thumbFilename);
+            }
         }
     }
 
