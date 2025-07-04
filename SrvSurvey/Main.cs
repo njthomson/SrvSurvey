@@ -449,7 +449,7 @@ namespace SrvSurvey
             }
 
             this.game = newGame;
-            if (!game.cmdr.isOdyssey) this.Text += " LEGACY MODE";
+            if (game.cmdr?.isOdyssey == false) this.Text = $"{this.Text} LEGACY MODE";
 
             Game.update += Game_modeChanged;
             this.game.journals!.onJournalEntry += Journals_onJournalEntry;
