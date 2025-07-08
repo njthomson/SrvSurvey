@@ -53,9 +53,13 @@ namespace SrvSurvey.widgets
 
             public static Pen orangeDark1 = orangeDark.toPen(1);
             public static Pen orangeDark2 = orangeDark.toPen(2);
+            public static Pen orangeDark3 = orangeDark.toPen(3);
+            public static Pen orangeDark4 = orangeDark.toPen(4);
 
             public static Pen cyan1 = cyan.toPen(1);
             public static Pen cyan2 = cyan.toPen(2);
+            public static Pen cyan3 = cyan.toPen(3);
+            public static Pen cyan4 = cyan.toPen(4);
 
             public static Pen cyanDark1 = cyanDark.toPen(1);
             public static Pen cyanDark2 = cyanDark.toPen(2);

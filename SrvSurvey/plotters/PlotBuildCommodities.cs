@@ -228,6 +228,22 @@ namespace SrvSurvey.plotters
             }
 
             // start rendering...
+            if (game.lastColonisationConstructionDepot?.ConstructionComplete == true)
+            {
+                headerText = game.lastDocked?.StationName ?? "";
+                headerText = headerText.Substring(headerText.IndexOf(":") + 2);
+                drawTextAt2("🚧  ", C.yellow, GameColors.Fonts.gothic_10);
+                drawTextAt2(headerText, GameColors.Fonts.gothic_12B);
+                drawTextAt2("  🚧", C.yellow, GameColors.Fonts.gothic_10);
+                newLine(+ten, true);
+                
+                drawTextAt2(ten, "☑️ Construction complete ☑️", C.green, GameColors.Fonts.gothic_10);
+                newLine(+ten, true);
+
+                this.formAdjustSize(+ten, +ten);
+                return;
+            }
+
             dtx = 10;
             if (dockedAtConstructionSite) drawTextAt2("🚧  ", C.yellow, GameColors.Fonts.gothic_10);
             drawTextAt2(headerText, GameColors.Fonts.gothic_12B);

@@ -1679,6 +1679,7 @@ namespace SrvSurvey.game
             if (entry.ConstructionComplete)
             {
                 // mark current project as complete?
+                this.lastColonisationConstructionDepot = entry;
                 cmdrColony.updateComplete(entry).justDoIt();
             }
             else
