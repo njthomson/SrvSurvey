@@ -235,7 +235,7 @@ namespace BioCriterias
                     //if (currentName.Contains("informem", StringComparison.OrdinalIgnoreCase)) System.Diagnostics.Debugger.Break();
 
                     var propName = Map.properties.GetValueOrDefault(clause.property) ?? clause.property;
-                    if (!bodyProps.ContainsKey(propName)) throw new Exception($"Unexpected property: {propName} ({clause.property})");
+                    if (!bodyProps.ContainsKey(propName)) throw new Exception($"Unexpected property: '{propName}' ({clause.property}) from: {query} / {currentName}");
 
                     var bodyValue = bodyProps.GetValueOrDefault(propName);
 

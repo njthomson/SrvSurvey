@@ -1310,7 +1310,7 @@ namespace SrvSurvey
         {
             var folder = Path.Combine(Git.srcRootFolder, "docs", "colony");
             var files = Directory.GetFiles(folder, "*.jpg")
-                .Where(f => !Path.GetFileNameWithoutExtension(f).EndsWith("-thumb"))
+                .Where(f => !Path.GetFileNameWithoutExtension(f).Contains("-"))
                 .ToList();
 
             Game.log($"Making thumbnails for {files.Count} images...");

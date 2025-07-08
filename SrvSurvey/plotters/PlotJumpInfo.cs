@@ -315,6 +315,8 @@ namespace SrvSurvey.plotters
             // prep rectangles for drawing dots and scoop arcs above them
             var dotRadius = five;
             var r = new RectangleF(x - dotRadius, y - dotRadius, dotRadius * 2, dotRadius * 2);
+            var r0 = new RectangleF(r.Location, r.Size);
+            r0.Inflate(-0.5f, -0.5f);
             var r2 = new RectangleF(r.Location, r.Size);
             r2.Inflate(dotRadius, dotRadius);
 
@@ -355,8 +357,10 @@ namespace SrvSurvey.plotters
                 {
                     if (n < nextHopIdx - 1)
                     {
-                        g.FillEllipse(C.Brushes.black, r);
-                        g.DrawEllipse(C.Pens.orangeDark2, r);
+                        //g.FillEllipse(C.Brushes.black, r);
+                        //g.DrawEllipse(C.Pens.orangeDark2, r);
+                        g.FillEllipse(C.Brushes.black, r0);
+                        g.DrawEllipse(C.Pens.orangeDark3, r0);
                     }
                     else if (n >= nextHopIdx)
                     {
@@ -394,6 +398,7 @@ namespace SrvSurvey.plotters
                 }
 
                 r.X -= w;
+                r0.X = r.X;
                 x -= w;
             }
 
@@ -404,13 +409,17 @@ namespace SrvSurvey.plotters
             }
             else if (nextHopIdx == 0)
             {
-                g.FillEllipse(C.Brushes.cyanDark, r);
-                g.DrawEllipse(C.Pens.cyan2, r);
+                //r0.X = r.X;
+                g.FillEllipse(C.Brushes.cyanDark, r0);
+                g.DrawEllipse(C.Pens.cyan3, r0);
+                //g.FillEllipse(C.Brushes.cyanDark, r);
+                //g.DrawEllipse(C.Pens.cyan2, r);
             }
             else if (nextHopIdx > 0)
             {
-                g.FillEllipse(C.Brushes.black, r);
-                g.DrawEllipse(C.Pens.orangeDark2, r);
+                //r0.X = r.X;
+                g.FillEllipse(C.Brushes.black, r0);
+                g.DrawEllipse(C.Pens.orangeDark3, r0);
             }
 
 
@@ -422,8 +431,12 @@ namespace SrvSurvey.plotters
             else if (nextHopIdx > 0)
             {
                 r.X = xNow - dotRadius;
-                g.FillEllipse(C.Brushes.cyanDark, r);
-                g.DrawEllipse(C.Pens.cyan2, r);
+                r0.X = r.X;
+                //g.FillEllipse(C.Brushes.cyanDark, r);
+                //g.DrawEllipse(C.Pens.cyan2, r);
+                g.FillEllipse(C.Brushes.cyanDark, r0);
+                g.DrawEllipse(C.Pens.cyan3, r0);
+
             }
 
             newLine(+four);
