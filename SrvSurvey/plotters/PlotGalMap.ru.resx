@@ -61,7 +61,7 @@
   </resheader>
   <!--Localizable elements are below-->
   <data name="CountGenus">
-    <value>{0}x Род</value>
+    <value>{0}x Био</value>
     <source>{0}x Genus</source>
   </data>
   <data name="Current">
