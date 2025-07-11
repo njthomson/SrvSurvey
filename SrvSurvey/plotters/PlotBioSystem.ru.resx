@@ -84,7 +84,7 @@
     <source>System FSS required</source>
   </data>
   <data name="GeoSignals">
-    <value>Геосигналы: {0}</value>
+    <value>Геосигналов: {0}</value>
     <comment>Header shown when body has geo signals
 {0} int, total count of geo signals on the body</comment>
     <source>Geo signals: {0}</source>
@@ -101,7 +101,7 @@
     <source>Rewards: {0}</source>
   </data>
   <data name="SysBio_Header">
-    <value>Биосигналы: {0}</value>
+    <value>Биосигналов: {0}</value>
     <comment>Header shown when showing bio signals forthe whole system
 {0} int, count of bio signals in this system</comment>
     <source>Bio signals: {0}</source>
