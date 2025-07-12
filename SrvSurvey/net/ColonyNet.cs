@@ -149,7 +149,6 @@ namespace SrvSurvey.game
             }
         }
 
-
         public async Task contribute(string buildId, string cmdr, Dictionary<string, int> diff)
         {
             Game.log(diff.formatWithHeader($"Colony.contribute: {buildId}"));
