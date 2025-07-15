@@ -201,6 +201,9 @@ namespace SrvSurvey.game
         {
             if (current == null) return;
 
+            if (this.doingFindSystemsInCurrentBoxel) return;
+            this.doingFindSystemsInCurrentBoxel = true;
+
             Task.Run(async () =>
             {
                 try
@@ -219,8 +222,14 @@ namespace SrvSurvey.game
                 {
                     FormErrorSubmit.Show(ex);
                 }
+                finally
+                {
+                    this.doingFindSystemsInCurrentBoxel = false;
+                }
             });
         }
+
+        private bool doingFindSystemsInCurrentBoxel = false;
 
         private async Task<bool> findSystemsInCurrentBoxel()
         {

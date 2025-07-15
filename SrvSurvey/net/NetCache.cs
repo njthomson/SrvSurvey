@@ -14,6 +14,11 @@
             return rslt;
         }
 
+        public static void clearAll()
+        {
+            cache.Clear();
+        }
+
         class QueryCache<T, Q> where Q : notnull
         {
             private Dictionary<Q, T> queries = new();

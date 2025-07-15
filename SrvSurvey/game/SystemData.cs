@@ -52,6 +52,8 @@ namespace SrvSurvey.game
 
             var filepath = files[0];
             var systemData = Data.Load<SystemData>(filepath)!;
+            if (systemData == null) return null;
+
             cache[systemData.address] = systemData;
 
             // post-process after loading ...

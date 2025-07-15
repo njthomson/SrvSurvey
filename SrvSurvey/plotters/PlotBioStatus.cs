@@ -370,18 +370,6 @@ namespace SrvSurvey.plotters
                     txt += $"|{organism.range}m";
                 }
 
-                /* TODO: show rewards here another time - it will require network calls to get the species name before we've visited it directly
-                if (organism.Reward > 0)
-                {
-                    var credits = Util.credits(1234567); // (long)organism.Reward);
-                    txt += $"|{credits}";
-                }
-                //else
-                //{
-                //    txt += $"|? CR";
-                //}
-                // */
-
                 var sz = g.MeasureString(txt, GameColors.fontSmall);
                 if (x + sz.Width > this.Width - oneSix)
                 {

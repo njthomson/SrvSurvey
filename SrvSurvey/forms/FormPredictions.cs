@@ -111,7 +111,9 @@ namespace SrvSurvey
         {
             base.OnLoad(e);
 
-            this.MinimumSize = new Size(flowCounts.Right + flowCounts.Left * 2, 0);
+            var minWidth = flowCounts.Right + flowCounts.Left * 2;
+            if (minWidth < 0) minWidth = 0;
+            this.MinimumSize = new Size(minWidth, 0);
 
             Game.update += Game_update;
             Program.defer(() => btnCurrentBody.Focus());

@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.net;
 using SrvSurvey.plotters;
 using SrvSurvey.Properties;
 using SrvSurvey.units;
@@ -121,6 +122,9 @@ namespace SrvSurvey.forms
                 var rslt = MessageBox.Show(this, $"{lblBoxelCount.Text}\n\nThis could mean searching through many 100's of systems.\n\nAre you sure you want to do this?", "SrvSurvey", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (rslt != DialogResult.Yes) return;
             }
+
+            // purge any (Spansh) caches
+            NetCache.clearAll();
 
             closeConfig(true, bx);
         }
