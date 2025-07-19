@@ -1360,7 +1360,7 @@
   {
     "economy": "Industrial",
     "subType": 2,
-    "name": "Meteope",
+    "name": "Minthe",
     "landingPads": [
       { "size": "Large", "offset": { "X": 79.78324, "Y": 12.651707 } }
     ],
@@ -1445,7 +1445,7 @@
   {
     "economy": "Industrial",
     "subType": 3,
-    "name": "Minthe",
+    "name": "Palici",
     "landingPads": [
       { "size": "Medium", "offset": { "X": 0.37367627, "Y": -72.72724 } }
     ],
@@ -1507,7 +1507,7 @@
   {
     "economy": "Industrial",
     "subType": 4,
-    "name": "Palici",
+    "name": "Meteope",
     "landingPads": [
       { "size": "Small", "offset": { "X": -130.5007, "Y": -59.44336 } },
       { "size": "Large", "offset": { "X": 46.835117, "Y": 87.1446 }, "rot": 270 }
