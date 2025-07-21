@@ -9,12 +9,14 @@ Currently SrvSurvey supports localization into the following languages:
 - Русский (ru-*)
 - 简体中文 (zh-Hans)
 
+If you would like to contribute to SrvSurvey's localization, you will need to clone the repo, make changes to .resx files and then submit a pull request. To help view diff's in .resx files, building in Visual Studio will re-sort the .resx files. The same can be done by manually running [sort-resx.ps1](../sort-resx.ps1). Changes to .resx files will be visible immediately after rebuilding from local sources, then restarting SrvSurvey.
+
 Localized resources for SrvSurvey can be found in 3 folders:
 - [./SrvSurvey/Properties/](https://github.com/njthomson/SrvSurvey/tree/main/SrvSurvey/Properties)
 - [./SrvSurvey/forms/](https://github.com/njthomson/SrvSurvey/tree/main/SrvSurvey/forms)
 - [./SrvSurvey/plotters/](https://github.com/njthomson/SrvSurvey/tree/main/SrvSurvey/plotters)
 
-Resources are spread across many .resx files, where the original file is named `abc.resx` and each translated file `abc.<lang>.resx`. These are initially populated with machine translations which tend to be of questionable quality. To help view diff's in .resx files, building in Visual Studio will re-sort the .resx files. The same can be done by manually running [sort-resx.ps1](../sort-resx.ps1). Edits to .resx files will be visible immediately after rebuilding and running SrvSurvey from local sources.
+Resources are spread across many .resx files, where the original file is named `abc.resx` and each translated file `abc.<lang>.resx`. These are initially populated with machine translations which tend to be of questionable quality. 
 
 There are some customizations in localized .resx files to make it easier to identify the state of translations. To begin with, all localizable resources are sorted lower in the file below this line
 
