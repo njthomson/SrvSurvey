@@ -539,6 +539,7 @@ namespace SrvSurvey
         {
             var redirectedRoamingFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Packages/35333NosmohtSoftware.142860789C73F_p4c193bsm1z5a/LocalCache/Roaming/SrvSurvey/SrvSurvey");
             var redirectedRoamingFolder2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Packages/35333NosmohtSoftware.142860789C73F_p4c193bsm1z5a/LocalCache/Roaming/SrvSurvey/SrvSurvey-");
+            var lastOperation = "";
 
             try
             {
@@ -553,9 +554,11 @@ namespace SrvSurvey
                 if (Directory.Exists(redirectedRoamingFolder) && !Directory.Exists(redirectedRoamingFolder2))
                 {
                     // first - rename redirected folder with a trailing '-' so it won't cause problems on the next run
+                    lastOperation = "Rename redirectedRoamingFolder";
                     Directory.Move(redirectedRoamingFolder, $"{redirectedRoamingFolder}-");
 
                     // ensure the real folder exists
+                    lastOperation = "Create appData folder";
                     var info1 = new ProcessStartInfo("cmd.exe", $"/c \"md %appdata%\\SrvSurvey\\SrvSurvey\\1.0.0.0\"");
                     Process.Start(info1)?.WaitForExit();
 
@@ -568,12 +571,14 @@ namespace SrvSurvey
                 else if (Directory.Exists(redirectedRoamingFolder) && Directory.Exists(redirectedRoamingFolder2))
                 {
                     // there will be trouble if both folders exist, so rename to avoid that
+                    lastOperation = "Rename X redirectedRoamingFolder";
                     Directory.Move(redirectedRoamingFolder, $"x{redirectedRoamingFolder}");
                 }
 
                 var hasAppStoreRedirectedRoamingFolder2 = Directory.Exists(redirectedRoamingFolder2);
                 if (hasAppStoreRedirectedRoamingFolder2)
                 {
+                    lastOperation = "Read files: redirectedRoamingFolder2";
                     var filenames = Directory.GetFiles(redirectedRoamingFolder2, "*.*", SearchOption.AllDirectories);
                     hasAppStoreRedirectedRoamingFolder2 = filenames.Length > 0;
                 }
@@ -585,6 +590,7 @@ namespace SrvSurvey
                 var hasRealRoamingFolder = Directory.Exists(realRoamingFolder);
                 if (hasRealRoamingFolder)
                 {
+                    lastOperation = "Read files: realRoamingFolder";
                     var filenames = Directory.GetFiles(realRoamingFolder, "*.*", SearchOption.AllDirectories);
                     hasRealRoamingFolder = filenames.Length > 0;
                 }
@@ -593,6 +599,7 @@ namespace SrvSurvey
                 if (!hasRealRoamingFolder)
                 {
                     // but folders still redirected - must do the move this way
+                    lastOperation = "Move files: redirectedRoamingFolder2 to appData";
                     var info2 = new ProcessStartInfo("cmd.exe", $"/c \"move /Y {redirectedRoamingFolder2} %appdata%\\SrvSurvey & rd %appdata%\\SrvSurvey\\SrvSurvey /s /q & move /Y %appdata%\\SrvSurvey\\SrvSurvey- %appdata%\\SrvSurvey\\SrvSurvey");
                     Process.Start(info2)?.WaitForExit();
                 }
@@ -604,7 +611,7 @@ namespace SrvSurvey
                 var count3 = Directory.Exists(dataFolder) ? Directory.GetFiles(dataFolder, "*.*", SearchOption.AllDirectories).Length : -1;
                 var count4 = Directory.Exists(dataFolder2) ? Directory.GetFiles(dataFolder2, "*.*", SearchOption.AllDirectories).Length : -1;
 
-                MessageBox.Show($"An unexpected error occurred. Please report the following on https://github.com/njthomson/SrvSurvey/issues:\r\n\r\nDiagnostic counts: [{count1}, {count2}, {count3}, {count4}]\n\n {ex.Message}\n\n{ex.StackTrace}", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"An unexpected error occurred. Please report the following on https://github.com/njthomson/SrvSurvey/issues:\n\nDiagnostic counts: [{count1}, {count2}, {count3}, {count4}]\nLast operation: {lastOperation}\n\n{ex.Message}\n\n{ex.StackTrace}", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Process.GetCurrentProcess().Kill();
                 return true;
             }
