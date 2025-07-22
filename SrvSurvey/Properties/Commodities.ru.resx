@@ -1,0 +1,2307 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Pre-loc from: https://raw.githubusercontent.com/EDCD/EDDI/refs/heads/develop/DataDefinitions/Properties/Commodities.ru.resx -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <!--Localizable elements are below-->
+  <data name="AdvancedCatalysers">
+    <value>Улучшенные катализаторы</value>
+    <comment>Commodity AdvancedCatalysers</comment>
+    <source>Advanced Catalysers</source>
+  </data>
+  <data name="AdvancedMedicines">
+    <value>Новейшие лекарства</value>
+    <comment>Commodity AdvancedMedicines</comment>
+    <source>Advanced Medicines</source>
+  </data>
+  <data name="Advert1">
+    <value>Экспериментальные ультра компактные процессоры</value>
+    <comment>Commodity Ultra-Compact Processor Prototypes</comment>
+    <source>Ultra-Compact Processor Prototypes</source>
+  </data>
+  <data name="AerialEdenApple">
+    <value>Райские яблоки с Эриала</value>
+    <comment>Commodity AerialEdenApple </comment>
+    <source>Eden Apples Of Aerial</source>
+  </data>
+  <data name="AganippeRush">
+    <value>Aganippe Rush</value>
+    <comment>Commodity AganippeRush</comment>
+    <source>Aganippe Rush</source>
+  </data>
+  <data name="AgriculturalMedicines">
+    <value>Ветмедикаменты</value>
+    <comment>Commodity AgriculturalMedicines</comment>
+    <source>Agri-Medicines</source>
+  </data>
+  <data name="agronomictreatment">
+    <value>Агрономическая обработка</value>
+    <comment>Commodity agronomictreatment</comment>
+    <source>Agronomic Treatment</source>
+  </data>
+  <data name="AiRelics">
+    <value>Фрагменты ИИ</value>
+    <comment>Commodity AiRelics</comment>
+    <source>Ai Relics</source>
+  </data>
+  <data name="aislingmediamaterials">
+    <value>Агитационные материалы Айслинг</value>
+    <comment>Commodity aislingmediamaterials</comment>
+    <source>Aisling Media Materials</source>
+  </data>
+  <data name="AislingMediaResources">
+    <value>Запечатанные контракты Айслинг</value>
+    <comment>Commodity AislingMediaResources</comment>
+    <source>Aisling Sealed Contracts</source>
+  </data>
+  <data name="aislingpromotionalmaterials">
+    <value>Политическая программа Айслинг</value>
+    <comment>Commodity aislingpromotionalmaterials</comment>
+    <source>Aisling Programme Materials</source>
+  </data>
+  <data name="AlacarakmoSkinArt">
+    <value>Алакаракмовские татуировки</value>
+    <comment>Commodity AlacarakmoSkinArt</comment>
+    <source>Alacarakmo Skin Art</source>
+  </data>
+  <data name="AlbinoQuechuaMammoth">
+    <value>Мясо белого кечуанского мамонта</value>
+    <comment>Commodity AlbinoQuechuaMammoth</comment>
+    <source>Albino Quechua Mammoth</source>
+  </data>
+  <data name="Alexandrite">
+    <value>Александрит</value>
+    <comment>Commodity Alexandrite</comment>
+    <source>Alexandrite</source>
+  </data>
+  <data name="Algae">
+    <value>Водоросли</value>
+    <comment>Commodity Algae</comment>
+    <source>Algae</source>
+  </data>
+  <data name="alieneggs">
+    <value>Кожистые яйца</value>
+    <comment>Commodity alieneggs</comment>
+    <source>Leathery Eggs</source>
+  </data>
+  <data name="AllianceLegaslativeContracts">
+    <value>Законодательные договоры Альянса</value>
+    <comment>Commodity AllianceLegaslativeContracts</comment>
+    <source>Alliance Legislative Contracts</source>
+  </data>
+  <data name="alliancelegaslativerecords">
+    <value>Законодательные отчеты Альянса</value>
+    <comment>Commodity alliancelegaslativerecords</comment>
+    <source>Alliance Legislative Records</source>
+  </data>
+  <data name="AllianceTradeAgreements">
+    <value>Торговые соглашения Альянса</value>
+    <comment>Commodity AllianceTradeAgreements</comment>
+    <source>Alliance Trade Agreements</source>
+  </data>
+  <data name="AltairianSkin">
+    <value>Альтаирская кожа</value>
+    <comment>Commodity AltairianSkin</comment>
+    <source>Altairian Skin</source>
+  </data>
+  <data name="Aluminium">
+    <value>Алюминий</value>
+    <comment>Commodity Aluminium</comment>
+    <source>Aluminium</source>
+  </data>
+  <data name="AlyaBodilySoap">
+    <value>Алийское мыло для тела</value>
+    <comment>Commodity AlyaBodySoap</comment>
+    <source>Alya Body Soap</source>
+  </data>
+  <data name="AncientCasket">
+    <value>Древний контейнер</value>
+    <comment>Commodity AncientCasket</comment>
+    <source>Ancient Casket</source>
+  </data>
+  <data name="ancientkey">
+    <value>Древний ключ</value>
+    <comment>Commodity Ancient Key</comment>
+    <source>Ancient Key</source>
+  </data>
+  <data name="AncientOrb">
+    <value>Древний шар</value>
+    <comment>Commodity AncientOrb</comment>
+    <source>Ancient Orb</source>
+  </data>
+  <data name="AncientRelic">
+    <value>Древняя реликвия</value>
+    <comment>Commodity AncientRelic</comment>
+    <source>Ancient Relic</source>
+  </data>
+  <data name="AncientRelicTG">
+    <!--Machine translated-->
+    <value>Неклассифицированная реликвия</value>
+    <comment>Commodity AncientRelicTG</comment>
+    <source>Unclassified Relic</source>
+  </data>
+  <data name="AncientTablet">
+    <value>Древняя пластина</value>
+    <comment>Commodity AncientTablet</comment>
+    <source>Ancient Tablet</source>
+  </data>
+  <data name="AncientTotem">
+    <value>Древний тотем</value>
+    <comment>Commodity AncientTotem</comment>
+    <source>Ancient Totem</source>
+  </data>
+  <data name="AncientUrn">
+    <value>Древняя урна</value>
+    <comment>Commodity AncientUrn</comment>
+    <source>Ancient Urn</source>
+  </data>
+  <data name="AnduligaFireWorks">
+    <value>Андулигские фейерверки</value>
+    <comment>Commodity AnduligaFireWorks</comment>
+    <source>Anduliga Fire Works</source>
+  </data>
+  <data name="AnimalEffigies">
+    <value>Серебряная дурь Crom</value>
+    <comment>Commodity Crom Silver Fesh</comment>
+    <source>Crom Silver Fesh</source>
+  </data>
+  <data name="Animalmeat">
+    <value>Животное мясо</value>
+    <comment>Commodity Animalmeat</comment>
+    <source>Animal Meat</source>
+  </data>
+  <data name="AnimalMonitors">
+    <value>Мониторы фауны</value>
+    <comment>Commodity AnimalMonitors</comment>
+    <source>Animal Monitors</source>
+  </data>
+  <data name="AntimatterContainmentUnit">
+    <value>Контейнер с антиматерией</value>
+    <comment>Commodity AntimatterContainmentUnit</comment>
+    <source>Antimatter Containment Unit</source>
+  </data>
+  <data name="AntiqueJewellery">
+    <value>Древние ювелирные украшения</value>
+    <comment>Commodity AntiqueJewellery</comment>
+    <source>Antique Jewelry</source>
+  </data>
+  <data name="Antiquities">
+    <value>Древние реликвии</value>
+    <comment>Commodity Antiquities</comment>
+    <source>Antiquities</source>
+  </data>
+  <data name="AnyNaCoffee">
+    <value>Кофе Any Na</value>
+    <comment>Commodity AnyNaCoffee</comment>
+    <source>Any Na Coffee</source>
+  </data>
+  <data name="AquaponicSystems">
+    <value>Аквапонные системы</value>
+    <comment>Commodity AquaponicSystems</comment>
+    <source>Aquaponic Systems</source>
+  </data>
+  <data name="AroucaConventualSweets">
+    <value>Монастырские сладости Ароуки</value>
+    <comment>Commodity AroucaConventualSweets</comment>
+    <source>Arouca Conventual Sweets</source>
+  </data>
+  <data name="ArticulationMotors">
+    <value>Шарнирные моторы</value>
+    <comment>Commodity ArticulationMotors</comment>
+    <source>Articulation Motors</source>
+  </data>
+  <data name="AssaultPlans">
+    <value>Планы атак</value>
+    <comment>Commodity AssaultPlans</comment>
+    <source>Assault Plans</source>
+  </data>
+  <data name="AtmosphericExtractors">
+    <value>Атмосферный процессор</value>
+    <comment>Commodity AtmosphericExtractors</comment>
+    <source>Atmospheric Processors</source>
+  </data>
+  <data name="AutoFabricators">
+    <value>Автосинтезаторы</value>
+    <comment>Commodity AutoFabricators</comment>
+    <source>Auto-Fabricators</source>
+  </data>
+  <data name="AzCancriFormula42">
+    <!--Machine translated-->
+    <value>АЗ Канкри Формула 42</value>
+    <comment>Commodity AzCancriFormula42</comment>
+    <source>AZ Cancri Formula 42</source>
+  </data>
+  <data name="BakedGreebles">
+    <value>Печёные Greebles</value>
+    <comment>Commodity BakedGreebles</comment>
+    <source>Baked Greebles</source>
+  </data>
+  <data name="BaltahSineVacuumKrill">
+    <value>Вакуумный криль с Балтах'сине</value>
+    <comment>Commodity BaltahSineVacuumKrill</comment>
+    <source>Baltah Sine Vacuum Krill</source>
+  </data>
+  <data name="BankiAmphibiousLeather">
+    <value>Кожа банкийских амфибий</value>
+    <comment>Commodity BankiAmphibiousLeather</comment>
+    <source>Banki Amphibious Leather</source>
+  </data>
+  <data name="BasicMedicines">
+    <value>Основные лекарства</value>
+    <comment>Commodity BasicMedicines</comment>
+    <source>Basic Medicines</source>
+  </data>
+  <data name="BasicNarcotics">
+    <value>Наркотики</value>
+    <comment>Commodity BasicNarcotics</comment>
+    <source>Narcotics</source>
+  </data>
+  <data name="BastSnakeGin">
+    <value>Настойка из бастетовых змей</value>
+    <comment>Commodity BastSnakeGin</comment>
+    <source>Bast Snake Gin</source>
+  </data>
+  <data name="BattleWeapons">
+    <value>Военное оружие</value>
+    <comment>Commodity BattleWeapons</comment>
+    <source>Battle Weapons</source>
+  </data>
+  <data name="Bauxite">
+    <value>Боксит</value>
+    <comment>Commodity Bauxite</comment>
+    <source>Bauxite</source>
+  </data>
+  <data name="Beer">
+    <value>Пиво</value>
+    <comment>Commodity Beer</comment>
+    <source>Beer</source>
+  </data>
+  <data name="BelalansRayLeather">
+    <value>Кожа белаланских скатов</value>
+    <comment>Commodity BelalansRayLeather</comment>
+    <source>Belalans Ray Leather</source>
+  </data>
+  <data name="Benitoite">
+    <value>Бенитоит</value>
+    <comment>Commodity Benitoite</comment>
+    <source>Benitoite</source>
+  </data>
+  <data name="Bertrandite">
+    <value>Бертрандит</value>
+    <comment>Commodity Bertrandite</comment>
+    <source>Bertrandite</source>
+  </data>
+  <data name="Beryllium">
+    <value>Бериллий</value>
+    <comment>Commodity Beryllium</comment>
+    <source>Beryllium</source>
+  </data>
+  <data name="BioReducingLichen">
+    <value>Лишайник-биоредуктор</value>
+    <comment>Commodity BioReducingLichen</comment>
+    <source>Bioreducing Lichen</source>
+  </data>
+  <data name="Biowaste">
+    <value>Биоотходы</value>
+    <comment>Commodity Biowaste</comment>
+    <source>Bio-waste</source>
+  </data>
+  <data name="Bismuth">
+    <value>Висмут</value>
+    <comment>Commodity Bismuth</comment>
+    <source>Bismuth</source>
+  </data>
+  <data name="BlueMilk">
+    <value>Лазурное молоко</value>
+    <comment>Commodity BlueMilk</comment>
+    <source>Azure Milk</source>
+  </data>
+  <data name="BootlegLiquor">
+    <value>Самогон</value>
+    <comment>Commodity BootlegLiquor</comment>
+    <source>Bootleg Liquor</source>
+  </data>
+  <data name="BorasetaniPathogenetics">
+    <value>Боразетанские патогены</value>
+    <comment>Commodity BorasetaniPathogenetics</comment>
+    <source>Borasetani Pathogenetics</source>
+  </data>
+  <data name="Bromellite">
+    <value>Бромеллит</value>
+    <comment>Commodity Bromellite</comment>
+    <source>Bromellite</source>
+  </data>
+  <data name="BuckyballBeerMats">
+    <value>Подставка под пиво Buckyball</value>
+    <comment>Commodity BuckyballBeerMats</comment>
+    <source>Buckyball Beer Mats</source>
+  </data>
+  <data name="BuildingFabricators">
+    <value>Строительные синтезаторы</value>
+    <comment>Commodity BuildingFabricators</comment>
+    <source>Building Fabricators</source>
+  </data>
+  <data name="BurnhamBileDistillate">
+    <value>Бернхемский желчный дистиллят</value>
+    <comment>Commodity BurnhamBileDistillate</comment>
+    <source>Burnham Bile Distillate</source>
+  </data>
+  <data name="CD_75KittenBrandCoffee">
+    <value>Кошачий кофе CD-75</value>
+    <comment>(Deprecated) Commodity CD_75KittenBrandCoffee</comment>
+    <source>CD-75 Kitten Brand Coffee</source>
+  </data>
+  <data name="CD75CatCoffee">
+    <value>Кошачий кофе CD-75</value>
+    <comment>Commodity CD75CatCoffee </comment>
+    <source>CD-75 Kitten Brand Coffee</source>
+  </data>
+  <data name="CentauriMegaGin">
+    <value>Кентаврский мега-джин</value>
+    <comment>Commodity CentauriMegaGin</comment>
+    <source>Centauri Mega Gin</source>
+  </data>
+  <data name="CeramicComposites">
+    <value>Керамокомпозиты</value>
+    <comment>Commodity CeramicComposites</comment>
+    <source>Ceramic Composites</source>
+  </data>
+  <data name="CeremonialHeikeTea">
+    <value>Церемониальный чай Heike</value>
+    <comment>Commodity CeremonialHeikeTea</comment>
+    <source>Ceremonial Heike Tea</source>
+  </data>
+  <data name="CetiAepyornisEgg">
+    <value>Яйцо эпиорниса</value>
+    <comment>Commodity CetiAepyornisEgg</comment>
+    <source>Aepyornis Egg</source>
+  </data>
+  <data name="CetiRabbits">
+    <value>Кролики с Кита</value>
+    <comment>Commodity CetiRabbits</comment>
+    <source>Ceti Rabbits</source>
+  </data>
+  <data name="ChameleonCloth">
+    <value>Ткань-хамелеон</value>
+    <comment>Commodity ChameleonCloth</comment>
+    <source>Chameleon Cloth</source>
+  </data>
+  <data name="ChateauDeAegaeon">
+    <value>Шато де Эгеон</value>
+    <comment>Commodity ChateauDeAegaeon</comment>
+    <source>Chateau De Aegaeon</source>
+  </data>
+  <data name="ChemicalWaste">
+    <value>Радиоактивные материалы</value>
+    <comment>Commodity ChemicalWaste</comment>
+    <source>Chemical Waste</source>
+  </data>
+  <data name="CherbonesBloodCrystals">
+    <value>Чербонские кровавые кристаллы</value>
+    <comment>Commodity CherbonesBloodCrystals</comment>
+    <source>Cherbones Blood Crystals</source>
+  </data>
+  <data name="ChiEridaniMarinePaste">
+    <value>Морская паста с Чи Эридана</value>
+    <comment>Commodity ChiEridaniMarinePaste</comment>
+    <source>Chi Eridani Marine Paste</source>
+  </data>
+  <data name="ClassifiedExperimentalEquipment">
+    <value>Классифицированное экспериментальное оборудование</value>
+    <comment>Commodity ClassifiedExperimentalEquipment</comment>
+    <source>Classified Experimental Equipment</source>
+  </data>
+  <data name="Clothing">
+    <value>Одежда</value>
+    <comment>Commodity Clothing</comment>
+    <source>Clothing</source>
+  </data>
+  <data name="CMMComposite">
+    <value>CMM-композит</value>
+    <comment>Commodity CMMComposite</comment>
+    <source>CMM Composite</source>
+  </data>
+  <data name="Cobalt">
+    <value>Кобальт</value>
+    <comment>Commodity Cobalt</comment>
+    <source>Cobalt</source>
+  </data>
+  <data name="Coffee">
+    <value>Кофе</value>
+    <comment>Commodity Coffee</comment>
+    <source>Coffee</source>
+  </data>
+  <data name="Coltan">
+    <value>Колтан</value>
+    <comment>Commodity Coltan</comment>
+    <source>Coltan</source>
+  </data>
+  <data name="CombatStabilisers">
+    <value>Боевые стабилизаторы</value>
+    <comment>Commodity CombatStabilisers</comment>
+    <source>Combat Stabilisers</source>
+  </data>
+  <data name="ComercialSamples">
+    <value>Рекламные образцы</value>
+    <comment>Commodity ComercialSamples</comment>
+    <source>Commercial Samples</source>
+  </data>
+  <data name="ComputerComponents">
+    <value>Компьютерные компоненты</value>
+    <comment>Commodity ComputerComponents</comment>
+    <source>Computer Components</source>
+  </data>
+  <data name="ConductiveFabrics">
+    <value>Проводящая ткань</value>
+    <comment>Commodity ConductiveFabrics</comment>
+    <source>Conductive Fabrics</source>
+  </data>
+  <data name="ConsumerTechnology">
+    <value>Потребительские товары</value>
+    <comment>Commodity ConsumerTechnology</comment>
+    <source>Consumer Technology</source>
+  </data>
+  <data name="CoolingHoses">
+    <value>Шланги системы охлаждения малых диаметров</value>
+    <comment>Commodity CoolingHoses</comment>
+    <source>Micro-weave Cooling Hoses</source>
+  </data>
+  <data name="Copper">
+    <value>Медь</value>
+    <comment>Commodity Copper</comment>
+    <source>Copper</source>
+  </data>
+  <data name="CoquimSpongiformVictuals">
+    <value>Губковые продукты с Кокуима</value>
+    <comment>Commodity CoquimSpongiformVictuals</comment>
+    <source>Coquim Spongiform Victuals</source>
+  </data>
+  <data name="CoralSap">
+    <!--Machine translated-->
+    <value>Коралловый сок</value>
+    <comment>Commodity CoralSap</comment>
+    <source>Coral Sap</source>
+  </data>
+  <data name="CounterCultureSupport">
+    <value>Припасы революционеров</value>
+    <comment>Commodity CounterCultureSupport</comment>
+    <source>Revolutionary supplies</source>
+  </data>
+  <data name="CropHarvesters">
+    <value>Уборочный комбайн</value>
+    <comment>Commodity CropHarvesters</comment>
+    <source>Crop Harvesters</source>
+  </data>
+  <data name="Cryolite">
+    <value>Криолит</value>
+    <comment>Commodity Cryolite</comment>
+    <source>Cryolite</source>
+  </data>
+  <data name="CrystallineSpheres">
+    <value>Прозрачные сферы</value>
+    <comment>Commodity CrystallineSpheres</comment>
+    <source>Crystalline Spheres</source>
+  </data>
+  <data name="DamagedEscapePod">
+    <value>Поврежденная спасательная капсула</value>
+    <comment>Commodity DamagedEscapePod</comment>
+    <source>Damaged Escape Pod</source>
+  </data>
+  <data name="DamnaCarapaces">
+    <value>Панцири с Дамны</value>
+    <comment>Commodity DamnaCarapaces</comment>
+    <source>Damna Carapaces</source>
+  </data>
+  <data name="DataCore">
+    <value>Ядро данных</value>
+    <comment>Commodity DataCore</comment>
+    <source>Data Core</source>
+  </data>
+  <data name="DeltaPhoenicisPalms">
+    <value>Фениксовые пальмы с Дельты</value>
+    <comment>Commodity DeltaPhoenicisPalms</comment>
+    <source>Delta Phoenicis Palms</source>
+  </data>
+  <data name="DeuringasTruffles">
+    <value>Трюфели с Деуринги</value>
+    <comment>Commodity DeuringasTruffles</comment>
+    <source>Deuringas Truffles</source>
+  </data>
+  <data name="DiagnosticSensor">
+    <value>Сенсор диагностики оборудования</value>
+    <comment>Commodity DiagnosticSensor</comment>
+    <source>Hardware Diagnostic Sensor</source>
+  </data>
+  <data name="DiplomaticBag">
+    <value>Дипломатическая сумка</value>
+    <comment>Commodity DiplomaticBag</comment>
+    <source>Diplomatic Bag</source>
+  </data>
+  <data name="DisoMaCorn">
+    <value>Зерна дисо ма</value>
+    <comment>Commodity DisoMaCorn</comment>
+    <source>Diso Ma Corn</source>
+  </data>
+  <data name="DomesticAppliances">
+    <value>Бытовая техника</value>
+    <comment>Commodity DomesticAppliances</comment>
+    <source>Domestic Appliances</source>
+  </data>
+  <data name="Drones">
+    <value>Контроллеры дронов</value>
+    <comment>Commodity Drones</comment>
+    <source>Limpet</source>
+  </data>
+  <data name="EarthRelics">
+    <value>Реликвии с Земли</value>
+    <comment>Commodity EarthRelics</comment>
+    <source>Earth Relics</source>
+  </data>
+  <data name="EdenApplesOfAerial">
+    <value>Райские яблоки с Эриала</value>
+    <comment>(Deprecated) Commodity EdenApplesOfAerial</comment>
+    <source>Eden Apples Of Aerial</source>
+  </data>
+  <data name="EleuThermals">
+    <value>Элеусская теплая одежда</value>
+    <comment>Commodity EleuThermals</comment>
+    <source>Eleu Thermals</source>
+  </data>
+  <data name="EmergencyPowerCells">
+    <value>Аварийные энергоячейки</value>
+    <comment>Commodity EmergencyPowerCells</comment>
+    <source>Emergency Power Cells</source>
+  </data>
+  <data name="EncriptedDataStorage">
+    <value>Аварийные энергоячейки</value>
+    <comment>Commodity EncriptedDataStorage</comment>
+    <source>Encrypted Data Storage</source>
+  </data>
+  <data name="EncryptedCorrespondence">
+    <value>Шифрованная переписка</value>
+    <comment>Commodity EncryptedCorrespondence</comment>
+    <source>Encrypted Correspondence</source>
+  </data>
+  <data name="EraninPearlWhisky">
+    <value>Эранинское жемчужное виски</value>
+    <comment>Commodity EraninPearlWhisky</comment>
+    <source>Eranin Pearl Whisky</source>
+  </data>
+  <data name="EshuUmbrellas">
+    <value>Зонтики Эшу</value>
+    <comment>Commodity EshuUmbrellas</comment>
+    <source>Eshu Umbrellas</source>
+  </data>
+  <data name="EsusekuCaviar">
+    <value>Эсусекусская осетровая икра</value>
+    <comment>Commodity EsusekuCaviar</comment>
+    <source>Esuseku Caviar</source>
+  </data>
+  <data name="EthgrezeTeaBuds">
+    <value>Чайные бутоны Этгриза</value>
+    <comment>Commodity EthgrezeTeaBuds</comment>
+    <source>Ethgreze Tea Buds</source>
+  </data>
+  <data name="EvacuationShelter">
+    <value>Эвакуационное убежище</value>
+    <comment>Commodity EvacuationShelter</comment>
+    <source>Evacuation Shelter</source>
+  </data>
+  <data name="ExhaustManifold">
+    <value>Выпускной коллектор</value>
+    <comment>Commodity ExhaustManifold</comment>
+    <source>Exhaust Manifold</source>
+  </data>
+  <data name="Explosives">
+    <value>Взрывчатка</value>
+    <comment>Commodity Explosives</comment>
+    <source>Explosives</source>
+  </data>
+  <data name="FederalAid">
+    <value>Либеральные субсидии Федерации</value>
+    <comment>Commodity FederalAid</comment>
+    <source>Liberal Federal Aid</source>
+  </data>
+  <data name="FederalTradeContracts">
+    <value>Либеральный груз Федерации</value>
+    <comment>Commodity FederalTradeContracts</comment>
+    <source>Liberal Federal Packages</source>
+  </data>
+  <data name="Fish">
+    <value>Рыба</value>
+    <comment>Commodity Fish</comment>
+    <source>Fish</source>
+  </data>
+  <data name="FoodCartridges">
+    <value>Пищевые брикеты</value>
+    <comment>Commodity FoodCartridges</comment>
+    <source>Food Cartridges</source>
+  </data>
+  <data name="FossilRemnants">
+    <value>Ископаемые останки</value>
+    <comment>Commodity FossilRemnants</comment>
+    <source>Fossil Remnants</source>
+  </data>
+  <data name="FruitAndVegetables">
+    <value>Фрукты и овощи</value>
+    <comment>Commodity FruitAndVegetables</comment>
+    <source>Fruit and Vegetables</source>
+  </data>
+  <data name="FujinTea">
+    <value>Фудзинский чай</value>
+    <comment>Commodity FujinTea</comment>
+    <source>Fujin Tea</source>
+  </data>
+  <data name="GalacticTravelGuide">
+    <value>Путеводитель галактического путешественника</value>
+    <comment>Commodity GalacticTravelGuide</comment>
+    <source>Galactic Travel Guide</source>
+  </data>
+  <data name="Gallite">
+    <value>Галлит</value>
+    <comment>Commodity Gallite</comment>
+    <source>Gallite</source>
+  </data>
+  <data name="Gallium">
+    <value>Галлий</value>
+    <comment>Commodity Gallium</comment>
+    <source>Gallium</source>
+  </data>
+  <data name="GeawenDanceDust">
+    <value>Геавенская танцевальная пыль</value>
+    <comment>Commodity GeawenDanceDust</comment>
+    <source>Geawen Dance Dust</source>
+  </data>
+  <data name="GeneBank">
+    <value>Генотека</value>
+    <comment>Commodity GeneBank</comment>
+    <source>Gene Bank</source>
+  </data>
+  <data name="GeologicalEquipment">
+    <value>Геологическое оборудование</value>
+    <comment>Commodity GeologicalEquipment</comment>
+    <source>Geological Equipment</source>
+  </data>
+  <data name="GeologicalSamples">
+    <value>Образцы породы</value>
+    <comment>Commodity GeologicalSamples</comment>
+    <source>Geological Samples</source>
+  </data>
+  <data name="GerasianGueuzeBeer">
+    <value>Герасианское пиво гез</value>
+    <comment>Commodity GerasianGueuzeBeer</comment>
+    <source>Gerasian Gueuze Beer</source>
+  </data>
+  <data name="GiantIrukamaSnails">
+    <value>Огромные улитки с Ирукамы</value>
+    <comment>Commodity GiantIrukamaSnails</comment>
+    <source>Giant Irukama Snails</source>
+  </data>
+  <data name="GiantVerrix">
+    <value>Гигант Веррикс</value>
+    <comment>Commodity GiantVerrix</comment>
+    <source>Giant Verrix</source>
+  </data>
+  <data name="GilyaSignatureWeapons">
+    <value>Именное оружие из системы Гилья</value>
+    <comment>Commodity GilyaSignatureWeapons</comment>
+    <source>Gilya Signature Weapons</source>
+  </data>
+  <data name="Gold">
+    <value>Золото</value>
+    <comment>Commodity Gold</comment>
+    <source>Gold</source>
+  </data>
+  <data name="GomanYauponCoffee">
+    <value>Кофе Goman Yaupon</value>
+    <comment>Commodity GomanYauponCoffee</comment>
+    <source>Goman Yaupon Coffee</source>
+  </data>
+  <data name="Goslarite">
+    <value>Госларит</value>
+    <comment>Commodity Goslarite</comment>
+    <source>Goslarite</source>
+  </data>
+  <data name="Grain">
+    <value>Зерно</value>
+    <comment>Commodity Grain</comment>
+    <source>Grain</source>
+  </data>
+  <data name="Grandidierite">
+    <value>Грандидьерит</value>
+    <comment>Commodity Grandidierite</comment>
+    <source>Grandidierite</source>
+  </data>
+  <data name="GromCounterIntelligence">
+    <value>Разведданные Грома</value>
+    <comment>Commodity GromCounterIntelligence</comment>
+    <source>Grom Counter Intelligence</source>
+  </data>
+  <data name="GromWarTrophies">
+    <value>Военные припасы Юрия Грома</value>
+    <comment>Commodity GromWarTrophies</comment>
+    <source>Yuri Grom's Military Supplies</source>
+  </data>
+  <data name="Hafnium178">
+    <value>Гафний-178</value>
+    <comment>Commodity Hafnium178</comment>
+    <source>Hafnium 178</source>
+  </data>
+  <data name="HaidneBlackBrew">
+    <value>Гайдновский черный напиток</value>
+    <comment>Commodity HaidneBlackBrew</comment>
+    <source>Haidne Black Brew</source>
+  </data>
+  <data name="HarmaSilverSeaRum">
+    <value>Ром «Серебряное море Harma»</value>
+    <comment>Commodity HarmaSilverSeaRum</comment>
+    <source>Harma Silver Sea Rum</source>
+  </data>
+  <data name="HavasupaiDreamCatcher">
+    <value>Хавасупайский ловец снов</value>
+    <comment>Commodity HavasupaiDreamCatcher</comment>
+    <source>Havasupai Dream Catcher</source>
+  </data>
+  <data name="HazardousEnvironmentSuits">
+    <value>Защитные костюмы</value>
+    <comment>Commodity HazardousEnvironmentSuits</comment>
+    <source>H.E. Suits</source>
+  </data>
+  <data name="HeatsinkInterlink">
+    <value>Радиаторный соединитель</value>
+    <comment>Commodity HeatsinkInterlink</comment>
+    <source>Heatsink Interlink</source>
+  </data>
+  <data name="HeliostaticFurnaces">
+    <value>Микробные печи</value>
+    <comment>Commodity HeliostaticFurnaces</comment>
+    <source>Microbial Furnaces</source>
+  </data>
+  <data name="HelvetitjPearls">
+    <value>Жемчуг с Хельветитч</value>
+    <comment>Commodity HelvetitjPearls</comment>
+    <source>Helvetitj Pearls</source>
+  </data>
+  <data name="HIP10175BushMeat">
+    <value>Мясо лесной дичи с HIP 10175</value>
+    <comment>Commodity HIP10175BushMeat</comment>
+    <source>HIP 10175 Bush Meat</source>
+  </data>
+  <data name="HIP118311Swarm">
+    <value>Рой HIP 118311</value>
+    <comment>Commodity HIP118311Swarm</comment>
+    <source>HIP 118311 Swarm</source>
+  </data>
+  <data name="HIP41181Squid">
+    <value>Протокальмар с HIP</value>
+    <comment>Commodity HIPProto_Squid</comment>
+    <source>HIP Proto-Squid</source>
+  </data>
+  <data name="HIPOrganophosphates">
+    <value>Мощные органофосфаты</value>
+    <comment>Commodity HIPOrganophosphates</comment>
+    <source>HIP Organophosphates</source>
+  </data>
+  <data name="HNShockMount">
+    <value>Разрядная установка HN</value>
+    <comment>Commodity HNShockMount</comment>
+    <source>HN Shock Mount</source>
+  </data>
+  <data name="HolvaDuellingBlades">
+    <value>Хольванские дуэльные клинки</value>
+    <comment>Commodity HolvaDuellingBlades</comment>
+    <source>Holva Duelling Blades</source>
+  </data>
+  <data name="HonestyPills">
+    <value>Пилюли честности</value>
+    <comment>Commodity HonestyPills</comment>
+    <source>Honesty Pills</source>
+  </data>
+  <data name="Hostage">
+    <value>Заложник</value>
+    <comment>Commodity Hostage</comment>
+    <source>Hostage</source>
+  </data>
+  <data name="HR7221Wheat">
+    <value>Пшеница HR 7221</value>
+    <comment>Commodity HR7221Wheat</comment>
+    <source>HR 7221 Wheat</source>
+  </data>
+  <data name="HydrogenFuel">
+    <value>Водородное топливо</value>
+    <comment>Commodity HydrogenFuel</comment>
+    <source>Hydrogen Fuel</source>
+  </data>
+  <data name="HydrogenPeroxide">
+    <value>Пероксид водорода</value>
+    <comment>Commodity HydrogenPeroxide</comment>
+    <source>Hydrogen Peroxide</source>
+  </data>
+  <data name="IllicitConsignment">
+    <value>Контрабанда Kumo</value>
+    <comment>Commodity IllicitConsignment</comment>
+    <source>Kumo Contraband Package</source>
+  </data>
+  <data name="imperialprisoner">
+    <value>Политические заключенные Торвал</value>
+    <comment>Commodity imperialprisoner</comment>
+    <source>Imperial Prisoner</source>
+  </data>
+  <data name="ImperialSlaves">
+    <value>Имперские рабы</value>
+    <comment>Commodity ImperialSlaves</comment>
+    <source>Imperial Slaves</source>
+  </data>
+  <data name="IndiBourbon">
+    <value>Инди-бурбон</value>
+    <comment>Commodity IndiBourbon</comment>
+    <source>Indi Bourbon</source>
+  </data>
+  <data name="Indite">
+    <value>Индит</value>
+    <comment>Commodity Indite</comment>
+    <source>Indite</source>
+  </data>
+  <data name="Indium">
+    <value>Индий</value>
+    <comment>Commodity Indium</comment>
+    <source>Indium</source>
+  </data>
+  <data name="InsulatingMembrane">
+    <value>Изолирующая мембрана</value>
+    <comment>Commodity InsulatingMembrane</comment>
+    <source>Insulating Membrane</source>
+  </data>
+  <data name="IonDistributor">
+    <value>Ионный распределитель</value>
+    <comment>Commodity IonDistributor</comment>
+    <source>Ion Distributor</source>
+  </data>
+  <data name="Jadeite">
+    <value>Жадеит</value>
+    <comment>Commodity Jadeite</comment>
+    <source>Jadeite</source>
+  </data>
+  <data name="JaquesQuinentianStill">
+    <value>Дистиллятор Жака Квиненциана</value>
+    <comment>Commodity JaquesQuinentianStill</comment>
+    <source>Jaques Quinentian Still</source>
+  </data>
+  <data name="JaradharrePuzzleBox">
+    <value>Джарадхаррская головоломка</value>
+    <comment>Commodity JaradharrePuzzleBox</comment>
+    <source>Jaradharre Puzzle Box</source>
+  </data>
+  <data name="JarouaRice">
+    <value>Жаруйский рис</value>
+    <comment>Commodity JarouaRice</comment>
+    <source>Jaroua Rice</source>
+  </data>
+  <data name="JotunMookah">
+    <value>Йотунская моока</value>
+    <comment>Commodity JotunMookah</comment>
+    <source>Jotun Mookah</source>
+  </data>
+  <data name="KachiriginLeaches">
+    <value>Очищающие пиявки с Качиригина</value>
+    <comment>Commodity KachiriginLeaches</comment>
+    <source>Kachirigin Filter Leeches</source>
+  </data>
+  <data name="KaineAidSupplies">
+    <!--Machine translated-->
+    <value>Поставки помощи Kaine</value>
+    <comment>Powerplay</comment>
+    <source>Kaine Aid Supplies</source>
+  </data>
+  <data name="KaineLobbyingMaterial">
+    <!--Machine translated-->
+    <value>Материалы по лоббированию Кейна</value>
+    <comment>Powerplay</comment>
+    <source>Kaine Lobbying Material</source>
+  </data>
+  <data name="KaineMisinformation">
+    <!--Machine translated-->
+    <value>Дезинформация Кейна</value>
+    <comment>Powerplay</comment>
+    <source>Kaine Misinformation</source>
+  </data>
+  <data name="KamitraCigars">
+    <value>Сигары Kamitra</value>
+    <comment>Commodity KamitraCigars</comment>
+    <source>Kamitra Cigars</source>
+  </data>
+  <data name="KamorinHistoricWeapons">
+    <value>Каморинское историческое оружие</value>
+    <comment>Commodity KamorinHistoricWeapons</comment>
+    <source>Kamorin Historic Weapons</source>
+  </data>
+  <data name="KaretiiCouture">
+    <value>Модные вещи от Karetii</value>
+    <comment>Commodity KaretiiCouture</comment>
+    <source>Karetii Couture</source>
+  </data>
+  <data name="KarsukiLocusts">
+    <value>Саранча с Карсуки</value>
+    <comment>Commodity KarsukiLocusts</comment>
+    <source>Karsuki Locusts</source>
+  </data>
+  <data name="KinagoInstruments">
+    <value>Скрипки Kinago</value>
+    <comment>Commodity KinagoInstruments</comment>
+    <source>Kinago Violins</source>
+  </data>
+  <data name="KonggaAle">
+    <value>Эль с Кунгги</value>
+    <comment>Commodity KonggaAle</comment>
+    <source>Kongga Ale</source>
+  </data>
+  <data name="KorroKungPellets">
+    <value>Корокунгские катышки</value>
+    <comment>Commodity KoroKungPellets</comment>
+    <source>Koro Kung Pellets</source>
+  </data>
+  <data name="Landmines">
+    <value>Мины</value>
+    <comment>Commodity Landmines</comment>
+    <source>Landmines</source>
+  </data>
+  <data name="Lanthanum">
+    <value>Лантан</value>
+    <comment>Commodity Lanthanum</comment>
+    <source>Lanthanum</source>
+  </data>
+  <data name="LargeExplorationDataCash">
+    <value>Большой пакет с данными исследования</value>
+    <comment>Commodity LargeExplorationDataCash</comment>
+    <source>Large Survey Data Cache</source>
+  </data>
+  <data name="LavianBrandy">
+    <value>Лавианский бренди</value>
+    <comment>Commodity LavianBrandy</comment>
+    <source>Lavian Brandy</source>
+  </data>
+  <data name="lavignycorruptiondossiers">
+    <value>Отчеты Лавиньи о коррупции</value>
+    <comment>Commodity lavignycorruptiondossiers</comment>
+    <source>Lavigny Corruption Reports</source>
+  </data>
+  <data name="LavignyFieldSupplies">
+    <value>LavignyFieldSupplies</value>
+    <comment>Commodity LavignyFieldSupplies</comment>
+    <source>Lavigny Field Supplies</source>
+  </data>
+  <data name="lavignygarisonsupplies">
+    <value>Гарнизонные припасы Лавиньи</value>
+    <comment>Commodity lavignygarisonsupplies</comment>
+    <source>Lavigny Garrison Supplies</source>
+  </data>
+  <data name="LavignyStrategicReports">
+    <!--Machine translated-->
+    <value>Стратегические отчеты Лавиньи</value>
+    <comment>Powerplay</comment>
+    <source>Lavigny Strategic Reports</source>
+  </data>
+  <data name="Leather">
+    <value>Кожа</value>
+    <comment>Commodity Leather</comment>
+    <source>Leather</source>
+  </data>
+  <data name="LeestianEvilJuice">
+    <value>Леестийский сок зла</value>
+    <comment>Commodity LeestianEvilJuice</comment>
+    <source>Leestian Evil Juice</source>
+  </data>
+  <data name="Lepidolite">
+    <value>Лепидолит</value>
+    <comment>Commodity Lepidolite</comment>
+    <source>Lepidolite</source>
+  </data>
+  <data name="LFTVoidExtractCoffee">
+    <value>Кофе "Экстракт пустоты"</value>
+    <comment>Commodity VoidExtractCoffee</comment>
+    <source>Void Extract Coffee</source>
+  </data>
+  <data name="LiberalCampaignMaterials">
+    <value>Либеральная пропаганда</value>
+    <comment>Commodity LiberalCampaignMaterials</comment>
+    <source>Liberal Propaganda</source>
+  </data>
+  <data name="LiquidOxygen">
+    <value>Жидкий кислород</value>
+    <comment>Commodity LiquidOxygen</comment>
+    <source>Liquid oxygen</source>
+  </data>
+  <data name="Liquor">
+    <value>Спиртное</value>
+    <comment>Commodity Liquor</comment>
+    <source>Liquor</source>
+  </data>
+  <data name="Lithium">
+    <value>Литий</value>
+    <comment>Commodity Lithium</comment>
+    <source>Lithium</source>
+  </data>
+  <data name="LithiumHydroxide">
+    <value>Гидроксид лития</value>
+    <comment>Commodity LithiumHydroxide</comment>
+    <source>Lithium Hydroxide</source>
+  </data>
+  <data name="LiveHecateSeaWorms">
+    <value>Живые морские черви с Гекаты</value>
+    <comment>Commodity LiveHecateSeaWorms</comment>
+    <source>Live Hecate Sea Worms</source>
+  </data>
+  <data name="LoanedArms">
+    <value>Помеченное оружие</value>
+    <comment>Commodity LoanedArms</comment>
+    <source>Marked Military Arms</source>
+  </data>
+  <data name="LowTemperatureDiamond">
+    <value>Низкотемпературные алмазы</value>
+    <comment>Commodity LowTemperatureDiamond</comment>
+    <source>Low Temperature Diamonds</source>
+  </data>
+  <data name="LTTHypersweet">
+    <value>Гиперсладости LTT</value>
+    <comment>Commodity LTTHypersweet</comment>
+    <source>LTT Hypersweet</source>
+  </data>
+  <data name="LyraeWeed">
+    <value>Трава лираи</value>
+    <comment>Commodity LyraeWeed</comment>
+    <source>Lyrae Weed</source>
+  </data>
+  <data name="M_TissueSample_Fluid">
+    <value>Жидкость моллюска</value>
+    <comment>Commodity M_TissueSample_Fluid</comment>
+    <source>Mollusc Fluid</source>
+  </data>
+  <data name="M_TissueSample_Nerves">
+    <value>Мозговое вещество моллюска</value>
+    <comment>Commodity M_TissueSample_Nerves</comment>
+    <source>Mollusc Brain Tissue</source>
+  </data>
+  <data name="M_TissueSample_Soft">
+    <value>Мягкие ткани моллюска</value>
+    <comment>Commodity M_TissueSample_Soft</comment>
+    <source>Mollusc Soft tissue</source>
+  </data>
+  <data name="M3_TissueSample_Membrane">
+    <value>Мембрана моллюска</value>
+    <comment>Commodity M3_TissueSample_Membrane</comment>
+    <source>Mollusc Membrane</source>
+  </data>
+  <data name="M3_TissueSample_Mycelium">
+    <value>Мицелий моллюска</value>
+    <comment>Commodity M3_TissueSample_Mycelium</comment>
+    <source>Mollusc Mycelium</source>
+  </data>
+  <data name="M3_TissueSample_Spores">
+    <value>Споры моллюсков</value>
+    <comment>Commodity M3_TissueSample_Spores</comment>
+    <source>Mollusc Spores</source>
+  </data>
+  <data name="MagneticEmitterCoil">
+    <value>Спираль магнитного излучателя</value>
+    <comment>Commodity MagneticEmitterCoil</comment>
+    <source>Magnetic Emitter Coil</source>
+  </data>
+  <data name="MarineSupplies">
+    <value>Морское оборудование</value>
+    <comment>Commodity MarineSupplies</comment>
+    <source>Marine Equipment</source>
+  </data>
+  <data name="MarkedSlaves">
+    <value>Помеченные рабы</value>
+    <comment>Commodity MarkedSlaves</comment>
+    <source>Marked Slaves</source>
+  </data>
+  <data name="MasterChefs">
+    <value>Мастер-шефы</value>
+    <comment>Commodity MasterChefs</comment>
+    <source>Master Chefs</source>
+  </data>
+  <data name="MechucosHighTea">
+    <value>Мечукосский кайфочай</value>
+    <comment>Commodity MechucosHighTea</comment>
+    <source>Mechucos High Tea</source>
+  </data>
+  <data name="MedbStarlube">
+    <value>Звездная смазка с Медба</value>
+    <comment>Commodity MedbStarlube</comment>
+    <source>Medb Starlube</source>
+  </data>
+  <data name="MedicalDiagnosticEquipment">
+    <value>Диагностическое медоборудование</value>
+    <comment>Commodity MedicalDiagnosticEquipment</comment>
+    <source>Medical Diagnostic Equipment</source>
+  </data>
+  <data name="MetaAlloys">
+    <value>Метасплавы</value>
+    <comment>Commodity MetaAlloys</comment>
+    <source>Meta-Alloys</source>
+  </data>
+  <data name="MethaneClathrate">
+    <value>Клатрат метана</value>
+    <comment>Commodity MethaneClathrate</comment>
+    <source>Methane Clathrate</source>
+  </data>
+  <data name="MethanolMonohydrateCrystals">
+    <value>Кристаллы моногидрата метанола</value>
+    <comment>Commodity MethanolMonohydrateCrystals</comment>
+    <source>Methanol Monohydrate</source>
+  </data>
+  <data name="MicroControllers">
+    <value>Микроконтроллеры</value>
+    <comment>Commodity MicroControllers</comment>
+    <source>Micro Controllers</source>
+  </data>
+  <data name="MilitaryGradeFabrics">
+    <value>Ткани военного класса</value>
+    <comment>Commodity MilitaryGradeFabrics</comment>
+    <source>Military Grade Fabrics</source>
+  </data>
+  <data name="MilitaryIntelligence">
+    <value>Разведданные</value>
+    <comment>Commodity MilitaryIntelligence</comment>
+    <source>Military Intelligence</source>
+  </data>
+  <data name="MineralExtractors">
+    <value>Экстракторы минералов</value>
+    <comment>Commodity MineralExtractors</comment>
+    <source>Mineral Extractors</source>
+  </data>
+  <data name="MineralOil">
+    <value>Нефть</value>
+    <comment>Commodity MineralOil</comment>
+    <source>Mineral Oil</source>
+  </data>
+  <data name="ModularTerminals">
+    <value>Модульные терминалы</value>
+    <comment>Commodity ModularTerminals</comment>
+    <source>Modular Terminals</source>
+  </data>
+  <data name="Moissanite">
+    <value>Муассанит</value>
+    <comment>Commodity Moissanite</comment>
+    <source>Moissanite</source>
+  </data>
+  <data name="MokojingBeastFeast">
+    <value>Мокоджингское зверское яство</value>
+    <comment>Commodity MokojingBeastFeast</comment>
+    <source>Mokojing Beast Feast</source>
+  </data>
+  <data name="MomusBogSpaniel">
+    <value>Момусовский болотный спаниель</value>
+    <comment>Commodity MomusBogSpaniel</comment>
+    <source>Momus Bog Spaniel</source>
+  </data>
+  <data name="Monazite">
+    <value>Монацит</value>
+    <comment>Commodity Monazite</comment>
+    <source>Monazite</source>
+  </data>
+  <data name="MotronaExperienceJelly">
+    <value>Мотронское желе</value>
+    <comment>Commodity MotronaExperienceJelly</comment>
+    <source>Motrona Experience Jelly</source>
+  </data>
+  <data name="MukusubiiChitinOs">
+    <value>Мукусубские хитинос</value>
+    <comment>Commodity MukusubiiChitin_Os</comment>
+    <source>Mukusubii Chitin-Os</source>
+  </data>
+  <data name="MulachiGiantFungus">
+    <value>Гигантские грибы с Мулачи</value>
+    <comment>Commodity MulachiGiantFungus</comment>
+    <source>Mulachi Giant Fungus</source>
+  </data>
+  <data name="Musgravite">
+    <value>Мусгравит</value>
+    <comment>Commodity Musgravite</comment>
+    <source>Musgravite</source>
+  </data>
+  <data name="MuTomImager">
+    <value>Мюонное видеоустройство</value>
+    <comment>Commodity MuTomImager</comment>
+    <source>Muon Imager</source>
+  </data>
+  <data name="MysteriousIdol">
+    <value>Таинственный идол</value>
+    <comment>Commodity MysteriousIdol</comment>
+    <source>Mysterious Idol</source>
+  </data>
+  <data name="Nanobreakers">
+    <value>Нанопрерыватели</value>
+    <comment>Commodity Nanobreakers</comment>
+    <source>Nanobreakers</source>
+  </data>
+  <data name="Nanomedicines">
+    <value>Нанолекарства</value>
+    <comment>Commodity Nanomedicines</comment>
+    <source>Nanomedicines</source>
+  </data>
+  <data name="NaturalFabrics">
+    <value>Натуральная ткань</value>
+    <comment>Commodity NaturalFabrics</comment>
+    <source>Natural Fabrics</source>
+  </data>
+  <data name="NeofabricInsulation">
+    <value>Высокотехнологинчная изоляция</value>
+    <comment>Commodity NeofabricInsulation</comment>
+    <source>Neofabric Insulation</source>
+  </data>
+  <data name="NeritusBerries">
+    <value>Нерутские ягоды</value>
+    <comment>Commodity NeritusBerries</comment>
+    <source>Neritus Berries</source>
+  </data>
+  <data name="NerveAgents">
+    <value>Агенты нервно-паралитического действия</value>
+    <comment>Commodity NerveAgents</comment>
+    <source>Nerve Agents</source>
+  </data>
+  <data name="NgadandariFireOpals">
+    <value>Нгадандарийские огненные опалы</value>
+    <comment>Commodity NgadandariFireOpals</comment>
+    <source>Ngadandari Fire Opals</source>
+  </data>
+  <data name="NgunaModernAntiques">
+    <value>Современные древности с Нгуны</value>
+    <comment>Commodity NgunaModernAntiques</comment>
+    <source>Nguna Modern Antiques</source>
+  </data>
+  <data name="NjangariSaddles">
+    <value>Седла Njangari</value>
+    <comment>Commodity NjangariSaddles</comment>
+    <source>Njangari Saddles</source>
+  </data>
+  <data name="NonEuclidianExotanks">
+    <value>Неевклидовы экзобаки</value>
+    <comment>Commodity NonEuclidianExotanks</comment>
+    <source>Non Euclidian Exotanks</source>
+  </data>
+  <data name="NonLethalWeapons">
+    <value>Нелетальное оружие</value>
+    <comment>Commodity NonLethalWeapons</comment>
+    <source>Non-Lethal Weapons</source>
+  </data>
+  <data name="OccupiedCryoPod">
+    <value>Спасательная капсула с пассажиром</value>
+    <comment>Commodity OccupiedCryoPod</comment>
+    <source>Occupied Escape Pod</source>
+  </data>
+  <data name="OchoengChillies">
+    <value>Перчик чили с Очоенга</value>
+    <comment>Commodity OchoengChillies</comment>
+    <source>Ochoeng Chillies</source>
+  </data>
+  <data name="OnionHead">
+    <value>Луковая головка</value>
+    <comment>Commodity OnionHead</comment>
+    <source>Onion Head</source>
+  </data>
+  <data name="OnionHeadA">
+    <value>Луковая головка, сорт альфа</value>
+    <comment>Commodity OnionheadAlphaStrain</comment>
+    <source>Onionhead Alpha Strain</source>
+  </data>
+  <data name="OnionHeadB">
+    <value>Луковая головка, сорт бета</value>
+    <comment>Commodity OnionheadBetaStrain</comment>
+    <source>Onionhead Beta Strain</source>
+  </data>
+  <data name="OnionHeadC">
+    <value>Луковая головка, сорт гамма</value>
+    <comment>Commodity Onionhead Gamma Strain</comment>
+    <source>Onionhead Gamma Strain</source>
+  </data>
+  <data name="OnionheadDerivatives">
+    <value>Компоненты луковых головок</value>
+    <comment>Commodity OnionheadDerivatives</comment>
+    <source>Onionhead Derivatives</source>
+  </data>
+  <data name="OnionheadSamples">
+    <value>Образцы луковых головок</value>
+    <comment>Commodity OnionheadSamples</comment>
+    <source>Onionhead Samples</source>
+  </data>
+  <data name="Opal">
+    <value>Опалы бездны</value>
+    <comment>Commodity Opal</comment>
+    <source>Void Opal</source>
+  </data>
+  <data name="OphiuchiExinoArtefacts">
+    <value>Артефакты офиух экзино</value>
+    <comment>Commodity OphiuchExinoArtefacts</comment>
+    <source>Ophiuch Exino Artefacts</source>
+  </data>
+  <data name="OrrerianViciousBrew">
+    <value>Оррерское жуткое пойло</value>
+    <comment>Commodity OrrerianViciousBrew</comment>
+    <source>Orrerian Vicious Brew</source>
+  </data>
+  <data name="Osmium">
+    <value>Осмий</value>
+    <comment>Commodity Osmium</comment>
+    <source>Osmium</source>
+  </data>
+  <data name="OutOfDateGoods">
+    <value>Просроченные товары</value>
+    <comment>Commodity OutOfDateGoods</comment>
+    <source>Out Of Date Goods</source>
+  </data>
+  <data name="P_ParticulateSample">
+    <value>Аномальные частицы</value>
+    <comment>Commodity P_ParticulateSample</comment>
+    <source>Anomaly Particles</source>
+  </data>
+  <data name="Painite">
+    <value>Пейнит</value>
+    <comment>Commodity Painite</comment>
+    <source>Painite</source>
+  </data>
+  <data name="Palladium">
+    <value>Палладий</value>
+    <comment>Commodity Palladium</comment>
+    <source>Palladium</source>
+  </data>
+  <data name="PantaaPrayerSticks">
+    <value>Пантаские молитвенные палочки</value>
+    <comment>Commodity PantaaPrayerSticks</comment>
+    <source>Pantaa Prayer Sticks</source>
+  </data>
+  <data name="PatreusFieldSupplies">
+    <value>Полевые припасы Патреуса</value>
+    <comment>Commodity PatreusFieldSupplies</comment>
+    <source>Patreus Field Supplies</source>
+  </data>
+  <data name="PatreusGarisonSupplies">
+    <value>Гарнизонные припасы Патреуса</value>
+    <comment>Commodity PatreusGarisonSupplies</comment>
+    <source>Patreus Garrison Supplies</source>
+  </data>
+  <data name="PavonisEarGrubs">
+    <value>Павлинские ухочерви</value>
+    <comment>Commodity PavonisEarGrubs</comment>
+    <source>Pavonis Ear Grubs</source>
+  </data>
+  <data name="PerformanceEnhancers">
+    <value>Стимуляторы</value>
+    <comment>Commodity PerformanceEnhancers</comment>
+    <source>Performance Enhancers</source>
+  </data>
+  <data name="PersonalEffects">
+    <value>Личные вещи</value>
+    <comment>Commodity PersonalEffects</comment>
+    <source>Personal Effects</source>
+  </data>
+  <data name="PersonalGifts">
+    <!--Machine translated-->
+    <value>Праздничные подарки</value>
+    <comment>Commodity.PersonalGifts</comment>
+    <source>Festive Gifts</source>
+  </data>
+  <data name="PersonalWeapons">
+    <value>Личные вещи</value>
+    <comment>Commodity PersonalWeapons</comment>
+    <source>Personal Weapons</source>
+  </data>
+  <data name="Pesticides">
+    <value>Пестициды</value>
+    <comment>Commodity Pesticides</comment>
+    <source>Pesticides</source>
+  </data>
+  <data name="Platinum">
+    <value>Платина</value>
+    <comment>Commodity Platinum</comment>
+    <source>Platinum</source>
+  </data>
+  <data name="PlatinumAloy">
+    <value>Платиновый сплав</value>
+    <comment>Commodity PlatinumAloy</comment>
+    <source>Platinum Alloy</source>
+  </data>
+  <data name="PoliticalPrisoner">
+    <value>Политический заключенный</value>
+    <comment>Commodity PoliticalPrisoner</comment>
+    <source>Political Prisoner</source>
+  </data>
+  <data name="Polymers">
+    <value>Полимеры</value>
+    <comment>Commodity Polymers</comment>
+    <source>Polymers</source>
+  </data>
+  <data name="PowerConverter">
+    <value>Преобразователь энергии</value>
+    <comment>Commodity PowerConverter</comment>
+    <source>Power Converter</source>
+  </data>
+  <data name="PowerGenerators">
+    <value>Электрогенераторы</value>
+    <comment>Commodity PowerGenerators</comment>
+    <source>Power Generators</source>
+  </data>
+  <data name="PowerGridAssembly">
+    <value>Электросеть в сборе</value>
+    <comment>Commodity PowerGridAssembly</comment>
+    <source>Energy Grid Assembly</source>
+  </data>
+  <data name="PowerTransferConduits">
+    <value>Энергообменная шина</value>
+    <comment>Commodity PowerTransferConduits</comment>
+    <source>Power Transfer Bus</source>
+  </data>
+  <data name="Praseodymium">
+    <value>Празеодим</value>
+    <comment>Commodity Praseodymium</comment>
+    <source>Praseodymium</source>
+  </data>
+  <data name="PreciousGems">
+    <value>Драгоценные камни</value>
+    <comment>Commodity PreciousGems</comment>
+    <source>Precious Gems</source>
+  </data>
+  <data name="ProgenitorCells">
+    <value>Прогениторные клетки</value>
+    <comment>Commodity ProgenitorCells</comment>
+    <source>Progenitor Cells</source>
+  </data>
+  <data name="ProhibitedResearchMaterials">
+    <value>Запретные материалы исследований</value>
+    <comment>Commodity ProhibitedResearchMaterials</comment>
+    <source>Prohibited Research Materials</source>
+  </data>
+  <data name="Pyrophyllite">
+    <value>Пирофиллит</value>
+    <comment>Commodity Pyrophyllite</comment>
+    <source>Pyrophyllite</source>
+  </data>
+  <data name="RadiationBaffle">
+    <value>Отражатель излучения</value>
+    <comment>Commodity RadiationBaffle</comment>
+    <source>Radiation Baffle</source>
+  </data>
+  <data name="RajukruStoves">
+    <value>Мультипечи Rajukru</value>
+    <comment>Commodity RajukruStoves</comment>
+    <source>Rajukru Multi-Stoves</source>
+  </data>
+  <data name="RapaBaoSnakeSkins">
+    <value>Змеиные шкуры с Рапа Бао</value>
+    <comment>Commodity RapaBaoSnakeSkins</comment>
+    <source>Rapa Bao Snake Skins</source>
+  </data>
+  <data name="ReactiveArmour">
+    <value>Реактивная защита</value>
+    <comment>Commodity ReactiveArmour</comment>
+    <source>Reactive Armour</source>
+  </data>
+  <data name="ReinforcedMountingPlate">
+    <value>Усиленная монтажная плита</value>
+    <comment>Commodity ReinforcedMountingPlate</comment>
+    <source>Reinforced Mounting Plate</source>
+  </data>
+  <data name="RepublicanFieldSupplies">
+    <!--Machine translated-->
+    <value>Полевые припасы Арчера</value>
+    <comment>Commodity RepublicanFieldSupplies</comment>
+    <source>Archer's Field Supplies</source>
+  </data>
+  <data name="RepublicanGarisonSupplies">
+    <!--Machine translated-->
+    <value>Снабжение гарнизона лучников</value>
+    <comment>Commodity RepublicanGarisonSupplies</comment>
+    <source>Archer Garrison Supplies</source>
+  </data>
+  <data name="ResonatingSeparators">
+    <value>Резонансные сепараторы</value>
+    <comment>Commodity ResonatingSeparators</comment>
+    <source>Resonating Separators</source>
+  </data>
+  <data name="RestrictedIntel">
+    <!--Machine translated-->
+    <value>Ограниченные разведданные Арчера</value>
+    <comment>Commodity RestrictedIntel</comment>
+    <source>Archer's Restricted Intel</source>
+  </data>
+  <data name="RestrictedPackage">
+    <value>Секретный груз Core</value>
+    <comment>Commodity RestrictedPackage</comment>
+    <source>Core Restricted Package</source>
+  </data>
+  <data name="Rhodplumsite">
+    <value>Родплумсайт</value>
+    <comment>Commodity Rhodplumsite</comment>
+    <source>Rhodplumsite</source>
+  </data>
+  <data name="Robotics">
+    <value>Роботы</value>
+    <comment>Commodity Robotics</comment>
+    <source>Robotics</source>
+  </data>
+  <data name="RockforthFertiliser">
+    <value>Удобрения Rockforth</value>
+    <comment>Commodity RockforthFertiliser</comment>
+    <source>Rockforth Fertiliser</source>
+  </data>
+  <data name="RusaniOldSmokey">
+    <value>Старые папиросы Rusani</value>
+    <comment>Commodity RusaniOldSmokey</comment>
+    <source>Rusani Old Smokey</source>
+  </data>
+  <data name="Rutile">
+    <value>Рутил</value>
+    <comment>Commodity Rutile</comment>
+    <source>Rutile</source>
+  </data>
+  <data name="S_TissueSample_Cells">
+    <value>Ткань ядра стручков</value>
+    <comment>Commodity S_TissueSample_Cells</comment>
+    <source>Pod Core Tissue</source>
+  </data>
+  <data name="S_TissueSample_Core">
+    <value>Поверхностная ткань стручков</value>
+    <comment>Commodity S_TissueSample_Core</comment>
+    <source>Pod Surface Tissue</source>
+  </data>
+  <data name="S_TissueSample_Surface">
+    <value>Мертвая ткань стручков</value>
+    <comment>Commodity S_TissueSample_Surface</comment>
+    <source>Pod Dead Tissue</source>
+  </data>
+  <data name="S6_TissueSample_Cells">
+    <value>Внешняя ткань стручков</value>
+    <comment>Commodity S6_TissueSample_Cells</comment>
+    <source>Pod Outer Tissue</source>
+  </data>
+  <data name="S6_TissueSample_Coenosarc">
+    <value>Ткань оболочки стручков</value>
+    <comment>Commodity S6_TissueSample_Coenosarc</comment>
+    <source>Pod Shell Tissue</source>
+  </data>
+  <data name="S6_TissueSample_Mesoglea">
+    <value>Мезоглея стручков</value>
+    <comment>Commodity S6_TissueSample_Mesoglea</comment>
+    <source>Pod Mesoglea</source>
+  </data>
+  <data name="S9_TissueSample_Shell">
+    <value>Ткань стручков</value>
+    <comment>Commodity S9_TissueSample_Shell</comment>
+    <source>Pod Tissue</source>
+  </data>
+  <data name="Samarium">
+    <value>Самарий</value>
+    <comment>Commodity Samarium</comment>
+    <source>Samarium</source>
+  </data>
+  <data name="SanumaDecorativeMeat">
+    <value>Декоративное мясо с Касанумы</value>
+    <comment>(Deprecated) Commodity SanumaDecorativeMeat</comment>
+    <source>Sanuma Decorative Meat</source>
+  </data>
+  <data name="SanumaMEAT">
+    <value>Декоративное мясо Sanuma</value>
+    <comment>Commodity SanumaMEAT</comment>
+    <source>Sanuma Decorative Meat</source>
+  </data>
+  <data name="SAP8CoreContainer">
+    <value>Контейнер «SAP 8 Core»</value>
+    <comment>Commodity SAP8CoreContainer</comment>
+    <source>Sap 8 Core Container</source>
+  </data>
+  <data name="SaxonWine">
+    <value>Саксонское вино</value>
+    <comment>Commodity SaxonWine</comment>
+    <source>Saxon Wine</source>
+  </data>
+  <data name="ScientificResearch">
+    <value>Материалы исследования</value>
+    <comment>Commodity ScientificResearch</comment>
+    <source>Scientific Research</source>
+  </data>
+  <data name="ScientificSamples">
+    <value>Научные образцы</value>
+    <comment>Commodity ScientificSamples</comment>
+    <source>Scientific Samples</source>
+  </data>
+  <data name="Scrap">
+    <value>Утильсырье</value>
+    <comment>Commodity Scrap</comment>
+    <source>Scrap</source>
+  </data>
+  <data name="Semiconductors">
+    <value>Полупроводники</value>
+    <comment>Commodity Semiconductors</comment>
+    <source>Semiconductors</source>
+  </data>
+  <data name="Serendibite">
+    <value>Серендибит</value>
+    <comment>Commodity Serendibite</comment>
+    <source>Serendibite</source>
+  </data>
+  <data name="ShansCharisOrchid">
+    <value>Орхидея Shan Charis</value>
+    <comment>Commodity ShansCharisOrchid</comment>
+    <source>Shan's Charis Orchid</source>
+  </data>
+  <data name="Silver">
+    <value>Серебро</value>
+    <comment>Commodity Silver</comment>
+    <source>Silver</source>
+  </data>
+  <data name="SiriusCommercialContracts">
+    <value>Корпоративные контракты Sirius</value>
+    <comment>Commodity SiriusCommercialContracts</comment>
+    <source>Sirius Corporate Contracts</source>
+  </data>
+  <data name="SiriusFranchisePackage">
+    <value>Посылка с товаром Sirius</value>
+    <comment>Commodity SiriusFranchisePackage</comment>
+    <source>Sirius Franchise Package</source>
+  </data>
+  <data name="SiriusIndustrialEquipment">
+    <value>Промышленное оборудование Sirius</value>
+    <comment>Commodity SiriusIndustrialEquipment</comment>
+    <source>Sirius Industrial Equipment</source>
+  </data>
+  <data name="SkimerComponents">
+    <value>Компоненты оборонного беспилотника</value>
+    <comment>Commodity SkimerComponents</comment>
+    <source>Skimmer Components</source>
+  </data>
+  <data name="Slaves">
+    <value>Рабы</value>
+    <comment>Commodity Slaves</comment>
+    <source>Slaves</source>
+  </data>
+  <data name="SmallExplorationDataCash">
+    <value>Малый пакет с данными исследования</value>
+    <comment>Commodity SmallExplorationDataCash</comment>
+    <source>Small Survey Data Cache</source>
+  </data>
+  <data name="SoontillRelics">
+    <value>Реликты Сунтилла</value>
+    <comment>Commodity SoontillRelics</comment>
+    <source>Soontill Relics</source>
+  </data>
+  <data name="SothisCrystallineGold">
+    <value>Кристаллическое золото системы Sothis</value>
+    <comment>Commodity SothisCrystallineGold</comment>
+    <source>Sothis Crystalline Gold</source>
+  </data>
+  <data name="SpacePioneerRelics">
+    <value>Следы первопроходцев космоса</value>
+    <comment>Commodity SpacePioneerRelics</comment>
+    <source>Space Pioneer Relics</source>
+  </data>
+  <data name="Steel">
+    <!--Machine translated-->
+    <value>Сталь</value>
+    <comment>Steel commodity</comment>
+    <source>Steel</source>
+  </data>
+  <data name="StructuralRegulators">
+    <value>Конструкционные регуляторы</value>
+    <comment>Commodity StructuralRegulators</comment>
+    <source>Structural Regulators</source>
+  </data>
+  <data name="Superconductors">
+    <value>Сверхпроводники</value>
+    <comment>Commodity Superconductors</comment>
+    <source>Superconductors</source>
+  </data>
+  <data name="SurfaceStabilisers">
+    <value>Стабилизаторы поверхности</value>
+    <comment>Commodity SurfaceStabilisers</comment>
+    <source>Surface Stabilisers</source>
+  </data>
+  <data name="SurvivalEquipment">
+    <value>Снаряжение для выживания</value>
+    <comment>Commodity SurvivalEquipment</comment>
+    <source>Survival Equipment</source>
+  </data>
+  <data name="SyntheticFabrics">
+    <value>Синтетическая ткань</value>
+    <comment>Commodity SyntheticFabrics</comment>
+    <source>Synthetic Fabrics</source>
+  </data>
+  <data name="SyntheticMeat">
+    <value>Синтетическое мясо</value>
+    <comment>Commodity SyntheticMeat</comment>
+    <source>Synthetic Meat</source>
+  </data>
+  <data name="SyntheticReagents">
+    <value>Синтетические реагенты</value>
+    <comment>Commodity SyntheticReagents</comment>
+    <source>Synthetic Reagents</source>
+  </data>
+  <data name="Taaffeite">
+    <value>Тааффеит</value>
+    <comment>Commodity Taaffeite</comment>
+    <source>Taaffeite</source>
+  </data>
+  <data name="TacticalData">
+    <value>Тактические данные</value>
+    <comment>Commodity TacticalData</comment>
+    <source>Tactical Data</source>
+  </data>
+  <data name="TanmarkTranquilTea">
+    <value>Успокаивающий чай Tanmark</value>
+    <comment>Commodity TanmarkTranquilTea</comment>
+    <source>Tanmark Tranquil Tea</source>
+  </data>
+  <data name="Tantalum">
+    <value>Тантал</value>
+    <comment>Commodity Tantalum</comment>
+    <source>Tantalum</source>
+  </data>
+  <data name="TarachTorSpice">
+    <value>Таракская пряность</value>
+    <comment>Commodity TarachTorSpice</comment>
+    <source>Tarach Spice</source>
+  </data>
+  <data name="TauriChimes">
+    <value>Колокольчики с Тельца</value>
+    <comment>Commodity TauriChimes</comment>
+    <source>Tauri Chimes</source>
+  </data>
+  <data name="Tea">
+    <value>Чай</value>
+    <comment>Commodity Tea</comment>
+    <source>Tea</source>
+  </data>
+  <data name="TelemetrySuite">
+    <value>Телеметрический комплект</value>
+    <comment>Commodity TelemetrySuite</comment>
+    <source>Telemetry Suite</source>
+  </data>
+  <data name="TerrainEnrichmentSystems">
+    <value>Системы обогащения почвы</value>
+    <comment>Commodity TerrainEnrichmentSystems</comment>
+    <source>Land Enrichment Systems</source>
+  </data>
+  <data name="TerraMaterBloodBores">
+    <value>Кровяные усилители с Терра матер</value>
+    <comment>Commodity TerraMaterBloodBores</comment>
+    <source>Terra Mater Blood Bores</source>
+  </data>
+  <data name="Thallium">
+    <value>Таллий</value>
+    <comment>Commodity Thallium</comment>
+    <source>Thallium</source>
+  </data>
+  <data name="ThargoidBoneFragments">
+    <!--Machine translated-->
+    <value>Фрагменты костей</value>
+    <comment>Commodity ThargoidBoneFragments</comment>
+    <source>Bone Fragments</source>
+  </data>
+  <data name="ThargoidCystSpecimen">
+    <!--Machine translated-->
+    <value>Образец цисты</value>
+    <comment>Commodity ThargoidCystSpecimen</comment>
+    <source>Cyst Specimen</source>
+  </data>
+  <data name="ThargoidGeneratorTissueSample">
+    <!--Machine translated-->
+    <value>Образец едкой ткани</value>
+    <comment>Commodity ThargoidGeneratorTissueSample</comment>
+    <source>Caustic Tissue Sample</source>
+  </data>
+  <data name="ThargoidHeart">
+    <!--Machine translated-->
+    <value>Сердце таргоида</value>
+    <comment>Commodity ThargoidHeart</comment>
+    <source>Thargoid Heart</source>
+  </data>
+  <data name="ThargoidOrganSample">
+    <!--Machine translated-->
+    <value>Образец органа</value>
+    <comment>Commodity ThargoidOrganSample</comment>
+    <source>Organ Sample</source>
+  </data>
+  <data name="ThargoidPod">
+    <!--Machine translated-->
+    <value>Таргоидская капсула для биохранения</value>
+    <comment>Commodity ThargoidPod</comment>
+    <source>Thargoid Bio-storage Capsule</source>
+  </data>
+  <data name="ThargoidScoutTissueSample">
+    <!--Machine translated-->
+    <value>Образец ткани таргоидского разведчика</value>
+    <comment>Commodity ThargoidScoutTissueSample</comment>
+    <source>Thargoid Scout Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType1">
+    <value>Образец ткани таргоидского корабля «Циклоп»</value>
+    <comment>Commodity ThargoidTissueSampleType1</comment>
+    <source>Thargoid Cyclops Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType10a">
+    <!--Machine translated-->
+    <value>Образец глубоких тканей Titan Maw</value>
+    <comment>Commodity ThargoidTissueSampleType10a</comment>
+    <source>Titan Maw Deep Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType10b">
+    <!--Machine translated-->
+    <value>Образец ткани Titan Maw</value>
+    <comment>Commodity ThargoidTissueSampleType10b</comment>
+    <source>Titan Maw Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType10c">
+    <!--Machine translated-->
+    <value>Образец частичной ткани Titan Maw</value>
+    <comment>Commodity ThargoidTissueSampleType10c</comment>
+    <source>Titan Maw Partial Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType2">
+    <value>Образец ткани таргоидского корабля «Василиск»</value>
+    <comment>Commodity ThargoidTissueSampleType2</comment>
+    <source>Thargoid Basilisk Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType3">
+    <value>Образец ткани таргоидского корабля «Медуза»</value>
+    <comment>Commodity ThargoidTissueSampleType3</comment>
+    <source>Thargoid Medusa Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType4">
+    <value>Образец ткани таргоидского корабля «Гидра»</value>
+    <comment>Commodity ThargoidTissueSampleType4</comment>
+    <source>Thargoid Hydra Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType5">
+    <!--Machine translated-->
+    <value>Образец ткани таргоида ортруса</value>
+    <comment>Commodity ThargoidTissueSampleType5</comment>
+    <source>Thargoid Orthrus Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType6">
+    <!--Machine translated-->
+    <value>Образец ткани таргоидской глефы</value>
+    <comment>Commodity ThargoidTissueSampleType6</comment>
+    <source>Thargoid Glaive Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType7">
+    <!--Machine translated-->
+    <value>Образец ткани таргоидской косы</value>
+    <comment>Commodity ThargoidTissueSampleType7</comment>
+    <source>Thargoid Scythe Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType9a">
+    <!--Machine translated-->
+    <value>Образец глубоких тканей Titan</value>
+    <comment>Commodity ThargoidTissueSampleType9a</comment>
+    <source>Titan Deep Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType9b">
+    <!--Machine translated-->
+    <value>Образец ткани титана</value>
+    <comment>Commodity ThargoidTissueSampleType9b</comment>
+    <source>Titan Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType9c">
+    <!--Machine translated-->
+    <value>Образец частичной ткани Titan</value>
+    <comment>Commodity ThargoidTissueSampleType9c</comment>
+    <source>Titan Partial Tissue Sample</source>
+  </data>
+  <data name="ThargoidTitanDriveComponent">
+    <!--Machine translated-->
+    <value>Компонент привода Thargoid Titan</value>
+    <comment>Commodity ThargoidTitanDriveComponent</comment>
+    <source>Thargoid Titan Drive Component</source>
+  </data>
+  <data name="TheHuttonMug">
+    <value>Кружка Hutton</value>
+    <comment>Commodity TheHuttonMug</comment>
+    <source>The Hutton Mug</source>
+  </data>
+  <data name="ThermalCoolingUnits">
+    <value>Термальные охладители</value>
+    <comment>Commodity ThermalCoolingUnits</comment>
+    <source>Thermal Cooling Units</source>
+  </data>
+  <data name="Thorium">
+    <value>Торий</value>
+    <comment>Commodity Thorium</comment>
+    <source>Thorium</source>
+  </data>
+  <data name="ThrutisCream">
+    <value>Трутисские сливки</value>
+    <comment>Commodity ThrutisCream</comment>
+    <source>Thrutis Cream</source>
+  </data>
+  <data name="TiegfriesSynthSilk">
+    <value>Тигфрайский синтешелк</value>
+    <comment>Commodity TiegfriesSynthSilk</comment>
+    <source>Tiegfries Synth Silk</source>
+  </data>
+  <data name="TimeCapsule">
+    <value>Мемориальная капсула</value>
+    <comment>Commodity TimeCapsule</comment>
+    <source>Time Capsule</source>
+  </data>
+  <data name="TiolceWaste2PasteUnits">
+    <value>Устройства Мусор-в-пасту Tiolce</value>
+    <comment>Commodity TiolceWaste2PasteUnits</comment>
+    <source>Tiolce Waste2Paste Units</source>
+  </data>
+  <data name="Titanium">
+    <value>Титан</value>
+    <comment>Commodity Titanium</comment>
+    <source>Titanium</source>
+  </data>
+  <data name="Tobacco">
+    <value>Табак</value>
+    <comment>Commodity Tobacco</comment>
+    <source>Tobacco</source>
+  </data>
+  <data name="torvalcommercialcontracts">
+    <value>Торговые соглашения Торвал</value>
+    <comment>Commodity torvalcommercialcontracts</comment>
+    <source>Torval Commercial Contracts</source>
+  </data>
+  <data name="torvaldeeds">
+    <value>Договора Торвал</value>
+    <comment>Commodity torvaldeeds</comment>
+    <source>Torval Deed</source>
+  </data>
+  <data name="ToxandjiVirocide">
+    <value>Токсанджийские вирициды</value>
+    <comment>Commodity ToxandjiVirocide</comment>
+    <source>Toxandji Virocide</source>
+  </data>
+  <data name="ToxicWaste">
+    <value>Токсичные отходы</value>
+    <comment>Commodity ToxicWaste</comment>
+    <source>Toxic Waste</source>
+  </data>
+  <data name="TransgenicOnionHead">
+    <value>Луканская луковая головка</value>
+    <comment>Commodity TransgenicOnionHead</comment>
+    <source>Lucan Onionhead</source>
+  </data>
+  <data name="TrinketsOfFortune">
+    <value>Безделушки таинственной Фортуны</value>
+    <comment>Commodity TrinketsOfFortune</comment>
+    <source>Trinkets Of Hidden Fortune</source>
+  </data>
+  <data name="Tritium">
+    <value>Тритий</value>
+    <comment>Commodity Tritium</comment>
+    <source>Tritium</source>
+  </data>
+  <data name="undergroundsupport">
+    <value>Подпольная поддержка Грома</value>
+    <comment>Commodity undergroundsupport</comment>
+    <source>Grom Underground Support</source>
+  </data>
+  <data name="Unknown">
+    <value>Неизвестное</value>
+    <comment>Commodity Unknown</comment>
+    <source>Unknown</source>
+  </data>
+  <data name="UnknownArtifact">
+    <value>Таргоидский сенсор</value>
+    <comment>Commodity UnknownArtifact</comment>
+    <source>Thargoid Sensor</source>
+  </data>
+  <data name="UnknownArtifact2">
+    <value>Таргоидский зонд</value>
+    <comment>Commodity UnknownArtifact2</comment>
+    <source>Thargoid Probe</source>
+  </data>
+  <data name="UnknownArtifact3">
+    <value>Таргоидское звено</value>
+    <comment>Commodity UnknownArtifact3</comment>
+    <source>Thargoid Link</source>
+  </data>
+  <data name="UnknownBiologicalMatter">
+    <value>Таргоидская биомасса</value>
+    <comment>Commodity UnknownBiologicalMatter</comment>
+    <source>Thargoid Biological Matter</source>
+  </data>
+  <data name="UnknownMineral">
+    <!--Machine translated-->
+    <value>Минерал «Нечистый шпиль»</value>
+    <comment>Commodity UnknownMineral</comment>
+    <source>Impure Spire Mineral</source>
+  </data>
+  <data name="UnknownRefinedMineral">
+    <!--Machine translated-->
+    <value>Полуочищенный минерал шпиля</value>
+    <comment>Commodity UnknownRefinedMineral</comment>
+    <source>Semi-Refined Spire Mineral</source>
+  </data>
+  <data name="UnknownResin">
+    <value>Таргоидская смола</value>
+    <comment>Commodity UnknownResin</comment>
+    <source>Thargoid Resin</source>
+  </data>
+  <data name="UnknownSack">
+    <!--Machine translated-->
+    <value>Лом защитной мембраны</value>
+    <comment>Commodity UnknownSack</comment>
+    <source>Protective Membrane Scrap</source>
+  </data>
+  <data name="UnknownTechnologySamples">
+    <value>Образцы таргоидских технологий</value>
+    <comment>Commodity UnknownTechnologySamples</comment>
+    <source>Thargoid Technology Samples</source>
+  </data>
+  <data name="UnmarkedWeapons">
+    <value>Военные припасы без меток</value>
+    <comment>Commodity UnmarkedWeapons</comment>
+    <source>Unmarked Military supplies</source>
+  </data>
+  <data name="UnocuppiedEscapePod">
+    <!--Machine translated-->
+    <value>Незанятая спасательная капсула</value>
+    <comment>Commodity UnocuppiedEscapePod</comment>
+    <source>Unoccupied Escape Pod</source>
+  </data>
+  <data name="UnstableDataCore">
+    <value>Нестабильное ядро данных</value>
+    <comment>Commodity UnstableDataCore</comment>
+    <source>Unstable Data Core</source>
+  </data>
+  <data name="Uraninite">
+    <value>Уранит</value>
+    <comment>Commodity Uraninite</comment>
+    <source>Uraninite</source>
+  </data>
+  <data name="Uranium">
+    <value>Уран</value>
+    <comment>Commodity Uranium</comment>
+    <source>Uranium</source>
+  </data>
+  <data name="USSCargoAncientArtefact">
+    <value>Древний артефакт</value>
+    <comment>Commodity USSCargoAncientArtefact</comment>
+    <source>Ancient Artifact</source>
+  </data>
+  <data name="USSCargoBlackBox">
+    <value>Черный ящик</value>
+    <comment>Commodity USSCargoBlackBox</comment>
+    <source>Black Box</source>
+  </data>
+  <data name="USSCargoExperimentalChemicals">
+    <value>Экспериментальные химикаты</value>
+    <comment>Commodity USSCargoExperimentalChemicals</comment>
+    <source>Experimental Chemicals</source>
+  </data>
+  <data name="USSCargoMilitaryPlans">
+    <value>Военные планы</value>
+    <comment>Commodity USSCargoMilitaryPlans</comment>
+    <source>Military Plans</source>
+  </data>
+  <data name="USSCargoPrototypeTech">
+    <value>Экспериментальная техника</value>
+    <comment>Commodity USSCargoPrototypeTech</comment>
+    <source>Prototype Tech</source>
+  </data>
+  <data name="USSCargoRareArtwork">
+    <value>Редкие произведения искусства</value>
+    <comment>Commodity USSCargoRareArtwork</comment>
+    <source>Rare Artwork</source>
+  </data>
+  <data name="USSCargoRebelTransmissions">
+    <value>Переговоры повстанцев</value>
+    <comment>Commodity USSCargoRebelTransmissions</comment>
+    <source>Rebel Transmissions</source>
+  </data>
+  <data name="USSCargoTechnicalBlueprints">
+    <value>Промышленные чертежи</value>
+    <comment>Commodity USSCargoTechnicalBlueprints</comment>
+    <source>Technical Blueprints</source>
+  </data>
+  <data name="USSCargoTradeData">
+    <value>Торговая информация</value>
+    <comment>Commodity USSCargoTradeData</comment>
+    <source>Trade Data</source>
+  </data>
+  <data name="UszaianTreeGrub">
+    <value>Ушжаанский росток дерева</value>
+    <comment>Commodity UszaianTreeGrub</comment>
+    <source>Uszaian Tree Grub</source>
+  </data>
+  <data name="UtgaroarMillenialEggs">
+    <value>Миллениальные яйца с Утгарора</value>
+    <comment>Commodity UtgaroarMillenialEggs</comment>
+    <source>Utgaroar Millennial Eggs</source>
+  </data>
+  <data name="UtopianDissident">
+    <value>Диссиденты Утопии</value>
+    <comment>Commodity UtopianDissident</comment>
+    <source>Utopian Dissident</source>
+  </data>
+  <data name="UtopianFieldSupplies">
+    <value>Припасы Утопии</value>
+    <comment>Commodity UtopianFieldSupplies</comment>
+    <source>Utopian Supplies</source>
+  </data>
+  <data name="UtopianPublicity">
+    <value>Публикации Утопии</value>
+    <comment>Commodity UtopianPublicity</comment>
+    <source>Utopian Publicity</source>
+  </data>
+  <data name="UzumokuLow_GWings">
+    <value>Узумокские крылья для малой гравитации</value>
+    <comment>(Deprecated) Commodity UzumokuLow_GWings</comment>
+    <source>Uzumoku Low-G Wings</source>
+  </data>
+  <data name="UzumokuLowGWings">
+    <value>Узумокские крылья для малой гравитации</value>
+    <comment>Commodity UzumokuLowGWings</comment>
+    <source>Uzumoku Low-G Wings</source>
+  </data>
+  <data name="VanayequiRhinoFur">
+    <value>Мех носорогов с Ванайеку</value>
+    <comment>Commodity VanayequiRhinoFur</comment>
+    <source>Vanayequi Ceratomorpha Fur</source>
+  </data>
+  <data name="VegaSlimweed">
+    <value>Водоросли для похудения с Веги</value>
+    <comment>Commodity VegaSlimweed</comment>
+    <source>Vega Slimweed</source>
+  </data>
+  <data name="VHerculisBodyRub">
+    <value>Скраб с V Геркулеса</value>
+    <comment>Commodity VHerculisBodyRub</comment>
+    <source>V Herculis Body Rub</source>
+  </data>
+  <data name="VidavantianLace">
+    <value>Видавантийский шнурок</value>
+    <comment>Commodity VidavantianLace</comment>
+    <source>Vidavantian Lace</source>
+  </data>
+  <data name="VolkhabBeeDrones">
+    <value>Дроны Volkhab Bee</value>
+    <comment>Commodity VolkhabBeeDrones</comment>
+    <source>Volkhab Bee Drones</source>
+  </data>
+  <data name="Water">
+    <value>Вода</value>
+    <comment>Commodity Water</comment>
+    <source>Water</source>
+  </data>
+  <data name="WaterPurifiers">
+    <value>Водоочистители</value>
+    <comment>Commodity WaterPurifiers</comment>
+    <source>Water Purifiers</source>
+  </data>
+  <data name="WatersOfShintara">
+    <value>Воды Шинрарты</value>
+    <comment>Commodity WatersOfShintara</comment>
+    <source>Waters Of Shintara</source>
+  </data>
+  <data name="WheemeteWheatCakes">
+    <value>Уимитские пшеничные галеты</value>
+    <comment>Commodity WheemeteWheatCakes</comment>
+    <source>Wheemete Wheat Cakes</source>
+  </data>
+  <data name="Wine">
+    <value>Вино</value>
+    <comment>Commodity Wine</comment>
+    <source>Wine</source>
+  </data>
+  <data name="WitchhaulKobeBeef">
+    <value>Мясо кобе с Вичхола</value>
+    <comment>Commodity WitchhaulKobeBeef</comment>
+    <source>Witchhaul Kobe Beef</source>
+  </data>
+  <data name="Wolf1301Fesh">
+    <value>Волчья дурь</value>
+    <comment>Commodity Wolf1301Fesh</comment>
+    <source>Wolf Fesh</source>
+  </data>
+  <data name="WolfFesh">
+    <value>Wolf Fesh</value>
+    <comment>(Deprecated) Commodity WolfFesh</comment>
+    <source>Wolf Fesh</source>
+  </data>
+  <data name="WreckageComponents">
+    <value>Обломки кораблекрушения</value>
+    <comment>Commodity WreckageComponents</comment>
+    <source>Salvageable Wreckage</source>
+  </data>
+  <data name="WuthieloKuFroth">
+    <value>Пиво Ку с Вутхиело</value>
+    <comment>Commodity WuthieloKuFroth</comment>
+    <source>Wuthielo Ku Froth</source>
+  </data>
+  <data name="xihecompanions">
+    <value>Биоморфные спутники Xihe</value>
+    <comment>Commodity xihecompanions</comment>
+    <source>Xihe Biomorphic Companions</source>
+  </data>
+  <data name="YasoKondiLeaf">
+    <value>Лист ясо Конди</value>
+    <comment>Commodity YasoKondiLeaf</comment>
+    <source>Yaso Kondi Leaf</source>
+  </data>
+  <data name="ZeesszeAntGlue">
+    <value>Зесский муравьиный клей</value>
+    <comment>Commodity ZeesszeAntGlue</comment>
+    <source>Zeessze Ant Grub Glue</source>
+  </data>
+</root>

@@ -1,0 +1,2274 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Pre-loc from: https://raw.githubusercontent.com/EDCD/EDDI/refs/heads/develop/DataDefinitions/Properties/Commodities.de.resx -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <!--Localizable elements are below-->
+  <data name="AdvancedCatalysers">
+    <value>Fortschrittliche Katalysatoren</value>
+    <comment>Commodity AdvancedCatalysers</comment>
+    <source>Advanced Catalysers</source>
+  </data>
+  <data name="AdvancedMedicines">
+    <value>Fortschrittliche Medikamente</value>
+    <comment>Commodity AdvancedMedicines</comment>
+    <source>Advanced Medicines</source>
+  </data>
+  <data name="Advert1">
+    <value>Ultrakompakte Prozessorprototypen</value>
+    <comment>Commodity Ultra-Compact Processor Prototypes</comment>
+    <source>Ultra-Compact Processor Prototypes</source>
+  </data>
+  <data name="AerialEdenApple">
+    <value>Eden Äpfel der Luft</value>
+    <comment>Commodity AerialEdenApple </comment>
+    <source>Eden Apples Of Aerial</source>
+  </data>
+  <data name="AganippeRush">
+    <value>Aganippe-Hirnhetzer</value>
+    <comment>Commodity AganippeRush</comment>
+    <source>Aganippe Rush</source>
+  </data>
+  <data name="AgriculturalMedicines">
+    <value>Agrar-Medikamente</value>
+    <comment>Commodity AgriculturalMedicines</comment>
+    <source>Agri-Medicines</source>
+  </data>
+  <data name="agronomictreatment">
+    <value>Agronomisches Mittel</value>
+    <comment>Commodity agronomictreatment</comment>
+    <source>Agronomic Treatment</source>
+  </data>
+  <data name="AiRelics">
+    <value>AI Relikte</value>
+    <comment>Commodity AiRelics</comment>
+    <source>Ai Relics</source>
+  </data>
+  <data name="aislingmediamaterials">
+    <value>Aisling Medienberichte</value>
+    <comment>Commodity aislingmediamaterials</comment>
+    <source>Aisling Media Materials</source>
+  </data>
+  <data name="AislingMediaResources">
+    <value>Aislings abgeschlossene Verträge</value>
+    <comment>Commodity AislingMediaResources</comment>
+    <source>Aisling Sealed Contracts</source>
+  </data>
+  <data name="aislingpromotionalmaterials">
+    <value>Aisling Werbematerial</value>
+    <comment>Commodity aislingpromotionalmaterials</comment>
+    <source>Aisling Programme Materials</source>
+  </data>
+  <data name="AlacarakmoSkinArt">
+    <value>Alacarakmo Hautinlays</value>
+    <comment>Commodity AlacarakmoSkinArt</comment>
+    <source>Alacarakmo Skin Art</source>
+  </data>
+  <data name="AlbinoQuechuaMammoth">
+    <value>Albinomammut-Fleisch</value>
+    <comment>Commodity AlbinoQuechuaMammoth</comment>
+    <source>Albino Quechua Mammoth</source>
+  </data>
+  <data name="Alexandrite">
+    <value>Alexandrit</value>
+    <comment>Commodity Alexandrite</comment>
+    <source>Alexandrite</source>
+  </data>
+  <data name="Algae">
+    <value>Algen</value>
+    <comment>Commodity Algae</comment>
+    <source>Algae</source>
+  </data>
+  <data name="alieneggs">
+    <value>Ledrige Eier</value>
+    <comment>Commodity alieneggs</comment>
+    <source>Leathery Eggs</source>
+  </data>
+  <data name="AllianceLegaslativeContracts">
+    <value>Gesetzesverträge der Allianz</value>
+    <comment>Commodity AllianceLegaslativeContracts</comment>
+    <source>Alliance Legislative Contracts</source>
+  </data>
+  <data name="alliancelegaslativerecords">
+    <value>Allianz gesetzgebende Aufzeichnungen</value>
+    <comment>Commodity alliancelegaslativerecords</comment>
+    <source>Alliance Legislative Records</source>
+  </data>
+  <data name="AllianceTradeAgreements">
+    <value>Handelsabkommen der Allianz</value>
+    <comment>Commodity AllianceTradeAgreements</comment>
+    <source>Alliance Trade Agreements</source>
+  </data>
+  <data name="AltairianSkin">
+    <value>Altair-Haut</value>
+    <comment>Commodity AltairianSkin</comment>
+    <source>Altairian Skin</source>
+  </data>
+  <data name="Aluminium">
+    <value>Aluminium</value>
+    <comment>Commodity Aluminium</comment>
+    <source>Aluminium</source>
+  </data>
+  <data name="AlyaBodilySoap">
+    <value>Alya Körperseife</value>
+    <comment>Commodity AlyaBodySoap</comment>
+    <source>Alya Body Soap</source>
+  </data>
+  <data name="AncientCasket">
+    <value>Guardianschatulle</value>
+    <comment>Commodity AncientCasket</comment>
+    <source>Ancient Casket</source>
+  </data>
+  <data name="ancientkey">
+    <value>Uralter Schlüssel</value>
+    <comment>Commodity Ancient Key</comment>
+    <source>Ancient Key</source>
+  </data>
+  <data name="AncientOrb">
+    <value>Guardiankugel</value>
+    <comment>Commodity AncientOrb</comment>
+    <source>Ancient Orb</source>
+  </data>
+  <data name="AncientRelic">
+    <value>Guardian-Relikt</value>
+    <comment>Commodity AncientRelic</comment>
+    <source>Ancient Relic</source>
+  </data>
+  <data name="AncientRelicTG">
+    <value>Uraltes Tharg-Relikt</value>
+    <comment>Commodity AncientRelicTG</comment>
+    <source>Unclassified Relic</source>
+  </data>
+  <data name="AncientTablet">
+    <value>Guardiantafel</value>
+    <comment>Commodity AncientTablet</comment>
+    <source>Ancient Tablet</source>
+  </data>
+  <data name="AncientTotem">
+    <value>Guardian-Totem</value>
+    <comment>Commodity AncientTotem</comment>
+    <source>Ancient Totem</source>
+  </data>
+  <data name="AncientUrn">
+    <value>Guardian-Urne</value>
+    <comment>Commodity AncientUrn</comment>
+    <source>Ancient Urn</source>
+  </data>
+  <data name="AnduligaFireWorks">
+    <value>Anduliga Feuerwerk</value>
+    <comment>Commodity AnduligaFireWorks</comment>
+    <source>Anduliga Fire Works</source>
+  </data>
+  <data name="AnimalEffigies">
+    <value>Crom Silver Fesh</value>
+    <comment>Commodity Crom Silver Fesh</comment>
+    <source>Crom Silver Fesh</source>
+  </data>
+  <data name="Animalmeat">
+    <value>Tierfleisch</value>
+    <comment>Commodity Animalmeat</comment>
+    <source>Animal Meat</source>
+  </data>
+  <data name="AnimalMonitors">
+    <value>Tierüberwachung</value>
+    <comment>Commodity AnimalMonitors</comment>
+    <source>Animal Monitors</source>
+  </data>
+  <data name="AntimatterContainmentUnit">
+    <value>Antimaterie-Transporteinheit</value>
+    <comment>Commodity AntimatterContainmentUnit</comment>
+    <source>Antimatter Containment Unit</source>
+  </data>
+  <data name="AntiqueJewellery">
+    <value>Antiker Schmuck</value>
+    <comment>Commodity AntiqueJewellery</comment>
+    <source>Antique Jewelry</source>
+  </data>
+  <data name="Antiquities">
+    <value>Antiquitäten</value>
+    <comment>Commodity Antiquities</comment>
+    <source>Antiquities</source>
+  </data>
+  <data name="AnyNaCoffee">
+    <value>Any Na Kaffee</value>
+    <comment>Commodity AnyNaCoffee</comment>
+    <source>Any Na Coffee</source>
+  </data>
+  <data name="AquaponicSystems">
+    <value>Aquaponiksysteme</value>
+    <comment>Commodity AquaponicSystems</comment>
+    <source>Aquaponic Systems</source>
+  </data>
+  <data name="AroucaConventualSweets">
+    <value>Arouca Süßigkeiten</value>
+    <comment>Commodity AroucaConventualSweets</comment>
+    <source>Arouca Conventual Sweets</source>
+  </data>
+  <data name="ArticulationMotors">
+    <value>Gelenkmotoren</value>
+    <comment>Commodity ArticulationMotors</comment>
+    <source>Articulation Motors</source>
+  </data>
+  <data name="AssaultPlans">
+    <value>Angriffspläne</value>
+    <comment>Commodity AssaultPlans</comment>
+    <source>Assault Plans</source>
+  </data>
+  <data name="AtmosphericExtractors">
+    <value>Atmosphärenprozessoren</value>
+    <comment>Commodity AtmosphericExtractors</comment>
+    <source>Atmospheric Processors</source>
+  </data>
+  <data name="AutoFabricators">
+    <value>Fabrikatoren</value>
+    <comment>Commodity AutoFabricators</comment>
+    <source>Auto-Fabricators</source>
+  </data>
+  <data name="AzCancriFormula42">
+    <value>AZ Cancri Formel 42</value>
+    <comment>Commodity AzCancriFormula42</comment>
+    <source>AZ Cancri Formula 42</source>
+  </data>
+  <data name="BakedGreebles">
+    <value>Gebackene Greebles</value>
+    <comment>Commodity BakedGreebles</comment>
+    <source>Baked Greebles</source>
+  </data>
+  <data name="BaltahSineVacuumKrill">
+    <value>Vacuumkrill von Baltah'sine</value>
+    <comment>Commodity BaltahSineVacuumKrill</comment>
+    <source>Baltah Sine Vacuum Krill</source>
+  </data>
+  <data name="BankiAmphibiousLeather">
+    <value>Banki-Amphibienleder</value>
+    <comment>Commodity BankiAmphibiousLeather</comment>
+    <source>Banki Amphibious Leather</source>
+  </data>
+  <data name="BasicMedicines">
+    <value>Allgemeine Medikamente</value>
+    <comment>Commodity BasicMedicines</comment>
+    <source>Basic Medicines</source>
+  </data>
+  <data name="BasicNarcotics">
+    <value>Drogen</value>
+    <comment>Commodity BasicNarcotics</comment>
+    <source>Narcotics</source>
+  </data>
+  <data name="BastSnakeGin">
+    <value>Bast Snake Gin</value>
+    <comment>Commodity BastSnakeGin</comment>
+    <source>Bast Snake Gin</source>
+  </data>
+  <data name="BattleWeapons">
+    <value>Kriegswaffen</value>
+    <comment>Commodity BattleWeapons</comment>
+    <source>Battle Weapons</source>
+  </data>
+  <data name="Bauxite">
+    <value>Bauxit</value>
+    <comment>Commodity Bauxite</comment>
+    <source>Bauxite</source>
+  </data>
+  <data name="Beer">
+    <value>Bier</value>
+    <comment>Commodity Beer</comment>
+    <source>Beer</source>
+  </data>
+  <data name="BelalansRayLeather">
+    <value>Belalans-Rochenleder</value>
+    <comment>Commodity BelalansRayLeather</comment>
+    <source>Belalans Ray Leather</source>
+  </data>
+  <data name="Benitoite">
+    <value>Benitoit</value>
+    <comment>Commodity Benitoite</comment>
+    <source>Benitoite</source>
+  </data>
+  <data name="Bertrandite">
+    <value>Bertrandit</value>
+    <comment>Commodity Bertrandite</comment>
+    <source>Bertrandite</source>
+  </data>
+  <data name="Beryllium">
+    <value>Beryllium</value>
+    <comment>Commodity Beryllium</comment>
+    <source>Beryllium</source>
+  </data>
+  <data name="BioReducingLichen">
+    <value>Bioreduzierende Flechten</value>
+    <comment>Commodity BioReducingLichen</comment>
+    <source>Bioreducing Lichen</source>
+  </data>
+  <data name="Biowaste">
+    <value>Biomüll</value>
+    <comment>Commodity Biowaste</comment>
+    <source>Bio-waste</source>
+  </data>
+  <data name="Bismuth">
+    <value>Wismut</value>
+    <comment>Commodity Bismuth</comment>
+    <source>Bismuth</source>
+  </data>
+  <data name="BlueMilk">
+    <value>Azurmilch</value>
+    <comment>Commodity BlueMilk</comment>
+    <source>Azure Milk</source>
+  </data>
+  <data name="BootlegLiquor">
+    <value>Schmuggelschnapps</value>
+    <comment>Commodity BootlegLiquor</comment>
+    <source>Bootleg Liquor</source>
+  </data>
+  <data name="BorasetaniPathogenetics">
+    <value>Borasetani Pathogenetik</value>
+    <comment>Commodity BorasetaniPathogenetics</comment>
+    <source>Borasetani Pathogenetics</source>
+  </data>
+  <data name="Bromellite">
+    <value>Bromellit</value>
+    <comment>Commodity Bromellite</comment>
+    <source>Bromellite</source>
+  </data>
+  <data name="BuckyballBeerMats">
+    <value>Buckyball-Bierdeckel</value>
+    <comment>Commodity BuckyballBeerMats</comment>
+    <source>Buckyball Beer Mats</source>
+  </data>
+  <data name="BuildingFabricators">
+    <value>Baufabrikatoren</value>
+    <comment>Commodity BuildingFabricators</comment>
+    <source>Building Fabricators</source>
+  </data>
+  <data name="BurnhamBileDistillate">
+    <value>Burnham-Körpersaftdestillat</value>
+    <comment>Commodity BurnhamBileDistillate</comment>
+    <source>Burnham Bile Distillate</source>
+  </data>
+  <data name="CD_75KittenBrandCoffee">
+    <value>CD-75 Kitten Brand Coffee</value>
+    <comment>(Deprecated) Commodity CD_75KittenBrandCoffee</comment>
+    <source>CD-75 Kitten Brand Coffee</source>
+  </data>
+  <data name="CD75CatCoffee">
+    <value>CD-75 Kätzchen Marken Kaffee</value>
+    <comment>Commodity CD75CatCoffee </comment>
+    <source>CD-75 Kitten Brand Coffee</source>
+  </data>
+  <data name="CentauriMegaGin">
+    <value>Centauri Mega Gin</value>
+    <comment>Commodity CentauriMegaGin</comment>
+    <source>Centauri Mega Gin</source>
+  </data>
+  <data name="CeramicComposites">
+    <value>Keramik-Verbundwerkstoffe</value>
+    <comment>Commodity CeramicComposites</comment>
+    <source>Ceramic Composites</source>
+  </data>
+  <data name="CeremonialHeikeTea">
+    <value>Heike-Zeremonientee</value>
+    <comment>Commodity CeremonialHeikeTea</comment>
+    <source>Ceremonial Heike Tea</source>
+  </data>
+  <data name="CetiAepyornisEgg">
+    <value>Aepyornis-Eier</value>
+    <comment>Commodity CetiAepyornisEgg</comment>
+    <source>Aepyornis Egg</source>
+  </data>
+  <data name="CetiRabbits">
+    <value>Ceti-Kaninchen</value>
+    <comment>Commodity CetiRabbits</comment>
+    <source>Ceti Rabbits</source>
+  </data>
+  <data name="ChameleonCloth">
+    <value>Chamäleon-Kleidung</value>
+    <comment>Commodity ChameleonCloth</comment>
+    <source>Chameleon Cloth</source>
+  </data>
+  <data name="ChateauDeAegaeon">
+    <value>Chateau De Aegaeon</value>
+    <comment>Commodity ChateauDeAegaeon</comment>
+    <source>Chateau De Aegaeon</source>
+  </data>
+  <data name="ChemicalWaste">
+    <value>Chemiemüll</value>
+    <comment>Commodity ChemicalWaste</comment>
+    <source>Chemical Waste</source>
+  </data>
+  <data name="CherbonesBloodCrystals">
+    <value>Cherbones Blutkristalle</value>
+    <comment>Commodity CherbonesBloodCrystals</comment>
+    <source>Cherbones Blood Crystals</source>
+  </data>
+  <data name="ChiEridaniMarinePaste">
+    <value>Chi Eridani Meerespaste</value>
+    <comment>Commodity ChiEridaniMarinePaste</comment>
+    <source>Chi Eridani Marine Paste</source>
+  </data>
+  <data name="ClassifiedExperimentalEquipment">
+    <value>Klassifizierte experimentelle Ausrüstung</value>
+    <comment>Commodity ClassifiedExperimentalEquipment</comment>
+    <source>Classified Experimental Equipment</source>
+  </data>
+  <data name="Clothing">
+    <value>Kleidung</value>
+    <comment>Commodity Clothing</comment>
+    <source>Clothing</source>
+  </data>
+  <data name="CMMComposite">
+    <value>CMM-Verbundwerkstoffe</value>
+    <comment>Commodity CMMComposite</comment>
+    <source>CMM Composite</source>
+  </data>
+  <data name="Cobalt">
+    <value>Kobalt</value>
+    <comment>Commodity Cobalt</comment>
+    <source>Cobalt</source>
+  </data>
+  <data name="Coffee">
+    <value>Kaffee</value>
+    <comment>Commodity Coffee</comment>
+    <source>Coffee</source>
+  </data>
+  <data name="Coltan">
+    <value>Coltan</value>
+    <comment>Commodity Coltan</comment>
+    <source>Coltan</source>
+  </data>
+  <data name="CombatStabilisers">
+    <value>Kampfstabilisatoren</value>
+    <comment>Commodity CombatStabilisers</comment>
+    <source>Combat Stabilisers</source>
+  </data>
+  <data name="ComercialSamples">
+    <value>Werbeproben</value>
+    <comment>Commodity ComercialSamples</comment>
+    <source>Commercial Samples</source>
+  </data>
+  <data name="ComputerComponents">
+    <value>Computerteile</value>
+    <comment>Commodity ComputerComponents</comment>
+    <source>Computer Components</source>
+  </data>
+  <data name="ConductiveFabrics">
+    <value>Leitfähige Stoffe</value>
+    <comment>Commodity ConductiveFabrics</comment>
+    <source>Conductive Fabrics</source>
+  </data>
+  <data name="ConsumerTechnology">
+    <value>Unterhaltungselektronik</value>
+    <comment>Commodity ConsumerTechnology</comment>
+    <source>Consumer Technology</source>
+  </data>
+  <data name="CoolingHoses">
+    <value>Mikroflecht-Kühlschläuche</value>
+    <comment>Commodity CoolingHoses</comment>
+    <source>Micro-weave Cooling Hoses</source>
+  </data>
+  <data name="Copper">
+    <value>Kupfer</value>
+    <comment>Commodity Copper</comment>
+    <source>Copper</source>
+  </data>
+  <data name="CoquimSpongiformVictuals">
+    <value>Coqium Schwammkost</value>
+    <comment>Commodity CoquimSpongiformVictuals</comment>
+    <source>Coquim Spongiform Victuals</source>
+  </data>
+  <data name="CoralSap">
+    <value>Korallensaft</value>
+    <comment>Commodity CoralSap</comment>
+    <source>Coral Sap</source>
+  </data>
+  <data name="CounterCultureSupport">
+    <value>Revolutionsmaterialien</value>
+    <comment>Commodity CounterCultureSupport</comment>
+    <source>Revolutionary supplies</source>
+  </data>
+  <data name="CropHarvesters">
+    <value>Erntemaschinen</value>
+    <comment>Commodity CropHarvesters</comment>
+    <source>Crop Harvesters</source>
+  </data>
+  <data name="Cryolite">
+    <value>Kriolyth</value>
+    <comment>Commodity Cryolite</comment>
+    <source>Cryolite</source>
+  </data>
+  <data name="CrystallineSpheres">
+    <value>Kristallkugeln</value>
+    <comment>Commodity CrystallineSpheres</comment>
+    <source>Crystalline Spheres</source>
+  </data>
+  <data name="DamagedEscapePod">
+    <value>Beschädigte Rettungskapsel</value>
+    <comment>Commodity DamagedEscapePod</comment>
+    <source>Damaged Escape Pod</source>
+  </data>
+  <data name="DamnaCarapaces">
+    <value>Damna-Schildpanzer</value>
+    <comment>Commodity DamnaCarapaces</comment>
+    <source>Damna Carapaces</source>
+  </data>
+  <data name="DataCore">
+    <value>Datenkern</value>
+    <comment>Commodity DataCore</comment>
+    <source>Data Core</source>
+  </data>
+  <data name="DeltaPhoenicisPalms">
+    <value>Delta-Phönix-Palmen</value>
+    <comment>Commodity DeltaPhoenicisPalms</comment>
+    <source>Delta Phoenicis Palms</source>
+  </data>
+  <data name="DeuringasTruffles">
+    <value>Deuringas Trüffel</value>
+    <comment>Commodity DeuringasTruffles</comment>
+    <source>Deuringas Truffles</source>
+  </data>
+  <data name="DiagnosticSensor">
+    <value>Hardware-Diagnostiksensor</value>
+    <comment>Commodity DiagnosticSensor</comment>
+    <source>Hardware Diagnostic Sensor</source>
+  </data>
+  <data name="DiplomaticBag">
+    <value>Diplomatentasche</value>
+    <comment>Commodity DiplomaticBag</comment>
+    <source>Diplomatic Bag</source>
+  </data>
+  <data name="DisoMaCorn">
+    <value>Diso Ma Mais</value>
+    <comment>Commodity DisoMaCorn</comment>
+    <source>Diso Ma Corn</source>
+  </data>
+  <data name="DomesticAppliances">
+    <value>Haushaltsgeräte</value>
+    <comment>Commodity DomesticAppliances</comment>
+    <source>Domestic Appliances</source>
+  </data>
+  <data name="Drones">
+    <value>Drohne</value>
+    <comment>Commodity Drones</comment>
+    <source>Limpet</source>
+  </data>
+  <data name="EarthRelics">
+    <value>Erdrelikte</value>
+    <comment>Commodity EarthRelics</comment>
+    <source>Earth Relics</source>
+  </data>
+  <data name="EdenApplesOfAerial">
+    <value>Eden Luftäpfel</value>
+    <comment>(Deprecated) Commodity EdenApplesOfAerial</comment>
+    <source>Eden Apples Of Aerial</source>
+  </data>
+  <data name="EleuThermals">
+    <value>Eleu-Thermotextilien</value>
+    <comment>Commodity EleuThermals</comment>
+    <source>Eleu Thermals</source>
+  </data>
+  <data name="EmergencyPowerCells">
+    <value>Notfall-Energiezellen</value>
+    <comment>Commodity EmergencyPowerCells</comment>
+    <source>Emergency Power Cells</source>
+  </data>
+  <data name="EncriptedDataStorage">
+    <value>Verschlüsselter Datenträger</value>
+    <comment>Commodity EncriptedDataStorage</comment>
+    <source>Encrypted Data Storage</source>
+  </data>
+  <data name="EncryptedCorrespondence">
+    <value>Verschlüsselte Korrespondenz</value>
+    <comment>Commodity EncryptedCorrespondence</comment>
+    <source>Encrypted Correspondence</source>
+  </data>
+  <data name="EraninPearlWhisky">
+    <value>Eranin Perl Whisky</value>
+    <comment>Commodity EraninPearlWhisky</comment>
+    <source>Eranin Pearl Whisky</source>
+  </data>
+  <data name="EshuUmbrellas">
+    <value>Eshu Regenschirme</value>
+    <comment>Commodity EshuUmbrellas</comment>
+    <source>Eshu Umbrellas</source>
+  </data>
+  <data name="EsusekuCaviar">
+    <value>Esuseku Kaviar</value>
+    <comment>Commodity EsusekuCaviar</comment>
+    <source>Esuseku Caviar</source>
+  </data>
+  <data name="EthgrezeTeaBuds">
+    <value>Ethgreze Teeknospen</value>
+    <comment>Commodity EthgrezeTeaBuds</comment>
+    <source>Ethgreze Tea Buds</source>
+  </data>
+  <data name="EvacuationShelter">
+    <value>Evakuierungsschutz</value>
+    <comment>Commodity EvacuationShelter</comment>
+    <source>Evacuation Shelter</source>
+  </data>
+  <data name="ExhaustManifold">
+    <value>Krümmer</value>
+    <comment>Commodity ExhaustManifold</comment>
+    <source>Exhaust Manifold</source>
+  </data>
+  <data name="Explosives">
+    <value>Sprengstoffe</value>
+    <comment>Commodity Explosives</comment>
+    <source>Explosives</source>
+  </data>
+  <data name="FederalAid">
+    <value>Liberale Föderiertenhilfe</value>
+    <comment>Commodity FederalAid</comment>
+    <source>Liberal Federal Aid</source>
+  </data>
+  <data name="FederalTradeContracts">
+    <value>Liberales Föderiertenpaket</value>
+    <comment>Commodity FederalTradeContracts</comment>
+    <source>Liberal Federal Packages</source>
+  </data>
+  <data name="Fish">
+    <value>Fisch</value>
+    <comment>Commodity Fish</comment>
+    <source>Fish</source>
+  </data>
+  <data name="FoodCartridges">
+    <value>Nahrungskartuschen</value>
+    <comment>Commodity FoodCartridges</comment>
+    <source>Food Cartridges</source>
+  </data>
+  <data name="FossilRemnants">
+    <value>Fossile Überreste</value>
+    <comment>Commodity FossilRemnants</comment>
+    <source>Fossil Remnants</source>
+  </data>
+  <data name="FruitAndVegetables">
+    <value>Obst und Gemüse</value>
+    <comment>Commodity FruitAndVegetables</comment>
+    <source>Fruit and Vegetables</source>
+  </data>
+  <data name="FujinTea">
+    <value>Fujin-Tee</value>
+    <comment>Commodity FujinTea</comment>
+    <source>Fujin Tea</source>
+  </data>
+  <data name="GalacticTravelGuide">
+    <value>Galaktischer Reiseführer</value>
+    <comment>Commodity GalacticTravelGuide</comment>
+    <source>Galactic Travel Guide</source>
+  </data>
+  <data name="Gallite">
+    <value>Gallit</value>
+    <comment>Commodity Gallite</comment>
+    <source>Gallite</source>
+  </data>
+  <data name="Gallium">
+    <value>Gallium</value>
+    <comment>Commodity Gallium</comment>
+    <source>Gallium</source>
+  </data>
+  <data name="GeawenDanceDust">
+    <value>Geawen Tanzstaub</value>
+    <comment>Commodity GeawenDanceDust</comment>
+    <source>Geawen Dance Dust</source>
+  </data>
+  <data name="GeneBank">
+    <value>Gen-Datenbank</value>
+    <comment>Commodity GeneBank</comment>
+    <source>Gene Bank</source>
+  </data>
+  <data name="GeologicalEquipment">
+    <value>Geologie-Ausrüstung</value>
+    <comment>Commodity GeologicalEquipment</comment>
+    <source>Geological Equipment</source>
+  </data>
+  <data name="GeologicalSamples">
+    <value>Geologische Proben</value>
+    <comment>Commodity GeologicalSamples</comment>
+    <source>Geological Samples</source>
+  </data>
+  <data name="GerasianGueuzeBeer">
+    <value>Gerasisches Gueuze Bier</value>
+    <comment>Commodity GerasianGueuzeBeer</comment>
+    <source>Gerasian Gueuze Beer</source>
+  </data>
+  <data name="GiantIrukamaSnails">
+    <value>Irukama-Riesenschnecken</value>
+    <comment>Commodity GiantIrukamaSnails</comment>
+    <source>Giant Irukama Snails</source>
+  </data>
+  <data name="GiantVerrix">
+    <value>Riesen-Verrix</value>
+    <comment>Commodity GiantVerrix</comment>
+    <source>Giant Verrix</source>
+  </data>
+  <data name="GilyaSignatureWeapons">
+    <value>Gilya Signierte Waffen</value>
+    <comment>Commodity GilyaSignatureWeapons</comment>
+    <source>Gilya Signature Weapons</source>
+  </data>
+  <data name="Gold">
+    <value>Gold</value>
+    <comment>Commodity Gold</comment>
+    <source>Gold</source>
+  </data>
+  <data name="GomanYauponCoffee">
+    <value>Goman Yaupon Kaffee</value>
+    <comment>Commodity GomanYauponCoffee</comment>
+    <source>Goman Yaupon Coffee</source>
+  </data>
+  <data name="Goslarite">
+    <value>Goslarit</value>
+    <comment>Commodity Goslarite</comment>
+    <source>Goslarite</source>
+  </data>
+  <data name="Grain">
+    <value>Getreide</value>
+    <comment>Commodity Grain</comment>
+    <source>Grain</source>
+  </data>
+  <data name="Grandidierite">
+    <value>Grandidierit</value>
+    <comment>Commodity Grandidierite</comment>
+    <source>Grandidierite</source>
+  </data>
+  <data name="GromCounterIntelligence">
+    <value>Grom-Spionageabwehr</value>
+    <comment>Commodity GromCounterIntelligence</comment>
+    <source>Grom Counter Intelligence</source>
+  </data>
+  <data name="GromWarTrophies">
+    <value>Yuri Groms Militärausrüstung</value>
+    <comment>Commodity GromWarTrophies</comment>
+    <source>Yuri Grom's Military Supplies</source>
+  </data>
+  <data name="Hafnium178">
+    <value>Hafnium 178</value>
+    <comment>Commodity Hafnium178</comment>
+    <source>Hafnium 178</source>
+  </data>
+  <data name="HaidneBlackBrew">
+    <value>Haiden-Schwarzbier</value>
+    <comment>Commodity HaidneBlackBrew</comment>
+    <source>Haidne Black Brew</source>
+  </data>
+  <data name="HarmaSilverSeaRum">
+    <value>Harma Silberseerum</value>
+    <comment>Commodity HarmaSilverSeaRum</comment>
+    <source>Harma Silver Sea Rum</source>
+  </data>
+  <data name="HavasupaiDreamCatcher">
+    <value>Havasupai Traumfänger</value>
+    <comment>Commodity HavasupaiDreamCatcher</comment>
+    <source>Havasupai Dream Catcher</source>
+  </data>
+  <data name="HazardousEnvironmentSuits">
+    <value>Schutzanzüge</value>
+    <comment>Commodity HazardousEnvironmentSuits</comment>
+    <source>H.E. Suits</source>
+  </data>
+  <data name="HeatsinkInterlink">
+    <value>Kühlkörperverbinder</value>
+    <comment>Commodity HeatsinkInterlink</comment>
+    <source>Heatsink Interlink</source>
+  </data>
+  <data name="HeliostaticFurnaces">
+    <value>Mikrobielle Öfen</value>
+    <comment>Commodity HeliostaticFurnaces</comment>
+    <source>Microbial Furnaces</source>
+  </data>
+  <data name="HelvetitjPearls">
+    <value>Helvetitj Perlen</value>
+    <comment>Commodity HelvetitjPearls</comment>
+    <source>Helvetitj Pearls</source>
+  </data>
+  <data name="HIP10175BushMeat">
+    <value>Wildfleisch von HIP 10175</value>
+    <comment>Commodity HIP10175BushMeat</comment>
+    <source>HIP 10175 Bush Meat</source>
+  </data>
+  <data name="HIP118311Swarm">
+    <value>Hip 118311 Schwarm</value>
+    <comment>Commodity HIP118311Swarm</comment>
+    <source>HIP 118311 Swarm</source>
+  </data>
+  <data name="HIP41181Squid">
+    <value>Hip Proto-Tintenfisch</value>
+    <comment>Commodity HIPProto_Squid</comment>
+    <source>HIP Proto-Squid</source>
+  </data>
+  <data name="HIPOrganophosphates">
+    <value>Hip Organophosphat</value>
+    <comment>Commodity HIPOrganophosphates</comment>
+    <source>HIP Organophosphates</source>
+  </data>
+  <data name="HNShockMount">
+    <value>HN-Dämpferaufhängung</value>
+    <comment>Commodity HNShockMount</comment>
+    <source>HN Shock Mount</source>
+  </data>
+  <data name="HolvaDuellingBlades">
+    <value>Holva Duellierklingen</value>
+    <comment>Commodity HolvaDuellingBlades</comment>
+    <source>Holva Duelling Blades</source>
+  </data>
+  <data name="HonestyPills">
+    <value>Ehrlichkeitspillen</value>
+    <comment>Commodity HonestyPills</comment>
+    <source>Honesty Pills</source>
+  </data>
+  <data name="Hostage">
+    <value>Geisel</value>
+    <comment>Commodity Hostage</comment>
+    <source>Hostage</source>
+  </data>
+  <data name="HR7221Wheat">
+    <value>HR 7221 Weizen</value>
+    <comment>Commodity HR7221Wheat</comment>
+    <source>HR 7221 Wheat</source>
+  </data>
+  <data name="HydrogenFuel">
+    <value>Wasserstoff-Treibstoff</value>
+    <comment>Commodity HydrogenFuel</comment>
+    <source>Hydrogen Fuel</source>
+  </data>
+  <data name="HydrogenPeroxide">
+    <value>Wasserstoffperoxid</value>
+    <comment>Commodity HydrogenPeroxide</comment>
+    <source>Hydrogen Peroxide</source>
+  </data>
+  <data name="IllicitConsignment">
+    <value>Kumo-Schmuggelwarenpaket</value>
+    <comment>Commodity IllicitConsignment</comment>
+    <source>Kumo Contraband Package</source>
+  </data>
+  <data name="imperialprisoner">
+    <value>Imperialer Gefangener</value>
+    <comment>Commodity imperialprisoner</comment>
+    <source>Imperial Prisoner</source>
+  </data>
+  <data name="ImperialSlaves">
+    <value>Imperiale Sklaven</value>
+    <comment>Commodity ImperialSlaves</comment>
+    <source>Imperial Slaves</source>
+  </data>
+  <data name="IndiBourbon">
+    <value>Indi Bourbon</value>
+    <comment>Commodity IndiBourbon</comment>
+    <source>Indi Bourbon</source>
+  </data>
+  <data name="Indite">
+    <value>Indit</value>
+    <comment>Commodity Indite</comment>
+    <source>Indite</source>
+  </data>
+  <data name="Indium">
+    <value>Indium</value>
+    <comment>Commodity Indium</comment>
+    <source>Indium</source>
+  </data>
+  <data name="InsulatingMembrane">
+    <value>Isoliermembranen</value>
+    <comment>Commodity InsulatingMembrane</comment>
+    <source>Insulating Membrane</source>
+  </data>
+  <data name="IonDistributor">
+    <value>Ionenverteiler</value>
+    <comment>Commodity IonDistributor</comment>
+    <source>Ion Distributor</source>
+  </data>
+  <data name="Jadeite">
+    <value>Jadeit</value>
+    <comment>Commodity Jadeite</comment>
+    <source>Jadeite</source>
+  </data>
+  <data name="JaquesQuinentianStill">
+    <value>Jaques Quinent-Destille</value>
+    <comment>Commodity JaquesQuinentianStill</comment>
+    <source>Jaques Quinentian Still</source>
+  </data>
+  <data name="JaradharrePuzzleBox">
+    <value>Jaradharre Puzzelkiste</value>
+    <comment>Commodity JaradharrePuzzleBox</comment>
+    <source>Jaradharre Puzzle Box</source>
+  </data>
+  <data name="JarouaRice">
+    <value>Jarous Reis</value>
+    <comment>Commodity JarouaRice</comment>
+    <source>Jaroua Rice</source>
+  </data>
+  <data name="JotunMookah">
+    <value>Jotun Mookah</value>
+    <comment>Commodity JotunMookah</comment>
+    <source>Jotun Mookah</source>
+  </data>
+  <data name="KachiriginLeaches">
+    <value>Kachiriginische Lauge</value>
+    <comment>Commodity KachiriginLeaches</comment>
+    <source>Kachirigin Filter Leeches</source>
+  </data>
+  <data name="KaineAidSupplies">
+    <value>Kaines Hilfsgüter</value>
+    <comment>Powerplay</comment>
+    <source>Kaine Aid Supplies</source>
+  </data>
+  <data name="KaineLobbyingMaterial">
+    <value>Kaines Lobbymaterial</value>
+    <comment>Powerplay</comment>
+    <source>Kaine Lobbying Material</source>
+  </data>
+  <data name="KaineMisinformation">
+    <value>Kaines Falschinformationen</value>
+    <comment>Powerplay</comment>
+    <source>Kaine Misinformation</source>
+  </data>
+  <data name="KamitraCigars">
+    <value>Kamitra Zigarren</value>
+    <comment>Commodity KamitraCigars</comment>
+    <source>Kamitra Cigars</source>
+  </data>
+  <data name="KamorinHistoricWeapons">
+    <value>Kamorins historische Waffen</value>
+    <comment>Commodity KamorinHistoricWeapons</comment>
+    <source>Kamorin Historic Weapons</source>
+  </data>
+  <data name="KaretiiCouture">
+    <value>Karetii Mode</value>
+    <comment>Commodity KaretiiCouture</comment>
+    <source>Karetii Couture</source>
+  </data>
+  <data name="KarsukiLocusts">
+    <value>Karsuki Heuschrecken</value>
+    <comment>Commodity KarsukiLocusts</comment>
+    <source>Karsuki Locusts</source>
+  </data>
+  <data name="KinagoInstruments">
+    <value>Kinago Instrumente</value>
+    <comment>Commodity KinagoInstruments</comment>
+    <source>Kinago Violins</source>
+  </data>
+  <data name="KonggaAle">
+    <value>Kongga Bier</value>
+    <comment>Commodity KonggaAle</comment>
+    <source>Kongga Ale</source>
+  </data>
+  <data name="KorroKungPellets">
+    <value>Koro Kung Tabletten</value>
+    <comment>Commodity KoroKungPellets</comment>
+    <source>Koro Kung Pellets</source>
+  </data>
+  <data name="Landmines">
+    <value>Landminen</value>
+    <comment>Commodity Landmines</comment>
+    <source>Landmines</source>
+  </data>
+  <data name="Lanthanum">
+    <value>Lanthan</value>
+    <comment>Commodity Lanthanum</comment>
+    <source>Lanthanum</source>
+  </data>
+  <data name="LargeExplorationDataCash">
+    <value>Großer Erkundungsdatenspeicher</value>
+    <comment>Commodity LargeExplorationDataCash</comment>
+    <source>Large Survey Data Cache</source>
+  </data>
+  <data name="LavianBrandy">
+    <value>Lavian Brandy</value>
+    <comment>Commodity LavianBrandy</comment>
+    <source>Lavian Brandy</source>
+  </data>
+  <data name="lavignycorruptiondossiers">
+    <value>Lavigny's Korruptionsberichte</value>
+    <comment>Commodity lavignycorruptiondossiers</comment>
+    <source>Lavigny Corruption Reports</source>
+  </data>
+  <data name="LavignyFieldSupplies">
+    <value>Lavignys Feldversorgung</value>
+    <comment>Commodity LavignyFieldSupplies</comment>
+    <source>Lavigny Field Supplies</source>
+  </data>
+  <data name="lavignygarisonsupplies">
+    <value>Lavignys Garnisonsversorgung</value>
+    <comment>Commodity lavignygarisonsupplies</comment>
+    <source>Lavigny Garrison Supplies</source>
+  </data>
+  <data name="LavignyStrategicReports">
+    <value>Lavignys strategische Berichte</value>
+    <comment>Powerplay</comment>
+    <source>Lavigny Strategic Reports</source>
+  </data>
+  <data name="Leather">
+    <value>Leder</value>
+    <comment>Commodity Leather</comment>
+    <source>Leather</source>
+  </data>
+  <data name="LeestianEvilJuice">
+    <value>Leesti Teufelssaft</value>
+    <comment>Commodity LeestianEvilJuice</comment>
+    <source>Leestian Evil Juice</source>
+  </data>
+  <data name="Lepidolite">
+    <value>Lepidolith</value>
+    <comment>Commodity Lepidolite</comment>
+    <source>Lepidolite</source>
+  </data>
+  <data name="LFTVoidExtractCoffee">
+    <value>Void Kaffeekonzentrat</value>
+    <comment>Commodity VoidExtractCoffee</comment>
+    <source>Void Extract Coffee</source>
+  </data>
+  <data name="LiberalCampaignMaterials">
+    <value>Liberale Propaganda</value>
+    <comment>Commodity LiberalCampaignMaterials</comment>
+    <source>Liberal Propaganda</source>
+  </data>
+  <data name="LiquidOxygen">
+    <value>Flüssiger Sauerstoff</value>
+    <comment>Commodity LiquidOxygen</comment>
+    <source>Liquid oxygen</source>
+  </data>
+  <data name="Liquor">
+    <value>Spirituosen</value>
+    <comment>Commodity Liquor</comment>
+    <source>Liquor</source>
+  </data>
+  <data name="Lithium">
+    <value>Lithium</value>
+    <comment>Commodity Lithium</comment>
+    <source>Lithium</source>
+  </data>
+  <data name="LithiumHydroxide">
+    <value>Lithiumhydroxid</value>
+    <comment>Commodity LithiumHydroxide</comment>
+    <source>Lithium Hydroxide</source>
+  </data>
+  <data name="LiveHecateSeaWorms">
+    <value>Live-Hecate-Seewürmer</value>
+    <comment>Commodity LiveHecateSeaWorms</comment>
+    <source>Live Hecate Sea Worms</source>
+  </data>
+  <data name="LoanedArms">
+    <value>Markierte Militärwaffen</value>
+    <comment>Commodity LoanedArms</comment>
+    <source>Marked Military Arms</source>
+  </data>
+  <data name="LowTemperatureDiamond">
+    <value>Tieftemperaturdiamanten</value>
+    <comment>Commodity LowTemperatureDiamond</comment>
+    <source>Low Temperature Diamonds</source>
+  </data>
+  <data name="LTTHypersweet">
+    <value>LTT-Hypersüße</value>
+    <comment>Commodity LTTHypersweet</comment>
+    <source>LTT Hypersweet</source>
+  </data>
+  <data name="LyraeWeed">
+    <value>Lyrae Grass</value>
+    <comment>Commodity LyraeWeed</comment>
+    <source>Lyrae Weed</source>
+  </data>
+  <data name="M_TissueSample_Fluid">
+    <value>Molluskenflüssigkeit</value>
+    <comment>Commodity M_TissueSample_Fluid</comment>
+    <source>Mollusc Fluid</source>
+  </data>
+  <data name="M_TissueSample_Nerves">
+    <value>Molluskengehirngewebe</value>
+    <comment>Commodity M_TissueSample_Nerves</comment>
+    <source>Mollusc Brain Tissue</source>
+  </data>
+  <data name="M_TissueSample_Soft">
+    <value>Mollusken-Weichgewebe</value>
+    <comment>Commodity M_TissueSample_Soft</comment>
+    <source>Mollusc Soft tissue</source>
+  </data>
+  <data name="M3_TissueSample_Membrane">
+    <value>Molluskenmembran</value>
+    <comment>Commodity M3_TissueSample_Membrane</comment>
+    <source>Mollusc Membrane</source>
+  </data>
+  <data name="M3_TissueSample_Mycelium">
+    <value>Molluskenmyzel</value>
+    <comment>Commodity M3_TissueSample_Mycelium</comment>
+    <source>Mollusc Mycelium</source>
+  </data>
+  <data name="M3_TissueSample_Spores">
+    <value>Molluskensporen</value>
+    <comment>Commodity M3_TissueSample_Spores</comment>
+    <source>Mollusc Spores</source>
+  </data>
+  <data name="MagneticEmitterCoil">
+    <value>Magnetische Emitterspule</value>
+    <comment>Commodity MagneticEmitterCoil</comment>
+    <source>Magnetic Emitter Coil</source>
+  </data>
+  <data name="MarineSupplies">
+    <value>Maritimausstattung</value>
+    <comment>Commodity MarineSupplies</comment>
+    <source>Marine Equipment</source>
+  </data>
+  <data name="MarkedSlaves">
+    <value>Markierte Sklaven</value>
+    <comment>Commodity MarkedSlaves</comment>
+    <source>Marked Slaves</source>
+  </data>
+  <data name="MasterChefs">
+    <value>Oberköche</value>
+    <comment>Commodity MasterChefs</comment>
+    <source>Master Chefs</source>
+  </data>
+  <data name="MechucosHighTea">
+    <value>Mechucos-High-Tee</value>
+    <comment>Commodity MechucosHighTea</comment>
+    <source>Mechucos High Tea</source>
+  </data>
+  <data name="MedbStarlube">
+    <value>Medb-Sternschmiere</value>
+    <comment>Commodity MedbStarlube</comment>
+    <source>Medb Starlube</source>
+  </data>
+  <data name="MedicalDiagnosticEquipment">
+    <value>Medizinische Diagnostikausrüstung</value>
+    <comment>Commodity MedicalDiagnosticEquipment</comment>
+    <source>Medical Diagnostic Equipment</source>
+  </data>
+  <data name="MetaAlloys">
+    <value>Meta-Legierungen</value>
+    <comment>Commodity MetaAlloys</comment>
+    <source>Meta-Alloys</source>
+  </data>
+  <data name="MethaneClathrate">
+    <value>Methanklathrat</value>
+    <comment>Commodity MethaneClathrate</comment>
+    <source>Methane Clathrate</source>
+  </data>
+  <data name="MethanolMonohydrateCrystals">
+    <value>Methanol-Monohydrat-Kristalle</value>
+    <comment>Commodity MethanolMonohydrateCrystals</comment>
+    <source>Methanol Monohydrate</source>
+  </data>
+  <data name="MicroControllers">
+    <value>Mikrocontroller</value>
+    <comment>Commodity MicroControllers</comment>
+    <source>Micro Controllers</source>
+  </data>
+  <data name="MilitaryGradeFabrics">
+    <value>Militärische Stoffe</value>
+    <comment>Commodity MilitaryGradeFabrics</comment>
+    <source>Military Grade Fabrics</source>
+  </data>
+  <data name="MilitaryIntelligence">
+    <value>Militär Geheimdienst</value>
+    <comment>Commodity MilitaryIntelligence</comment>
+    <source>Military Intelligence</source>
+  </data>
+  <data name="MineralExtractors">
+    <value>Mineralextraktoren</value>
+    <comment>Commodity MineralExtractors</comment>
+    <source>Mineral Extractors</source>
+  </data>
+  <data name="MineralOil">
+    <value>Erdöl</value>
+    <comment>Commodity MineralOil</comment>
+    <source>Mineral Oil</source>
+  </data>
+  <data name="ModularTerminals">
+    <value>Modulterminals</value>
+    <comment>Commodity ModularTerminals</comment>
+    <source>Modular Terminals</source>
+  </data>
+  <data name="Moissanite">
+    <value>Moissanit</value>
+    <comment>Commodity Moissanite</comment>
+    <source>Moissanite</source>
+  </data>
+  <data name="MokojingBeastFeast">
+    <value>Mokojing Monstermüsli</value>
+    <comment>Commodity MokojingBeastFeast</comment>
+    <source>Mokojing Beast Feast</source>
+  </data>
+  <data name="MomusBogSpaniel">
+    <value>Momus-Sumpfspaniel</value>
+    <comment>Commodity MomusBogSpaniel</comment>
+    <source>Momus Bog Spaniel</source>
+  </data>
+  <data name="Monazite">
+    <value>Monazit</value>
+    <comment>Commodity Monazite</comment>
+    <source>Monazite</source>
+  </data>
+  <data name="MotronaExperienceJelly">
+    <value>Motrona Erlebnisgelee</value>
+    <comment>Commodity MotronaExperienceJelly</comment>
+    <source>Motrona Experience Jelly</source>
+  </data>
+  <data name="MukusubiiChitinOs">
+    <value>Mukusubii Chitin-Os</value>
+    <comment>Commodity MukusubiiChitin_Os</comment>
+    <source>Mukusubii Chitin-Os</source>
+  </data>
+  <data name="MulachiGiantFungus">
+    <value>Mulachi Riesenpilz</value>
+    <comment>Commodity MulachiGiantFungus</comment>
+    <source>Mulachi Giant Fungus</source>
+  </data>
+  <data name="Musgravite">
+    <value>Musgravit</value>
+    <comment>Commodity Musgravite</comment>
+    <source>Musgravite</source>
+  </data>
+  <data name="MuTomImager">
+    <value>Myon-Bildgeber</value>
+    <comment>Commodity MuTomImager</comment>
+    <source>Muon Imager</source>
+  </data>
+  <data name="MysteriousIdol">
+    <value>Mysteriöses Idol</value>
+    <comment>Commodity MysteriousIdol</comment>
+    <source>Mysterious Idol</source>
+  </data>
+  <data name="Nanobreakers">
+    <value>Nanozertrümmerer</value>
+    <comment>Commodity Nanobreakers</comment>
+    <source>Nanobreakers</source>
+  </data>
+  <data name="Nanomedicines">
+    <value>Nanomedizin</value>
+    <comment>Commodity Nanomedicines</comment>
+    <source>Nanomedicines</source>
+  </data>
+  <data name="NaturalFabrics">
+    <value>Naturfasern</value>
+    <comment>Commodity NaturalFabrics</comment>
+    <source>Natural Fabrics</source>
+  </data>
+  <data name="NeofabricInsulation">
+    <value>Neogewebe-Isolierung</value>
+    <comment>Commodity NeofabricInsulation</comment>
+    <source>Neofabric Insulation</source>
+  </data>
+  <data name="NeritusBerries">
+    <value>Netitus Beeren</value>
+    <comment>Commodity NeritusBerries</comment>
+    <source>Neritus Berries</source>
+  </data>
+  <data name="NerveAgents">
+    <value>Nervengas</value>
+    <comment>Commodity NerveAgents</comment>
+    <source>Nerve Agents</source>
+  </data>
+  <data name="NgadandariFireOpals">
+    <value>Ngadandari Feueropale</value>
+    <comment>Commodity NgadandariFireOpals</comment>
+    <source>Ngadandari Fire Opals</source>
+  </data>
+  <data name="NgunaModernAntiques">
+    <value>Nguna Moderne Antiquitäen</value>
+    <comment>Commodity NgunaModernAntiques</comment>
+    <source>Nguna Modern Antiques</source>
+  </data>
+  <data name="NjangariSaddles">
+    <value>Njangari Sättel</value>
+    <comment>Commodity NjangariSaddles</comment>
+    <source>Njangari Saddles</source>
+  </data>
+  <data name="NonEuclidianExotanks">
+    <value>Nichteuklidische Exotanks</value>
+    <comment>Commodity NonEuclidianExotanks</comment>
+    <source>Non Euclidian Exotanks</source>
+  </data>
+  <data name="NonLethalWeapons">
+    <value>Nichttödliche Waffen</value>
+    <comment>Commodity NonLethalWeapons</comment>
+    <source>Non-Lethal Weapons</source>
+  </data>
+  <data name="OccupiedCryoPod">
+    <value>Besetzte Rettungskapsel</value>
+    <comment>Commodity OccupiedCryoPod</comment>
+    <source>Occupied Escape Pod</source>
+  </data>
+  <data name="OchoengChillies">
+    <value>Ochoeng-Chili</value>
+    <comment>Commodity OchoengChillies</comment>
+    <source>Ochoeng Chillies</source>
+  </data>
+  <data name="OnionHead">
+    <value>Onionhead</value>
+    <comment>Commodity OnionHead</comment>
+    <source>Onion Head</source>
+  </data>
+  <data name="OnionHeadA">
+    <value>Onionhead (Alpha)</value>
+    <comment>Commodity OnionheadAlphaStrain</comment>
+    <source>Onionhead Alpha Strain</source>
+  </data>
+  <data name="OnionHeadB">
+    <value>Onionhead (Beta)</value>
+    <comment>Commodity OnionheadBetaStrain</comment>
+    <source>Onionhead Beta Strain</source>
+  </data>
+  <data name="OnionHeadC">
+    <value>Onionhead (Gamma)</value>
+    <comment>Commodity Onionhead Gamma Strain</comment>
+    <source>Onionhead Gamma Strain</source>
+  </data>
+  <data name="OnionheadDerivatives">
+    <value>Onionhead-Derivantien</value>
+    <comment>Commodity OnionheadDerivatives</comment>
+    <source>Onionhead Derivatives</source>
+  </data>
+  <data name="OnionheadSamples">
+    <value>Onionhead-Proben</value>
+    <comment>Commodity OnionheadSamples</comment>
+    <source>Onionhead Samples</source>
+  </data>
+  <data name="Opal">
+    <value>Leerenopal</value>
+    <comment>Commodity Opal</comment>
+    <source>Void Opal</source>
+  </data>
+  <data name="OphiuchiExinoArtefacts">
+    <value>Ophiuch Exino Artefakte</value>
+    <comment>Commodity OphiuchExinoArtefacts</comment>
+    <source>Ophiuch Exino Artefacts</source>
+  </data>
+  <data name="OrrerianViciousBrew">
+    <value>Orrerianisches Immerwach</value>
+    <comment>Commodity OrrerianViciousBrew</comment>
+    <source>Orrerian Vicious Brew</source>
+  </data>
+  <data name="Osmium">
+    <value>Osmium</value>
+    <comment>Commodity Osmium</comment>
+    <source>Osmium</source>
+  </data>
+  <data name="OutOfDateGoods">
+    <value>Abgelaufene Waren</value>
+    <comment>Commodity OutOfDateGoods</comment>
+    <source>Out Of Date Goods</source>
+  </data>
+  <data name="P_ParticulateSample">
+    <value>Anomaliepartikel</value>
+    <comment>Commodity P_ParticulateSample</comment>
+    <source>Anomaly Particles</source>
+  </data>
+  <data name="Painite">
+    <value>Painit</value>
+    <comment>Commodity Painite</comment>
+    <source>Painite</source>
+  </data>
+  <data name="Palladium">
+    <value>Palladium</value>
+    <comment>Commodity Palladium</comment>
+    <source>Palladium</source>
+  </data>
+  <data name="PantaaPrayerSticks">
+    <value>Pantaa-Weihrauchstöcke</value>
+    <comment>Commodity PantaaPrayerSticks</comment>
+    <source>Pantaa Prayer Sticks</source>
+  </data>
+  <data name="PatreusFieldSupplies">
+    <value>Patreus' Feldversorgung</value>
+    <comment>Commodity PatreusFieldSupplies</comment>
+    <source>Patreus Field Supplies</source>
+  </data>
+  <data name="PatreusGarisonSupplies">
+    <value>Patreus' Garnisonsversorgung</value>
+    <comment>Commodity PatreusGarisonSupplies</comment>
+    <source>Patreus Garrison Supplies</source>
+  </data>
+  <data name="PavonisEarGrubs">
+    <value>Pavonis Ohr-Maden</value>
+    <comment>Commodity PavonisEarGrubs</comment>
+    <source>Pavonis Ear Grubs</source>
+  </data>
+  <data name="PerformanceEnhancers">
+    <value>Leistungssteigerer</value>
+    <comment>Commodity PerformanceEnhancers</comment>
+    <source>Performance Enhancers</source>
+  </data>
+  <data name="PersonalEffects">
+    <value>Persönliches</value>
+    <comment>Commodity PersonalEffects</comment>
+    <source>Personal Effects</source>
+  </data>
+  <data name="PersonalGifts">
+    <value>Festliche Geschenke</value>
+    <comment>Commodity.PersonalGifts</comment>
+    <source>Festive Gifts</source>
+  </data>
+  <data name="PersonalWeapons">
+    <value>Persönliche Waffen</value>
+    <comment>Commodity PersonalWeapons</comment>
+    <source>Personal Weapons</source>
+  </data>
+  <data name="Pesticides">
+    <value>Pestizide</value>
+    <comment>Commodity Pesticides</comment>
+    <source>Pesticides</source>
+  </data>
+  <data name="Platinum">
+    <value>Platin</value>
+    <comment>Commodity Platinum</comment>
+    <source>Platinum</source>
+  </data>
+  <data name="PlatinumAloy">
+    <value>Platinlegierung</value>
+    <comment>Commodity PlatinumAloy</comment>
+    <source>Platinum Alloy</source>
+  </data>
+  <data name="PoliticalPrisoner">
+    <value>Politischer Gefangener</value>
+    <comment>Commodity PoliticalPrisoner</comment>
+    <source>Political Prisoner</source>
+  </data>
+  <data name="Polymers">
+    <value>Polymere</value>
+    <comment>Commodity Polymers</comment>
+    <source>Polymers</source>
+  </data>
+  <data name="PowerConverter">
+    <value>Energiekonverter</value>
+    <comment>Commodity PowerConverter</comment>
+    <source>Power Converter</source>
+  </data>
+  <data name="PowerGenerators">
+    <value>Stromerzeuger</value>
+    <comment>Commodity PowerGenerators</comment>
+    <source>Power Generators</source>
+  </data>
+  <data name="PowerGridAssembly">
+    <value>Energienetz-Gruppe</value>
+    <comment>Commodity PowerGridAssembly</comment>
+    <source>Energy Grid Assembly</source>
+  </data>
+  <data name="PowerTransferConduits">
+    <value>Energietransferbus</value>
+    <comment>Commodity PowerTransferConduits</comment>
+    <source>Power Transfer Bus</source>
+  </data>
+  <data name="Praseodymium">
+    <value>Praseodymium</value>
+    <comment>Commodity Praseodymium</comment>
+    <source>Praseodymium</source>
+  </data>
+  <data name="PreciousGems">
+    <value>Edelsteine</value>
+    <comment>Commodity PreciousGems</comment>
+    <source>Precious Gems</source>
+  </data>
+  <data name="ProgenitorCells">
+    <value>Vorläuferzellen</value>
+    <comment>Commodity ProgenitorCells</comment>
+    <source>Progenitor Cells</source>
+  </data>
+  <data name="ProhibitedResearchMaterials">
+    <value>Verbotene Forschungsmaterialien</value>
+    <comment>Commodity ProhibitedResearchMaterials</comment>
+    <source>Prohibited Research Materials</source>
+  </data>
+  <data name="Pyrophyllite">
+    <value>Pyrophyllit</value>
+    <comment>Commodity Pyrophyllite</comment>
+    <source>Pyrophyllite</source>
+  </data>
+  <data name="RadiationBaffle">
+    <value>Strahlungsabweiser</value>
+    <comment>Commodity RadiationBaffle</comment>
+    <source>Radiation Baffle</source>
+  </data>
+  <data name="RajukruStoves">
+    <value>Rajukru Multi-Öfen</value>
+    <comment>Commodity RajukruStoves</comment>
+    <source>Rajukru Multi-Stoves</source>
+  </data>
+  <data name="RapaBaoSnakeSkins">
+    <value>Rapa Bao Schlangenhäute</value>
+    <comment>Commodity RapaBaoSnakeSkins</comment>
+    <source>Rapa Bao Snake Skins</source>
+  </data>
+  <data name="ReactiveArmour">
+    <value>Reaktivrüstung</value>
+    <comment>Commodity ReactiveArmour</comment>
+    <source>Reactive Armour</source>
+  </data>
+  <data name="ReinforcedMountingPlate">
+    <value>Verstärkte Trägerplatte</value>
+    <comment>Commodity ReinforcedMountingPlate</comment>
+    <source>Reinforced Mounting Plate</source>
+  </data>
+  <data name="RepublicanFieldSupplies">
+    <value>Archers Feldversorgung</value>
+    <comment>Commodity RepublicanFieldSupplies</comment>
+    <source>Archer's Field Supplies</source>
+  </data>
+  <data name="RepublicanGarisonSupplies">
+    <value>Archers Garnisonsversorgung</value>
+    <comment>Commodity RepublicanGarisonSupplies</comment>
+    <source>Archer Garrison Supplies</source>
+  </data>
+  <data name="ResonatingSeparators">
+    <value>Resonanzabgrenzer</value>
+    <comment>Commodity ResonatingSeparators</comment>
+    <source>Resonating Separators</source>
+  </data>
+  <data name="RestrictedIntel">
+    <value>Archers Geheiminformationen</value>
+    <comment>Commodity RestrictedIntel</comment>
+    <source>Archer's Restricted Intel</source>
+  </data>
+  <data name="RestrictedPackage">
+    <value>Vertrauliches Paket der Core Holding</value>
+    <comment>Commodity RestrictedPackage</comment>
+    <source>Core Restricted Package</source>
+  </data>
+  <data name="Rhodplumsite">
+    <value>Rhodplumsit</value>
+    <comment>Commodity Rhodplumsite</comment>
+    <source>Rhodplumsite</source>
+  </data>
+  <data name="Robotics">
+    <value>Roboter</value>
+    <comment>Commodity Robotics</comment>
+    <source>Robotics</source>
+  </data>
+  <data name="RockforthFertiliser">
+    <value>Rockforth Dünger</value>
+    <comment>Commodity RockforthFertiliser</comment>
+    <source>Rockforth Fertiliser</source>
+  </data>
+  <data name="RusaniOldSmokey">
+    <value>Rusani Old Smokey</value>
+    <comment>Commodity RusaniOldSmokey</comment>
+    <source>Rusani Old Smokey</source>
+  </data>
+  <data name="Rutile">
+    <value>Rutil</value>
+    <comment>Commodity Rutile</comment>
+    <source>Rutile</source>
+  </data>
+  <data name="S_TissueSample_Cells">
+    <value>Schalenkerngewebeprobe</value>
+    <comment>Commodity S_TissueSample_Cells</comment>
+    <source>Pod Core Tissue</source>
+  </data>
+  <data name="S_TissueSample_Core">
+    <value>Schalenoberflächengewebeprobe</value>
+    <comment>Commodity S_TissueSample_Core</comment>
+    <source>Pod Surface Tissue</source>
+  </data>
+  <data name="S_TissueSample_Surface">
+    <value>Hülsentotgewebe</value>
+    <comment>Commodity S_TissueSample_Surface</comment>
+    <source>Pod Dead Tissue</source>
+  </data>
+  <data name="S6_TissueSample_Cells">
+    <value>Zellen Gewebeprobe</value>
+    <comment>Commodity S6_TissueSample_Cells</comment>
+    <source>Pod Outer Tissue</source>
+  </data>
+  <data name="S6_TissueSample_Coenosarc">
+    <value>Coenosarc Gewebeprobe</value>
+    <comment>Commodity S6_TissueSample_Coenosarc</comment>
+    <source>Pod Shell Tissue</source>
+  </data>
+  <data name="S6_TissueSample_Mesoglea">
+    <value>Mesoglea Gewebeprobe</value>
+    <comment>Commodity S6_TissueSample_Mesoglea</comment>
+    <source>Pod Mesoglea</source>
+  </data>
+  <data name="S9_TissueSample_Shell">
+    <value>Schalengewebeprobe</value>
+    <comment>Commodity S9_TissueSample_Shell</comment>
+    <source>Pod Tissue</source>
+  </data>
+  <data name="Samarium">
+    <value>Samarium</value>
+    <comment>Commodity Samarium</comment>
+    <source>Samarium</source>
+  </data>
+  <data name="SanumaDecorativeMeat">
+    <value>Dekoratives Sanuma Fleisch</value>
+    <comment>(Deprecated) Commodity SanumaDecorativeMeat</comment>
+    <source>Sanuma Decorative Meat</source>
+  </data>
+  <data name="SanumaMEAT">
+    <value>Dekoratives Sanuma Fleisch</value>
+    <comment>Commodity SanumaMEAT</comment>
+    <source>Sanuma Decorative Meat</source>
+  </data>
+  <data name="SAP8CoreContainer">
+    <value>Container mit SAP 8-Kern</value>
+    <comment>Commodity SAP8CoreContainer</comment>
+    <source>Sap 8 Core Container</source>
+  </data>
+  <data name="SaxonWine">
+    <value>Sachsenwein</value>
+    <comment>Commodity SaxonWine</comment>
+    <source>Saxon Wine</source>
+  </data>
+  <data name="ScientificResearch">
+    <value>Wissenschaftliche Forschung</value>
+    <comment>Commodity ScientificResearch</comment>
+    <source>Scientific Research</source>
+  </data>
+  <data name="ScientificSamples">
+    <value>Wissenschaftliche Proben</value>
+    <comment>Commodity ScientificSamples</comment>
+    <source>Scientific Samples</source>
+  </data>
+  <data name="Scrap">
+    <value>Schrott</value>
+    <comment>Commodity Scrap</comment>
+    <source>Scrap</source>
+  </data>
+  <data name="Semiconductors">
+    <value>Halbleiter</value>
+    <comment>Commodity Semiconductors</comment>
+    <source>Semiconductors</source>
+  </data>
+  <data name="Serendibite">
+    <value>Serendibit</value>
+    <comment>Commodity Serendibite</comment>
+    <source>Serendibite</source>
+  </data>
+  <data name="ShansCharisOrchid">
+    <value>Shans Charis-Orchidee</value>
+    <comment>Commodity ShansCharisOrchid</comment>
+    <source>Shan's Charis Orchid</source>
+  </data>
+  <data name="Silver">
+    <value>Silber</value>
+    <comment>Commodity Silver</comment>
+    <source>Silver</source>
+  </data>
+  <data name="SiriusCommercialContracts">
+    <value>Sirius Unternehmensverträge</value>
+    <comment>Commodity SiriusCommercialContracts</comment>
+    <source>Sirius Corporate Contracts</source>
+  </data>
+  <data name="SiriusFranchisePackage">
+    <value>Sirius Franchise-Paket</value>
+    <comment>Commodity SiriusFranchisePackage</comment>
+    <source>Sirius Franchise Package</source>
+  </data>
+  <data name="SiriusIndustrialEquipment">
+    <value>Sirius Industrieausrüstung</value>
+    <comment>Commodity SiriusIndustrialEquipment</comment>
+    <source>Sirius Industrial Equipment</source>
+  </data>
+  <data name="SkimerComponents">
+    <value>Of-Drohnen-Komponenten</value>
+    <comment>Commodity SkimerComponents</comment>
+    <source>Skimmer Components</source>
+  </data>
+  <data name="Slaves">
+    <value>Sklaven</value>
+    <comment>Commodity Slaves</comment>
+    <source>Slaves</source>
+  </data>
+  <data name="SmallExplorationDataCash">
+    <value>Kleiner Erkundungsdatenspeicher</value>
+    <comment>Commodity SmallExplorationDataCash</comment>
+    <source>Small Survey Data Cache</source>
+  </data>
+  <data name="SoontillRelics">
+    <value>Soontill-Relikte</value>
+    <comment>Commodity SoontillRelics</comment>
+    <source>Soontill Relics</source>
+  </data>
+  <data name="SothisCrystallineGold">
+    <value>Kristallines Sothis Gold</value>
+    <comment>Commodity SothisCrystallineGold</comment>
+    <source>Sothis Crystalline Gold</source>
+  </data>
+  <data name="SpacePioneerRelics">
+    <value>Weltraumpionier-Relikte</value>
+    <comment>Commodity SpacePioneerRelics</comment>
+    <source>Space Pioneer Relics</source>
+  </data>
+  <data name="Steel">
+    <value>Stahl</value>
+    <comment>Steel commodity</comment>
+    <source>Steel</source>
+  </data>
+  <data name="StructuralRegulators">
+    <value>Strukturregulatoren</value>
+    <comment>Commodity StructuralRegulators</comment>
+    <source>Structural Regulators</source>
+  </data>
+  <data name="Superconductors">
+    <value>Supra-Leiter</value>
+    <comment>Commodity Superconductors</comment>
+    <source>Superconductors</source>
+  </data>
+  <data name="SurfaceStabilisers">
+    <value>Oberflächenstabilisierer</value>
+    <comment>Commodity SurfaceStabilisers</comment>
+    <source>Surface Stabilisers</source>
+  </data>
+  <data name="SurvivalEquipment">
+    <value>Überlebensausrüstung</value>
+    <comment>Commodity SurvivalEquipment</comment>
+    <source>Survival Equipment</source>
+  </data>
+  <data name="SyntheticFabrics">
+    <value>Chemiefasern</value>
+    <comment>Commodity SyntheticFabrics</comment>
+    <source>Synthetic Fabrics</source>
+  </data>
+  <data name="SyntheticMeat">
+    <value>Künstliches Fleisch</value>
+    <comment>Commodity SyntheticMeat</comment>
+    <source>Synthetic Meat</source>
+  </data>
+  <data name="SyntheticReagents">
+    <value>Synthetische Reagenzstoffe</value>
+    <comment>Commodity SyntheticReagents</comment>
+    <source>Synthetic Reagents</source>
+  </data>
+  <data name="Taaffeite">
+    <value>Taaffeit</value>
+    <comment>Commodity Taaffeite</comment>
+    <source>Taaffeite</source>
+  </data>
+  <data name="TacticalData">
+    <value>Aufklärungsdaten</value>
+    <comment>Commodity TacticalData</comment>
+    <source>Tactical Data</source>
+  </data>
+  <data name="TanmarkTranquilTea">
+    <value>Beruhigender Tanmark Tee</value>
+    <comment>Commodity TanmarkTranquilTea</comment>
+    <source>Tanmark Tranquil Tea</source>
+  </data>
+  <data name="Tantalum">
+    <value>Tantal</value>
+    <comment>Commodity Tantalum</comment>
+    <source>Tantalum</source>
+  </data>
+  <data name="TarachTorSpice">
+    <value>Tarach Gewürz</value>
+    <comment>Commodity TarachTorSpice</comment>
+    <source>Tarach Spice</source>
+  </data>
+  <data name="TauriChimes">
+    <value>Tauri Glockenspiel</value>
+    <comment>Commodity TauriChimes</comment>
+    <source>Tauri Chimes</source>
+  </data>
+  <data name="Tea">
+    <value>Tee</value>
+    <comment>Commodity Tea</comment>
+    <source>Tea</source>
+  </data>
+  <data name="TelemetrySuite">
+    <value>Telemetrie-Paket</value>
+    <comment>Commodity TelemetrySuite</comment>
+    <source>Telemetry Suite</source>
+  </data>
+  <data name="TerrainEnrichmentSystems">
+    <value>Landanreicherungssysteme</value>
+    <comment>Commodity TerrainEnrichmentSystems</comment>
+    <source>Land Enrichment Systems</source>
+  </data>
+  <data name="TerraMaterBloodBores">
+    <value>Terra Mater Blutsenkung</value>
+    <comment>Commodity TerraMaterBloodBores</comment>
+    <source>Terra Mater Blood Bores</source>
+  </data>
+  <data name="Thallium">
+    <value>Thallium</value>
+    <comment>Commodity Thallium</comment>
+    <source>Thallium</source>
+  </data>
+  <data name="ThargoidBoneFragments">
+    <value>Knochenfragmente</value>
+    <comment>Commodity ThargoidBoneFragments</comment>
+    <source>Bone Fragments</source>
+  </data>
+  <data name="ThargoidCystSpecimen">
+    <value>Zystenprobe</value>
+    <comment>Commodity ThargoidCystSpecimen</comment>
+    <source>Cyst Specimen</source>
+  </data>
+  <data name="ThargoidGeneratorTissueSample">
+    <value>Ätzende Gewebeprobe</value>
+    <comment>Commodity ThargoidGeneratorTissueSample</comment>
+    <source>Caustic Tissue Sample</source>
+  </data>
+  <data name="ThargoidHeart">
+    <value>Thargoiden Herz</value>
+    <comment>Commodity ThargoidHeart</comment>
+    <source>Thargoid Heart</source>
+  </data>
+  <data name="ThargoidOrganSample">
+    <value>Organprobe</value>
+    <comment>Commodity ThargoidOrganSample</comment>
+    <source>Organ Sample</source>
+  </data>
+  <data name="ThargoidPod">
+    <value>Thargoid Biospeicherkapsel</value>
+    <comment>Commodity ThargoidPod</comment>
+    <source>Thargoid Bio-storage Capsule</source>
+  </data>
+  <data name="ThargoidScoutTissueSample">
+    <value>Thargoidenspäher Gewebeprobe</value>
+    <comment>Commodity ThargoidScoutTissueSample</comment>
+    <source>Thargoid Scout Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType1">
+    <value>Thargoid Cyclops Gewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType1</comment>
+    <source>Thargoid Cyclops Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType10a">
+    <value>Titan Maw Tiefengewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType10a</comment>
+    <source>Titan Maw Deep Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType10b">
+    <value>Titan Maw Gewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType10b</comment>
+    <source>Titan Maw Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType10c">
+    <value>Titan Maw Teilgewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType10c</comment>
+    <source>Titan Maw Partial Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType2">
+    <value>Thargoid Basilisk Gewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType2</comment>
+    <source>Thargoid Basilisk Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType3">
+    <value>Thargoid Medusa Gewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType3</comment>
+    <source>Thargoid Medusa Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType4">
+    <value>Thargoid Hydra Gewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType4</comment>
+    <source>Thargoid Hydra Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType5">
+    <value>Thargoid Orthrus Gewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType5</comment>
+    <source>Thargoid Orthrus Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType6">
+    <value>Thargoid Glaive Gewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType6</comment>
+    <source>Thargoid Glaive Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType7">
+    <value>Thargoid Scythe Gewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType7</comment>
+    <source>Thargoid Scythe Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType9a">
+    <value>Titan Tiefengewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType9a</comment>
+    <source>Titan Deep Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType9b">
+    <value>Titan Gewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType9b</comment>
+    <source>Titan Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType9c">
+    <value>Titan Teilgewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType9c</comment>
+    <source>Titan Partial Tissue Sample</source>
+  </data>
+  <data name="ThargoidTitanDriveComponent">
+    <value>Titan Antriebskomponente</value>
+    <comment>Commodity ThargoidTitanDriveComponent</comment>
+    <source>Thargoid Titan Drive Component</source>
+  </data>
+  <data name="TheHuttonMug">
+    <value>Der Hutton-Becher</value>
+    <comment>Commodity TheHuttonMug</comment>
+    <source>The Hutton Mug</source>
+  </data>
+  <data name="ThermalCoolingUnits">
+    <value>Thermal-Kühleinheiten</value>
+    <comment>Commodity ThermalCoolingUnits</comment>
+    <source>Thermal Cooling Units</source>
+  </data>
+  <data name="Thorium">
+    <value>Thorium</value>
+    <comment>Commodity Thorium</comment>
+    <source>Thorium</source>
+  </data>
+  <data name="ThrutisCream">
+    <value>Thrustis Sahne</value>
+    <comment>Commodity ThrutisCream</comment>
+    <source>Thrutis Cream</source>
+  </data>
+  <data name="TiegfriesSynthSilk">
+    <value>Künstliche Tiegfries Seide</value>
+    <comment>Commodity TiegfriesSynthSilk</comment>
+    <source>Tiegfries Synth Silk</source>
+  </data>
+  <data name="TimeCapsule">
+    <value>Zeitkapsel</value>
+    <comment>Commodity TimeCapsule</comment>
+    <source>Time Capsule</source>
+  </data>
+  <data name="TiolceWaste2PasteUnits">
+    <value>Tiolce Recyclingpaste</value>
+    <comment>Commodity TiolceWaste2PasteUnits</comment>
+    <source>Tiolce Waste2Paste Units</source>
+  </data>
+  <data name="Titanium">
+    <value>Titan</value>
+    <comment>Commodity Titanium</comment>
+    <source>Titanium</source>
+  </data>
+  <data name="Tobacco">
+    <value>Tabak</value>
+    <comment>Commodity Tobacco</comment>
+    <source>Tobacco</source>
+  </data>
+  <data name="torvalcommercialcontracts">
+    <value>Torval Geschäftskontakte</value>
+    <comment>Commodity torvalcommercialcontracts</comment>
+    <source>Torval Commercial Contracts</source>
+  </data>
+  <data name="torvaldeeds">
+    <value>Torval Tat</value>
+    <comment>Commodity torvaldeeds</comment>
+    <source>Torval Deed</source>
+  </data>
+  <data name="ToxandjiVirocide">
+    <value>Toxandij Verozid</value>
+    <comment>Commodity ToxandjiVirocide</comment>
+    <source>Toxandji Virocide</source>
+  </data>
+  <data name="ToxicWaste">
+    <value>Giftmüll</value>
+    <comment>Commodity ToxicWaste</comment>
+    <source>Toxic Waste</source>
+  </data>
+  <data name="TransgenicOnionHead">
+    <value>Lucan Onionhead</value>
+    <comment>Commodity TransgenicOnionHead</comment>
+    <source>Lucan Onionhead</source>
+  </data>
+  <data name="TrinketsOfFortune">
+    <value>Glücksbringer</value>
+    <comment>Commodity TrinketsOfFortune</comment>
+    <source>Trinkets Of Hidden Fortune</source>
+  </data>
+  <data name="Tritium">
+    <value>Tritium</value>
+    <comment>Commodity Tritium</comment>
+    <source>Tritium</source>
+  </data>
+  <data name="undergroundsupport">
+    <value>Untergrund-Support für Grom</value>
+    <comment>Commodity undergroundsupport</comment>
+    <source>Grom Underground Support</source>
+  </data>
+  <data name="Unknown">
+    <value>Unbekannt</value>
+    <comment>Commodity Unknown</comment>
+    <source>Unknown</source>
+  </data>
+  <data name="UnknownArtifact">
+    <value>Thargoiden-Sensor</value>
+    <comment>Commodity UnknownArtifact</comment>
+    <source>Thargoid Sensor</source>
+  </data>
+  <data name="UnknownArtifact2">
+    <value>Thargoiden-Sonde</value>
+    <comment>Commodity UnknownArtifact2</comment>
+    <source>Thargoid Probe</source>
+  </data>
+  <data name="UnknownArtifact3">
+    <value>Thargoiden-Verknüpfung</value>
+    <comment>Commodity UnknownArtifact3</comment>
+    <source>Thargoid Link</source>
+  </data>
+  <data name="UnknownBiologicalMatter">
+    <value>Thargoidenmaterie</value>
+    <comment>Commodity UnknownBiologicalMatter</comment>
+    <source>Thargoid Biological Matter</source>
+  </data>
+  <data name="UnknownMineral">
+    <value>Unreines Spitzen-Mineral</value>
+    <comment>Commodity UnknownMineral</comment>
+    <source>Impure Spire Mineral</source>
+  </data>
+  <data name="UnknownRefinedMineral">
+    <value>Teilveredeltes Spitzen-Mineral</value>
+    <comment>Commodity UnknownRefinedMineral</comment>
+    <source>Semi-Refined Spire Mineral</source>
+  </data>
+  <data name="UnknownResin">
+    <value>Thargoiden-Harz</value>
+    <comment>Commodity UnknownResin</comment>
+    <source>Thargoid Resin</source>
+  </data>
+  <data name="UnknownSack">
+    <value>Schutzmembranen-Schrott</value>
+    <comment>Commodity UnknownSack</comment>
+    <source>Protective Membrane Scrap</source>
+  </data>
+  <data name="UnknownTechnologySamples">
+    <value>Thargoiden-Technologie-Beispiele</value>
+    <comment>Commodity UnknownTechnologySamples</comment>
+    <source>Thargoid Technology Samples</source>
+  </data>
+  <data name="UnmarkedWeapons">
+    <value>Unmarkierte Militärmaterialien</value>
+    <comment>Commodity UnmarkedWeapons</comment>
+    <source>Unmarked Military supplies</source>
+  </data>
+  <data name="UnocuppiedEscapePod">
+    <value>Unbesetzte Rettungskapsel</value>
+    <comment>Commodity UnocuppiedEscapePod</comment>
+    <source>Unoccupied Escape Pod</source>
+  </data>
+  <data name="UnstableDataCore">
+    <value>Instabiler Datenkern</value>
+    <comment>Commodity UnstableDataCore</comment>
+    <source>Unstable Data Core</source>
+  </data>
+  <data name="Uraninite">
+    <value>Uraninit</value>
+    <comment>Commodity Uraninite</comment>
+    <source>Uraninite</source>
+  </data>
+  <data name="Uranium">
+    <value>Uran</value>
+    <comment>Commodity Uranium</comment>
+    <source>Uranium</source>
+  </data>
+  <data name="USSCargoAncientArtefact">
+    <value>Uraltes Artefakt</value>
+    <comment>Commodity USSCargoAncientArtefact</comment>
+    <source>Ancient Artifact</source>
+  </data>
+  <data name="USSCargoBlackBox">
+    <value>Black Box</value>
+    <comment>Commodity USSCargoBlackBox</comment>
+    <source>Black Box</source>
+  </data>
+  <data name="USSCargoExperimentalChemicals">
+    <value>Experimentelle Chemikalien</value>
+    <comment>Commodity USSCargoExperimentalChemicals</comment>
+    <source>Experimental Chemicals</source>
+  </data>
+  <data name="USSCargoMilitaryPlans">
+    <value>Militärpläne</value>
+    <comment>Commodity USSCargoMilitaryPlans</comment>
+    <source>Military Plans</source>
+  </data>
+  <data name="USSCargoPrototypeTech">
+    <value>Prototyp Technologie</value>
+    <comment>Commodity USSCargoPrototypeTech</comment>
+    <source>Prototype Tech</source>
+  </data>
+  <data name="USSCargoRareArtwork">
+    <value>Seltene Kunstgegenstände</value>
+    <comment>Commodity USSCargoRareArtwork</comment>
+    <source>Rare Artwork</source>
+  </data>
+  <data name="USSCargoRebelTransmissions">
+    <value>Rebellenübertragung</value>
+    <comment>Commodity USSCargoRebelTransmissions</comment>
+    <source>Rebel Transmissions</source>
+  </data>
+  <data name="USSCargoTechnicalBlueprints">
+    <value>Technische Blaupausen</value>
+    <comment>Commodity USSCargoTechnicalBlueprints</comment>
+    <source>Technical Blueprints</source>
+  </data>
+  <data name="USSCargoTradeData">
+    <value>Handelsdaten</value>
+    <comment>Commodity USSCargoTradeData</comment>
+    <source>Trade Data</source>
+  </data>
+  <data name="UszaianTreeGrub">
+    <value>Uszaianisches Baumgras</value>
+    <comment>Commodity UszaianTreeGrub</comment>
+    <source>Uszaian Tree Grub</source>
+  </data>
+  <data name="UtgaroarMillenialEggs">
+    <value>Utgaroar tausendjährige Eier</value>
+    <comment>Commodity UtgaroarMillenialEggs</comment>
+    <source>Utgaroar Millennial Eggs</source>
+  </data>
+  <data name="UtopianDissident">
+    <value>Utopia-Dissidenten</value>
+    <comment>Commodity UtopianDissident</comment>
+    <source>Utopian Dissident</source>
+  </data>
+  <data name="UtopianFieldSupplies">
+    <value>Utopia-Versorgungsmaterialien</value>
+    <comment>Commodity UtopianFieldSupplies</comment>
+    <source>Utopian Supplies</source>
+  </data>
+  <data name="UtopianPublicity">
+    <value>Utopia-PR-Dokumente</value>
+    <comment>Commodity UtopianPublicity</comment>
+    <source>Utopian Publicity</source>
+  </data>
+  <data name="UzumokuLow_GWings">
+    <value>Uzumokusanische niedrig-G Flügel</value>
+    <comment>(Deprecated) Commodity UzumokuLow_GWings</comment>
+    <source>Uzumoku Low-G Wings</source>
+  </data>
+  <data name="UzumokuLowGWings">
+    <value>Uzumokusische niedrig-G Flügel</value>
+    <comment>Commodity UzumokuLowGWings</comment>
+    <source>Uzumoku Low-G Wings</source>
+  </data>
+  <data name="VanayequiRhinoFur">
+    <value>Vanayequi-Ceratomorpha-Fell</value>
+    <comment>Commodity VanayequiRhinoFur</comment>
+    <source>Vanayequi Ceratomorpha Fur</source>
+  </data>
+  <data name="VegaSlimweed">
+    <value>Veganisches Schlankheitskraut</value>
+    <comment>Commodity VegaSlimweed</comment>
+    <source>Vega Slimweed</source>
+  </data>
+  <data name="VHerculisBodyRub">
+    <value>V Herculis Körperreibe</value>
+    <comment>Commodity VHerculisBodyRub</comment>
+    <source>V Herculis Body Rub</source>
+  </data>
+  <data name="VidavantianLace">
+    <value>Vidavantianische Spitze</value>
+    <comment>Commodity VidavantianLace</comment>
+    <source>Vidavantian Lace</source>
+  </data>
+  <data name="VolkhabBeeDrones">
+    <value>Volkhab Bienendrohnen</value>
+    <comment>Commodity VolkhabBeeDrones</comment>
+    <source>Volkhab Bee Drones</source>
+  </data>
+  <data name="Water">
+    <value>Wasser</value>
+    <comment>Commodity Water</comment>
+    <source>Water</source>
+  </data>
+  <data name="WaterPurifiers">
+    <value>Wasserreiniger</value>
+    <comment>Commodity WaterPurifiers</comment>
+    <source>Water Purifiers</source>
+  </data>
+  <data name="WatersOfShintara">
+    <value>Shinrarta-Wasser</value>
+    <comment>Commodity WatersOfShintara</comment>
+    <source>Waters Of Shintara</source>
+  </data>
+  <data name="WheemeteWheatCakes">
+    <value>Wheemete Weizenkekse</value>
+    <comment>Commodity WheemeteWheatCakes</comment>
+    <source>Wheemete Wheat Cakes</source>
+  </data>
+  <data name="Wine">
+    <value>Wein</value>
+    <comment>Commodity Wine</comment>
+    <source>Wine</source>
+  </data>
+  <data name="WitchhaulKobeBeef">
+    <value>Witchhaul Kobe-Rindfleisch</value>
+    <comment>Commodity WitchhaulKobeBeef</comment>
+    <source>Witchhaul Kobe Beef</source>
+  </data>
+  <data name="Wolf1301Fesh">
+    <value>Wolf Fesh</value>
+    <comment>Commodity Wolf1301Fesh</comment>
+    <source>Wolf Fesh</source>
+  </data>
+  <data name="WolfFesh">
+    <value>Wolf Fesh</value>
+    <comment>(Deprecated) Commodity WolfFesh</comment>
+    <source>Wolf Fesh</source>
+  </data>
+  <data name="WreckageComponents">
+    <value>Bergungsfähige Wrackteile</value>
+    <comment>Commodity WreckageComponents</comment>
+    <source>Salvageable Wreckage</source>
+  </data>
+  <data name="WuthieloKuFroth">
+    <value>Wuthielo Ku Schaum</value>
+    <comment>Commodity WuthieloKuFroth</comment>
+    <source>Wuthielo Ku Froth</source>
+  </data>
+  <data name="xihecompanions">
+    <value>Haustiere aus Xihe</value>
+    <comment>Commodity xihecompanions</comment>
+    <source>Xihe Biomorphic Companions</source>
+  </data>
+  <data name="YasoKondiLeaf">
+    <value>Yaso Kondi Blatt</value>
+    <comment>Commodity YasoKondiLeaf</comment>
+    <source>Yaso Kondi Leaf</source>
+  </data>
+  <data name="ZeesszeAntGlue">
+    <value>Zeesszer Ameisenkleber</value>
+    <comment>Commodity ZeesszeAntGlue</comment>
+    <source>Zeessze Ant Grub Glue</source>
+  </data>
+</root>

@@ -1,5 +1,6 @@
 ﻿Codex.resx
 CodexShort.resx
+Commodities.resx
 Economies.resx
 FactionStates.resx
 FormBoxelSearch.resx

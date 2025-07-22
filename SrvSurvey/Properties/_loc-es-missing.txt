@@ -88,6 +88,44 @@
 	BearingTo
 	DistanceTo
 
+/Properties/Commodities.es.resx
+	AzCancriFormula42
+	KorroKungPellets
+	RepublicanFieldSupplies
+	RepublicanGarisonSupplies
+	RestrictedIntel
+	ThargoidScoutTissueSample
+	PersonalGifts
+	Opal
+	ClassifiedExperimentalEquipment
+	AncientRelicTG
+	ThargoidTissueSampleType5
+	ThargoidGeneratorTissueSample
+	UnocuppiedEscapePod
+	ThargoidTissueSampleType6
+	ThargoidTissueSampleType9a
+	ThargoidTissueSampleType9b
+	ThargoidTissueSampleType9c
+	ThargoidTissueSampleType10a
+	ThargoidTissueSampleType10b
+	ThargoidTissueSampleType10c
+	ThargoidTissueSampleType7
+	UnknownSack
+	ThargoidPod
+	CoralSap
+	UnknownMineral
+	UnknownRefinedMineral
+	ThargoidTitanDriveComponent
+	ThargoidCystSpecimen
+	ThargoidBoneFragments
+	ThargoidOrganSample
+	ThargoidHeart
+	KaineAidSupplies
+	KaineMisinformation
+	KaineLobbyingMaterial
+	LavignyStrategicReports
+	Steel
+
 /Properties/Guardian.es.resx
 	Alpha
 	Beta

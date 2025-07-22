@@ -1,0 +1,2715 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <!--Localizable elements are below-->
+  <data name="AdvancedCatalysers">
+    <!--Machine translated-->
+    <value>* ADVANCED CATALYSERS →→→!</value>
+    <comment>Commodity AdvancedCatalysers</comment>
+    <source>Advanced Catalysers</source>
+  </data>
+  <data name="AdvancedMedicines">
+    <!--Machine translated-->
+    <value>* ADVANCED MEDICINES →→→!</value>
+    <comment>Commodity AdvancedMedicines</comment>
+    <source>Advanced Medicines</source>
+  </data>
+  <data name="Advert1">
+    <!--Machine translated-->
+    <value>* ULTRA-COMPACT PROCESSOR PROTOTYPES →→→!</value>
+    <comment>Commodity Ultra-Compact Processor Prototypes</comment>
+    <source>Ultra-Compact Processor Prototypes</source>
+  </data>
+  <data name="AerialEdenApple">
+    <!--Machine translated-->
+    <value>* EDEN APPLES OF AERIAL →→→!</value>
+    <comment>Commodity AerialEdenApple </comment>
+    <source>Eden Apples Of Aerial</source>
+  </data>
+  <data name="AganippeRush">
+    <!--Machine translated-->
+    <value>* AGANIPPE RUSH →→→!</value>
+    <comment>Commodity AganippeRush</comment>
+    <source>Aganippe Rush</source>
+  </data>
+  <data name="AgriculturalMedicines">
+    <!--Machine translated-->
+    <value>* AGRI-MEDICINES →→→!</value>
+    <comment>Commodity AgriculturalMedicines</comment>
+    <source>Agri-Medicines</source>
+  </data>
+  <data name="agronomictreatment">
+    <!--Machine translated-->
+    <value>* AGRONOMIC TREATMENT →→→!</value>
+    <comment>Commodity agronomictreatment</comment>
+    <source>Agronomic Treatment</source>
+  </data>
+  <data name="AiRelics">
+    <!--Machine translated-->
+    <value>* AI RELICS →→→!</value>
+    <comment>Commodity AiRelics</comment>
+    <source>Ai Relics</source>
+  </data>
+  <data name="aislingmediamaterials">
+    <!--Machine translated-->
+    <value>* AISLING MEDIA MATERIALS →→→!</value>
+    <comment>Commodity aislingmediamaterials</comment>
+    <source>Aisling Media Materials</source>
+  </data>
+  <data name="AislingMediaResources">
+    <!--Machine translated-->
+    <value>* AISLING SEALED CONTRACTS →→→!</value>
+    <comment>Commodity AislingMediaResources</comment>
+    <source>Aisling Sealed Contracts</source>
+  </data>
+  <data name="aislingpromotionalmaterials">
+    <!--Machine translated-->
+    <value>* AISLING PROGRAMME MATERIALS →→→!</value>
+    <comment>Commodity aislingpromotionalmaterials</comment>
+    <source>Aisling Programme Materials</source>
+  </data>
+  <data name="AlacarakmoSkinArt">
+    <!--Machine translated-->
+    <value>* ALACARAKMO SKIN ART →→→!</value>
+    <comment>Commodity AlacarakmoSkinArt</comment>
+    <source>Alacarakmo Skin Art</source>
+  </data>
+  <data name="AlbinoQuechuaMammoth">
+    <!--Machine translated-->
+    <value>* ALBINO QUECHUA MAMMOTH →→→!</value>
+    <comment>Commodity AlbinoQuechuaMammoth</comment>
+    <source>Albino Quechua Mammoth</source>
+  </data>
+  <data name="Alexandrite">
+    <!--Machine translated-->
+    <value>* ALEXANDRITE →→→!</value>
+    <comment>Commodity Alexandrite</comment>
+    <source>Alexandrite</source>
+  </data>
+  <data name="Algae">
+    <!--Machine translated-->
+    <value>* ALGAE →→→!</value>
+    <comment>Commodity Algae</comment>
+    <source>Algae</source>
+  </data>
+  <data name="alieneggs">
+    <!--Machine translated-->
+    <value>* LEATHERY EGGS →→→!</value>
+    <comment>Commodity alieneggs</comment>
+    <source>Leathery Eggs</source>
+  </data>
+  <data name="AllianceLegaslativeContracts">
+    <!--Machine translated-->
+    <value>* ALLIANCE LEGISLATIVE CONTRACTS →→→!</value>
+    <comment>Commodity AllianceLegaslativeContracts</comment>
+    <source>Alliance Legislative Contracts</source>
+  </data>
+  <data name="alliancelegaslativerecords">
+    <!--Machine translated-->
+    <value>* ALLIANCE LEGISLATIVE RECORDS →→→!</value>
+    <comment>Commodity alliancelegaslativerecords</comment>
+    <source>Alliance Legislative Records</source>
+  </data>
+  <data name="AllianceTradeAgreements">
+    <!--Machine translated-->
+    <value>* ALLIANCE TRADE AGREEMENTS →→→!</value>
+    <comment>Commodity AllianceTradeAgreements</comment>
+    <source>Alliance Trade Agreements</source>
+  </data>
+  <data name="AltairianSkin">
+    <!--Machine translated-->
+    <value>* ALTAIRIAN SKIN →→→!</value>
+    <comment>Commodity AltairianSkin</comment>
+    <source>Altairian Skin</source>
+  </data>
+  <data name="Aluminium">
+    <!--Machine translated-->
+    <value>* ALUMINIUM →→→!</value>
+    <comment>Commodity Aluminium</comment>
+    <source>Aluminium</source>
+  </data>
+  <data name="AlyaBodilySoap">
+    <!--Machine translated-->
+    <value>* ALYA BODY SOAP →→→!</value>
+    <comment>Commodity AlyaBodySoap</comment>
+    <source>Alya Body Soap</source>
+  </data>
+  <data name="AncientCasket">
+    <!--Machine translated-->
+    <value>* ANCIENT CASKET →→→!</value>
+    <comment>Commodity AncientCasket</comment>
+    <source>Ancient Casket</source>
+  </data>
+  <data name="ancientkey">
+    <!--Machine translated-->
+    <value>* ANCIENT KEY →→→!</value>
+    <comment>Commodity Ancient Key</comment>
+    <source>Ancient Key</source>
+  </data>
+  <data name="AncientOrb">
+    <!--Machine translated-->
+    <value>* ANCIENT ORB →→→!</value>
+    <comment>Commodity AncientOrb</comment>
+    <source>Ancient Orb</source>
+  </data>
+  <data name="AncientRelic">
+    <!--Machine translated-->
+    <value>* ANCIENT RELIC →→→!</value>
+    <comment>Commodity AncientRelic</comment>
+    <source>Ancient Relic</source>
+  </data>
+  <data name="AncientRelicTG">
+    <!--Machine translated-->
+    <value>* UNCLASSIFIED RELIC →→→!</value>
+    <comment>Commodity AncientRelicTG</comment>
+    <source>Unclassified Relic</source>
+  </data>
+  <data name="AncientTablet">
+    <!--Machine translated-->
+    <value>* ANCIENT TABLET →→→!</value>
+    <comment>Commodity AncientTablet</comment>
+    <source>Ancient Tablet</source>
+  </data>
+  <data name="AncientTotem">
+    <!--Machine translated-->
+    <value>* ANCIENT TOTEM →→→!</value>
+    <comment>Commodity AncientTotem</comment>
+    <source>Ancient Totem</source>
+  </data>
+  <data name="AncientUrn">
+    <!--Machine translated-->
+    <value>* ANCIENT URN →→→!</value>
+    <comment>Commodity AncientUrn</comment>
+    <source>Ancient Urn</source>
+  </data>
+  <data name="AnduligaFireWorks">
+    <!--Machine translated-->
+    <value>* ANDULIGA FIRE WORKS →→→!</value>
+    <comment>Commodity AnduligaFireWorks</comment>
+    <source>Anduliga Fire Works</source>
+  </data>
+  <data name="AnimalEffigies">
+    <!--Machine translated-->
+    <value>* CROM SILVER FESH →→→!</value>
+    <comment>Commodity Crom Silver Fesh</comment>
+    <source>Crom Silver Fesh</source>
+  </data>
+  <data name="Animalmeat">
+    <!--Machine translated-->
+    <value>* ANIMAL MEAT →→→!</value>
+    <comment>Commodity Animalmeat</comment>
+    <source>Animal Meat</source>
+  </data>
+  <data name="AnimalMonitors">
+    <!--Machine translated-->
+    <value>* ANIMAL MONITORS →→→!</value>
+    <comment>Commodity AnimalMonitors</comment>
+    <source>Animal Monitors</source>
+  </data>
+  <data name="AntimatterContainmentUnit">
+    <!--Machine translated-->
+    <value>* ANTIMATTER CONTAINMENT UNIT →→→!</value>
+    <comment>Commodity AntimatterContainmentUnit</comment>
+    <source>Antimatter Containment Unit</source>
+  </data>
+  <data name="AntiqueJewellery">
+    <!--Machine translated-->
+    <value>* ANTIQUE JEWELRY →→→!</value>
+    <comment>Commodity AntiqueJewellery</comment>
+    <source>Antique Jewelry</source>
+  </data>
+  <data name="Antiquities">
+    <!--Machine translated-->
+    <value>* ANTIQUITIES →→→!</value>
+    <comment>Commodity Antiquities</comment>
+    <source>Antiquities</source>
+  </data>
+  <data name="AnyNaCoffee">
+    <!--Machine translated-->
+    <value>* ANY NA COFFEE →→→!</value>
+    <comment>Commodity AnyNaCoffee</comment>
+    <source>Any Na Coffee</source>
+  </data>
+  <data name="AquaponicSystems">
+    <!--Machine translated-->
+    <value>* AQUAPONIC SYSTEMS →→→!</value>
+    <comment>Commodity AquaponicSystems</comment>
+    <source>Aquaponic Systems</source>
+  </data>
+  <data name="AroucaConventualSweets">
+    <!--Machine translated-->
+    <value>* AROUCA CONVENTUAL SWEETS →→→!</value>
+    <comment>Commodity AroucaConventualSweets</comment>
+    <source>Arouca Conventual Sweets</source>
+  </data>
+  <data name="ArticulationMotors">
+    <!--Machine translated-->
+    <value>* ARTICULATION MOTORS →→→!</value>
+    <comment>Commodity ArticulationMotors</comment>
+    <source>Articulation Motors</source>
+  </data>
+  <data name="AssaultPlans">
+    <!--Machine translated-->
+    <value>* ASSAULT PLANS →→→!</value>
+    <comment>Commodity AssaultPlans</comment>
+    <source>Assault Plans</source>
+  </data>
+  <data name="AtmosphericExtractors">
+    <!--Machine translated-->
+    <value>* ATMOSPHERIC PROCESSORS →→→!</value>
+    <comment>Commodity AtmosphericExtractors</comment>
+    <source>Atmospheric Processors</source>
+  </data>
+  <data name="AutoFabricators">
+    <!--Machine translated-->
+    <value>* AUTO-FABRICATORS →→→!</value>
+    <comment>Commodity AutoFabricators</comment>
+    <source>Auto-Fabricators</source>
+  </data>
+  <data name="AzCancriFormula42">
+    <!--Machine translated-->
+    <value>* AZ CANCRI FORMULA 42 →→→!</value>
+    <comment>Commodity AzCancriFormula42</comment>
+    <source>AZ Cancri Formula 42</source>
+  </data>
+  <data name="BakedGreebles">
+    <!--Machine translated-->
+    <value>* BAKED GREEBLES →→→!</value>
+    <comment>Commodity BakedGreebles</comment>
+    <source>Baked Greebles</source>
+  </data>
+  <data name="BaltahSineVacuumKrill">
+    <!--Machine translated-->
+    <value>* BALTAH SINE VACUUM KRILL →→→!</value>
+    <comment>Commodity BaltahSineVacuumKrill</comment>
+    <source>Baltah Sine Vacuum Krill</source>
+  </data>
+  <data name="BankiAmphibiousLeather">
+    <!--Machine translated-->
+    <value>* BANKI AMPHIBIOUS LEATHER →→→!</value>
+    <comment>Commodity BankiAmphibiousLeather</comment>
+    <source>Banki Amphibious Leather</source>
+  </data>
+  <data name="BasicMedicines">
+    <!--Machine translated-->
+    <value>* BASIC MEDICINES →→→!</value>
+    <comment>Commodity BasicMedicines</comment>
+    <source>Basic Medicines</source>
+  </data>
+  <data name="BasicNarcotics">
+    <!--Machine translated-->
+    <value>* NARCOTICS →→→!</value>
+    <comment>Commodity BasicNarcotics</comment>
+    <source>Narcotics</source>
+  </data>
+  <data name="BastSnakeGin">
+    <!--Machine translated-->
+    <value>* BAST SNAKE GIN →→→!</value>
+    <comment>Commodity BastSnakeGin</comment>
+    <source>Bast Snake Gin</source>
+  </data>
+  <data name="BattleWeapons">
+    <!--Machine translated-->
+    <value>* BATTLE WEAPONS →→→!</value>
+    <comment>Commodity BattleWeapons</comment>
+    <source>Battle Weapons</source>
+  </data>
+  <data name="Bauxite">
+    <!--Machine translated-->
+    <value>* BAUXITE →→→!</value>
+    <comment>Commodity Bauxite</comment>
+    <source>Bauxite</source>
+  </data>
+  <data name="Beer">
+    <!--Machine translated-->
+    <value>* BEER →→→!</value>
+    <comment>Commodity Beer</comment>
+    <source>Beer</source>
+  </data>
+  <data name="BelalansRayLeather">
+    <!--Machine translated-->
+    <value>* BELALANS RAY LEATHER →→→!</value>
+    <comment>Commodity BelalansRayLeather</comment>
+    <source>Belalans Ray Leather</source>
+  </data>
+  <data name="Benitoite">
+    <!--Machine translated-->
+    <value>* BENITOITE →→→!</value>
+    <comment>Commodity Benitoite</comment>
+    <source>Benitoite</source>
+  </data>
+  <data name="Bertrandite">
+    <!--Machine translated-->
+    <value>* BERTRANDITE →→→!</value>
+    <comment>Commodity Bertrandite</comment>
+    <source>Bertrandite</source>
+  </data>
+  <data name="Beryllium">
+    <!--Machine translated-->
+    <value>* BERYLLIUM →→→!</value>
+    <comment>Commodity Beryllium</comment>
+    <source>Beryllium</source>
+  </data>
+  <data name="BioReducingLichen">
+    <!--Machine translated-->
+    <value>* BIOREDUCING LICHEN →→→!</value>
+    <comment>Commodity BioReducingLichen</comment>
+    <source>Bioreducing Lichen</source>
+  </data>
+  <data name="Biowaste">
+    <!--Machine translated-->
+    <value>* BIO-WASTE →→→!</value>
+    <comment>Commodity Biowaste</comment>
+    <source>Bio-waste</source>
+  </data>
+  <data name="Bismuth">
+    <!--Machine translated-->
+    <value>* BISMUTH →→→!</value>
+    <comment>Commodity Bismuth</comment>
+    <source>Bismuth</source>
+  </data>
+  <data name="BlueMilk">
+    <!--Machine translated-->
+    <value>* AZURE MILK →→→!</value>
+    <comment>Commodity BlueMilk</comment>
+    <source>Azure Milk</source>
+  </data>
+  <data name="BootlegLiquor">
+    <!--Machine translated-->
+    <value>* BOOTLEG LIQUOR →→→!</value>
+    <comment>Commodity BootlegLiquor</comment>
+    <source>Bootleg Liquor</source>
+  </data>
+  <data name="BorasetaniPathogenetics">
+    <!--Machine translated-->
+    <value>* BORASETANI PATHOGENETICS →→→!</value>
+    <comment>Commodity BorasetaniPathogenetics</comment>
+    <source>Borasetani Pathogenetics</source>
+  </data>
+  <data name="Bromellite">
+    <!--Machine translated-->
+    <value>* BROMELLITE →→→!</value>
+    <comment>Commodity Bromellite</comment>
+    <source>Bromellite</source>
+  </data>
+  <data name="BuckyballBeerMats">
+    <!--Machine translated-->
+    <value>* BUCKYBALL BEER MATS →→→!</value>
+    <comment>Commodity BuckyballBeerMats</comment>
+    <source>Buckyball Beer Mats</source>
+  </data>
+  <data name="BuildingFabricators">
+    <!--Machine translated-->
+    <value>* BUILDING FABRICATORS →→→!</value>
+    <comment>Commodity BuildingFabricators</comment>
+    <source>Building Fabricators</source>
+  </data>
+  <data name="BurnhamBileDistillate">
+    <!--Machine translated-->
+    <value>* BURNHAM BILE DISTILLATE →→→!</value>
+    <comment>Commodity BurnhamBileDistillate</comment>
+    <source>Burnham Bile Distillate</source>
+  </data>
+  <data name="CD_75KittenBrandCoffee">
+    <!--Machine translated-->
+    <value>* CD-75 KITTEN BRAND COFFEE →→→!</value>
+    <comment>(Deprecated) Commodity CD_75KittenBrandCoffee</comment>
+    <source>CD-75 Kitten Brand Coffee</source>
+  </data>
+  <data name="CD75CatCoffee">
+    <!--Machine translated-->
+    <value>* CD-75 KITTEN BRAND COFFEE →→→!</value>
+    <comment>Commodity CD75CatCoffee </comment>
+    <source>CD-75 Kitten Brand Coffee</source>
+  </data>
+  <data name="CentauriMegaGin">
+    <!--Machine translated-->
+    <value>* CENTAURI MEGA GIN →→→!</value>
+    <comment>Commodity CentauriMegaGin</comment>
+    <source>Centauri Mega Gin</source>
+  </data>
+  <data name="CeramicComposites">
+    <!--Machine translated-->
+    <value>* CERAMIC COMPOSITES →→→!</value>
+    <comment>Commodity CeramicComposites</comment>
+    <source>Ceramic Composites</source>
+  </data>
+  <data name="CeremonialHeikeTea">
+    <!--Machine translated-->
+    <value>* CEREMONIAL HEIKE TEA →→→!</value>
+    <comment>Commodity CeremonialHeikeTea</comment>
+    <source>Ceremonial Heike Tea</source>
+  </data>
+  <data name="CetiAepyornisEgg">
+    <!--Machine translated-->
+    <value>* AEPYORNIS EGG →→→!</value>
+    <comment>Commodity CetiAepyornisEgg</comment>
+    <source>Aepyornis Egg</source>
+  </data>
+  <data name="CetiRabbits">
+    <!--Machine translated-->
+    <value>* CETI RABBITS →→→!</value>
+    <comment>Commodity CetiRabbits</comment>
+    <source>Ceti Rabbits</source>
+  </data>
+  <data name="ChameleonCloth">
+    <!--Machine translated-->
+    <value>* CHAMELEON CLOTH →→→!</value>
+    <comment>Commodity ChameleonCloth</comment>
+    <source>Chameleon Cloth</source>
+  </data>
+  <data name="ChateauDeAegaeon">
+    <!--Machine translated-->
+    <value>* CHATEAU DE AEGAEON →→→!</value>
+    <comment>Commodity ChateauDeAegaeon</comment>
+    <source>Chateau De Aegaeon</source>
+  </data>
+  <data name="ChemicalWaste">
+    <!--Machine translated-->
+    <value>* CHEMICAL WASTE →→→!</value>
+    <comment>Commodity ChemicalWaste</comment>
+    <source>Chemical Waste</source>
+  </data>
+  <data name="CherbonesBloodCrystals">
+    <!--Machine translated-->
+    <value>* CHERBONES BLOOD CRYSTALS →→→!</value>
+    <comment>Commodity CherbonesBloodCrystals</comment>
+    <source>Cherbones Blood Crystals</source>
+  </data>
+  <data name="ChiEridaniMarinePaste">
+    <!--Machine translated-->
+    <value>* CHI ERIDANI MARINE PASTE →→→!</value>
+    <comment>Commodity ChiEridaniMarinePaste</comment>
+    <source>Chi Eridani Marine Paste</source>
+  </data>
+  <data name="ClassifiedExperimentalEquipment">
+    <!--Machine translated-->
+    <value>* CLASSIFIED EXPERIMENTAL EQUIPMENT →→→!</value>
+    <comment>Commodity ClassifiedExperimentalEquipment</comment>
+    <source>Classified Experimental Equipment</source>
+  </data>
+  <data name="Clothing">
+    <!--Machine translated-->
+    <value>* CLOTHING →→→!</value>
+    <comment>Commodity Clothing</comment>
+    <source>Clothing</source>
+  </data>
+  <data name="CMMComposite">
+    <!--Machine translated-->
+    <value>* CMM COMPOSITE →→→!</value>
+    <comment>Commodity CMMComposite</comment>
+    <source>CMM Composite</source>
+  </data>
+  <data name="Cobalt">
+    <!--Machine translated-->
+    <value>* COBALT →→→!</value>
+    <comment>Commodity Cobalt</comment>
+    <source>Cobalt</source>
+  </data>
+  <data name="Coffee">
+    <!--Machine translated-->
+    <value>* COFFEE →→→!</value>
+    <comment>Commodity Coffee</comment>
+    <source>Coffee</source>
+  </data>
+  <data name="Coltan">
+    <!--Machine translated-->
+    <value>* COLTAN →→→!</value>
+    <comment>Commodity Coltan</comment>
+    <source>Coltan</source>
+  </data>
+  <data name="CombatStabilisers">
+    <!--Machine translated-->
+    <value>* COMBAT STABILISERS →→→!</value>
+    <comment>Commodity CombatStabilisers</comment>
+    <source>Combat Stabilisers</source>
+  </data>
+  <data name="ComercialSamples">
+    <!--Machine translated-->
+    <value>* COMMERCIAL SAMPLES →→→!</value>
+    <comment>Commodity ComercialSamples</comment>
+    <source>Commercial Samples</source>
+  </data>
+  <data name="ComputerComponents">
+    <!--Machine translated-->
+    <value>* COMPUTER COMPONENTS →→→!</value>
+    <comment>Commodity ComputerComponents</comment>
+    <source>Computer Components</source>
+  </data>
+  <data name="ConductiveFabrics">
+    <!--Machine translated-->
+    <value>* CONDUCTIVE FABRICS →→→!</value>
+    <comment>Commodity ConductiveFabrics</comment>
+    <source>Conductive Fabrics</source>
+  </data>
+  <data name="ConsumerTechnology">
+    <!--Machine translated-->
+    <value>* CONSUMER TECHNOLOGY →→→!</value>
+    <comment>Commodity ConsumerTechnology</comment>
+    <source>Consumer Technology</source>
+  </data>
+  <data name="CoolingHoses">
+    <!--Machine translated-->
+    <value>* MICRO-WEAVE COOLING HOSES →→→!</value>
+    <comment>Commodity CoolingHoses</comment>
+    <source>Micro-weave Cooling Hoses</source>
+  </data>
+  <data name="Copper">
+    <!--Machine translated-->
+    <value>* COPPER →→→!</value>
+    <comment>Commodity Copper</comment>
+    <source>Copper</source>
+  </data>
+  <data name="CoquimSpongiformVictuals">
+    <!--Machine translated-->
+    <value>* COQUIM SPONGIFORM VICTUALS →→→!</value>
+    <comment>Commodity CoquimSpongiformVictuals</comment>
+    <source>Coquim Spongiform Victuals</source>
+  </data>
+  <data name="CoralSap">
+    <!--Machine translated-->
+    <value>* CORAL SAP →→→!</value>
+    <comment>Commodity CoralSap</comment>
+    <source>Coral Sap</source>
+  </data>
+  <data name="CounterCultureSupport">
+    <!--Machine translated-->
+    <value>* REVOLUTIONARY SUPPLIES →→→!</value>
+    <comment>Commodity CounterCultureSupport</comment>
+    <source>Revolutionary supplies</source>
+  </data>
+  <data name="CropHarvesters">
+    <!--Machine translated-->
+    <value>* CROP HARVESTERS →→→!</value>
+    <comment>Commodity CropHarvesters</comment>
+    <source>Crop Harvesters</source>
+  </data>
+  <data name="Cryolite">
+    <!--Machine translated-->
+    <value>* CRYOLITE →→→!</value>
+    <comment>Commodity Cryolite</comment>
+    <source>Cryolite</source>
+  </data>
+  <data name="CrystallineSpheres">
+    <!--Machine translated-->
+    <value>* CRYSTALLINE SPHERES →→→!</value>
+    <comment>Commodity CrystallineSpheres</comment>
+    <source>Crystalline Spheres</source>
+  </data>
+  <data name="DamagedEscapePod">
+    <!--Machine translated-->
+    <value>* DAMAGED ESCAPE POD →→→!</value>
+    <comment>Commodity DamagedEscapePod</comment>
+    <source>Damaged Escape Pod</source>
+  </data>
+  <data name="DamnaCarapaces">
+    <!--Machine translated-->
+    <value>* DAMNA CARAPACES →→→!</value>
+    <comment>Commodity DamnaCarapaces</comment>
+    <source>Damna Carapaces</source>
+  </data>
+  <data name="DataCore">
+    <!--Machine translated-->
+    <value>* DATA CORE →→→!</value>
+    <comment>Commodity DataCore</comment>
+    <source>Data Core</source>
+  </data>
+  <data name="DeltaPhoenicisPalms">
+    <!--Machine translated-->
+    <value>* DELTA PHOENICIS PALMS →→→!</value>
+    <comment>Commodity DeltaPhoenicisPalms</comment>
+    <source>Delta Phoenicis Palms</source>
+  </data>
+  <data name="DeuringasTruffles">
+    <!--Machine translated-->
+    <value>* DEURINGAS TRUFFLES →→→!</value>
+    <comment>Commodity DeuringasTruffles</comment>
+    <source>Deuringas Truffles</source>
+  </data>
+  <data name="DiagnosticSensor">
+    <!--Machine translated-->
+    <value>* HARDWARE DIAGNOSTIC SENSOR →→→!</value>
+    <comment>Commodity DiagnosticSensor</comment>
+    <source>Hardware Diagnostic Sensor</source>
+  </data>
+  <data name="DiplomaticBag">
+    <!--Machine translated-->
+    <value>* DIPLOMATIC BAG →→→!</value>
+    <comment>Commodity DiplomaticBag</comment>
+    <source>Diplomatic Bag</source>
+  </data>
+  <data name="DisoMaCorn">
+    <!--Machine translated-->
+    <value>* DISO MA CORN →→→!</value>
+    <comment>Commodity DisoMaCorn</comment>
+    <source>Diso Ma Corn</source>
+  </data>
+  <data name="DomesticAppliances">
+    <!--Machine translated-->
+    <value>* DOMESTIC APPLIANCES →→→!</value>
+    <comment>Commodity DomesticAppliances</comment>
+    <source>Domestic Appliances</source>
+  </data>
+  <data name="Drones">
+    <!--Machine translated-->
+    <value>* LIMPET →→→!</value>
+    <comment>Commodity Drones</comment>
+    <source>Limpet</source>
+  </data>
+  <data name="EarthRelics">
+    <!--Machine translated-->
+    <value>* EARTH RELICS →→→!</value>
+    <comment>Commodity EarthRelics</comment>
+    <source>Earth Relics</source>
+  </data>
+  <data name="EdenApplesOfAerial">
+    <!--Machine translated-->
+    <value>* EDEN APPLES OF AERIAL →→→!</value>
+    <comment>(Deprecated) Commodity EdenApplesOfAerial</comment>
+    <source>Eden Apples Of Aerial</source>
+  </data>
+  <data name="EleuThermals">
+    <!--Machine translated-->
+    <value>* ELEU THERMALS →→→!</value>
+    <comment>Commodity EleuThermals</comment>
+    <source>Eleu Thermals</source>
+  </data>
+  <data name="EmergencyPowerCells">
+    <!--Machine translated-->
+    <value>* EMERGENCY POWER CELLS →→→!</value>
+    <comment>Commodity EmergencyPowerCells</comment>
+    <source>Emergency Power Cells</source>
+  </data>
+  <data name="EncriptedDataStorage">
+    <!--Machine translated-->
+    <value>* ENCRYPTED DATA STORAGE →→→!</value>
+    <comment>Commodity EncriptedDataStorage</comment>
+    <source>Encrypted Data Storage</source>
+  </data>
+  <data name="EncryptedCorrespondence">
+    <!--Machine translated-->
+    <value>* ENCRYPTED CORRESPONDENCE →→→!</value>
+    <comment>Commodity EncryptedCorrespondence</comment>
+    <source>Encrypted Correspondence</source>
+  </data>
+  <data name="EraninPearlWhisky">
+    <!--Machine translated-->
+    <value>* ERANIN PEARL WHISKY →→→!</value>
+    <comment>Commodity EraninPearlWhisky</comment>
+    <source>Eranin Pearl Whisky</source>
+  </data>
+  <data name="EshuUmbrellas">
+    <!--Machine translated-->
+    <value>* ESHU UMBRELLAS →→→!</value>
+    <comment>Commodity EshuUmbrellas</comment>
+    <source>Eshu Umbrellas</source>
+  </data>
+  <data name="EsusekuCaviar">
+    <!--Machine translated-->
+    <value>* ESUSEKU CAVIAR →→→!</value>
+    <comment>Commodity EsusekuCaviar</comment>
+    <source>Esuseku Caviar</source>
+  </data>
+  <data name="EthgrezeTeaBuds">
+    <!--Machine translated-->
+    <value>* ETHGREZE TEA BUDS →→→!</value>
+    <comment>Commodity EthgrezeTeaBuds</comment>
+    <source>Ethgreze Tea Buds</source>
+  </data>
+  <data name="EvacuationShelter">
+    <!--Machine translated-->
+    <value>* EVACUATION SHELTER →→→!</value>
+    <comment>Commodity EvacuationShelter</comment>
+    <source>Evacuation Shelter</source>
+  </data>
+  <data name="ExhaustManifold">
+    <!--Machine translated-->
+    <value>* EXHAUST MANIFOLD →→→!</value>
+    <comment>Commodity ExhaustManifold</comment>
+    <source>Exhaust Manifold</source>
+  </data>
+  <data name="Explosives">
+    <!--Machine translated-->
+    <value>* EXPLOSIVES →→→!</value>
+    <comment>Commodity Explosives</comment>
+    <source>Explosives</source>
+  </data>
+  <data name="FederalAid">
+    <!--Machine translated-->
+    <value>* LIBERAL FEDERAL AID →→→!</value>
+    <comment>Commodity FederalAid</comment>
+    <source>Liberal Federal Aid</source>
+  </data>
+  <data name="FederalTradeContracts">
+    <!--Machine translated-->
+    <value>* LIBERAL FEDERAL PACKAGES →→→!</value>
+    <comment>Commodity FederalTradeContracts</comment>
+    <source>Liberal Federal Packages</source>
+  </data>
+  <data name="Fish">
+    <!--Machine translated-->
+    <value>* FISH →→→!</value>
+    <comment>Commodity Fish</comment>
+    <source>Fish</source>
+  </data>
+  <data name="FoodCartridges">
+    <!--Machine translated-->
+    <value>* FOOD CARTRIDGES →→→!</value>
+    <comment>Commodity FoodCartridges</comment>
+    <source>Food Cartridges</source>
+  </data>
+  <data name="FossilRemnants">
+    <!--Machine translated-->
+    <value>* FOSSIL REMNANTS →→→!</value>
+    <comment>Commodity FossilRemnants</comment>
+    <source>Fossil Remnants</source>
+  </data>
+  <data name="FruitAndVegetables">
+    <!--Machine translated-->
+    <value>* FRUIT AND VEGETABLES →→→!</value>
+    <comment>Commodity FruitAndVegetables</comment>
+    <source>Fruit and Vegetables</source>
+  </data>
+  <data name="FujinTea">
+    <!--Machine translated-->
+    <value>* FUJIN TEA →→→!</value>
+    <comment>Commodity FujinTea</comment>
+    <source>Fujin Tea</source>
+  </data>
+  <data name="GalacticTravelGuide">
+    <!--Machine translated-->
+    <value>* GALACTIC TRAVEL GUIDE →→→!</value>
+    <comment>Commodity GalacticTravelGuide</comment>
+    <source>Galactic Travel Guide</source>
+  </data>
+  <data name="Gallite">
+    <!--Machine translated-->
+    <value>* GALLITE →→→!</value>
+    <comment>Commodity Gallite</comment>
+    <source>Gallite</source>
+  </data>
+  <data name="Gallium">
+    <!--Machine translated-->
+    <value>* GALLIUM →→→!</value>
+    <comment>Commodity Gallium</comment>
+    <source>Gallium</source>
+  </data>
+  <data name="GeawenDanceDust">
+    <!--Machine translated-->
+    <value>* GEAWEN DANCE DUST →→→!</value>
+    <comment>Commodity GeawenDanceDust</comment>
+    <source>Geawen Dance Dust</source>
+  </data>
+  <data name="GeneBank">
+    <!--Machine translated-->
+    <value>* GENE BANK →→→!</value>
+    <comment>Commodity GeneBank</comment>
+    <source>Gene Bank</source>
+  </data>
+  <data name="GeologicalEquipment">
+    <!--Machine translated-->
+    <value>* GEOLOGICAL EQUIPMENT →→→!</value>
+    <comment>Commodity GeologicalEquipment</comment>
+    <source>Geological Equipment</source>
+  </data>
+  <data name="GeologicalSamples">
+    <!--Machine translated-->
+    <value>* GEOLOGICAL SAMPLES →→→!</value>
+    <comment>Commodity GeologicalSamples</comment>
+    <source>Geological Samples</source>
+  </data>
+  <data name="GerasianGueuzeBeer">
+    <!--Machine translated-->
+    <value>* GERASIAN GUEUZE BEER →→→!</value>
+    <comment>Commodity GerasianGueuzeBeer</comment>
+    <source>Gerasian Gueuze Beer</source>
+  </data>
+  <data name="GiantIrukamaSnails">
+    <!--Machine translated-->
+    <value>* GIANT IRUKAMA SNAILS →→→!</value>
+    <comment>Commodity GiantIrukamaSnails</comment>
+    <source>Giant Irukama Snails</source>
+  </data>
+  <data name="GiantVerrix">
+    <!--Machine translated-->
+    <value>* GIANT VERRIX →→→!</value>
+    <comment>Commodity GiantVerrix</comment>
+    <source>Giant Verrix</source>
+  </data>
+  <data name="GilyaSignatureWeapons">
+    <!--Machine translated-->
+    <value>* GILYA SIGNATURE WEAPONS →→→!</value>
+    <comment>Commodity GilyaSignatureWeapons</comment>
+    <source>Gilya Signature Weapons</source>
+  </data>
+  <data name="Gold">
+    <!--Machine translated-->
+    <value>* GOLD →→→!</value>
+    <comment>Commodity Gold</comment>
+    <source>Gold</source>
+  </data>
+  <data name="GomanYauponCoffee">
+    <!--Machine translated-->
+    <value>* GOMAN YAUPON COFFEE →→→!</value>
+    <comment>Commodity GomanYauponCoffee</comment>
+    <source>Goman Yaupon Coffee</source>
+  </data>
+  <data name="Goslarite">
+    <!--Machine translated-->
+    <value>* GOSLARITE →→→!</value>
+    <comment>Commodity Goslarite</comment>
+    <source>Goslarite</source>
+  </data>
+  <data name="Grain">
+    <!--Machine translated-->
+    <value>* GRAIN →→→!</value>
+    <comment>Commodity Grain</comment>
+    <source>Grain</source>
+  </data>
+  <data name="Grandidierite">
+    <!--Machine translated-->
+    <value>* GRANDIDIERITE →→→!</value>
+    <comment>Commodity Grandidierite</comment>
+    <source>Grandidierite</source>
+  </data>
+  <data name="GromCounterIntelligence">
+    <!--Machine translated-->
+    <value>* GROM COUNTER INTELLIGENCE →→→!</value>
+    <comment>Commodity GromCounterIntelligence</comment>
+    <source>Grom Counter Intelligence</source>
+  </data>
+  <data name="GromWarTrophies">
+    <!--Machine translated-->
+    <value>* YURI GROM'S MILITARY SUPPLIES →→→!</value>
+    <comment>Commodity GromWarTrophies</comment>
+    <source>Yuri Grom's Military Supplies</source>
+  </data>
+  <data name="Hafnium178">
+    <!--Machine translated-->
+    <value>* HAFNIUM 178 →→→!</value>
+    <comment>Commodity Hafnium178</comment>
+    <source>Hafnium 178</source>
+  </data>
+  <data name="HaidneBlackBrew">
+    <!--Machine translated-->
+    <value>* HAIDNE BLACK BREW →→→!</value>
+    <comment>Commodity HaidneBlackBrew</comment>
+    <source>Haidne Black Brew</source>
+  </data>
+  <data name="HarmaSilverSeaRum">
+    <!--Machine translated-->
+    <value>* HARMA SILVER SEA RUM →→→!</value>
+    <comment>Commodity HarmaSilverSeaRum</comment>
+    <source>Harma Silver Sea Rum</source>
+  </data>
+  <data name="HavasupaiDreamCatcher">
+    <!--Machine translated-->
+    <value>* HAVASUPAI DREAM CATCHER →→→!</value>
+    <comment>Commodity HavasupaiDreamCatcher</comment>
+    <source>Havasupai Dream Catcher</source>
+  </data>
+  <data name="HazardousEnvironmentSuits">
+    <!--Machine translated-->
+    <value>* H.E. SUITS →→→!</value>
+    <comment>Commodity HazardousEnvironmentSuits</comment>
+    <source>H.E. Suits</source>
+  </data>
+  <data name="HeatsinkInterlink">
+    <!--Machine translated-->
+    <value>* HEATSINK INTERLINK →→→!</value>
+    <comment>Commodity HeatsinkInterlink</comment>
+    <source>Heatsink Interlink</source>
+  </data>
+  <data name="HeliostaticFurnaces">
+    <!--Machine translated-->
+    <value>* MICROBIAL FURNACES →→→!</value>
+    <comment>Commodity HeliostaticFurnaces</comment>
+    <source>Microbial Furnaces</source>
+  </data>
+  <data name="HelvetitjPearls">
+    <!--Machine translated-->
+    <value>* HELVETITJ PEARLS →→→!</value>
+    <comment>Commodity HelvetitjPearls</comment>
+    <source>Helvetitj Pearls</source>
+  </data>
+  <data name="HIP10175BushMeat">
+    <!--Machine translated-->
+    <value>* HIP 10175 BUSH MEAT →→→!</value>
+    <comment>Commodity HIP10175BushMeat</comment>
+    <source>HIP 10175 Bush Meat</source>
+  </data>
+  <data name="HIP118311Swarm">
+    <!--Machine translated-->
+    <value>* HIP 118311 SWARM →→→!</value>
+    <comment>Commodity HIP118311Swarm</comment>
+    <source>HIP 118311 Swarm</source>
+  </data>
+  <data name="HIP41181Squid">
+    <!--Machine translated-->
+    <value>* HIP PROTO-SQUID →→→!</value>
+    <comment>Commodity HIPProto_Squid</comment>
+    <source>HIP Proto-Squid</source>
+  </data>
+  <data name="HIPOrganophosphates">
+    <!--Machine translated-->
+    <value>* HIP ORGANOPHOSPHATES →→→!</value>
+    <comment>Commodity HIPOrganophosphates</comment>
+    <source>HIP Organophosphates</source>
+  </data>
+  <data name="HNShockMount">
+    <!--Machine translated-->
+    <value>* HN SHOCK MOUNT →→→!</value>
+    <comment>Commodity HNShockMount</comment>
+    <source>HN Shock Mount</source>
+  </data>
+  <data name="HolvaDuellingBlades">
+    <!--Machine translated-->
+    <value>* HOLVA DUELLING BLADES →→→!</value>
+    <comment>Commodity HolvaDuellingBlades</comment>
+    <source>Holva Duelling Blades</source>
+  </data>
+  <data name="HonestyPills">
+    <!--Machine translated-->
+    <value>* HONESTY PILLS →→→!</value>
+    <comment>Commodity HonestyPills</comment>
+    <source>Honesty Pills</source>
+  </data>
+  <data name="Hostage">
+    <!--Machine translated-->
+    <value>* HOSTAGE →→→!</value>
+    <comment>Commodity Hostage</comment>
+    <source>Hostage</source>
+  </data>
+  <data name="HR7221Wheat">
+    <!--Machine translated-->
+    <value>* HR 7221 WHEAT →→→!</value>
+    <comment>Commodity HR7221Wheat</comment>
+    <source>HR 7221 Wheat</source>
+  </data>
+  <data name="HydrogenFuel">
+    <!--Machine translated-->
+    <value>* HYDROGEN FUEL →→→!</value>
+    <comment>Commodity HydrogenFuel</comment>
+    <source>Hydrogen Fuel</source>
+  </data>
+  <data name="HydrogenPeroxide">
+    <!--Machine translated-->
+    <value>* HYDROGEN PEROXIDE →→→!</value>
+    <comment>Commodity HydrogenPeroxide</comment>
+    <source>Hydrogen Peroxide</source>
+  </data>
+  <data name="IllicitConsignment">
+    <!--Machine translated-->
+    <value>* KUMO CONTRABAND PACKAGE →→→!</value>
+    <comment>Commodity IllicitConsignment</comment>
+    <source>Kumo Contraband Package</source>
+  </data>
+  <data name="imperialprisoner">
+    <!--Machine translated-->
+    <value>* IMPERIAL PRISONER →→→!</value>
+    <comment>Commodity imperialprisoner</comment>
+    <source>Imperial Prisoner</source>
+  </data>
+  <data name="ImperialSlaves">
+    <!--Machine translated-->
+    <value>* IMPERIAL SLAVES →→→!</value>
+    <comment>Commodity ImperialSlaves</comment>
+    <source>Imperial Slaves</source>
+  </data>
+  <data name="IndiBourbon">
+    <!--Machine translated-->
+    <value>* INDI BOURBON →→→!</value>
+    <comment>Commodity IndiBourbon</comment>
+    <source>Indi Bourbon</source>
+  </data>
+  <data name="Indite">
+    <!--Machine translated-->
+    <value>* INDITE →→→!</value>
+    <comment>Commodity Indite</comment>
+    <source>Indite</source>
+  </data>
+  <data name="Indium">
+    <!--Machine translated-->
+    <value>* INDIUM →→→!</value>
+    <comment>Commodity Indium</comment>
+    <source>Indium</source>
+  </data>
+  <data name="InsulatingMembrane">
+    <!--Machine translated-->
+    <value>* INSULATING MEMBRANE →→→!</value>
+    <comment>Commodity InsulatingMembrane</comment>
+    <source>Insulating Membrane</source>
+  </data>
+  <data name="IonDistributor">
+    <!--Machine translated-->
+    <value>* ION DISTRIBUTOR →→→!</value>
+    <comment>Commodity IonDistributor</comment>
+    <source>Ion Distributor</source>
+  </data>
+  <data name="Jadeite">
+    <!--Machine translated-->
+    <value>* JADEITE →→→!</value>
+    <comment>Commodity Jadeite</comment>
+    <source>Jadeite</source>
+  </data>
+  <data name="JaquesQuinentianStill">
+    <!--Machine translated-->
+    <value>* JAQUES QUINENTIAN STILL →→→!</value>
+    <comment>Commodity JaquesQuinentianStill</comment>
+    <source>Jaques Quinentian Still</source>
+  </data>
+  <data name="JaradharrePuzzleBox">
+    <!--Machine translated-->
+    <value>* JARADHARRE PUZZLE BOX →→→!</value>
+    <comment>Commodity JaradharrePuzzleBox</comment>
+    <source>Jaradharre Puzzle Box</source>
+  </data>
+  <data name="JarouaRice">
+    <!--Machine translated-->
+    <value>* JAROUA RICE →→→!</value>
+    <comment>Commodity JarouaRice</comment>
+    <source>Jaroua Rice</source>
+  </data>
+  <data name="JotunMookah">
+    <!--Machine translated-->
+    <value>* JOTUN MOOKAH →→→!</value>
+    <comment>Commodity JotunMookah</comment>
+    <source>Jotun Mookah</source>
+  </data>
+  <data name="KachiriginLeaches">
+    <!--Machine translated-->
+    <value>* KACHIRIGIN FILTER LEECHES →→→!</value>
+    <comment>Commodity KachiriginLeaches</comment>
+    <source>Kachirigin Filter Leeches</source>
+  </data>
+  <data name="KaineAidSupplies">
+    <!--Machine translated-->
+    <value>* KAINE AID SUPPLIES →→→!</value>
+    <comment>Powerplay</comment>
+    <source>Kaine Aid Supplies</source>
+  </data>
+  <data name="KaineLobbyingMaterial">
+    <!--Machine translated-->
+    <value>* KAINE LOBBYING MATERIAL →→→!</value>
+    <comment>Powerplay</comment>
+    <source>Kaine Lobbying Material</source>
+  </data>
+  <data name="KaineMisinformation">
+    <!--Machine translated-->
+    <value>* KAINE MISINFORMATION →→→!</value>
+    <comment>Powerplay</comment>
+    <source>Kaine Misinformation</source>
+  </data>
+  <data name="KamitraCigars">
+    <!--Machine translated-->
+    <value>* KAMITRA CIGARS →→→!</value>
+    <comment>Commodity KamitraCigars</comment>
+    <source>Kamitra Cigars</source>
+  </data>
+  <data name="KamorinHistoricWeapons">
+    <!--Machine translated-->
+    <value>* KAMORIN HISTORIC WEAPONS →→→!</value>
+    <comment>Commodity KamorinHistoricWeapons</comment>
+    <source>Kamorin Historic Weapons</source>
+  </data>
+  <data name="KaretiiCouture">
+    <!--Machine translated-->
+    <value>* KARETII COUTURE →→→!</value>
+    <comment>Commodity KaretiiCouture</comment>
+    <source>Karetii Couture</source>
+  </data>
+  <data name="KarsukiLocusts">
+    <!--Machine translated-->
+    <value>* KARSUKI LOCUSTS →→→!</value>
+    <comment>Commodity KarsukiLocusts</comment>
+    <source>Karsuki Locusts</source>
+  </data>
+  <data name="KinagoInstruments">
+    <!--Machine translated-->
+    <value>* KINAGO VIOLINS →→→!</value>
+    <comment>Commodity KinagoInstruments</comment>
+    <source>Kinago Violins</source>
+  </data>
+  <data name="KonggaAle">
+    <!--Machine translated-->
+    <value>* KONGGA ALE →→→!</value>
+    <comment>Commodity KonggaAle</comment>
+    <source>Kongga Ale</source>
+  </data>
+  <data name="KorroKungPellets">
+    <!--Machine translated-->
+    <value>* KORO KUNG PELLETS →→→!</value>
+    <comment>Commodity KoroKungPellets</comment>
+    <source>Koro Kung Pellets</source>
+  </data>
+  <data name="Landmines">
+    <!--Machine translated-->
+    <value>* LANDMINES →→→!</value>
+    <comment>Commodity Landmines</comment>
+    <source>Landmines</source>
+  </data>
+  <data name="Lanthanum">
+    <!--Machine translated-->
+    <value>* LANTHANUM →→→!</value>
+    <comment>Commodity Lanthanum</comment>
+    <source>Lanthanum</source>
+  </data>
+  <data name="LargeExplorationDataCash">
+    <!--Machine translated-->
+    <value>* LARGE SURVEY DATA CACHE →→→!</value>
+    <comment>Commodity LargeExplorationDataCash</comment>
+    <source>Large Survey Data Cache</source>
+  </data>
+  <data name="LavianBrandy">
+    <!--Machine translated-->
+    <value>* LAVIAN BRANDY →→→!</value>
+    <comment>Commodity LavianBrandy</comment>
+    <source>Lavian Brandy</source>
+  </data>
+  <data name="lavignycorruptiondossiers">
+    <!--Machine translated-->
+    <value>* LAVIGNY CORRUPTION REPORTS →→→!</value>
+    <comment>Commodity lavignycorruptiondossiers</comment>
+    <source>Lavigny Corruption Reports</source>
+  </data>
+  <data name="LavignyFieldSupplies">
+    <!--Machine translated-->
+    <value>* LAVIGNY FIELD SUPPLIES →→→!</value>
+    <comment>Commodity LavignyFieldSupplies</comment>
+    <source>Lavigny Field Supplies</source>
+  </data>
+  <data name="lavignygarisonsupplies">
+    <!--Machine translated-->
+    <value>* LAVIGNY GARRISON SUPPLIES →→→!</value>
+    <comment>Commodity lavignygarisonsupplies</comment>
+    <source>Lavigny Garrison Supplies</source>
+  </data>
+  <data name="LavignyStrategicReports">
+    <!--Machine translated-->
+    <value>* LAVIGNY STRATEGIC REPORTS →→→!</value>
+    <comment>Powerplay</comment>
+    <source>Lavigny Strategic Reports</source>
+  </data>
+  <data name="Leather">
+    <!--Machine translated-->
+    <value>* LEATHER →→→!</value>
+    <comment>Commodity Leather</comment>
+    <source>Leather</source>
+  </data>
+  <data name="LeestianEvilJuice">
+    <!--Machine translated-->
+    <value>* LEESTIAN EVIL JUICE →→→!</value>
+    <comment>Commodity LeestianEvilJuice</comment>
+    <source>Leestian Evil Juice</source>
+  </data>
+  <data name="Lepidolite">
+    <!--Machine translated-->
+    <value>* LEPIDOLITE →→→!</value>
+    <comment>Commodity Lepidolite</comment>
+    <source>Lepidolite</source>
+  </data>
+  <data name="LFTVoidExtractCoffee">
+    <!--Machine translated-->
+    <value>* VOID EXTRACT COFFEE →→→!</value>
+    <comment>Commodity VoidExtractCoffee</comment>
+    <source>Void Extract Coffee</source>
+  </data>
+  <data name="LiberalCampaignMaterials">
+    <!--Machine translated-->
+    <value>* LIBERAL PROPAGANDA →→→!</value>
+    <comment>Commodity LiberalCampaignMaterials</comment>
+    <source>Liberal Propaganda</source>
+  </data>
+  <data name="LiquidOxygen">
+    <!--Machine translated-->
+    <value>* LIQUID OXYGEN →→→!</value>
+    <comment>Commodity LiquidOxygen</comment>
+    <source>Liquid oxygen</source>
+  </data>
+  <data name="Liquor">
+    <!--Machine translated-->
+    <value>* LIQUOR →→→!</value>
+    <comment>Commodity Liquor</comment>
+    <source>Liquor</source>
+  </data>
+  <data name="Lithium">
+    <!--Machine translated-->
+    <value>* LITHIUM →→→!</value>
+    <comment>Commodity Lithium</comment>
+    <source>Lithium</source>
+  </data>
+  <data name="LithiumHydroxide">
+    <!--Machine translated-->
+    <value>* LITHIUM HYDROXIDE →→→!</value>
+    <comment>Commodity LithiumHydroxide</comment>
+    <source>Lithium Hydroxide</source>
+  </data>
+  <data name="LiveHecateSeaWorms">
+    <!--Machine translated-->
+    <value>* LIVE HECATE SEA WORMS →→→!</value>
+    <comment>Commodity LiveHecateSeaWorms</comment>
+    <source>Live Hecate Sea Worms</source>
+  </data>
+  <data name="LoanedArms">
+    <!--Machine translated-->
+    <value>* MARKED MILITARY ARMS →→→!</value>
+    <comment>Commodity LoanedArms</comment>
+    <source>Marked Military Arms</source>
+  </data>
+  <data name="LowTemperatureDiamond">
+    <!--Machine translated-->
+    <value>* LOW TEMPERATURE DIAMONDS →→→!</value>
+    <comment>Commodity LowTemperatureDiamond</comment>
+    <source>Low Temperature Diamonds</source>
+  </data>
+  <data name="LTTHypersweet">
+    <!--Machine translated-->
+    <value>* LTT HYPERSWEET →→→!</value>
+    <comment>Commodity LTTHypersweet</comment>
+    <source>LTT Hypersweet</source>
+  </data>
+  <data name="LyraeWeed">
+    <!--Machine translated-->
+    <value>* LYRAE WEED →→→!</value>
+    <comment>Commodity LyraeWeed</comment>
+    <source>Lyrae Weed</source>
+  </data>
+  <data name="M_TissueSample_Fluid">
+    <!--Machine translated-->
+    <value>* MOLLUSC FLUID →→→!</value>
+    <comment>Commodity M_TissueSample_Fluid</comment>
+    <source>Mollusc Fluid</source>
+  </data>
+  <data name="M_TissueSample_Nerves">
+    <!--Machine translated-->
+    <value>* MOLLUSC BRAIN TISSUE →→→!</value>
+    <comment>Commodity M_TissueSample_Nerves</comment>
+    <source>Mollusc Brain Tissue</source>
+  </data>
+  <data name="M_TissueSample_Soft">
+    <!--Machine translated-->
+    <value>* MOLLUSC SOFT TISSUE →→→!</value>
+    <comment>Commodity M_TissueSample_Soft</comment>
+    <source>Mollusc Soft tissue</source>
+  </data>
+  <data name="M3_TissueSample_Membrane">
+    <!--Machine translated-->
+    <value>* MOLLUSC MEMBRANE →→→!</value>
+    <comment>Commodity M3_TissueSample_Membrane</comment>
+    <source>Mollusc Membrane</source>
+  </data>
+  <data name="M3_TissueSample_Mycelium">
+    <!--Machine translated-->
+    <value>* MOLLUSC MYCELIUM →→→!</value>
+    <comment>Commodity M3_TissueSample_Mycelium</comment>
+    <source>Mollusc Mycelium</source>
+  </data>
+  <data name="M3_TissueSample_Spores">
+    <!--Machine translated-->
+    <value>* MOLLUSC SPORES →→→!</value>
+    <comment>Commodity M3_TissueSample_Spores</comment>
+    <source>Mollusc Spores</source>
+  </data>
+  <data name="MagneticEmitterCoil">
+    <!--Machine translated-->
+    <value>* MAGNETIC EMITTER COIL →→→!</value>
+    <comment>Commodity MagneticEmitterCoil</comment>
+    <source>Magnetic Emitter Coil</source>
+  </data>
+  <data name="MarineSupplies">
+    <!--Machine translated-->
+    <value>* MARINE EQUIPMENT →→→!</value>
+    <comment>Commodity MarineSupplies</comment>
+    <source>Marine Equipment</source>
+  </data>
+  <data name="MarkedSlaves">
+    <!--Machine translated-->
+    <value>* MARKED SLAVES →→→!</value>
+    <comment>Commodity MarkedSlaves</comment>
+    <source>Marked Slaves</source>
+  </data>
+  <data name="MasterChefs">
+    <!--Machine translated-->
+    <value>* MASTER CHEFS →→→!</value>
+    <comment>Commodity MasterChefs</comment>
+    <source>Master Chefs</source>
+  </data>
+  <data name="MechucosHighTea">
+    <!--Machine translated-->
+    <value>* MECHUCOS HIGH TEA →→→!</value>
+    <comment>Commodity MechucosHighTea</comment>
+    <source>Mechucos High Tea</source>
+  </data>
+  <data name="MedbStarlube">
+    <!--Machine translated-->
+    <value>* MEDB STARLUBE →→→!</value>
+    <comment>Commodity MedbStarlube</comment>
+    <source>Medb Starlube</source>
+  </data>
+  <data name="MedicalDiagnosticEquipment">
+    <!--Machine translated-->
+    <value>* MEDICAL DIAGNOSTIC EQUIPMENT →→→!</value>
+    <comment>Commodity MedicalDiagnosticEquipment</comment>
+    <source>Medical Diagnostic Equipment</source>
+  </data>
+  <data name="MetaAlloys">
+    <!--Machine translated-->
+    <value>* META-ALLOYS →→→!</value>
+    <comment>Commodity MetaAlloys</comment>
+    <source>Meta-Alloys</source>
+  </data>
+  <data name="MethaneClathrate">
+    <!--Machine translated-->
+    <value>* METHANE CLATHRATE →→→!</value>
+    <comment>Commodity MethaneClathrate</comment>
+    <source>Methane Clathrate</source>
+  </data>
+  <data name="MethanolMonohydrateCrystals">
+    <!--Machine translated-->
+    <value>* METHANOL MONOHYDRATE →→→!</value>
+    <comment>Commodity MethanolMonohydrateCrystals</comment>
+    <source>Methanol Monohydrate</source>
+  </data>
+  <data name="MicroControllers">
+    <!--Machine translated-->
+    <value>* MICRO CONTROLLERS →→→!</value>
+    <comment>Commodity MicroControllers</comment>
+    <source>Micro Controllers</source>
+  </data>
+  <data name="MilitaryGradeFabrics">
+    <!--Machine translated-->
+    <value>* MILITARY GRADE FABRICS →→→!</value>
+    <comment>Commodity MilitaryGradeFabrics</comment>
+    <source>Military Grade Fabrics</source>
+  </data>
+  <data name="MilitaryIntelligence">
+    <!--Machine translated-->
+    <value>* MILITARY INTELLIGENCE →→→!</value>
+    <comment>Commodity MilitaryIntelligence</comment>
+    <source>Military Intelligence</source>
+  </data>
+  <data name="MineralExtractors">
+    <!--Machine translated-->
+    <value>* MINERAL EXTRACTORS →→→!</value>
+    <comment>Commodity MineralExtractors</comment>
+    <source>Mineral Extractors</source>
+  </data>
+  <data name="MineralOil">
+    <!--Machine translated-->
+    <value>* MINERAL OIL →→→!</value>
+    <comment>Commodity MineralOil</comment>
+    <source>Mineral Oil</source>
+  </data>
+  <data name="ModularTerminals">
+    <!--Machine translated-->
+    <value>* MODULAR TERMINALS →→→!</value>
+    <comment>Commodity ModularTerminals</comment>
+    <source>Modular Terminals</source>
+  </data>
+  <data name="Moissanite">
+    <!--Machine translated-->
+    <value>* MOISSANITE →→→!</value>
+    <comment>Commodity Moissanite</comment>
+    <source>Moissanite</source>
+  </data>
+  <data name="MokojingBeastFeast">
+    <!--Machine translated-->
+    <value>* MOKOJING BEAST FEAST →→→!</value>
+    <comment>Commodity MokojingBeastFeast</comment>
+    <source>Mokojing Beast Feast</source>
+  </data>
+  <data name="MomusBogSpaniel">
+    <!--Machine translated-->
+    <value>* MOMUS BOG SPANIEL →→→!</value>
+    <comment>Commodity MomusBogSpaniel</comment>
+    <source>Momus Bog Spaniel</source>
+  </data>
+  <data name="Monazite">
+    <!--Machine translated-->
+    <value>* MONAZITE →→→!</value>
+    <comment>Commodity Monazite</comment>
+    <source>Monazite</source>
+  </data>
+  <data name="MotronaExperienceJelly">
+    <!--Machine translated-->
+    <value>* MOTRONA EXPERIENCE JELLY →→→!</value>
+    <comment>Commodity MotronaExperienceJelly</comment>
+    <source>Motrona Experience Jelly</source>
+  </data>
+  <data name="MukusubiiChitinOs">
+    <!--Machine translated-->
+    <value>* MUKUSUBII CHITIN-OS →→→!</value>
+    <comment>Commodity MukusubiiChitin_Os</comment>
+    <source>Mukusubii Chitin-Os</source>
+  </data>
+  <data name="MulachiGiantFungus">
+    <!--Machine translated-->
+    <value>* MULACHI GIANT FUNGUS →→→!</value>
+    <comment>Commodity MulachiGiantFungus</comment>
+    <source>Mulachi Giant Fungus</source>
+  </data>
+  <data name="Musgravite">
+    <!--Machine translated-->
+    <value>* MUSGRAVITE →→→!</value>
+    <comment>Commodity Musgravite</comment>
+    <source>Musgravite</source>
+  </data>
+  <data name="MuTomImager">
+    <!--Machine translated-->
+    <value>* MUON IMAGER →→→!</value>
+    <comment>Commodity MuTomImager</comment>
+    <source>Muon Imager</source>
+  </data>
+  <data name="MysteriousIdol">
+    <!--Machine translated-->
+    <value>* MYSTERIOUS IDOL →→→!</value>
+    <comment>Commodity MysteriousIdol</comment>
+    <source>Mysterious Idol</source>
+  </data>
+  <data name="Nanobreakers">
+    <!--Machine translated-->
+    <value>* NANOBREAKERS →→→!</value>
+    <comment>Commodity Nanobreakers</comment>
+    <source>Nanobreakers</source>
+  </data>
+  <data name="Nanomedicines">
+    <!--Machine translated-->
+    <value>* NANOMEDICINES →→→!</value>
+    <comment>Commodity Nanomedicines</comment>
+    <source>Nanomedicines</source>
+  </data>
+  <data name="NaturalFabrics">
+    <!--Machine translated-->
+    <value>* NATURAL FABRICS →→→!</value>
+    <comment>Commodity NaturalFabrics</comment>
+    <source>Natural Fabrics</source>
+  </data>
+  <data name="NeofabricInsulation">
+    <!--Machine translated-->
+    <value>* NEOFABRIC INSULATION →→→!</value>
+    <comment>Commodity NeofabricInsulation</comment>
+    <source>Neofabric Insulation</source>
+  </data>
+  <data name="NeritusBerries">
+    <!--Machine translated-->
+    <value>* NERITUS BERRIES →→→!</value>
+    <comment>Commodity NeritusBerries</comment>
+    <source>Neritus Berries</source>
+  </data>
+  <data name="NerveAgents">
+    <!--Machine translated-->
+    <value>* NERVE AGENTS →→→!</value>
+    <comment>Commodity NerveAgents</comment>
+    <source>Nerve Agents</source>
+  </data>
+  <data name="NgadandariFireOpals">
+    <!--Machine translated-->
+    <value>* NGADANDARI FIRE OPALS →→→!</value>
+    <comment>Commodity NgadandariFireOpals</comment>
+    <source>Ngadandari Fire Opals</source>
+  </data>
+  <data name="NgunaModernAntiques">
+    <!--Machine translated-->
+    <value>* NGUNA MODERN ANTIQUES →→→!</value>
+    <comment>Commodity NgunaModernAntiques</comment>
+    <source>Nguna Modern Antiques</source>
+  </data>
+  <data name="NjangariSaddles">
+    <!--Machine translated-->
+    <value>* NJANGARI SADDLES →→→!</value>
+    <comment>Commodity NjangariSaddles</comment>
+    <source>Njangari Saddles</source>
+  </data>
+  <data name="NonEuclidianExotanks">
+    <!--Machine translated-->
+    <value>* NON EUCLIDIAN EXOTANKS →→→!</value>
+    <comment>Commodity NonEuclidianExotanks</comment>
+    <source>Non Euclidian Exotanks</source>
+  </data>
+  <data name="NonLethalWeapons">
+    <!--Machine translated-->
+    <value>* NON-LETHAL WEAPONS →→→!</value>
+    <comment>Commodity NonLethalWeapons</comment>
+    <source>Non-Lethal Weapons</source>
+  </data>
+  <data name="OccupiedCryoPod">
+    <!--Machine translated-->
+    <value>* OCCUPIED ESCAPE POD →→→!</value>
+    <comment>Commodity OccupiedCryoPod</comment>
+    <source>Occupied Escape Pod</source>
+  </data>
+  <data name="OchoengChillies">
+    <!--Machine translated-->
+    <value>* OCHOENG CHILLIES →→→!</value>
+    <comment>Commodity OchoengChillies</comment>
+    <source>Ochoeng Chillies</source>
+  </data>
+  <data name="OnionHead">
+    <!--Machine translated-->
+    <value>* ONION HEAD →→→!</value>
+    <comment>Commodity OnionHead</comment>
+    <source>Onion Head</source>
+  </data>
+  <data name="OnionHeadA">
+    <!--Machine translated-->
+    <value>* ONIONHEAD ALPHA STRAIN →→→!</value>
+    <comment>Commodity OnionheadAlphaStrain</comment>
+    <source>Onionhead Alpha Strain</source>
+  </data>
+  <data name="OnionHeadB">
+    <!--Machine translated-->
+    <value>* ONIONHEAD BETA STRAIN →→→!</value>
+    <comment>Commodity OnionheadBetaStrain</comment>
+    <source>Onionhead Beta Strain</source>
+  </data>
+  <data name="OnionHeadC">
+    <!--Machine translated-->
+    <value>* ONIONHEAD GAMMA STRAIN →→→!</value>
+    <comment>Commodity Onionhead Gamma Strain</comment>
+    <source>Onionhead Gamma Strain</source>
+  </data>
+  <data name="OnionheadDerivatives">
+    <!--Machine translated-->
+    <value>* ONIONHEAD DERIVATIVES →→→!</value>
+    <comment>Commodity OnionheadDerivatives</comment>
+    <source>Onionhead Derivatives</source>
+  </data>
+  <data name="OnionheadSamples">
+    <!--Machine translated-->
+    <value>* ONIONHEAD SAMPLES →→→!</value>
+    <comment>Commodity OnionheadSamples</comment>
+    <source>Onionhead Samples</source>
+  </data>
+  <data name="Opal">
+    <!--Machine translated-->
+    <value>* VOID OPAL →→→!</value>
+    <comment>Commodity Opal</comment>
+    <source>Void Opal</source>
+  </data>
+  <data name="OphiuchiExinoArtefacts">
+    <!--Machine translated-->
+    <value>* OPHIUCH EXINO ARTEFACTS →→→!</value>
+    <comment>Commodity OphiuchExinoArtefacts</comment>
+    <source>Ophiuch Exino Artefacts</source>
+  </data>
+  <data name="OrrerianViciousBrew">
+    <!--Machine translated-->
+    <value>* ORRERIAN VICIOUS BREW →→→!</value>
+    <comment>Commodity OrrerianViciousBrew</comment>
+    <source>Orrerian Vicious Brew</source>
+  </data>
+  <data name="Osmium">
+    <!--Machine translated-->
+    <value>* OSMIUM →→→!</value>
+    <comment>Commodity Osmium</comment>
+    <source>Osmium</source>
+  </data>
+  <data name="OutOfDateGoods">
+    <!--Machine translated-->
+    <value>* OUT OF DATE GOODS →→→!</value>
+    <comment>Commodity OutOfDateGoods</comment>
+    <source>Out Of Date Goods</source>
+  </data>
+  <data name="P_ParticulateSample">
+    <!--Machine translated-->
+    <value>* ANOMALY PARTICLES →→→!</value>
+    <comment>Commodity P_ParticulateSample</comment>
+    <source>Anomaly Particles</source>
+  </data>
+  <data name="Painite">
+    <!--Machine translated-->
+    <value>* PAINITE →→→!</value>
+    <comment>Commodity Painite</comment>
+    <source>Painite</source>
+  </data>
+  <data name="Palladium">
+    <!--Machine translated-->
+    <value>* PALLADIUM →→→!</value>
+    <comment>Commodity Palladium</comment>
+    <source>Palladium</source>
+  </data>
+  <data name="PantaaPrayerSticks">
+    <!--Machine translated-->
+    <value>* PANTAA PRAYER STICKS →→→!</value>
+    <comment>Commodity PantaaPrayerSticks</comment>
+    <source>Pantaa Prayer Sticks</source>
+  </data>
+  <data name="PatreusFieldSupplies">
+    <!--Machine translated-->
+    <value>* PATREUS FIELD SUPPLIES →→→!</value>
+    <comment>Commodity PatreusFieldSupplies</comment>
+    <source>Patreus Field Supplies</source>
+  </data>
+  <data name="PatreusGarisonSupplies">
+    <!--Machine translated-->
+    <value>* PATREUS GARRISON SUPPLIES →→→!</value>
+    <comment>Commodity PatreusGarisonSupplies</comment>
+    <source>Patreus Garrison Supplies</source>
+  </data>
+  <data name="PavonisEarGrubs">
+    <!--Machine translated-->
+    <value>* PAVONIS EAR GRUBS →→→!</value>
+    <comment>Commodity PavonisEarGrubs</comment>
+    <source>Pavonis Ear Grubs</source>
+  </data>
+  <data name="PerformanceEnhancers">
+    <!--Machine translated-->
+    <value>* PERFORMANCE ENHANCERS →→→!</value>
+    <comment>Commodity PerformanceEnhancers</comment>
+    <source>Performance Enhancers</source>
+  </data>
+  <data name="PersonalEffects">
+    <!--Machine translated-->
+    <value>* PERSONAL EFFECTS →→→!</value>
+    <comment>Commodity PersonalEffects</comment>
+    <source>Personal Effects</source>
+  </data>
+  <data name="PersonalGifts">
+    <!--Machine translated-->
+    <value>* FESTIVE GIFTS →→→!</value>
+    <comment>Commodity.PersonalGifts</comment>
+    <source>Festive Gifts</source>
+  </data>
+  <data name="PersonalWeapons">
+    <!--Machine translated-->
+    <value>* PERSONAL WEAPONS →→→!</value>
+    <comment>Commodity PersonalWeapons</comment>
+    <source>Personal Weapons</source>
+  </data>
+  <data name="Pesticides">
+    <!--Machine translated-->
+    <value>* PESTICIDES →→→!</value>
+    <comment>Commodity Pesticides</comment>
+    <source>Pesticides</source>
+  </data>
+  <data name="Platinum">
+    <!--Machine translated-->
+    <value>* PLATINUM →→→!</value>
+    <comment>Commodity Platinum</comment>
+    <source>Platinum</source>
+  </data>
+  <data name="PlatinumAloy">
+    <!--Machine translated-->
+    <value>* PLATINUM ALLOY →→→!</value>
+    <comment>Commodity PlatinumAloy</comment>
+    <source>Platinum Alloy</source>
+  </data>
+  <data name="PoliticalPrisoner">
+    <!--Machine translated-->
+    <value>* POLITICAL PRISONER →→→!</value>
+    <comment>Commodity PoliticalPrisoner</comment>
+    <source>Political Prisoner</source>
+  </data>
+  <data name="Polymers">
+    <!--Machine translated-->
+    <value>* POLYMERS →→→!</value>
+    <comment>Commodity Polymers</comment>
+    <source>Polymers</source>
+  </data>
+  <data name="PowerConverter">
+    <!--Machine translated-->
+    <value>* POWER CONVERTER →→→!</value>
+    <comment>Commodity PowerConverter</comment>
+    <source>Power Converter</source>
+  </data>
+  <data name="PowerGenerators">
+    <!--Machine translated-->
+    <value>* POWER GENERATORS →→→!</value>
+    <comment>Commodity PowerGenerators</comment>
+    <source>Power Generators</source>
+  </data>
+  <data name="PowerGridAssembly">
+    <!--Machine translated-->
+    <value>* ENERGY GRID ASSEMBLY →→→!</value>
+    <comment>Commodity PowerGridAssembly</comment>
+    <source>Energy Grid Assembly</source>
+  </data>
+  <data name="PowerTransferConduits">
+    <!--Machine translated-->
+    <value>* POWER TRANSFER BUS →→→!</value>
+    <comment>Commodity PowerTransferConduits</comment>
+    <source>Power Transfer Bus</source>
+  </data>
+  <data name="Praseodymium">
+    <!--Machine translated-->
+    <value>* PRASEODYMIUM →→→!</value>
+    <comment>Commodity Praseodymium</comment>
+    <source>Praseodymium</source>
+  </data>
+  <data name="PreciousGems">
+    <!--Machine translated-->
+    <value>* PRECIOUS GEMS →→→!</value>
+    <comment>Commodity PreciousGems</comment>
+    <source>Precious Gems</source>
+  </data>
+  <data name="ProgenitorCells">
+    <!--Machine translated-->
+    <value>* PROGENITOR CELLS →→→!</value>
+    <comment>Commodity ProgenitorCells</comment>
+    <source>Progenitor Cells</source>
+  </data>
+  <data name="ProhibitedResearchMaterials">
+    <!--Machine translated-->
+    <value>* PROHIBITED RESEARCH MATERIALS →→→!</value>
+    <comment>Commodity ProhibitedResearchMaterials</comment>
+    <source>Prohibited Research Materials</source>
+  </data>
+  <data name="Pyrophyllite">
+    <!--Machine translated-->
+    <value>* PYROPHYLLITE →→→!</value>
+    <comment>Commodity Pyrophyllite</comment>
+    <source>Pyrophyllite</source>
+  </data>
+  <data name="RadiationBaffle">
+    <!--Machine translated-->
+    <value>* RADIATION BAFFLE →→→!</value>
+    <comment>Commodity RadiationBaffle</comment>
+    <source>Radiation Baffle</source>
+  </data>
+  <data name="RajukruStoves">
+    <!--Machine translated-->
+    <value>* RAJUKRU MULTI-STOVES →→→!</value>
+    <comment>Commodity RajukruStoves</comment>
+    <source>Rajukru Multi-Stoves</source>
+  </data>
+  <data name="RapaBaoSnakeSkins">
+    <!--Machine translated-->
+    <value>* RAPA BAO SNAKE SKINS →→→!</value>
+    <comment>Commodity RapaBaoSnakeSkins</comment>
+    <source>Rapa Bao Snake Skins</source>
+  </data>
+  <data name="ReactiveArmour">
+    <!--Machine translated-->
+    <value>* REACTIVE ARMOUR →→→!</value>
+    <comment>Commodity ReactiveArmour</comment>
+    <source>Reactive Armour</source>
+  </data>
+  <data name="ReinforcedMountingPlate">
+    <!--Machine translated-->
+    <value>* REINFORCED MOUNTING PLATE →→→!</value>
+    <comment>Commodity ReinforcedMountingPlate</comment>
+    <source>Reinforced Mounting Plate</source>
+  </data>
+  <data name="RepublicanFieldSupplies">
+    <!--Machine translated-->
+    <value>* ARCHER'S FIELD SUPPLIES →→→!</value>
+    <comment>Commodity RepublicanFieldSupplies</comment>
+    <source>Archer's Field Supplies</source>
+  </data>
+  <data name="RepublicanGarisonSupplies">
+    <!--Machine translated-->
+    <value>* ARCHER GARRISON SUPPLIES →→→!</value>
+    <comment>Commodity RepublicanGarisonSupplies</comment>
+    <source>Archer Garrison Supplies</source>
+  </data>
+  <data name="ResonatingSeparators">
+    <!--Machine translated-->
+    <value>* RESONATING SEPARATORS →→→!</value>
+    <comment>Commodity ResonatingSeparators</comment>
+    <source>Resonating Separators</source>
+  </data>
+  <data name="RestrictedIntel">
+    <!--Machine translated-->
+    <value>* ARCHER'S RESTRICTED INTEL →→→!</value>
+    <comment>Commodity RestrictedIntel</comment>
+    <source>Archer's Restricted Intel</source>
+  </data>
+  <data name="RestrictedPackage">
+    <!--Machine translated-->
+    <value>* CORE RESTRICTED PACKAGE →→→!</value>
+    <comment>Commodity RestrictedPackage</comment>
+    <source>Core Restricted Package</source>
+  </data>
+  <data name="Rhodplumsite">
+    <!--Machine translated-->
+    <value>* RHODPLUMSITE →→→!</value>
+    <comment>Commodity Rhodplumsite</comment>
+    <source>Rhodplumsite</source>
+  </data>
+  <data name="Robotics">
+    <!--Machine translated-->
+    <value>* ROBOTICS →→→!</value>
+    <comment>Commodity Robotics</comment>
+    <source>Robotics</source>
+  </data>
+  <data name="RockforthFertiliser">
+    <!--Machine translated-->
+    <value>* ROCKFORTH FERTILISER →→→!</value>
+    <comment>Commodity RockforthFertiliser</comment>
+    <source>Rockforth Fertiliser</source>
+  </data>
+  <data name="RusaniOldSmokey">
+    <!--Machine translated-->
+    <value>* RUSANI OLD SMOKEY →→→!</value>
+    <comment>Commodity RusaniOldSmokey</comment>
+    <source>Rusani Old Smokey</source>
+  </data>
+  <data name="Rutile">
+    <!--Machine translated-->
+    <value>* RUTILE →→→!</value>
+    <comment>Commodity Rutile</comment>
+    <source>Rutile</source>
+  </data>
+  <data name="S_TissueSample_Cells">
+    <!--Machine translated-->
+    <value>* POD CORE TISSUE →→→!</value>
+    <comment>Commodity S_TissueSample_Cells</comment>
+    <source>Pod Core Tissue</source>
+  </data>
+  <data name="S_TissueSample_Core">
+    <!--Machine translated-->
+    <value>* POD SURFACE TISSUE →→→!</value>
+    <comment>Commodity S_TissueSample_Core</comment>
+    <source>Pod Surface Tissue</source>
+  </data>
+  <data name="S_TissueSample_Surface">
+    <!--Machine translated-->
+    <value>* POD DEAD TISSUE →→→!</value>
+    <comment>Commodity S_TissueSample_Surface</comment>
+    <source>Pod Dead Tissue</source>
+  </data>
+  <data name="S6_TissueSample_Cells">
+    <!--Machine translated-->
+    <value>* POD OUTER TISSUE →→→!</value>
+    <comment>Commodity S6_TissueSample_Cells</comment>
+    <source>Pod Outer Tissue</source>
+  </data>
+  <data name="S6_TissueSample_Coenosarc">
+    <!--Machine translated-->
+    <value>* POD SHELL TISSUE →→→!</value>
+    <comment>Commodity S6_TissueSample_Coenosarc</comment>
+    <source>Pod Shell Tissue</source>
+  </data>
+  <data name="S6_TissueSample_Mesoglea">
+    <!--Machine translated-->
+    <value>* POD MESOGLEA →→→!</value>
+    <comment>Commodity S6_TissueSample_Mesoglea</comment>
+    <source>Pod Mesoglea</source>
+  </data>
+  <data name="S9_TissueSample_Shell">
+    <!--Machine translated-->
+    <value>* POD TISSUE →→→!</value>
+    <comment>Commodity S9_TissueSample_Shell</comment>
+    <source>Pod Tissue</source>
+  </data>
+  <data name="Samarium">
+    <!--Machine translated-->
+    <value>* SAMARIUM →→→!</value>
+    <comment>Commodity Samarium</comment>
+    <source>Samarium</source>
+  </data>
+  <data name="SanumaDecorativeMeat">
+    <!--Machine translated-->
+    <value>* SANUMA DECORATIVE MEAT →→→!</value>
+    <comment>(Deprecated) Commodity SanumaDecorativeMeat</comment>
+    <source>Sanuma Decorative Meat</source>
+  </data>
+  <data name="SanumaMEAT">
+    <!--Machine translated-->
+    <value>* SANUMA DECORATIVE MEAT →→→!</value>
+    <comment>Commodity SanumaMEAT</comment>
+    <source>Sanuma Decorative Meat</source>
+  </data>
+  <data name="SAP8CoreContainer">
+    <!--Machine translated-->
+    <value>* SAP 8 CORE CONTAINER →→→!</value>
+    <comment>Commodity SAP8CoreContainer</comment>
+    <source>Sap 8 Core Container</source>
+  </data>
+  <data name="SaxonWine">
+    <!--Machine translated-->
+    <value>* SAXON WINE →→→!</value>
+    <comment>Commodity SaxonWine</comment>
+    <source>Saxon Wine</source>
+  </data>
+  <data name="ScientificResearch">
+    <!--Machine translated-->
+    <value>* SCIENTIFIC RESEARCH →→→!</value>
+    <comment>Commodity ScientificResearch</comment>
+    <source>Scientific Research</source>
+  </data>
+  <data name="ScientificSamples">
+    <!--Machine translated-->
+    <value>* SCIENTIFIC SAMPLES →→→!</value>
+    <comment>Commodity ScientificSamples</comment>
+    <source>Scientific Samples</source>
+  </data>
+  <data name="Scrap">
+    <!--Machine translated-->
+    <value>* SCRAP →→→!</value>
+    <comment>Commodity Scrap</comment>
+    <source>Scrap</source>
+  </data>
+  <data name="Semiconductors">
+    <!--Machine translated-->
+    <value>* SEMICONDUCTORS →→→!</value>
+    <comment>Commodity Semiconductors</comment>
+    <source>Semiconductors</source>
+  </data>
+  <data name="Serendibite">
+    <!--Machine translated-->
+    <value>* SERENDIBITE →→→!</value>
+    <comment>Commodity Serendibite</comment>
+    <source>Serendibite</source>
+  </data>
+  <data name="ShansCharisOrchid">
+    <!--Machine translated-->
+    <value>* SHAN'S CHARIS ORCHID →→→!</value>
+    <comment>Commodity ShansCharisOrchid</comment>
+    <source>Shan's Charis Orchid</source>
+  </data>
+  <data name="Silver">
+    <!--Machine translated-->
+    <value>* SILVER →→→!</value>
+    <comment>Commodity Silver</comment>
+    <source>Silver</source>
+  </data>
+  <data name="SiriusCommercialContracts">
+    <!--Machine translated-->
+    <value>* SIRIUS CORPORATE CONTRACTS →→→!</value>
+    <comment>Commodity SiriusCommercialContracts</comment>
+    <source>Sirius Corporate Contracts</source>
+  </data>
+  <data name="SiriusFranchisePackage">
+    <!--Machine translated-->
+    <value>* SIRIUS FRANCHISE PACKAGE →→→!</value>
+    <comment>Commodity SiriusFranchisePackage</comment>
+    <source>Sirius Franchise Package</source>
+  </data>
+  <data name="SiriusIndustrialEquipment">
+    <!--Machine translated-->
+    <value>* SIRIUS INDUSTRIAL EQUIPMENT →→→!</value>
+    <comment>Commodity SiriusIndustrialEquipment</comment>
+    <source>Sirius Industrial Equipment</source>
+  </data>
+  <data name="SkimerComponents">
+    <!--Machine translated-->
+    <value>* SKIMMER COMPONENTS →→→!</value>
+    <comment>Commodity SkimerComponents</comment>
+    <source>Skimmer Components</source>
+  </data>
+  <data name="Slaves">
+    <!--Machine translated-->
+    <value>* SLAVES →→→!</value>
+    <comment>Commodity Slaves</comment>
+    <source>Slaves</source>
+  </data>
+  <data name="SmallExplorationDataCash">
+    <!--Machine translated-->
+    <value>* SMALL SURVEY DATA CACHE →→→!</value>
+    <comment>Commodity SmallExplorationDataCash</comment>
+    <source>Small Survey Data Cache</source>
+  </data>
+  <data name="SoontillRelics">
+    <!--Machine translated-->
+    <value>* SOONTILL RELICS →→→!</value>
+    <comment>Commodity SoontillRelics</comment>
+    <source>Soontill Relics</source>
+  </data>
+  <data name="SothisCrystallineGold">
+    <!--Machine translated-->
+    <value>* SOTHIS CRYSTALLINE GOLD →→→!</value>
+    <comment>Commodity SothisCrystallineGold</comment>
+    <source>Sothis Crystalline Gold</source>
+  </data>
+  <data name="SpacePioneerRelics">
+    <!--Machine translated-->
+    <value>* SPACE PIONEER RELICS →→→!</value>
+    <comment>Commodity SpacePioneerRelics</comment>
+    <source>Space Pioneer Relics</source>
+  </data>
+  <data name="Steel">
+    <!--Machine translated-->
+    <value>* STEEL →→→!</value>
+    <comment>Steel commodity</comment>
+    <source>Steel</source>
+  </data>
+  <data name="StructuralRegulators">
+    <!--Machine translated-->
+    <value>* STRUCTURAL REGULATORS →→→!</value>
+    <comment>Commodity StructuralRegulators</comment>
+    <source>Structural Regulators</source>
+  </data>
+  <data name="Superconductors">
+    <!--Machine translated-->
+    <value>* SUPERCONDUCTORS →→→!</value>
+    <comment>Commodity Superconductors</comment>
+    <source>Superconductors</source>
+  </data>
+  <data name="SurfaceStabilisers">
+    <!--Machine translated-->
+    <value>* SURFACE STABILISERS →→→!</value>
+    <comment>Commodity SurfaceStabilisers</comment>
+    <source>Surface Stabilisers</source>
+  </data>
+  <data name="SurvivalEquipment">
+    <!--Machine translated-->
+    <value>* SURVIVAL EQUIPMENT →→→!</value>
+    <comment>Commodity SurvivalEquipment</comment>
+    <source>Survival Equipment</source>
+  </data>
+  <data name="SyntheticFabrics">
+    <!--Machine translated-->
+    <value>* SYNTHETIC FABRICS →→→!</value>
+    <comment>Commodity SyntheticFabrics</comment>
+    <source>Synthetic Fabrics</source>
+  </data>
+  <data name="SyntheticMeat">
+    <!--Machine translated-->
+    <value>* SYNTHETIC MEAT →→→!</value>
+    <comment>Commodity SyntheticMeat</comment>
+    <source>Synthetic Meat</source>
+  </data>
+  <data name="SyntheticReagents">
+    <!--Machine translated-->
+    <value>* SYNTHETIC REAGENTS →→→!</value>
+    <comment>Commodity SyntheticReagents</comment>
+    <source>Synthetic Reagents</source>
+  </data>
+  <data name="Taaffeite">
+    <!--Machine translated-->
+    <value>* TAAFFEITE →→→!</value>
+    <comment>Commodity Taaffeite</comment>
+    <source>Taaffeite</source>
+  </data>
+  <data name="TacticalData">
+    <!--Machine translated-->
+    <value>* TACTICAL DATA →→→!</value>
+    <comment>Commodity TacticalData</comment>
+    <source>Tactical Data</source>
+  </data>
+  <data name="TanmarkTranquilTea">
+    <!--Machine translated-->
+    <value>* TANMARK TRANQUIL TEA →→→!</value>
+    <comment>Commodity TanmarkTranquilTea</comment>
+    <source>Tanmark Tranquil Tea</source>
+  </data>
+  <data name="Tantalum">
+    <!--Machine translated-->
+    <value>* TANTALUM →→→!</value>
+    <comment>Commodity Tantalum</comment>
+    <source>Tantalum</source>
+  </data>
+  <data name="TarachTorSpice">
+    <!--Machine translated-->
+    <value>* TARACH SPICE →→→!</value>
+    <comment>Commodity TarachTorSpice</comment>
+    <source>Tarach Spice</source>
+  </data>
+  <data name="TauriChimes">
+    <!--Machine translated-->
+    <value>* TAURI CHIMES →→→!</value>
+    <comment>Commodity TauriChimes</comment>
+    <source>Tauri Chimes</source>
+  </data>
+  <data name="Tea">
+    <!--Machine translated-->
+    <value>* TEA →→→!</value>
+    <comment>Commodity Tea</comment>
+    <source>Tea</source>
+  </data>
+  <data name="TelemetrySuite">
+    <!--Machine translated-->
+    <value>* TELEMETRY SUITE →→→!</value>
+    <comment>Commodity TelemetrySuite</comment>
+    <source>Telemetry Suite</source>
+  </data>
+  <data name="TerrainEnrichmentSystems">
+    <!--Machine translated-->
+    <value>* LAND ENRICHMENT SYSTEMS →→→!</value>
+    <comment>Commodity TerrainEnrichmentSystems</comment>
+    <source>Land Enrichment Systems</source>
+  </data>
+  <data name="TerraMaterBloodBores">
+    <!--Machine translated-->
+    <value>* TERRA MATER BLOOD BORES →→→!</value>
+    <comment>Commodity TerraMaterBloodBores</comment>
+    <source>Terra Mater Blood Bores</source>
+  </data>
+  <data name="Thallium">
+    <!--Machine translated-->
+    <value>* THALLIUM →→→!</value>
+    <comment>Commodity Thallium</comment>
+    <source>Thallium</source>
+  </data>
+  <data name="ThargoidBoneFragments">
+    <!--Machine translated-->
+    <value>* BONE FRAGMENTS →→→!</value>
+    <comment>Commodity ThargoidBoneFragments</comment>
+    <source>Bone Fragments</source>
+  </data>
+  <data name="ThargoidCystSpecimen">
+    <!--Machine translated-->
+    <value>* CYST SPECIMEN →→→!</value>
+    <comment>Commodity ThargoidCystSpecimen</comment>
+    <source>Cyst Specimen</source>
+  </data>
+  <data name="ThargoidGeneratorTissueSample">
+    <!--Machine translated-->
+    <value>* CAUSTIC TISSUE SAMPLE →→→!</value>
+    <comment>Commodity ThargoidGeneratorTissueSample</comment>
+    <source>Caustic Tissue Sample</source>
+  </data>
+  <data name="ThargoidHeart">
+    <!--Machine translated-->
+    <value>* THARGOID HEART →→→!</value>
+    <comment>Commodity ThargoidHeart</comment>
+    <source>Thargoid Heart</source>
+  </data>
+  <data name="ThargoidOrganSample">
+    <!--Machine translated-->
+    <value>* ORGAN SAMPLE →→→!</value>
+    <comment>Commodity ThargoidOrganSample</comment>
+    <source>Organ Sample</source>
+  </data>
+  <data name="ThargoidPod">
+    <!--Machine translated-->
+    <value>* THARGOID BIO-STORAGE CAPSULE →→→!</value>
+    <comment>Commodity ThargoidPod</comment>
+    <source>Thargoid Bio-storage Capsule</source>
+  </data>
+  <data name="ThargoidScoutTissueSample">
+    <!--Machine translated-->
+    <value>* THARGOID SCOUT TISSUE SAMPLE →→→!</value>
+    <comment>Commodity ThargoidScoutTissueSample</comment>
+    <source>Thargoid Scout Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType1">
+    <!--Machine translated-->
+    <value>* THARGOID CYCLOPS TISSUE SAMPLE →→→!</value>
+    <comment>Commodity ThargoidTissueSampleType1</comment>
+    <source>Thargoid Cyclops Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType10a">
+    <!--Machine translated-->
+    <value>* TITAN MAW DEEP TISSUE SAMPLE →→→!</value>
+    <comment>Commodity ThargoidTissueSampleType10a</comment>
+    <source>Titan Maw Deep Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType10b">
+    <!--Machine translated-->
+    <value>* TITAN MAW TISSUE SAMPLE →→→!</value>
+    <comment>Commodity ThargoidTissueSampleType10b</comment>
+    <source>Titan Maw Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType10c">
+    <!--Machine translated-->
+    <value>* TITAN MAW PARTIAL TISSUE SAMPLE →→→!</value>
+    <comment>Commodity ThargoidTissueSampleType10c</comment>
+    <source>Titan Maw Partial Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType2">
+    <!--Machine translated-->
+    <value>* THARGOID BASILISK TISSUE SAMPLE →→→!</value>
+    <comment>Commodity ThargoidTissueSampleType2</comment>
+    <source>Thargoid Basilisk Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType3">
+    <!--Machine translated-->
+    <value>* THARGOID MEDUSA TISSUE SAMPLE →→→!</value>
+    <comment>Commodity ThargoidTissueSampleType3</comment>
+    <source>Thargoid Medusa Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType4">
+    <!--Machine translated-->
+    <value>* THARGOID HYDRA TISSUE SAMPLE →→→!</value>
+    <comment>Commodity ThargoidTissueSampleType4</comment>
+    <source>Thargoid Hydra Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType5">
+    <!--Machine translated-->
+    <value>* THARGOID ORTHRUS TISSUE SAMPLE →→→!</value>
+    <comment>Commodity ThargoidTissueSampleType5</comment>
+    <source>Thargoid Orthrus Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType6">
+    <!--Machine translated-->
+    <value>* THARGOID GLAIVE TISSUE SAMPLE →→→!</value>
+    <comment>Commodity ThargoidTissueSampleType6</comment>
+    <source>Thargoid Glaive Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType7">
+    <!--Machine translated-->
+    <value>* THARGOID SCYTHE TISSUE SAMPLE →→→!</value>
+    <comment>Commodity ThargoidTissueSampleType7</comment>
+    <source>Thargoid Scythe Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType9a">
+    <!--Machine translated-->
+    <value>* TITAN DEEP TISSUE SAMPLE →→→!</value>
+    <comment>Commodity ThargoidTissueSampleType9a</comment>
+    <source>Titan Deep Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType9b">
+    <!--Machine translated-->
+    <value>* TITAN TISSUE SAMPLE →→→!</value>
+    <comment>Commodity ThargoidTissueSampleType9b</comment>
+    <source>Titan Tissue Sample</source>
+  </data>
+  <data name="ThargoidTissueSampleType9c">
+    <!--Machine translated-->
+    <value>* TITAN PARTIAL TISSUE SAMPLE →→→!</value>
+    <comment>Commodity ThargoidTissueSampleType9c</comment>
+    <source>Titan Partial Tissue Sample</source>
+  </data>
+  <data name="ThargoidTitanDriveComponent">
+    <!--Machine translated-->
+    <value>* THARGOID TITAN DRIVE COMPONENT →→→!</value>
+    <comment>Commodity ThargoidTitanDriveComponent</comment>
+    <source>Thargoid Titan Drive Component</source>
+  </data>
+  <data name="TheHuttonMug">
+    <!--Machine translated-->
+    <value>* THE HUTTON MUG →→→!</value>
+    <comment>Commodity TheHuttonMug</comment>
+    <source>The Hutton Mug</source>
+  </data>
+  <data name="ThermalCoolingUnits">
+    <!--Machine translated-->
+    <value>* THERMAL COOLING UNITS →→→!</value>
+    <comment>Commodity ThermalCoolingUnits</comment>
+    <source>Thermal Cooling Units</source>
+  </data>
+  <data name="Thorium">
+    <!--Machine translated-->
+    <value>* THORIUM →→→!</value>
+    <comment>Commodity Thorium</comment>
+    <source>Thorium</source>
+  </data>
+  <data name="ThrutisCream">
+    <!--Machine translated-->
+    <value>* THRUTIS CREAM →→→!</value>
+    <comment>Commodity ThrutisCream</comment>
+    <source>Thrutis Cream</source>
+  </data>
+  <data name="TiegfriesSynthSilk">
+    <!--Machine translated-->
+    <value>* TIEGFRIES SYNTH SILK →→→!</value>
+    <comment>Commodity TiegfriesSynthSilk</comment>
+    <source>Tiegfries Synth Silk</source>
+  </data>
+  <data name="TimeCapsule">
+    <!--Machine translated-->
+    <value>* TIME CAPSULE →→→!</value>
+    <comment>Commodity TimeCapsule</comment>
+    <source>Time Capsule</source>
+  </data>
+  <data name="TiolceWaste2PasteUnits">
+    <!--Machine translated-->
+    <value>* TIOLCE WASTE2PASTE UNITS →→→!</value>
+    <comment>Commodity TiolceWaste2PasteUnits</comment>
+    <source>Tiolce Waste2Paste Units</source>
+  </data>
+  <data name="Titanium">
+    <!--Machine translated-->
+    <value>* TITANIUM →→→!</value>
+    <comment>Commodity Titanium</comment>
+    <source>Titanium</source>
+  </data>
+  <data name="Tobacco">
+    <!--Machine translated-->
+    <value>* TOBACCO →→→!</value>
+    <comment>Commodity Tobacco</comment>
+    <source>Tobacco</source>
+  </data>
+  <data name="torvalcommercialcontracts">
+    <!--Machine translated-->
+    <value>* TORVAL COMMERCIAL CONTRACTS →→→!</value>
+    <comment>Commodity torvalcommercialcontracts</comment>
+    <source>Torval Commercial Contracts</source>
+  </data>
+  <data name="torvaldeeds">
+    <!--Machine translated-->
+    <value>* TORVAL DEED →→→!</value>
+    <comment>Commodity torvaldeeds</comment>
+    <source>Torval Deed</source>
+  </data>
+  <data name="ToxandjiVirocide">
+    <!--Machine translated-->
+    <value>* TOXANDJI VIROCIDE →→→!</value>
+    <comment>Commodity ToxandjiVirocide</comment>
+    <source>Toxandji Virocide</source>
+  </data>
+  <data name="ToxicWaste">
+    <!--Machine translated-->
+    <value>* TOXIC WASTE →→→!</value>
+    <comment>Commodity ToxicWaste</comment>
+    <source>Toxic Waste</source>
+  </data>
+  <data name="TransgenicOnionHead">
+    <!--Machine translated-->
+    <value>* LUCAN ONIONHEAD →→→!</value>
+    <comment>Commodity TransgenicOnionHead</comment>
+    <source>Lucan Onionhead</source>
+  </data>
+  <data name="TrinketsOfFortune">
+    <!--Machine translated-->
+    <value>* TRINKETS OF HIDDEN FORTUNE →→→!</value>
+    <comment>Commodity TrinketsOfFortune</comment>
+    <source>Trinkets Of Hidden Fortune</source>
+  </data>
+  <data name="Tritium">
+    <!--Machine translated-->
+    <value>* TRITIUM →→→!</value>
+    <comment>Commodity Tritium</comment>
+    <source>Tritium</source>
+  </data>
+  <data name="undergroundsupport">
+    <!--Machine translated-->
+    <value>* GROM UNDERGROUND SUPPORT →→→!</value>
+    <comment>Commodity undergroundsupport</comment>
+    <source>Grom Underground Support</source>
+  </data>
+  <data name="Unknown">
+    <!--Machine translated-->
+    <value>* UNKNOWN →→→!</value>
+    <comment>Commodity Unknown</comment>
+    <source>Unknown</source>
+  </data>
+  <data name="UnknownArtifact">
+    <!--Machine translated-->
+    <value>* THARGOID SENSOR →→→!</value>
+    <comment>Commodity UnknownArtifact</comment>
+    <source>Thargoid Sensor</source>
+  </data>
+  <data name="UnknownArtifact2">
+    <!--Machine translated-->
+    <value>* THARGOID PROBE →→→!</value>
+    <comment>Commodity UnknownArtifact2</comment>
+    <source>Thargoid Probe</source>
+  </data>
+  <data name="UnknownArtifact3">
+    <!--Machine translated-->
+    <value>* THARGOID LINK →→→!</value>
+    <comment>Commodity UnknownArtifact3</comment>
+    <source>Thargoid Link</source>
+  </data>
+  <data name="UnknownBiologicalMatter">
+    <!--Machine translated-->
+    <value>* THARGOID BIOLOGICAL MATTER →→→!</value>
+    <comment>Commodity UnknownBiologicalMatter</comment>
+    <source>Thargoid Biological Matter</source>
+  </data>
+  <data name="UnknownMineral">
+    <!--Machine translated-->
+    <value>* IMPURE SPIRE MINERAL →→→!</value>
+    <comment>Commodity UnknownMineral</comment>
+    <source>Impure Spire Mineral</source>
+  </data>
+  <data name="UnknownRefinedMineral">
+    <!--Machine translated-->
+    <value>* SEMI-REFINED SPIRE MINERAL →→→!</value>
+    <comment>Commodity UnknownRefinedMineral</comment>
+    <source>Semi-Refined Spire Mineral</source>
+  </data>
+  <data name="UnknownResin">
+    <!--Machine translated-->
+    <value>* THARGOID RESIN →→→!</value>
+    <comment>Commodity UnknownResin</comment>
+    <source>Thargoid Resin</source>
+  </data>
+  <data name="UnknownSack">
+    <!--Machine translated-->
+    <value>* PROTECTIVE MEMBRANE SCRAP →→→!</value>
+    <comment>Commodity UnknownSack</comment>
+    <source>Protective Membrane Scrap</source>
+  </data>
+  <data name="UnknownTechnologySamples">
+    <!--Machine translated-->
+    <value>* THARGOID TECHNOLOGY SAMPLES →→→!</value>
+    <comment>Commodity UnknownTechnologySamples</comment>
+    <source>Thargoid Technology Samples</source>
+  </data>
+  <data name="UnmarkedWeapons">
+    <!--Machine translated-->
+    <value>* UNMARKED MILITARY SUPPLIES →→→!</value>
+    <comment>Commodity UnmarkedWeapons</comment>
+    <source>Unmarked Military supplies</source>
+  </data>
+  <data name="UnocuppiedEscapePod">
+    <!--Machine translated-->
+    <value>* UNOCCUPIED ESCAPE POD →→→!</value>
+    <comment>Commodity UnocuppiedEscapePod</comment>
+    <source>Unoccupied Escape Pod</source>
+  </data>
+  <data name="UnstableDataCore">
+    <!--Machine translated-->
+    <value>* UNSTABLE DATA CORE →→→!</value>
+    <comment>Commodity UnstableDataCore</comment>
+    <source>Unstable Data Core</source>
+  </data>
+  <data name="Uraninite">
+    <!--Machine translated-->
+    <value>* URANINITE →→→!</value>
+    <comment>Commodity Uraninite</comment>
+    <source>Uraninite</source>
+  </data>
+  <data name="Uranium">
+    <!--Machine translated-->
+    <value>* URANIUM →→→!</value>
+    <comment>Commodity Uranium</comment>
+    <source>Uranium</source>
+  </data>
+  <data name="USSCargoAncientArtefact">
+    <!--Machine translated-->
+    <value>* ANCIENT ARTIFACT →→→!</value>
+    <comment>Commodity USSCargoAncientArtefact</comment>
+    <source>Ancient Artifact</source>
+  </data>
+  <data name="USSCargoBlackBox">
+    <!--Machine translated-->
+    <value>* BLACK BOX →→→!</value>
+    <comment>Commodity USSCargoBlackBox</comment>
+    <source>Black Box</source>
+  </data>
+  <data name="USSCargoExperimentalChemicals">
+    <!--Machine translated-->
+    <value>* EXPERIMENTAL CHEMICALS →→→!</value>
+    <comment>Commodity USSCargoExperimentalChemicals</comment>
+    <source>Experimental Chemicals</source>
+  </data>
+  <data name="USSCargoMilitaryPlans">
+    <!--Machine translated-->
+    <value>* MILITARY PLANS →→→!</value>
+    <comment>Commodity USSCargoMilitaryPlans</comment>
+    <source>Military Plans</source>
+  </data>
+  <data name="USSCargoPrototypeTech">
+    <!--Machine translated-->
+    <value>* PROTOTYPE TECH →→→!</value>
+    <comment>Commodity USSCargoPrototypeTech</comment>
+    <source>Prototype Tech</source>
+  </data>
+  <data name="USSCargoRareArtwork">
+    <!--Machine translated-->
+    <value>* RARE ARTWORK →→→!</value>
+    <comment>Commodity USSCargoRareArtwork</comment>
+    <source>Rare Artwork</source>
+  </data>
+  <data name="USSCargoRebelTransmissions">
+    <!--Machine translated-->
+    <value>* REBEL TRANSMISSIONS →→→!</value>
+    <comment>Commodity USSCargoRebelTransmissions</comment>
+    <source>Rebel Transmissions</source>
+  </data>
+  <data name="USSCargoTechnicalBlueprints">
+    <!--Machine translated-->
+    <value>* TECHNICAL BLUEPRINTS →→→!</value>
+    <comment>Commodity USSCargoTechnicalBlueprints</comment>
+    <source>Technical Blueprints</source>
+  </data>
+  <data name="USSCargoTradeData">
+    <!--Machine translated-->
+    <value>* TRADE DATA →→→!</value>
+    <comment>Commodity USSCargoTradeData</comment>
+    <source>Trade Data</source>
+  </data>
+  <data name="UszaianTreeGrub">
+    <!--Machine translated-->
+    <value>* USZAIAN TREE GRUB →→→!</value>
+    <comment>Commodity UszaianTreeGrub</comment>
+    <source>Uszaian Tree Grub</source>
+  </data>
+  <data name="UtgaroarMillenialEggs">
+    <!--Machine translated-->
+    <value>* UTGAROAR MILLENNIAL EGGS →→→!</value>
+    <comment>Commodity UtgaroarMillenialEggs</comment>
+    <source>Utgaroar Millennial Eggs</source>
+  </data>
+  <data name="UtopianDissident">
+    <!--Machine translated-->
+    <value>* UTOPIAN DISSIDENT →→→!</value>
+    <comment>Commodity UtopianDissident</comment>
+    <source>Utopian Dissident</source>
+  </data>
+  <data name="UtopianFieldSupplies">
+    <!--Machine translated-->
+    <value>* UTOPIAN SUPPLIES →→→!</value>
+    <comment>Commodity UtopianFieldSupplies</comment>
+    <source>Utopian Supplies</source>
+  </data>
+  <data name="UtopianPublicity">
+    <!--Machine translated-->
+    <value>* UTOPIAN PUBLICITY →→→!</value>
+    <comment>Commodity UtopianPublicity</comment>
+    <source>Utopian Publicity</source>
+  </data>
+  <data name="UzumokuLow_GWings">
+    <!--Machine translated-->
+    <value>* UZUMOKU LOW-G WINGS →→→!</value>
+    <comment>(Deprecated) Commodity UzumokuLow_GWings</comment>
+    <source>Uzumoku Low-G Wings</source>
+  </data>
+  <data name="UzumokuLowGWings">
+    <!--Machine translated-->
+    <value>* UZUMOKU LOW-G WINGS →→→!</value>
+    <comment>Commodity UzumokuLowGWings</comment>
+    <source>Uzumoku Low-G Wings</source>
+  </data>
+  <data name="VanayequiRhinoFur">
+    <!--Machine translated-->
+    <value>* VANAYEQUI CERATOMORPHA FUR →→→!</value>
+    <comment>Commodity VanayequiRhinoFur</comment>
+    <source>Vanayequi Ceratomorpha Fur</source>
+  </data>
+  <data name="VegaSlimweed">
+    <!--Machine translated-->
+    <value>* VEGA SLIMWEED →→→!</value>
+    <comment>Commodity VegaSlimweed</comment>
+    <source>Vega Slimweed</source>
+  </data>
+  <data name="VHerculisBodyRub">
+    <!--Machine translated-->
+    <value>* V HERCULIS BODY RUB →→→!</value>
+    <comment>Commodity VHerculisBodyRub</comment>
+    <source>V Herculis Body Rub</source>
+  </data>
+  <data name="VidavantianLace">
+    <!--Machine translated-->
+    <value>* VIDAVANTIAN LACE →→→!</value>
+    <comment>Commodity VidavantianLace</comment>
+    <source>Vidavantian Lace</source>
+  </data>
+  <data name="VolkhabBeeDrones">
+    <!--Machine translated-->
+    <value>* VOLKHAB BEE DRONES →→→!</value>
+    <comment>Commodity VolkhabBeeDrones</comment>
+    <source>Volkhab Bee Drones</source>
+  </data>
+  <data name="Water">
+    <!--Machine translated-->
+    <value>* WATER →→→!</value>
+    <comment>Commodity Water</comment>
+    <source>Water</source>
+  </data>
+  <data name="WaterPurifiers">
+    <!--Machine translated-->
+    <value>* WATER PURIFIERS →→→!</value>
+    <comment>Commodity WaterPurifiers</comment>
+    <source>Water Purifiers</source>
+  </data>
+  <data name="WatersOfShintara">
+    <!--Machine translated-->
+    <value>* WATERS OF SHINTARA →→→!</value>
+    <comment>Commodity WatersOfShintara</comment>
+    <source>Waters Of Shintara</source>
+  </data>
+  <data name="WheemeteWheatCakes">
+    <!--Machine translated-->
+    <value>* WHEEMETE WHEAT CAKES →→→!</value>
+    <comment>Commodity WheemeteWheatCakes</comment>
+    <source>Wheemete Wheat Cakes</source>
+  </data>
+  <data name="Wine">
+    <!--Machine translated-->
+    <value>* WINE →→→!</value>
+    <comment>Commodity Wine</comment>
+    <source>Wine</source>
+  </data>
+  <data name="WitchhaulKobeBeef">
+    <!--Machine translated-->
+    <value>* WITCHHAUL KOBE BEEF →→→!</value>
+    <comment>Commodity WitchhaulKobeBeef</comment>
+    <source>Witchhaul Kobe Beef</source>
+  </data>
+  <data name="Wolf1301Fesh">
+    <!--Machine translated-->
+    <value>* WOLF FESH →→→!</value>
+    <comment>Commodity Wolf1301Fesh</comment>
+    <source>Wolf Fesh</source>
+  </data>
+  <data name="WolfFesh">
+    <!--Machine translated-->
+    <value>* WOLF FESH →→→!</value>
+    <comment>(Deprecated) Commodity WolfFesh</comment>
+    <source>Wolf Fesh</source>
+  </data>
+  <data name="WreckageComponents">
+    <!--Machine translated-->
+    <value>* SALVAGEABLE WRECKAGE →→→!</value>
+    <comment>Commodity WreckageComponents</comment>
+    <source>Salvageable Wreckage</source>
+  </data>
+  <data name="WuthieloKuFroth">
+    <!--Machine translated-->
+    <value>* WUTHIELO KU FROTH →→→!</value>
+    <comment>Commodity WuthieloKuFroth</comment>
+    <source>Wuthielo Ku Froth</source>
+  </data>
+  <data name="xihecompanions">
+    <!--Machine translated-->
+    <value>* XIHE BIOMORPHIC COMPANIONS →→→!</value>
+    <comment>Commodity xihecompanions</comment>
+    <source>Xihe Biomorphic Companions</source>
+  </data>
+  <data name="YasoKondiLeaf">
+    <!--Machine translated-->
+    <value>* YASO KONDI LEAF →→→!</value>
+    <comment>Commodity YasoKondiLeaf</comment>
+    <source>Yaso Kondi Leaf</source>
+  </data>
+  <data name="ZeesszeAntGlue">
+    <!--Machine translated-->
+    <value>* ZEESSZE ANT GRUB GLUE →→→!</value>
+    <comment>Commodity ZeesszeAntGlue</comment>
+    <source>Zeessze Ant Grub Glue</source>
+  </data>
+</root>
