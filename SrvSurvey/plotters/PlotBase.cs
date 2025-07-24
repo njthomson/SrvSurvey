@@ -1125,7 +1125,7 @@ namespace SrvSurvey.plotters
         private static Bitmap? backOne;
         private static Color colorOne = Color.FromArgb(1, 1, 1);
         private static Brush brushOne = new SolidBrush(colorOne);
-        private Rectangle lastOne;
+        protected Rectangle lastOne;
 
         class WindowOne : Form
         {
@@ -1155,11 +1155,13 @@ namespace SrvSurvey.plotters
         {
             if (!Game.settings.streamOneOverlay || windowOne != null) return;
 
-            Game.log("startWindowOne");
             var sz = Elite.getWindowRect().Size;
+            if (sz.Width <= 0 || sz.Height <= 0) return;
+
             backOne = new Bitmap(sz.Width, sz.Height);
             windowOne = new WindowOne(backOne);
             windowOne.Show();
+            Game.log("startWindowOne");
         }
 
         public static void stopWindowOne()
