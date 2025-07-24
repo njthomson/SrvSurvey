@@ -433,6 +433,11 @@ namespace SrvSurvey
                 Program.closeAllPlotters(true);
                 Program.getPlotter<PlotPulse>()?.reposition(Elite.getWindowRect());
             }
+
+            if (Game.settings.streamOneOverlay)
+                PlotBase.startWindowOne();
+            else
+                PlotBase.stopWindowOne();
         }
 
         protected override void OnClosed(EventArgs e)

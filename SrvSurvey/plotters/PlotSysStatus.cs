@@ -61,81 +61,73 @@ namespace SrvSurvey.plotters
         protected override void onPaintPlotter(PaintEventArgs e)
         {
             var minViableWidth = scaled(170);
-            try
+            if (game?.systemData == null || game.status == null || !PlotSysStatus.allowPlotter)
             {
-                if (game?.systemData == null || game.status == null || !PlotSysStatus.allowPlotter)
-                {
-                    this.setOpacity(0);
-                    Program.control.BeginInvoke(() => Program.closePlotter<PlotSysStatus>());
-                    return;
-                }
+                this.setOpacity(0);
+                Program.control.BeginInvoke(() => Program.closePlotter<PlotSysStatus>());
+                return;
+            }
 
-                this.dty = eight;
-                drawTextAt2(six, Res.Header, GameColors.fontSmall);
-                newLine(0, true);
-                dtx = six;
+            this.dty = eight;
+            drawTextAt2(six, Res.Header, GameColors.fontSmall);
+            newLine(0, true);
+            dtx = six;
 
-                // reduce destination to it's short name
-                var destinationBody = game.status.Destination?.Name?.Replace(game.systemData.name, "").Replace(" ", "");
+            // reduce destination to it's short name
+            var destinationBody = game.status.Destination?.Name?.Replace(game.systemData.name, "").Replace(" ", "");
 
-                if (this.nextSystem != null)
-                {
-                    // render next system only, if populated
-                    this.drawTextAt2(Res.NextSystem);
-                    this.drawTextAt2(this.nextSystem, GameColors.Cyan);
-                    return;
-                }
+            if (this.nextSystem != null)
+            {
+                // render next system only, if populated
+                this.drawTextAt2(Res.NextSystem);
+                this.drawTextAt2(this.nextSystem, GameColors.Cyan);
+                return;
+            }
 
-                var dssRemaining = game.systemData.getDssRemainingNames();
-                if (!game.systemData.honked)
-                {
-                    this.drawTextAt2(Res.FssNotStarted, GameColors.Cyan);
-                }
-                else if (!game.systemData.fssComplete)
-                {
-                    var fssProgress = 100.0 / (float)game.systemData.bodyCount * (float)game.systemData.fssBodyCount;
-                    var txt = dssRemaining.Count == 0
-                        ? Res.FssCompleteLong.format((int)fssProgress)
-                        : Res.FssCompleteShort.format((int)fssProgress);
-                    this.drawTextAt2(txt, GameColors.Cyan);
-                }
+            var dssRemaining = game.systemData.getDssRemainingNames();
+            if (!game.systemData.honked)
+            {
+                this.drawTextAt2(Res.FssNotStarted, GameColors.Cyan);
+            }
+            else if (!game.systemData.fssComplete)
+            {
+                var fssProgress = 100.0 / (float)game.systemData.bodyCount * (float)game.systemData.fssBodyCount;
+                var txt = dssRemaining.Count == 0
+                    ? Res.FssCompleteLong.format((int)fssProgress)
+                    : Res.FssCompleteShort.format((int)fssProgress);
+                this.drawTextAt2(txt, GameColors.Cyan);
+            }
 
-                if (dssRemaining.Count > 0)
+            if (dssRemaining.Count > 0)
+            {
+                if (dtx > 6) this.drawTextAt2(" ");
+                this.drawTextAt2(Res.DssRemaining.format(dssRemaining.Count));
+                this.drawRemainingBodies(destinationBody, dssRemaining);
+            }
+            else if (game.systemData.fssComplete && game.systemData.honked)
+            {
+                this.drawTextAt2(Res.NoDssMeet);
+            }
+            newLine(true);
+
+            if (!Game.settings.autoShowPlotBioSystem)
+            {
+                var bioRemaining = game.systemData.getBioRemainingNames();
+                if (bioRemaining.Count > 0)
                 {
-                    if (dtx > 6) this.drawTextAt2(" ");
-                    this.drawTextAt2(Res.DssRemaining.format(dssRemaining.Count));
-                    this.drawRemainingBodies(destinationBody, dssRemaining);
+                    this.drawTextAt2(Res.BioSignals.format(game.systemData.bioSignalsRemaining));
+                    this.drawRemainingBodies(destinationBody, bioRemaining);
                 }
-                else if (game.systemData.fssComplete && game.systemData.honked)
-                {
-                    this.drawTextAt2(Res.NoDssMeet);
-                }
+            }
+
+            var nonBodySignalCount = game.systemData.nonBodySignalCount;
+            if (Game.settings.showNonBodySignals && nonBodySignalCount > 0)
+            {
+                var sz = this.drawTextAt2(six, Res.NonBodySignals.format(nonBodySignalCount), GameColors.fontSmall2);
                 newLine(true);
-
-                if (!Game.settings.autoShowPlotBioSystem)
-                {
-                    var bioRemaining = game.systemData.getBioRemainingNames();
-                    if (bioRemaining.Count > 0)
-                    {
-                        this.drawTextAt2(Res.BioSignals.format(game.systemData.bioSignalsRemaining));
-                        this.drawRemainingBodies(destinationBody, bioRemaining);
-                    }
-                }
-
-                var nonBodySignalCount = game.systemData.nonBodySignalCount;
-                if (Game.settings.showNonBodySignals && nonBodySignalCount > 0)
-                {
-                    var sz = this.drawTextAt2(six, Res.NonBodySignals.format(nonBodySignalCount), GameColors.fontSmall2);
-                    newLine(true);
-                }
             }
-            finally
-            {
-                if (!this.IsDisposed)
-                {
-                    this.formAdjustSize(six, eight);
-                }
-            }
+
+            this.formAdjustSize(six, eight);
         }
 
         /// <summary>

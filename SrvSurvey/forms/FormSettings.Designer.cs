@@ -235,6 +235,7 @@ namespace SrvSurvey
             label28 = new Label();
             checkKeyChords = new CheckBox();
             tabPage8 = new TabPage();
+            checkBox51 = new CheckBox();
             checkBox50 = new CheckBox();
             numGravityWarningLevel = new NumericUpDown();
             label12 = new Label();
@@ -2924,6 +2925,7 @@ namespace SrvSurvey
             // 
             tabPage8.BackColor = SystemColors.Control;
             tabPage8.BorderStyle = BorderStyle.Fixed3D;
+            tabPage8.Controls.Add(checkBox51);
             tabPage8.Controls.Add(checkBox50);
             tabPage8.Controls.Add(numGravityWarningLevel);
             tabPage8.Controls.Add(label12);
@@ -2940,6 +2942,18 @@ namespace SrvSurvey
             tabPage8.Size = new Size(699, 448);
             tabPage8.TabIndex = 9;
             tabPage8.Text = "More";
+            // 
+            // checkBox51
+            // 
+            checkBox51.AutoSize = true;
+            checkBox51.FlatStyle = FlatStyle.System;
+            checkBox51.Location = new Point(12, 196);
+            checkBox51.Name = "checkBox51";
+            checkBox51.Size = new Size(206, 20);
+            checkBox51.TabIndex = 46;
+            checkBox51.Tag = "streamOneOverlay";
+            checkBox51.Text = "For streaming: use joined overlay";
+            checkBox51.UseVisualStyleBackColor = true;
             // 
             // checkBox50
             // 
@@ -3458,5 +3472,6 @@ namespace SrvSurvey
         private LinkLabel linkLabel2;
         private CheckBox checkBox49;
         private CheckBox checkBox50;
+        private CheckBox checkBox51;
     }
 }

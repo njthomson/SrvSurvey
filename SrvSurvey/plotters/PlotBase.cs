@@ -394,7 +394,7 @@ namespace SrvSurvey.plotters
         protected virtual void onJournalEntry(Docked entry) { /* overridden as necessary */ }
         protected virtual void onJournalEntry(MaterialCollected entry) { /* overridden as necessary */ }
         protected virtual void onJournalEntry(Music entry) { /* overridden as necessary */ }
-        protected virtual void onJournalEntry(FactionKillBond entry) { /* overridden as necessary */ }       
+        protected virtual void onJournalEntry(FactionKillBond entry) { /* overridden as necessary */ }
 
         #endregion
 
@@ -426,6 +426,9 @@ namespace SrvSurvey.plotters
                     // exit early if our `g` reference has changed - it means we painted already async before this one finished
                     if (this.g != e.Graphics) return;
 
+                    if (this.formSize.Width < this.Size.Width || this.formSize.Height < this.Size.Height)
+                        this.hideMyClone();
+
                     g.FillRectangle(C.Brushes.black, 0, 0, this.Width, this.Height);
                     this.formSize = new SizeF(2, 0);
                     this.dtx = eight;
@@ -434,6 +437,9 @@ namespace SrvSurvey.plotters
                         g.DrawImage(this.BackgroundImage, 0, 0);
                     onPaintPlotter(e);
                 }
+
+                if (Game.settings.streamOneOverlay && !this.fading)
+                    this.cloneMe();
 
                 if (!didFirstPaint)
                 {
@@ -465,6 +471,38 @@ namespace SrvSurvey.plotters
             {
                 this.g = null!;
             }
+        }
+
+        private void cloneMe()
+        {
+            try
+            {
+                if (!Game.settings.streamOneOverlay || this.fading || windowOne == null || backOne == null) return;
+
+                var er = Elite.getWindowRect();
+                var x = this.Left - er.Left;
+                var y = this.Top - er.Top;
+
+                if (this.Opacity == 0 || !this.Visible)
+                {
+                    using (var g2 = Graphics.FromImage(backOne))
+                    {
+                        g2.FillRectangle(brushOne, this.lastOne);
+                    }
+                }
+                else
+                {
+                    this.lastOne = new Rectangle(x, y, this.Width, this.Height);
+                    using (var g2 = Graphics.FromImage(backOne))
+                    {
+                        g2.FillRectangle(brushOne, this.lastOne);
+                        this.DrawToBitmap(backOne, this.lastOne);
+                    }
+                }
+
+                Program.defer(() => windowOne.Invalidate());
+            }
+            catch { }
         }
 
         /// <summary> Show an obvious border if this plotter is getting adjusted </summary>
@@ -892,6 +930,9 @@ namespace SrvSurvey.plotters
 
             if (this.Size != this.formSize.ToSize() && !forceRepaint)
             {
+                if (this.formSize.Width < this.Size.Width || this.formSize.Height < this.Size.Height)
+                    this.hideMyClone();
+
                 //Game.log($"formAdjustSize: {this.Name} - {this.Size} => {this.formSize.ToSize()}");
                 this.Size = this.formSize.ToSize();
                 this.BackgroundImage = GameGraphics.getBackgroundImage(this);
@@ -1074,6 +1115,80 @@ namespace SrvSurvey.plotters
             var txt = rm.GetString(name);
             if (txt == null) Debugger.Break();
             return string.Format(txt ?? "", args);
+        }
+
+        #endregion
+
+        #region One Window to Rule Them All
+
+        private static WindowOne? windowOne;
+        private static Bitmap? backOne;
+        private static Color colorOne = Color.FromArgb(1, 1, 1);
+        private static Brush brushOne = new SolidBrush(colorOne);
+        private Rectangle lastOne;
+
+        class WindowOne : Form
+        {
+            public WindowOne(Bitmap bm) : base()
+            {
+                this.Text = "SrvSurveyWindowOne";
+                this.Name = "SrvSurveyWindowOne";
+                this.BackgroundImage = bm;
+                this.FormBorderStyle = FormBorderStyle.None;
+                this.StartPosition = FormStartPosition.Manual;
+                this.ShowIcon = false;
+                this.ShowInTaskbar = false;
+                this.BackColor = colorOne;
+                this.TransparencyKey = colorOne;
+                this.AllowTransparency = true;
+                this.Size = bm.Size;
+                this.Opacity = 0;
+
+                this.MinimizeBox = false;
+                this.MaximizeBox = false;
+                this.ControlBox = false;
+                this.DoubleBuffered = true;
+            }
+        }
+
+        public static void startWindowOne()
+        {
+            if (!Game.settings.streamOneOverlay || windowOne != null) return;
+
+            Game.log("startWindowOne");
+            var sz = Elite.getWindowRect().Size;
+            backOne = new Bitmap(sz.Width, sz.Height);
+            windowOne = new WindowOne(backOne);
+            windowOne.Show();
+        }
+
+        public static void stopWindowOne()
+        {
+            if (windowOne != null)
+            {
+                Game.log("stopWindowOne");
+                windowOne.Close();
+                windowOne = null;
+                backOne = null;
+            }
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            this.hideMyClone();
+        }
+
+        public void hideMyClone()
+        {
+            if (!Game.settings.streamOneOverlay || windowOne == null || backOne == null) return;
+
+            Debug.WriteLine($"hideMyClone: {this.Name} => {this.lastOne}");
+            using (var g2 = Graphics.FromImage(backOne))
+            {
+                g2.FillRectangle(brushOne, this.lastOne);
+            }
+            windowOne.Invalidate();
         }
 
         #endregion

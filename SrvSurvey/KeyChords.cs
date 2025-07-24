@@ -94,6 +94,7 @@ namespace SrvSurvey
             { KeyAction.track7, "ALT CTRL F7" },
             { KeyAction.track8, "ALT CTRL F8" },
             { KeyAction.nextWindow, "ALT CTRL W" },
+            { KeyAction.streamOne, "ALT CTRL O" },
         };
 
         public static bool doKeyAction(KeyAction keyAction)
@@ -128,6 +129,7 @@ namespace SrvSurvey
                 case KeyAction.track7: return trackLocation(7);
                 case KeyAction.track8: return trackLocation(8);
                 case KeyAction.nextWindow: return focusNextGameWindow();
+                case KeyAction.streamOne: return toggleStreamOne();
 
                 default:
                     Game.log($"Unsupported key action: {keyAction}");
@@ -433,6 +435,24 @@ namespace SrvSurvey
 
             return true;
         }
+
+        private static bool toggleStreamOne()
+        {
+            if (Game.settings.streamOneOverlay)
+            {
+                Game.settings.streamOneOverlay = false;
+                PlotBase.stopWindowOne();
+            }
+            else
+            {
+                Game.settings.streamOneOverlay = true;
+                PlotBase.startWindowOne();
+                Program.invalidateActivePlotters();
+            }
+
+            Game.settings.Save();
+            return true;
+        }
     }
 
     /// <summary>
@@ -473,6 +493,8 @@ namespace SrvSurvey
         collapseColonyData,
         /// <summary> Set focus on the next game window </summary>
         nextWindow,
+        /// <summary> Toggle setting streamOneOverlay </summary>
+        streamOne,
         /// <summary> Track the current location as #1 </summary>
         track1,
         /// <summary> Track the current location as #2 </summary>

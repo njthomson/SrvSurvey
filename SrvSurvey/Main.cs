@@ -475,6 +475,8 @@ namespace SrvSurvey
                     Game.log($"Cmdr migrations complete!");
                 }));
             }
+
+            PlotBase.startWindowOne();
         }
 
         private void updateAllControls(GameMode? newMode = null)

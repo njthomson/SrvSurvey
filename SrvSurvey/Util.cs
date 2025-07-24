@@ -1273,9 +1273,9 @@ namespace SrvSurvey
         /// <summary>
         /// Waits to invoke the action, invoking only once should there be multiple requests during the delay time.
         /// </summary>
-        public static void deferAfter(int delayMs, Action func)
+        public static void deferAfter(int delayMs, Action func, string? prefix = null)
         {
-            var name = $"{func.Target}/{func.Method}";
+            var name = $"{prefix}{func.Target}/{func.Method}";
             if (!pendingCounts.ContainsKey(name)) pendingCounts[name] = 0;
 
             pendingCounts[name]++;

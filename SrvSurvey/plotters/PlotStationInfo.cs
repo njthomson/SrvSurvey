@@ -68,8 +68,12 @@ namespace SrvSurvey.plotters
 
             if (station == null)
             {
+                var hadOpacity = this.Opacity > 0;
+
                 // it is not
                 setOpacity(0);
+                if (hadOpacity)
+                    this.hideMyClone();
             }
             else if (game.systemData != null)
             {
