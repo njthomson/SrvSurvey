@@ -29,7 +29,7 @@ namespace SrvSurvey.widgets
                     var obj = JsonConvert.DeserializeObject<JObject>(json)!;
                     parseThemeObj(theme, "", obj);
 
-                    Game.log($"Loaded theme");
+                    Game.log($"Loaded theme (default: {defaultTheme})");
                     return theme;
                 }
                 catch (Exception ex)

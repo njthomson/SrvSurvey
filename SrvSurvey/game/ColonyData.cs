@@ -48,6 +48,7 @@ namespace SrvSurvey.game
 
         public static ColonyData Load(string fid, string cmdr)
         {
+            Game.log("ColonyData.Load (from disk)");
             var filepath = Path.Combine(Program.dataFolder, $"{fid}-colony.json");
 
             var data = Data.Load<ColonyData>(filepath);
@@ -62,6 +63,7 @@ namespace SrvSurvey.game
 
         public async Task fetchLatest(string? buildId = null)
         {
+            Game.log("ColonyData.fetchLatest (from network)");
             // Make plotter it render "updating..."
             Program.getPlotter<PlotBuildCommodities>()?.startPending();
             try
