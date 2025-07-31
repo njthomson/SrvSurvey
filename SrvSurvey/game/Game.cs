@@ -1690,10 +1690,10 @@ namespace SrvSurvey.game
                     || entry.ResourcesRequired
                         .Any(r => r.ProvidedAmount != lastColonisationConstructionDepot.ResourcesRequired.First(m => m.Name == r.Name).ProvidedAmount);
 
-                if (changed)
+                if (changed && systemData != null)
                 {
                     this.lastColonisationConstructionDepot = entry;
-                    cmdrColony.updateNeeds(entry, systemData!.address);
+                    cmdrColony.updateNeeds(entry, systemData.address);
                 }
             }
 

@@ -161,6 +161,8 @@ namespace SrvSurvey.plotters
                     this.distance = -1;
                     Game.edsm.getSystems(this.destinationName).continueOnMain(this, data =>
                     {
+                        if (this.IsDisposed || game.systemData == null) return;
+
                         if (!(data.Length > 0))
                         {
                             this.distance = -2;
