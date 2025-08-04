@@ -225,8 +225,7 @@
     <source>Structure</source>
   </data>
   <data name="Unknown">
-    <!--Machine translated-->
-    <value>未知</value>
+    <value>类型未知</value>
     <comment>Guardian site type is unknown</comment>
     <source>Unknown</source>
   </data>
