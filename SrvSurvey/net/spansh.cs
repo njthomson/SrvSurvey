@@ -246,7 +246,7 @@ namespace SrvSurvey.net
                 public double distance;
                 public int efficiency;
                 public Guid job;
-                public int range;
+                public string range;
                 public string source_system;
                 public List<Jump> system_jumps;
 
@@ -276,7 +276,7 @@ namespace SrvSurvey.net
             public class Result
             {
                 public Guid job;
-                public int range;
+                public string range;
                 public string source_system;
                 public List<string> destination_systems;
                 public List<Jump> system_jumps;
