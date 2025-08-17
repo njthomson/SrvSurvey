@@ -3318,7 +3318,7 @@ namespace SrvSurvey.game
 
             try
             {
-                Game.log($"## Before: InvokeRequired: {Program.control.InvokeRequired}, IsAlive: {Thread.CurrentThread.IsAlive}, IsBackground: {Thread.CurrentThread.IsBackground}, IsThreadPoolThread: {Thread.CurrentThread.IsThreadPoolThread}, ApartmentState: {Thread.CurrentThread.ApartmentState}");
+                Game.log($"## Before: InvokeRequired: {Program.control.InvokeRequired}, IsAlive: {Thread.CurrentThread.IsAlive}, IsBackground: {Thread.CurrentThread.IsBackground}, IsThreadPoolThread: {Thread.CurrentThread.IsThreadPoolThread}");
             }
             catch { }
 
@@ -3334,7 +3334,7 @@ namespace SrvSurvey.game
                     {
                         try
                         {
-                            Game.log($"## {count} First: InvokeRequired: {Program.control.InvokeRequired}, IsAlive: {Thread.CurrentThread.IsAlive}, IsBackground: {Thread.CurrentThread.IsBackground}, IsThreadPoolThread: {Thread.CurrentThread.IsThreadPoolThread}, ApartmentState: {Thread.CurrentThread.ApartmentState}");
+                            Game.log($"## {count} First: InvokeRequired: {Program.control.InvokeRequired}, IsAlive: {Thread.CurrentThread.IsAlive}, IsBackground: {Thread.CurrentThread.IsBackground}, IsThreadPoolThread: {Thread.CurrentThread.IsThreadPoolThread}");
                         }
                         catch { }
                     }
@@ -3345,7 +3345,7 @@ namespace SrvSurvey.game
                         Game.log($"Stop counting - fps: {fps} for {duration} seconds. (Max observed: {maxBlueCount.ToString("N5")})");
                         try
                         {
-                            Game.log($"## {count} Last: InvokeRequired: {Program.control.InvokeRequired}, IsAlive: {Thread.CurrentThread.IsAlive}, IsBackground: {Thread.CurrentThread.IsBackground}, IsThreadPoolThread: {Thread.CurrentThread.IsThreadPoolThread}, ApartmentState: {Thread.CurrentThread.ApartmentState}");
+                            Game.log($"## {count} Last: InvokeRequired: {Program.control.InvokeRequired}, IsAlive: {Thread.CurrentThread.IsAlive}, IsBackground: {Thread.CurrentThread.IsBackground}, IsThreadPoolThread: {Thread.CurrentThread.IsThreadPoolThread}");
                         }
                         catch { }
                     }
@@ -3360,7 +3360,7 @@ namespace SrvSurvey.game
                         this.systemData?.Save();
                         try
                         {
-                            Game.log($"## {count} Last: InvokeRequired: {Program.control.InvokeRequired}, IsAlive: {Thread.CurrentThread.IsAlive}, IsBackground: {Thread.CurrentThread.IsBackground}, IsThreadPoolThread: {Thread.CurrentThread.IsThreadPoolThread}, ApartmentState: {Thread.CurrentThread.ApartmentState}");
+                            Game.log($"## {count} Last: InvokeRequired: {Program.control.InvokeRequired}, IsAlive: {Thread.CurrentThread.IsAlive}, IsBackground: {Thread.CurrentThread.IsBackground}, IsThreadPoolThread: {Thread.CurrentThread.IsThreadPoolThread}");
                         }
                         catch { }
 

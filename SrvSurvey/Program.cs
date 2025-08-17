@@ -537,8 +537,8 @@ namespace SrvSurvey
 
         public static bool checkAndMigrateAppStoreRoamingFolder()
         {
-            var redirectedRoamingFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Packages/35333NosmohtSoftware.142860789C73F_p4c193bsm1z5a/LocalCache/Roaming/SrvSurvey/SrvSurvey");
-            var redirectedRoamingFolder2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Packages/35333NosmohtSoftware.142860789C73F_p4c193bsm1z5a/LocalCache/Roaming/SrvSurvey/SrvSurvey-");
+            var redirectedRoamingFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Packages\35333NosmohtSoftware.142860789C73F_p4c193bsm1z5a\LocalCache\Roaming\SrvSurvey\SrvSurvey");
+            var redirectedRoamingFolder2 = redirectedRoamingFolder + "-";
             var lastOperation = "";
 
             try
@@ -555,7 +555,7 @@ namespace SrvSurvey
                 {
                     // first - rename redirected folder with a trailing '-' so it won't cause problems on the next run
                     lastOperation = "Rename redirectedRoamingFolder";
-                    Directory.Move(redirectedRoamingFolder, $"{redirectedRoamingFolder}-");
+                    Directory.Move(redirectedRoamingFolder, redirectedRoamingFolder2);
 
                     // ensure the real folder exists
                     lastOperation = "Create appData folder";
