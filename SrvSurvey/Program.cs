@@ -572,7 +572,7 @@ namespace SrvSurvey
                 {
                     // there will be trouble if both folders exist, so rename to avoid that
                     lastOperation = "Rename X redirectedRoamingFolder";
-                    Directory.Move(redirectedRoamingFolder, $"x{redirectedRoamingFolder}");
+                    Directory.Move(redirectedRoamingFolder, $"{redirectedRoamingFolder}x");
                 }
 
                 var hasAppStoreRedirectedRoamingFolder2 = Directory.Exists(redirectedRoamingFolder2);
