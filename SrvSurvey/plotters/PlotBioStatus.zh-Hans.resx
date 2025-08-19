@@ -104,7 +104,7 @@
     <source>Something is wrong. Please share logs.</source>
   </data>
   <data name="SuffixFF">
-    <value>(FF奖励)</value>
+    <value>(含FF奖励)</value>
     <comment>Shown next to credit value when First Footfall bonus will be applied</comment>
     <source>(FF bonus)</source>
   </data>
