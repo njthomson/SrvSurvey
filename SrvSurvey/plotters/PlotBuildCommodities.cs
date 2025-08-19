@@ -511,7 +511,10 @@ namespace SrvSurvey.plotters
 
             var canCollapse = Game.settings.buildProjectsShowSumFC_TEST && !dockedAtLinkedFC && Game.settings.buildProjectsCollapseGroupsWithFCEnough_TEST != toggleCollapse;
 
-            foreach (var cargoType in ColonyData.mapCargoType.Keys)
+            var cargoTypes = ColonyData.mapCargoType.Keys
+                .OrderBy(cargoType => Properties.CommodityCategories.ResourceManager.GetString(cargoType) ?? cargoType, StringComparer.OrdinalIgnoreCase);
+
+            foreach (var cargoType in cargoTypes)
             {
                 // skip types with nothing needed
                 var sum = ColonyData.mapCargoType[cargoType].Sum(name => needs.commodities.GetValueOrDefault(name));
@@ -542,7 +545,11 @@ namespace SrvSurvey.plotters
 
                 // then each commodity in the type
                 var flip = true;
-                foreach (var name in ColonyData.mapCargoType[cargoType])
+
+                // order the commodities by their translated name, with ordinal comparison to match the in-game sorting ("Équipement" comes after "Vêtements" with the game in French, go ask Frontier)
+                var commodities = ColonyData.mapCargoType[cargoType]
+                    .OrderBy(name => Properties.Commodities.ResourceManager.GetString(name) ?? name, StringComparer.OrdinalIgnoreCase);
+                foreach (var name in commodities)
                 {
                     // skip anything not needed
                     var needCount = needs.commodities.GetValueOrDefault(name);
