@@ -61,8 +61,7 @@
   </resheader>
   <!--Localizable elements are below-->
   <data name="BluePrintLine">
-    <!--Machine translated-->
-    <value>Impression bleue : {0}</value>
+    <value>Plan : {0}</value>
     <comment>Line header shown if the site yields some blue print
 {0} string, the type of blue print</comment>
     <source>Blue print: {0}</source>

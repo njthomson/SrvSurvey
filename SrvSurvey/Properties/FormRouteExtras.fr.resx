@@ -152,7 +152,7 @@
   </data>
   <data name="RouteProgress">
     <!--Machine translated-->
-    <value>Progression de l’itinéraire : #{0} de {1}</value>
+    <value>Progression de l’itinéraire : #{0} sur {1}</value>
     <comment>Footer label when route is in progress
 {0} int, the current hop
 {1} int, total count of hops</comment>

@@ -73,14 +73,13 @@
     <source>AGRI</source>
   </data>
   <data name="AutoDock1">
-    <!--Machine translated-->
-    <value>Station d’accueil automatique en cours</value>
+    <value>Appontage automatique en cours</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Auto dock in progress</source>
   </data>
   <data name="AutoDock2">
     <!--Machine translated-->
-    <value>Prise en charge de l’identification automatique des règlements</value>
+    <value>Prise en charge de l’identification automatique des complexes</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Settlement auto-identification supported</source>
   </data>
@@ -104,26 +103,23 @@
   </data>
   <data name="DockingApproved">
     <!--Machine translated-->
-    <value>Accostage approuvé : pad #{0}</value>
+    <value>Appontage autorisé : pad #{0}</value>
     <comment>Shown when approaching a settlement
 {0} int, the pad number assigned</comment>
     <source>Docking approved: pad #{0}</source>
   </data>
   <data name="DockingDenied">
-    <!--Machine translated-->
-    <value>Amarrage refusé</value>
+    <value>Appontage refusé</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Docking denied</source>
   </data>
   <data name="DockingRequested">
-    <!--Machine translated-->
-    <value>Amarrage demandé</value>
+    <value>Appontage demandé</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Docking requested</source>
   </data>
   <data name="EXT">
-    <!--Machine translated-->
-    <value>POSTE</value>
+    <value>EXT</value>
     <comment>A contraction of External, ideally 3 letters</comment>
     <source>EXT</source>
   </data>
@@ -146,8 +142,7 @@
     <source>HAB</source>
   </data>
   <data name="HasInterstellar">
-    <!--Machine translated-->
-    <value>Factions interstellaires disponibles</value>
+    <value>Interstellar Factor disponible</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Interstellar factions available</source>
   </data>
@@ -171,13 +166,13 @@
   </data>
   <data name="HelpFoot3">
     <!--Machine translated-->
-    <value>3. Faites face avec les chevrons devant vous à votre gauche</value>
+    <value>3. Faites face aux chevrons devant vous à votre gauche</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>3. Face with the chevrons ahead to your left</source>
   </data>
   <data name="HelpFoot4">
     <!--Machine translated-->
-    <value>4. Visez la fin du groove devant vous</value>
+    <value>4. Visez la fin de la rainure devant vous</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>4. Aim at the end of the groove ahead of you</source>
   </data>
@@ -196,20 +191,18 @@
     <source>See the wiki for more info</source>
   </data>
   <data name="HelpShip1">
-    <!--Machine translated-->
-    <value>Le règlement sera déterminé après la prochaine action</value>
+    <value>Le complexe sera déterminé après la prochaine action</value>
     <comment>Shown when landed and help is needed in a ship</comment>
     <source>Settlement will be identified after next action</source>
   </data>
   <data name="HelpShip2">
     <!--Machine translated-->
-    <value>Pour identifier manuellement</value>
+    <value>Pour l'identifier manuellement</value>
     <comment>Shown when landed and help is needed in a ship</comment>
     <source>To manually identify</source>
   </data>
   <data name="HelpShip3">
-    <!--Machine translated-->
-    <value>Envoyer {0} lorsqu’il est ancré</value>
+    <value>Envoyer {0} une fois apponté</value>
     <comment>Shown when landed and help is needed in a ship
 {0} string, the non-localized command to type</comment>
     <source>Send '{0}' when docked</source>
@@ -233,32 +226,27 @@
     <source>Influence</source>
   </data>
   <data name="KnownSettlement">
-    <!--Machine translated-->
-    <value>Peuplement connu</value>
+    <value>Complexe connu</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Known settlement</source>
   </data>
   <data name="LAB">
-    <!--Machine translated-->
-    <value>LABORATOIRE</value>
+    <value>LAB</value>
     <comment>A contraction of Laboratory, ideally 3 letters</comment>
     <source>LAB</source>
   </data>
   <data name="ManualDock1">
-    <!--Machine translated-->
-    <value>Amarrage manuel en cours</value>
+    <value>Appontage manuel en cours</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Manual docking in progress</source>
   </data>
   <data name="ManualDock2">
-    <!--Machine translated-->
-    <value>L’identification des colonies sera retardée</value>
+    <value>L'identification du complexe va être retardé</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Settlement identification will be delayed</source>
   </data>
   <data name="ManualDock3">
-    <!--Machine translated-->
-    <value>Station d’accueil automatique recommandée</value>
+    <value>Appontage automatique recommandé</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Auto dock recommended</source>
   </data>
@@ -269,8 +257,7 @@
     <source>MED</source>
   </data>
   <data name="NoSpace">
-    <!--Machine translated-->
-    <value>Pas de tampons disponibles</value>
+    <value>Aucune plateforme d'atterrissage disponible</value>
     <comment>Shown when approaching a settlement</comment>
     <source>No pads available</source>
   </data>
@@ -288,7 +275,7 @@
   </data>
   <data name="POW">
     <!--Machine translated-->
-    <value>Prisonnier de guerre</value>
+    <value>POW</value>
     <comment>A contraction of Power Center, ideally 3 letters</comment>
     <source>POW</source>
   </data>
@@ -311,8 +298,7 @@
     <source>STO</source>
   </data>
   <data name="TooLarge">
-    <!--Machine translated-->
-    <value>Navire trop grand</value>
+    <value>Vaisseau trop grand</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Ship too large</source>
   </data>

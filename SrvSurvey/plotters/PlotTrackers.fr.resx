@@ -61,8 +61,7 @@
   </resheader>
   <!--Localizable elements are below-->
   <data name="HeaderLine">
-    <!--Machine translated-->
-    <value>Suivi {0} cibles :</value>
+    <value>Suivi de {0} cibles :</value>
     <comment>Header line
 {0} int, count of bookmarks tracked</comment>
     <source>Tracking {0} targets:</source>

@@ -27,7 +27,6 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -59,58 +58,72 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <!--Localizable elements are below-->
-  <data name="NearingShipDistance">
-    <value>Approche de la distance de départ du vaisseau</value>
-    <comment>Warning shown when nearing ship departure distance</comment>
-    <source>Nearing ship departure distance</source>
+  <data name="Chemicals">
+    <value>Produits chimiques</value>
+    <comment>Commodity category Chemicals</comment>
   </data>
-  <data name="ScanOne_Long">
-    <!--Machine translated-->
-    <value>Analyse 1 :</value>
-    <comment>Prefix to bearing and distance to scan one</comment>
-    <source>Scan one:</source>
+  <data name="ConsumerItems">
+    <value>Biens de Consommation</value>
+    <comment>Commodity category ConsumerItems</comment>
   </data>
-  <data name="ScanOne_Short">
-    <!--Machine translated-->
-    <value>1ère:</value>
-    <comment>A shorter prefix to bearing and distance to scan one, when window is too narrow</comment>
-    <source>1st:</source>
+  <data name="Foods">
+    <value>Alimentation</value>
+    <comment>Commodity category Foods</comment>
   </data>
-  <data name="ScanOneInvalid">
-    <!--Machine translated-->
-    <value>Analyse 2 : invalide</value>
-    <comment>Warning shown when scan one is not valid</comment>
-    <source>Scan one: invalid</source>
+  <data name="IndustrialMaterials">
+    <value>Matériaux Industriels</value>
+    <comment>Commodity category IndustrialMaterials</comment>
   </data>
-  <data name="ScanTwo_Long">
-    <!--Machine translated-->
-    <value>Analyse 2 :</value>
-    <comment>Prefix to bearing and distance to scan two</comment>
-    <source>Scan two:</source>
+  <data name="Machinery">
+    <value>Machines</value>
+    <comment>Commodity category Machinery</comment>
   </data>
-  <data name="ScanTwo_Short">
-    <!--Machine translated-->
-    <value>2ème :</value>
-    <comment>A shorter prefix to bearing and distance to scan two, when window is too narrow</comment>
-    <source>2nd:</source>
+  <data name="Medicines">
+    <value>Médicaments</value>
+    <comment>Commodity category Medicines</comment>
   </data>
-  <data name="ScanTwoInvalid">
-    <!--Machine translated-->
-    <value>Analyse 2 : non valide</value>
-    <comment>Warning shown when scan two is not valid</comment>
-    <source>Scan two: invalid</source>
+  <data name="Metals">
+    <value>Métaux</value>
+    <comment>Commodity category Metals</comment>
   </data>
-  <data name="Ship">
-    <!--Machine translated-->
-    <value>Vaisseau :</value>
-    <comment>Prefix to bearing and distance to the ship</comment>
-    <source>Ship:</source>
+  <data name="Minerals">
+    <value>Minerais</value>
+    <comment>Commodity category Minerals</comment>
   </data>
-  <data name="SRV">
-    <!--Machine translated-->
-    <value>SRV :</value>
-    <comment>Prefix to bearing and distance to SRV</comment>
-    <source>SRV:</source>
+  <data name="Narcotics">
+    <value>Narcotiques</value>
+    <comment>Commodity category Narcotics</comment>
+  </data>
+  <data name="NonMarketable">
+    <value>Non commercialisable</value>
+    <comment>Commodity category NonMarketable</comment>
+  </data>
+  <data name="Powerplay">
+    <value>Power play</value>
+    <comment>Commodity category Powerplay</comment>
+  </data>
+  <data name="Salvage">
+    <value>Ferraille</value>
+    <comment>Commodity category Salvage</comment>
+  </data>
+  <data name="Technology">
+    <value>Technologie</value>
+    <comment>Commodity category Technology</comment>
+  </data>
+  <data name="Textiles">
+    <value>Textiles</value>
+    <comment>Commodity category Textiles</comment>
+  </data>
+  <data name="Unknown">
+    <value>Inconnu</value>
+    <comment>Commodity category Unknown</comment>
+  </data>
+  <data name="Waste">
+    <value>Déchets</value>
+    <comment>Commodity category Waste</comment>
+  </data>
+  <data name="Weapons">
+    <value>Armes</value>
+    <comment>Commodity category Weapons</comment>
   </data>
 </root>
