@@ -149,7 +149,7 @@
   </data>
   <data name="FormBoxelSearch_VisitedCounts">
     <!--Machine translated-->
-    <value>Achèvement de {2} de {3} boxels, {0} de {1} systèmes dans les boxels actuels</value>
+    <value>Achèvement de {2} sur {3} boxels, {0} sur {1} systèmes dans les boxels actuels</value>
     <comment>Shown in FormBoxelSearch status bar, summarizing how many systems have been visited
 {0} int, count of systems visited
 {1} int, total count of systems to be visited
@@ -170,7 +170,7 @@
   </data>
   <data name="NetSysData_DiscoveredPartial">
     <!--Machine translated-->
-    <value>Découverte ({0} de {1})</value>
+    <value>Découverte ({0} sur {1})</value>
     <comment>{0} int, count of bodies, {1} int, total count of bodies</comment>
     <source>Discovered ({0} of {1})</source>
   </data>

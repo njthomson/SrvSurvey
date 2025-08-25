@@ -74,8 +74,7 @@
     <source>Tracking {0} signals from Canonn:</source>
   </data>
   <data name="NoMoreSignals">
-    <!--Machine translated-->
-    <value>Aucun signal non balayé ne répond aux critères</value>
+    <value>Aucun signal non-analysé ne répond aux critères</value>
     <comment>Line shown when no more signals apply</comment>
     <source>No un-scanned signals meet criteria</source>
   </data>

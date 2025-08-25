@@ -192,7 +192,6 @@
     <source>Ancient Relic</source>
   </data>
   <data name="AncientRelicTG">
-    <!--Machine translated-->
     <value>Relique non classée</value>
     <comment>Commodity AncientRelicTG</comment>
     <source>Unclassified Relic</source>
@@ -283,8 +282,7 @@
     <source>Auto-Fabricators</source>
   </data>
   <data name="AzCancriFormula42">
-    <!--Machine translated-->
-    <value>AZ Cancri Formule 42</value>
+    <value>Formule 42 d'AZ Cancri</value>
     <comment>Commodity AzCancriFormula42</comment>
     <source>AZ Cancri Formula 42</source>
   </data>
@@ -464,8 +462,7 @@
     <source>Chi Eridani Marine Paste</source>
   </data>
   <data name="ClassifiedExperimentalEquipment">
-    <!--Machine translated-->
-    <value>Matériel expérimental classé</value>
+    <value>Équipement expérimental top secret</value>
     <comment>Commodity ClassifiedExperimentalEquipment</comment>
     <source>Classified Experimental Equipment</source>
   </data>
@@ -535,8 +532,7 @@
     <source>Coquim Spongiform Victuals</source>
   </data>
   <data name="CoralSap">
-    <!--Machine translated-->
-    <value>Sève de corail</value>
+    <value>Sève corallienne</value>
     <comment>Commodity CoralSap</comment>
     <source>Coral Sap</source>
   </data>
@@ -1370,8 +1366,7 @@
     <source>Onionhead Beta Strain</source>
   </data>
   <data name="OnionHeadC">
-    <!--Machine translated-->
-    <value>Souche Onionhead Gamma</value>
+    <value>Variété gamma de tête d'oignon</value>
     <comment>Commodity Onionhead Gamma Strain</comment>
     <source>Onionhead Gamma Strain</source>
   </data>
@@ -1456,7 +1451,6 @@
     <source>Personal Effects</source>
   </data>
   <data name="PersonalGifts">
-    <!--Machine translated-->
     <value>Cadeaux festifs</value>
     <comment>Commodity.PersonalGifts</comment>
     <source>Festive Gifts</source>
@@ -1755,7 +1749,6 @@
     <source>Space Pioneer Relics</source>
   </data>
   <data name="Steel">
-    <!--Machine translated-->
     <value>Acier</value>
     <comment>Steel commodity</comment>
     <source>Steel</source>
@@ -1851,44 +1844,37 @@
     <source>Thallium</source>
   </data>
   <data name="ThargoidBoneFragments">
-    <!--Machine translated-->
-    <value>Fragments d’os</value>
+    <value>Fragments d'os</value>
     <comment>Commodity ThargoidBoneFragments</comment>
     <source>Bone Fragments</source>
   </data>
   <data name="ThargoidCystSpecimen">
-    <!--Machine translated-->
-    <value>Échantillon de kyste</value>
+    <value>Spécimen de kyste</value>
     <comment>Commodity ThargoidCystSpecimen</comment>
     <source>Cyst Specimen</source>
   </data>
   <data name="ThargoidGeneratorTissueSample">
-    <!--Machine translated-->
     <value>Échantillon de tissu caustique</value>
     <comment>Commodity ThargoidGeneratorTissueSample</comment>
     <source>Caustic Tissue Sample</source>
   </data>
   <data name="ThargoidHeart">
-    <!--Machine translated-->
-    <value>Cœur thargoïde</value>
+    <value>Cœur Thargoid</value>
     <comment>Commodity ThargoidHeart</comment>
     <source>Thargoid Heart</source>
   </data>
   <data name="ThargoidOrganSample">
-    <!--Machine translated-->
-    <value>Échantillon d’organe</value>
+    <value>Échantillon d'organe</value>
     <comment>Commodity ThargoidOrganSample</comment>
     <source>Organ Sample</source>
   </data>
   <data name="ThargoidPod">
-    <!--Machine translated-->
-    <value>Capsule de bio-stockage thargoid</value>
+    <value>Capsule de bioconfinement Thargoid</value>
     <comment>Commodity ThargoidPod</comment>
     <source>Thargoid Bio-storage Capsule</source>
   </data>
   <data name="ThargoidScoutTissueSample">
-    <!--Machine translated-->
-    <value>Échantillon de tissu de scout thargoïde</value>
+    <value>Échantillon de tissu Thargoid - éclaireur</value>
     <comment>Commodity ThargoidScoutTissueSample</comment>
     <source>Thargoid Scout Tissue Sample</source>
   </data>
@@ -1898,20 +1884,17 @@
     <source>Thargoid Cyclops Tissue Sample</source>
   </data>
   <data name="ThargoidTissueSampleType10a">
-    <!--Machine translated-->
-    <value>Échantillon de tissus profonds de Titan Maw</value>
+    <value>Échantillon de tissu profond de gueule - Titan</value>
     <comment>Commodity ThargoidTissueSampleType10a</comment>
     <source>Titan Maw Deep Tissue Sample</source>
   </data>
   <data name="ThargoidTissueSampleType10b">
-    <!--Machine translated-->
-    <value>Échantillon de tissu Titan Maw</value>
+    <value>Échantillon de tissu de gueule - Titan</value>
     <comment>Commodity ThargoidTissueSampleType10b</comment>
     <source>Titan Maw Tissue Sample</source>
   </data>
   <data name="ThargoidTissueSampleType10c">
-    <!--Machine translated-->
-    <value>Échantillon partiel de tissu Titan Maw</value>
+    <value>Échantillon de tissu de gueule partiel - Titan</value>
     <comment>Commodity ThargoidTissueSampleType10c</comment>
     <source>Titan Maw Partial Tissue Sample</source>
   </data>
@@ -1931,44 +1914,37 @@
     <source>Thargoid Hydra Tissue Sample</source>
   </data>
   <data name="ThargoidTissueSampleType5">
-    <!--Machine translated-->
-    <value>Échantillon de tissu d’Orthôdre thargoïde</value>
+    <value>Échantillon de tissu d'un Orthrus thargoid</value>
     <comment>Commodity ThargoidTissueSampleType5</comment>
     <source>Thargoid Orthrus Tissue Sample</source>
   </data>
   <data name="ThargoidTissueSampleType6">
-    <!--Machine translated-->
-    <value>Échantillon de tissu de glaive thargoïde</value>
+    <value>Échantillon de tissu Thargoid - Glaive</value>
     <comment>Commodity ThargoidTissueSampleType6</comment>
     <source>Thargoid Glaive Tissue Sample</source>
   </data>
   <data name="ThargoidTissueSampleType7">
-    <!--Machine translated-->
-    <value>Échantillon de tissu de faux thargoïde</value>
+    <value>Échantillon de tissu thargoid - Scythe</value>
     <comment>Commodity ThargoidTissueSampleType7</comment>
     <source>Thargoid Scythe Tissue Sample</source>
   </data>
   <data name="ThargoidTissueSampleType9a">
-    <!--Machine translated-->
-    <value>Échantillon de tissus profonds Titan</value>
+    <value>Échantillon de tissu profond - Titan</value>
     <comment>Commodity ThargoidTissueSampleType9a</comment>
     <source>Titan Deep Tissue Sample</source>
   </data>
   <data name="ThargoidTissueSampleType9b">
-    <!--Machine translated-->
-    <value>Échantillon de tissu Titan</value>
+    <value>Échantillon de tissu - Titan</value>
     <comment>Commodity ThargoidTissueSampleType9b</comment>
     <source>Titan Tissue Sample</source>
   </data>
   <data name="ThargoidTissueSampleType9c">
-    <!--Machine translated-->
-    <value>Échantillon partiel de tissu Titan</value>
+    <value>Échantillon de tissu partiel - Titan</value>
     <comment>Commodity ThargoidTissueSampleType9c</comment>
     <source>Titan Partial Tissue Sample</source>
   </data>
   <data name="ThargoidTitanDriveComponent">
-    <!--Machine translated-->
-    <value>Composant d’entraînement Thargoid Titan</value>
+    <value>Composant de réacteur de Titan</value>
     <comment>Commodity ThargoidTitanDriveComponent</comment>
     <source>Thargoid Titan Drive Component</source>
   </data>
@@ -2083,14 +2059,12 @@
     <source>Thargoid Biological Matter</source>
   </data>
   <data name="UnknownMineral">
-    <!--Machine translated-->
-    <value>Minéral Flèche Impure</value>
+    <value>Minerai de flèche impur</value>
     <comment>Commodity UnknownMineral</comment>
     <source>Impure Spire Mineral</source>
   </data>
   <data name="UnknownRefinedMineral">
-    <!--Machine translated-->
-    <value>Flèche semi-raffinée minérale</value>
+    <value>Minerai de flèche à moitié raffiné</value>
     <comment>Commodity UnknownRefinedMineral</comment>
     <source>Semi-Refined Spire Mineral</source>
   </data>
@@ -2100,8 +2074,7 @@
     <source>Thargoid Resin</source>
   </data>
   <data name="UnknownSack">
-    <!--Machine translated-->
-    <value>Déchets de membrane protectrice</value>
+    <value>Morceau de membrane protectrice</value>
     <comment>Commodity UnknownSack</comment>
     <source>Protective Membrane Scrap</source>
   </data>
@@ -2116,8 +2089,7 @@
     <source>Unmarked Military supplies</source>
   </data>
   <data name="UnocuppiedEscapePod">
-    <!--Machine translated-->
-    <value>Capsule de sauvetage inoccupée</value>
+    <value>Nacelle d'évacuation inoccupée</value>
     <comment>Commodity UnocuppiedEscapePod</comment>
     <source>Unoccupied Escape Pod</source>
   </data>
