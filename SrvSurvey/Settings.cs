@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.plotters;
@@ -226,7 +227,9 @@ namespace SrvSurvey
         public Guid hookDirectXDeviceId_TEST;
         public bool hookDirectXNotXInput_TEST;
 
+        [JsonConverter(typeof(KeyActionsSettingJsonConverter))]
         public Dictionary<KeyAction, string>? keyActions_TEST = KeyChords.defaultKeys;
+
         /// <summary>
         /// Distance at which we remove vs replace a tracked location
         /// </summary>
@@ -314,6 +317,41 @@ namespace SrvSurvey
                 // allow a single retry if we fail to write settings
                 if (allowRetry)
                     Program.control.BeginInvoke(() => this.Save(false));
+            }
+        }
+
+        class KeyActionsSettingJsonConverter : Newtonsoft.Json.JsonConverter
+        {
+            public override bool CanConvert(Type objectType) { return false; }
+
+            public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+            {
+                // convert to a vanilla dictionary and de-serialize that
+                var values = serializer.Deserialize<Dictionary<string, string>>(reader);
+                var parsedValues = new Dictionary<KeyAction, string>();
+                if (values == null) return parsedValues;
+
+                // ignore key values that are not valid enum values
+                foreach (var key in values.Keys)
+                {
+                    if (Enum.TryParse<KeyAction>(key, out var parsedKey))
+                        parsedValues[parsedKey] = values[key];
+                    else
+                        Game.log($"Ignoring bad enum: '{key}' : '{values[key]}'");
+                }
+
+                return parsedValues;
+            }
+
+            public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+            {
+                var data = value as Dictionary<KeyAction, string>;
+                if (data == null) throw new Exception($"Unexpected value: {value?.GetType().Name}");
+
+                // convert to a vanilla dictionary and serialize that
+                var values = data.ToDictionary(kv => kv.Key.ToString(), kv => kv.Value);
+                var obj = JObject.FromObject(values);
+                obj.WriteTo(writer);
             }
         }
 

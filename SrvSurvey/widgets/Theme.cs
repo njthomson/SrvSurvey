@@ -14,7 +14,11 @@ namespace SrvSurvey.widgets
         {
             // copy default theme if there's no custom one yet
             if (!File.Exists(themePath))
-                File.Copy(themeDefaultPath, themePath);
+            {
+                // read and write (a basic file copy has issues with BitLocker on Win11?)
+                var txt = File.ReadAllText(themeDefaultPath);
+                File.WriteAllText(themePath, txt);
+            }
 
             Exception? caughtError = null;
             // read and parse file contents into tmp object

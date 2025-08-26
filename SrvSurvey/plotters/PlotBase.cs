@@ -1632,7 +1632,9 @@ namespace SrvSurvey.plotters
         public static void resetAll()
         {
             Game.log($"Resetting custom overlay positions");
-            File.Copy(defaultPlotterPositionPath, customPlotterPositionPath, true);
+            // read and write (a basic file copy has issues with BitLocker on Win11?)
+            var txt = File.ReadAllText(defaultPlotterPositionPath);
+            File.WriteAllText(customPlotterPositionPath, txt);
         }
 
         public static void backup()
