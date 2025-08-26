@@ -72,57 +72,49 @@
     <source>Survey: {0} | {1}/{2} relics, {3}/{4} items</source>
   </data>
   <data name="HeaderNeedRelicTowerHeading">
-    <!--Machine translated-->
-    <value>需要 Relic Tower 标题</value>
+    <value>需要采集 遗迹塔(Relic Tower) 方位</value>
     <comment>Header shown when we need the heading of relic towers</comment>
     <source>Need Relic Tower heading</source>
   </data>
   <data name="HeaderNeedRelicTowers">
-    <!--Machine translated-->
-    <value>Need {0} Relic Tower 标题</value>
+    <value>还需要 {0} 遗迹塔(Relic Tower) 方位</value>
     <comment>Header shown when we need the headings of more relic towers
 {0} int, the count of towers needed to be measured</comment>
     <source>Need {0} Relic Tower heading</source>
   </data>
   <data name="HeaderRuinsComplete">
-    <!--Machine translated-->
     <value>废墟 #{0}：调查完成</value>
     <comment>Header shown when the Ruins has been fully surveyed
 {0} int, the index of the site</comment>
     <source>Ruins #{0}: survey complete</source>
   </data>
   <data name="HeaderStructureComplete">
-    <!--Machine translated-->
     <value>结构 {0}： 调查完成</value>
     <comment>Header shown when the Strcture has been fully surveyed
 {0} string, the type of the site, eg: Stickyhand, Hammerbot (not localized)</comment>
     <source>Structure {0}: survey complete</source>
   </data>
   <data name="HeadingSite">
-    <!--Machine translated-->
     <value>地点：{0}°</value>
     <comment>Fragment used to show site heading
 {0} int, the heading of a site in degrees</comment>
     <source>site: {0}°</source>
   </data>
   <data name="HeadingUnknown">
-    <!--Machine translated-->
-    <value>未知标题</value>
+    <value>未知朝向</value>
     <comment>Fragment used when the site heading is not known</comment>
     <source>unknown heading</source>
   </data>
   <data name="IdentifyNoMap">
-    <!--Machine translated-->
     <value>■ 注意：目前还没有地图：{0}</value>
     <comment>Message shown when we have no map for a site type
 {0} string, the type of the size</comment>
     <source>■ Note: there is no map yet for: {0}</source>
   </data>
   <data name="IdentifySiteHeading">
-    <!--Machine translated-->
-    <value>需要网站标题：
+    <value>需要遗址朝向：
 
-■ 要使用当前标题：
+■ 要使用当前朝向：
     - 切换驾驶舱模式两次
     - 发送消息：.heading
 
@@ -137,10 +129,8 @@
 ■ Or send message: &lt;degrees&gt;</source>
   </data>
   <data name="IdentifySiteType">
-    <!--Machine translated-->
-    <value>选择站点类型
-Fire Group 或 Send
-消息：
+    <value>选择遗址类型
+切换火力组 或 发送消息：
 
 'a' 表示 {0}
 
@@ -162,35 +152,30 @@ message:
  'g' for {2}</source>
   </data>
   <data name="IdentifyWithButtress">
-    <!--Machine translated-->
-    <value>与此扶壁对齐：</value>
+    <value>与此支撑对齐：</value>
     <comment>Suffix appended to IdentifySiteHeading, when we need to align with some buttress</comment>
     <source>Align with this buttress:</source>
   </data>
   <data name="IdentifyWithPort">
-    <!--Machine translated-->
-    <value>与数据端口对齐：</value>
+    <value>与此数据端口对齐：</value>
     <comment>Suffix appended to IdentifySiteHeading, when we need to align with the data port</comment>
     <source>Align with the data port:</source>
   </data>
   <data name="NoMapForType">
-    <!--Machine translated-->
-    <value>（目前还没有地图：{0}）</value>
+    <value>（此地点无已知地图：{0}）</value>
     <comment>Footer shown when there is no background map for some site type
 {0} string, the type of site</comment>
     <source>(There is no map yet for: {0})</source>
   </data>
   <data name="ObliskFooter">
-    <!--Machine translated-->
-    <value>方尖碑 {0} - dist： {1}</value>
+    <value>距方尖碑 {0}  ： {1} m</value>
     <comment>Footer when moving around a site near some obelisk
 {0} string, the name of some obelisk, eg: "M22"
 {1} string, a formatted distance in meters</comment>
     <source>Obelisk {0} - dist: {1}</source>
   </data>
   <data name="RuinsFooter">
-    <!--Machine translated-->
-    <value>{0}， 废墟 #{1} - {2}</value>
+    <value>{0} 行星 - 废墟 #{1} - 类型： {2}</value>
     <comment>Footer shown when moving around a Ruins
 {0} string, the name of the current body
 {1} int, site number
@@ -198,57 +183,49 @@ message:
     <source>{0}, Ruins #{1} - {2}</source>
   </data>
   <data name="StructureFooter">
-    <!--Machine translated-->
-    <value>{0}: {1}</value>
+    <value>{0} 行星 - 结构类型: {1}</value>
     <comment>Footer shown when moving around a Structure
 {0} string, the name of the current body
 {1} string, type of ruins, eg: Stickyhand, Hammerbot (not localized)</comment>
     <source>{0}: {1}</source>
   </data>
   <data name="TrackLeft">
-    <!--Machine translated-->
     <value>左</value>
     <comment>Used in "TrackOriginHeaderSuffix" when turning left</comment>
     <source>left</source>
   </data>
   <data name="TrackOriginFooter">
-    <!--Machine translated-->
-    <value>海拔高度：{0}m |目标高度： {1}m</value>
+    <value>当前高度：{0}m |目标高度： {1}m</value>
     <comment>Footer shown when in aerial assistance mode
 {0} int, current ship altitude in meters
 {1} int, the desired altitude they should reach</comment>
     <source>Altitude: {0}m | Target altitude: {1}m</source>
   </data>
   <data name="TrackOriginHeaderPrefix">
-    <!--Machine translated-->
-    <value>站点标题： {0}°</value>
+    <value>遗址朝向： {0}°</value>
     <comment>Header prefix shown when in aerial assistance mode
 {0} int, current site heading</comment>
     <source>Site heading: {0}°</source>
   </data>
   <data name="TrackOriginHeaderSuffix">
-    <!--Machine translated-->
-    <value>将船舶旋转 {0} {1}°</value>
+    <value>将舰船向 {0} 旋转 {1}°</value>
     <comment>Header suffix shown when in aerial assistance mode
 {0} string, a direction: "left" or "right"
 {1} int, how many degrees to rotate in that direction</comment>
     <source>Rotate ship {0} {1}°</source>
   </data>
   <data name="TrackRight">
-    <!--Machine translated-->
     <value>右</value>
     <comment>Used in "TrackOriginHeaderSuffix" when turning right</comment>
     <source>right</source>
   </data>
   <data name="ZoomLevel">
-    <!--Machine translated-->
-    <value>缩放：{0}</value>
+    <value>缩放级别：{0}</value>
     <comment>Zoom level shown top right
 {0} float, 1 decimal place: the zoom level, eg: 1.5</comment>
     <source>Zoom: {0}</source>
   </data>
   <data name="ZoomLevelAuto">
-    <!--Machine translated-->
     <value>（自动）</value>
     <comment>Suffix shown after ZoomLevel when zoom level is set automatically</comment>
     <source>(auto)</source>

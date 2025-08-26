@@ -73,7 +73,7 @@
     <source>DSS required</source>
   </data>
   <data name="FFBonus">
-    <value>(FF奖励: {0})</value>
+    <value>(含FF奖励: {0})</value>
     <comment>Extra footer line showing rewards if body has FF bonus applied
 {0} string, either a single number of credits or &lt;min&gt; ~ &lt;max&gt; credits</comment>
     <source>(FF bonus: {0})</source>
