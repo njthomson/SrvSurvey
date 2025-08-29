@@ -31,10 +31,10 @@ namespace SrvSurvey
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            ListViewItem listViewItem1 = new ListViewItem("Materials count after pickup");
-            ListViewItem listViewItem2 = new ListViewItem("Mission remaining cargo count");
-            ListViewItem listViewItem3 = new ListViewItem("Boxel search status");
-            ListViewItem listViewItem4 = new ListViewItem("Next boxel to search");
+            ListViewItem listViewItem9 = new ListViewItem("Materials count after pickup");
+            ListViewItem listViewItem10 = new ListViewItem("Mission remaining cargo count");
+            ListViewItem listViewItem11 = new ListViewItem("Boxel search status");
+            ListViewItem listViewItem12 = new ListViewItem("Next boxel to search");
             panel1 = new Panel();
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
@@ -255,6 +255,7 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
+            checkBox52 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -2229,6 +2230,7 @@ namespace SrvSurvey
             // 
             // groupColonization
             // 
+            groupColonization.Controls.Add(checkBox52);
             groupColonization.Controls.Add(checkBox49);
             groupColonization.Controls.Add(linkLabel2);
             groupColonization.Controls.Add(checkBox48);
@@ -2238,9 +2240,9 @@ namespace SrvSurvey
             groupColonization.Controls.Add(checkBox43);
             groupColonization.Controls.Add(checkBox39);
             groupColonization.Controls.Add(checkColonization);
-            groupColonization.Location = new Point(362, 195);
+            groupColonization.Location = new Point(362, 184);
             groupColonization.Name = "groupColonization";
-            groupColonization.Size = new Size(332, 243);
+            groupColonization.Size = new Size(332, 254);
             groupColonization.TabIndex = 34;
             groupColonization.TabStop = false;
             groupColonization.Text = "Colonisation: (experimental)";
@@ -3046,15 +3048,15 @@ namespace SrvSurvey
             // listView1
             // 
             listView1.CheckBoxes = true;
-            listViewItem1.StateImageIndex = 0;
-            listViewItem1.Tag = "materialCountAfterPickup";
-            listViewItem2.StateImageIndex = 0;
-            listViewItem2.Tag = "cargoMissionRemaining";
-            listViewItem3.StateImageIndex = 0;
-            listViewItem3.Tag = "currentBoxelSearchStatus";
-            listViewItem4.StateImageIndex = 0;
-            listViewItem4.Tag = "showNextBoxelToSearch";
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4 });
+            listViewItem9.StateImageIndex = 0;
+            listViewItem9.Tag = "materialCountAfterPickup";
+            listViewItem10.StateImageIndex = 0;
+            listViewItem10.Tag = "cargoMissionRemaining";
+            listViewItem11.StateImageIndex = 0;
+            listViewItem11.Tag = "currentBoxelSearchStatus";
+            listViewItem12.StateImageIndex = 0;
+            listViewItem12.Tag = "showNextBoxelToSearch";
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem9, listViewItem10, listViewItem11, listViewItem12 });
             listView1.Location = new Point(12, 331);
             listView1.Name = "listView1";
             listView1.Size = new Size(400, 107);
@@ -3163,6 +3165,19 @@ namespace SrvSurvey
             menuClearCodexCache.Text = "Clear cached images";
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
+            // 
+            // checkBox52
+            // 
+            checkBox52.AutoSize = true;
+            checkBox52.CheckAlign = ContentAlignment.TopLeft;
+            checkBox52.FlatStyle = FlatStyle.System;
+            checkBox52.Location = new Point(36, 228);
+            checkBox52.Name = "checkBox52";
+            checkBox52.Size = new Size(241, 20);
+            checkBox52.TabIndex = 42;
+            checkBox52.Tag = "buildProjectsOnRightScreen";
+            checkBox52.Text = "Show when looking at right-hand panel";
+            checkBox52.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -3473,5 +3488,6 @@ namespace SrvSurvey
         private CheckBox checkBox49;
         private CheckBox checkBox50;
         private CheckBox checkBox51;
+        private CheckBox checkBox52;
     }
 }

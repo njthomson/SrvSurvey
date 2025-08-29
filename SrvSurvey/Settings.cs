@@ -18,6 +18,7 @@ namespace SrvSurvey
         public bool buildProjectsInlineSumFC_TEST = false;
         public bool buildProjectsHighlightAlmostFC_TEST = false;
         public bool buildProjectsCollapseGroupsWithFCEnough_TEST = true;
+        public bool buildProjectsOnRightScreen = true;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string? buildProjectsUrl_TEST = null;

@@ -19,6 +19,7 @@ namespace SrvSurvey.plotters
                         && (Game.activeGame.marketEventSeen || Game.activeGame.cmdrColony.has(Game.activeGame.lastDocked))
                     )
                     || (ColonyData.isConstructionSite(Game.activeGame.lastDocked) && !Game.activeGame.isMode(GameMode.GalaxyMap))
+                    || (Game.settings.buildProjectsOnRightScreen && Game.activeGame.isMode(GameMode.InternalPanel))
                 )
                 ;
         }
@@ -238,7 +239,7 @@ namespace SrvSurvey.plotters
                 drawTextAt2(headerText, GameColors.Fonts.gothic_12B);
                 drawTextAt2("  🚧", C.yellow, GameColors.Fonts.gothic_10);
                 newLine(+ten, true);
-                
+
                 drawTextAt2(ten, "☑️ Construction complete ☑️", C.green, GameColors.Fonts.gothic_10);
                 newLine(+ten, true);
 
