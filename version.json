@@ -6,5 +6,5 @@
     "^refs/heads/rel/v\\d+\\.\\d+"
   ],
 
-  "version": "2.0.6"
+  "version": "2.0.7"
 }
