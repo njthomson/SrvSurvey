@@ -1368,8 +1368,7 @@
     <source>⏶ Hide list</source>
   </data>
   <data name="checkAutoCopy.Text">
-    <!--Machine translated-->
-    <value>&amp; Copie automatique dans la carte gal</value>
+    <value>&amp; Copie automatique dans la carte de la galaxie</value>
     <source>&amp;Auto-copy in gal map</source>
   </data>
   <data name="checkCompleteOnEnterSystem.Text">
@@ -1378,8 +1377,7 @@
     <source>Entering a system</source>
   </data>
   <data name="checkCompleteOnFssAllBodies.Text">
-    <!--Machine translated-->
-    <value>FSS de tous les organismes</value>
+    <value>ACS de tous les corps effectué</value>
     <source>FSS'ing all bodies</source>
   </data>
   <data name="checkSkipVisited.Text">
