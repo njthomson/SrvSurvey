@@ -426,17 +426,14 @@
     <source>Auto copy in Gal-Map</source>
   </data>
   <data name="btnImportSpanshUrl.Text">
-    <!--Machine translated-->
     <value>URL de l'itinéraire Spansh à partir du presse-papiers</value>
     <source>Spansh route URL from clipboard</source>
   </data>
   <data name="btnNamesFromClipboard.Text">
-    <!--Machine translated-->
     <value>Noms de systèmes à partir du presse-papiers</value>
     <source>System names from clipboard</source>
   </data>
   <data name="btnNamesFromFile.Text">
-    <!--Machine translated-->
     <value>Noms de systèmes à partir du fichier</value>
     <source>System names from file</source>
   </data>

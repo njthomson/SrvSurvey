@@ -78,8 +78,7 @@
     <source>Auto dock in progress</source>
   </data>
   <data name="AutoDock2">
-    <!--Machine translated-->
-    <value>Prise en charge de l’identification automatique des complexes</value>
+    <value>Prise en charge de l'identification automatique des complexes</value>
     <comment>Shown when approaching a settlement</comment>
     <source>Settlement auto-identification supported</source>
   </data>
@@ -102,7 +101,6 @@
     <source>Too far away</source>
   </data>
   <data name="DockingApproved">
-    <!--Machine translated-->
     <value>Appontage autorisé : pad #{0}</value>
     <comment>Shown when approaching a settlement
 {0} int, the pad number assigned</comment>
@@ -165,13 +163,11 @@
     <source>2. Place your left foot over the the center grooves</source>
   </data>
   <data name="HelpFoot3">
-    <!--Machine translated-->
     <value>3. Faites face aux chevrons devant vous à votre gauche</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>3. Face with the chevrons ahead to your left</source>
   </data>
   <data name="HelpFoot4">
-    <!--Machine translated-->
     <value>4. Visez la fin de la rainure devant vous</value>
     <comment>Shown when landed and help is needed on foot</comment>
     <source>4. Aim at the end of the groove ahead of you</source>
@@ -196,7 +192,6 @@
     <source>Settlement will be identified after next action</source>
   </data>
   <data name="HelpShip2">
-    <!--Machine translated-->
     <value>Pour l'identifier manuellement</value>
     <comment>Shown when landed and help is needed in a ship</comment>
     <source>To manually identify</source>
@@ -274,7 +269,6 @@
     <source>On approach</source>
   </data>
   <data name="POW">
-    <!--Machine translated-->
     <value>POW</value>
     <comment>A contraction of Power Center, ideally 3 letters</comment>
     <source>POW</source>

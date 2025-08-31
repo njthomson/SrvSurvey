@@ -140,7 +140,6 @@
     <source>Now entering</source>
   </data>
   <data name="SpecialRouteHop">
-    <!--Machine translated-->
     <value>Étape d'itinéraire</value>
     <comment>A line header when the next system is a hop on the route we are following</comment>
     <source>Route hop</source>

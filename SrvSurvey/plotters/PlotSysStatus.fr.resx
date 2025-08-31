@@ -101,7 +101,6 @@
     <source>None</source>
   </data>
   <data name="NonBodySignals">
-    <!--Machine translated-->
     <value>► {0} signaux non-corporels</value>
     <comment>{0} int, count of non body signals</comment>
     <source>► {0} non-body signals</source>

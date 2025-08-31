@@ -92,14 +92,12 @@
     <source>Geo signals: {0}</source>
   </data>
   <data name="Gravity">
-    <!--Machine translated-->
     <value>Gravité : {0}g</value>
     <comment>Body gravity
 {0} decimal, 3 places, gravity value</comment>
     <source>Gravity: {0}g</source>
   </data>
   <data name="Materials">
-    <!--Machine translated-->
     <value>Matériaux :</value>
     <comment>Line prefix for materials</comment>
     <source>Materials:</source>
@@ -171,7 +169,6 @@
     <source>Unmapped</source>
   </data>
   <data name="Volcanism">
-    <!--Machine translated-->
     <value>Volcanisme :</value>
     <comment>Line prefix for volcanism</comment>
     <source>Volcanism:</source>
