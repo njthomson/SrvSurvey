@@ -13,6 +13,7 @@ namespace SrvSurvey.plotters
         {
             get => Game.activeGame != null
                 && Game.activeGame.mode == GameMode.GalaxyMap
+                // NOT suppressed by buildProjectsSuppressOtherOverlays
                 && Game.settings.useExternalData;
         }
 

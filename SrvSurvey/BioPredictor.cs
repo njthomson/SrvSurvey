@@ -661,6 +661,7 @@ namespace BioCriterias
                 49786130467, // Eock Flyao XY-S d3-1 // single star system
 
                 // 113053059083, // Slegi AV-Y d3 // Not Predicted: Stratum Tectonicas Green / Due to a Neutron being deemed the hottest but it should have been the local M stars
+                2282674557658, // Vodyakamana // <-- not actually tested yet
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");

@@ -30,6 +30,7 @@ namespace SrvSurvey.plotters
         {
             get => Game.settings.enableGuardianSites
                 && Game.activeGame?.systemBody != null
+                && !Game.settings.buildProjectsSuppressOtherOverlays
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && Game.activeGame.status?.hasLatLong == true
                 && Game.activeGame.systemSite?.location != null

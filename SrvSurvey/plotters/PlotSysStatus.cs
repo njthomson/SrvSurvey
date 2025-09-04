@@ -11,6 +11,7 @@ namespace SrvSurvey.plotters
         {
             get => Game.settings.autoShowPlotSysStatus
                 && Game.activeGame != null
+                // NOT suppressed by buildProjectsSuppressOtherOverlays
                 && Game.activeGame.status?.InTaxi != true
                 && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
                 // show only after honking or we have Canonn data

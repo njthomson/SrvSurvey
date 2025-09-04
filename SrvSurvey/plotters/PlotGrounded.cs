@@ -18,6 +18,7 @@ namespace SrvSurvey.plotters
                 && !Game.activeGame.status.Docked
                 && !Game.activeGame.isShutdown // not needed?
                 && !Game.activeGame.atMainMenu // not needed?
+                && !Game.settings.buildProjectsSuppressOtherOverlays
                 && (Game.activeGame.systemStation == null || !Game.settings.autoShowHumanSitesTest)
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && Game.activeGame.status.hasLatLong

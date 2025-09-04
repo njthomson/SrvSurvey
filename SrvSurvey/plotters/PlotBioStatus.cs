@@ -16,6 +16,7 @@ namespace SrvSurvey.plotters
             get => SystemData.isWithinLastDssDuration()
                 || Game.settings.autoShowBioSummary
                 && Game.activeGame?.systemBody != null
+                && !Game.settings.buildProjectsSuppressOtherOverlays
                 && Game.activeGame.systemBody.bioSignalCount > 0
                 //&& (Game.activeGame.systemStation == null || !Game.settings.autoShowHumanSitesTest)
                 && !Game.activeGame.hidePlottersFromCombatSuits

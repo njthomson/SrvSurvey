@@ -11,6 +11,7 @@ namespace SrvSurvey.plotters
         {
             get => Game.settings.autoShowFlightWarnings
                 && Game.activeGame?.systemBody != null
+                // NOT suppressed by buildProjectsSuppressOtherOverlays
                 && Game.activeGame.systemBody.type == SystemBodyType.LandableBody
                 && Game.activeGame.systemBody.surfaceGravity >= Game.settings.highGravityWarningLevel * 10
                 && Game.activeGame.isMode(GameMode.Landed, GameMode.SuperCruising, GameMode.GlideMode, GameMode.Flying, GameMode.InFighter, GameMode.InSrv)

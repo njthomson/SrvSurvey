@@ -14,6 +14,7 @@ namespace SrvSurvey.plotters
                 && Game.settings.enableGuardianSites
                 && Game.activeGame?.systemBody != null
                 && Game.activeGame.cmdr.ramTahActive
+                && !Game.settings.buildProjectsSuppressOtherOverlays
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && Game.activeGame.status?.hasLatLong == true
                 && Game.activeGame.systemSite?.location != null

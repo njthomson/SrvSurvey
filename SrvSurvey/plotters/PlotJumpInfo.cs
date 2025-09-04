@@ -14,6 +14,7 @@ namespace SrvSurvey.plotters
         {
             get => Game.activeGame?.status != null
                 && Game.settings.autoShowPlotJumpInfo
+                // NOT suppressed by buildProjectsSuppressOtherOverlays
                 && (
                     // when FSD is charging for a jump, or ...
                     (Game.activeGame.status.FsdChargingJump && Game.activeGame.isMode(GameMode.Flying, GameMode.SuperCruising))

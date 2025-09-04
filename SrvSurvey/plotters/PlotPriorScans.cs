@@ -16,6 +16,7 @@ namespace SrvSurvey.plotters
             get => Game.settings.useExternalData
                 && Game.settings.autoLoadPriorScans
                 && Game.activeGame?.systemBody != null
+                && !Game.settings.buildProjectsSuppressOtherOverlays
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && !Game.activeGame.status.Docked
                 && !PlotGuardians.allowPlotter && !Program.isPlotter<PlotGuardians>()

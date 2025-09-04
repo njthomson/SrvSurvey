@@ -15,6 +15,7 @@ namespace SrvSurvey.plotters
                 && Game.activeGame.status != null
                 && Game.activeGame.status.hasLatLong
                 && !Game.activeGame.status.InTaxi
+                // NOT suppressed by buildProjectsSuppressOtherOverlays
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel);
         }

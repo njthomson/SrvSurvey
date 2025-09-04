@@ -22,6 +22,7 @@ namespace SrvSurvey.plotters
                 && Game.activeGame?.status != null
                 && !Game.activeGame.atMainMenu
                 && Game.activeGame.status.hasLatLong
+                && !Game.settings.buildProjectsSuppressOtherOverlays
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && Game.activeGame.systemStation != null;
         }

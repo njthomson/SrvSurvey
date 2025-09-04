@@ -12,6 +12,7 @@ namespace SrvSurvey.plotters
                 && Game.activeGame?.systemStation != null
                 && Game.activeGame.lastApproachSettlement?.StationFaction.FactionState == "War"
                 && Game.activeGame.systemStation.name == Game.activeGame.lastApproachSettlement.Name
+                && !Game.settings.buildProjectsSuppressOtherOverlays
                 && Game.activeGame.status.Altitude < 100
                 //&& Game.activeGame.isMode(GameMode.OnFoot)
                 ;

@@ -14,6 +14,7 @@ namespace SrvSurvey.plotters
             get => Game.settings.autoShowPlotBioSystem
                 && Game.activeGame?.status != null
                 && Game.activeGame.systemData != null
+                && !Game.settings.buildProjectsSuppressOtherOverlays
                 && Game.activeGame.systemData.bioSignalsTotal > 0
                 && !Game.activeGame.status.InTaxi
                 && !Game.activeGame.hidePlottersFromCombatSuits

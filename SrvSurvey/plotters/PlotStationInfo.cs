@@ -15,6 +15,7 @@ namespace SrvSurvey.plotters
         {
             get => Game.settings.autoShowPlotStationInfo_TEST
                 && Game.activeGame?.systemData != null
+                // NOT suppressed by buildProjectsSuppressOtherOverlays
                 && Game.activeGame.isMode(GameMode.ExternalPanel)
                 ;
         }

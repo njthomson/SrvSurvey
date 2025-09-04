@@ -12,6 +12,7 @@ namespace SrvSurvey.plotters
             // Game.settings.enableGuardianSites && Game.settings.autoShowGuardianSummary && PlotGuardianSystem.allowPlotter && game?.systemData?.settlements.Count > 0
             get => Game.settings.enableGuardianSites
                 && Game.settings.autoShowGuardianSummary
+                && !Game.settings.buildProjectsSuppressOtherOverlays
                 && Game.activeGame?.systemData != null
                 && Game.activeGame.systemData.settlements.Count > 0
                 && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap);

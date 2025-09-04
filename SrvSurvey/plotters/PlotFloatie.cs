@@ -10,6 +10,7 @@ namespace SrvSurvey.plotters
         {
             // show in any mode, so long as we have some messages so show
             get => Game.settings.autoShowFloatie_TEST
+                // NOT suppressed by buildProjectsSuppressOtherOverlays
                 && Game.activeGame != null
                 && messages.Count > 0
                 ;

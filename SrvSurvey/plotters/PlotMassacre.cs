@@ -11,6 +11,7 @@ namespace SrvSurvey.plotters
         public static bool allowPlotter
         {
             get => Game.settings.autoShowPlotMassacre_TEST
+                && !Game.settings.buildProjectsSuppressOtherOverlays
                 && Game.activeGame?.cmdr?.trackMassacres?.Count > 0
                 && Game.activeGame.isMode(GameMode.Flying, GameMode.ExternalPanel, GameMode.SuperCruising, GameMode.StationServices)
                 ;

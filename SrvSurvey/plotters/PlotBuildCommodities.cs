@@ -12,9 +12,10 @@ namespace SrvSurvey.plotters
             // show in any mode, so long as we have some messages so show
             get => Game.settings.buildProjects_TEST
                 && Game.settings.autoShowPlotBuildCommodities
+                // NOT suppressed by buildProjectsSuppressOtherOverlays
                 && Game.activeGame != null
                 && (
-                    (PlotBuildCommodities.forceShow && !Game.activeGame.fsdJumping)
+                    (PlotBuildCommodities.forceShow && !Game.activeGame.fsdJumping && !Game.activeGame.isMode(GameMode.ExternalPanel))
                     || (Game.activeGame.isMode(GameMode.StationServices)
                         && (Game.activeGame.marketEventSeen || Game.activeGame.cmdrColony.has(Game.activeGame.lastDocked))
                     )

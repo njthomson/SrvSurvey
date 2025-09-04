@@ -13,6 +13,7 @@ namespace SrvSurvey.plotters
         public static bool allowPlotter
         {
             get => Game.settings.autoShowPlotMiniTrack_TEST
+                // NOT suppressed by buildProjectsSuppressOtherOverlays
                 && Game.activeGame?.systemBody != null
                 && Game.activeGame.status.hasLatLong
                 && !Game.activeGame.status.Docked
