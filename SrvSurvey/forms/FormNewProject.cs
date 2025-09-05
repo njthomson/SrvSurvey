@@ -8,26 +8,128 @@ namespace SrvSurvey.forms
     {
         private Game game => Game.activeGame!;
 
+        private List<SystemSite> systemSites = new();
+        private List<ColonyCost2> allCosts = Game.colony.loadDefaultCosts()
+            .OrderBy(c => c.tier)
+            .ToList();
+
         public FormNewProject()
         {
             InitializeComponent();
             this.Icon = Icons.ruler;
 
-            var allCosts = Game.colony.loadDefaultCosts();
-            var sourceCosts = allCosts
-                .Where(r => (r.location == "orbital") == (game.status.PlanetRadius == 0))
-                .ToDictionary(c => c.buildType, c => c.ToString());
-            this.comboBuildType.DataSource = new BindingSource(sourceCosts, null);
+            var isOrbital = game.status.PlanetRadius == 0;
+            this.radioOrbital.Checked = isOrbital;
+            this.radioSurface.Checked = !isOrbital;
+
             this.comboBuildType.DisplayMember = "Value";
             this.comboBuildType.ValueMember = "Key";
             this.comboBuildType.Enabled = true;
             this.comboBuildType.DropDownWidth = N.s(500);
 
+            this.comboSystemSite.DisplayMember = "Value";
+            this.comboSystemSite.ValueMember = "Key";
+
             txtArchitect.Text = game.Commander;
 
-            var lastDocked = game.lastDocked;
-            if (lastDocked != null)
-                txtName.Text = ColonyData.getDefaultProjectName(lastDocked);
+            if (game.lastDocked == null) return;
+
+            txtName.Text = ColonyData.getDefaultProjectName(game.lastDocked);
+
+            comboSystemSite.Text = "Loading ...";
+            Game.colony.getSystemSites(game.lastDocked.StarSystem).continueOnMain(this, sites =>
+            {
+                this.systemSites.Clear();
+                this.systemSites.AddRange(sites);
+                var mapSites = new Dictionary<string, string>() { { "", "None" } };
+
+                foreach (var site in sites)
+                    if (site.status != SystemSite.Status.complete)
+                        mapSites.Add(site.id, $"{site.name} ({site.buildType})");
+
+                comboSystemSite.DataSource = new BindingSource(mapSites, null);
+                comboSystemSite.SelectedIndex = 0;
+                comboSystemSite.Enabled = true;
+
+                // pre-select if there is only one
+                if (mapSites.Count == 2)
+                    comboSystemSite.SelectedIndex = 1;
+            });
+
+            Game.colony.getSystemArchitect(game.lastDocked.StarSystem).continueOnMain(this, architect =>
+            {
+                if (!string.IsNullOrWhiteSpace(architect))
+                    txtArchitect.Text = architect;
+            });
+        }
+
+        private void radioOrbital_CheckedChanged(object sender, EventArgs e)
+        {
+            var isOrbital = radioOrbital.Checked;
+
+            var sourceCosts = allCosts
+                .Where(r => (r.location == "orbital") == isOrbital)
+                .ToDictionary(c => c.buildType, c => $"Tier {c.tier}: {c.displayName}");
+
+            comboBuildType.DataSource = new BindingSource(sourceCosts, null);
+            comboBuildSubType.Items.Clear();
+            comboBuildSubType.Items.AddRange(allCosts.First().layouts.ToArray());
+            comboBuildSubType.SelectedIndex = 0;
+        }
+
+        private void comboBuildType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            comboBuildSubType.Items.Clear();
+
+            var buildType = comboBuildType.SelectedValue?.ToString() ?? "";
+            var match = allCosts.FirstOrDefault(c => c.buildType == buildType);
+            if (match != null)
+            {
+                comboBuildSubType.Items.AddRange(match.layouts.ToArray());
+                comboBuildSubType.SelectedIndex = 0;
+            }
+
+            comboBuildSubType.Enabled = true;
+        }
+
+        private void comboSystemSite_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (game.lastDocked == null) return;
+
+            var siteId = comboSystemSite.SelectedValue?.ToString();
+            if (string.IsNullOrEmpty(siteId))
+            {
+                // stick with default name
+                txtName.Text = ColonyData.getDefaultProjectName(game.lastDocked);
+                comboBuildType.Enabled = true;
+                comboBuildSubType.Enabled = true;
+                radioOrbital.Enabled = true;
+                radioSurface.Enabled = true;
+                comboBuildType.SelectedIndex = 0;
+            }
+            else
+            {
+                var siteMatch = systemSites.FirstOrDefault(s => s.id == siteId);
+                if (siteMatch != null)
+                {
+                    var costMatch = allCosts.Find(c => c.layouts.Contains(siteMatch.buildType, StringComparer.OrdinalIgnoreCase));
+                    if (costMatch != null)
+                    {
+                        // if this is a primary site - use the system site name, otherwise switch it
+                        if (game.lastDocked.StationName.StartsWith(ColonyData.ExtPanelColonisationShip, StringComparison.OrdinalIgnoreCase))
+                            txtName.Text = siteMatch.name;
+
+                        comboBuildType.SelectedValue = costMatch.buildType;
+                        comboBuildSubType.Text = siteMatch.buildType;
+
+                        comboBuildType.Enabled = false;
+                        comboBuildSubType.Enabled = false;
+                        radioOrbital.Enabled = false;
+                        radioSurface.Enabled = false;
+                        radioOrbital.Checked = costMatch.location == "orbital";
+                    }
+                }
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -57,7 +159,7 @@ namespace SrvSurvey.forms
             {
                 var createProject = new ProjectCreate
                 {
-                    buildType = comboBuildType.SelectedValue?.ToString() ?? "",
+                    buildType = comboBuildSubType.Text.ToLowerInvariant(),
                     buildName = txtName.Text ?? "primary-port",
                     architectName = txtArchitect.Text,
                     factionName = lastDocked.StationFaction.Name ?? "",
@@ -74,7 +176,9 @@ namespace SrvSurvey.forms
                     colonisationConstructionDepot = lastDepot,
 
                     // add current cmdrs
-                    commanders = new() { { game.Commander!, new() } },                    
+                    commanders = new() { { game.Commander!, new() } },
+
+                    systemSiteId = comboSystemSite.SelectedValue?.ToString(),
                 };
 
                 if (lastDepot != null && game.lastDocked != null && lastDepot.MarketID == game.lastDocked.MarketID)

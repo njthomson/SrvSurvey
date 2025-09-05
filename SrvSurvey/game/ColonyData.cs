@@ -34,7 +34,7 @@ namespace SrvSurvey.game
 
         public static string getDefaultProjectName(Docked lastDocked)
         {
-            var defaultName = lastDocked.StationName == ColonyData.SystemColonisationShip
+            var defaultName = lastDocked.StationName.StartsWith(ExtPanelColonisationShip, StringComparison.OrdinalIgnoreCase)|| lastDocked.StationName == ColonyData.SystemColonisationShip
                 ? $"Primary port: {lastDocked.StarSystem}"
                 : lastDocked.StationName
                     .Replace(ColonyData.ExtPanelColonisationShip + "; ", "")

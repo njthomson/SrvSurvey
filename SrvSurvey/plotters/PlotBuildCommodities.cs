@@ -16,11 +16,11 @@ namespace SrvSurvey.plotters
                 && Game.activeGame != null
                 && (
                     (PlotBuildCommodities.forceShow && !Game.activeGame.fsdJumping && !Game.activeGame.isMode(GameMode.ExternalPanel))
-                    || (Game.activeGame.isMode(GameMode.StationServices)
-                        && (Game.activeGame.marketEventSeen || Game.activeGame.cmdrColony.has(Game.activeGame.lastDocked))
-                    )
+                    || (Game.activeGame.isMode(GameMode.StationServices) 
+                        && ((Game.activeGame.marketEventSeen && Game.activeGame.cmdrColony.projects.Any()) || Game.activeGame.cmdrColony.has(Game.activeGame.lastDocked))
+                        )
                     || (ColonyData.isConstructionSite(Game.activeGame.lastDocked) && !Game.activeGame.isMode(GameMode.GalaxyMap))
-                    || (Game.settings.buildProjectsOnRightScreen && Game.activeGame.isMode(GameMode.InternalPanel))
+                    || (Game.settings.buildProjectsOnRightScreen && Game.activeGame.isMode(GameMode.InternalPanel) && Game.activeGame.cmdrColony.projects.Any())
                 )
                 ;
         }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
@@ -298,6 +299,26 @@ namespace SrvSurvey.game
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
         }
 
+        public async Task<List<SystemSite>> getSystemSites(string nameOrNum)
+        {
+            Game.log($"Colony.getSystemSites: {nameOrNum}");
+
+            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/v2/system/{Uri.EscapeDataString(nameOrNum)}/sites");
+            var json = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<List<SystemSite>>(json)!;
+            return obj;
+        }
+
+        public async Task<string> getSystemArchitect(string nameOrNum)
+        {
+            Game.log($"Colony.getSystemArchitect: {nameOrNum}");
+
+            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/v2/system/{Uri.EscapeDataString(nameOrNum)}/architect");
+            var json = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<string>(json)!;
+            return obj;
+        }
+
         /*
         public async Task<string> foo1()
         {
@@ -471,6 +492,11 @@ namespace SrvSurvey.game
 
     public class ProjectCreate : ProjectCore
     {
+        /// <summary>
+        /// The ID of the site from /api/v2/system that this project is replacing
+        /// </summary>
+        public string? systemSiteId;
+
         // Schema.ProjectCommodity
         public Dictionary<string, int> commodities;
         public ColonisationConstructionDepot? colonisationConstructionDepot;
@@ -572,6 +598,24 @@ namespace SrvSurvey.game
         public string name;
         public string displayName;
         public Dictionary<string, int> cargo;
+    }
+
+    public class SystemSite
+    {
+        public string id;
+        public string name;
+        public int bodyNum;
+        public string buildType;
+        public string buildId;
+        public Status status;
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum Status
+        {
+            plan,
+            build,
+            complete
+        }
     }
 
 }
