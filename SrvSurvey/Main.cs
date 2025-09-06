@@ -1854,7 +1854,7 @@ namespace SrvSurvey
             menuColonizeLine2.Visible = showNewProject;
 
             // show if docked on a Fleet Carrier and not already linked
-            var showPublishFC = game?.lastDocked?.StationType == StationType.FleetCarrier && !game.cmdrColony.linkedFCs.ContainsKey(game.lastDocked.MarketID);
+            var showPublishFC = game?.lastDocked?.StationType == StationType.FleetCarrier;
             menuPublishFC.Visible = showPublishFC;
             menuPublishFC.Text = $"Publish FC: {game?.lastDocked?.StationName}";
 
