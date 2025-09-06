@@ -682,36 +682,6 @@ namespace SrvSurvey
             }
         }
 
-        private void updateColonizationMenuItems()
-        {
-            if (!Game.settings.buildProjects_TEST) return;
-
-            menuRefreshProjects.Enabled = game?.cmdrColony != null;
-
-            var showMyProjects = (Game.settings.preferredCommander ?? Game.settings.lastCommander) != null;
-            menuMyProjects.Visible = showMyProjects;
-
-            // use where we are docked or the general primary
-            var localBuildId = game?.cmdrColony?.getBuildId(game.lastDocked) ?? ColonyData.localUntrackedProject?.buildId;
-            var activeBuildId = localBuildId ?? game?.cmdrColony?.primaryBuildId;
-            var showCurrentProject = localBuildId != null && !string.IsNullOrEmpty(activeBuildId);
-            menuCurrentProject.Visible = showCurrentProject;
-            menuPrimaryProject.Visible = localBuildId != null && ColonyData.localUntrackedProject == null;
-            menuPrimaryProject.Text = localBuildId == game?.cmdrColony?.primaryBuildId ? "Clear primary" : "Set primary";
-
-            menuColonizeLine1.Visible = showCurrentProject || showMyProjects;
-
-            var showNewProject = localBuildId == null && game?.cmdrColony != null && ColonyData.isConstructionSite(game?.lastDocked);
-            menuNewProject.Visible = showNewProject;
-            menuColonizeLine2.Visible = showNewProject;
-
-            // highlight the outer button if we are docked at a project
-            if (localBuildId != null || showNewProject)
-                btnColonize.BackColor = C.cyan;
-            else
-                Util.applyTheme(btnColonize, Game.settings.darkTheme);
-        }
-
         private void updateCommanderTexts()
         {
             var gameIsActive = game != null && Elite.isGameRunning && game.Commander != null;
@@ -1860,6 +1830,49 @@ namespace SrvSurvey
             });
         }
 
+        private void updateColonizationMenuItems()
+        {
+            if (!Game.settings.buildProjects_TEST) return;
+
+            menuRefreshProjects.Enabled = game?.cmdrColony != null;
+
+            var showMyProjects = (Game.settings.preferredCommander ?? Game.settings.lastCommander) != null;
+            menuMyProjects.Visible = showMyProjects;
+
+            // use where we are docked or the general primary
+            var localBuildId = game?.cmdrColony?.getBuildId(game.lastDocked) ?? ColonyData.localUntrackedProject?.buildId;
+            var activeBuildId = localBuildId ?? game?.cmdrColony?.primaryBuildId;
+            var showCurrentProject = localBuildId != null && !string.IsNullOrEmpty(activeBuildId);
+            menuCurrentProject.Visible = showCurrentProject;
+            menuPrimaryProject.Visible = localBuildId != null && ColonyData.localUntrackedProject == null;
+            menuPrimaryProject.Text = localBuildId == game?.cmdrColony?.primaryBuildId ? "Clear primary" : "Set primary";
+
+            menuColonizeLine1.Visible = showCurrentProject || showMyProjects;
+
+            var showNewProject = localBuildId == null && game?.cmdrColony != null && ColonyData.isConstructionSite(game?.lastDocked);
+            menuNewProject.Visible = showNewProject;
+            menuColonizeLine2.Visible = showNewProject;
+
+            // show if docked on a Fleet Carrier and not already linked
+            var showPublishFC = game?.lastDocked?.StationType == StationType.FleetCarrier && !game.cmdrColony.linkedFCs.ContainsKey(game.lastDocked.MarketID);
+            menuPublishFC.Visible = showPublishFC;
+            menuPublishFC.Text = $"Publish FC: {game?.lastDocked?.StationName}";
+
+            // show if in a system when FSS is complete
+            var showUpdateSystemBods = game?.systemData?.fssAllBodies == true;
+            menuUpdateSystem.Visible = showUpdateSystemBods;
+
+            // show if either update item is shown
+            menuColonizeLine4.Visible = showPublishFC || showUpdateSystemBods;
+            menuUpdateHeader.Visible = showPublishFC || showUpdateSystemBods;
+
+            // highlight the outer button if we are docked at a project
+            if (localBuildId != null || showNewProject)
+                btnColonize.BackColor = C.cyan;
+            else
+                Util.applyTheme(btnColonize, Game.settings.darkTheme);
+        }
+
         private void menuJourney_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             // decide which entries should be visible/enabled
@@ -1926,6 +1939,41 @@ namespace SrvSurvey
         {
             var cmdr = Game.settings.preferredCommander ?? Game.settings.lastCommander;
             Util.openLink($"{ColonyNet.uxUri}/#cmdr={cmdr}");
+        }
+
+        private void menuUpdateSystem_Click(object sender, EventArgs e)
+        {
+            
+            if (game?.systemData == null) return;
+            btnColonize.Enabled = false;
+            ColonyData.updateSysBodies(game.systemData).continueOnMain(this, success =>
+            {
+                btnColonize.Enabled = true;
+                Game.log($"System updated: {success}");
+                if (success)
+                    MessageBox.Show(this, $"System bodies have been updated.\n\nPlease refresh any relevant web pages.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else
+                    MessageBox.Show(this, $"Updating system bodies was not successful. Check logs for more details.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            });
+        }
+
+        private void menuPublishFC_Click(object sender, EventArgs e)
+        {
+            if (game?.lastDocked?.StationType != StationType.FleetCarrier || game.journals == null) return;
+
+            btnColonize.Enabled = false;
+            ColonyData.publishFC().continueOnMain(this, fc =>
+            {
+                btnColonize.Enabled = true;
+                Game.log($"FC Published: {fc}");
+                if (fc == null)
+                    MessageBox.Show(this, $"Fleet Carrier publish was not successful. Check logs for more details.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                else
+                {
+                    game.cmdrColony.fetchLatest().justDoIt();
+                    MessageBox.Show(this, $"Fleet Carrier {fc.displayName} - {fc.name} has been published and linked to your Commander.\n\nPlease refresh any relevant web pages.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            });
         }
 
         private void menuCurrentProject_Click(object sender, EventArgs e)

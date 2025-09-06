@@ -206,6 +206,23 @@ namespace SrvSurvey.game
             return obj;
         }
 
+        /// <summary>
+        /// Replace server FC data with this. (Cargo untouched if it is null)
+        /// </summary>
+        public async Task<FleetCarrier> publishFC(FleetCarrier fc)
+        {
+            Game.log($"Colony.updateFleetCarrier: {fc}");
+
+            var json1 = JsonConvert.SerializeObject(fc);
+            var body = new StringContent(json1, Encoding.Default, "application/json");
+            if (!string.IsNullOrEmpty(Game.activeGame?.Commander))
+                body.Headers.Add("rcc-cmdr", Game.activeGame?.Commander);
+            var response = await ColonyNet.client.PutAsync($"{svcUri}/api/fc/{fc.marketId}", body);
+            var json = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<FleetCarrier>(json)!;
+            return obj;
+        }
+
         public async Task<FleetCarrier[]> getAllCmdrFCs(string cmdr)
         {
             Game.log($"Colony.getCmdrFCAll: {cmdr}");
@@ -317,6 +334,22 @@ namespace SrvSurvey.game
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<string>(json)!;
             return obj;
+        }
+
+        /// <summary>
+        /// Replace server body data with what we have
+        /// </summary>
+        public async Task<bool> updateSysBodies(long address, List<Bod> bods)
+        {
+            Game.log($"Colony.updateSysBodies: {address} - bodies: {bods.Count}");
+
+            var json1 = JsonConvert.SerializeObject(bods);
+            var body = new StringContent(json1, Encoding.Default, "application/json");
+            var response = await ColonyNet.client.PutAsync($"{svcUri}/api/v2/system/{address}/bodies", body);
+            var json = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<List<Bod>>(json)!;
+
+            return true;
         }
 
         /*
@@ -597,7 +630,12 @@ namespace SrvSurvey.game
         public long marketId;
         public string name;
         public string displayName;
-        public Dictionary<string, int> cargo;
+        public Dictionary<string, int>? cargo;
+
+        public override string ToString()
+        {
+            return $"{displayName} - {name} ({marketId})";
+        }
     }
 
     public class SystemSite
@@ -618,4 +656,81 @@ namespace SrvSurvey.game
         }
     }
 
+    /// <summary>Represents a body in a system</summary>
+    public class Bod
+    {
+        public required string name;
+        public required int num;
+        public required double distLS;
+        public required List<int> parents;
+        public required BodyType type;
+        /// <summary>Need to match Spansh</summary>
+        public string? subType;
+        public required HashSet<BodyFeature> features;
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum BodyType
+        {
+            /// <summary>unknown</summary>
+            un,
+            /// <summary>Black Hole</summary>
+            bh,
+            /// <summary>Neutron Star</summary>
+            ns,
+            /// <summary>White Dwarf</summary>
+            wd,
+            /// <summary>some kind of star</summary>
+            st,
+            /// <summary>Ammonia World</summary>
+            aw,
+            /// <summary>Earth Like Body</summary>
+            elw,
+            /// <summary>Gas Giant</summary>
+            gg,
+            /// <summary>High Metal Content Body</summary>
+            hmc,
+            /// <summary>Icy Body</summary>
+            ib,
+            /// <summary>Metal Rich Body</summary>
+            mrb,
+            /// <summary>Rock Body</summary>
+            rb,
+            /// <summary>Rocky Ice Body</summary>
+            ri,
+            /// <summary>Water Giant</summary>
+            wg,
+            /// <summary>Water World</summary>
+            ww,
+            /// <summary>Asteroid cluster</summary>
+            ac,
+            /// <summary>barycenter</summary>
+            bc,
+        }
+
+        public static Dictionary<string, BodyType> mapBodyTypeFromPlanetClass = new()
+        {
+            { "Ammonia world", BodyType.aw },
+            { "Earthlike body", BodyType.elw },
+            // Gas Giants - BodyType.gg - handled in code
+            { "High metal content body", BodyType.hmc },
+            { "Icy body", BodyType.ib },
+            { "Metal rich body", BodyType.mrb },
+            { "Rocky body", BodyType.rb },
+            { "Rocky ice body", BodyType.ri },
+            { "Water giant", BodyType.wg },
+            { "Water world", BodyType.ww },
+        };
+    }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum BodyFeature
+    {
+        bio,
+        geo,
+        rings,
+        volcanism,
+        terraformable,
+        tidal,
+        landable,
+    }
 }

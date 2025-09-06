@@ -72,7 +72,7 @@ namespace SrvSurvey.plotters
         protected override void onJournalEntry(Scan entry)
         {
             // ignore Belt Clusters
-            if (entry.Bodyname.Contains("Belt Cluster") || game?.systemData == null)
+            if (entry.BodyName.Contains("Belt Cluster") || game?.systemData == null)
                 return;
 
             // allow time for the body to get created

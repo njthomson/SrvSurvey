@@ -638,11 +638,11 @@ namespace SrvSurvey.game
         public bool onJournalEntry(Scan entry)
         {
             if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Scan Expected: `{this.name}`, got: {entry.StarSystem}"); return false; }
-            var body = this.findOrCreate(entry.Bodyname, entry.BodyID);
+            var body = this.findOrCreate(entry.BodyName, entry.BodyID);
 
             // update fields
             body.scanned = true;
-            body.type = SystemBody.typeFrom(entry.StarType, entry.PlanetClass, entry.Landable, entry.Bodyname);
+            body.type = SystemBody.typeFrom(entry.StarType, entry.PlanetClass, entry.Landable, entry.BodyName);
             body.planetClass = entry.PlanetClass;
             if (!string.IsNullOrEmpty(entry.TerraformState))
                 body.terraformable = entry.TerraformState == "Terraformable";
@@ -694,7 +694,7 @@ namespace SrvSurvey.game
                 {
                     body.reward = reward;
                     Game.activeGame.cmdr.countScans += 1;
-                    Game.activeGame.cmdr.applyExplReward(reward, $"Scan:{entry.ScanType} of {entry.Bodyname}");
+                    Game.activeGame.cmdr.applyExplReward(reward, $"Scan:{entry.ScanType} of {entry.BodyName}");
 
                     // and adjust main star value too
                     if (this.honked)
@@ -830,7 +830,7 @@ namespace SrvSurvey.game
         public bool onJournalEntry(FSSBodySignals entry)
         {
             if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! FSSBodySignals Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
-            var body = this.findOrCreate(entry.Bodyname, entry.BodyID);
+            var body = this.findOrCreate(entry.BodyName, entry.BodyID);
 
             // update fields
             var bioSignals = entry.Signals.FirstOrDefault(_ => _.Type == "$SAA_SignalType_Biological;");

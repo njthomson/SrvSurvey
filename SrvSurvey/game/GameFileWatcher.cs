@@ -24,7 +24,7 @@ namespace SrvSurvey.game
         /// <summary>
         /// Returns the content of the given file, re-reading if forced
         /// </summary>
-        public static Q read<Q>(string filepath, bool force = false) where Q : IWatchedFile
+        public static Q read<Q>(string filepath, bool force = false, DateTimeOffset? timestamp = null) where Q : IWatchedFile
         {
             if (!mapWatchers.ContainsKey(filepath))
                 mapWatchers[filepath] = new JsonFileWatcher<Q>(filepath, false);
@@ -33,7 +33,7 @@ namespace SrvSurvey.game
 
             // force read the file
             if (force)
-                watcher.readFile();
+                watcher.readFile(timestamp);
 
             return watcher.value;
         }
@@ -96,10 +96,14 @@ namespace SrvSurvey.game
                 });
             }
 
-            public void readFile()
+            public void readFile(DateTimeOffset? timestamp = null)
             {
                 var obj = this.parseFile();
                 Game.log($"Reading: {this.filename}");
+
+                // ignore parsed data if we are given a timestamp but it does not match
+                if (timestamp != null && obj?.timestamp != timestamp)
+                    return;
 
                 // only update our value if we got a new one
                 if (obj != null)
@@ -107,9 +111,6 @@ namespace SrvSurvey.game
                     this.value.preRead();
                     this.value = obj;
                 }
-
-                // Maybe?
-                // Program.invalidateActivePlotters();
             }
 
             private T? parseFile()
@@ -154,10 +155,17 @@ namespace SrvSurvey.game
 
     interface IWatchedFile
     {
+        public DateTimeOffset timestamp { get; }
+        public string @event { get; }
+
         public void preRead();
     }
+
     class WatchedFile : IWatchedFile
     {
+        public DateTimeOffset timestamp { get; set; }
+        public string @event { get; set; }
+
         public virtual void preRead() { /* no-op */ }
     }
 
@@ -204,12 +212,11 @@ namespace SrvSurvey.game
     {
         public static string filepath { get => Path.Combine(Game.settings.watchedJournalFolder, "Cargo.json"); }
 
-        public static CargoFile2 read(bool force)
+        public static CargoFile2 read(bool force, DateTimeOffset? timestamp = null)
         {
-            return GameFileWatcher.read<CargoFile2>(CargoFile2.filepath, force);
+            return GameFileWatcher.read<CargoFile2>(CargoFile2.filepath, force, timestamp);
         }
 
-        public DateTimeOffset timestamp;
         public string Vessel;
         public int Count;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]

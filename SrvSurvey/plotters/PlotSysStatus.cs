@@ -41,7 +41,7 @@ namespace SrvSurvey.plotters
 
         protected override void onJournalEntry(FSSBodySignals entry)
         {
-            Game.log($"PlotSysStatus: FSSBodySignals event: {entry.Bodyname}");
+            Game.log($"PlotSysStatus: FSSBodySignals event: {entry.BodyName}");
             this.Invalidate();
         }
 
@@ -54,7 +54,7 @@ namespace SrvSurvey.plotters
 
         protected override void onJournalEntry(Scan entry)
         {
-            Game.log($"PlotSysStatus: Scan event: {entry.Bodyname}");
+            Game.log($"PlotSysStatus: Scan event: {entry.BodyName}");
             this.nextSystem = null;
             this.Invalidate();
         }

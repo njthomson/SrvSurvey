@@ -11,7 +11,6 @@ namespace SrvSurvey
     class Settings
     {
         public bool buildProjects_TEST = true;
-        public bool trackConstructionContributions_TEST = true;
         public bool autoShowPlotBuildCommodities = true;
         public bool buildProjectsShowSumFC_TEST = true;
         public bool buildProjectsShowSumFCDelta_TEST = false;

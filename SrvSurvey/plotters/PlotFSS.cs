@@ -90,7 +90,7 @@ namespace SrvSurvey.plotters
 
         protected override void onJournalEntry(FSSBodySignals entry)
         {
-            Game.log($"PlotFSS: FSSBodySignals event: {entry.Bodyname}");
+            Game.log($"PlotFSS: FSSBodySignals event: {entry.BodyName}");
             this.lastFSSBodySignals = entry;
         }
 
@@ -100,7 +100,7 @@ namespace SrvSurvey.plotters
             var firstParentKey = entry.Parents?.FirstOrDefault()?.Keys?.FirstOrDefault();
             if (firstParentKey == ParentBodyType.Ring) return;
 
-            Game.log($"PlotFSS: Scan event: {entry.Bodyname}");
+            Game.log($"PlotFSS: Scan event: {entry.BodyName}");
 
             // remember time of last scan + change to waiting or skipped state if already waiting
             this.lastScanTime = DateTime.Now;
@@ -112,10 +112,10 @@ namespace SrvSurvey.plotters
             lastNotes = "";
 
             // ignore Belt Clusters
-            if (entry.Bodyname.Contains("Belt Cluster") || !string.IsNullOrEmpty(entry.StarType))
+            if (entry.BodyName.Contains("Belt Cluster") || !string.IsNullOrEmpty(entry.StarType))
                 return;
 
-            lastBodyName = entry.Bodyname;
+            lastBodyName = entry.BodyName;
             lastWasDiscovered = entry.WasDiscovered;
             if (!entry.WasDiscovered) lastBodyName = $"⚑ {lastBodyName}";
 

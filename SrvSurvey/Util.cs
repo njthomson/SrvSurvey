@@ -975,7 +975,7 @@ namespace SrvSurvey
             return poiType == POIType.casket || poiType == POIType.orb || poiType == POIType.tablet || poiType == POIType.totem || poiType == POIType.urn || poiType == POIType.unknown;
         }
 
-        public static string pascal(string txt)
+        public static string pascal(string? txt)
         {
             if (string.IsNullOrEmpty(txt))
                 return "";

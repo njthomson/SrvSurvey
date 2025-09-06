@@ -417,6 +417,18 @@ namespace SrvSurvey
         public bool Sent { get; set; }
     }
 
+    class ReceiveText : JournalEntry
+    {
+        // { "timestamp":"2025-09-04T15:11:46Z", "event":"ReceiveText", "From":"", "Message":"$COMMS_entered:#name=North America Sector IR-W d1-81;", "Message_Localised":"Entered Channel: North America Sector IR-W d1-81", "Channel":"npc" }
+
+        public string From{ get; set; }
+
+        public string Message { get; set; }
+        public string Message_Localised { get; set; }
+
+        public string Channel { get; set; }
+    }
+
     class SupercruiseExit : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-03-12T06:16:56Z", "event":"SupercruiseExit", "Taxi":false, "Multicrew":false, "StarSystem":"Synuefe EN-H d11-96", "SystemAddress":3309179996515, "Body":"Synuefe EN-H d11-96 2", "BodyID":9, "BodyType":"Planet" }
@@ -751,13 +763,11 @@ namespace SrvSurvey
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public long SystemAddress { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public string Bodyname { get; set; }
+        public string BodyName { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public int BodyID { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public long DistanceFromArrivalLS { get; set; }
-
-
+        public double DistanceFromArrivalLS { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string StarType { get; set; } // Stellar classification (for a star) – see §15.2
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
@@ -876,7 +886,7 @@ namespace SrvSurvey
     {
         // { "timestamp":"2023-08-18T23:10:13Z", "event":"FSSBodySignals", "BodyName":"Wregoe LH-T b5-0 1", "BodyID":5, "SystemAddress":684377515057, "Signals":[ { "Type":"$SAA_SignalType_Biological;", "Type_Localised":"Biological", "Count":1 } ] }
         public long SystemAddress { get; set; }
-        public string Bodyname { get; set; }
+        public string BodyName { get; set; }
         public int BodyID { get; set; }
         public List<ScanSignal> Signals { get; set; }
     }

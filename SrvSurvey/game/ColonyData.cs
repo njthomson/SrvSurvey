@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.plotters;
+using System.Diagnostics;
 
 namespace SrvSurvey.game
 {
@@ -34,7 +35,7 @@ namespace SrvSurvey.game
 
         public static string getDefaultProjectName(Docked lastDocked)
         {
-            var defaultName = lastDocked.StationName.StartsWith(ExtPanelColonisationShip, StringComparison.OrdinalIgnoreCase)|| lastDocked.StationName == ColonyData.SystemColonisationShip
+            var defaultName = lastDocked.StationName.StartsWith(ExtPanelColonisationShip, StringComparison.OrdinalIgnoreCase) || lastDocked.StationName == ColonyData.SystemColonisationShip
                 ? $"Primary port: {lastDocked.StarSystem}"
                 : lastDocked.StationName
                     .Replace(ColonyData.ExtPanelColonisationShip + "; ", "")
@@ -139,6 +140,7 @@ namespace SrvSurvey.game
         public bool fcTracking = true;
         public Dictionary<string, int> fcCommodities = new();
 
+        /// <summary> FCs linked to some project or directly to the CMDR</summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public Dictionary<long, FleetCarrier> linkedFCs = new();
 
@@ -466,6 +468,199 @@ namespace SrvSurvey.game
             Game.log(matches.Take(5).Select(kv => $"{kv.Key}: {kv.Value}").formatWithHeader($"matchByCargo: top 5"));
             var bestMatch = matches.First();
             return bestMatch.Key;
+        }
+
+        public static async Task<FleetCarrier> publishFC()
+        {
+            var game = Game.activeGame;
+            if (game?.lastDocked?.StationType != StationType.FleetCarrier || game.journals == null) return null;
+
+            // pull what we can from Docked, then find the display name
+            var newFC = new FleetCarrier()
+            {
+                marketId = game.lastDocked.MarketID,
+                name = game.lastDocked.StationName,
+                displayName = "",
+                cargo = null,
+            };
+
+            // walk through journals until we find ReceiveText or FSSSignalDiscovered
+            game.journals.walkDeep(true, entry =>
+            {
+                // match from station chatter?
+                var receiveText = entry as ReceiveText;
+                if (receiveText?.From.EndsWith(newFC.name) == true)
+                {
+                    newFC.displayName = receiveText.From.Replace($" {newFC.name}", "");
+                    return true;
+                }
+
+                // match from FSSSignalDiscovered?
+                var fssSignalDiscovered = entry as FSSSignalDiscovered;
+                if (fssSignalDiscovered?.SignalType == "FleetCarrier" && fssSignalDiscovered?.SignalName.EndsWith(newFC.name) == true)
+                {
+                    newFC.displayName = fssSignalDiscovered.SignalName.Replace($" {newFC.name}", "");
+                    return true;
+                }
+
+                return false;
+            });
+
+            if (newFC.displayName.EndsWith(" |"))
+                newFC.displayName = newFC.displayName.Substring(0, newFC.displayName.Length - 2);
+
+
+            Game.log($"Publishing FC: {newFC}");
+
+            var fc = await Game.colony.publishFC(newFC);
+
+            // if market data matches this FC, update that too
+            if (game.marketFile.MarketId == fc.marketId)
+                await game.cmdrColony.updateFromMarketFC(game.marketFile);
+
+            return fc;
+        }
+
+        public static async Task<bool> updateSysBodies(SystemData sys)
+        {
+            Game.log($"Colony.updateSysBodies: {sys.ToString()} ({sys.fssAllBodies})");
+            if (sys?.fssAllBodies != true || Game.activeGame?.journals == null) return false;
+
+            var bods = new List<Bod>();
+            var tidalsNeeded = 0;
+            foreach (var b in sys.bodies)
+            {
+                var bod = new Bod
+                {
+                    num = b.id,
+                    name = b.name,
+                    distLS = b.distanceFromArrivalLS,
+                    parents = b.parents?.Select(bp => bp.id).ToList() ?? new(),
+
+                    type = Bod.BodyType.un,
+                    subType = Util.pascal(b.planetClass?.Replace("Sudarsky ", "")),
+                    features = new(),
+                };
+
+                // map type
+                if (b.name.Contains("barycentre"))
+                {
+                    bod.type = Bod.BodyType.bc;
+                    bod.subType = null;
+                }
+                else if (b.type == SystemBodyType.Star)
+                {
+                    var starType = Util.flattenStarType(b.starType);
+                    if (starType == "H") bod.type = Bod.BodyType.bh;
+                    else if (starType == "NS") bod.type = Bod.BodyType.ns;
+                    else if (starType == "D") bod.type = Bod.BodyType.bh;
+                    else bod.type = Bod.BodyType.st;
+
+                    bod.subType = getSubType(b);
+                }
+                else if (b.planetClass?.StartsWith("Gas giant", StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    bod.type = Bod.BodyType.gg;
+                }
+                else
+                {
+                    tidalsNeeded++;
+                    bod.type = Bod.mapBodyTypeFromPlanetClass.GetValueOrDefault(b.planetClass!, StringComparison.OrdinalIgnoreCase);
+                }
+                if (bod.type == Bod.BodyType.un)
+                {
+                    Game.log($"Why body type not known? {bod.name} => {b.planetClass}");
+                    Debugger.Break();
+                    return false;
+                }
+
+                // map features
+                if (b.bioSignalCount > 0) bod.features.Add(BodyFeature.bio);
+                if (b.geoSignalCount > 0) bod.features.Add(BodyFeature.geo);
+                if (b.hasRings) bod.features.Add(BodyFeature.rings);
+                if (!string.IsNullOrEmpty(b.volcanism) && b.volcanism != "No volcanism") bod.features.Add(BodyFeature.volcanism);
+                if (b.terraformable) bod.features.Add(BodyFeature.terraformable);
+                if (b.type == SystemBodyType.LandableBody) bod.features.Add(BodyFeature.landable);
+
+                // as tidally locked is not stored, will must parse journals to find (done in a batch below)
+
+                bods.Add(bod);
+            }
+
+            Game.log($"Parsing journals for {tidalsNeeded} tidally locked status");
+            var countJournals = 0;
+            Game.activeGame.journals.walkDeep(true, entry =>
+            {
+                var scan = entry as Scan;
+                if (scan == null) return false;
+
+                var match = bods.Find(b => b.name == scan.BodyName);
+                if (match == null) { Debugger.Break(); return false; }
+
+                Game.log($"Found #{tidalsNeeded} '{scan.BodyName}' => {scan.TidalLock}");
+                if (scan.TidalLock)
+                    match.features.Add(BodyFeature.tidal);
+
+                tidalsNeeded--;
+
+                return tidalsNeeded <= 0;
+            }, _ =>
+            {
+                // search through 20 journal files max
+                countJournals++;
+                return countJournals < 20;
+            });
+
+
+            Game.log($"{sys.address} / {sys.name}\n\n" + JsonConvert.SerializeObject(bods, Formatting.Indented));
+            return await Game.colony.updateSysBodies(sys.address, bods);
+        }
+
+        private static string getSubType(SystemBody b)
+        {
+            // TODO: Not really sure what qualified as giant vs super-giant or not...
+            switch (b.starType)
+            {
+                case "A":
+                    return b.radius < 82 ? "A (Blue-White) Star" : "A (Blue-White super giant) Star";
+                case "B":
+                    return b.radius < 450 ? "B (Blue-White) Star" : "B (Blue-White super giant) Star";
+                case "H":
+                    return "Black Hole";
+                case "F":
+                    return b.radius < 220 ? "F (White) Star" : "F (White super giant) Star";
+                case "G":
+                    return b.radius < 150 ? "G (White-Yellow) Star" : "G (White-Yellow super giant) Star";
+                case "K":
+                    return b.radius < 50 ? "K (Yellow-Orange) Star" : "K (Yellow-Orange giant) Star";
+                case "L":
+                    return "L (Brown dwarf) Star";
+                case "MS":
+                    return "MS-type Star";
+                case "M":
+                    return b.radius < 3.85m ? "M (Red dwarf) Star" : b.radius < 610m ? "M (Red giant) Star" : "M (Red super giant) Star";
+                case "N":
+                    return "Neutron Star";
+                case "O":
+                    return "O (Blue-White) Star";
+                case "S":
+                    return "S-type star";
+                case "T":
+                    return "T (Brown dwarf) Star";
+                case "TTS":
+                    return "T Tauri Star";
+                case "Y":
+                    return "Y (Brown dwarf) Star";
+            }
+
+            if (b.starType?.StartsWith("D") == true)
+                return $"White Dwarf ({b.starType}) Star";
+
+            if (b.starType?.StartsWith("W") == true)
+                return $"Wolf-Rayet ({b.starType}) Star";
+
+            Debugger.Break();
+            return $"{b.starType} (?) Star"; // TODO: map the star type
         }
     }
 }

@@ -1527,7 +1527,7 @@ namespace SrvSurvey.game
                     inventoryItem.Count -= delta;
 
                     // update linked FC?
-                    if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID))
+                    if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID))
                     {
                         Game.log($"Transferring {delta}x {transferItem.Type} to tracked marketId: {lastDocked.MarketID}");
                         fcTrackedCargo.init(transferItem.Type);
@@ -1540,7 +1540,7 @@ namespace SrvSurvey.game
                     inventoryItem.Count += delta;
 
                     // update linked FC?
-                    if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID))
+                    if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID))
                     {
                         Game.log($"Transferring {delta}x {transferItem.Type} from tracked marketId: {lastDocked.MarketID}");
                         fcTrackedCargo.init(transferItem.Type);
@@ -1594,16 +1594,42 @@ namespace SrvSurvey.game
                 this.cargoFile.Vessel = entry.Vessel;
                 this.cargoFile.Count = entry.Count;
                 this.cargoFile.Inventory = entry.Inventory;
+
+                // also read so we initialize things (which skips if the times do not match)
+                CargoFile2.read(true, entry.timestamp);
             }
             else
             {
                 // force re-read the cargo file
                 CargoFile2.read(true);
+
+                // TODO: Remove with confirmation that diff tracking behaves
+                //Game.log(this.cargoFile.Inventory.formatWithHeader($"AFTER read: {cargoFile.timestamp} | {cargoFile.Count}", "\r\n\t"));
+
+                // if docked on a TRACKED Squadron FC - use crude cargo diff'ing to track cargo on the thing
+                if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && lastDocked.StationServices?.Contains("squadronBank") == true && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID))
+                {
+                    var diff = cargoFile.getDiff();
+                    if (diff.Count > 0)
+                    {
+                        // invert the diff as we want it applied to the FC
+                        diff = diff.ToDictionary(x => x.Key, x => x.Value * -1);
+                        Game.colony.supplyFC(lastDocked.MarketID, diff).continueOnMain(null, updatedCargo =>
+                        {
+                            Game.log(updatedCargo.formatWithHeader($"updatedCargo after supplyFC: {lastDocked.MarketID}"));
+                            if (cmdrColony == null || lastDocked == null) return;
+                            var fc = cmdrColony.linkedFCs.GetValueOrDefault(lastDocked.MarketID);
+                            if (fc != null)
+                            {
+                                fc.cargo = updatedCargo;
+                                cmdrColony.sumCargoLinkedFCs = ColonyData.getSumCargoFC(cmdrColony.linkedFCs.Values);
+                                cmdrColony.Save();
+                                Program.getPlotter<PlotBuildCommodities>()?.endPending();
+                            }
+                        });
+                    }
+                }
             }
-
-            // TODO: Remove with confirmation that diff tracking behaves
-            //Game.log(this.cargoFile.Inventory.formatWithHeader($"AFTER read: {cargoFile.timestamp} | {cargoFile.Count}", "\r\n\t"));
-
 
             Program.invalidate<PlotBuildCommodities>();
         }
@@ -1621,7 +1647,7 @@ namespace SrvSurvey.game
             item.Count += entry.Count;
 
             // track purchases from linked FleetCarriers
-            if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
+            if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
             {
                 Game.log($"Buying {entry.Count}x {entry.Type} from linked FC marketId: {entry.MarketId}");
                 Program.getPlotter<PlotBuildCommodities>()?.startPending();
@@ -1646,7 +1672,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(MarketSell entry)
         {
             // tracked sales to linked FleetCarriers
-            if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
+            if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
             {
                 Game.log($"Selling {entry.Count}x {entry.Type} to linked FC marketId: {entry.MarketId}");
                 Program.getPlotter<PlotBuildCommodities>()?.startPending();
@@ -1704,7 +1730,7 @@ namespace SrvSurvey.game
         {
             if (lastDocked == null || !ColonyData.isConstructionSite(lastDocked)) return;
 
-            if (Game.settings.buildProjects_TEST && Game.settings.trackConstructionContributions_TEST)
+            if (Game.settings.buildProjects_TEST)
             {
                 // if we are currently docked at a construction site ... track this contribution in stats
                 var diff = entry.Contributions.ToDictionary(
@@ -1734,7 +1760,6 @@ namespace SrvSurvey.game
 
             if (entry.StationType == "FleetCarrier")
             {
-
                 if (cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
                 {
                     cmdrColony.updateFromMarketFC(this.marketFile).justDoIt();
@@ -2174,6 +2199,9 @@ namespace SrvSurvey.game
             cmdr.lastSystemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
             cmdr.Save();
 
+            if (entry.Docked && lastDocked == null && lastEverDocked != null)
+                lastDocked = lastEverDocked;
+
             if (Game.settings.useExternalData)
                 this.fetchSystemData(entry.StarSystem, entry.SystemAddress);
         }
@@ -2185,7 +2213,7 @@ namespace SrvSurvey.game
             journals!.searchDeep(
                 (Scan scan) =>
                 {
-                    if (scan.Bodyname == bodyName)
+                    if (scan.BodyName == bodyName)
                     {
                         planetRadius = scan.Radius;
                         return true;
