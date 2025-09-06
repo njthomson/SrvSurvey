@@ -61,8 +61,7 @@
   </resheader>
   <!--Localizable elements are below-->
   <data name="collapseColonyData">
-    <!--Machine translated-->
-    <value>在 FC 上足够时切换折叠的货物组。</value>
+    <value>当航母上有足够货物时切换折叠货物组</value>
     <comment>A description of a key-chord setting</comment>
     <source>Toggle collapsing cargo groups when enough on FCs.</source>
   </data>
@@ -103,8 +102,7 @@
     <source>Paste clipboard text when in Gal-Map</source>
   </data>
   <data name="refreshColonyData">
-    <!--Machine translated-->
-    <value>立即刷新 Colonisation 数据。</value>
+    <value>立即刷新 殖民建设 数据。</value>
     <comment>A description of a key-chord setting</comment>
     <source>Immediately refresh of Colonisation data.</source>
   </data>
@@ -114,8 +112,7 @@
     <source>Force show the Body info overlay.</source>
   </data>
   <data name="showColonyShopping">
-    <!--Machine translated-->
-    <value>强制显示 Colonisation 购物清单叠加层。</value>
+    <value>强制显示 殖民建设 采购清单覆盖层。</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force show the Colonisation shopping list overlay.</source>
   </data>
@@ -130,8 +127,7 @@
     <source>Force toggle the FSD jump overlay without starting to jump.</source>
   </data>
   <data name="showStationInfo">
-    <!--Machine translated-->
-    <value>强制显示 Station Info 叠加层。</value>
+    <value>强制显示 空间站信息 覆盖层。</value>
     <comment>A description of a key-chord setting</comment>
     <source>Force show the Station Info overlay.</source>
   </data>
