@@ -484,13 +484,11 @@
     <source>&amp;Paste</source>
   </data>
   <data name="btnTargetCurrent.Text">
-    <!--Machine translated-->
-    <value>&amp;Emplacement actuel cible</value>
+    <value>&amp;Cibler l'emplacement actuel</value>
     <source>&amp;Target current location</source>
   </data>
   <data name="button1.Text">
-    <!--Machine translated-->
-    <value>&amp;Cible claire</value>
+    <value>&amp;Effacer la cible</value>
     <source>&amp;Clear target</source>
   </data>
   <data name="label2.Text">

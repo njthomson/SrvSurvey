@@ -61,7 +61,6 @@
   </resheader>
   <!--Localizable elements are below-->
   <data name="Aleoida">
-    <!--Machine translated-->
     <value>Aleoida</value>
     <comment>An Odyssey genus name</comment>
     <source>Aleoida</source>
@@ -85,14 +84,12 @@
     <source>Aquamarine</source>
   </data>
   <data name="Bacterium">
-    <!--Machine translated-->
-    <value>Bactérie</value>
+    <value>Bacterium</value>
     <comment>An Odyssey genus name</comment>
     <source>Bacterium</source>
   </data>
   <data name="Bark Mounds">
-    <!--Machine translated-->
-    <value>Monticules d’écorce</value>
+    <value>Rhizomes</value>
     <comment>A Horizons genus/species name</comment>
     <source>Bark Mounds</source>
   </data>
@@ -103,19 +100,16 @@
     <source>Blue</source>
   </data>
   <data name="Brain Trees">
-    <!--Machine translated-->
-    <value>Arbres cérébraux</value>
+    <value>Céphalobore</value>
     <comment>A Horizons genus/species name</comment>
     <source>Brain Trees</source>
   </data>
   <data name="Cactoida">
-    <!--Machine translated-->
-    <value>Cactoïdes</value>
+    <value>Cactoida</value>
     <comment>An Odyssey genus name</comment>
     <source>Cactoida</source>
   </data>
   <data name="Clypeus">
-    <!--Machine translated-->
     <value>Clypeus</value>
     <comment>An Odyssey genus name</comment>
     <source>Clypeus</source>
@@ -127,7 +121,6 @@
     <source>Cobalt</source>
   </data>
   <data name="Concha">
-    <!--Machine translated-->
     <value>Concha</value>
     <comment>An Odyssey genus name</comment>
     <source>Concha</source>
@@ -145,7 +138,6 @@
     <source>Cyan</source>
   </data>
   <data name="Electricae">
-    <!--Machine translated-->
     <value>Electricae</value>
     <comment>An Odyssey genus name</comment>
     <source>Electricae</source>
@@ -157,25 +149,21 @@
     <source>Emerald</source>
   </data>
   <data name="Fonticulua">
-    <!--Machine translated-->
     <value>Fonticulua</value>
     <comment>An Odyssey genus name</comment>
     <source>Fonticulua</source>
   </data>
   <data name="Frutexa">
-    <!--Machine translated-->
     <value>Frutexa</value>
     <comment>An Odyssey genus name</comment>
     <source>Frutexa</source>
   </data>
   <data name="Fumerola">
-    <!--Machine translated-->
     <value>Fumerola</value>
     <comment>An Odyssey genus name</comment>
     <source>Fumerola</source>
   </data>
   <data name="Fungoida">
-    <!--Machine translated-->
     <value>Fungoida</value>
     <comment>An Odyssey genus name</comment>
     <source>Fungoida</source>
@@ -253,8 +241,7 @@
     <source>Orange</source>
   </data>
   <data name="Osseus">
-    <!--Machine translated-->
-    <value>Ossée</value>
+    <value>Osseus</value>
     <comment>An Odyssey genus name</comment>
     <source>Osseus</source>
   </data>
@@ -265,8 +252,7 @@
     <source>Peach</source>
   </data>
   <data name="Recepta">
-    <!--Machine translated-->
-    <value>Récepta</value>
+    <value>Recepta</value>
     <comment>An Odyssey genus name</comment>
     <source>Recepta</source>
   </data>
@@ -283,14 +269,12 @@
     <source>Sage</source>
   </data>
   <data name="Sinuous Tubers">
-    <!--Machine translated-->
     <value>Tubercules sinueux</value>
     <comment>A Horizons genus/species name</comment>
     <source>Sinuous Tubers</source>
   </data>
   <data name="Stratum">
-    <!--Machine translated-->
-    <value>Strate</value>
+    <value>Stratum</value>
     <comment>An Odyssey genus name</comment>
     <source>Stratum</source>
   </data>
@@ -313,8 +297,7 @@
     <source>Turquoise</source>
   </data>
   <data name="Tussock">
-    <!--Machine translated-->
-    <value>Touffe</value>
+    <value>Touradon</value>
     <comment>An Odyssey genus name</comment>
     <source>Tussock</source>
   </data>

@@ -76,54 +76,47 @@
     <source>Distance:</source>
   </data>
   <data name="DistanceExceeds">
-    <!--Machine translated-->
-    <value>{0}ly - dépasse {1} ly</value>
+    <value>{0}ly - dépasse les {1} ly</value>
     <comment>Shown when measured distance exceeds some limit.
 {0} float, 2 decimal places, measured distance between 2 star systems
 {1} float, 2 decimal places, the maximum distance allowed</comment>
     <source>{0}ly - exceeds {1} ly</source>
   </data>
   <data name="DistanceWithin">
-    <!--Machine translated-->
-    <value>{0} - dans {1} ly</value>
+    <value>{0} - dans les {1} ly</value>
     <comment>Shown when measured distance is within some limit.
 {0} float, 2 decimal places, measured distance between 2 star systems
 {1} float, 2 decimal places, the maximum distance allowed</comment>
     <source>{0} - within {1} ly</source>
   </data>
   <data name="From">
-    <!--Machine translated-->
-    <value>De:</value>
+    <value>De :</value>
     <comment>Header before name of central star system</comment>
     <source>From:</source>
   </data>
   <data name="Next">
-    <!--Machine translated-->
-    <value>Prochain:</value>
+    <value>Prochain :</value>
     <comment>Header before name of next boxel system to visit</comment>
     <source>Next:</source>
   </data>
   <data name="To">
-    <!--Machine translated-->
-    <value>À:</value>
+    <value>À :</value>
     <comment>Header before name of target star system</comment>
     <source>To:</source>
   </data>
   <data name="UnknownDist">
-    <!--Machine translated-->
-    <value>Inconnu (tracé de l’intrigue)</value>
+    <value>Inconnu (planifier un itinéraire)</value>
     <comment>Message shown when we do not know the distance, but would if the cmdr plots a route</comment>
     <source>Unknown (plot route)</source>
   </data>
   <data name="Visited">
-    <!--Machine translated-->
-    <value>Visité:</value>
+    <value>Visité :</value>
     <comment>Header before count of systems visited</comment>
     <source>Visited:</source>
   </data>
   <data name="VisitedOf">
     <!--Machine translated-->
-    <value>{0} ({1} de {2})</value>
+    <value>{0} ({1} sur {2})</value>
     <comment>{0} int, percentage of systems visited
 {1} int, how many systems we have visited
 {2} int, how many systems total to visit</comment>

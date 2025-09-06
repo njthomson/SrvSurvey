@@ -426,18 +426,15 @@
     <source>Auto copy in Gal-Map</source>
   </data>
   <data name="btnImportSpanshUrl.Text">
-    <!--Machine translated-->
-    <value>URL de l’itinéraire spansh à partir du presse-papiers</value>
+    <value>URL de l'itinéraire Spansh à partir du presse-papiers</value>
     <source>Spansh route URL from clipboard</source>
   </data>
   <data name="btnNamesFromClipboard.Text">
-    <!--Machine translated-->
-    <value>Noms de système à partir du presse-papiers</value>
+    <value>Noms de systèmes à partir du presse-papiers</value>
     <source>System names from clipboard</source>
   </data>
   <data name="btnNamesFromFile.Text">
-    <!--Machine translated-->
-    <value>Noms système à partir du fichier</value>
+    <value>Noms de systèmes à partir du fichier</value>
     <source>System names from file</source>
   </data>
   <data name="btnSave.Text">
@@ -461,8 +458,7 @@
     <source>System</source>
   </data>
   <data name="lblIntro.Text">
-    <!--Machine translated-->
-    <value>Utilisez des itinéraires pour tracer manuellement votre chemin à travers la galaxie. Commencez par importer un itinéraire, puis recherchez des conseils dans le coin supérieur droit de la Gal-Map.</value>
+    <value>Utilisez des itinéraires pour tracer manuellement votre chemin à travers la galaxie. Commencez par importer un itinéraire, puis trouvez la suite dans le coin supérieur droit de la Gal-Map.</value>
     <source>Use routes to manually plot your way across the galaxy. Begin by importing a route, then look for guidance in the top-right corner in the Gal-Map.</source>
   </data>
   <data name="$this.Text">

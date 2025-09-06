@@ -75,8 +75,7 @@
     <source>Bio signals: {0} ( value: {1} cr )</source>
   </data>
   <data name="EarthLike">
-    <!--Machine translated-->
-    <value>Comme la Terre</value>
+    <value>De type terrestre</value>
     <comment>Atmosphere type is like Earth</comment>
     <source>Earth Like</source>
   </data>
@@ -87,22 +86,19 @@
     <source>First mapped</source>
   </data>
   <data name="GeoSignals">
-    <!--Machine translated-->
-    <value>Signaux géo : {0}</value>
+    <value>Signaux géologiques : {0}</value>
     <comment>Line prefix when geo signals are present
 {0} int, count of geo signals</comment>
     <source>Geo signals: {0}</source>
   </data>
   <data name="Gravity">
-    <!--Machine translated-->
-    <value>Poids : {0}g</value>
+    <value>Gravité : {0}g</value>
     <comment>Body gravity
 {0} decimal, 3 places, gravity value</comment>
     <source>Gravity: {0}g</source>
   </data>
   <data name="Materials">
-    <!--Machine translated-->
-    <value>Matériaux:</value>
+    <value>Matériaux :</value>
     <comment>Line prefix for materials</comment>
     <source>Materials:</source>
   </data>
@@ -127,20 +123,17 @@
     <source>{0}(atm)</source>
   </data>
   <data name="Rings">
-    <!--Machine translated-->
-    <value>Anneaux:</value>
+    <value>Anneaux :</value>
     <comment>Line prefix for rings</comment>
     <source>Rings:</source>
   </data>
   <data name="ScanRequired">
-    <!--Machine translated-->
-    <value>Numérisation requise</value>
+    <value>Analyse requise</value>
     <comment>Header shown when a scan is required</comment>
     <source>Scan required</source>
   </data>
   <data name="ScanValue">
-    <!--Machine translated-->
-    <value>Valeur de balayage</value>
+    <value>Valeur de l'analyse</value>
     <comment>Line prefix before showing the scan value for a body</comment>
     <source>Scan value</source>
   </data>
@@ -165,8 +158,7 @@
     <source>Terraformable</source>
   </data>
   <data name="Undiscovered">
-    <!--Machine translated-->
-    <value>Inconnues</value>
+    <value>Non découvert</value>
     <comment>Header tag</comment>
     <source>Undiscovered</source>
   </data>
@@ -177,14 +169,12 @@
     <source>Unmapped</source>
   </data>
   <data name="Volcanism">
-    <!--Machine translated-->
-    <value>Volcanisme:</value>
+    <value>Volcanisme :</value>
     <comment>Line prefix for volcanism</comment>
     <source>Volcanism:</source>
   </data>
   <data name="WithDSS">
-    <!--Machine translated-->
-    <value>(avec DSS : {0})</value>
+    <value>(avec DSD : {0})</value>
     <comment>Suffix shown after scan value for a body
 {0} string, value of credits</comment>
     <source>(with DSS: {0})</source>

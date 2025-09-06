@@ -89,8 +89,7 @@
     <source>Structures: {0}</source>
   </data>
   <data name="JumpCounts">
-    <!--Machine translated-->
-    <value>#{0} de {1}</value>
+    <value>#{0} sur {1}</value>
     <comment>Shown right of lines of jumps.
 {0} how many jumps already completed on this journey.
 {1} total count of jumps in this journey.</comment>
@@ -123,8 +122,7 @@
     <source>Guardian</source>
   </data>
   <data name="SpecialHopInfo">
-    <!--Machine translated-->
-    <value>#{0} de {1}</value>
+    <value>#{0} sur {1}</value>
     <comment>Part of a special line shown when the next system is part of a route we are following
 {0} int, the index of the next system in the route
 {1} int, total count of route hops</comment>
@@ -137,14 +135,12 @@
     <source>,</source>
   </data>
   <data name="SpecialNowEntering">
-    <!--Machine translated-->
-    <value>Entrant maintenant</value>
+    <value>Entrée en cours</value>
     <comment>A line header when the next system is in a different galactic region</comment>
     <source>Now entering</source>
   </data>
   <data name="SpecialRouteHop">
-    <!--Machine translated-->
-    <value>Saut d’itinéraire</value>
+    <value>Étape d'itinéraire</value>
     <comment>A line header when the next system is a hop on the route we are following</comment>
     <source>Route hop</source>
   </data>
