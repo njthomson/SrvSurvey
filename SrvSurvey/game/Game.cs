@@ -222,7 +222,6 @@ namespace SrvSurvey.game
             this.status.StatusChanged += Status_StatusChanged;
 
             Game.ready = true;
-            this.predictSystemSpecies();
 
             Status_StatusChanged(false);
         }
