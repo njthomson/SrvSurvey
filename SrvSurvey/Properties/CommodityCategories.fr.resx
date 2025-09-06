@@ -27,7 +27,6 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-                <xsd:element name="source" type="xsd:string" minOccurs="0" msdata:Ordinal="3" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
@@ -59,11 +58,72 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <!--Localizable elements are below-->
-  <data name="HeaderLine">
-    <value>Suivi de {0} cibles :</value>
-    <comment>Header line
-{0} int, count of bookmarks tracked</comment>
-    <source>Tracking {0} targets:</source>
+  <data name="Chemicals">
+    <value>Produits chimiques</value>
+    <comment>Commodity category Chemicals</comment>
+  </data>
+  <data name="ConsumerItems">
+    <value>Biens de Consommation</value>
+    <comment>Commodity category ConsumerItems</comment>
+  </data>
+  <data name="Foods">
+    <value>Alimentation</value>
+    <comment>Commodity category Foods</comment>
+  </data>
+  <data name="IndustrialMaterials">
+    <value>Matériaux Industriels</value>
+    <comment>Commodity category IndustrialMaterials</comment>
+  </data>
+  <data name="Machinery">
+    <value>Machines</value>
+    <comment>Commodity category Machinery</comment>
+  </data>
+  <data name="Medicines">
+    <value>Médicaments</value>
+    <comment>Commodity category Medicines</comment>
+  </data>
+  <data name="Metals">
+    <value>Métaux</value>
+    <comment>Commodity category Metals</comment>
+  </data>
+  <data name="Minerals">
+    <value>Minerais</value>
+    <comment>Commodity category Minerals</comment>
+  </data>
+  <data name="Narcotics">
+    <value>Narcotiques</value>
+    <comment>Commodity category Narcotics</comment>
+  </data>
+  <data name="NonMarketable">
+    <value>Non commercialisable</value>
+    <comment>Commodity category NonMarketable</comment>
+  </data>
+  <data name="Powerplay">
+    <value>Power play</value>
+    <comment>Commodity category Powerplay</comment>
+  </data>
+  <data name="Salvage">
+    <value>Ferraille</value>
+    <comment>Commodity category Salvage</comment>
+  </data>
+  <data name="Technology">
+    <value>Technologie</value>
+    <comment>Commodity category Technology</comment>
+  </data>
+  <data name="Textiles">
+    <value>Textiles</value>
+    <comment>Commodity category Textiles</comment>
+  </data>
+  <data name="Unknown">
+    <value>Inconnu</value>
+    <comment>Commodity category Unknown</comment>
+  </data>
+  <data name="Waste">
+    <value>Déchets</value>
+    <comment>Commodity category Waste</comment>
+  </data>
+  <data name="Weapons">
+    <value>Armes</value>
+    <comment>Commodity category Weapons</comment>
   </data>
 </root>

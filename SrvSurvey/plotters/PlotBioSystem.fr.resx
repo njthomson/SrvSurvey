@@ -69,8 +69,7 @@
     <source>Body {0} bio signals: {1}</source>
   </data>
   <data name="DssRequired">
-    <!--Machine translated-->
-    <value>DSS requis</value>
+    <value>DSD requis</value>
     <comment>Message shown if the body needs to be DSS scanned</comment>
     <source>DSS required</source>
   </data>
@@ -82,8 +81,7 @@
     <source>(FF bonus: {0})</source>
   </data>
   <data name="FssRequired">
-    <!--Machine translated-->
-    <value>Système FSS requis</value>
+    <value>ACS requis</value>
     <comment>Message shown if the system needs to be FSS scanned</comment>
     <source>System FSS required</source>
   </data>
@@ -108,8 +106,7 @@
     <source>Rewards: {0}</source>
   </data>
   <data name="SysBio_Header">
-    <!--Machine translated-->
-    <value>Signaux biographiques : {0}</value>
+    <value>Signaux biologiques : {0}</value>
     <comment>Header shown when showing bio signals forthe whole system
 {0} int, count of bio signals in this system</comment>
     <source>Bio signals: {0}</source>

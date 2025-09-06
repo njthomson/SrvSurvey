@@ -61,50 +61,42 @@
   </resheader>
   <!--Localizable elements are below-->
   <data name="NearingShipDistance">
-    <!--Machine translated-->
-    <value>Distance de départ du navire qui s’approche</value>
+    <value>Approche de la distance de départ du vaisseau</value>
     <comment>Warning shown when nearing ship departure distance</comment>
     <source>Nearing ship departure distance</source>
   </data>
   <data name="ScanOne_Long">
-    <!--Machine translated-->
-    <value>Scannez un :</value>
+    <value>Analyse 1 :</value>
     <comment>Prefix to bearing and distance to scan one</comment>
     <source>Scan one:</source>
   </data>
   <data name="ScanOne_Short">
-    <!--Machine translated-->
-    <value>1er:</value>
+    <value>1ère:</value>
     <comment>A shorter prefix to bearing and distance to scan one, when window is too narrow</comment>
     <source>1st:</source>
   </data>
   <data name="ScanOneInvalid">
-    <!--Machine translated-->
-    <value>Scanner un : invalide</value>
+    <value>Analyse 2 : invalide</value>
     <comment>Warning shown when scan one is not valid</comment>
     <source>Scan one: invalid</source>
   </data>
   <data name="ScanTwo_Long">
-    <!--Machine translated-->
-    <value>Balayage deux :</value>
+    <value>Analyse 2 :</value>
     <comment>Prefix to bearing and distance to scan two</comment>
     <source>Scan two:</source>
   </data>
   <data name="ScanTwo_Short">
-    <!--Machine translated-->
-    <value>deuxième:</value>
+    <value>2ème :</value>
     <comment>A shorter prefix to bearing and distance to scan two, when window is too narrow</comment>
     <source>2nd:</source>
   </data>
   <data name="ScanTwoInvalid">
-    <!--Machine translated-->
-    <value>Deuxième balayage : non valide</value>
+    <value>Analyse 2 : invalide</value>
     <comment>Warning shown when scan two is not valid</comment>
     <source>Scan two: invalid</source>
   </data>
   <data name="Ship">
-    <!--Machine translated-->
-    <value>Bateau:</value>
+    <value>Vaisseau :</value>
     <comment>Prefix to bearing and distance to the ship</comment>
     <source>Ship:</source>
   </data>
