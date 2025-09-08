@@ -61,32 +61,27 @@
   </resheader>
   <!--Localizable elements are below-->
   <data name="DssRequired">
-    <!--Machine translated-->
-    <value>Signaux biologiques détectés - Balayage DSS requis</value>
+    <value>Signaux biologiques détectés - Analyse DSD requise</value>
     <comment>Warning shown when body has not been DSS'd</comment>
     <source>Bio signals detected - DSS Scan required</source>
   </data>
   <data name="FooterAllScanned">
-    <!--Machine translated-->
-    <value>Tous les signaux sont balayés</value>
+    <value>Tous les signaux ont été analysés</value>
     <comment>Footer shown when all bio signals are scanned</comment>
     <source>All signals scanned</source>
   </data>
   <data name="FooterAllScannedFF">
-    <!--Machine translated-->
-    <value>Tous les signaux sont balayés avec le bonus FF appliqué</value>
+    <value>Tous les signaux ont été analysés avec le bonus FF appliqué</value>
     <comment>Footer shown when all bio signals are scanned and First Footfall bonus is applied</comment>
     <source>All signals scanned with FF bonus applied</source>
   </data>
   <data name="FooterApplyFF">
-    <!--Machine translated-->
-    <value>Application du bonus de première présence</value>
+    <value>Application du bonus de premier débarquement</value>
     <comment>Footer shown when not scanning anything currently and First Footfall bonus will be applied</comment>
     <source>Applying first footfall bonus</source>
   </data>
   <data name="FooterUseCompScanner">
-    <!--Machine translated-->
-    <value>Utiliser l’analyseur de composition pour définir des cibles de suivi</value>
+    <value>Utiliser le détecteur de composition pour définir des cibles de suivi</value>
     <comment>Footer shown to remind people to use the composition scanner</comment>
     <source>Use Composition Scanner to set tracker targets</source>
   </data>

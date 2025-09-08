@@ -313,18 +313,15 @@
     <source>Disable</source>
   </data>
   <data name="label1.Text">
-    <!--Machine translated-->
-    <value>Appuyez sur l’accord de touche souhaité :</value>
+    <value>Pressez la combinaison de touches souhaitée :</value>
     <source>Press desired key-chord:</source>
   </data>
   <data name="lblInvalid.Text">
-    <!--Machine translated-->
-    <value>Accord de tonalité invalide !</value>
+    <value>Combinaison de touches invalide !</value>
     <source>Invalid key chord!</source>
   </data>
   <data name="$this.Text">
-    <!--Machine translated-->
-    <value>Définir l’accord de clé</value>
+    <value>Définir la combinaison de touches</value>
     <source>Set Key Chord</source>
   </data>
 </root>
