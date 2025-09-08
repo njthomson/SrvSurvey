@@ -531,7 +531,7 @@ namespace SrvSurvey
             else
             {
                 // show data and start (cached) Spansh lookup for the system name from systemAddress/bodyId
-                toolDiscoveryDate.Text = entry.time.ToString();
+                toolDiscoveryDate.Text = entry.time.ToCmdrShortDateTime24Hours();
                 toolBodyName.Text = $"{entry.address} / {entry.bodyId} ...";
                 toolRegionName.Text = "..?";
             }

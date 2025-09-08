@@ -99,7 +99,7 @@ namespace SrvSurvey.game
             public void readFile(DateTimeOffset? timestamp = null)
             {
                 var obj = this.parseFile();
-                Game.log($"Reading: {this.filename}");
+                Game.log($"**** Reading: {this.filename}");
 
                 // ignore parsed data if we are given a timestamp but it does not match
                 if (timestamp != null && obj?.timestamp != timestamp)

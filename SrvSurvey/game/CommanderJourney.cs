@@ -13,7 +13,7 @@ namespace SrvSurvey.game
     {
         #region static loading and house keeping/crud code
 
-        private static readonly string dataFolder = Path.Combine(Program.dataFolder, $"journey");
+        public static readonly string dataFolder = Path.Combine(Program.dataFolder, $"journey");
 
         public static CommanderJourney? Load(string fid, string filename)
         {

@@ -453,12 +453,12 @@ namespace SrvSurvey.forms
                         // set dates
                         if (sys.visitedAt != null)
                         {
-                            item.SubItems["lastVisited"]!.Text = sys.visitedAt.Value.ToLocalShortDateTime24Hours();
+                            item.SubItems["lastVisited"]!.Text = sys.visitedAt.Value.ToCmdrShortDateTime24Hours();
                             item.SubItems["lastVisited"]!.Tag = sys.visitedAt.Value;
                         }
                         if (sys?.spanshUpdated != null)
                         {
-                            item.SubItems["spanshUpdated"]!.Text = sys.spanshUpdated.Value.ToLocalShortDateTime24Hours();
+                            item.SubItems["spanshUpdated"]!.Text = sys.spanshUpdated.Value.ToCmdrShortDateTime24Hours();
                             item.SubItems["spanshUpdated"]!.Tag = sys.spanshUpdated.Value;
                         }
                     }

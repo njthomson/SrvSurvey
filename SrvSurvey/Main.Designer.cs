@@ -96,6 +96,7 @@ namespace SrvSurvey
             menuJourneyBegin = new ToolStripMenuItem();
             menuJourneyNotes = new ToolStripMenuItem();
             menuJourneyReview = new ToolStripMenuItem();
+            menuPastJourneys = new ToolStripMenuItem();
             toolStripSeparator2 = new ToolStripSeparator();
             menuFollowRoute = new ToolStripMenuItem();
             btnTravel = new FlatButton();
@@ -859,11 +860,11 @@ namespace SrvSurvey
             // 
             menuJourney.BackColor = SystemColors.ControlLight;
             menuJourney.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            menuJourney.Items.AddRange(new ToolStripItem[] { menuSetLatLong, toolStripSeparator1, menuJourneyBegin, menuJourneyNotes, menuJourneyReview, toolStripSeparator2, menuFollowRoute });
+            menuJourney.Items.AddRange(new ToolStripItem[] { menuSetLatLong, toolStripSeparator1, menuJourneyBegin, menuJourneyNotes, menuJourneyReview, menuPastJourneys, toolStripSeparator2, menuFollowRoute });
             menuJourney.Name = "menuJourney";
             menuJourney.RenderMode = ToolStripRenderMode.System;
             menuJourney.ShowImageMargin = false;
-            menuJourney.Size = new Size(203, 146);
+            menuJourney.Size = new Size(203, 194);
             menuJourney.targetButton = btnTravel;
             menuJourney.Opening += menuJourney_Opening;
             // 
@@ -900,6 +901,13 @@ namespace SrvSurvey
             menuJourneyReview.Size = new Size(202, 26);
             menuJourneyReview.Text = "View Journey ...";
             menuJourneyReview.Click += menuJourneyReview_Click;
+            // 
+            // menuPastJourneys
+            // 
+            menuPastJourneys.Name = "menuPastJourneys";
+            menuPastJourneys.Size = new Size(202, 26);
+            menuPastJourneys.Text = "Past Journeys ...";
+            menuPastJourneys.Click += menuPastJourneys_Click;
             // 
             // toolStripSeparator2
             // 
@@ -1362,5 +1370,6 @@ namespace SrvSurvey
         private ToolStripMenuItem menuUpdateSystem;
         private ToolStripMenuItem menuUpdateHeader;
         private ToolStripSeparator menuColonizeLine4;
+        private ToolStripMenuItem menuPastJourneys;
     }
 }

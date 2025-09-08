@@ -1884,7 +1884,8 @@ namespace SrvSurvey
             // show NOTES when journey is active and we're in a system
             menuJourney.Items[3].Visible = hasActiveJourney;
             // show REVIEW when there is any journey
-            menuJourney.Items[4].Enabled = hasActiveJourney;
+            menuJourney.Items[4].Visible = hasActiveJourney;
+            menuJourney.Items[5].Visible = Directory.GetFiles(Path.Combine(CommanderJourney.dataFolder, CommanderSettings.currentOrLastFid), "*.json").Any();
         }
 
         private void menuJourneyBegin_Click(object sender, EventArgs e)
@@ -1900,6 +1901,11 @@ namespace SrvSurvey
         private void menuJourneyReview_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormJourneyViewer>(this);
+        }
+
+        private void menuPastJourneys_Click(object sender, EventArgs e)
+        {
+            BaseForm.show<FormJourneyList>();
         }
 
         private void menuJourneyNotes_Click(object sender, EventArgs e)
@@ -1943,7 +1949,7 @@ namespace SrvSurvey
 
         private void menuUpdateSystem_Click(object sender, EventArgs e)
         {
-            
+
             if (game?.systemData == null) return;
             btnColonize.Enabled = false;
             ColonyData.updateSysBodies(game.systemData).continueOnMain(this, success =>

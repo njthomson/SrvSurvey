@@ -75,6 +75,9 @@ namespace SrvSurvey
 
             groupColonization.setChildrenEnabled(Game.settings.buildProjects_TEST, checkColonization);
 
+            checkShowInRightPanel.Enabled = checkBox49.Checked;
+            checkSuppressNonColonise.Enabled = checkBox49.Checked;
+
             if (game == null)
             {
                 btnClearUnclaimed.Enabled = false;
@@ -928,6 +931,12 @@ namespace SrvSurvey
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Util.openLink("https://github.com/njthomson/SrvSurvey/wiki/Colonization#colonization-settings");
+        }
+
+        private void checkBox49_CheckedChanged(object sender, EventArgs e)
+        {
+            checkShowInRightPanel.Enabled = checkBox49.Checked;
+            checkSuppressNonColonise.Enabled = checkBox49.Checked;
         }
     }
 }

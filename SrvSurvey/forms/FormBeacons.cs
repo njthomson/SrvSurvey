@@ -134,7 +134,7 @@ namespace SrvSurvey
 
             foreach (var entry in allBeacons)
             {
-                var lastVisited = entry.lastVisited == DateTimeOffset.MinValue ? "" : entry.lastVisited.ToString("d")!;
+                var lastVisited = entry.lastVisited.Year < 2000 ? "" : entry.lastVisited.ToCmdrShortDateTime24Hours(true);
                 var distanceToArrival = entry.distanceToArrival.ToString("N0");
 
                 entry.systemDistance = Util.getSystemDistance(this.from, entry.starPos);
@@ -163,7 +163,7 @@ namespace SrvSurvey
 
             foreach (var entry in allSites)
             {
-                var lastVisited = entry.lastVisited == DateTimeOffset.MinValue ? "" : entry.lastVisited.ToString("d")!;
+                var lastVisited = entry.lastVisited.Year < 2000 ? "" : entry.lastVisited.ToCmdrShortDateTime24Hours(true);
                 var distanceToArrival = entry.distanceToArrival.ToString("N0");
 
                 entry.systemDistance = Util.getSystemDistance(this.from, entry.starPos);

@@ -6,6 +6,28 @@ namespace SrvSurvey.forms
     [Draggable, TrackPosition]
     internal partial class FormJourneyViewer : SizableForm
     {
+        public static bool loadJourney(CommanderJourney journey)
+        {
+            var prior = BaseForm.get<FormJourneyViewer>();
+            if (prior?.isDirty == true)
+            {
+                prior.Activate();
+                var rslt = MessageBox.Show("Save changes before switching journeys?", "SrvSurvey", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                if (rslt == DialogResult.Cancel)
+                    return true;
+
+                if (rslt == DialogResult.Yes)
+                    prior.btnSave_Click(null!, null!);
+            }
+
+            BaseForm.show<FormJourneyViewer>(viewer =>
+            {
+                viewer.journey = journey;
+            });
+
+            return false;
+        }
+
         private CommanderJourney journey;
         private ViewJourneySystem viewSys;
 
@@ -20,19 +42,27 @@ namespace SrvSurvey.forms
             };
             panelSystem.Controls.Add(this.viewSys);
 
-            this.journey = Game.activeGame?.journey ?? CommanderSettings.LoadCurrentOrLast().loadActiveJourney()!;
-            if (this.journey == null) throw new Exception("Why no active journey?");
-
             menuGalacticTime.Checked = Game.settings.viewJourneyGalacticTime;
             menuTopMost.Checked = Game.settings.viewJourneyTopMost;
             this.TopMost = Game.settings.viewJourneyTopMost;
+
+            //Util.applyTheme(this);
+        }
+
+        protected override void beforeShowing()
+        {
+            base.beforeShowing();
+
+            // load current journey 
+            if (this.journey == null)
+                this.journey = Game.activeGame?.journey ?? CommanderSettings.LoadCurrentOrLast().loadActiveJourney()!;
+            if (this.journey == null)
+                throw new Exception("Why no active journey?");
 
             this.refresh();
 
             if (journey.endTime == null)
                 tabControl1.SelectTab(1);
-
-            //Util.applyTheme(this);
         }
 
         /// <summary>
@@ -47,9 +77,7 @@ namespace SrvSurvey.forms
             this.txtDescription.Text = journey.description;
 
             var duration = DateTime.Now - journey.startTime.LocalDateTime;
-            var startedOn = Game.settings.viewJourneyGalacticTime
-                ? journey.startTime.ToGalacticShortDateTime24Hours()
-                : journey.startTime.ToLocalShortDateTime24Hours();
+            var startedOn = journey.startTime.ToCmdrShortDateTime24Hours();
             this.txtByline.Text = $"CMDR {journey.commander}  |  Set out: {startedOn}, {duration.TotalDays:n0} days ago";
 
             prepQuickStats();
@@ -144,10 +172,12 @@ namespace SrvSurvey.forms
             updateSaveVisible();
         }
 
+        public bool isDirty => viewSys.dirty || txtDescription.Text != journey.description || txtJourneyName.Text != journey.name;
+
         public void updateSaveVisible()
         {
             // show the save button if system view is dirty or our two text boxes have changed
-            var dirty = viewSys.dirty || txtDescription.Text != journey.description || txtJourneyName.Text != journey.name;
+            var dirty = this.isDirty;
             menuSaveUpdates.Visible = dirty;
             menuDiscard.Visible = dirty;
             menuConclude.Enabled = !dirty;

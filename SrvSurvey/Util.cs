@@ -1575,6 +1575,21 @@ namespace SrvSurvey
             return dateTime.AddYears(1286).UtcDateTime.ToShortDateString() + " " + dateTime.UtcDateTime.ToString("HH:mm");
         }
 
+        /// <summary>
+        /// Returns a string using local or Galactic short date and 24 hour time, depending on the setting
+        /// </summary>
+        public static string ToCmdrShortDateTime24Hours(this DateTimeOffset dateTime, bool dateOnly = false)
+        {
+            if (dateOnly)
+                return Game.settings.viewJourneyGalacticTime
+                    ? dateTime.AddYears(1286).UtcDateTime.ToString("d")
+                    : dateTime.ToString("d");
+            else
+                return Game.settings.viewJourneyGalacticTime
+                    ? dateTime.ToGalacticShortDateTime24Hours()
+                    : dateTime.ToLocalShortDateTime24Hours();
+        }
+
         public static TValue init<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key) where TKey : notnull
         {
             // initialize dictionary entry if not found

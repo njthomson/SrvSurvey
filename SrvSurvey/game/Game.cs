@@ -739,7 +739,7 @@ namespace SrvSurvey.game
 
             if (Elite.hadManyGameProcs)
             {
-                Game.log("Ignoring CargoFile contents as there are many game processes running");
+                Game.log("**** Ignoring CargoFile contents as there are many game processes running");
                 this.cargoFile.Count = 0;
                 this.cargoFile.Inventory.Clear();
             }
@@ -1600,7 +1600,7 @@ namespace SrvSurvey.game
             else
             {
                 // force re-read the cargo file
-                CargoFile2.read(true);
+                CargoFile2.read(true, entry.timestamp);
 
                 // TODO: Remove with confirmation that diff tracking behaves
                 //Game.log(this.cargoFile.Inventory.formatWithHeader($"AFTER read: {cargoFile.timestamp} | {cargoFile.Count}", "\r\n\t"));
@@ -1615,7 +1615,7 @@ namespace SrvSurvey.game
                         diff = diff.ToDictionary(x => x.Key, x => x.Value * -1);
                         Game.colony.supplyFC(lastDocked.MarketID, diff).continueOnMain(null, updatedCargo =>
                         {
-                            Game.log(updatedCargo.formatWithHeader($"updatedCargo after supplyFC: {lastDocked.MarketID}"));
+                            Game.log(updatedCargo.formatWithHeader($"**** updatedCargo after supplyFC: {lastDocked.MarketID}"));
                             if (cmdrColony == null || lastDocked == null) return;
                             var fc = cmdrColony.linkedFCs.GetValueOrDefault(lastDocked.MarketID);
                             if (fc != null)

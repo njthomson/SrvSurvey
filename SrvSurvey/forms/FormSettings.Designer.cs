@@ -31,10 +31,10 @@ namespace SrvSurvey
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            ListViewItem listViewItem1 = new ListViewItem("Materials count after pickup");
-            ListViewItem listViewItem2 = new ListViewItem("Mission remaining cargo count");
-            ListViewItem listViewItem3 = new ListViewItem("Boxel search status");
-            ListViewItem listViewItem4 = new ListViewItem("Next boxel to search");
+            ListViewItem listViewItem5 = new ListViewItem("Materials count after pickup");
+            ListViewItem listViewItem6 = new ListViewItem("Mission remaining cargo count");
+            ListViewItem listViewItem7 = new ListViewItem("Boxel search status");
+            ListViewItem listViewItem8 = new ListViewItem("Next boxel to search");
             panel1 = new Panel();
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
@@ -180,8 +180,8 @@ namespace SrvSurvey
             checkBox4 = new CheckBox();
             tabPage7 = new TabPage();
             groupColonization = new GroupBox();
-            checkBox53 = new CheckBox();
-            checkBox52 = new CheckBox();
+            checkSuppressNonColonise = new CheckBox();
+            checkShowInRightPanel = new CheckBox();
             checkBox49 = new CheckBox();
             linkLabel2 = new LinkLabel();
             checkBox48 = new CheckBox();
@@ -256,6 +256,7 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
+            checkBox39 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -2230,8 +2231,8 @@ namespace SrvSurvey
             // 
             // groupColonization
             // 
-            groupColonization.Controls.Add(checkBox53);
-            groupColonization.Controls.Add(checkBox52);
+            groupColonization.Controls.Add(checkSuppressNonColonise);
+            groupColonization.Controls.Add(checkShowInRightPanel);
             groupColonization.Controls.Add(checkBox49);
             groupColonization.Controls.Add(linkLabel2);
             groupColonization.Controls.Add(checkBox48);
@@ -2247,31 +2248,31 @@ namespace SrvSurvey
             groupColonization.TabStop = false;
             groupColonization.Text = "Colonisation: (experimental)";
             // 
-            // checkBox53
+            // checkSuppressNonColonise
             // 
-            checkBox53.AutoSize = true;
-            checkBox53.CheckAlign = ContentAlignment.TopLeft;
-            checkBox53.FlatStyle = FlatStyle.System;
-            checkBox53.Location = new Point(36, 227);
-            checkBox53.Name = "checkBox53";
-            checkBox53.Size = new Size(221, 20);
-            checkBox53.TabIndex = 43;
-            checkBox53.Tag = "buildProjectsSuppressOtherOverlays";
-            checkBox53.Text = "Suppress non-Colonisation overlays";
-            checkBox53.UseVisualStyleBackColor = true;
+            checkSuppressNonColonise.AutoSize = true;
+            checkSuppressNonColonise.CheckAlign = ContentAlignment.TopLeft;
+            checkSuppressNonColonise.FlatStyle = FlatStyle.System;
+            checkSuppressNonColonise.Location = new Point(36, 227);
+            checkSuppressNonColonise.Name = "checkSuppressNonColonise";
+            checkSuppressNonColonise.Size = new Size(221, 20);
+            checkSuppressNonColonise.TabIndex = 43;
+            checkSuppressNonColonise.Tag = "buildProjectsSuppressOtherOverlays";
+            checkSuppressNonColonise.Text = "Suppress non-Colonisation overlays";
+            checkSuppressNonColonise.UseVisualStyleBackColor = true;
             // 
-            // checkBox52
+            // checkShowInRightPanel
             // 
-            checkBox52.AutoSize = true;
-            checkBox52.CheckAlign = ContentAlignment.TopLeft;
-            checkBox52.FlatStyle = FlatStyle.System;
-            checkBox52.Location = new Point(36, 202);
-            checkBox52.Name = "checkBox52";
-            checkBox52.Size = new Size(241, 20);
-            checkBox52.TabIndex = 42;
-            checkBox52.Tag = "buildProjectsOnRightScreen";
-            checkBox52.Text = "Show when looking at right-hand panel";
-            checkBox52.UseVisualStyleBackColor = true;
+            checkShowInRightPanel.AutoSize = true;
+            checkShowInRightPanel.CheckAlign = ContentAlignment.TopLeft;
+            checkShowInRightPanel.FlatStyle = FlatStyle.System;
+            checkShowInRightPanel.Location = new Point(36, 202);
+            checkShowInRightPanel.Name = "checkShowInRightPanel";
+            checkShowInRightPanel.Size = new Size(241, 20);
+            checkShowInRightPanel.TabIndex = 42;
+            checkShowInRightPanel.Tag = "buildProjectsOnRightScreen";
+            checkShowInRightPanel.Text = "Show when looking at right-hand panel";
+            checkShowInRightPanel.UseVisualStyleBackColor = true;
             // 
             // checkBox49
             // 
@@ -2285,6 +2286,7 @@ namespace SrvSurvey
             checkBox49.Tag = "autoShowPlotBuildCommodities";
             checkBox49.Text = "Auto show colonisation overlay";
             checkBox49.UseVisualStyleBackColor = true;
+            checkBox49.CheckedChanged += checkBox49_CheckedChanged;
             // 
             // linkLabel2
             // 
@@ -2940,6 +2942,7 @@ namespace SrvSurvey
             // 
             tabPage8.BackColor = SystemColors.Control;
             tabPage8.BorderStyle = BorderStyle.Fixed3D;
+            tabPage8.Controls.Add(checkBox39);
             tabPage8.Controls.Add(checkBox51);
             tabPage8.Controls.Add(checkBox50);
             tabPage8.Controls.Add(numGravityWarningLevel);
@@ -3061,15 +3064,15 @@ namespace SrvSurvey
             // listView1
             // 
             listView1.CheckBoxes = true;
-            listViewItem1.StateImageIndex = 0;
-            listViewItem1.Tag = "materialCountAfterPickup";
-            listViewItem2.StateImageIndex = 0;
-            listViewItem2.Tag = "cargoMissionRemaining";
-            listViewItem3.StateImageIndex = 0;
-            listViewItem3.Tag = "currentBoxelSearchStatus";
-            listViewItem4.StateImageIndex = 0;
-            listViewItem4.Tag = "showNextBoxelToSearch";
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4 });
+            listViewItem5.StateImageIndex = 0;
+            listViewItem5.Tag = "materialCountAfterPickup";
+            listViewItem6.StateImageIndex = 0;
+            listViewItem6.Tag = "cargoMissionRemaining";
+            listViewItem7.StateImageIndex = 0;
+            listViewItem7.Tag = "currentBoxelSearchStatus";
+            listViewItem8.StateImageIndex = 0;
+            listViewItem8.Tag = "showNextBoxelToSearch";
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem5, listViewItem6, listViewItem7, listViewItem8 });
             listView1.Location = new Point(12, 331);
             listView1.Name = "listView1";
             listView1.Size = new Size(400, 107);
@@ -3178,6 +3181,18 @@ namespace SrvSurvey
             menuClearCodexCache.Text = "Clear cached images";
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
+            // 
+            // checkBox39
+            // 
+            checkBox39.AutoSize = true;
+            checkBox39.FlatStyle = FlatStyle.System;
+            checkBox39.Location = new Point(12, 222);
+            checkBox39.Name = "checkBox39";
+            checkBox39.Size = new Size(166, 20);
+            checkBox39.TabIndex = 47;
+            checkBox39.Tag = "viewJourneyGalacticTime";
+            checkBox39.Text = "Use future dates, eg: 3309";
+            checkBox39.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -3487,7 +3502,8 @@ namespace SrvSurvey
         private CheckBox checkBox49;
         private CheckBox checkBox50;
         private CheckBox checkBox51;
-        private CheckBox checkBox52;
-        private CheckBox checkBox53;
+        private CheckBox checkShowInRightPanel;
+        private CheckBox checkSuppressNonColonise;
+        private CheckBox checkBox39;
     }
 }

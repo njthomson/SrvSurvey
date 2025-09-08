@@ -24,8 +24,8 @@ namespace SrvSurvey.forms
 
             txtNotes.Text = systemData.notes;
 
-            var arrivedTime = Game.settings.viewJourneyGalacticTime ? systemStats.arrived.ToGalacticShortDateTime24Hours() : systemStats.arrived.ToLocalShortDateTime24Hours();
-            var departedTime = Game.settings.viewJourneyGalacticTime ? systemStats.departed?.ToGalacticShortDateTime24Hours() : systemStats.departed?.ToLocalShortDateTime24Hours();
+            var arrivedTime = systemStats.arrived.ToCmdrShortDateTime24Hours();
+            var departedTime = systemStats.departed?.ToCmdrShortDateTime24Hours();
             if (departedTime != null)
                 txtStuff.Text  = $"Arrived: {arrivedTime} - Departed: " + departedTime;
             else
