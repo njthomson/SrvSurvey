@@ -7,9 +7,7 @@
 	btnCopyNext.Text
 	btnParent.Text
 	btnToggleList.Text
-	checkAutoCopy.Text
 	checkCompleteOnEnterSystem.Text
-	checkCompleteOnFssAllBodies.Text
 	checkSkipVisited.Text
 	checkSpinKnownToSpansh.Text
 	colCompleted.Text
@@ -38,8 +36,6 @@
 	btnBegin.Text
 	btnCancel.Text
 	btnPaste.Text
-	btnTargetCurrent.Text
-	button1.Text
 	label2.Text
 	label3.Text
 	label6.Text
@@ -50,14 +46,10 @@
 /forms/FormRoute.fr.resx
 	btnActive.Text
 	btnAutoCopy.Text
-	btnImportSpanshUrl.Text
-	btnNamesFromClipboard.Text
-	btnNamesFromFile.Text
 	btnSave.Text
 	colDistance.Text
 	colNotes.Text
 	colSystem.Text
-	lblIntro.Text
 	$this.Text
 	toolStripDropDownButton1.Text
 
@@ -65,15 +57,11 @@
 	btnAccept.Text
 	btnCancel.Text
 	btnDisable.Text
-	label1.Text
-	lblInvalid.Text
-	$this.Text
 
 /forms/FormSphereLimit.fr.resx
 	btnAccept.Text
 	btnCancel.Text
 	btnDisable.Text
-	label1.Text
 	label2.Text
 	label3.Text
 	label4.Text
@@ -89,11 +77,6 @@
 	$this.Text
 
 /plotters/PlotBioStatus.fr.resx
-	DssRequired
-	FooterAllScanned
-	FooterAllScannedFF
-	FooterApplyFF
-	FooterUseCompScanner
 	GeoN
 	Header
 	SomethingWrong
@@ -102,35 +85,22 @@
 
 /plotters/PlotBioSystem.fr.resx
 	BodyBio_Header
-	DssRequired
 	FFBonus
-	FssRequired
 	GeoSignals
 	NotPredicted
 	RewardFooter
-	SysBio_Header
 
 /plotters/PlotBodyInfo.fr.resx
 	Atmosphere
 	BioSignals
-	EarthLike
 	FirstMapped
-	GeoSignals
-	Gravity
-	Materials
 	None
 	Pressure
 	PressureValue
-	Rings
-	ScanRequired
-	ScanValue
 	StarClass
 	Temp
 	Terraformable
-	Undiscovered
 	Unmapped
-	Volcanism
-	WithDSS
 
 /plotters/PlotFlightWarning.fr.resx
 	SurfaceGravityWarning
@@ -164,14 +134,6 @@
 	Selected
 
 /plotters/PlotGrounded.fr.resx
-	NearingShipDistance
-	ScanOneInvalid
-	ScanOne_Long
-	ScanOne_Short
-	ScanTwoInvalid
-	ScanTwo_Long
-	ScanTwo_Short
-	Ship
 	SRV
 
 /plotters/PlotGuardians.fr.resx
@@ -236,7 +198,6 @@
 	YouHaveScanned
 
 /plotters/PlotGuardianSystem.fr.resx
-	BluePrintLine
 	Header
 	SurveyIncomplete
 	SurveyLine
@@ -249,47 +210,27 @@
 	AGRI
 	HAB
 	CMD
-	POW
 	PWR
-	EXT
 	STO
 	RES
 	IND
 	MED
-	LAB
 	UnknownTypeHeading
 	UnkownHeading
-	KnownSettlement
 	OnApproach
 	Faction
 	Influence
 	YourRep
 	Government
-	HasInterstellar
-	DockingRequested
-	DockingApproved
-	DockingDenied
 	Distance
 	Hostile
-	TooLarge
-	NoSpace
 	Offenses
 	ActiveFighter
 	Unknown
-	AutoDock1
-	AutoDock2
 	AutoDock3
-	ManualDock1
-	ManualDock2
-	ManualDock3
-	HelpShip1
-	HelpShip2
-	HelpShip3
 	HelpFoot0
 	HelpFoot1
 	HelpFoot2
-	HelpFoot3
-	HelpFoot4
 	HelpFoot5
 	HelpFoot6
 
@@ -299,16 +240,12 @@
 	DiscoveredBy
 	LastUpdated
 	TrafficInfo
-	JumpCounts
 	JumpDistance
 	GuardianBeacon
 	GuardianRuins
 	GuardianStructures
 	SpecialGuardian
-	SpecialHopInfo
 	SpecialJoiner
-	SpecialNowEntering
-	SpecialRouteHop
 
 /plotters/PlotMassacre.fr.resx
 	Header
@@ -316,7 +253,6 @@
 /plotters/PlotPriorScans.fr.resx
 	Footer
 	Header
-	NoMoreSignals
 
 /plotters/PlotRamTah.fr.resx
 	Footer
@@ -326,54 +262,26 @@
 /plotters/PlotSphericalSearch.fr.resx
 	Boxel
 	Distance
-	DistanceExceeds
-	DistanceWithin
-	From
-	Next
-	To
-	UnknownDist
-	Visited
 	VisitedOf
 
 /plotters/PlotSysStatus.fr.resx
-	BioSignals
 	DssRemaining
-	FssCompleteLong
-	FssCompleteShort
-	FssNotStarted
-	Header
 	NextSystem
 	NoDssMeet
-	NonBodySignals
-
-/plotters/PlotTrackers.fr.resx
-	HeaderLine
 
 /plotters/PlotTrackTarget.fr.resx
 	BearingTo
 	DistanceTo
 
 /Properties/Codex.fr.resx
-	Aleoida
 	Amethyst
 	Amphora Plant
 	Aquamarine
-	Bacterium
-	Bark Mounds
 	Blue
-	Brain Trees
-	Cactoida
-	Clypeus
 	Cobalt
-	Concha
 	Crystalline Shards
 	Cyan
-	Electricae
 	Emerald
-	Fonticulua
-	Frutexa
-	Fumerola
-	Fungoida
 	Gold
 	Green
 	Grey
@@ -386,17 +294,12 @@
 	Mulberry
 	Ocher
 	Orange
-	Osseus
 	Peach
-	Recepta
 	Red
 	Sage
-	Sinuous Tubers
-	Stratum
 	Teal
 	Tubus
 	Turquoise
-	Tussock
 	White
 	Yellow
 
@@ -424,41 +327,13 @@
 	Tussock
 
 /Properties/Commodities.fr.resx
-	AzCancriFormula42
 	RepublicanFieldSupplies
 	RepublicanGarisonSupplies
 	RestrictedIntel
-	ThargoidScoutTissueSample
-	PersonalGifts
-	OnionHeadC
-	ClassifiedExperimentalEquipment
-	AncientRelicTG
-	ThargoidTissueSampleType5
-	ThargoidGeneratorTissueSample
-	UnocuppiedEscapePod
-	ThargoidTissueSampleType6
-	ThargoidTissueSampleType9a
-	ThargoidTissueSampleType9b
-	ThargoidTissueSampleType9c
-	ThargoidTissueSampleType10a
-	ThargoidTissueSampleType10b
-	ThargoidTissueSampleType10c
-	ThargoidTissueSampleType7
-	UnknownSack
-	ThargoidPod
-	CoralSap
-	UnknownMineral
-	UnknownRefinedMineral
-	ThargoidTitanDriveComponent
-	ThargoidCystSpecimen
-	ThargoidBoneFragments
-	ThargoidOrganSample
-	ThargoidHeart
 	KaineAidSupplies
 	KaineMisinformation
 	KaineLobbyingMaterial
 	LavignyStrategicReports
-	Steel
 
 /Properties/Economies.fr.resx
 	Engineer
@@ -485,7 +360,6 @@
 	RouteComplete
 	RouteNotFound
 	RouteNotStarted
-	RouteProgress
 	SpanshImportSuccess
 	TextFiles
 
@@ -566,8 +440,6 @@
 
 /Properties/Misc.fr.resx
 	NetSysData_Bodies
-	NetSysData_DiscoveredAll
-	NetSysData_DiscoveredPartial
 	NetSysData_FC
 	NetSysData_Genus
 	NetSysData_MaterialTrader
@@ -589,7 +461,6 @@
 	FormBoxelSearch_UndiscoveredSystem
 	FormBoxelSearch_Visited
 	FormBoxelSearch_SearchNotActive
-	FormBoxelSearch_VisitedCounts
 	NetSysData_Encoded
 	NetSysData_GuardianBroker
 	NetSysData_HumanBroker

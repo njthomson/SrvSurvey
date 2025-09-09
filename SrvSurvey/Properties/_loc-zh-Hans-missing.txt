@@ -1,38 +1,5 @@
 /plotters/PlotGuardians.zh-Hans.resx
 	HeaderGeneral
-	HeaderNeedRelicTowerHeading
-	HeaderNeedRelicTowers
-	HeaderRuinsComplete
-	HeaderStructureComplete
-	HeadingSite
-	HeadingUnknown
-	IdentifyNoMap
-	IdentifySiteHeading
-	IdentifySiteType
-	IdentifyWithButtress
-	IdentifyWithPort
-	NoMapForType
-	ObliskFooter
-	RuinsFooter
-	StructureFooter
-	TrackLeft
-	TrackOriginFooter
-	TrackOriginHeaderPrefix
-	TrackOriginHeaderSuffix
-	TrackRight
-	ZoomLevel
-	ZoomLevelAuto
-
-/Properties/Guardian.zh-Hans.resx
-	Unknown
 
 /Properties/KeyChords.zh-Hans.resx
-	collapseColonyData
 	nextWindow
-	refreshColonyData
-	showColonyShopping
-	showStationInfo
-
-/Properties/Misc.zh-Hans.resx
-	Cancel
-	Close

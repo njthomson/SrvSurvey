@@ -458,7 +458,7 @@ namespace BioCriterias
             foreach (var body in systemData.bodies)
             {
                 var realBody = bioStats.bodies.Find(b => b.bodyId == body.id);
-                if (realBody?.signals?.biology == null) continue; // skip bodies without known bio signals
+                if (realBody?.signals?.biology == null /*&& body.name != "Ihad BK-L b35-0 1 a"*/) continue; // skip bodies without known bio signals
 
                 BioPredictor.logOrganism = "";
                 var predictions = BioPredictor.predict(body); // <--- drag execution up to here
@@ -658,10 +658,11 @@ namespace BioCriterias
                 //84431081539, // Eolls Ploe OX-L d7-2
 
                 //353504315603, // Oochody YF-L d9-10 // consistently wrong star choice?
-                49786130467, // Eock Flyao XY-S d3-1 // single star system
+                //49786130467, // Eock Flyao XY-S d3-1 // single star system
 
                 // 113053059083, // Slegi AV-Y d3 // Not Predicted: Stratum Tectonicas Green / Due to a Neutron being deemed the hottest but it should have been the local M stars
-                2282674557658, // Vodyakamana // <-- not actually tested yet
+                //2282674557658, // Vodyakamana // <-- BC4 Fails because Argon is < 100% BUT there's no Nitrogen in the atmosphere (or anything else?!)
+                //1050522316081, // Ihad BK-L b35-0 // <-- we are missing data about the star AND Canonn has incomplete bio data for Ihad BK-L b35-0 1 a
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");
