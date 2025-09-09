@@ -19,7 +19,7 @@ namespace SrvSurvey.plotters
                     // when FSD is charging for a jump, or ...
                     (Game.activeGame.status.FsdChargingJump && Game.activeGame.isMode(GameMode.Flying, GameMode.SuperCruising))
                     // whilst in witch space, jumping to next system
-                    || Game.activeGame.mode == GameMode.FSDJumping
+                    || Game.activeGame.mode == GameMode.FSDJumping || Game.activeGame.fsdJumping
                     // or a keystroke forced it
                     || (PlotJumpInfo.forceShow && Game.activeGame.mode != GameMode.FSS)
                     || (Game.settings.showPlotJumpInfoIfNextHop && Game.activeGame.destinationNextRouteHop && Game.activeGame.isMode(GameMode.SuperCruising))

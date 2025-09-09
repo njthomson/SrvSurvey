@@ -1611,13 +1611,15 @@ namespace SrvSurvey.game
                     var diff = cargoFile.getDiff();
                     if (diff.Count > 0)
                     {
+                        var marketId = lastDocked.MarketID;
                         // invert the diff as we want it applied to the FC
                         diff = diff.ToDictionary(x => x.Key, x => x.Value * -1);
-                        Game.colony.supplyFC(lastDocked.MarketID, diff).continueOnMain(null, updatedCargo =>
+                        Program.getPlotter<PlotBuildCommodities>()?.startPending(diff);
+                        Game.colony.supplyFC(marketId, diff).continueOnMain(null, updatedCargo =>
                         {
-                            Game.log(updatedCargo.formatWithHeader($"**** updatedCargo after supplyFC: {lastDocked.MarketID}"));
-                            if (cmdrColony == null || lastDocked == null) return;
-                            var fc = cmdrColony.linkedFCs.GetValueOrDefault(lastDocked.MarketID);
+                            Game.log(updatedCargo.formatWithHeader($"**** updatedCargo after supplyFC: {marketId}"));
+                            if (cmdrColony == null) return;
+                            var fc = cmdrColony.linkedFCs.GetValueOrDefault(marketId);
                             if (fc != null)
                             {
                                 fc.cargo = updatedCargo;
@@ -1627,6 +1629,8 @@ namespace SrvSurvey.game
                             }
                         });
                     }
+                    else
+                        Game.log("**** really?");
                 }
             }
 
