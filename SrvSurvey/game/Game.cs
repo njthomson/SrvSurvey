@@ -1605,13 +1605,17 @@ namespace SrvSurvey.game
                 // TODO: Remove with confirmation that diff tracking behaves
                 //Game.log(this.cargoFile.Inventory.formatWithHeader($"AFTER read: {cargoFile.timestamp} | {cargoFile.Count}", "\r\n\t"));
 
+                var onSquadFC = lastDocked?.StationServices?.Contains("squadronBank") == true;
+                var isLinkedFC = lastDocked != null && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID);
+                Game.log($"**** marketId : {lastDocked?.MarketID}, onSquadFC: {onSquadFC}, isLinkedFC: {isLinkedFC}, lastDocked?.StationType: {lastDocked?.StationType}");
+
                 // if docked on a TRACKED Squadron FC - use crude cargo diff'ing to track cargo on the thing
-                if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && lastDocked.StationServices?.Contains("squadronBank") == true && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID))
+                if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && onSquadFC && isLinkedFC)
                 {
+                    var marketId = lastDocked.MarketID;
                     var diff = cargoFile.getDiff();
                     if (diff.Count > 0)
                     {
-                        var marketId = lastDocked.MarketID;
                         // invert the diff as we want it applied to the FC
                         diff = diff.ToDictionary(x => x.Key, x => x.Value * -1);
                         Program.getPlotter<PlotBuildCommodities>()?.startPending(diff);
@@ -1630,7 +1634,7 @@ namespace SrvSurvey.game
                         });
                     }
                     else
-                        Game.log("**** really?");
+                        Game.log("**** no diff - really?");
                 }
             }
 
