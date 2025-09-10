@@ -178,7 +178,6 @@ namespace SrvSurvey.game
             return GameFileWatcher.read<MarketFile>(MarketFile.filepath, force);
         }
 
-        public DateTimeOffset timestamp;
         public long MarketId;
         public string StationName;
         public string StationType;

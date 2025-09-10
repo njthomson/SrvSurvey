@@ -630,7 +630,7 @@ namespace SrvSurvey.game
         public long marketId;
         public string name;
         public string displayName;
-        public Dictionary<string, int>? cargo;
+        public Dictionary<string, int> cargo;
 
         public override string ToString()
         {

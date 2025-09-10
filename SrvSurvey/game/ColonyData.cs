@@ -470,7 +470,7 @@ namespace SrvSurvey.game
             return bestMatch.Key;
         }
 
-        public static async Task<FleetCarrier> publishFC()
+        public static async Task<FleetCarrier?> publishFC()
         {
             var game = Game.activeGame;
             if (game?.lastDocked?.StationType != StationType.FleetCarrier || game.journals == null) return null;
@@ -481,7 +481,7 @@ namespace SrvSurvey.game
                 marketId = game.lastDocked.MarketID,
                 name = game.lastDocked.StationName,
                 displayName = "",
-                cargo = null,
+                cargo = null!, // we explicitly don't want an empty list here
             };
 
             // walk through journals until we find ReceiveText or FSSSignalDiscovered
@@ -508,7 +508,6 @@ namespace SrvSurvey.game
 
             if (newFC.displayName.EndsWith(" |"))
                 newFC.displayName = newFC.displayName.Substring(0, newFC.displayName.Length - 2);
-
 
             Game.log($"Publishing FC: {newFC}");
 
