@@ -238,21 +238,15 @@ namespace SrvSurvey.game
         public Dictionary<string, int> getDiff()
         {
             var diffs = new Dictionary<string, int>();
-            if (lastInventory.Count > 0)
+            foreach (var entry in this.Inventory)
             {
-                foreach (var entry in this.Inventory)
-                {
-                    var delta = entry.Count - lastInventory.GetValueOrDefault(entry.Name);
-                    if (delta != 0) diffs[entry.Name] = delta;
-                }
-
-                foreach (var entry in lastInventory)
-                {
-                    if (!this.Inventory.Any(_ => _.Name == entry.Key))
-                        diffs[entry.Key] = -entry.Value;
-                }
-
+                var delta = entry.Count - lastInventory.GetValueOrDefault(entry.Name);
+                if (delta != 0) diffs[entry.Name] = delta;
             }
+
+            foreach (var entry in lastInventory)
+                if (!this.Inventory.Any(_ => _.Name == entry.Key))
+                    diffs[entry.Key] = -entry.Value;
 
             // TODO: Remove with confirmation that diff tracking behaves
             Game.log(diffs.formatWithHeader("**** getDiff:", "\r\n\t"));

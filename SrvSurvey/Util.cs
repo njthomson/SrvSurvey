@@ -1461,7 +1461,7 @@ namespace SrvSurvey
         /// <summary>
         /// string.Join's the enumeration using separator prefixed by the header+separator
         /// </summary>
-        public static string formatWithHeader<T>(this IEnumerable<T> values, string header, string separator = "\n\t")
+        public static string formatWithHeader<T>(this IEnumerable<T> values, string header, string separator = "\r\n\t")
         {
             return header + separator + string.Join(separator, values);
         }
