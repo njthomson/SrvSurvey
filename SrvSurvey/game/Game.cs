@@ -1612,10 +1612,10 @@ namespace SrvSurvey.game
                 // if docked on a TRACKED Squadron FC - use crude cargo diff'ing to track cargo on the thing
                 if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && onSquadFC && isLinkedFC)
                 {
-                    var marketId = lastDocked.MarketID;
                     var diff = cargoFile.getDiff();
                     if (diff.Count > 0)
                     {
+                        var marketId = lastDocked.MarketID;
                         // invert the diff as we want it applied to the FC
                         diff = diff.ToDictionary(x => x.Key, x => x.Value * -1);
                         Program.getPlotter<PlotBuildCommodities>()?.startPending(diff);
