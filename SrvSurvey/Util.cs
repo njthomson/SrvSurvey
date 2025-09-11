@@ -1279,7 +1279,7 @@ namespace SrvSurvey
             if (!pendingCounts.ContainsKey(name)) pendingCounts[name] = 0;
 
             pendingCounts[name]++;
-            Game.log($"deferAfter {delayMs}ms => '{name}' (q:{pendingCounts[name]})");
+            //Game.log($"deferAfter {delayMs}ms => '{name}' (q:{pendingCounts[name]})");
 
             Task.Delay(delayMs).ContinueWith(t => Program.defer(() =>
             {

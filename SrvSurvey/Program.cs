@@ -151,32 +151,34 @@ namespace SrvSurvey
         private static Dictionary<string, PlotterForm> activePlotters = new Dictionary<string, PlotterForm>();
         private static Dictionary<string, Form> tombs = new Dictionary<string, Form>();
 
-        public static T? showPlotter<T>(Rectangle? gameRect = null) where T : PlotterForm
+        public static T? showPlotter<T>(Rectangle? gameRect = null, string? formTypeName = null) where T : PlotterForm
         {
             var formType = typeof(T);
+            if (formTypeName == null)
+                formTypeName = formType.Name;
 
             // exit early if the game does not have focus, but return a reference if we already have one
             if (!Elite.focusElite && !Elite.focusSrvSurvey)
             {
                 //if (!Debugger.IsAttached && (!Elite.focusElite || Elite.focusSrvSurvey)) // Maybe not "|| Elite.focusSrvSurvey" ?
-                T? match = (T?)activePlotters.GetValueOrDefault(formType.Name);
+                T? match = (T?)activePlotters.GetValueOrDefault(formTypeName);
                 if (match != null && !match.IsDisposed)
                     return match;
                 else if (match != null && match.IsDisposed)
-                    activePlotters.Remove(formType.Name);
+                    activePlotters.Remove(formTypeName);
             }
 
             // remove tomb if present
-            if (Game.settings.overlayTombs && tombs.ContainsKey(formType.Name))
+            if (Game.settings.overlayTombs && tombs.ContainsKey(formTypeName))
             {
-                tombs[formType.Name].Close();
-                tombs.Remove(formType.Name);
+                tombs[formTypeName].Close();
+                tombs.Remove(formTypeName);
             }
 
             // only create if missing
             var created = "";
             T form;
-            if (!activePlotters.ContainsKey(formType.Name))
+            if (!activePlotters.ContainsKey(formTypeName))
             {
                 created = " (created)";
 
@@ -185,21 +187,29 @@ namespace SrvSurvey
                     BindingFlags.Instance | BindingFlags.NonPublic, null,
                     CallingConventions.HasThis, new Type[0], null)!;
 
-                // create and force form.Name to match class name
-                form = (T)ctor.Invoke(null);
-                form.Name = formType.Name;
+                if (formType.Name == nameof(PlotContainer))
+                {
+                    var def = Overlays.get(formTypeName)!;
+                    form = (T)(PlotterForm)def.form!;
+                }
+                else
+                {
+                    // create and force form.Name to match class name
+                    form = (T)ctor.Invoke(null);
+                    form.Name = formTypeName;
+                }
 
                 // add to list, then show
-                activePlotters.Add(formType.Name, form);
+                activePlotters.Add(formTypeName, form);
             }
             else
             {
-                form = (T)activePlotters[formType.Name];
+                form = (T)activePlotters[formTypeName];
 
                 // don't try showing a disposed form
                 if (form.IsDisposed)
                 {
-                    activePlotters.Remove(formType.Name);
+                    activePlotters.Remove(formTypeName);
                     return showPlotter<T>(gameRect);
                 }
 
@@ -209,7 +219,7 @@ namespace SrvSurvey
             // show form if not visible
             if (!form.Visible)
             {
-                Game.log($"Program.Showing{created} plotter: {formType.Name}");
+                Game.log($"Program.Showing{created} plotter: {formTypeName}");
                 gameRect ??= Elite.getWindowRect();
                 form.reposition(gameRect.Value);
 
@@ -223,7 +233,7 @@ namespace SrvSurvey
                     Game.log($"Program.ShowPlotter: form.show failed:\r\n{ex}");
 
                     // untrack and force close the form
-                    if (!activePlotters.ContainsKey(formType.Name)) activePlotters.Remove(formType.Name);
+                    if (!activePlotters.ContainsKey(formTypeName)) activePlotters.Remove(formTypeName);
                     try { form.Close(); } catch { /* swallow */ }
 
                     return default(T);
@@ -245,7 +255,7 @@ namespace SrvSurvey
                 closePlotter(typeof(T).Name);
         }
 
-        private static void closePlotter(string name)
+        public static void closePlotter(string name)
         {
             var plotter = Program.activePlotters.GetValueOrDefault(name);
 

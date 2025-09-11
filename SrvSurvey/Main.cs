@@ -27,6 +27,7 @@ namespace SrvSurvey
         private bool gameHadFocus;
         private FormMultiFloatie? multiFloatie;
         private DateTime lastProcCheck;
+        private BigOverlay? bigOverlay;
 
         public static Main form;
         public KeyboardHook hook;
@@ -335,6 +336,9 @@ namespace SrvSurvey
             var hasFocus = rect != Rectangle.Empty && rect.X > -30_000 && Elite.gameHasFocus;
             var forceOpen = Game.settings.keepOverlays || Debugger.IsAttached;
 
+            if (hasFocus && bigOverlay?.Visible == false)
+                bigOverlay?.Show();
+
             // show/hide plotters if game has changed focus state
             if (gameHadFocus != hasFocus)
             {
@@ -342,14 +346,23 @@ namespace SrvSurvey
                 if (hasFocus || forceOpen)
                 {
                     Program.showActivePlotters();
-                    if (!forceOpen) Program.repositionPlotters(rect);
+
+                    if (!forceOpen)
+                    {
+                        Program.repositionPlotters(rect);
+                        bigOverlay?.reposition(rect);
+                    }
                 }
                 else
+                {
                     Program.hideActivePlotters();
+                    bigOverlay?.Hide();
+                }
             }
             else if (forceOpen && rect.X < -30000)
             {
                 Program.hideActivePlotters();
+                bigOverlay?.Hide();
             }
 
             // force plotters to appear if we just gained focus
@@ -382,6 +395,7 @@ namespace SrvSurvey
                 this.lastWindowRect = rect;
                 Program.repositionPlotters(rect);
                 this.multiFloatie?.positionOverGame(rect);
+                bigOverlay?.reposition(rect);
             }
 
             // if the game process is NOT running, but we have an active game object processing journals ... append a fake shutdown entry and stop processing journal entries
@@ -426,6 +440,16 @@ namespace SrvSurvey
                     this.game.status.StatusChanged -= Status_StatusChanged;
                 this.game.Dispose();
             }
+            if (Game.settings.useOneOverlay_TEST)
+            {
+                Overlays.closeAll();
+                bigOverlay?.Close();
+            }
+            else if (Game.settings.useNotOneOverlay_TEST)
+            {
+                Overlays.closeAll();
+            }
+
             this.game = null;
 
             this.updateAllControls();
@@ -477,6 +501,18 @@ namespace SrvSurvey
             }
 
             PlotBase.startWindowOne();
+            if (Game.settings.useOneOverlay_TEST)
+            {
+                bigOverlay?.Close();
+
+                bigOverlay = new BigOverlay();
+                bigOverlay.Show();
+                Overlays.renderAll(game);
+            }
+            else if (Game.settings.useNotOneOverlay_TEST)
+            {
+                Overlays.renderAll(game);
+            }
         }
 
         private void updateAllControls(GameMode? newMode = null)
@@ -1351,6 +1387,18 @@ namespace SrvSurvey
                     // force opacity changes to take immediate effect
                     Program.showActivePlotters();
                     Util.applyTheme(this);
+
+                    if (Game.settings.useOneOverlay_TEST)
+                    {
+                        Overlays.closeAll();
+                        Application.DoEvents();
+                        if (game != null)
+                            Overlays.renderAll(game);
+                    }
+                    else if (Game.settings.useNotOneOverlay_TEST && game != null)
+                    {
+                        Overlays.renderAll(game);
+                    }
                 }
             }
             finally
@@ -1720,9 +1768,16 @@ namespace SrvSurvey
             checkTempHide.Checked = Program.tempHideAllPlotters;
 
             if (Program.tempHideAllPlotters)
+            {
                 Program.hideActivePlotters();
+                bigOverlay?.Hide();
+            }
             else
+            {
                 Program.showActivePlotters();
+                bigOverlay?.Show();
+                bigOverlay?.Invalidate();
+            }
         }
 
         private void Main_MouseDoubleClick(object sender, MouseEventArgs e)

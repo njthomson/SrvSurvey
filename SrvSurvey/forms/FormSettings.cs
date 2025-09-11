@@ -465,13 +465,19 @@ namespace SrvSurvey
         private void trackOpacity_Scroll(object sender, EventArgs e)
         {
             if (numOpacity.Value != trackOpacity.Value)
+            {
                 numOpacity.Value = trackOpacity.Value;
+                BigOverlay.current.Opacity = trackOpacity.Value / 100d;
+            }
         }
 
         private void numOpacity_ValueChanged(object sender, EventArgs e)
         {
             if (numOpacity.Value != trackOpacity.Value)
+            {
                 trackOpacity.Value = (int)numOpacity.Value;
+                BigOverlay.current.Opacity = trackOpacity.Value / 100d;
+            }
         }
 
         private void btnNextProc_Click(object sender, EventArgs e)

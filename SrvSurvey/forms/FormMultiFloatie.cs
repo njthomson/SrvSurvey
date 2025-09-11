@@ -1,5 +1,5 @@
 ﻿using SrvSurvey.game;
-using SrvSurvey.widgets;
+using SrvSurvey.plotters;
 using System.Diagnostics;
 
 namespace SrvSurvey.forms
@@ -109,6 +109,7 @@ namespace SrvSurvey.forms
             if (!Elite.hadManyGameProcs) return;
 
             Program.hideActivePlotters();
+            BigOverlay.current?.Hide();
 
             // increment process idx and make plotters adjust
             Elite.nextWindow();
@@ -121,6 +122,7 @@ namespace SrvSurvey.forms
             if (!Elite.hadManyGameProcs) return;
 
             Program.hideActivePlotters();
+            BigOverlay.current?.Hide();
             Application.DoEvents();
 
             var edProcs = Process.GetProcessesByName("EliteDangerous64");

@@ -22,6 +22,7 @@ namespace SrvSurvey.game
             var bk = new Bitmap(sz.Width, sz.Height);
             using (var g = Graphics.FromImage(bk))
             {
+                g.FillRectangle(Brushes.Black, 0, 0, sz.Width, sz.Height);
                 g.FillRectangle(GameColors.brushBackgroundStripe, 0, 0, sz.Width, sz.Height);
 
                 if (!noStripes)

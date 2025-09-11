@@ -43,6 +43,9 @@ namespace SrvSurvey
 
         public event StatusFileChanged StatusChanged;
 
+        /// <summary> The names of properties that changed when last reading the file </summary>
+        public HashSet<string> changed = new();
+
         private FileSystemWatcher? fileWatcher;
 
         public Status(bool watch)
@@ -96,6 +99,10 @@ namespace SrvSurvey
 
             try
             {
+                this.changed.Clear();
+                var oldFlags = this.Flags;
+                var oldFlags2 = this.Flags2;
+
                 // read the file contents ...
                 using (var sr = new StreamReader(new FileStream(Status.Filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
                 {
@@ -108,9 +115,42 @@ namespace SrvSurvey
                     // ... assign all property values from tmp object
                     var allProps = typeof(Status).GetProperties(Program.InstanceProps);
                     foreach (var prop in allProps)
+                    {
                         if (prop.CanWrite)
-                            prop.SetValue(this, prop.GetValue(obj));
+                        {
+                            var currentValue = prop.GetValue(this);
+                            var newValue = prop.GetValue(obj);
+                            var didChange = this.getChanged(prop.Name, currentValue, newValue);
+                            if (didChange)
+                                changed.Add(prop.Name);
+
+                            prop.SetValue(this, newValue);
+                        }
+                    }
                 }
+
+                // call out which individual flags have changed
+                if (this.Flags != oldFlags)
+                {
+                    foreach (var f in Enum.GetValues<StatusFlags>())
+                    {
+                        var newValue = (this.Flags & f) > 0;
+                        var oldValue = (oldFlags & f) > 0;
+                        if (newValue != oldValue)
+                            changed.Add(f.ToString());
+                    }
+                }
+                if (this.Flags2 != oldFlags2)
+                {
+                    foreach (var f in Enum.GetValues<StatusFlags2>())
+                    {
+                        var newValue = (this.Flags2 & f) > 0;
+                        var oldValue = (oldFlags2 & f) > 0;
+                        if (newValue != oldValue)
+                            changed.Add(f.ToString());
+                    }
+                }
+                //Game.log("Status properties changed:" + string.Join(", ", changed));
 
                 // update singleton location
                 Status.here.Lat = this.Latitude;
@@ -132,6 +172,32 @@ namespace SrvSurvey
             {
                 Game.log($"parseStatusFile: {ex}");
             }
+        }
+
+        private bool getChanged(string propName, dynamic? currentValue, dynamic? newValue)
+        {
+            var nullChanged = (currentValue == null) != (newValue == null);
+            if (nullChanged)
+                return true;
+
+            // some special cases for compounds objects
+            if (propName == nameof(Pips))
+                return Pips?[0] != newValue?[0]
+                    || Pips?[1] != newValue?[1]
+                    || Pips?[2] != newValue?[2];
+
+            if (propName == nameof(Fuel))
+                return Fuel.FuelMain != newValue?.FuelMain
+                    || Fuel.FuelReservoir != newValue?.FuelReservoir;
+
+            if (propName == nameof(Destination))
+                return Destination?.System != newValue?.System
+                    || Destination?.Body != newValue?.Body
+                    || Destination?.Name != newValue?.Name
+                    || Destination?.Name_Localised != newValue?.Name_Localised;
+
+            // anything else will work with this
+            return currentValue?.Equals(newValue) == false;
         }
 
         #endregion

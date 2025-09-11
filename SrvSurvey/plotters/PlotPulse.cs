@@ -107,7 +107,6 @@ namespace SrvSurvey.plotters
             }
 
             this.Invalidate();
-
         }
 
         #region mouse handlers

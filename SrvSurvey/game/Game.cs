@@ -304,6 +304,7 @@ namespace SrvSurvey.game
             var newMode = this.mode;
             if (this._mode != newMode)
             {
+                status.changed.Add("mode");
                 log($"Mode change {this._mode} => {newMode}");
                 this._mode = newMode;
                 doUpdate = true;
@@ -322,6 +323,8 @@ namespace SrvSurvey.game
             // fire event!
             if (doUpdate)
                 fireUpdate(newMode, false);
+
+            Overlays.renderAll(this);
         }
 
         private void Status_StatusChanged(bool blink)
