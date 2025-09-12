@@ -1513,7 +1513,7 @@ namespace SrvSurvey.game
                 {
                     if (_.rings.Count > 0)
                         names.Add(_.shortName + "rA");
-                    if (_.rings.Count > 0)
+                    if (_.rings.Count > 1)
                         names.Add(_.shortName + "rB");
                 }
 

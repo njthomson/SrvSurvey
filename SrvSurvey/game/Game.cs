@@ -272,6 +272,7 @@ namespace SrvSurvey.game
         private void fireUpdate(GameMode newMode, bool force)
         {
             if (Game.update != null) Game.update(newMode, force);
+            if (force) PlotBase2.renderAll(this, true);
         }
 
         public static event GameModeChanged? update;
@@ -323,7 +324,6 @@ namespace SrvSurvey.game
             // fire event!
             if (doUpdate)
                 fireUpdate(newMode, false);
-
         }
 
         private void Status_StatusChanged(bool blink)
@@ -411,7 +411,7 @@ namespace SrvSurvey.game
             this.checkModeChange();
 
             // tell all new plotters
-            PlotBase2.statusChanged();
+            PlotBase2.processstatusChanged();
             PlotBase2.renderAll(this);
         }
 
@@ -1061,6 +1061,9 @@ namespace SrvSurvey.game
 
                 if (this.systemData != null)
                     this.systemData.Journals_onJournalEntry(entry, true);
+
+                // finally, let any active plotters process the entry
+                PlotBase2.processJournalEntry(entry);
             }
             catch (Exception ex)
             {
@@ -1212,13 +1215,6 @@ namespace SrvSurvey.game
                 Program.closePlotter<PlotFSSInfo>();
                 Program.closePlotter<PlotBodyInfo>();
 
-                // clear the nextSystem displayed when jumping to some other system
-                var form = Program.getPlotter<PlotSysStatus>();
-                if (form != null)
-                {
-                    form.nextSystem = null;
-                    form.Invalidate();
-                }
             }
             else
             {

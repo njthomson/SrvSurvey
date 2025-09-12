@@ -202,7 +202,13 @@ namespace SrvSurvey.plotters
             if (pulseTick > 0)
             {
                 pulseTick--;
-                Task.Delay(500).ContinueWith(t => Program.control.Invoke(() => tickAway()));
+                Task.Delay(500).ContinueWith(t =>
+                {
+                    if (Program.control.IsHandleCreated)
+                        Program.control.Invoke(() => tickAway());
+                    else
+                        pulseTick = 0;
+                });
                 BigOverlay.invalidate();
             }
         }

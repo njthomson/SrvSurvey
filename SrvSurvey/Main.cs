@@ -440,16 +440,11 @@ namespace SrvSurvey
                     this.game.status.StatusChanged -= Status_StatusChanged;
                 this.game.Dispose();
             }
-            if (Game.settings.useOneOverlay_TEST)
-            {
-                PlotBase2.closeAll();
-                bigOverlay?.Close();
-                bigOverlay = null;
-            }
-            else if (Game.settings.useNotOneOverlay_TEST)
-            {
-                PlotBase2.closeAll();
-            }
+
+            // remove bigOverlay
+            PlotBase2.closeAll();
+            bigOverlay?.Close();
+            bigOverlay = null;
 
             this.game = null;
 
@@ -499,16 +494,12 @@ namespace SrvSurvey
             }
 
             PlotBase.startWindowOne();
-            if (Game.settings.useOneOverlay_TEST)
-            {
-                bigOverlay?.Close();
 
-                bigOverlay = new BigOverlay();
-                bigOverlay.Show();
-            }
-
-            if (Game.settings.useOneOverlay_TEST || Game.settings.useNotOneOverlay_TEST)
-                PlotBase2.renderAll(game);
+            // reset bigOverlay
+            bigOverlay?.Close();
+            bigOverlay = new BigOverlay();
+            bigOverlay.Show();
+            PlotBase2.renderAll(game);
         }
 
         private void updateAllControls(GameMode? newMode = null)
@@ -556,9 +547,6 @@ namespace SrvSurvey
                 Program.showPlotter<PlotFSSInfo>();
             else
                 Program.closePlotter<PlotFSSInfo>();
-
-            if (gameIsActive && PlotSysStatus.allowPlotter)
-                Program.showPlotter<PlotSysStatus>();
 
             if (gameIsActive && PlotBioSystem.allowPlotter)
                 Program.showPlotter<PlotBioSystem>();
@@ -1376,13 +1364,10 @@ namespace SrvSurvey
                     Program.showActivePlotters();
                     Util.applyTheme(this);
 
-                    if (Game.settings.useOneOverlay_TEST)
-                    {
-                        PlotBase2.closeAll();
-                        Application.DoEvents();
-                    }
+                    PlotBase2.closeAll();
+                    Application.DoEvents();
 
-                    if (game != null && (Game.settings.useOneOverlay_TEST || Game.settings.useNotOneOverlay_TEST))
+                    if (game != null)
                         PlotBase2.renderAll(game);
                 }
             }
@@ -1774,6 +1759,9 @@ namespace SrvSurvey
                 Application.DoEvents();
                 plotFss.analyzeGrab(true);
             }
+
+            if (game != null)
+                PlotBase2.renderAll(game, true);
         }
 
         //#region key chording

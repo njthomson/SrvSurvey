@@ -29,7 +29,7 @@ namespace SrvSurvey.plotters
             this.top = 20;
         }
 
-        protected override SizeF doRender(Game game, Graphics g)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
             //g.DrawRectangle(Pens.Red, 0, 0, this.width - 1, this.height - 1);
             //g.DrawLine(Pens.Red, 0, 0, this.width - 1, this.height - 1);
@@ -72,7 +72,7 @@ namespace SrvSurvey.plotters
             this.top = 20;
         }
 
-        protected override SizeF doRender(Game game, Graphics g)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
             //g.DrawRectangle(Pens.Red, 0, 0, this.width - 1, this.height - 1);
             //g.DrawLine(Pens.Red, 0, 0, this.width - 1, this.height - 1);

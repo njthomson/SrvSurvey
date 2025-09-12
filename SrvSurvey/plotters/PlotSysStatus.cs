@@ -4,91 +4,82 @@ using Res = Loc.PlotSysStatus;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(170, 40)]
-    internal class PlotSysStatus : PlotBase, PlotterForm
+    internal class PlotSysStatus : PlotBase2
     {
-        public static bool allowPlotter
+        #region def + statics
+
+        public static PlotDef plotDef = new PlotDef()
         {
-            get => Game.settings.autoShowPlotSysStatus
-                && Game.activeGame != null
+            name = nameof(PlotSysStatus),
+            allowed = allowed,
+            ctor = (game, def) => new PlotSysStatus(game, def),
+            defaultSize = new Size(170, 40),
+            factors = new() { "mode" },
+        };
+
+        public static bool allowed(Game game)
+        {
+            return Game.settings.autoShowPlotSysStatus
                 // NOT suppressed by buildProjectsSuppressOtherOverlays
-                && Game.activeGame.status?.InTaxi != true
-                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
+                && game.status?.InTaxi != true
+                && game.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
                 // show only after honking or we have Canonn data
-                && Game.activeGame.systemData != null
-                && (Game.activeGame.systemData.honked || Game.activeGame.canonnPoi != null);
+                && game.systemData != null
+                && (game.systemData.honked || game.canonnPoi != null);
         }
 
-        public string? nextSystem;
+
+        #endregion
+
         private Font boldFont = GameColors.fontMiddleBold;
 
-        private PlotSysStatus() : base()
+        private PlotSysStatus(Game game, PlotDef def) : base(game, def)
         {
-            this.Font = GameColors.fontMiddle;
+            this.font = GameColors.fontMiddle;
         }
 
-        public override bool allow { get => PlotSysStatus.allowPlotter; }
-
-        protected override void OnLoad(EventArgs e)
+        protected override void onStatusChange(Status status)
         {
-            // Size set during paint
-
-            base.OnLoad(e);
-
-            this.initializeOnLoad();
-            this.reposition(Elite.getWindowRect(true));
+            if (status.changed.Contains(nameof(Status.Destination)))
+                this.invalidate();
         }
 
         protected override void onJournalEntry(FSSBodySignals entry)
         {
-            Game.log($"PlotSysStatus: FSSBodySignals event: {entry.BodyName}");
-            this.Invalidate();
+            this.invalidate();
         }
 
         protected override void onJournalEntry(FSSDiscoveryScan entry)
         {
-            Game.log($"PlotSysStatus: FSSDiscoveryScan event: {entry.SystemName}");
-            this.nextSystem = null;
-            this.Invalidate();
+            this.invalidate();
         }
 
         protected override void onJournalEntry(Scan entry)
         {
-            Game.log($"PlotSysStatus: Scan event: {entry.BodyName}");
-            this.nextSystem = null;
-            this.Invalidate();
+            this.invalidate();
         }
 
-        protected override void onPaintPlotter(PaintEventArgs e)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
-            var minViableWidth = scaled(170);
-            if (game?.systemData == null || game.status == null || !PlotSysStatus.allowPlotter)
+            var minViableWidth = N.s(170);
+            if (game?.systemData == null || game.status == null) // still needed --> || !PlotSysStatus.allowed(game))
             {
-                this.setOpacity(0);
-                Program.control.BeginInvoke(() => Program.closePlotter<PlotSysStatus>());
-                return;
+                this.hide();
+                return frame.Size;
             }
 
-            this.dty = eight;
-            drawTextAt2(six, Res.Header, GameColors.fontSmall);
-            newLine(0, true);
-            dtx = six;
+            tt.dty = N.eight;
+            tt.draw(N.six, Res.Header, GameColors.fontSmall);
+            tt.newLine(0, true);
+            tt.dtx = N.six;
 
             // reduce destination to it's short name
             var destinationBody = game.status.Destination?.Name?.Replace(game.systemData.name, "").Replace(" ", "");
 
-            if (this.nextSystem != null)
-            {
-                // render next system only, if populated
-                this.drawTextAt2(Res.NextSystem);
-                this.drawTextAt2(this.nextSystem, GameColors.Cyan);
-                return;
-            }
-
             var dssRemaining = game.systemData.getDssRemainingNames();
             if (!game.systemData.honked)
             {
-                this.drawTextAt2(Res.FssNotStarted, GameColors.Cyan);
+                tt.draw(Res.FssNotStarted, GameColors.Cyan);
             }
             else if (!game.systemData.fssComplete)
             {
@@ -96,64 +87,68 @@ namespace SrvSurvey.plotters
                 var txt = dssRemaining.Count == 0
                     ? Res.FssCompleteLong.format((int)fssProgress)
                     : Res.FssCompleteShort.format((int)fssProgress);
-                this.drawTextAt2(txt, GameColors.Cyan);
+                tt.draw(txt, GameColors.Cyan);
             }
 
             if (dssRemaining.Count > 0)
             {
-                if (dtx > 6) this.drawTextAt2(" ");
-                this.drawTextAt2(Res.DssRemaining.format(dssRemaining.Count));
-                this.drawRemainingBodies(destinationBody, dssRemaining);
+                if (tt.dtx > 6) tt.draw(" ");
+                tt.draw(Res.DssRemaining.format(dssRemaining.Count));
+                this.drawRemainingBodies(g, tt, destinationBody, dssRemaining);
             }
             else if (game.systemData.fssComplete && game.systemData.honked)
             {
-                this.drawTextAt2(Res.NoDssMeet);
+                tt.draw(Res.NoDssMeet);
             }
-            newLine(true);
+            tt.newLine(true);
 
             if (!Game.settings.autoShowPlotBioSystem)
             {
                 var bioRemaining = game.systemData.getBioRemainingNames();
                 if (bioRemaining.Count > 0)
                 {
-                    this.drawTextAt2(Res.BioSignals.format(game.systemData.bioSignalsRemaining));
-                    this.drawRemainingBodies(destinationBody, bioRemaining);
+                    tt.draw(Res.BioSignals.format(game.systemData.bioSignalsRemaining));
+                    this.drawRemainingBodies(g, tt, destinationBody, bioRemaining);
                 }
             }
 
             var nonBodySignalCount = game.systemData.nonBodySignalCount;
             if (Game.settings.showNonBodySignals && nonBodySignalCount > 0)
             {
-                var sz = this.drawTextAt2(six, Res.NonBodySignals.format(nonBodySignalCount), GameColors.fontSmall2);
-                newLine(true);
+                var sz = tt.draw(N.six, Res.NonBodySignals.format(nonBodySignalCount), GameColors.fontSmall2);
+                tt.newLine(true);
             }
 
-            this.formAdjustSize(six, eight);
+            return tt.pad(N.six, N.eight);
         }
 
         /// <summary>
         /// Render names in a horizontal list, highlighting any in the same group as the destination
         /// </summary>
-        private void drawRemainingBodies(string? destination, List<string> names)
+        private void drawRemainingBodies(Graphics g, TextCursor tt, string? destination, List<string> names)
         {
-            const TextFormatFlags flags = TextFormatFlags.VerticalCenter | TextFormatFlags.NoPadding;
+            // adjust for the fact that bold makes rendering shift up a pixel or two
+            var flags = tt.flags;
+            tt.flags = TextFormatFlags.NoPadding | TextFormatFlags.PreserveGraphicsTranslateTransform | TextFormatFlags.VerticalCenter;
+            var dy = (int)Math.Ceiling(tt.lastTextSize.Height / 2);
+            tt.dty += dy;
 
             // draw each remaining body, highlighting color if they are in the same group as the destination, or all of them if no destination
             foreach (var bodyName in names)
             {
                 var isLocal = string.IsNullOrEmpty(destination) || bodyName[0] == destination[0];
 
-                var font = this.Font;
+                var useFont = this.font;
+                if (destination == bodyName) useFont = this.boldFont;
+                var useColor = isLocal ? GameColors.Cyan : GameColors.Orange;
 
-                if (destination == bodyName) font = this.boldFont;
-                var color = isLocal ? GameColors.Cyan : GameColors.Orange;
-
-                var sz = g.MeasureString(bodyName, font).ToSize();
-                var rect = new Rectangle((int)this.dtx, (int)this.dty, sz.Width, sz.Height);
-
-                TextRenderer.DrawText(g, bodyName, font, rect, color, flags);
-                this.dtx += sz.Width;
+                tt.draw(bodyName, useColor, useFont);
+                tt.dtx += 4;
             }
+
+            // revert adjustments
+            tt.dty -= dy;
+            tt.flags = flags;
         }
     }
 }

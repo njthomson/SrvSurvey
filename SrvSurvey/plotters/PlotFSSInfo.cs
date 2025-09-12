@@ -195,10 +195,19 @@ namespace SrvSurvey.plotters
 
                 newLine(+four, true);
 
+                // stop if we are starting to overlap any other plotter, allowing for some padding
+                var thisRect = new Rectangle(Left, Top, Width, (int)dty + 100);
+                foreach (var other in PlotBase2.active)
+                {
+                    if (other != this && other.rect.IntersectsWith(thisRect))
+                        break;
+                }
+                /* TODO: REVISIT when migrating this plotter
                 var plotSysStatusTop = Program.getPlotter<PlotSysStatus>()?.Top;
                 var plotBioSysTop = Program.getPlotter<PlotBioSystem>()?.Top;
                 if (dty > plotSysStatusTop - hundred || dty > plotBioSysTop - hundred)
                     break;
+                */
             }
 
             drawTextAt2(eight, Res.Footer1, GameColors.OrangeDim);

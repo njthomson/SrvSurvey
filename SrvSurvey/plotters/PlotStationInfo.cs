@@ -1,7 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.net;
 using SrvSurvey.widgets;
-using System.Drawing.Drawing2D;
 
 namespace SrvSurvey.plotters
 {
@@ -74,11 +73,10 @@ namespace SrvSurvey.plotters
             Game.log($"PlotStationInfo.Selected station: {this.station?.name} ({this.station?.id})");
         }
 
-        protected override SizeF doRender(Game game, Graphics g)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
             // render nothing if there is no station
             if (this.station == null) return frame.Size;
-            var tt = new TextCursor(g, this);
 
             var indent = N.oneEight;
 

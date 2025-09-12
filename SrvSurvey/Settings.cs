@@ -258,7 +258,6 @@ namespace SrvSurvey
 
         public bool streamOneOverlay = false;
 
-        public bool useOneOverlay_TEST = false;
         public bool useNotOneOverlay_TEST = false;
 
         #region loading / saving

@@ -15,6 +15,7 @@ namespace SrvSurvey.plotters
         float fade { get; set; }
         bool stale { get; }
         bool hidden { get; set; }
+        Rectangle rect { get; }
 
         Image frame { get; }
         Image background { get; }
@@ -66,13 +67,20 @@ namespace SrvSurvey.plotters
             this.width = def.defaultSize.Width;
             this.height = def.defaultSize.Height;
 
+            this.setPosition();
+
+            this.frame = new Bitmap(this.width, this.height);
+            this.stale = true;
+        }
+
+        public Rectangle rect => new Rectangle(left, top, width, height);
+
+        private void setPosition()
+        {
             // get initial position
             var pt = PlotPos.getPlotterLocation(this.name, new Size(this.width, this.height), Rectangle.Empty);
             this.left = pt.X;
             this.top = pt.Y;
-
-            this.frame = new Bitmap(this.width, this.height);
-            this.stale = true;
         }
 
         private void setSize(int width, int height)
@@ -82,6 +90,8 @@ namespace SrvSurvey.plotters
             {
                 this.width = width;
                 this.height = height;
+
+                this.setPosition();
                 this.invalidate();
             }
         }
@@ -138,7 +148,7 @@ namespace SrvSurvey.plotters
             this.invalidate();
         }
 
-        protected abstract SizeF doRender(Game game, Graphics g);
+        protected abstract SizeF doRender(Game game, Graphics g, TextCursor tt);
 
         /// <summary> Generate a new frame image </summary>
         public Image render()
@@ -154,7 +164,8 @@ namespace SrvSurvey.plotters
                 nextFrame = new Bitmap(this.width, this.height);
                 using (var g = Graphics.FromImage(nextFrame))
                 {
-                    var sz = this.doRender(game, g);
+                    var tt = new TextCursor(g, this);
+                    var sz = this.doRender(game, g, tt);
                     this.stale = false;
                     this.setSize((int)sz.Width, (int)sz.Height);
                 }
@@ -251,7 +262,7 @@ namespace SrvSurvey.plotters
             def?.instance?.invalidate();
         }
 
-        public static void renderAll(Game game)
+        public static void renderAll(Game game, bool force = false)
         {
             if (game.isShutdown || game.status == null) return;
 
@@ -259,32 +270,29 @@ namespace SrvSurvey.plotters
             var invalidateBig = false;
             foreach (var def in defs.Values)
             {
+                // TODO: remove?
                 var relevant = def.factors.Any(x => game.status.changed.Contains(x));
 
                 var shouldShow = def.allowed(game);
                 //Game.log($"relevant? {def.name} => {relevant} / {def.instance != null} / shouldShow: {shouldShow}");
 
                 // only attempt to create or destroy if something relevant changed
-                if (relevant)
+                if (shouldShow && def.instance == null)
                 {
-                    // create or destroy as needed
-                    if (shouldShow && def.instance == null)
-                    {
-                        invalidateBig = true;
-                        add(game, def);
-                    }
-                    else if (!shouldShow && def.instance != null)
-                    {
-                        invalidateBig = true;
-                        remove(def);
-                    }
+                    invalidateBig = true;
+                    add(game, def);
+                }
+                else if (!shouldShow && def.instance != null)
+                {
+                    invalidateBig = true;
+                    remove(def);
                 }
 
                 if (shouldShow)
                 {
                     // render if stale or if a relevant factor changed
                     var shouldRender = def.renderFactors != null && def.renderFactors.Any(x => game.status.changed.Contains(x));
-                    if (def.instance!.stale || shouldRender)
+                    if (def.instance!.stale || shouldRender || force)
                     {
                         invalidateBig = true;
                         def.instance.render();
@@ -330,14 +338,52 @@ namespace SrvSurvey.plotters
 
         #endregion
 
-        protected virtual void onStatusChange(Status status) { /* override as needed */ }
+        #region journal and status file processing
 
         /// <summary> Gives every active plotter a chance to process status changes </summary>
-        public static void statusChanged()
+        public static void processstatusChanged()
         {
             foreach (var def in defs.Values)
                 def.instance?.onStatusChange(def.instance.game.status);
         }
+
+        public static void processJournalEntry(IJournalEntry entry)
+        {
+            foreach (var def in defs.Values)
+                def.instance?.onJournalEntry((dynamic)entry);
+        }
+
+        protected virtual void onStatusChange(Status status) { /* override as needed */ }
+
+        protected virtual void onJournalEntry(JournalEntry entry) { /* override as needed */ }
+
+        protected virtual void onJournalEntry(BackpackChange entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(CodexEntry entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(DataScanned entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(Disembark entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(Docked entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(DockingCancelled entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(DockingDenied entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(DockingGranted entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(DockingRequested entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(Embark entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(FactionKillBond entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(FSDJump entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(FSDTarget entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(FSSBodySignals entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(FSSDiscoveryScan entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(MaterialCollected entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(Music entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(NavRoute entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(NavRouteClear entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(Scan entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(ScanOrganic entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(Screenshot entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(SendText entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(SupercruiseEntry entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(Touchdown entry) { /* overridden as necessary */ }
+
+        #endregion
     }
 
     internal class PlotContainer : PlotBase
