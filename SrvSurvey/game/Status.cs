@@ -84,7 +84,7 @@ namespace SrvSurvey
         {
             Program.crashGuard(() =>
             {
-                PlotPulse.LastChanged = DateTime.Now;
+                BigOverlay.resetPulse();
                 this.parseStatusFile();
             });
         }

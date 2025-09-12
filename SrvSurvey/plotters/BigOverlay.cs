@@ -1,10 +1,8 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.Properties;
 using SrvSurvey.widgets;
-using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Windows.Forms;
-using static SrvSurvey.canonn.GRReports;
 
 namespace SrvSurvey.plotters
 {
@@ -48,6 +46,7 @@ namespace SrvSurvey.plotters
 
             this.Text = "SrvSurveyOne";
 
+            this.initPlotPulse();
             this.reposition(Elite.getWindowRect());
         }
 
@@ -83,6 +82,9 @@ namespace SrvSurvey.plotters
                 this.Size = rect.Size;
                 this.ResumeLayout();
 
+                // get PlotPulse location
+                this.ptPlotPulse = PlotPos.getPlotterLocation("PlotPulse", plotPulseDefaultSize, rect);
+
                 if (Game.activeGame != null)
                     PlotBase2.renderAll(Game.activeGame);
 
@@ -94,7 +96,7 @@ namespace SrvSurvey.plotters
         {
             base.OnPaintBackground(e);
             if (this.IsDisposed) return;
-            maskColor = Color.FromArgb(1, 1, 1);
+
             try
             {
                 var g = e.Graphics;
@@ -102,6 +104,9 @@ namespace SrvSurvey.plotters
                 var game = Game.activeGame;
                 if (game != null)
                 {
+                    if (!Game.settings.hideJournalWriteTimer)
+                        this.renderPulse(g);
+
                     foreach (var plotter in PlotBase2.active)
                     {
                         // skip anything not visible
@@ -158,5 +163,68 @@ namespace SrvSurvey.plotters
 
             BigOverlay.current.Invalidate();
         }
+
+        #region PlotPulse
+
+        public static Size plotPulseDefaultSize = new Size(32, 32);
+        private static int pulseTick;
+
+        private Image pulseBackground;
+        private Point ptPlotPulse;
+
+        private void initPlotPulse()
+        {
+            // replace the Orange from the bitmap with a themed colour
+            var b = new Bitmap(ImageResources.pulse);
+            var or = Color.FromArgb(255, 127, 39);
+
+            for (int x = 0; x < b.Width; x++)
+                for (int y = 0; y < b.Height; y++)
+                    if (b.GetPixel(x, y) == or)
+                        b.SetPixel(x, y, C.orangeDark);
+
+            this.pulseBackground = b;
+        }
+
+        /// <summary> Resets pulse timer from any journal file update </summary>
+        public static void resetPulse()
+        {
+            // skip if timer is disabled
+            if (Game.settings.hideJournalWriteTimer) return;
+
+            // reset counter
+            pulseTick = 20;
+            tickAway();
+        }
+
+        private static void tickAway()
+        {
+            if (pulseTick > 0)
+            {
+                pulseTick--;
+                Task.Delay(500).ContinueWith(t => Program.control.Invoke(() => tickAway()));
+                BigOverlay.invalidate();
+            }
+        }
+
+        private void renderPulse(Graphics g)
+        {
+            // don't render anything when in maps
+            if (Game.activeGame?.isMode(GameMode.GalaxyMap, GameMode.SystemMap) == true)
+                return;
+
+            g.DrawImage(pulseBackground, ptPlotPulse);
+
+            // we want a fuzzy outline on this rectangle
+            g.SmoothingMode = SmoothingMode.HighQuality;
+
+            g.FillRectangle(C.Brushes.orange,
+                ptPlotPulse.X + 10, ptPlotPulse.Y + 27 - pulseTick,
+                10, pulseTick);
+
+            g.SmoothingMode = SmoothingMode.Default;
+        }
+
+        #endregion
     }
 }

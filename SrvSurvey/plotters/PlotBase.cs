@@ -1574,14 +1574,12 @@ namespace SrvSurvey.plotters
                 .Where(_ => typeof(PlotBase).IsAssignableFrom(_) && !_.IsAbstract)
                 .ToList();
 
-            // include plotters not yet derived from the base class
-            allPlotterTypes.Add(typeof(PlotPulse));
-
             // These plotters are not movable and are intentionally missing from plotters.json
             // PlotTrackers
 
             var dirty = false;
             Dictionary<string, PlotPos>? defaultPositions = null;
+            typicalSize["PlotPulse"] = BigOverlay.plotPulseDefaultSize;
             foreach (var type in allPlotterTypes)
             {
                 var name = type.Name;
@@ -1765,9 +1763,7 @@ namespace SrvSurvey.plotters
                 return plotterPositions.GetValueOrDefault(name);
         }
 
-        /// <summary>
-        /// Returns where the named plotter should be
-        /// </summary>
+        /// <summary> Returns where the named plotter should be </summary>
         /// <param name="formName">The name of the plotter</param>
         /// <param name="sz">The size of the plotter</param>
         /// <param name="rect">The rectangle of the game window</param>

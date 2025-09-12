@@ -480,9 +480,6 @@ namespace SrvSurvey
             this.game.journals!.onJournalEntry += Journals_onJournalEntry;
             this.game.status.StatusChanged += Status_StatusChanged;
 
-            if (!Game.settings.hideJournalWriteTimer)
-                Program.showPlotter<PlotPulse>();
-
             this.updateAllControls();
             this.hook?.startDirectX(Game.settings.hookDirectXDeviceId_TEST);
 
@@ -544,12 +541,9 @@ namespace SrvSurvey
 
             if (newMode == GameMode.MainMenu)
             {
-                Program.closeAllPlotters(true);
+                Program.closeAllPlotters();
                 return;
             }
-
-            if (newMode == GameMode.ExternalPanel)
-                Program.getPlotter<PlotPulse>()?.reposition(Elite.getWindowRect());
 
             var gameIsActive = game != null && Elite.isGameRunning && game.Commander != null;
 
@@ -685,7 +679,6 @@ namespace SrvSurvey
             if (force || this.txtMode.Text != newMode.ToString())
             {
                 this.updateAllControls(newMode);
-                Program.invalidate<PlotPulse>();
             }
         }
 
@@ -1073,8 +1066,8 @@ namespace SrvSurvey
         {
             if (entry.JumpType == "Hyperspace")
             {
-                // close everything when entering hyperspace (except PlotPulse and PlotJumpInfo)
-                Program.closeAllPlotters(true, true);
+                // close everything when entering hyperspace (except PlotJumpInfo)
+                Program.closeAllPlotters(true);
             }
         }
 

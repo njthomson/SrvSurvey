@@ -322,9 +322,9 @@ namespace SrvSurvey
             return activePlotters.Keys.Order().ToArray();
         }
 
-        public static void closeAllPlotters(bool exceptPlotPulse = false, bool exceptJumpInfo = false)
+        public static void closeAllPlotters(bool exceptJumpInfo = false)
         {
-            Game.log($"Program.CloseAllPlotters (exceptPlotPulse: {exceptPlotPulse}, exceptJumpInfo: {exceptJumpInfo})");
+            Game.log($"Program.CloseAllPlotters (exceptJumpInfo: {exceptJumpInfo})");
 
             var names = Program.activePlotters.Keys.ToArray();
             foreach (string name in names)
@@ -332,10 +332,6 @@ namespace SrvSurvey
                 if (name == nameof(PlotJumpInfo) && exceptJumpInfo) continue;
                 Program.closePlotter(name);
             }
-
-            // we want to reset this plotter, so create it again
-            if (exceptPlotPulse && !Game.settings.hideJournalWriteTimer && Elite.isGameRunning)
-                Program.showPlotter<PlotPulse>();
         }
 
         public static void repositionPlotters()

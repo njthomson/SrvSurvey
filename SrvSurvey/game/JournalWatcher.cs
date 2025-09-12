@@ -54,7 +54,7 @@ namespace SrvSurvey
             if (this.disposed) return;
             Program.crashGuard(() =>
             {
-                PlotPulse.LastChanged = DateTime.Now;
+                BigOverlay.resetPulse();
                 this.readEntries();
             });
         }

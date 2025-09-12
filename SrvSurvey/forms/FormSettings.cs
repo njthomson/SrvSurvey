@@ -432,9 +432,8 @@ namespace SrvSurvey
             }
             else
             {
-                // close all plotters (except PlotPulse)
-                Program.closeAllPlotters(true);
-                Program.getPlotter<PlotPulse>()?.reposition(Elite.getWindowRect());
+                // close all plotters
+                Program.closeAllPlotters();
             }
 
             if (Game.settings.streamOneOverlay)
