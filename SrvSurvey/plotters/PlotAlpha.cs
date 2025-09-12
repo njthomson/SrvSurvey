@@ -5,36 +5,31 @@ namespace SrvSurvey.plotters
 {
     internal class PlotAlpha : PlotBase2
     {
+        public static PlotDef plotDef = new PlotDef()
+        {
+            name = nameof(PlotAlpha),
+            allowed = allowed,
+            ctor = (game, def) => new PlotAlpha(game, def),
+            defaultSize = new Size(240, 140),
+            factors = new() { "mode" },
+            renderFactors = new() { nameof(Status.GuiFocus) }, // "mode"
+        };
+
         public static int foo = 10;
 
-        public static void register()
+        public static bool allowed(Game game)
         {
-            Overlays.register(new Overlays.Factors
-            {
-                name = nameof(PlotAlpha),
-                factors = new() { "mode" },
-                showMe = showMe,
-                ctor = () => new PlotAlpha(),
-                renderFactors = new() { nameof(Status.GuiFocus) }, // "mode"
-            });
+            return false && Game.settings.autoShowPlotStationInfo_TEST
+                && game.mode == GameMode.InternalPanel;
         }
 
-        public static bool showMe(Game game)
-        {
-            var valid = Game.settings.autoShowPlotStationInfo_TEST
-                && game.mode == GameMode.ExternalPanel;
-
-            //Game.log($"PlotAlpha.showMe: {valid}");
-            return valid;
-        }
-
-        public PlotAlpha() : base(240, 140)
+        public PlotAlpha(Game game, PlotDef def) : base(game, def)
         {
             this.left = 20;
             this.top = 20;
         }
 
-        protected override Size doRender(Game game, Graphics g)
+        protected override SizeF doRender(Game game, Graphics g)
         {
             //g.DrawRectangle(Pens.Red, 0, 0, this.width - 1, this.height - 1);
             //g.DrawLine(Pens.Red, 0, 0, this.width - 1, this.height - 1);
@@ -52,36 +47,32 @@ namespace SrvSurvey.plotters
 
     internal class PlotBravo: PlotBase2
     {
+        public static PlotDef plotDef = new PlotDef()
+        {
+            name = nameof(PlotBravo),
+            allowed = allowed,
+            ctor = (game, def) => new PlotBravo(game, def),
+            defaultSize = new Size(240, 140),
+            factors = new() { "mode", StatusFlags.LightsOn.ToString() },
+            renderFactors = new() { StatusFlags.LightsOn.ToString() }
+        };
+
         public static int foo = 10;
 
-        public static void register()
+        public static bool allowed(Game game)
         {
-            Overlays.register(new Overlays.Factors
-            {
-                name = nameof(PlotBravo),
-                factors = new() { "mode", StatusFlags.LightsOn.ToString() },
-                showMe = showMe,
-                ctor = () => new PlotBravo(),
-                renderFactors = new() { nameof(Status.GuiFocus), StatusFlags.LightsOn.ToString() },
-            });
-        }
-
-        public static bool showMe(Game game)
-        {
-            var valid = Game.settings.autoShowPlotStationInfo_TEST
+            return false && Game.settings.autoShowPlotStationInfo_TEST
                 //&& game.mode == GameMode.ExternalPanel;
                 && game.status.lightsOn;
-
-            return valid;
         }
 
-        public PlotBravo() : base(240, 140)
+        public PlotBravo(Game game, PlotDef def) : base(game, def)
         {
             this.left = 420;
             this.top = 20;
         }
 
-        protected override Size doRender(Game game, Graphics g)
+        protected override SizeF doRender(Game game, Graphics g)
         {
             //g.DrawRectangle(Pens.Red, 0, 0, this.width - 1, this.height - 1);
             //g.DrawLine(Pens.Red, 0, 0, this.width - 1, this.height - 1);

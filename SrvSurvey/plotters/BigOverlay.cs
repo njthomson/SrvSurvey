@@ -13,6 +13,13 @@ namespace SrvSurvey.plotters
     {
         public static BigOverlay current;
 
+        /// <summary> Invalidates the big overlay, using Program.defer </summary>
+        public static void invalidate()
+        {
+            if (BigOverlay.current != null)
+                Program.defer(() => BigOverlay.current?.Invalidate());
+        }
+
         private static Color maskColor = Color.FromArgb(1, 1, 1);
 
         public BigOverlay()
@@ -47,7 +54,7 @@ namespace SrvSurvey.plotters
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
-            Overlays.closeAll();
+            PlotBase2.closeAll();
             BigOverlay.current = null!;
         }
 
@@ -77,7 +84,7 @@ namespace SrvSurvey.plotters
                 this.ResumeLayout();
 
                 if (Game.activeGame != null)
-                    Overlays.renderAll(Game.activeGame);
+                    PlotBase2.renderAll(Game.activeGame);
 
                 this.Invalidate();
             }
@@ -91,57 +98,34 @@ namespace SrvSurvey.plotters
             try
             {
                 var g = e.Graphics;
-                //g.Clear(maskColor);
-                //g.DrawRectangle(Pens.DarkRed, 0, 0, this.Width - 1, this.Height - 1);
-                //g.DrawLine(Pens.DarkRed, 0, 0, this.Width - 1, this.Height - 1);
-                //g.DrawLine(Pens.DarkRed, this.Width, 0, 0, this.Height - 1);
-
-                //if (this.Opacity != Game.settings.Opacity)
-                //    this.Opacity = Game.settings.Opacity;
 
                 var game = Game.activeGame;
                 if (game != null)
                 {
-                    foreach (var plotter in Overlays.active)
+                    foreach (var plotter in PlotBase2.active)
                     {
+                        // skip anything not visible
+                        if (plotter.hidden) continue;
+
                         // re-render only if needed
-                        if (plotter.stale)
-                            plotter.render(game);
+                        if (plotter.stale) plotter.render();
 
-                        //Game.log($"BigOne draw: {plotter.name}");
-                        if (plotter.fade == 1)
+                        if (plotter.fade == 0)
                         {
-
+                            // start fading in
+                            Util.deferAfter(20, () => fadeNext2((PlotBase2)plotter, 0.1f), plotter.name);
+                        }
+                        else if (plotter.fade == 1)
+                        {
+                            // fading has finished
                             g.DrawImageUnscaled(plotter.background, plotter.left, plotter.top);
                             g.DrawImageUnscaled(plotter.frame, plotter.left, plotter.top);
                         }
-                        else if (plotter.fade == 0)
-                        {
-                            //var rect = new Rectangle(plotter.left, plotter.top, sz.Width, 20);
-                            //g.FillRectangle(new SolidBrush(Color.FromArgb(140, 0, 0, 0)), rect);
-
-                            Util.deferAfter(20, () => fadeNext2((PlotBase2)plotter, 0.1f), plotter.name);
-                        }
                         else
                         {
-                            var colorMatrix = new ColorMatrix()
-                            {
-                                Matrix33 = plotter.fade,
-                            };
-
-                            // TODO: remove next time
-                            //var ff1 = 1f;
-                            //var ff0 = plotter.fade; //1f;
-                            //var ff = 0f;
-                            //float[][] colorMatrixElements = {
-                            //    new float[] {ff1,  0,  0,  0, 0},        // red scaling factor of 1
-                            //    new float[] {0,  ff1,  0,  0, 0},        // green scaling factor of 1
-                            //    new float[] {0,  0,  ff1,  0, 0},        // blue scaling factor of 1
-                            //    new float[] {0,  0,  0,  ff0, 0},        // alpha scaling factor of 1
-                            //    new float[] {ff, ff, ff, ff, 1}};        // three translations of 0.2
-                            //ColorMatrix colorMatrix = new ColorMatrix(colorMatrixElements);
-
+                            // draw faded image
                             var attr = new ImageAttributes();
+                            var colorMatrix = new ColorMatrix() { Matrix33 = plotter.fade, };
                             attr.SetColorMatrix(colorMatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
                             var sz = plotter.frame.Size;
@@ -166,59 +150,13 @@ namespace SrvSurvey.plotters
         {
             form.fade += delta;
 
+            // until we reach 1, re-render every 20ms
             if (form.fade < 1)
                 Util.deferAfter(20, () => fadeNext2(form, delta), form.name);
-            else
-                if (form.fade > 1) form.fade = 1;
+            else if (form.fade > 1)
+                form.fade = 1;
 
             BigOverlay.current.Invalidate();
         }
-
-        private static void fadeNext(PlotBase2 form, float targetOpacity, long lastTick, float delta)
-        {
-            //Application.DoEvents();
-
-            //if (!Elite.gameHasFocus || form.forceHide)
-            //{
-            //    // stop early and hide form if the game loses focus, or the form is being forced hidden
-            //    form.setOpacity(0);
-            //    return;
-            //}
-            //form.fading = true;
-
-            var wasFade = form.fade;
-            var wasSmaller = form.fade < targetOpacity;
-
-            // (there are 10,000 ticks in a millisecond)
-            var nextTick = lastTick + 10_000;
-
-            if (nextTick < DateTime.Now.Ticks)
-            {
-                var newFade = form.fade + (wasSmaller ? delta : -delta);
-                var isSmaller = newFade < targetOpacity;
-
-                Debug.WriteLine($"! delta:{delta}, junk.Opacity:{wasFade}, this.targetOpacity:{targetOpacity}, wasSmaller:{wasSmaller}, isSmaller:{isSmaller}");
-
-                // end animation when we reach target
-                if (wasSmaller != isSmaller || form.fade == targetOpacity)
-                {
-                    form.fade = 1;
-                    return;
-                }
-
-                form.fade = newFade;
-                lastTick = DateTime.Now.Ticks;
-                // TODO: animate the location too, just a little?
-            }
-            else
-            {
-                Debug.WriteLine($"~ delta:{delta}, junk.Opacity:{wasFade}, this.targetOpacity:{targetOpacity}, skip! {lastTick} // {nextTick} < {DateTime.Now.Ticks}");
-            }
-
-            Program.defer(() => fadeNext(form, targetOpacity, lastTick, delta));
-        }
-
-
-
     }
 }

@@ -442,12 +442,13 @@ namespace SrvSurvey
             }
             if (Game.settings.useOneOverlay_TEST)
             {
-                Overlays.closeAll();
+                PlotBase2.closeAll();
                 bigOverlay?.Close();
+                bigOverlay = null;
             }
             else if (Game.settings.useNotOneOverlay_TEST)
             {
-                Overlays.closeAll();
+                PlotBase2.closeAll();
             }
 
             this.game = null;
@@ -507,12 +508,10 @@ namespace SrvSurvey
 
                 bigOverlay = new BigOverlay();
                 bigOverlay.Show();
-                Overlays.renderAll(game);
             }
-            else if (Game.settings.useNotOneOverlay_TEST)
-            {
-                Overlays.renderAll(game);
-            }
+
+            if (Game.settings.useOneOverlay_TEST || Game.settings.useNotOneOverlay_TEST)
+                PlotBase2.renderAll(game);
         }
 
         private void updateAllControls(GameMode? newMode = null)
@@ -598,10 +597,6 @@ namespace SrvSurvey
             else
                 Program.closePlotter<PlotFloatie>();
 
-            if (gameIsActive && PlotStationInfo.allowPlotter)
-                Program.showPlotter<PlotStationInfo>();
-            else
-                Program.closePlotter<PlotStationInfo>();
 
             if (gameIsActive && PlotBuildCommodities.allowPlotter)
                 PlotBuildCommodities.showButCleanFirst();
@@ -1390,15 +1385,12 @@ namespace SrvSurvey
 
                     if (Game.settings.useOneOverlay_TEST)
                     {
-                        Overlays.closeAll();
+                        PlotBase2.closeAll();
                         Application.DoEvents();
-                        if (game != null)
-                            Overlays.renderAll(game);
                     }
-                    else if (Game.settings.useNotOneOverlay_TEST && game != null)
-                    {
-                        Overlays.renderAll(game);
-                    }
+
+                    if (game != null && (Game.settings.useOneOverlay_TEST || Game.settings.useNotOneOverlay_TEST))
+                        PlotBase2.renderAll(game);
                 }
             }
             finally

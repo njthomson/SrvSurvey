@@ -1,8 +1,7 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.widgets;
 using System.Diagnostics;
 using System.Reflection;
-using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 
 namespace SrvSurvey.plotters
 {
@@ -15,14 +14,35 @@ namespace SrvSurvey.plotters
         int height { get; }
         float fade { get; set; }
         bool stale { get; }
+        bool hidden { get; set; }
+
         Image frame { get; }
         Image background { get; }
 
-        Image render(Game game);
+        Image render();
+    }
+
+    internal class PlotDef
+    {
+        public string name;
+        public Func<Game, PlotDef, PlotBase2> ctor;
+        /// <summary> Returns true if the plotter is allowed to be shown </summary>
+        public Func<Game, bool> allowed;
+        public Size defaultSize;
+
+        /// <summary> Factors that govern if this plotter is allowed </summary>
+        public HashSet<string> factors;
+        /// <summary> Optional factors that govern if this plotter would be re-rendered - for plotters who do not listen to status changes directly </summary>
+        public HashSet<string>? renderFactors;
+
+        public PlotBase2? instance;
+        public PlotContainer? form;
     }
 
     internal abstract class PlotBase2 : IPlotBase2
     {
+        protected Game game;
+        protected PlotDef def;
         public string name { get; set; }
         public int left { get; set; }
         public int top { get; set; }
@@ -34,16 +54,28 @@ namespace SrvSurvey.plotters
         public Image frame { get; set; }
         public Image background { get; set; }
 
-        public PlotBase2(int w, int h)
-        {
-            this.name = GetType().Name;
+        public Font font = GameColors.Fonts.gothic_10;
+        public Color color = C.orange;
 
+        public PlotBase2(Game game, PlotDef def)
+        {
+            this.game = game;
+            this.def = def;
+            this.name = def.name;
+
+            this.width = def.defaultSize.Width;
+            this.height = def.defaultSize.Height;
+
+            // get initial position
+            var pt = PlotPos.getPlotterLocation(this.name, new Size(this.width, this.height), Rectangle.Empty);
+            this.left = pt.X;
+            this.top = pt.Y;
+
+            this.frame = new Bitmap(this.width, this.height);
             this.stale = true;
-            this.setSize(w, h);
-            this.frame = new Bitmap(w, h);
         }
 
-        public void setSize(int width, int height)
+        private void setSize(int width, int height)
         {
             var changed = this.width != width || this.height != height;
             if (changed)
@@ -59,16 +91,60 @@ namespace SrvSurvey.plotters
             // override as necessary
         }
 
+        #region rendering
+
         public void invalidate()
         {
             //Game.log($"invalidate: {this.name}");
             this.stale = true;
+
+            if (Game.settings.useNotOneOverlay_TEST)
+                Program.invalidate(this.name);
+            else
+                BigOverlay.invalidate();
         }
 
-        protected abstract Size doRender(Game game, Graphics g);
-
-        public Image render(Game game)
+        public bool hidden
         {
+            get => this._hidden;
+            set
+            {
+                if (value) this.hide();
+                else this.show();
+            }
+        }
+        private bool _hidden;
+
+        /// <summary>
+        /// Stop rendering this plotter without destroying it
+        /// </summary>
+        public void hide()
+        {
+            this._hidden = true;
+            this.invalidate();
+        }
+
+        /// <summary>
+        /// Start rendering if hidden, or invalidates if already visible
+        /// </summary>
+        public void show()
+        {
+            if (this._hidden)
+            {
+                this._hidden = false;
+                this.fade = 0;
+            }
+
+            this.invalidate();
+        }
+
+        protected abstract SizeF doRender(Game game, Graphics g);
+
+        /// <summary> Generate a new frame image </summary>
+        public Image render()
+        {
+            if (game.isShutdown || game.status == null) return this.frame;
+
             //Game.log($"Render: {this.name}, stale: {this.stale}");
             var renderCount = 0;
             Bitmap nextFrame = null!;
@@ -80,25 +156,27 @@ namespace SrvSurvey.plotters
                 {
                     var sz = this.doRender(game, g);
                     this.stale = false;
-                    this.setSize(sz.Width, sz.Height);
+                    this.setSize((int)sz.Width, (int)sz.Height);
                 }
                 if (renderCount > 6) Debugger.Break();
-            } while (stale || renderCount > 10);
+            } while (stale && renderCount < 10);
 
             //Game.log($"Render: {this.name}, renderCount: {renderCount}");
             this.frame = nextFrame;
 
-            // re-render background only when size has changed
+            // re-create background when missing or size has changed
             if (this.background == null || this.background.Size != this.frame.Size)
                 this.background = GameGraphics.getBackgroundImage(frame.Size);
 
             return this.frame;
         }
-    }
 
-    internal static class Overlays
-    {
-        static Overlays()
+
+        #endregion
+
+        #region static def and instance mgmt
+
+        static PlotBase2()
         {
             // start by collecting all non-abstract classes derived from PlotBase2
             var allPlotterTypes = Assembly.GetExecutingAssembly()
@@ -106,53 +184,24 @@ namespace SrvSurvey.plotters
                 .Where(_ => typeof(PlotBase2).IsAssignableFrom(_) && !_.IsAbstract)
                 .ToList();
 
-            Game.log(allPlotterTypes.Count);
-            foreach (var foo in allPlotterTypes)
+            Game.log($"Registering {allPlotterTypes.Count} plotters");
+
+            foreach (var type in allPlotterTypes)
             {
-                Game.log(foo.Name);
-                var func = foo.GetMethod("register", BindingFlags.Static | BindingFlags.Public);
-                if (func != null)
-                    func.Invoke(null, null);
+                var def = type
+                    .GetField("plotDef", BindingFlags.Public | BindingFlags.Static)
+                    ?.GetValue(null) as plotters.PlotDef;
+
+                if (def == null)
+                    throw new Exception($"Def not found: {type.Name}");
                 else
-                    Debugger.Break();
+                    defs[def.name] = def;
             }
-            //Overlays.register()
-
         }
 
-        private static Dictionary<string, Factors> overlays = new Dictionary<string, Factors>();
+        private static Dictionary<string, PlotDef> defs = new Dictionary<string, PlotDef>();
 
-        public static void register(Factors def)
-        {
-            overlays[def.name] = def;
-        }
-
-        internal class Factors
-        {
-            public string name;
-            /// <summary>
-            /// Factors that govern if this plotter should be shown or hidden
-            /// </summary>
-            public HashSet<string> factors;
-            public Func<Game, bool> showMe;
-            public PlotBase2? instance;
-            public Func<PlotBase2> ctor;
-            public HashSet<string>? renderFactors;
-            public PlotContainer? form;
-        }
-
-        /*public static PlotBase2? add(string name)
-        {
-            var def = overlays.GetValueOrDefault(name);
-            if (def != null)
-                return add(def);
-
-            Game.log($"Why no def?");
-            Debugger.Break();
-            return null;
-        }*/
-
-        public static PlotBase2? add(Factors def)
+        public static void add(Game game, PlotDef def)
         {
             if (def.instance != null)
             {
@@ -162,31 +211,22 @@ namespace SrvSurvey.plotters
             }
 
             Game.log($"Overlays.add: {def.name}");
-            def.instance = def.ctor();
-
-            return def.instance;
+            def.instance = def.ctor(game, def);
         }
 
-        public static Factors? get(string name)
+        public static PlotDef? get(string name)
         {
-            var def = overlays.GetValueOrDefault(name);
+            var def = defs.GetValueOrDefault(name);
             return def;
         }
 
-        /*public static void remove(string name)
+        public static T? getPlotter<T>() where T : PlotBase2
         {
-            var def = overlays.GetValueOrDefault(name);
-            if (def != null)
-            {
-                remove(def);
-                return;
-            }
+            var name = typeof(T).Name;
+            return defs.GetValueOrDefault(name)?.instance as T;
+        }
 
-            Game.log($"Why no def?");
-            Debugger.Break();
-        }*/
-
-        public static void remove(Factors def)
+        public static void remove(PlotDef def)
         {
             if (def.instance != null)
             {
@@ -194,21 +234,21 @@ namespace SrvSurvey.plotters
 
                 if (Game.settings.useNotOneOverlay_TEST)
                 {
-                    def.form = new PlotContainer(def);
                     Program.closePlotter(def.name);
+                    def.form = null;
                 }
 
                 def.instance.close();
                 def.instance = null;
+
+                BigOverlay.invalidate();
             }
         }
 
         public static void invalidate(string name)
         {
-            var def = overlays.GetValueOrDefault(name);
+            var def = defs.GetValueOrDefault(name);
             def?.instance?.invalidate();
-
-            BigOverlay.current?.Invalidate();
         }
 
         public static void renderAll(Game game)
@@ -216,11 +256,12 @@ namespace SrvSurvey.plotters
             if (game.isShutdown || game.status == null) return;
 
             // check if we need to create or remove any
-            foreach (var def in overlays.Values)
+            var invalidateBig = false;
+            foreach (var def in defs.Values)
             {
                 var relevant = def.factors.Any(x => game.status.changed.Contains(x));
 
-                var shouldShow = def.showMe(game);
+                var shouldShow = def.allowed(game);
                 //Game.log($"relevant? {def.name} => {relevant} / {def.instance != null} / shouldShow: {shouldShow}");
 
                 // only attempt to create or destroy if something relevant changed
@@ -228,42 +269,52 @@ namespace SrvSurvey.plotters
                 {
                     // create or destroy as needed
                     if (shouldShow && def.instance == null)
-                        add(def);
+                    {
+                        invalidateBig = true;
+                        add(game, def);
+                    }
                     else if (!shouldShow && def.instance != null)
+                    {
+                        invalidateBig = true;
                         remove(def);
+                    }
                 }
 
-                // render every time, unless we have factors to consider
-                var shouldRender = def.renderFactors == null || def.renderFactors.Any(x => game.status.changed.Contains(x));
-                if (shouldRender)
-                    def.instance?.render(game);
-
-                if (Game.settings.useNotOneOverlay_TEST && def.instance != null)
+                if (shouldShow)
                 {
-                    if (def.form == null)
+                    // render if stale or if a relevant factor changed
+                    var shouldRender = def.renderFactors != null && def.renderFactors.Any(x => game.status.changed.Contains(x));
+                    if (def.instance!.stale || shouldRender)
                     {
-                        def.form = new PlotContainer(def);
-                        Program.showPlotter<PlotContainer>(null, def.name);
+                        invalidateBig = true;
+                        def.instance.render();
                     }
 
-                    def.form?.doRender();
+                    if (Game.settings.useNotOneOverlay_TEST && def.instance != null)
+                    {
+                        if (def.form == null)
+                        {
+                            def.form = new PlotContainer(def);
+                            Program.showPlotter<PlotContainer>(null, def.name);
+                        }
+
+                        def.form?.doRender();
+                    }
                 }
             }
 
-            if (!Game.settings.useNotOneOverlay_TEST)
-            {
+            if (invalidateBig)
                 BigOverlay.current?.Invalidate();
-            }
         }
 
         public static void closeAll()
         {
             Game.log($"Overlays.closeAll");
 
-            foreach (var def in overlays.Values)
+            foreach (var def in defs.Values)
                 remove(def);
 
-            BigOverlay.current?.Invalidate();
+            BigOverlay.invalidate();
         }
 
         /// <summary>
@@ -271,19 +322,29 @@ namespace SrvSurvey.plotters
         /// </summary>
         public static List<IPlotBase2> active
         {
-            get => overlays.Values
+            get => defs.Values
                 .Where(def => def.instance != null)
                 .Select(def => def.instance!)
                 .ToList<IPlotBase2>();
         }
 
+        #endregion
+
+        protected virtual void onStatusChange(Status status) { /* override as needed */ }
+
+        /// <summary> Gives every active plotter a chance to process status changes </summary>
+        public static void statusChanged()
+        {
+            foreach (var def in defs.Values)
+                def.instance?.onStatusChange(def.instance.game.status);
+        }
     }
 
     internal class PlotContainer : PlotBase
     {
-        private readonly Overlays.Factors def;
+        private readonly PlotDef def;
 
-        public PlotContainer(Overlays.Factors def)
+        public PlotContainer(PlotDef def)
         {
             this.def = def;
             this.Name = def.name;
@@ -299,7 +360,7 @@ namespace SrvSurvey.plotters
             base.Dispose(disposing);
         }
 
-        public override bool allow => Game.activeGame == null ? false : def.showMe(Game.activeGame);
+        public override bool allow => Game.activeGame == null ? false : def.allowed(Game.activeGame);
 
         public void doRender()
         {
@@ -315,8 +376,8 @@ namespace SrvSurvey.plotters
         {
             if (this.IsDisposed || def.instance == null || Game.activeGame == null) return;
 
-            if (def.instance.frame == null)
-                def.instance.render(Game.activeGame);
+            if (def.instance.frame == null || def.instance.stale)
+                def.instance.render();
 
             g.DrawImage(def.instance.background, 0, 0);
             g.DrawImage(def.instance.frame!, 0, 0);

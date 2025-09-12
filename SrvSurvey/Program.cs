@@ -189,7 +189,7 @@ namespace SrvSurvey
 
                 if (formType.Name == nameof(PlotContainer))
                 {
-                    var def = Overlays.get(formTypeName)!;
+                    var def = PlotBase2.get(formTypeName)!;
                     form = (T)(PlotterForm)def.form!;
                 }
                 else
@@ -378,7 +378,12 @@ namespace SrvSurvey
                 return;
             }
 
-            var plotter = activePlotters.GetValueOrDefault(typeof(T).Name) as T;
+            Program.invalidate(typeof(T).Name);
+        }
+
+        public static void invalidate(string formTypeName)
+        {
+            var plotter = activePlotters.GetValueOrDefault(formTypeName);
             plotter?.Invalidate();
         }
 

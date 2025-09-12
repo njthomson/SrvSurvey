@@ -324,7 +324,6 @@ namespace SrvSurvey.game
             if (doUpdate)
                 fireUpdate(newMode, false);
 
-            Overlays.renderAll(this);
         }
 
         private void Status_StatusChanged(bool blink)
@@ -410,6 +409,10 @@ namespace SrvSurvey.game
             }
 
             this.checkModeChange();
+
+            // tell all new plotters
+            PlotBase2.statusChanged();
+            PlotBase2.renderAll(this);
         }
 
         private void statusDestinationChanged()

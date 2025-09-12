@@ -5,56 +5,54 @@ using System.Drawing.Drawing2D;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(200, 300)]
-    internal class PlotStationInfo : PlotBase, PlotterForm
+    internal class PlotStationInfo : PlotBase2
     {
-        private PenBrush pb = new PenBrush(C.orange, 3, LineCap.Flat);
-        private ApiSystemDump.System.Station? station;
+        #region def + statics
 
-        public static bool allowPlotter
+        public static PlotDef plotDef = new PlotDef()
         {
-            get => Game.settings.autoShowPlotStationInfo_TEST
+            name = nameof(PlotStationInfo),
+            allowed = allowed,
+            ctor = (game, def) => new PlotStationInfo(game, def),
+            defaultSize = new Size(200, 300),
+            factors = new() { "mode", nameof(Status.Destination) },
+        };
+
+        public static bool allowed(Game game)
+        {
+            return Game.settings.autoShowPlotStationInfo_TEST
                 && Game.activeGame?.systemData != null
                 // NOT suppressed by buildProjectsSuppressOtherOverlays
-                && Game.activeGame.isMode(GameMode.ExternalPanel)
-                ;
+                && (Game.activeGame.isMode(GameMode.ExternalPanel) || PlotStationInfo.forceShow);
         }
 
-        /// <summary> When true, makes the plotter become visible IF there is a valid body to show </summary>
         public static bool forceShow = false;
 
-        private PlotStationInfo() : base()
+        #endregion
+
+        public ApiSystemDump.System.Station? station;
+
+        public PlotStationInfo(Game game, PlotDef def) : base(game, def)
         {
-            this.Size = Size.Empty;
-            this.Font = GameColors.Fonts.gothic_10;
-        }
-
-        public override bool allow { get => PlotStationInfo.allowPlotter; }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            this.Width = scaled(300);
-            this.Height = scaled(1000);
-
-            base.OnLoad(e);
-
-            this.initializeOnLoad();
-            this.reposition(Elite.getWindowRect(true));
+            this.font = GameColors.Fonts.gothic_10;
+            this.color = C.orange;
 
             setStationFromDestination();
         }
 
-        protected override void Status_StatusChanged(bool blink)
+        protected override void onStatusChange(Status status)
         {
-            if (this.IsDisposed) return;
-            base.Status_StatusChanged(blink);
-
-            setStationFromDestination();
+            if (status.changed.Contains(nameof(Status.Destination)))
+                setStationFromDestination();
         }
 
         private void setStationFromDestination()
         {
-            if (game.systemData == null || game.status.Destination?.System != game.systemData.address) return;
+            if (game.systemData == null || game.status.Destination?.System != game.systemData.address)
+            {
+                this.hide();
+                return;
+            }
 
             // disregard construction sites
             if (ColonyData.isConstructionSite(game.status.Destination.Name))
@@ -67,60 +65,38 @@ namespace SrvSurvey.plotters
                 this.station = game.systemData.spanshStations?.FirstOrDefault(s => s.name == game.status.Destination.Name);
             }
 
+            // render only if we have something
             if (station == null)
-            {
-                var hadOpacity = this.Opacity > 0;
-
-                // it is not
-                setOpacity(0);
-                if (hadOpacity)
-                    this.hideMyClone();
-            }
+                this.hide();
             else if (game.systemData != null)
-            {
-                // yes
-                resetOpacity();
-                //Program.defer(() => Util.fadeOpacity(this, PlotPos.getOpacity(this), Game.settings.fadeInDuration));
-                Game.log($"Selected station: {this.station?.name} ({this.station?.id})");
-            }
+                this.show();
 
-            this.Invalidate();
+            Game.log($"PlotStationInfo.Selected station: {this.station?.name} ({this.station?.id})");
         }
 
-        public override void setOpacity(double newOpacity)
+        protected override SizeF doRender(Game game, Graphics g)
         {
-            // toggle visibility based on if we have a valid station of not
-            if (this.Visible != (this.station != null))
-                this.Visible = this.station != null;
+            // render nothing if there is no station
+            if (this.station == null) return frame.Size;
+            var tt = new TextCursor(g, this);
 
-            base.setOpacity(newOpacity);
-        }
-
-        protected override void onPaintPlotter(PaintEventArgs e)
-        {
-            if (this.IsDisposed) return;
-            if (this.station == null)
-            {
-                setOpacity(0);
-                return;
-            }
-            var indent = oneEight;
+            var indent = N.oneEight;
 
             // title
-            drawTextAt2(eight, station.name, GameColors.Fonts.gothic_12B);
-            newLine(true);
+            tt.draw(N.eight, station.name, GameColors.Fonts.gothic_12B);
+            tt.newLine(true);
 
             // settlement type?
             var match = game.systemData?.stations?.Find(s => s.marketId == station.id);
             if (match != null)
             {
-                drawTextAt2(indent, $"{station.type}: {match.economy} #{match.subType}", GameColors.Fonts.gothic_9);
-                newLine(true);
+                tt.draw(indent, $"{station.type}: {match.economy} #{match.subType}", GameColors.Fonts.gothic_9);
+                tt.newLine(true);
             }
             else
             {
-                drawTextAt2(indent, station.type, GameColors.Fonts.gothic_9);
-                newLine(true);
+                tt.draw(indent, station.type, GameColors.Fonts.gothic_9);
+                tt.newLine(true);
             }
 
             // largest pad
@@ -130,28 +106,28 @@ namespace SrvSurvey.plotters
             else if (station.landingPads?.Small > 0) largestPad = "Small";
             if (largestPad != null)
             {
-                drawTextAt2(indent, $"Landing pads: {largestPad}", GameColors.Fonts.gothic_9);
-                newLine(true);
+                tt.draw(indent, $"Landing pads: {largestPad}", GameColors.Fonts.gothic_9);
+                tt.newLine(true);
             }
 
             //if (station.economies.Count )
             if (station.economies == null)
             {
-                drawTextAt2(indent, station.primaryEconomy, GameColors.Fonts.gothic_9);
-                newLine(+ten, true);
+                tt.draw(indent, station.primaryEconomy, GameColors.Fonts.gothic_9);
+                tt.newLine(+N.ten, true);
             }
             else
             {
-                dty += ten;
-                drawTextAt2(eight, $"Economy:");
-                newLine(true);
+                tt.dty += N.ten;
+                tt.draw(N.eight, $"Economy:");
+                tt.newLine(true);
 
                 foreach (var entry in station.economies.OrderByDescending(kv => kv.Value))
                 {
-                    drawTextAt2(indent, $"{entry.Key}: {entry.Value}%", GameColors.Fonts.gothic_9);
-                    newLine(true);
+                    tt.draw(indent, $"{entry.Key}: {entry.Value}%", GameColors.Fonts.gothic_9);
+                    tt.newLine(true);
                 }
-                dty += 10;
+                tt.dty += 10;
             }
 
             // faction
@@ -160,33 +136,31 @@ namespace SrvSurvey.plotters
                 var (rep, inf, state) = game.getFactionInfRep(station.controllingFaction);
                 var txtRep = Util.getReputationText(rep);
 
-                drawTextAt2(eight, $"Faction:");
-                newLine(true);
-                drawTextAt2(indent, station.controllingFaction, GameColors.Fonts.gothic_9);
+                tt.draw(N.eight, $"Faction:");
+                tt.newLine(true);
+                tt.draw(indent, station.controllingFaction, GameColors.Fonts.gothic_9);
                 if (state != null && state != "None")
                 {
-                    newLine(true);
-                    drawTextAt2(indent, $"State: {state}", GameColors.Fonts.gothic_9);
+                    tt.newLine(true);
+                    tt.draw(indent, $"State: {state}", GameColors.Fonts.gothic_9);
                 }
-                newLine(true);
-                drawTextAt2(indent, $"Inf: {inf:P0} | Rep: {txtRep}", GameColors.Fonts.gothic_9);
+                tt.newLine(true);
+                tt.draw(indent, $"Inf: {inf:P0} | Rep: {txtRep}", GameColors.Fonts.gothic_9);
             }
-
-
 
 
             // relevant services
             if (station.services != null)
             {
-                newLine(+ten, true);
-                drawTextAt2(eight, "Relevant services:");
+                tt.newLine(+N.ten, true);
+                tt.draw(N.eight, "Relevant services:");
                 var interesting = new List<string>() { "Shipyard", "Outfitting", "Refuel", "Restock", "Repair", "Market", "Universal Cartographics", "Search and Rescue", "Interstellar Factors" };
                 // TODO: Tech broker, mat trader, engineer, black market
                 foreach (var service in station.services)
                 {
                     if (!interesting.Contains(service)) continue;
-                    newLine(true);
-                    drawTextAt2(ten, "- " + service, GameColors.Fonts.gothic_9);
+                    tt.newLine(true);
+                    tt.draw(N.ten, "- " + service, GameColors.Fonts.gothic_9);
                 }
             }
 
@@ -194,23 +168,23 @@ namespace SrvSurvey.plotters
             // Prohibited goods?
             if (station.market?.prohibitedCommodities.Count > 0)
             {
-                newLine(+ten, true);
-                drawTextAt2(eight, "Prohibited:");
+                tt.newLine(+N.ten, true);
+                tt.draw(N.eight, "Prohibited:");
                 foreach (var commodity in station.market.prohibitedCommodities)
                 {
-                    newLine(true);
-                    drawTextAt2(ten, "- " + commodity, GameColors.Fonts.gothic_9);
+                    tt.newLine(true);
+                    tt.draw(N.ten, "- " + commodity, GameColors.Fonts.gothic_9);
                 }
-                //newLine(+ten, true);
+                //tt.newLine(+ten, true);
             }
 
-            newLine(+ten, true);
-            drawTextAt2(eight, "Data: Spansh.co.uk", C.orangeDark, GameColors.Fonts.gothic_9);
-            newLine(true);
-            drawTextAt2(eight, $"Updated: {station.updateTime.LocalDateTime.ToShortDateString()}", C.orangeDark, GameColors.Fonts.gothic_9);
-            newLine(true);
+            tt.newLine(+N.ten, true);
+            tt.draw(N.eight, "Data: Spansh.co.uk", C.orangeDark, GameColors.Fonts.gothic_9);
+            tt.newLine(true);
+            tt.draw(N.eight, $"Updated: {station.updateTime.LocalDateTime.ToShortDateString()}", C.orangeDark, GameColors.Fonts.gothic_9);
+            tt.newLine(true);
 
-            this.formAdjustSize(+eight, +eight);
+            return tt.pad(+N.eight, +N.eight);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace SrvSurvey.widgets
+﻿using SrvSurvey.plotters;
+
+namespace SrvSurvey.widgets
 {
     internal class TextCursor : BaseWidget
     {
@@ -13,7 +15,8 @@
         public TextFormatFlags flags = defaultTextFlags;
 
         private Graphics g;
-        private Control ctrl;
+        private Control? ctrl;
+        private PlotBase2? plotter;
 
         private SizeF lastTextSize;
         public SizeF frameSize;
@@ -26,12 +29,20 @@
             reset();
         }
 
+        public TextCursor(Graphics g, PlotBase2 plotter)
+        {
+            this.g = g;
+            this.plotter = plotter;
+
+            reset();
+        }
+
         public void reset()
         {
             this.dtx = N.eight;
             this.dty = N.ten;
-            this.font = ctrl.Font;
-            this.color = ctrl.ForeColor;
+            this.font = ctrl?.Font ?? plotter!.font;
+            this.color = ctrl?.ForeColor ?? plotter!.color;
             this.flags = defaultTextFlags;
             this.frameSize = new SizeF();
         }
@@ -95,13 +106,16 @@
             return this.lastTextSize;
         }
 
-        #endregion 
+        #endregion
 
         #region draw wrapped text (unscaled)
 
+        private int containerWidth => ctrl?.Width ?? plotter!.width;
+        private int containerHeight => ctrl?.Height ?? plotter!.height;
+
         public SizeF drawWrapped(float tx, string? txt, Font font)
         {
-            return drawWrapped(tx, this.ctrl.Width, txt, null, font, false);
+            return drawWrapped(tx, this.containerWidth, txt, null, font, false);
         }
 
         public SizeF drawWrapped(float tx, int w, string? txt, Font? font = null, bool rightAlign = false)
@@ -111,7 +125,7 @@
 
         public SizeF drawWrapped(float tx, string? txt, Color? col, Font? font = null, bool rightAlign = false)
         {
-            return drawWrapped(tx, this.ctrl.Width, txt, col, font, rightAlign);
+            return drawWrapped(tx, this.containerWidth, txt, col, font, rightAlign);
         }
 
         public SizeF drawWrapped(float tx, int w, string? txt, Color? col, Font? font = null, bool rightAlign = false)
@@ -186,9 +200,19 @@
 
         public bool resizeNeeded
         {
-            get => this.ctrl.Width != this.frameSize.Width || this.ctrl.Height != this.frameSize.Height;
+            get => this.containerWidth != this.frameSize.Width || this.containerHeight != this.frameSize.Height;
         }
 
+        /// <summary> Returns frameSize after increasing it by the given deltas </summary>
+        public SizeF pad(float dx = 0, float dy = 0)
+        {
+            this.frameSize.Width += dx;
+            this.frameSize.Height += dy;
+
+            return this.frameSize;
+        }
+
+        /* Still needed? Maybe ...
         public bool resizeFrame(float dx = 0, float dy = 0, bool force = false)
         {
             this.frameSize.Width += dx;
@@ -196,15 +220,23 @@
 
             if (this.resizeNeeded || force) // ?? && !forceRepaint)
             {
-                this.ctrl.Size = new Size(
-                    (int)Math.Ceiling(this.frameSize.Width),
-                    (int)Math.Ceiling(this.frameSize.Height)
-                );
-                return true;
+                if (this.ctrl != null)
+                {
+                    this.ctrl.Size = new Size(
+                        (int)Math.Ceiling(this.frameSize.Width),
+                        (int)Math.Ceiling(this.frameSize.Height)
+                    );
+                    return true;
+                }
+                else
+                {
+                    Debugger.Break();
+                }
             }
 
             return false;
         }
+        */
 
         #endregion
     }

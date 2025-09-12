@@ -80,7 +80,7 @@ namespace SrvSurvey
             { KeyAction.copyNextBoxel, "CTRL C" },
             { KeyAction.showFssInfo, "ALT F" },
             { KeyAction.showBodyInfo, "ALT B" },
-            { KeyAction.showStationInfo, "ALT P" },
+            { KeyAction.showStationInfo, "ALT I" },
             { KeyAction.showColonyShopping, "ALT S" },
             { KeyAction.refreshColonyData, "ALT CTRL S" },
             { KeyAction.collapseColonyData, "ALT SHIFT S" },
@@ -329,24 +329,24 @@ namespace SrvSurvey
         {
             if (game == null) return true;
 
-            var stationInfo = Program.getPlotter<PlotStationInfo>();
+            var stationInfo = PlotBase2.getPlotter<PlotStationInfo>();
             if (stationInfo == null)
             {
                 // force show if no plotter
                 PlotStationInfo.forceShow = true;
-                Program.showPlotter<PlotStationInfo>();
+                PlotBase2.add(game, PlotStationInfo.plotDef);
             }
             else if (PlotStationInfo.forceShow)
             {
                 // unforce (hide)
                 PlotStationInfo.forceShow = false;
-                Program.closePlotter<PlotStationInfo>();
+                PlotBase2.remove(PlotStationInfo.plotDef);
             }
             else
             {
                 // the plotter exists and was not forced ... toggle forceHide on it
-                stationInfo.forceHide = !stationInfo.forceHide;
-                if (!stationInfo.forceHide) PlotStationInfo.forceShow = false;
+                stationInfo.hidden = !stationInfo.hidden;
+                if (!stationInfo.hidden) PlotStationInfo.forceShow = false;
             }
 
             return true;
