@@ -32,7 +32,7 @@ namespace SrvSurvey.plotters
         public Size defaultSize;
 
         /// <summary> Factors that govern if this plotter is allowed </summary>
-        public HashSet<string> factors;
+        public HashSet<string>? factors;
         /// <summary> Optional factors that govern if this plotter would be re-rendered - for plotters who do not listen to status changes directly </summary>
         public HashSet<string>? renderFactors;
 
@@ -96,10 +96,7 @@ namespace SrvSurvey.plotters
             }
         }
 
-        public virtual void close()
-        {
-            // override as necessary
-        }
+        public virtual void close() { /* override as necessary */ }
 
         #region rendering
 
@@ -169,7 +166,11 @@ namespace SrvSurvey.plotters
                     this.stale = false;
                     this.setSize((int)sz.Width, (int)sz.Height);
                 }
-                if (renderCount > 6) Debugger.Break();
+                if (renderCount > 4)
+                {
+                    Game.log($"Render: {name} #{renderCount} => {this.width}, {this.height}, stale: {stale}");
+                    Debugger.Break();
+                }
             } while (stale && renderCount < 10);
 
             //Game.log($"Render: {this.name}, renderCount: {renderCount}");
@@ -237,6 +238,12 @@ namespace SrvSurvey.plotters
             return defs.GetValueOrDefault(name)?.instance as T;
         }
 
+        public static bool isPlotter<T>() where T : PlotBase2
+        {
+            var name = typeof(T).Name;
+            return defs.GetValueOrDefault(name)?.instance != null;
+        }
+
         public static void remove(PlotDef def)
         {
             if (def.instance != null)
@@ -262,6 +269,28 @@ namespace SrvSurvey.plotters
             def?.instance?.invalidate();
         }
 
+        /* TODO: remove next commit
+        public static bool showHidePlotter(Game game, PlotDef def, bool? shouldShow = null)
+        {
+            if (!shouldShow.HasValue)
+                shouldShow = def.allowed(game);
+            //Game.log($"relevant? {def.name} => {relevant} / {def.instance != null} / shouldShow: {shouldShow}");
+
+            // only attempt to create or destroy if something relevant changed
+            if (shouldShow.Value && def.instance == null)
+            {
+                add(game, def);
+                return true;
+            }
+            else if (!shouldShow.Value && def.instance != null)
+            {
+                remove(def);
+                return true;
+            }
+
+            return false;
+        }*/
+
         public static void renderAll(Game game, bool force = false)
         {
             if (game.isShutdown || game.status == null) return;
@@ -271,7 +300,7 @@ namespace SrvSurvey.plotters
             foreach (var def in defs.Values)
             {
                 // TODO: remove?
-                var relevant = def.factors.Any(x => game.status.changed.Contains(x));
+                var relevant = def.factors?.Any(x => game.status.changed.Contains(x)) == true;
 
                 var shouldShow = def.allowed(game);
                 //Game.log($"relevant? {def.name} => {relevant} / {def.instance != null} / shouldShow: {shouldShow}");

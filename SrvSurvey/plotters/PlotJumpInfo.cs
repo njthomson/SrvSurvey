@@ -7,24 +7,34 @@ using Res = Loc.PlotJumpInfo;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(540, 100)]
-    internal class PlotJumpInfo : PlotBase, PlotterForm
+    internal class PlotJumpInfo : PlotBase2
     {
-        public static bool allowPlotter
+        #region def + statics
+
+        public static PlotDef plotDef = new PlotDef()
         {
-            get => Game.activeGame?.status != null
-                && Game.settings.autoShowPlotJumpInfo
+            name = nameof(PlotJumpInfo),
+            allowed = allowed,
+            ctor = (game, def) => new PlotJumpInfo(game, def),
+            defaultSize = new Size(600, 100),
+        };
+
+        public static bool allowed(Game game)
+        {
+            return Game.settings.autoShowPlotJumpInfo
                 // NOT suppressed by buildProjectsSuppressOtherOverlays
                 && (
                     // when FSD is charging for a jump, or ...
-                    (Game.activeGame.status.FsdChargingJump && Game.activeGame.isMode(GameMode.Flying, GameMode.SuperCruising))
+                    (game.status.FsdChargingJump && game.isMode(GameMode.Flying, GameMode.SuperCruising))
                     // whilst in witch space, jumping to next system
-                    || Game.activeGame.mode == GameMode.FSDJumping || Game.activeGame.fsdJumping
+                    || game.fsdJumping
                     // or a keystroke forced it
-                    || (PlotJumpInfo.forceShow && Game.activeGame.mode != GameMode.FSS)
-                    || (Game.settings.showPlotJumpInfoIfNextHop && Game.activeGame.destinationNextRouteHop && Game.activeGame.isMode(GameMode.SuperCruising))
+                    || (PlotJumpInfo.forceShow && game.mode != GameMode.FSS)
+                    || (Game.settings.showPlotJumpInfoIfNextHop && game.destinationNextRouteHop && game.isMode(GameMode.SuperCruising))
                 );
         }
+
+        #endregion
 
         public static bool forceShow = false;
 
@@ -34,21 +44,9 @@ namespace SrvSurvey.plotters
         private List<bool> hopScoops = new List<bool>();
         private float totalDistance;
 
-        private PlotJumpInfo() : base()
+        private PlotJumpInfo(Game game, PlotDef def) : base(game, def)
         {
-            this.Font = GameColors.fontSmall;
-        }
-
-        public override bool allow { get => PlotJumpInfo.allowPlotter; }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            // Size set during paint
-
-            base.OnLoad(e);
-
-            this.initializeOnLoad();
-            this.reposition(Elite.getWindowRect(true));
+            this.font = GameColors.fontSmall;
 
             // determine next system
             this.initFromRoute();
@@ -58,12 +56,16 @@ namespace SrvSurvey.plotters
             Program.closePlotter<PlotGuardianStatus>();
         }
 
-        protected override void OnFormClosed(FormClosedEventArgs e)
+        protected override void onStatusChange(Status status)
         {
-            base.OnFormClosed(e);
+            if (status.changed.Contains(StatusFlags.FsdCharging.ToString()))
+                this.invalidate();
+        }
 
+        public override void close()
+        {
             // we may have closed plotters on opening, force a mode change event to bring them back
-            game.fireUpdate(true);
+            //game.fireUpdate(true); // TODO: revisit !!!
         }
 
         private void initFromRoute()
@@ -89,7 +91,7 @@ namespace SrvSurvey.plotters
                 }
 
                 //this.netData = netData2;
-                this.Invalidate();
+                this.invalidate();
             };
 
             // proceed with either FSDTarget or status.Destination, or exit early if none
@@ -104,7 +106,7 @@ namespace SrvSurvey.plotters
             if (this.netData == null)
             {
                 Game.log($"Why no next name of address?");
-                this.setOpacity(0);
+                this.hide();
                 Debugger.Break();
                 return;
             }
@@ -215,52 +217,52 @@ namespace SrvSurvey.plotters
                 initFromRoute();
         }
 
-        protected override void onPaintPlotter(PaintEventArgs e)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
             if (this.netData == null)
             {
                 // avoid showing an empty plotter
-                this.setOpacity(0);
-                return;
+                this.hide();
+                return frame.Size;
             }
 
             // 1st line the name of the system we are jumping to
-            dty += two;
-            drawTextAt2(eight, Res.NextJump);
-            dty -= two;
+            tt.dty += N.two;
+            tt.draw(N.eight, Res.NextJump);
+            tt.dty -= N.two;
 
-            drawTextAt2(" " + this.netData.systemName, GameColors.fontMiddleBold);
+            tt.draw(" " + this.netData.systemName, GameColors.fontMiddleBold);
             if (netData.starClass != null)
-                drawTextAt2(this.Width - eight, Res.StarClass.format(netData.starClass), netData.starClass == "N" ? GameColors.Cyan : null, null, true);
-            newLine(+ten, true);
+                tt.draw(this.width - N.eight, Res.StarClass.format(netData.starClass), netData.starClass == "N" ? GameColors.Cyan : null, null, true);
+            tt.newLine(+N.ten, true);
 
-            this.drawJumpLine();
+            this.drawJumpLine(g, tt);
 
             // 2nd line: discovered vs unvisited + discovered and update dates
-            dtx = eight;
+            tt.dtx = N.eight;
             if (netData.totalBodyCount == 0)
-                drawTextAt2("▶️ " + netData.discoveryStatus, GameColors.Cyan);
+                tt.draw("▶️ " + netData.discoveryStatus, GameColors.Cyan);
             else if (netData.discoveredDate.HasValue)
-                drawTextAt2("▶️ " + Res.DiscoveredBy.format(netData.discoveredBy, netData.discoveredDate.Value.ToString("d")));
+                tt.draw("▶️ " + Res.DiscoveredBy.format(netData.discoveredBy, netData.discoveredDate.Value.ToString("d")));
 
             var lastUpdated = netData.lastUpdated;// ?? netData.spanshSystem?.updated_at.GetValueOrDefault()?.ToLocalTime();
             if (lastUpdated != null && (lastUpdated > netData.discoveredDate || netData.discoveredDate == null))
             {
-                if (dtx > eight) dtx += eight;
-                drawTextAt2("▶️ " + Res.LastUpdated.format(lastUpdated.Value.ToString("d")));
-                //drawTextAt2(eight, lineTwo, netData.discovered == false ? GameColors.Cyan : null);
-                //drawTextAt2(Game.settings.useLastUpdatedFromSpanshNotEDSM ? "(Spansh)" : "(EDSM)", GameColors.OrangeDim);
+                if (tt.dtx > N.eight) tt.dtx += N.eight;
+                tt.draw("▶️ " + Res.LastUpdated.format(lastUpdated.Value.ToString("d")));
+                //tt.draw(eight, lineTwo, netData.discovered == false ? GameColors.Cyan : null);
+                //tt.draw(Game.settings.useLastUpdatedFromSpanshNotEDSM ? "(Spansh)" : "(EDSM)", GameColors.OrangeDim);
             }
-            newLine(+two, true);
+            tt.newLine(+N.two, true);
 
             // traffic (if known)
             var traffic = netData.edsmTraffic?.traffic;
             if (traffic != null && traffic.total > 0)
             {
                 var lineThree = $"▶️ " + Res.TrafficInfo.format(traffic.day.ToString("n0"), traffic.week.ToString("n0"), traffic.total.ToString("n0"));
-                drawTextAt2(eight, lineThree);
-                drawTextAt2(" (EDSM)", GameColors.OrangeDim);
-                newLine(+two, true);
+                tt.draw(N.eight, lineThree);
+                tt.draw(" (EDSM)", GameColors.OrangeDim);
+                tt.newLine(+N.two, true);
             }
 
             // 3rd line: count of ports, genus, etc
@@ -270,8 +272,8 @@ namespace SrvSurvey.plotters
             if (POIs.Any())
             {
                 var lineThree = "▶️ " + string.Join(", ", POIs);
-                drawTextAt2(eight, lineThree);
-                newLine(+two, true);
+                tt.draw(N.eight, lineThree);
+                tt.newLine(+N.two, true);
             }
 
             // 4th line: anything special
@@ -279,34 +281,34 @@ namespace SrvSurvey.plotters
             {
                 foreach (var pair in netData.special)
                 {
-                    drawTextAt2(eight, $"▶️ {pair.Key}: ", GameColors.Cyan);
-                    drawTextAt2(string.Join(Res.SpecialJoiner + " ", pair.Value), GameColors.Cyan);
-                    newLine(+two, true);
+                    tt.draw(N.eight, $"▶️ {pair.Key}: ", GameColors.Cyan);
+                    tt.draw(string.Join(Res.SpecialJoiner + " ", pair.Value), GameColors.Cyan);
+                    tt.newLine(+N.two, true);
                 }
             }
 
             // resize height to fit, allow width to be bigger but not smaller
-            this.formSize.Width += six;
-            if (this.Width > this.formSize.Width) this.formSize.Width = this.Width;
-            this.formAdjustSize(0, +ten);
+            var sz = tt.pad(+N.six, +N.ten);
+            if (this.width > sz.Width) sz.Width = this.width;
+            return sz;
         }
 
-        private void drawJumpLine()
+        private void drawJumpLine(Graphics g, TextCursor tt)
         {
             if (hopDistances.Count == 0) return;
-            dty += six;
+            tt.dty += N.six;
             // draw text for `#1 of 2` on left, and total distance travelled on the right
-            var szLeft = drawTextAt(eight, Res.JumpCounts.format(nextHopIdx + 1, hopDistances.Count));
-            var szRight = drawTextAt(this.Width - eight, Res.JumpDistance.format(totalDistance.ToString("N1")), null, null, true);
+            var szLeft = tt.draw(N.eight, Res.JumpCounts.format(nextHopIdx + 1, hopDistances.Count));
+            var szRight = tt.draw(this.width - N.eight, Res.JumpDistance.format(totalDistance.ToString("N1")), null, null, true);
 
             // calc left edge of line + whole line width to fix between rendered text
-            var left = szLeft.Width + oneFour;
-            var lineWidth = this.Width - left - szRight.Width - oneSix;
+            var left = szLeft.Width + N.oneFour;
+            var lineWidth = this.width - left - szRight.Width - N.oneSix;
             var pixelsPerLY = lineWidth / this.totalDistance;
 
             // prep pixel coords for parts of the line
             var x = left + lineWidth;
-            var y = dty + (szRight.Height / 2) - two;
+            var y = tt.dty + (szRight.Height / 2) - N.two;
 
             // draw the whole line if we are travelling a long way (as drawing it in parts looks poor)
             var limitExcessDistance = 1000;
@@ -314,7 +316,7 @@ namespace SrvSurvey.plotters
                 g.DrawLine(GameColors.Route.penBehind, x, y, x - lineWidth, y);
 
             // prep rectangles for drawing dots and scoop arcs above them
-            var dotRadius = five;
+            var dotRadius = N.five;
             var r = new RectangleF(x - dotRadius, y - dotRadius, dotRadius * 2, dotRadius * 2);
             var r0 = new RectangleF(r.Location, r.Size);
             r0.Inflate(-0.5f, -0.5f);
@@ -331,9 +333,9 @@ namespace SrvSurvey.plotters
                 {
                     // render scoopable stars a ticker and taller
                     if (hopScoops[n])
-                        g.DrawLine(n < nextHopIdx ? GameColors.penGameOrangeDim1 : GameColors.penGameOrange1, x - 1, y - six, x - 1, y + six);
+                        g.DrawLine(n < nextHopIdx ? GameColors.penGameOrangeDim1 : GameColors.penGameOrange1, x - 1, y - N.six, x - 1, y + N.six);
                     else
-                        g.DrawLine(n < nextHopIdx ? GameColors.penGameOrangeDim1 : GameColors.penGameOrange1, x - 1, y - four, x - 1, y + four);
+                        g.DrawLine(n < nextHopIdx ? GameColors.penGameOrangeDim1 : GameColors.penGameOrange1, x - 1, y - N.four, x - 1, y + N.four);
                 }
 
                 var d = hopDistances[n];
@@ -341,15 +343,15 @@ namespace SrvSurvey.plotters
 
                 // draw line part from right to left, highlighting if Neutron and/or if next, ahead or behind
                 if (n == nextHopIdx)
-                    g.DrawLine(GameColors.Route.penNext4, x - one, y, x - w, y);
+                    g.DrawLine(GameColors.Route.penNext4, x - N.one, y, x - w, y);
                 else if (n < nextHopIdx && d > game.currentShip.maxJump)
                     g.DrawLine(GameColors.Route.penNeutronBehind, x, y, x - w, y);
                 else if (n < nextHopIdx)
                     g.DrawLine(GameColors.Route.penBehind, x, y, x - w, y);
                 else if (d > game.currentShip.maxJump && this.totalDistance <= limitExcessDistance)
-                    g.DrawLine(GameColors.Route.penNeutronAhead, x - two, y, x - w, y);
+                    g.DrawLine(GameColors.Route.penNeutronAhead, x - N.two, y, x - w, y);
                 else if (d > game.currentShip.maxJump && this.totalDistance > limitExcessDistance)
-                    g.DrawLine(GameColors.Route.penNeutronBehind, x - two, y, x - w, y);
+                    g.DrawLine(GameColors.Route.penNeutronBehind, x - N.two, y, x - w, y);
                 else if (this.totalDistance < limitExcessDistance)
                     g.DrawLine(GameColors.Route.penAhead, x, y, x - w, y);
 
@@ -384,13 +386,13 @@ namespace SrvSurvey.plotters
                 {
                     if (pixelsPerLY < limitPixelsPerLY)
                     {
-                        g.DrawLine(GameColors.Route.penNext2, x - two, y, x - oneTwo, y - ten);
-                        g.DrawLine(GameColors.Route.penNext2, x - two, y, x - oneTwo, y + ten);
+                        g.DrawLine(GameColors.Route.penNext2, x - N.two, y, x - N.oneTwo, y - N.ten);
+                        g.DrawLine(GameColors.Route.penNext2, x - N.two, y, x - N.oneTwo, y + N.ten);
                     }
                     else
                     {
-                        g.DrawLine(GameColors.Route.penNext2, x - dotRadius, y, x - ten - dotRadius, y - ten);
-                        g.DrawLine(GameColors.Route.penNext2, x - dotRadius, y, x - ten - dotRadius, y + ten);
+                        g.DrawLine(GameColors.Route.penNext2, x - dotRadius, y, x - N.ten - dotRadius, y - N.ten);
+                        g.DrawLine(GameColors.Route.penNext2, x - dotRadius, y, x - N.ten - dotRadius, y + N.ten);
                     }
                 }
                 else if (n + 1 == nextHopIdx)
@@ -406,7 +408,7 @@ namespace SrvSurvey.plotters
             // draw the left most the starting dot/tick
             if (this.totalDistance > limitExcessDistance)
             {
-                g.DrawLine(GameColors.penGameOrange1, x - 1, y - four, x - 1, y + four);
+                g.DrawLine(GameColors.penGameOrange1, x - 1, y - N.four, x - 1, y + N.four);
             }
             else if (nextHopIdx == 0)
             {
@@ -427,7 +429,7 @@ namespace SrvSurvey.plotters
             // finally redraw dot for next jump, as it got clipped by prior rendering
             if (pixelsPerLY < limitPixelsPerLY)
             {
-                g.DrawLine(GameColors.Route.penNext2, xNow, y - six, xNow, y + six);
+                g.DrawLine(GameColors.Route.penNext2, xNow, y - N.six, xNow, y + N.six);
             }
             else if (nextHopIdx > 0)
             {
@@ -440,7 +442,7 @@ namespace SrvSurvey.plotters
 
             }
 
-            newLine(+four);
+            tt.newLine(+N.six);
         }
     }
 }

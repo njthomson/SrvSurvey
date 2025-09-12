@@ -399,15 +399,6 @@ namespace SrvSurvey.game
                 this.lastDestination = destinationHash;
             }
 
-            // Make JumpInfo appear or close as needed.
-            if (isMode(GameMode.Flying, GameMode.SuperCruising))
-            {
-                if (status.FsdChargingJump && !Program.isPlotter<PlotJumpInfo>() && PlotJumpInfo.allowPlotter)
-                    Program.showPlotter<PlotJumpInfo>();
-                else if (!status.FsdChargingJump && Program.isPlotter<PlotJumpInfo>() && !PlotJumpInfo.allowPlotter)
-                    Program.closePlotter<PlotJumpInfo>();
-            }
-
             this.checkModeChange();
 
             // tell all new plotters
@@ -1271,16 +1262,16 @@ namespace SrvSurvey.game
             if (cmdr.route?.active == true)
                 cmdr.route.setNextHop(StarRef.from(entry));
 
-            // If PlotJumpInfo is open, close it but re-open again if forced (making it update to the next jump)
-            if (Program.isPlotter<PlotJumpInfo>())
+            // If PlotJumpInfo is open, close it after a delay, and re-open again if forced (making it update to the next jump)
+            if (PlotBase2.isPlotter<PlotJumpInfo>())
             {
                 var recreate = PlotJumpInfo.forceShow;
                 Util.deferAfter(1000, () =>
                 {
-                    Program.closePlotter<PlotJumpInfo>();
+                    PlotBase2.remove(PlotJumpInfo.plotDef);
 
                     if (recreate)
-                        Program.defer(() => Program.showPlotter<PlotJumpInfo>());
+                        Program.defer(() => PlotBase2.add(this, PlotJumpInfo.plotDef));
                 });
             }
         }

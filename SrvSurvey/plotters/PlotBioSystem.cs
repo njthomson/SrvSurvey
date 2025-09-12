@@ -590,7 +590,7 @@ namespace SrvSurvey.plotters
             if (fssNeeded)
             {
                 dty += eight;
-                this.drawTextAt(six, "► " + Res.FssRequired, GameColors.brushCyan, GameColors.fontSmall);
+                this.drawTextAt(six, "► " + (game.systemData.honked ? Res.DssRequired : Res.FssRequired), GameColors.brushCyan, GameColors.fontSmall);
                 newLine(true);
             }
 

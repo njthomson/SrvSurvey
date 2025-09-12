@@ -183,24 +183,24 @@ namespace SrvSurvey
             // we need a route for this to work
             if (game.navRoute.Route.Count > 0)
             {
-                var jumpInfo = Program.getPlotter<PlotJumpInfo>();
+                var jumpInfo = PlotBase2.getPlotter<PlotJumpInfo>();
                 if (jumpInfo == null)
                 {
                     // force show if no plotter
                     PlotJumpInfo.forceShow = true;
-                    Program.showPlotter<PlotJumpInfo>();
+                    PlotBase2.add(game, PlotJumpInfo.plotDef);
                 }
                 else if (PlotJumpInfo.forceShow)
                 {
                     // unforce (hide)
                     PlotJumpInfo.forceShow = false;
-                    Program.closePlotter<PlotJumpInfo>();
+                    PlotBase2.remove(PlotJumpInfo.plotDef);
                 }
                 else
                 {
                     // the plotter exists and was not forced ... toggle forceHide on it
-                    jumpInfo.forceHide = !jumpInfo.forceHide;
-                    if (!jumpInfo.forceHide) PlotJumpInfo.forceShow = false;
+                    jumpInfo.hidden = !jumpInfo.hidden;
+                    if (!jumpInfo.hidden) PlotJumpInfo.forceShow = false;
                 }
             }
             else

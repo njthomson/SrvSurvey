@@ -328,10 +328,7 @@ namespace SrvSurvey
 
             var names = Program.activePlotters.Keys.ToArray();
             foreach (string name in names)
-            {
-                if (name == nameof(PlotJumpInfo) && exceptJumpInfo) continue;
                 Program.closePlotter(name);
-            }
         }
 
         public static void repositionPlotters()

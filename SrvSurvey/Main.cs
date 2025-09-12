@@ -559,11 +559,6 @@ namespace SrvSurvey
             if (gameIsActive && PlotHumanSite.allowPlotter)
                 Program.showPlotter<PlotHumanSite>();
 
-            if (gameIsActive && PlotJumpInfo.allowPlotter)
-                Program.showPlotter<PlotJumpInfo>();
-            else
-                Program.closePlotter<PlotJumpInfo>();
-
             if (gameIsActive && PlotMassacre.allowPlotter)
                 Program.showPlotter<PlotMassacre>();
             else
