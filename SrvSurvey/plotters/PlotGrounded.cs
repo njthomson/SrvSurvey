@@ -354,7 +354,7 @@ namespace SrvSurvey.plotters
 
         private void drawPriorScans(Graphics g)
         {
-            var form = Program.getPlotter<PlotPriorScans>();
+            var form = PlotBase2.getPlotter<PlotPriorScans>();
             if (game.systemBody == null || form == null) return;
 
             foreach (var signal in form.signals)

@@ -48,7 +48,6 @@ namespace SrvSurvey.widgets
             //x += two + (r * 3);
             //g.DrawString(Util.metersToString(dist), GameColors.fontSmall, brush, x, y);
         }
-
     }
 
     /// <summary>
@@ -144,6 +143,7 @@ namespace SrvSurvey.widgets
         public static float sixFour = s(64f);
         public static float sixFive = s(65f);
         public static float sevenTwo = s(72f);
+        public static float sevenFive = s(75f);
         public static float eighty = s(80f);
         public static float eightSix = s(86f);
         public static float eightEight = s(88f);

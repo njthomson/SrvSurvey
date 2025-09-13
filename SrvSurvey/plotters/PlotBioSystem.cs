@@ -6,28 +6,39 @@ using Res = Loc.PlotBioSystem;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(200, 200)]
-    internal class PlotBioSystem : PlotBase, PlotterForm
+    internal class PlotBioSystem : PlotBase2
     {
-        public static bool allowPlotter
+        #region def + statics
+
+        public static PlotDef plotDef = new PlotDef()
         {
-            get => Game.settings.autoShowPlotBioSystem
-                && Game.activeGame?.status != null
-                && Game.activeGame.systemData != null
+            name = nameof(PlotBioSystem),
+            allowed = allowed,
+            ctor = (game, def) => new PlotBioSystem(game, def),
+            defaultSize = new Size(200, 200),
+        };
+
+        public static bool allowed(Game game)
+        {
+            return Game.settings.autoShowPlotBioSystem
+                && game.status != null
+                && game.systemData != null
                 && !Game.settings.buildProjectsSuppressOtherOverlays
-                && Game.activeGame.systemData.bioSignalsTotal > 0
-                && !Game.activeGame.status.InTaxi
-                && !Game.activeGame.hidePlottersFromCombatSuits
+                && game.systemData.bioSignalsTotal > 0
+                && !game.status.InTaxi
+                && !game.hidePlottersFromCombatSuits
                 && (!Game.settings.enableGuardianSites || !PlotGuardians.allowPlotter)
                 && (
-                    Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
+                    game.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
                     || (
                         PlotBioSystem.targetBody?.bioSignalCount > 0
-                        && Game.activeGame.isMode(GameMode.GlideMode, GameMode.Flying, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel, GameMode.InSrv, GameMode.RolePanel, GameMode.Codex)
-                                && (Game.activeGame.systemStation == null || !Game.settings.autoShowHumanSitesTest)
+                        && game.isMode(GameMode.GlideMode, GameMode.Flying, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel, GameMode.InSrv, GameMode.RolePanel, GameMode.Codex)
+                                && (game.systemStation == null || !Game.settings.autoShowHumanSitesTest)
                     )
                 );
         }
+
+        #endregion
 
         private string? lastDestination;
         private SystemBody? durationBody;
@@ -35,9 +46,9 @@ namespace SrvSurvey.plotters
         private float durationCount;
         private float durationTotal;
 
-        private PlotBioSystem() : base()
+        private PlotBioSystem(Game game, PlotDef def) : base(game, def)
         {
-            this.Font = GameColors.fontSmall;
+            this.font = GameColors.fontSmall;
             this.lastDestination = game.status.Destination?.Name;
 
             durationTimer = new System.Windows.Forms.Timer()
@@ -48,25 +59,9 @@ namespace SrvSurvey.plotters
             durationTimer.Tick += DurationTimer_Tick;
         }
 
-        public override bool allow { get => PlotBioSystem.allowPlotter; }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            // Size set during paint
-
-            base.OnLoad(e);
-
-            this.initializeOnLoad();
-            this.reposition(Elite.getWindowRect(true));
-        }
-
-        public override void reposition(Rectangle gameRect)
-        {
-            base.reposition(gameRect);
-
-            // It's easy for this to overlap with PlotBioSystem ... so shift them up if that is the case
-            Program.getPlotter<PlotPriorScans>()?.avoidPlotBioSystem(this);
-        }
+        // It's easy for this to overlap with PlotBioSystem ... so shift them up if that is the case
+        // TODO: REVISIT !!!
+        // Program.getPlotter<PlotPriorScans>()?.avoidPlotBioSystem(this);
 
         public static SystemBody? targetBody
         {
@@ -96,15 +91,12 @@ namespace SrvSurvey.plotters
             }
         }
 
-        protected override void Status_StatusChanged(bool blink)
+        protected override void onStatusChange(Status status)
         {
-            if (this.IsDisposed) return;
-            base.Status_StatusChanged(blink);
-
             if (!Game.settings.drawBodyBiosOnlyWhenNear && this.durationTimer.Enabled && game.mode != GameMode.ExternalPanel)
             {
                 this.stopTimer();
-                this.Invalidate();
+                this.invalidate();
             }
 
             // if the targetBody has recent changed ...
@@ -132,7 +124,7 @@ namespace SrvSurvey.plotters
                     this.durationTimer.Start();
                     Game.log($"Start duration timer, for: {this.durationBody?.name}");
                 }
-                this.Invalidate();
+                this.invalidate();
             }
         }
 
@@ -151,15 +143,15 @@ namespace SrvSurvey.plotters
             if (this.durationCount <= 0)
                 this.stopTimer();
 
-            this.Invalidate();
+            this.invalidate();
         }
 
-        protected override void onPaintPlotter(PaintEventArgs e)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
-            if (this.IsDisposed || game.systemData == null || game.status == null || !PlotBioSystem.allowPlotter)
+            if (game.systemData == null || game.status == null)
             {
-                this.setOpacity(0);
-                return;
+                this.hide();
+                return frame.Size;
             }
 
             var body = PlotBioSystem.targetBody;
@@ -178,31 +170,29 @@ namespace SrvSurvey.plotters
                 body = this.durationBody;
 
             if (body != null)
-                this.drawBodyBios2(body);
+                return this.drawBodyBios2(g, tt, body);
             else
-                this.drawSystemBios2();
+                return this.drawSystemBios2(g, tt);
         }
 
-        private void drawBodyBios2(SystemBody body)
+        private SizeF drawBodyBios2(Graphics g, TextCursor tt, SystemBody body)
         {
-            if (game == null) return;
-
-            drawTextAt(eight, Res.BodyBio_Header.format(body.shortName, body.bioSignalCount), GameColors.brushGameOrange);
-            newLine(+eight, true);
+            tt.draw(N.eight, Res.BodyBio_Header.format(body.shortName, body.bioSignalCount), C.orange);
+            tt.newLine(+N.eight, true);
 
             if (this.durationTimer.Enabled && this.durationCount > 0)
-                this.drawTimerBar();
+                this.drawTimerBar(g);
 
             if (body.organisms == null)
             {
                 if (!body.dssComplete)
                 {
-                    dty -= four;
-                    this.drawTextAt(ten, "► " + Res.DssRequired, GameColors.brushCyan);
-                    newLine(+four, true);
+                    tt.dty -= N.four;
+                    tt.draw(N.ten, "► " + Res.DssRequired, C.cyan);
+                    tt.newLine(+N.four, true);
                 }
 
-                this.drawBodyPredictions(body);
+                this.drawBodyPredictions(g, tt, body);
             }
             else
             {
@@ -211,7 +201,7 @@ namespace SrvSurvey.plotters
                 foreach (var organism in body.organisms)
                 {
                     var highlight = !organism.analyzed && ((game.cmdr.scanOne?.genus == organism.genus && game.cmdr.scanOne.body == body.name) || game.cmdr.scanOne?.genus == null);
-                    Brush brush = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+                    var col = highlight ? C.cyan: C.orange;
 
                     var predictions = body.predictions.Values.Where(p => p.species.genus.name == organism.genus).ToList();
                     var potentialFirstDiscovery = predictions.Any(p => !game.cmdrCodex.isDiscovered(p.entryId));
@@ -221,12 +211,12 @@ namespace SrvSurvey.plotters
                     if (organism.isCmdrFirst) discoveryPrefix = "⚑";
                     else if (organism.isNewEntry) discoveryPrefix = "⚐";
 
-                    dty = (int)dty;
+                    tt.dty = (int)tt.dty;
 
                     if (first)
                         first = false;
                     else
-                        g.DrawLine(GameColors.penGameOrangeDim1, eight, dty - five, this.ClientSize.Width - eight, dty - five);
+                        g.DrawLine(GameColors.penGameOrangeDim1, N.eight, tt.dty - N.five, this.width - N.eight, tt.dty - N.five);
 
                     // if we have predictions - use that renderer
                     if (organism.variant == null && predictions.Count > 0)
@@ -234,11 +224,11 @@ namespace SrvSurvey.plotters
                         //var genus = Game.codexRef.matchFromGenus(organism.genus)!;
                         var prediction = body.genusPredictions.Find(p => p.genus.name == organism.genus);
                         if (prediction == null) { Debugger.Break(); continue; }
-                        drawBodyPredictionsRow(prediction, highlight);
+                        drawBodyPredictionsRow(g, tt, prediction, highlight);
                         continue;
                     }
 
-                    var yy = dty;
+                    var yy = tt.dty;
 
                     // displayName is either genus, or species/variant without the genus prefix
                     var displayName = organism.genusLocalized ?? organism.bioMatch?.genus.locName!;
@@ -276,77 +266,77 @@ namespace SrvSurvey.plotters
                             if (Game.settings.highlightRegionalFirsts) volCol = VolColor.Gold;
                         }
                     }
-                    VolumeBar.render(g, oneTwo, yy + oneSix, volCol, minReward, maxReward, false);
+                    VolumeBar.render(g, N.oneTwo, yy + N.oneSix, volCol, minReward, maxReward, false);
 
                     // line 1
-                    if (volCol == VolColor.Gold) brush = GameColors.Bio.brushGold;
+                    if (volCol == VolColor.Gold) col = C.Bio.gold;
                     if (displayName?.Length > 0)
-                        this.drawTextAt(twoEight, displayName, brush);
+                        tt.draw(N.twoEight, displayName, col);
                     if (organism.analyzed)
                     {
                         // strike-through if already analyzed
-                        var y = dty + four;
-                        g.DrawLine(GameColors.penGameOrange1, twoEight, y, dtx, y);
-                        g.DrawLine(GameColors.penGameOrangeDim1, twoEight + 1, y + 1, dtx + 1, y + 1);
+                        var y = tt.dty + N.four;
+                        g.DrawLine(GameColors.penGameOrange1, N.twoEight, y, tt.dtx, y);
+                        g.DrawLine(GameColors.penGameOrangeDim1, N.twoEight + 1, y + 1, tt.dtx + 1, y + 1);
                         //g.DrawLine(GameColors.penGameOrange1, twoEight, y, this.ClientSize.Width - oneTwo, y);
                         //g.DrawLine(GameColors.penGameOrangeDim1, twoEight + 1, y + 1, this.ClientSize.Width - oneTwo + 1, y + 1);
                     }
-                    newLine(+one, true);
+                    tt.newLine(+N.one, true);
 
                     // 2nd line - right
-                    var sz = drawTextAt(
-                        this.ClientSize.Width - ten,
+                    var sz = tt.draw(
+                        this.width - N.ten,
                         Util.getMinMaxCredits(minReward, maxReward),
-                        highlight ? GameColors.brushCyan : GameColors.brushGameOrange,
+                        highlight ? C.cyan: C.orange,
                         null, true);
 
                     // 2nd line - left
-                    brush = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
-                    if (!highlight && shouldBeGold(discoveryPrefix)) brush = GameColors.Bio.brushGold;
+                    col = highlight ? C.cyan: C.orange;
+                    if (!highlight && shouldBeGold(discoveryPrefix)) col = C.Bio.gold;
 
-                    dtx = twoEight;
+                    tt.dtx = N.twoEight;
                     if (discoveryPrefix != null)
-                        drawTextAt(discoveryPrefix, shouldBeGold(discoveryPrefix) ? GameColors.Bio.brushGold : brush);
+                        tt.draw(discoveryPrefix, shouldBeGold(discoveryPrefix) ? C.Bio.gold : col);
 
                     var leftText = displayName != (organism.genusLocalized ?? organism.bioMatch?.genus.locName) || organism.entryId > 0
                         ? organism.genusLocalized
                         : "?";
-                    drawTextAt(leftText, brush);
-                    dtx += sz.Width + ten;
-                    newLine(+eight, true);
+                    tt.draw(leftText, col);
+                    tt.dtx += sz.Width + N.ten;
+                    tt.newLine(+N.eight, true);
 
                     if (organism.genus == game.cmdr.scanOne?.genus && game.cmdr.scanOne?.body == body.name)
                     {
                         // draw side-bars to highlight this is what we're currently scanning
-                        g.DrawLine(GameColors.penCyan4, four, yy - one, four, dty - eight);
-                        g.DrawLine(GameColors.penCyan4, Width - four, yy - one, Width - four, dty - eight);
+                        g.DrawLine(GameColors.penCyan4, N.four, yy - N.one, N.four, tt.dty - N.eight);
+                        g.DrawLine(GameColors.penCyan4, width - N.four, yy - N.one, width - N.four, tt.dty - N.eight);
                     }
 
                 }
             }
 
             // summary footer
-            this.dty += two;
+            tt.dty += N.two;
             var footerTxt = Res.RewardFooter.format(body.getMinMaxBioRewards(false));
-            drawTextAt(eight, footerTxt, GameColors.brushGameOrange);
-            newLine(true);
+            tt.draw(N.eight, footerTxt, C.orange);
+            tt.newLine(true);
 
             if (body.firstFootFall)
             {
-                this.dty += two;
-                drawTextAt(this.Width - eight, Res.FFBonus.format(body.getMinMaxBioRewards(true)), GameColors.brushCyan, null, true);
-                dtx = lastTextSize.Width;
-                newLine(true);
+                tt.dty += N.two;
+                tt.draw(this.width - N.eight, Res.FFBonus.format(body.getMinMaxBioRewards(true)), C.cyan, null, true);
+                tt.dtx = tt.lastTextSize.Width;
+                tt.newLine(true);
             }
 
             if (body.geoSignalCount > 0 && !Game.settings.hideGeoCountInBioSystem)
             {
-                dty += ten;
-                g.DrawLine(GameColors.penGameOrangeDim1, eight, dty - five, this.ClientSize.Width - eight, dty - five);
-                dty += two;
+                tt.dty += N.ten;
+                g.DrawLine(GameColors.penGameOrangeDim1, N.eight, tt.dty - N.five, this.width - N.eight, tt.dty - N.five);
+                tt.dty += N.two;
 
-                drawTextAt(eight, Res.GeoSignals.format(body.geoSignalCount), GameColors.brushGameOrange);
-                newLine(+four, true);
+                tt.draw(N.eight, Res.GeoSignals.format(body.geoSignalCount), C.orange);
+                tt.newLine(+N.four, true);
 
                 // geo signals?
                 if (body.geoSignals?.Count > 0)
@@ -354,28 +344,26 @@ namespace SrvSurvey.plotters
                     foreach (var geoName in body.geoSignalNames)
                     {
                         // TODO: show gold flags if this is a first discovery?
-                        this.drawTextAt(oneTwo, $"► {geoName}");
-                        newLine(+four, true);
+                        tt.draw(N.oneTwo, $"► {geoName}");
+                        tt.newLine(+N.four, true);
                     }
                 }
             }
 
             // resize window as necessary
-            formAdjustSize(+ten, +ten);
+            return tt.pad(+N.ten, +N.ten);
         }
 
-        private void drawTimerBar()
+        private void drawTimerBar(Graphics g)
         {
             var r = 1f / this.durationTotal * this.durationCount;
 
-            var x = two;
-            var y = this.Height - one;
-            var w = (this.Width - x - x);
+            var x = N.two;
+            var y = this.height - N.one;
+            var w = (this.width - x - x);
             // slide to the left
             g.DrawLine(GameColors.penGameOrangeDim2, x, y, x + w * r, y);
-            g.DrawLine(GameColors.penGameOrangeDim2, x, one, x + w * r, one);
-
-            this.formGrow(false, true); // TODO: still needed?
+            g.DrawLine(GameColors.penGameOrangeDim2, x, N.one, x + w * r, N.one);
         }
 
         private bool shouldBeGold(string? prefix)
@@ -384,7 +372,7 @@ namespace SrvSurvey.plotters
                 || (prefix == "⚐" && Game.settings.highlightRegionalFirsts);
         }
 
-        private void drawBodyPredictions(SystemBody body)
+        private void drawBodyPredictions(Graphics g, TextCursor tt, SystemBody body)
         {
             if (body.predictions == null || body.predictions.Count == 0) return;
 
@@ -394,9 +382,9 @@ namespace SrvSurvey.plotters
                 if (first)
                     first = false;
                 else
-                    g.DrawLine(GameColors.penGameOrangeDim1, eight, dty - six, this.ClientSize.Width - eight, dty - six);
+                    g.DrawLine(GameColors.penGameOrangeDim1, N.eight, tt.dty - N.six, this.width - N.eight, tt.dty - N.six);
 
-                drawBodyPredictionsRow(prediction, true);
+                drawBodyPredictionsRow(g, tt, prediction, true);
             }
         }
 
@@ -405,25 +393,25 @@ namespace SrvSurvey.plotters
             "Anemone", "Brain Tree", "Sinuous Tubers"
         };
 
-        private void drawBodyPredictionsRow(SystemGenusPrediction prediction, bool highlight)
+        private void drawBodyPredictionsRow(Graphics g, TextCursor tt, SystemGenusPrediction prediction, bool highlight)
         {
-            dtx = (float)Math.Round(dtx);
-            dty = (float)Math.Round(dty);
-            var yy = dty;
+            tt.dtx = (float)Math.Round(tt.dtx);
+            tt.dty = (float)Math.Round(tt.dty);
+            var yy = tt.dty;
             var genusName = prediction.genus.locName;
-            Brush b;
+            Color col;
             foreach (var species in prediction.species)
             {
-                b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+                col = highlight ? C.cyan : C.orange;
 
 
                 // draw an initial ? for predictions
-                dtx = twoEight;
-                drawTextAt("?", GameColors.Bio.brushPrediction);
+                tt.dtx = N.twoEight;
+                tt.draw("?", C.Bio.prediction);
 
                 var isLegacy = !species.Key.genus.odyssey;
                 if (!isLegacy)
-                    drawTextAt($"{species.Key.locName}:", b);
+                    tt.draw($"{species.Key.locName}:", col);
 
                 // TODO: handle legacy species better - put them on the same line as if they were variants
                 foreach (var variant in species.Value.OrderBy(v => v.variant.locName))
@@ -431,13 +419,13 @@ namespace SrvSurvey.plotters
                     //  🎂 🧁 🍥 ‡† ⁑ ⁂ ※ ⁜‼•🟎 🟂🟎🟒🟈⚑⚐⛿🏁🎌⛳🏴🏳🟎✩✭✪𓇽𓇼 🚕🛺🚐🚗🚜🚛🛬🚀🛩️☀️🌀☄️🔥⚡🌩️🌠☀️
                     // 💫 🧭🧭🌍🌐🌏🌎🗽♨️🌅
                     // 💎🪐🎁🍥🍪🧊⛩️🌋⛰️🗻❄️🎉🧨🎁🧿🎲🕹️📣🎨🧵🔇🔕🎚️🎛️📻📱📺💻🖥️💾📕📖📦📍📎✂️📌📐📈💼🔰🛡️🔨🗡️🔧🧪🚷🧴📵🧽➰🔻🔺🔔🔘🔳🔲🏁🚩🏴✔️✖️❌➕➖➗ℹ️📛⭕☑️📶🔅🔆⚠️⛔🚫🧻↘️⚰️🧯🧰📡🧬⚗️🔩⚙️🔓🗝️🗄️📩🧾📒📰🗞️🏷️📑🔖💡🔋🏮🕯🔌📞☎️💍👑🧶🎯🔮🧿🎈🏆🎖️🌌💫🚧💰
-                    b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+                    col = highlight ? C.cyan: C.orange;
                     if (variant.isRegionalNew)
-                        drawTextAt("☀", GameColors.Bio.brushWhite);
+                        tt.draw("☀", C.Bio.white);
                     else if (variant.isCmdrNew)
-                        drawTextAt("⚑", GameColors.Bio.brushGold);
+                        tt.draw("⚑", C.Bio.gold);
                     else if (variant.isCmdrRegionalNew)
-                        drawTextAt($"⚐", variant.isGold ? GameColors.Bio.brushGold : b);
+                        tt.draw($"⚐", variant.isGold ? C.Bio.gold : col);
 
                     var displayName = variant.variant.locColorName;
                     if (isLegacy)
@@ -454,47 +442,47 @@ namespace SrvSurvey.plotters
                         }
                     }
 
-                    if (variant.isRegionalNew) b = GameColors.Bio.brushWhite;
-                    else if (!highlight && variant.isGold) b = GameColors.Bio.brushGold;
-                    drawTextAt(displayName, b, variant.isRegionalNew ? GameColors.fontSmallBold : null);
+                    if (variant.isRegionalNew) col = C.Bio.white;
+                    else if (!highlight && variant.isGold) col = C.Bio.gold;
+                    tt.draw(displayName, col, variant.isRegionalNew ? GameColors.fontSmallBold : null);
                 }
 
                 // draw a trailing ? for predictions
-                drawTextAt("?", GameColors.Bio.brushPrediction);
-                newLine(+one, true);
+                tt.draw("?", C.Bio.prediction);
+                tt.newLine(+N.one, true);
             }
 
             var volCol = prediction.isGold ? VolColor.Gold : VolColor.Blue;
             if (prediction.hasRegionalNew) volCol = VolColor.White;
-            VolumeBar.render(g, oneTwo, yy + oneSix, volCol, prediction.min, prediction.max, true);
+            VolumeBar.render(g, N.oneTwo, yy + N.oneSix, volCol, prediction.min, prediction.max, true);
 
             // 2nd/last line Right - credit range
-            b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+            col = highlight ? C.cyan : C.orange;
             var txtRight = " " + Util.getMinMaxCredits(prediction.min, prediction.max);
-            var sz = drawTextAt(this.Width - eight, txtRight, b, null, true);
+            var sz = tt.draw(this.width - N.eight, txtRight, col, null, true);
 
             // 2nd/last line LEFT - genus name
-            dtx = twoEight;
+            tt.dtx = N.twoEight;
             if (prediction.hasRegionalNew)
-                drawTextAt("☀", GameColors.Bio.brushWhite);
+                tt.draw("☀", C.Bio.white);
             else if (prediction.hasCmdrNew)
-                drawTextAt("⚑", GameColors.Bio.brushGold);
+                tt.draw("⚑", C.Bio.gold);
             else if (prediction.hasCmdrRegionalNew)
-                drawTextAt("⚐", prediction.isGold ? GameColors.Bio.brushGold : b);
+                tt.draw("⚐", prediction.isGold ? C.Bio.gold : col);
 
-            if (prediction.hasRegionalNew) b = GameColors.Bio.brushWhite;
-            else if (!highlight && prediction.isGold) b = GameColors.Bio.brushGold;
-            drawTextAt($"{prediction.genus.locName}", b, prediction.hasRegionalNew ? GameColors.fontSmallBold : null);
-            dtx += sz.Width;
-            newLine(+ten, true);
+            if (prediction.hasRegionalNew) col = C.Bio.white;
+            else if (!highlight && prediction.isGold) col = C.Bio.gold;
+            tt.draw($"{prediction.genus.locName}", col, prediction.hasRegionalNew ? GameColors.fontSmallBold : null);
+            tt.dtx += sz.Width;
+            tt.newLine(+N.ten, true);
         }
 
-        private void drawSystemBios2()
+        private SizeF drawSystemBios2(Graphics g, TextCursor tt)
         {
-            if (game.systemData == null) return;
+            if (game.systemData == null) return frame.Size;
 
-            this.drawTextAt(Res.SysBio_Header.format(game.systemData.bioSignalsTotal), GameColors.brushGameOrange, GameColors.fontSmall);
-            newLine(+four, true);
+            tt.draw(Res.SysBio_Header.format(game.systemData.bioSignalsTotal), C.orange, GameColors.fontSmall);
+            tt.newLine(+N.four, true);
 
             //var anyFoo = game.systemData.bodies.Any(b => b.id == game.status.Destination?.Body && b.bioSignalCount > 0);
             var destinationBody = game.targetBodyShortName;
@@ -508,8 +496,8 @@ namespace SrvSurvey.plotters
                 maxNameWidth = Math.Max(maxNameWidth, g.MeasureString(body.shortName, GameColors.fontMiddle).Width);
                 maxBioCount = Math.Max(maxBioCount, body.bioSignalCount);
             }
-            var boxLeft = oneTwo + maxNameWidth;
-            var boxRight = boxLeft + (maxBioCount * oneTwo);
+            var boxLeft = N.oneTwo + maxNameWidth;
+            var boxRight = boxLeft + (maxBioCount * N.oneTwo);
 
             // draw a row for each body
             var sortedBodies = game.systemData.bodies.OrderBy(b => b.shortName).ToList();
@@ -527,33 +515,33 @@ namespace SrvSurvey.plotters
                 //var highlight = (body == game.systemBody && game.status.hasLatLong) || (game.systemBody == null && body.shortName == destinationBody);
                 // || !anyFoo); // body.countAnalyzedBioSignals == body.bioSignalCount || bodyName == "1 f";
 
-                dty = (float)Math.Round(dty);
+                tt.dty = (float)Math.Round(tt.dty);
 
                 // draw body name
-                Brush b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+                var col = highlight ? C.cyan : C.orange;
 
                 var scansComplete = body.bioSignalCount == body.countAnalyzedBioSignals;
-                if (scansComplete) b = GameColors.brushGameOrangeDim;
+                if (scansComplete) col = C.orangeDark;
 
                 //if (!highlight && potentialFirstDiscovery) b = (SolidBrush)GameColors.Bio.brushGold;
-                var sz2 = this.drawTextAt(eight, body.shortName, b, GameColors.fontMiddle);
+                var sz2 = tt.draw(N.eight, body.shortName, col, GameColors.fontMiddle);
 
                 if (scansComplete)
                 {
                     // strike-through if already analyzed
-                    var y = dty + sz2.Height / 2;
-                    g.DrawLine(highlight ? GameColors.penCyan1 : GameColors.penGameOrange1, dtx, y, dtx - sz2.Width, y);
-                    g.DrawLine(highlight ? GameColors.penDarkCyan1 : GameColors.penGameOrangeDim1, dtx + 1, y + 1, dtx - sz2.Width + 1, y + 1);
+                    var y = tt.dty + sz2.Height / 2;
+                    g.DrawLine(highlight ? GameColors.penCyan1 : GameColors.penGameOrange1, tt.dtx, y, tt.dtx - sz2.Width, y);
+                    g.DrawLine(highlight ? GameColors.penDarkCyan1 : GameColors.penGameOrangeDim1, tt.dtx + 1, y + 1, tt.dtx - sz2.Width + 1, y + 1);
                 }
 
-                dtx = boxLeft;
-                dtx += drawBodyBars(g, body, dtx, dty, highlight);
+                tt.dtx = boxLeft;
+                tt.dtx += drawBodyBars(g, body, tt.dtx, tt.dty, highlight);
 
-                if (dtx > boxRight)
-                    boxRight = dtx;
+                if (tt.dtx > boxRight)
+                    boxRight = tt.dtx;
 
                 // credits
-                b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+                col = highlight ? C.cyan : C.orange;
                 //if (!highlight && potentialFirstDiscovery) b = (SolidBrush)GameColors.Bio.brushGold;
 
                 var txt = body.getMinMaxBioRewards(false);
@@ -564,7 +552,7 @@ namespace SrvSurvey.plotters
                     var bodyHasKnownSignals = game.canonnPoi?.codex?.Any(c => c.body != null && body.name.EndsWith(c.body)) ?? false;
                     if (bodyHasKnownSignals)
                     {
-                        g.DrawImage(Properties.ImageResources.canonn_16x16, dtx + four, dty + two, 16, 16);
+                        g.DrawImage(Properties.ImageResources.canonn_16x16, tt.dtx + N.four, tt.dty + N.two, 16, 16);
                         if (!incBoxRight)
                         {
                             boxRight += 10;
@@ -574,12 +562,12 @@ namespace SrvSurvey.plotters
                 }
 
                 if (txt == "") txt = " ";
-                dty += two;
-                drawTextAt(this.ClientSize.Width - ten, txt, b, GameColors.fontSmaller, true);
-                dty -= two;
+                tt.dty += N.two;
+                tt.draw(this.width - N.ten, txt, col, GameColors.fontSmaller, true);
+                tt.dty -= N.two;
 
-                dtx = lastTextSize.Width + boxRight + oneTwo;
-                newLine(+four, true);
+                tt.dtx = tt.lastTextSize.Width + boxRight + N.oneTwo;
+                tt.newLine(+N.four, true);
 
                 // if we are missing predictions - we need to FSS the system to feed the predictor
                 if ((body.organisms?.Count(o => o.entryId > 0) ?? 0) < body.bioSignalCount && body.genusPredictions.Count == 0)
@@ -589,24 +577,24 @@ namespace SrvSurvey.plotters
             // fss needed?
             if (fssNeeded)
             {
-                dty += eight;
-                this.drawTextAt(six, "► " + (game.systemData.honked ? Res.DssRequired : Res.FssRequired), GameColors.brushCyan, GameColors.fontSmall);
-                newLine(true);
+                tt.dty += N.eight;
+                tt.draw(N.six, "► " + (game.systemData.honked ? Res.DssRequired : Res.FssRequired), C.cyan, GameColors.fontSmall);
+                tt.newLine(true);
             }
 
-            this.dty += four;
+            tt.dty += N.four;
             var footerTxt = Res.RewardFooter.format(Util.getMinMaxCredits(game.systemData.getMinBioRewards(false), game.systemData.getMaxBioRewards(false)));
-            this.drawTextAt(six, footerTxt, GameColors.brushGameOrange, GameColors.fontSmall);
-            newLine(+two, true);
+            tt.draw(N.six, footerTxt, C.orange, GameColors.fontSmall);
+            tt.newLine(+N.two, true);
 
             if (anyFF)
             {
-                drawTextAt(this.Width - eight, Res.FFBonus.format(Util.getMinMaxCredits(game.systemData.getMinBioRewards(true), game.systemData.getMaxBioRewards(true))), GameColors.brushCyan, null, true);
-                dtx = lastTextSize.Width;
-                newLine(+two, true);
+                tt.draw(this.width - N.eight, Res.FFBonus.format(Util.getMinMaxCredits(game.systemData.getMinBioRewards(true), game.systemData.getMaxBioRewards(true))), C.cyan, null, true);
+                tt.dtx = tt.lastTextSize.Width;
+                tt.newLine(+N.two, true);
             }
 
-            formAdjustSize(+ten, +six);
+            return tt.pad(+N.ten, +N.six);
         }
 
         public static float drawBodyBars(Graphics g, SystemBody body, float x, float y, bool highlight)
@@ -616,14 +604,14 @@ namespace SrvSurvey.plotters
             var ix = x;
             if (body.bioSignalCount == 0) return 0;
             var signalCount = body.bioSignalCount;
-            y += oneFive;
+            y += N.oneFive;
 
             // draw outer box indicating how many signals match the body signal count
             g.SmoothingMode = SmoothingMode.Default;
-            var w = (body.bioSignalCount * oneTwo) + two;
+            var w = (body.bioSignalCount * N.oneTwo) + N.two;
             g.DrawRectangle(highlight ? GameColors.penCyan1Dotted : GameColors.penGameOrange1Dotted,
-                x - three, y - oneFive,
-                w, twoOne);
+                x - N.three, y - N.oneFive,
+                w, N.twoOne);
             g.SmoothingMode = SmoothingMode.HighQuality;
 
             // first render known genus - this implies DSS has happened
@@ -656,7 +644,7 @@ namespace SrvSurvey.plotters
                         VolumeBar.render(g, x, y, volCol, genusPrediction.min, genusPrediction.max, true);
                     }
 
-                    x += oneTwo;
+                    x += N.oneTwo;
                     signalCount--;
                 }
             }
@@ -679,10 +667,10 @@ namespace SrvSurvey.plotters
                 else if (genusPrediction.isGold) volCol = VolColor.Gold;
 
                 // skip a few pixels to cross the dotted box
-                if (signalCount == 0) x += three;
+                if (signalCount == 0) x += N.three;
 
                 VolumeBar.render(g, x, y, volCol, genusPrediction.min, genusPrediction.max, true);
-                x += oneTwo;
+                x += N.oneTwo;
                 signalCount--;
             }
 
@@ -692,19 +680,19 @@ namespace SrvSurvey.plotters
                 while (signalCount > 0)
                 {
                     VolumeBar.render(g, x, y, volCol, -1, -1, false);
-                    x += oneTwo;
+                    x += N.oneTwo;
                     signalCount--;
                 }
             }
 
-            if (signalCount < 0) x -= two;
+            if (signalCount < 0) x -= N.two;
             return x - ix;
         }
 
         public static void drawVolumeBars(Graphics g, float x, float y, VolColor col, long reward, long maxReward = -1, bool prediction = false)
         {
             g.SmoothingMode = SmoothingMode.Default;
-            var ww = eight;
+            var ww = N.eight;
             var yy = y;
 
             var buckets = new List<long>()
@@ -716,13 +704,13 @@ namespace SrvSurvey.plotters
             };
 
             // draw outer dotted box
-            g.FillRectangle(Brushes.Black, x, y - oneTwo, ww, oneTwo);
-            g.DrawRectangle(GameColors.Bio.volEdge[col], x, y - oneTwo, ww, oneFive);
+            g.FillRectangle(Brushes.Black, x, y - N.oneTwo, ww, N.oneTwo);
+            g.DrawRectangle(GameColors.Bio.volEdge[col], x, y - N.oneTwo, ww, N.oneFive);
 
             if (reward <= 0)
             {
-                // (don't use drawTextAt as that messes with dtx/dty)
-                g.DrawString("?", GameColors.fontSmallBold, GameColors.Bio.brushPrediction, x - 0.7f, y - oneOne);
+                // (don't use tt.draw as that messes with dtx/dty)
+                g.DrawString("?", GameColors.fontSmallBold, GameColors.Bio.brushPrediction, x - 0.7f, y - N.oneOne);
                 return;
             }
 
@@ -730,28 +718,28 @@ namespace SrvSurvey.plotters
             {
                 if (reward > bucket)
                 {
-                    g.FillRectangle(GameColors.Bio.volMin[col].brush, x, y, ww, three);
-                    g.DrawRectangle(GameColors.Bio.volMin[col].pen, x, y, ww, three);
+                    g.FillRectangle(GameColors.Bio.volMin[col].brush, x, y, ww, N.three);
+                    g.DrawRectangle(GameColors.Bio.volMin[col].pen, x, y, ww, N.three);
                 }
                 else if (maxReward > bucket)
                 {
-                    g.FillRectangle(GameColors.Bio.volMax[col].brush, x, y, ww, three);
-                    g.DrawRectangle(GameColors.Bio.volMax[col].pen, x, y, ww, three);
+                    g.FillRectangle(GameColors.Bio.volMax[col].brush, x, y, ww, N.three);
+                    g.DrawRectangle(GameColors.Bio.volMax[col].pen, x, y, ww, N.three);
                 }
-                y -= four;
+                y -= N.four;
             }
 
             // draw a grey hatch effect if we're drawing a prediction
             if (prediction)
             {
-                g.FillRectangle(GameColors.Bio.brushPredictionHatch, x + one, y + five, ww - one, oneFour);
+                g.FillRectangle(GameColors.Bio.brushPredictionHatch, x + N.one, y + N.five, ww - N.one, N.oneFour);
                 //g.FillRectangle(GameColors.Bio.brushPredictionHatch, x, y + four, ww + one, oneSix);
             }
 
             if (col == VolColor.White)
             {
-                g.DrawRectangle(GameColors.Bio.volEdge[col], x, yy - oneTwo, ww, oneFive);
-                g.DrawRectangle(GameColors.Bio.volEdge[col], x, yy - oneTwo, ww, oneFive);
+                g.DrawRectangle(GameColors.Bio.volEdge[col], x, yy - N.oneTwo, ww, N.oneFive);
+                g.DrawRectangle(GameColors.Bio.volEdge[col], x, yy - N.oneTwo, ww, N.oneFive);
             }
 
             g.SmoothingMode = SmoothingMode.HighQuality;

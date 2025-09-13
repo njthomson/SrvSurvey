@@ -106,6 +106,23 @@ namespace SrvSurvey.widgets
             return this.lastTextSize;
         }
 
+        /* /// <summary> Draw bottom/center aligned </summary>
+        public SizeF drawFooter(string txt, Color? col, Font? font = null)
+        {
+            var footerFlags = flags | TextFormatFlags.Bottom | TextFormatFlags.HorizontalCenter;
+
+            col = col ?? this.color;
+            font = font ?? this.font;
+            this.lastTextSize = TextRenderer.MeasureText(txt, font, Size.Empty, footerFlags);
+
+            var pt = new Point(
+                this.containerWidth / 2,
+                this.containerHeight - 6);
+
+            TextRenderer.DrawText(g, txt, font, pt, col.Value, footerFlags);
+            return this.lastTextSize;
+        }*/
+
         #endregion
 
         #region draw wrapped text (unscaled)

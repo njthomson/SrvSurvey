@@ -65,7 +65,7 @@ namespace SrvSurvey.plotters
         public override void close()
         {
             // we may have closed plotters on opening, force a mode change event to bring them back
-            //game.fireUpdate(true); // TODO: revisit !!!
+            Program.defer(() => game.fireUpdate(true)); // Revisit once those plotters are migrated
         }
 
         private void initFromRoute()

@@ -1,6 +1,7 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.widgets;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 using System.Reflection;
 
 namespace SrvSurvey.plotters
@@ -21,6 +22,7 @@ namespace SrvSurvey.plotters
         Image background { get; }
 
         Image render();
+        void setPosition(Rectangle? rect = null);
     }
 
     internal class PlotDef
@@ -48,7 +50,9 @@ namespace SrvSurvey.plotters
         public int left { get; set; }
         public int top { get; set; }
         public int width { get; set; }
+        public int right => left + width;
         public int height { get; set; }
+        public int bottom => top + height;
         public float fade { get; set; }
 
         public bool stale { get; set; }
@@ -75,16 +79,17 @@ namespace SrvSurvey.plotters
 
         public Rectangle rect => new Rectangle(left, top, width, height);
 
-        private void setPosition()
+        public void setPosition(Rectangle? rect = null)
         {
             // get initial position
-            var pt = PlotPos.getPlotterLocation(this.name, new Size(this.width, this.height), Rectangle.Empty);
+            var pt = PlotPos.getPlotterLocation(this.name, new Size(this.width, this.height), rect ?? Rectangle.Empty, true);
             this.left = pt.X;
             this.top = pt.Y;
         }
 
         private void setSize(int width, int height)
         {
+            if (width == 0 || height == 0) Debugger.Break();
             var changed = this.width != width || this.height != height;
             if (changed)
             {
@@ -161,6 +166,8 @@ namespace SrvSurvey.plotters
                 nextFrame = new Bitmap(this.width, this.height);
                 using (var g = Graphics.FromImage(nextFrame))
                 {
+                    g.SmoothingMode = SmoothingMode.HighQuality;
+
                     var tt = new TextCursor(g, this);
                     var sz = this.doRender(game, g, tt);
                     this.stale = false;

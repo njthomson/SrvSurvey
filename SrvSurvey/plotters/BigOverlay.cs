@@ -1,4 +1,5 @@
-﻿using SrvSurvey.game;
+﻿using SrvSurvey.forms;
+using SrvSurvey.game;
 using SrvSurvey.Properties;
 using SrvSurvey.widgets;
 using System.Drawing.Drawing2D;
@@ -83,10 +84,15 @@ namespace SrvSurvey.plotters
                 this.ResumeLayout();
 
                 // get PlotPulse location
-                this.ptPlotPulse = PlotPos.getPlotterLocation("PlotPulse", plotPulseDefaultSize, rect);
+                this.ptPlotPulse = PlotPos.getPlotterLocation("PlotPulse", plotPulseDefaultSize, rect, true);
 
                 if (Game.activeGame != null)
+                {
+                    foreach (var plotter in PlotBase2.active)
+                        plotter.setPosition(rect);
+
                     PlotBase2.renderAll(Game.activeGame);
+                }
 
                 this.Invalidate();
             }
@@ -114,6 +120,9 @@ namespace SrvSurvey.plotters
 
                         // re-render only if needed
                         if (plotter.stale) plotter.render();
+#if DEBUG
+                        if (true) plotter.render(); // for easier debugging of plotter rendering code
+#endif
 
                         if (plotter.fade == 0)
                         {
@@ -141,6 +150,13 @@ namespace SrvSurvey.plotters
 
                             g.DrawImage(plotter.background, rect, 0, 0, sz.Width, sz.Height, GraphicsUnit.Pixel, attr);
                             g.DrawImage(plotter.frame, rect, 0, 0, sz.Width, sz.Height, GraphicsUnit.Pixel, attr);
+                        }
+
+                        if (plotter.name == FormAdjustOverlay.targetName)
+                        {
+                            var sz = plotter.frame.Size;
+                            var rect = new Rectangle(plotter.left , plotter.top, sz.Width, sz.Height);
+                            g.DrawRectangle(GameColors.penYellow4, rect);
                         }
                     }
                 }

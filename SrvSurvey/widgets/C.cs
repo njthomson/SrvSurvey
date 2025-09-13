@@ -87,6 +87,9 @@ namespace SrvSurvey.widgets
 
             public static Brush brushUnknown = c("bio.unknown").toBrush();
             public static Brush brushHatch = new HatchBrush(HatchStyle.DarkUpwardDiagonal, c("bio.hatch"), Color.Transparent);
+
+            public static Color white = c("bio.white");
+            public static Color prediction = c("bio.prediction");
         }
     }
 

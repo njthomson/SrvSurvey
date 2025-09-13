@@ -39,7 +39,7 @@ namespace SrvSurvey.widgets
             this.font = font;
         }
 
-        public void renderAngleOfAttack(Graphics g, float x, float y, decimal radius, LatLong2 target, LatLong2 cmdr)
+        public void renderAngleOfAttack(Graphics g, float x, float y, decimal radius, LatLong2 target, LatLong2 cmdr, bool showBearing)
         {
             if (game?.status == null) return;
 
@@ -91,8 +91,11 @@ namespace SrvSurvey.widgets
                 bb = aside; // orange
 
             // draw bearing to target
-            x += threeEight;
-            renderBearingTo(g, x, y, ten, (double)deg, this.font, bb.brush, bb.pen);
+            if (showBearing)
+            {
+                x += threeEight;
+                renderBearingTo(g, x, y, ten, (double)deg, this.font, bb.brush, bb.pen);
+            }
         }
     }
 }

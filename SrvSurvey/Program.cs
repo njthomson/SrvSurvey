@@ -317,9 +317,9 @@ namespace SrvSurvey
             return activePlotters.GetValueOrDefault(name) as Form;
         }
 
-        public static string[] getAllPlotterNames()
+        public static IEnumerable<string> getAllPlotterNames()
         {
-            return activePlotters.Keys.Order().ToArray();
+            return activePlotters.Keys;
         }
 
         public static void closeAllPlotters(bool exceptJumpInfo = false)

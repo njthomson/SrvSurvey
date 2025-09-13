@@ -113,7 +113,6 @@ namespace SrvSurvey.plotters
             // if these are open - close them
             Program.closePlotter<PlotBioStatus>();
             Program.closePlotter<PlotGrounded>();
-            Program.closePlotter<PlotPriorScans>();
             Program.closePlotter<PlotTrackers>();
 
             this.initializeOnLoad();

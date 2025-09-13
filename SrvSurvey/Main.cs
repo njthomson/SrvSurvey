@@ -548,11 +548,6 @@ namespace SrvSurvey
             else
                 Program.closePlotter<PlotFSSInfo>();
 
-            if (gameIsActive && PlotBioSystem.allowPlotter)
-                Program.showPlotter<PlotBioSystem>();
-            else
-                Program.closePlotter<PlotBioSystem>();
-
             if (gameIsActive && PlotBodyInfo.allowPlotter)
                 Program.showPlotter<PlotBodyInfo>();
 
@@ -797,7 +792,6 @@ namespace SrvSurvey
                 Program.closePlotter<PlotBioStatus>();
                 Program.closePlotter<PlotGrounded>();
                 Program.closePlotter<PlotTrackers>();
-                Program.closePlotter<PlotPriorScans>();
                 return;
             }
 
@@ -862,13 +856,6 @@ namespace SrvSurvey
                 if (PlotBioStatus.allowPlotter)
                     Program.showPlotter<PlotBioStatus>();
 
-                // show prior scan data only if present
-                var showPlotPriorScans = PlotPriorScans.allowPlotter;
-                if (showPlotPriorScans)
-                    Program.showPlotter<PlotPriorScans>();
-                else
-                    Program.closePlotter<PlotPriorScans>();
-
                 if (PlotGrounded.allowPlotter)
                 {
                     // show trackers only if we have some
@@ -877,7 +864,7 @@ namespace SrvSurvey
                         Program.showPlotter<PlotTrackers>();
 
                     // show radar if we have trackers, prior scans, we landed or started scanning already
-                    if (game.systemSite == null && !game.isMode(GameMode.SuperCruising, GameMode.GlideMode) && (game.isLanded || showPlotTrackers || showPlotPriorScans || game.cmdr.scanOne != null || (game.status.Altitude < 1000 && game.systemBody?.bioScans?.Count > 0)))
+                    if (game.systemSite == null && !game.isMode(GameMode.SuperCruising, GameMode.GlideMode) && (game.isLanded || showPlotTrackers || game.cmdr.scanOne != null || (game.status.Altitude < 1000 && game.systemBody?.bioScans?.Count > 0)))
                         Program.showPlotter<PlotGrounded>();
                     else
                         Program.closePlotter<PlotGrounded>();
@@ -955,7 +942,6 @@ namespace SrvSurvey
 
                         Program.closePlotter<PlotGrounded>();
                         Program.closePlotter<PlotBioStatus>();
-                        Program.closePlotter<PlotPriorScans>();
                         Program.closePlotter<PlotTrackers>();
                     }
 

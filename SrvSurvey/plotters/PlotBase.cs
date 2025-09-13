@@ -1767,7 +1767,7 @@ namespace SrvSurvey.plotters
         /// <param name="formName">The name of the plotter</param>
         /// <param name="sz">The size of the plotter</param>
         /// <param name="rect">The rectangle of the game window</param>
-        public static Point getPlotterLocation(string formName, Size sz, Rectangle rect)
+        public static Point getPlotterLocation(string formName, Size sz, Rectangle rect, bool plot2 = false)
         {
             // skip plotters that are fixed
             if (!plotterPositions.ContainsKey(formName))
@@ -1777,6 +1777,9 @@ namespace SrvSurvey.plotters
 
             if (rect == Rectangle.Empty)
                 rect = Elite.getWindowRect();
+
+            if (plot2)
+                rect.Location = Point.Empty;
 
             var left = 0;
             if (pp.h == Horiz.Left)

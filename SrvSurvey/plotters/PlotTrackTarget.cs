@@ -121,7 +121,7 @@ namespace SrvSurvey.plotters
             BaseWidget.renderText(g, txt, four, ten, GameColors.fontSmall);
 
             var gt = new GroundTarget(this.Font);
-            gt.renderAngleOfAttack(g, ten, fourFour, game.status.PlanetRadius, this.targetLocation, Status.here);
+            gt.renderAngleOfAttack(g, ten, fourFour, game.status.PlanetRadius, this.targetLocation, Status.here, true);
         }
     }
 }

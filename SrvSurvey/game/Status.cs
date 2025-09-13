@@ -187,8 +187,8 @@ namespace SrvSurvey
                     || Pips?[2] != newValue?[2];
 
             if (propName == nameof(Fuel))
-                return Fuel.FuelMain != newValue?.FuelMain
-                    || Fuel.FuelReservoir != newValue?.FuelReservoir;
+                return Fuel?.FuelMain != newValue?.FuelMain
+                    || Fuel?.FuelReservoir != newValue?.FuelReservoir;
 
             if (propName == nameof(Destination))
                 return Destination?.System != newValue?.System

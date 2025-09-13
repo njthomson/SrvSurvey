@@ -93,7 +93,7 @@ namespace SrvSurvey.forms
             // all names, or only those visible?
             var names = checkShowAll.Checked
                 ? PlotPos.getAllPlotterNames()
-                : Program.getAllPlotterNames();
+                : PlotBase2.active.Select(d => d.name).Concat(Program.getAllPlotterNames()).Order().ToArray();
 
             for (var n = 0; n < names.Length; n++)
             {
@@ -140,7 +140,8 @@ namespace SrvSurvey.forms
             numY.Maximum = 10_000; // er.Height;
 
             var plotter = Program.getPlotter(targetName);
-            if (plotter == null)
+            var plotter2 = PlotBase2.get(targetName)?.instance;
+            if (plotter == null && plotter2 == null)
             {
                 createFakePlotter(targetName);
             }
