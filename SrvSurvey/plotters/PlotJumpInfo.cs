@@ -413,8 +413,17 @@ namespace SrvSurvey.plotters
             else if (nextHopIdx == 0)
             {
                 //r0.X = r.X;
-                g.FillEllipse(C.Brushes.cyanDark, r0);
-                g.DrawEllipse(C.Pens.cyan3, r0);
+                try
+                {
+                    g.FillEllipse(C.Brushes.cyanDark, r0);
+                    g.DrawEllipse(C.Pens.cyan3, r0);
+                }
+                catch (Exception ex)
+                {
+                    // TODO: Why is this happening?
+                    Game.log($"?? {r0}\r\n\r\n{ex.Message}");
+                    Debugger.Break();
+                }
                 //g.FillEllipse(C.Brushes.cyanDark, r);
                 //g.DrawEllipse(C.Pens.cyan2, r);
             }

@@ -121,7 +121,7 @@ namespace SrvSurvey.plotters
                         // re-render only if needed
                         if (plotter.stale) plotter.render();
 #if DEBUG
-                        if (true) plotter.render(); // for easier debugging of plotter rendering code
+                        //if (true) plotter.render(); // for easier debugging of plotter rendering code
 #endif
 
                         if (plotter.fade == 0)

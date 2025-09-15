@@ -4,39 +4,52 @@ using System.Diagnostics;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(200, 400)]
-    internal class PlotBuildCommodities : PlotBase, PlotterForm
+    internal class PlotBuildCommodities : PlotBase2
     {
-        public static bool allowPlotter
+        #region def + statics
+
+        public static PlotDef plotDef = new PlotDef()
         {
-            // show in any mode, so long as we have some messages so show
-            get => Game.settings.buildProjects_TEST
+            name = nameof(PlotBuildCommodities),
+            allowed = allowed,
+            ctor = (game, def) => new PlotBuildCommodities(game, def),
+            defaultSize = new Size(200, 400),
+        };
+
+        public static bool allowed(Game game)
+        {
+            return Game.settings.buildProjects_TEST
                 && Game.settings.autoShowPlotBuildCommodities
                 // NOT suppressed by buildProjectsSuppressOtherOverlays
-                && Game.activeGame != null
                 && (
-                    (PlotBuildCommodities.forceShow && !Game.activeGame.fsdJumping && !Game.activeGame.isMode(GameMode.ExternalPanel))
-                    || (Game.activeGame.isMode(GameMode.StationServices) 
-                        && ((Game.activeGame.marketEventSeen && Game.activeGame.cmdrColony.projects.Any()) || Game.activeGame.cmdrColony.has(Game.activeGame.lastDocked))
+                    // forced but not jumping or in external panel
+                    (PlotBuildCommodities.forceShow && !game.fsdJumping && !game.isMode(GameMode.ExternalPanel))
+                    // in station services, there are some projects and we've entered a market since docking ... or docked site is a tracked build site
+                    || (game.isMode(GameMode.StationServices)
+                        && ((game.marketEventSeen && game.cmdrColony.projects.Any()) || game.cmdrColony.has(game.lastDocked)) // TODO: I think this is redundant as we will show at any construction site (tracked or otherwise)
                         )
-                    || (ColonyData.isConstructionSite(Game.activeGame.lastDocked) && !Game.activeGame.isMode(GameMode.GalaxyMap))
-                    || (Game.settings.buildProjectsOnRightScreen && Game.activeGame.isMode(GameMode.InternalPanel) && Game.activeGame.cmdrColony.projects.Any())
+                    // docked at a construction site and not in gal-map
+                    || (ColonyData.isConstructionSite(game.lastDocked) && !game.isMode(GameMode.GalaxyMap))
+                    // setting allows, we have some projects and looking at right panel
+                    || (Game.settings.buildProjectsOnRightScreen && game.isMode(GameMode.InternalPanel) && game.cmdrColony.projects.Any())
                 )
                 ;
         }
 
-        public static void showButCleanFirst()
+        #endregion
+
+        public static void showButCleanFirst(Game game)
         {
-            var form = Program.getPlotter<PlotBuildCommodities>();
+            var form = PlotBase2.getPlotter<PlotBuildCommodities>();
             if (form != null && PlotBuildCommodities.forceShow)
             {
                 form.setHeaderTextAndNeeds();
-                form.Invalidate();
+                form.invalidate();
             }
-            else
+            else if (form != null)
             {
                 // just show the plotter
-                Program.showPlotter<PlotBuildCommodities>();
+                PlotBase2.add(game, PlotBuildCommodities.plotDef);
             }
         }
 
@@ -58,51 +71,38 @@ namespace SrvSurvey.plotters
         private List<FleetCarrier> cargoLinkedFCs = new();
         private Dictionary<string, int> sumCargoLinkedFCs = new();
 
-        private PlotBuildCommodities() : base()
+        private PlotBuildCommodities(Game game, PlotDef def) : base(game, def)
         {
-            this.Size = Size.Empty;
-            this.Font = GameColors.Fonts.gothic_10;
+            this.font = GameColors.Fonts.gothic_10;
 
             if (szBigNumbers == Size.Empty)
-                szBigNumbers = TextRenderer.MeasureText(123456.ToString("N0"), this.Font, Size.Empty);
+                szBigNumbers = TextRenderer.MeasureText(123456.ToString("N0"), this.font, Size.Empty);
 
             Properties.Commodities.ResourceManager.IgnoreCase = true;
             Properties.CommodityCategories.ResourceManager.IgnoreCase = true;
         }
 
-        public override bool allow { get => PlotBuildCommodities.allowPlotter; }
-
-        protected override void OnLoad(EventArgs e)
+        public static void startPending(Dictionary<string, int>? diff = null)
         {
-            if (this.lastOne.Width > 0)
-                this.Size = this.lastOne.Size;
-            else
-                this.Size = new Size(scaled(300), scaled(1000));
+            var plotter = PlotBase2.getPlotter<PlotBuildCommodities>();
+            if (plotter == null) return;
 
-            base.OnLoad(e);
+            plotter.pendingUpdates++;
+            plotter.pendingDiff = diff ?? new();
 
-            this.initializeOnLoad();
-            this.reposition(Elite.getWindowRect(true));
+            plotter.invalidate();
         }
 
-        public void startPending(Dictionary<string, int>? diff = null)
+        public static void endPending()
         {
-            this.pendingUpdates++;
-            this.pendingDiff = diff ?? new();
+            var plotter = PlotBase2.getPlotter<PlotBuildCommodities>();
+            if (plotter == null) return;
 
-            if (!this.IsDisposed) this.Invalidate();
-        }
+            plotter.pendingUpdates--;
+            if (plotter.pendingUpdates < 0) plotter.pendingUpdates = 0;
 
-        public void endPending()
-        {
-            this.pendingUpdates--;
-            if (this.pendingUpdates < 0) this.pendingUpdates = 0;
-
-            if (!this.IsDisposed)
-            {
-                this.Invalidate();
-                this.setHeaderTextAndNeeds();
-            }
+            plotter.invalidate();
+            plotter.setHeaderTextAndNeeds();
         }
 
         public void setHeaderTextAndNeeds()
@@ -117,7 +117,7 @@ namespace SrvSurvey.plotters
         private void setHeaderTextAndNeeds(bool dockedAtConstructionSite)
         {
             var colonyData = game.cmdrColony;
-            if (this.IsDisposed || colonyData == null || game.systemData == null) return;
+            if (colonyData == null || game.systemData == null) return;
 
             var effectiveAddress = -1L;
             var effectiveMarketId = -1L;
@@ -210,13 +210,14 @@ namespace SrvSurvey.plotters
             this.sumCargoLinkedFCs = ColonyData.getSumCargoFC(cargoLinkedFCs);
         }
 
-        protected override void onPaintPlotter(PaintEventArgs e)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
             var colonyData = game.cmdrColony;
-            if (this.IsDisposed || colonyData == null || game.systemData == null) return;
+            if (colonyData == null || game.systemData == null) return frame.Size;
 
             var localMarketId = game.lastDocked?.MarketID ?? -1;
             var dockedAtConstructionSite = ColonyData.isConstructionSite(game.lastDocked);
+            var dockedAtSquadFC = game.lastDocked?.StationServices?.Contains("squadronBank") == true;
 
             // calculate header text and needs only when needed
             if (this.headerText == null || this.needs == null || (colonyData.primaryBuildId == null && ((projectNames.Count > 0) == dockedAtConstructionSite)))
@@ -226,9 +227,9 @@ namespace SrvSurvey.plotters
             if (this.headerText == null || this.needs == null)
             {
                 Debugger.Break();
-                drawTextAt2(ten, "Oops!", GameColors.Fonts.gothic_12B);
-                newLine(+ten, true);
-                return;
+                tt.draw(N.ten, "Oops!", GameColors.Fonts.gothic_12B);
+                tt.newLine(+N.ten, true);
+                return frame.Size;
             }
 
             // start rendering...
@@ -236,33 +237,32 @@ namespace SrvSurvey.plotters
             {
                 headerText = game.lastDocked?.StationName ?? "";
                 headerText = headerText.Substring(headerText.IndexOf(":") + 2);
-                drawTextAt2("🚧  ", C.yellow, GameColors.Fonts.gothic_10);
-                drawTextAt2(headerText, GameColors.Fonts.gothic_12B);
-                drawTextAt2("  🚧", C.yellow, GameColors.Fonts.gothic_10);
-                newLine(+ten, true);
+                tt.draw("🚧  ", C.yellow, GameColors.Fonts.gothic_10);
+                tt.draw(headerText, GameColors.Fonts.gothic_12B);
+                tt.draw("  🚧", C.yellow, GameColors.Fonts.gothic_10);
+                tt.newLine(+N.ten, true);
 
-                drawTextAt2(ten, "☑️ Construction complete ☑️", C.green, GameColors.Fonts.gothic_10);
-                newLine(+ten, true);
+                tt.draw(N.ten, "☑️ Construction complete ☑️", C.green, GameColors.Fonts.gothic_10);
+                tt.newLine(+N.ten, true);
 
-                this.formAdjustSize(+ten, +ten);
-                return;
+                return tt.pad(+N.ten, +N.ten);
             }
 
-            dtx = 10;
-            if (dockedAtConstructionSite) drawTextAt2("🚧  ", C.yellow, GameColors.Fonts.gothic_10);
-            drawTextAt2(headerText, GameColors.Fonts.gothic_12B);
-            if (dockedAtConstructionSite) drawTextAt2("  🚧", C.yellow, GameColors.Fonts.gothic_10);
-            newLine(+ten, true);
+            tt.dtx = 10;
+            if (dockedAtConstructionSite) tt.draw("🚧  ", C.yellow, GameColors.Fonts.gothic_10);
+            tt.draw(headerText, GameColors.Fonts.gothic_12B);
+            if (dockedAtConstructionSite) tt.draw("  🚧", C.yellow, GameColors.Fonts.gothic_10);
+            tt.newLine(+N.ten, true);
 
             if (projectNames.Any())
             {
                 // show relevant project names
                 foreach (var name in projectNames)
                 {
-                    drawTextAt2(twenty, "► " + name, GameColors.Fonts.gothic_9);
-                    newLine(true);
+                    tt.draw(N.twenty, "► " + name, GameColors.Fonts.gothic_9);
+                    tt.newLine(true);
                 }
-                dty += ten;
+                tt.dty += N.ten;
             }
 
             // show warning if docked at untracked project
@@ -271,17 +271,17 @@ namespace SrvSurvey.plotters
                 var msg = ColonyData.localUntrackedProject == null
                     ? "Untracked project"
                     : "Not a member of this project";
-                drawTextAt2(ten, "⚠️ ", C.yellow, GameColors.Fonts.gothic_10);
-                drawTextAt2(msg, C.cyan, GameColors.Fonts.gothic_10);
-                drawTextAt2(" ⚠️", C.yellow, GameColors.Fonts.gothic_10);
-                newLine(+ten, true);
+                tt.draw(N.ten, "⚠️ ", C.yellow, GameColors.Fonts.gothic_10);
+                tt.draw(msg, C.cyan, GameColors.Fonts.gothic_10);
+                tt.draw(" ⚠️", C.yellow, GameColors.Fonts.gothic_10);
+                tt.newLine(+N.ten, true);
             }
 
             // show warning if docked at an untracked FC
             if (game.lastDocked?.StationEconomy == "$economy_Carrier;" && !game.cmdrColony.linkedFCs.ContainsKey(game.lastDocked.MarketID))
             {
-                drawTextAt2(ten, "⚠️ Untracked Fleet Carrier", C.yellow, GameColors.Fonts.gothic_10);
-                newLine(+ten, true);
+                tt.draw(N.ten, "⚠️ Untracked Fleet Carrier", C.yellow, GameColors.Fonts.gothic_10);
+                tt.newLine(+N.ten, true);
             }
 
             // prep 3 columns: first zero width (that will grow), last 2 large enough for a big number
@@ -291,7 +291,7 @@ namespace SrvSurvey.plotters
             if (showFCs && Game.settings.buildProjectsInlineSumFC_TEST) haveAnyCargo |= this.sumCargoLinkedFCs.Count > 0;
 
             var rightIndent = haveAnyCargo ? szBigNumbers.Width : 0;
-            var pinWidth = hasPin ? oneSix : 0;
+            var pinWidth = hasPin ? N.oneSix : 0;
             var columns = new Dictionary<int, float>() {
                 { 0, 0 },           // name of the commodity
                 { 1, rightIndent }, // Need column
@@ -300,13 +300,13 @@ namespace SrvSurvey.plotters
             };
 
             // render list headers: <commodity name>, <need>, <have>
-            var xNeed = this.Width - eight - rightIndent - pinWidth;
+            var xNeed = this.width - N.eight - rightIndent - pinWidth;
             var xFC = 0f;
             if (showFCs)
             {
                 if (Game.settings.buildProjectsInlineSumFC_TEST)
                 {
-                    xFC = this.Width - eight;
+                    xFC = this.width - N.eight;
                 }
                 else
                 {
@@ -315,37 +315,34 @@ namespace SrvSurvey.plotters
                 }
             }
 
-            drawTextAt2(xNeed, "Need", C.orangeDark, null, true).widestColumn(1, columns);
-            if (showFCs && !Game.settings.buildProjectsInlineSumFC_TEST) drawTextAt2(xFC, $"{cargoLinkedFCs.Count} FCs", C.orangeDark, null, true).widestColumn(2, columns);
-            if (haveAnyCargo) drawTextAt2(this.Width - eight, Game.settings.buildProjectsInlineSumFC_TEST ? "Have" : "Ship", C.orangeDark, null, true).widestColumn(3, columns);
-            drawTextAt2(ten, "Commodity", C.orangeDark, null).widestColumn(0, columns);
-            newLine(true);
+            tt.draw(xNeed, "Need", C.orangeDark, null, true).widestColumn(1, columns);
+            if (showFCs && !Game.settings.buildProjectsInlineSumFC_TEST) tt.draw(xFC, $"{cargoLinkedFCs.Count} FCs", C.orangeDark, null, true).widestColumn(2, columns);
+            if (haveAnyCargo) tt.draw(this.width - N.eight, Game.settings.buildProjectsInlineSumFC_TEST ? "Have" : "Ship", C.orangeDark, null, true).widestColumn(3, columns);
+            tt.draw(N.ten, "Commodity", C.orangeDark, null).widestColumn(0, columns);
+            tt.newLine(true);
 
             // draw cargo needs depending where we are
-            var sumNeed = 0;
-            if (dockedAtConstructionSite)
-            {
-                drawNeedsAlpha(needs, columns, rightIndent, xNeed, xFC);
-                sumNeed = game.lastColonisationConstructionDepot?.ResourcesRequired.Sum(r => r.RequiredAmount - r.ProvidedAmount) ?? 0;
-            }
+            if (dockedAtConstructionSite || dockedAtSquadFC)
+                drawNeedsAlpha(g, tt, needs, columns, rightIndent, xNeed, xFC);
             else
-            {
-                drawNeedsGrouped(needs, columns, rightIndent, xNeed, xFC);
-                sumNeed = needs.commodities.Values.Sum();
-            }
+                drawNeedsGrouped(g, tt, needs, columns, rightIndent, xNeed, xFC);
+
+            // sum needs depending where we are
+            var sumNeed = dockedAtConstructionSite
+                ? game.lastColonisationConstructionDepot?.ResourcesRequired.Sum(r => r.RequiredAmount - r.ProvidedAmount) ?? 0
+                : needs.commodities.Values.Sum();
 
             // grow size of this plotter?
-            var formWidthNeeded = columns.Values.Sum() + pinWidth + twenty;
-            if (this.formSize.Width < formWidthNeeded)
-                this.formSize.Width = formWidthNeeded;
+            var formWidthNeeded = columns.Values.Sum() + pinWidth + N.twenty;
+            tt.setMinWidth(formWidthNeeded);
 
-            dty += ten;
+            tt.dty += N.ten;
 
             // show relevant FCs
             if (cargoLinkedFCs.Count > 0)
             {
-                drawTextAt2b(ten, $"► {cargoLinkedFCs.Count} FCs:  " + string.Join("  ", cargoLinkedFCs.Select(fc => fc.name)));
-                newLine(true);
+                tt.drawWrapped(N.ten, this.width, $"► {cargoLinkedFCs.Count} FCs:  " + string.Join("  ", cargoLinkedFCs.Select(fc => fc.name)));
+                tt.newLine(true);
             }
 
             // show how many runs remaining
@@ -355,45 +352,49 @@ namespace SrvSurvey.plotters
                 var tripsNeeded = Math.Ceiling(sumNeed / (double)game.currentShip.cargoCapacity);
                 remainingTxt += $" ► {tripsNeeded:N0} trips in this ship";
             }
-            drawTextAt2(ten, remainingTxt);
-            newLine(true);
+            tt.draw(N.ten, remainingTxt);
+            tt.newLine(true);
 
             // show footer if we are actively updating against the service
             if (this.pendingUpdates > 0)
             {
-                dty += six;
-                drawTextAt2(ten, "► Updating...", C.cyan, GameColors.Fonts.gothic_10B);
-                newLine(+ten, true);
+                tt.dty += N.six;
+                tt.draw(N.ten, "► Updating...", C.cyan, GameColors.Fonts.gothic_10B);
+                tt.newLine(+N.ten, true);
             }
 
             if (hasPin)
             {
-                dty += eight;
-                drawTextAt2(ten, "📌 Assigned commodities", C.orangeDark);
-                newLine(true);
+                tt.dty += N.eight;
+                tt.draw(N.ten, "📌 Assigned commodities", C.orangeDark);
+                tt.newLine(true);
             }
 
-            this.formAdjustSize(+ten, +ten);
+            return tt.pad(+N.ten, +N.ten);
         }
 
-        private void drawNeedsAlpha(ColonyData.Needs needs, Dictionary<int, float> columns, float rightIndent, float xNeed, float xFC)
+        private void drawNeedsAlpha(Graphics g, TextCursor tt, ColonyData.Needs needs, Dictionary<int, float> columns, float rightIndent, float xNeed, float xFC)
         {
             // alpha sort commodity names if at construction site
             var commodityNames = needs.commodities.Keys.Order();
-            var required = game.lastColonisationConstructionDepot?.ResourcesRequired;
+            var required = game.lastColonisationConstructionDepot == null
+                ? needs.commodities
+                : game.lastColonisationConstructionDepot?.ResourcesRequired
+                    ?.ToDictionary(r => r.Name.Substring(1).Replace("_name;", ""), r => r.RequiredAmount - r.ProvidedAmount);
+
             if (required == null) return;
 
             var flip = false;
             foreach (var item in required)
             {
-                var name = item.Name.Substring(1).Replace("_name;", "");
-                var needCount = item.RequiredAmount - item.ProvidedAmount;
+                var name = item.Key;
+                var needCount = item.Value;
                 if (needCount == 0) continue;
 
                 var needTxt = needCount.ToString("N0");
-                var nameTxt = item.Name_Localised;
+                var nameTxt = Properties.Commodities.ResourceManager.GetString(name) ?? name;
 
-                if (flip) g.FillRectangle(brushBackgroundStripe, four, dty - one, this.Width - eight, szBigNumbers.Height + one);
+                if (flip) g.FillRectangle(brushBackgroundStripe, N.four, tt.dty - N.one, this.width - N.eight, szBigNumbers.Height + N.one);
                 flip = !flip;
 
                 var col = C.orange;
@@ -406,7 +407,7 @@ namespace SrvSurvey.plotters
                     // highlight what we just supplied
                     ff = GameColors.Fonts.gothic_9B;
                     col = C.cyan;
-                    nameTxt = "► " + name;
+                    nameTxt = "► " + nameTxt;
                     needTxt = "...";
                 }
                 //else if (cargoCount > 0)
@@ -435,13 +436,13 @@ namespace SrvSurvey.plotters
 
                 // render needed count
                 var inHold = cargoCount > 0;
-                drawTextAt2(xNeed, needTxt, col, ff, true)
+                tt.draw(xNeed, needTxt, col, ff, true)
                     .widestColumn(1, columns);
 
                 // render SHIP cargo count
                 if (cargoCount > 0)
                 {
-                    drawTextAt2(this.Width - eight, cargoCount.ToString("N0"), col, ff, true)
+                    tt.draw(this.width - N.eight, cargoCount.ToString("N0"), col, ff, true)
                         .widestColumn(3, columns);
                 }
 
@@ -464,7 +465,7 @@ namespace SrvSurvey.plotters
                             if (Game.settings.buildProjectsInlineSumFC_TEST)
                                 cc = cc = diff >= 0 ? C.greenDark : C.redDark;
 
-                            drawTextAt2(xFC, diffTxt, cc, ff, true)
+                            tt.draw(xFC, diffTxt, cc, ff, true)
                                 .widestColumn(2, columns);
                         }
                         else
@@ -478,7 +479,7 @@ namespace SrvSurvey.plotters
                             if (Game.settings.buildProjectsInlineSumFC_TEST)
                                 cc = fcAmount >= needCount ? C.greenDark : C.redDark;
 
-                            drawTextAt2(xFC, diffTxt, cc, ff, true)
+                            tt.draw(xFC, diffTxt, cc, ff, true)
                                 .widestColumn(2, columns);
                         }
                     }
@@ -488,20 +489,20 @@ namespace SrvSurvey.plotters
                 //if (cargoCount > needCount) col = C.red;
 
                 // render the name
-                var sz2 = drawTextAt2(ten, nameTxt, col, ff)
+                var sz2 = tt.draw(N.ten, nameTxt, col, ff)
                     .widestColumn(0, columns);
 
                 // draw assigned pin behind the need number
                 if (needs.assigned.Contains(name))
-                    drawTextAt2(xNeed, "📌", col, ff);
+                    tt.draw(xNeed, "📌", col, ff);
 
-                dtx = this.Width - twenty;
+                tt.dtx = this.width - N.twenty;
 
-                newLine(+one, true);
+                tt.newLine(+N.one, true);
             }
         }
 
-        private void drawNeedsGrouped(ColonyData.Needs needs, Dictionary<int, float> columns, float rightIndent, float xNeed, float xFC)
+        private void drawNeedsGrouped(Graphics g, TextCursor tt, ColonyData.Needs needs, Dictionary<int, float> columns, float rightIndent, float xNeed, float xFC)
         {
             var isDocked = game.lastDocked != null;
             var dockedAtLinkedFC = game.lastDocked != null && game.cmdrColony.linkedFCs.Keys.Contains(game.lastDocked.MarketID);
@@ -533,15 +534,15 @@ namespace SrvSurvey.plotters
 
                 // render the type name - with a line to the right
                 var cargoTypeTxt = Properties.CommodityCategories.ResourceManager.GetString(cargoType) ?? cargoType;
-                drawTextAt2(ten, cargoTypeTxt, collapseGroup ? C.greenDark : C.orangeDark, GameColors.Fonts.gothic_10);
+                tt.draw(N.ten, cargoTypeTxt, collapseGroup ? C.greenDark : C.orangeDark, GameColors.Fonts.gothic_10);
 
                 if (collapseGroup)
-                    drawTextAt2("  ✔️", C.greenDark, GameColors.Fonts.gothic_10);
+                    tt.draw("  ✔️", C.greenDark, GameColors.Fonts.gothic_10);
 
-                var lx = (int)dtx + eight;
-                var ly = (int)dty + one + Util.centerIn(szBigNumbers.Height, 2);
-                g.DrawLine(C.Pens.orangeDark2, lx, ly, this.Width - four, ly);
-                newLine(true);
+                var lx = (int)tt.dtx + N.eight;
+                var ly = (int)tt.dty + N.one + Util.centerIn(szBigNumbers.Height, 2);
+                g.DrawLine(C.Pens.orangeDark2, lx, ly, this.width - N.four, ly);
+                tt.newLine(true);
 
                 if (collapseGroup) continue;
 
@@ -558,7 +559,7 @@ namespace SrvSurvey.plotters
                     if (needCount == 0) continue;
                     //if (!needs.commodities.ContainsKey(name)) continue;
 
-                    if (flip) g.FillRectangle(brushBackgroundStripe, four, dty - one, this.Width - eight, szBigNumbers.Height + one);
+                    if (flip) g.FillRectangle(brushBackgroundStripe, N.four, tt.dty - N.one, this.width - N.eight, szBigNumbers.Height + N.one);
                     flip = !flip;
 
                     var needTxt = needCount.ToString("N0");
@@ -577,7 +578,7 @@ namespace SrvSurvey.plotters
                         // highlight what we just supplied
                         ff = GameColors.Fonts.gothic_9B;
                         col = C.cyan;
-                        nameTxt = "► " + name;
+                        nameTxt = "► " + nameTxt;
                         needTxt = "...";
                     }
                     //else if (cargoCount > 0)
@@ -607,13 +608,13 @@ namespace SrvSurvey.plotters
 
                     // render needed count
                     var inHold = cargoCount > 0;
-                    drawTextAt2(xNeed, needTxt, col, ff, true)
+                    tt.draw(xNeed, needTxt, col, ff, true)
                         .widestColumn(1, columns);
 
                     // render SHIP cargo count
                     if (cargoCount > 0)
                     {
-                        drawTextAt2(this.Width - eight, cargoCount.ToString("N0"), col, ff, true)
+                        tt.draw(this.width - N.eight, cargoCount.ToString("N0"), col, ff, true)
                             .widestColumn(3, columns);
                     }
 
@@ -657,7 +658,7 @@ namespace SrvSurvey.plotters
                                 // highlight and make and bold if almost there
                                 if (almost) cc = colAlmost;
 
-                                drawTextAt2(xFC, diffTxt, cc, almost ? GameColors.Fonts.gothic_10B : ff, true)
+                                tt.draw(xFC, diffTxt, cc, almost ? GameColors.Fonts.gothic_10B : ff, true)
                                     .widestColumn(2, columns);
                             }
                             else
@@ -675,7 +676,7 @@ namespace SrvSurvey.plotters
 
                                 if (fcAmount == 0) cc = C.redDark;
 
-                                drawTextAt2(xFC, diffTxt, cc, ff, true)
+                                tt.draw(xFC, diffTxt, cc, ff, true)
                                     .widestColumn(2, columns);
                             }
 
@@ -687,7 +688,7 @@ namespace SrvSurvey.plotters
 
                     // draw assigned pin behind the need number
                     if (needs.assigned.Contains(name))
-                        drawTextAt2(xNeed, "📌", col, ff);
+                        tt.draw(xNeed, "📌", col, ff);
 
                     // warn if we have more than needed
                     //if (cargoCount > needCount) col = C.red;
@@ -700,16 +701,16 @@ namespace SrvSurvey.plotters
                         nameTxt += " 🏁";
 
                     // render the name
-                    var sz2 = drawTextAt2(twenty, nameTxt, col, ff)
+                    var sz2 = tt.draw(N.twenty, nameTxt, col, ff)
                             .widestColumn(0, columns);
 
                     if (haveEnough && !nameTxt.EndsWith("❌"))
                     {
-                        var sz3 = drawTextAt2(" ✔️", col == C.green ? C.green : C.greenDark, ff);
+                        var sz3 = tt.draw(" ✔️", col == C.green ? C.green : C.greenDark, ff);
                         (sz2 + sz3).widestColumn(0, columns);
                     }
 
-                    newLine(true);
+                    tt.newLine(true);
                 }
             }
         }

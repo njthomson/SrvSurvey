@@ -570,11 +570,6 @@ namespace SrvSurvey
                 Program.closePlotter<PlotFloatie>();
 
 
-            if (gameIsActive && PlotBuildCommodities.allowPlotter)
-                PlotBuildCommodities.showButCleanFirst();
-            else
-                Program.closePlotter<PlotBuildCommodities>();
-
             if (gameIsActive && PlotFootCombat.allowPlotter)
                 Program.showPlotter<PlotFootCombat>();
 
@@ -1894,7 +1889,8 @@ namespace SrvSurvey
             menuJourney.Items[3].Visible = hasActiveJourney;
             // show REVIEW when there is any journey
             menuJourney.Items[4].Visible = hasActiveJourney;
-            menuJourney.Items[5].Visible = Directory.GetFiles(Path.Combine(CommanderJourney.dataFolder, CommanderSettings.currentOrLastFid), "*.json").Any();
+            var folder = Path.Combine(CommanderJourney.dataFolder, CommanderSettings.currentOrLastFid);
+            menuJourney.Items[5].Visible = Directory.Exists(folder) && Directory.GetFiles(folder, "*.json").Any();
         }
 
         private void menuJourneyBegin_Click(object sender, EventArgs e)

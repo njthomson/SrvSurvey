@@ -914,6 +914,7 @@ namespace SrvSurvey
             if (!comboDirectXDevice.Visible || comboDirectXDevice.Tag != null) return;
 
             var newDeviceId = (comboDirectXDevice.SelectedValue as Guid?) ?? Guid.Empty;
+            Main.form.hook ??= new KeyboardHook();
             if (Main.form.hook.activeDeviceId != newDeviceId)
             {
                 Main.form.hook.stopDirectX();

@@ -355,25 +355,24 @@ namespace SrvSurvey
         private static bool toggleColonyShopping()
         {
             if (game == null || !Game.settings.autoShowPlotBuildCommodities) return true;
-
-            var plotter = Program.getPlotter<PlotBuildCommodities>();
+            var plotter = PlotBase2.getPlotter<PlotBuildCommodities>();
             if (plotter == null)
             {
                 // force show if no plotter
                 PlotBuildCommodities.forceShow = true;
-                Program.showPlotter<PlotBuildCommodities>();
+                PlotBase2.add(game, PlotBuildCommodities.plotDef);
             }
             else if (PlotBuildCommodities.forceShow)
             {
                 // unforce (hide)
                 PlotBuildCommodities.forceShow = false;
-                Program.closePlotter<PlotBuildCommodities>();
+                PlotBase2.remove(PlotBuildCommodities.plotDef);
             }
             else
             {
                 // the plotter exists and was not forced ... toggle forceHide on it
-                plotter.forceHide = !plotter.forceHide;
-                if (!plotter.forceHide) PlotBuildCommodities.forceShow = false;
+                plotter.hidden = !plotter.hidden;
+                if (!plotter.hidden) PlotBuildCommodities.forceShow = false;
             }
 
             return true;
@@ -384,11 +383,11 @@ namespace SrvSurvey
             if (game == null) return true;
 
             // only toggle if the plotter is active
-            var plotter = Program.getPlotter<PlotBuildCommodities>();
+            var plotter = PlotBase2.getPlotter<PlotBuildCommodities>();
             if (plotter != null)
             {
                 PlotBuildCommodities.toggleCollapse = !PlotBuildCommodities.toggleCollapse;
-                plotter.Invalidate();
+                plotter.invalidate();
             }
 
             return true;

@@ -204,15 +204,29 @@ namespace SrvSurvey.widgets
             this.formGrow(growHoriz, growVert);
         }
 
+        public float setMinWidth(float width)
+        {
+            if (width > this.frameSize.Width)
+                this.frameSize.Width = width;
+
+            return this.frameSize.Width;
+        }
+
+        public float setMinHeight(float height)
+        {
+            if (height > this.frameSize.Height)
+                this.frameSize.Height = height;
+
+            return this.frameSize.Height;
+        }
+
         private void formGrow(bool horiz = true, bool vert = false)
         {
             // grow width?
-            if (horiz && this.dtx > this.frameSize.Width)
-                this.frameSize.Width = this.dtx;
+            if (horiz) this.setMinWidth(this.dtx);
 
             // grow height?
-            if (vert && this.dty > this.frameSize.Height)
-                this.frameSize.Height = this.dty;
+            if (vert) this.setMinHeight(this.dty);
         }
 
         public bool resizeNeeded
@@ -223,8 +237,8 @@ namespace SrvSurvey.widgets
         /// <summary> Returns frameSize after increasing it by the given deltas </summary>
         public SizeF pad(float dx = 0, float dy = 0)
         {
-            this.frameSize.Width += dx;
-            this.frameSize.Height += dy;
+            this.frameSize.Width = (float)Math.Ceiling(this.frameSize.Width + dx);
+            this.frameSize.Height = (float)Math.Ceiling(this.frameSize.Height + dy);
 
             return this.frameSize;
         }

@@ -66,7 +66,7 @@ namespace SrvSurvey.game
         {
             Game.log("ColonyData.fetchLatest (from network)");
             // Make plotter it render "updating..."
-            Program.getPlotter<PlotBuildCommodities>()?.startPending();
+            PlotBuildCommodities.startPending();
             try
             {
                 if (buildId == null)
@@ -111,7 +111,7 @@ namespace SrvSurvey.game
             }
             finally
             {
-                Program.getPlotter<PlotBuildCommodities>()?.endPending();
+                PlotBuildCommodities.endPending();
             }
         }
 
@@ -242,12 +242,12 @@ namespace SrvSurvey.game
             else
             {
                 Game.log(diff.formatWithHeader($"Supplying commodities for: {localProject.buildId} ({systemAddress}/{marketId})", "\r\n\t"));
-                Program.getPlotter<PlotBuildCommodities>()?.startPending(diff);
+                PlotBuildCommodities.startPending(diff);
 
                 Game.colony.contribute(localProject.buildId, this.cmdr, diff).continueOnMain(null, () =>
                 {
                     // wait a bit then force plotter to re-render
-                    Task.Delay(500).ContinueWith(t => Program.getPlotter<PlotBuildCommodities>()?.endPending());
+                    Task.Delay(500).ContinueWith(t => PlotBuildCommodities.endPending());
                 });
             }
         }
@@ -308,7 +308,7 @@ namespace SrvSurvey.game
 
             if (totalDiff != 0)
             {
-                Program.getPlotter<PlotBuildCommodities>()?.startPending();
+                PlotBuildCommodities.startPending();
                 var updateProj = new ProjectUpdate(proj.buildId)
                 {
                     commodities = needed,
@@ -335,7 +335,7 @@ namespace SrvSurvey.game
                     Game.log(savedProj);
                 }).justDoIt(() =>
                 {
-                    Program.getPlotter<PlotBuildCommodities>()?.endPending();
+                    PlotBuildCommodities.endPending();
                 });
             }
         }
@@ -349,7 +349,7 @@ namespace SrvSurvey.game
                 await Game.colony.markComplete(match.buildId);
                 match.complete = true;
                 this.Save();
-                Program.closePlotter<PlotBuildCommodities>();
+                PlotBase2.remove(PlotBuildCommodities.plotDef);
                 await this.fetchLatest();
             }
         }
@@ -358,7 +358,7 @@ namespace SrvSurvey.game
         {
             if (!linkedFCs.ContainsKey(marketFile.MarketId)) return;
 
-            Program.getPlotter<PlotBuildCommodities>()?.startPending();
+            PlotBuildCommodities.startPending();
 
             // fetch latest numbers first
             var fc = await Game.colony.getFC(marketFile.MarketId);
@@ -393,7 +393,7 @@ namespace SrvSurvey.game
             }
 
             await Task.Delay(500);
-            Program.getPlotter<PlotBuildCommodities>()?.endPending();
+            PlotBuildCommodities.endPending();
         }
 
         public class Needs

@@ -32,6 +32,7 @@ namespace SrvSurvey
         public double Temperature { get; set; }
 
         public string BodyName { get; set; }
+        public long Balance { get; set; }
         public Destination Destination { get; set; }
         public decimal PlanetRadius { get; set; }
         public string SelectedWeapon { get; set; }
@@ -47,6 +48,7 @@ namespace SrvSurvey
         public HashSet<string> changed = new();
 
         private FileSystemWatcher? fileWatcher;
+        private bool haveRead;
 
         public Status(bool watch)
         {
@@ -99,7 +101,6 @@ namespace SrvSurvey
 
             try
             {
-                this.changed.Clear();
                 var oldFlags = this.Flags;
                 var oldFlags2 = this.Flags2;
 
@@ -111,6 +112,27 @@ namespace SrvSurvey
 
                     // ... parse into tmp object ...
                     var obj = JsonConvert.DeserializeObject<Status>(json);
+
+                    /* TODO: This is not ready ... need a way to safely initialize the credit balance
+                    // to help multi-boxing ... ignore changes if credits AND GuiFocus or fire-group change at the same time
+                    if (haveRead)
+                    {
+                        var fireGroupChanged = obj?.FireGroup != this.FireGroup;
+                        //var fuelChanged = obj?.Fuel?.FuelMain != this.Fuel?.FuelMain || obj?.Fuel?.FuelReservoir != this.Fuel?.FuelReservoir;
+                        var balanceChanged = obj?.Balance != this.Balance;
+                        var guiFocusChanged = obj?.GuiFocus != this.GuiFocus;
+                        if (balanceChanged && (fireGroupChanged || guiFocusChanged))
+                        {
+                            Game.log($"Ignoring status.json change: {obj?.FireGroup} != {this.FireGroup} || {obj?.Balance} != {this.Balance} || {obj?.GuiFocus} vs {this.GuiFocus}");
+                            return;
+                        }
+
+                    // ok to proceed
+                    Game.log($"Accept Status.json change: {obj?.FireGroup} vs {this.FireGroup} || {obj?.Balance} vs {this.Balance} || {obj?.GuiFocus} vs {this.GuiFocus}");
+                    }
+                    //*/
+
+                    this.changed.Clear();
 
                     // ... assign all property values from tmp object
                     var allProps = typeof(Status).GetProperties(Program.InstanceProps);
@@ -167,6 +189,7 @@ namespace SrvSurvey
                     Program.control.Invoke(() => this.StatusChanged(blink));
 
                 //Game.log($"parseStatusFile:\n\t{Flags}\n\t{Flags2}");
+                haveRead = true;
             }
             catch (Exception ex)
             {

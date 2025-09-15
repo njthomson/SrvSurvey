@@ -80,12 +80,12 @@ namespace SrvSurvey
         /// <summary>
         /// Set focus on Elite Dangerous
         /// </summary>
-        public static void setFocusED(IntPtr hwnd = 0)
+        public static void setFocusED(IntPtr hwnd = 0, bool noLog = false)
         {
             if (hwnd == IntPtr.Zero)
                 hwnd = getWindowHandle();
 
-            Game.log($"setFocusED: hwnd: {hwnd}");
+            if (!noLog) Game.log($"setFocusED: hwnd: {hwnd}");
 
             if (hwnd != IntPtr.Zero)
             {

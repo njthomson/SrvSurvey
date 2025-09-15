@@ -132,7 +132,7 @@ namespace SrvSurvey.forms
 
             Game.log($"focusNextWindow: #{nextGameProc.MainWindowHandle} (vs #{edProcs[Elite.procIdx].MainWindowHandle})");
 
-            Elite.setFocusED(nextGameProc.MainWindowHandle);
+            Elite.setFocusED(nextGameProc.MainWindowHandle, true);
         }
 
     }

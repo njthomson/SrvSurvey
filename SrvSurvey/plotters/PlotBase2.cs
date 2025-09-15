@@ -162,7 +162,6 @@ namespace SrvSurvey.plotters
             Bitmap nextFrame = null!;
             do
             {
-                renderCount++;
                 nextFrame = new Bitmap(this.width, this.height);
                 using (var g = Graphics.FromImage(nextFrame))
                 {
@@ -171,11 +170,13 @@ namespace SrvSurvey.plotters
                     var tt = new TextCursor(g, this);
                     var sz = this.doRender(game, g, tt);
                     this.stale = false;
-                    this.setSize((int)sz.Width, (int)sz.Height);
+                    this.setSize((int)Math.Ceiling(sz.Width), (int)Math.Ceiling(sz.Height));
                 }
-                if (renderCount > 4)
+                ++renderCount;
+                Debug.WriteLine($"Render: {name} #{renderCount} => {this.width}, {this.height}, stale: {stale}");
+                if (renderCount > 5)
                 {
-                    Game.log($"Render: {name} #{renderCount} => {this.width}, {this.height}, stale: {stale}");
+                    Application.DoEvents();
                     Debugger.Break();
                 }
             } while (stale && renderCount < 10);
@@ -231,6 +232,8 @@ namespace SrvSurvey.plotters
 
             Game.log($"Overlays.add: {def.name}");
             def.instance = def.ctor(game, def);
+
+            BigOverlay.invalidate();
         }
 
         public static PlotDef? get(string name)

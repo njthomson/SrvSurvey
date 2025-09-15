@@ -1048,10 +1048,11 @@ namespace SrvSurvey.game
                 if (this.journey != null)
                     this.journey.processJournalEntry(entry, true);
 
-                this.onJournalEntry((dynamic)entry); // TODO: <-- move after systemData processes things
-
                 if (this.systemData != null)
                     this.systemData.Journals_onJournalEntry(entry, true);
+
+                // do this after systemData, removing the need for async/deferring things in this file
+                this.onJournalEntry((dynamic)entry);
 
                 // finally, let any active plotters process the entry
                 PlotBase2.processJournalEntry(entry);
@@ -1547,7 +1548,7 @@ namespace SrvSurvey.game
 
             if (lastDocked != null && fcTrackedCargo.Count > 0)
             {
-                Program.getPlotter<PlotBuildCommodities>()?.startPending(fcTrackedCargo);
+                PlotBuildCommodities.startPending(fcTrackedCargo);
                 Game.colony.supplyFC(lastDocked.MarketID, fcTrackedCargo).continueOnMain(null, updatedCargo =>
                 {
                     Game.log(updatedCargo.formatWithHeader("updatedCargo after supplyFC:"));
@@ -1558,7 +1559,7 @@ namespace SrvSurvey.game
                         fc.cargo = updatedCargo;
                         cmdrColony.sumCargoLinkedFCs = ColonyData.getSumCargoFC(cmdrColony.linkedFCs.Values);
                         cmdrColony.Save();
-                        Program.getPlotter<PlotBuildCommodities>()?.endPending();
+                        PlotBuildCommodities.endPending();
                     }
                 });
             }
@@ -1611,7 +1612,7 @@ namespace SrvSurvey.game
                         var marketId = lastDocked.MarketID;
                         // invert the diff as we want it applied to the FC
                         diff = diff.ToDictionary(x => x.Key, x => x.Value * -1);
-                        Program.getPlotter<PlotBuildCommodities>()?.startPending(diff);
+                        PlotBuildCommodities.startPending(diff);
                         Game.colony.supplyFC(marketId, diff).continueOnMain(null, updatedCargo =>
                         {
                             Game.log(updatedCargo.formatWithHeader($"**** updatedCargo after supplyFC: {marketId}"));
@@ -1622,7 +1623,7 @@ namespace SrvSurvey.game
                                 fc.cargo = updatedCargo;
                                 cmdrColony.sumCargoLinkedFCs = ColonyData.getSumCargoFC(cmdrColony.linkedFCs.Values);
                                 cmdrColony.Save();
-                                Program.getPlotter<PlotBuildCommodities>()?.endPending();
+                                PlotBuildCommodities.endPending();
                             }
                         });
                     }
@@ -1631,7 +1632,7 @@ namespace SrvSurvey.game
                 }
             }
 
-            Program.invalidate<PlotBuildCommodities>();
+            PlotBase2.invalidate(nameof(PlotBuildCommodities));
         }
 
         private void onJournalEntry(MarketBuy entry)
@@ -1650,7 +1651,7 @@ namespace SrvSurvey.game
             if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
             {
                 Game.log($"Buying {entry.Count}x {entry.Type} from linked FC marketId: {entry.MarketId}");
-                Program.getPlotter<PlotBuildCommodities>()?.startPending();
+                PlotBuildCommodities.startPending();
                 Game.colony.supplyFC(entry.MarketId, entry.Type, -entry.Count).continueOnMain(null, updatedCargo =>
                 {
                     Game.log(updatedCargo);
@@ -1661,12 +1662,12 @@ namespace SrvSurvey.game
                         fc.cargo = updatedCargo;
                         cmdrColony.sumCargoLinkedFCs = ColonyData.getSumCargoFC(cmdrColony.linkedFCs.Values);
                         cmdrColony.Save();
-                        Program.getPlotter<PlotBuildCommodities>()?.endPending();
+                        PlotBuildCommodities.endPending();
                     }
                 });
             }
 
-            Program.invalidate<PlotBuildCommodities>();
+            PlotBase2.invalidate(nameof(PlotBuildCommodities));
 
         }
         private void onJournalEntry(MarketSell entry)
@@ -1675,7 +1676,7 @@ namespace SrvSurvey.game
             if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
             {
                 Game.log($"Selling {entry.Count}x {entry.Type} to linked FC marketId: {entry.MarketId}");
-                Program.getPlotter<PlotBuildCommodities>()?.startPending();
+                PlotBuildCommodities.startPending();
                 Game.colony.supplyFC(entry.MarketId, entry.Type, entry.Count).continueOnMain(null, updatedCargo =>
                 {
                     Game.log(updatedCargo);
@@ -1686,7 +1687,7 @@ namespace SrvSurvey.game
                         fc.cargo = updatedCargo;
                         cmdrColony.sumCargoLinkedFCs = ColonyData.getSumCargoFC(cmdrColony.linkedFCs.Values);
                         cmdrColony.Save();
-                        Program.getPlotter<PlotBuildCommodities>()?.endPending();
+                        PlotBuildCommodities.endPending();
                     }
                 });
                 /*
@@ -1696,7 +1697,7 @@ namespace SrvSurvey.game
                 cmdrColony.Save();
                 */
 
-                Program.invalidate<PlotBuildCommodities>();
+                PlotBase2.invalidate(nameof(PlotBuildCommodities));
             }
         }
 
@@ -1723,7 +1724,7 @@ namespace SrvSurvey.game
                 }
             }
 
-            Program.invalidate<PlotBuildCommodities>();
+            PlotBase2.invalidate(nameof(PlotBuildCommodities));
         }
 
         private void onJournalEntry(ColonisationContribution entry)
@@ -1766,8 +1767,8 @@ namespace SrvSurvey.game
                 }
             }
 
-            if (PlotBuildCommodities.allowPlotter)
-                PlotBuildCommodities.showButCleanFirst();
+            if (PlotBuildCommodities.allowed(this))
+                PlotBuildCommodities.showButCleanFirst(this);
         }
 
         private static Dictionary<string, string> inventoryItemNameMap = new Dictionary<string, string>()
@@ -2801,8 +2802,8 @@ namespace SrvSurvey.game
             if (Game.settings.logDockToDockTimes)
                 dockTimer = new DockToDockTimer(this, entry, this.lastDocked);
 
-            if (PlotBuildCommodities.allowPlotter)
-                PlotBuildCommodities.showButCleanFirst();
+            if (PlotBuildCommodities.allowed(this))
+                PlotBuildCommodities.showButCleanFirst(this);
         }
 
         public void initMats(CanonnStation station)
