@@ -2559,11 +2559,18 @@ namespace SrvSurvey.game
         private void onJournalEntry(ApproachBody entry)
         {
             this.setLocations(entry);
+
+            // some overlays may want to appear at this time
+            PlotBase2.renderAll(this);
         }
 
         private void onJournalEntry(ApproachSettlement entry)
         {
             this.lastApproachSettlement = entry;
+
+            /* TODO: the ordering with below is important
+            // some overlays may want to appear at this time
+            PlotBase2.renderAll(this);*/
 
             if (entry.Name.StartsWith("$Ancient"))
             {

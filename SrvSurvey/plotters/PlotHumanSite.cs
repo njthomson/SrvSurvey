@@ -133,7 +133,7 @@ namespace SrvSurvey.plotters
             base.OnLoad(e);
 
             // close these, if they happen to be open
-            Program.closePlotter<PlotBioStatus>();
+            PlotBase2.remove(PlotBioStatus.plotDef);
             Program.closePlotter<PlotGrounded>();
 
             this.initializeOnLoad();

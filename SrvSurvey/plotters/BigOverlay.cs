@@ -118,10 +118,12 @@ namespace SrvSurvey.plotters
                         // skip anything not visible
                         if (plotter.hidden) continue;
 
+#if DEBUG
+                        //if (plotter.stale) // for easier debugging of plotter rendering code
+                            plotter.render();
+#else
                         // re-render only if needed
                         if (plotter.stale) plotter.render();
-#if DEBUG
-                        //if (true) plotter.render(); // for easier debugging of plotter rendering code
 #endif
 
                         if (plotter.fade == 0)
@@ -155,7 +157,7 @@ namespace SrvSurvey.plotters
                         if (plotter.name == FormAdjustOverlay.targetName)
                         {
                             var sz = plotter.frame.Size;
-                            var rect = new Rectangle(plotter.left , plotter.top, sz.Width, sz.Height);
+                            var rect = new Rectangle(plotter.left, plotter.top, sz.Width, sz.Height);
                             g.DrawRectangle(GameColors.penYellow4, rect);
                         }
                     }

@@ -48,7 +48,7 @@ namespace SrvSurvey
         public HashSet<string> changed = new();
 
         private FileSystemWatcher? fileWatcher;
-        private bool haveRead;
+        //private bool haveRead;
 
         public Status(bool watch)
         {
@@ -189,7 +189,7 @@ namespace SrvSurvey
                     Program.control.Invoke(() => this.StatusChanged(blink));
 
                 //Game.log($"parseStatusFile:\n\t{Flags}\n\t{Flags2}");
-                haveRead = true;
+                //haveRead = true;
             }
             catch (Exception ex)
             {

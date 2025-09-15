@@ -201,7 +201,7 @@ namespace SrvSurvey.plotters
                 foreach (var organism in body.organisms)
                 {
                     var highlight = !organism.analyzed && ((game.cmdr.scanOne?.genus == organism.genus && game.cmdr.scanOne.body == body.name) || game.cmdr.scanOne?.genus == null);
-                    var col = highlight ? C.cyan: C.orange;
+                    var col = highlight ? C.cyan : C.orange;
 
                     var predictions = body.predictions.Values.Where(p => p.species.genus.name == organism.genus).ToList();
                     var potentialFirstDiscovery = predictions.Any(p => !game.cmdrCodex.isDiscovered(p.entryId));
@@ -272,31 +272,27 @@ namespace SrvSurvey.plotters
                     if (volCol == VolColor.Gold) col = C.Bio.gold;
                     if (displayName?.Length > 0)
                         tt.draw(N.twoEight, displayName, col);
+
+                    // strike-through if already analyzed
                     if (organism.analyzed)
-                    {
-                        // strike-through if already analyzed
-                        var y = tt.dty + N.four;
-                        g.DrawLine(GameColors.penGameOrange1, N.twoEight, y, tt.dtx, y);
-                        g.DrawLine(GameColors.penGameOrangeDim1, N.twoEight + 1, y + 1, tt.dtx + 1, y + 1);
-                        //g.DrawLine(GameColors.penGameOrange1, twoEight, y, this.ClientSize.Width - oneTwo, y);
-                        //g.DrawLine(GameColors.penGameOrangeDim1, twoEight + 1, y + 1, this.ClientSize.Width - oneTwo + 1, y + 1);
-                    }
+                        tt.strikeThroughLast();
+
                     tt.newLine(+N.one, true);
 
                     // 2nd line - right
                     var sz = tt.draw(
                         this.width - N.ten,
                         Util.getMinMaxCredits(minReward, maxReward),
-                        highlight ? C.cyan: C.orange,
+                        highlight ? C.cyan : C.orange,
                         null, true);
 
                     // 2nd line - left
-                    col = highlight ? C.cyan: C.orange;
+                    col = highlight ? C.cyan : C.orange;
                     if (!highlight && shouldBeGold(discoveryPrefix)) col = C.Bio.gold;
 
                     tt.dtx = N.twoEight;
                     if (discoveryPrefix != null)
-                        tt.draw(discoveryPrefix, shouldBeGold(discoveryPrefix) ? C.Bio.gold : col);
+                        drawEmoji(tt, discoveryPrefix, shouldBeGold(discoveryPrefix) ? C.Bio.gold : col);
 
                     var leftText = displayName != (organism.genusLocalized ?? organism.bioMatch?.genus.locName) || organism.entryId > 0
                         ? organism.genusLocalized
@@ -352,6 +348,18 @@ namespace SrvSurvey.plotters
 
             // resize window as necessary
             return tt.pad(+N.ten, +N.ten);
+        }
+
+        private void drawEmoji(TextCursor tt, string emoji, Color col, Font? font = null)
+        {
+            // glyphs change size using TextRenderer, so use a different font and adjust things a little
+            font ??= GameColors.Fonts.segoeEmoji_8;
+
+            tt.dty -= N.one;
+            tt.draw(emoji, col, font);
+            tt.dty += N.one;
+
+            tt.dtx += N.two;
         }
 
         private void drawTimerBar(Graphics g)
@@ -419,13 +427,13 @@ namespace SrvSurvey.plotters
                     //  🎂 🧁 🍥 ‡† ⁑ ⁂ ※ ⁜‼•🟎 🟂🟎🟒🟈⚑⚐⛿🏁🎌⛳🏴🏳🟎✩✭✪𓇽𓇼 🚕🛺🚐🚗🚜🚛🛬🚀🛩️☀️🌀☄️🔥⚡🌩️🌠☀️
                     // 💫 🧭🧭🌍🌐🌏🌎🗽♨️🌅
                     // 💎🪐🎁🍥🍪🧊⛩️🌋⛰️🗻❄️🎉🧨🎁🧿🎲🕹️📣🎨🧵🔇🔕🎚️🎛️📻📱📺💻🖥️💾📕📖📦📍📎✂️📌📐📈💼🔰🛡️🔨🗡️🔧🧪🚷🧴📵🧽➰🔻🔺🔔🔘🔳🔲🏁🚩🏴✔️✖️❌➕➖➗ℹ️📛⭕☑️📶🔅🔆⚠️⛔🚫🧻↘️⚰️🧯🧰📡🧬⚗️🔩⚙️🔓🗝️🗄️📩🧾📒📰🗞️🏷️📑🔖💡🔋🏮🕯🔌📞☎️💍👑🧶🎯🔮🧿🎈🏆🎖️🌌💫🚧💰
-                    col = highlight ? C.cyan: C.orange;
+                    col = highlight ? C.cyan : C.orange;
                     if (variant.isRegionalNew)
-                        tt.draw("☀", C.Bio.white);
+                        drawEmoji(tt, "☀", C.Bio.white, GameColors.Fonts.segoeEmoji_6);
                     else if (variant.isCmdrNew)
-                        tt.draw("⚑", C.Bio.gold);
+                        drawEmoji(tt, "⚑", C.Bio.gold);
                     else if (variant.isCmdrRegionalNew)
-                        tt.draw($"⚐", variant.isGold ? C.Bio.gold : col);
+                        drawEmoji(tt, "⚐", variant.isGold ? C.Bio.gold : col);
 
                     var displayName = variant.variant.locColorName;
                     if (isLegacy)
@@ -464,11 +472,11 @@ namespace SrvSurvey.plotters
             // 2nd/last line LEFT - genus name
             tt.dtx = N.twoEight;
             if (prediction.hasRegionalNew)
-                tt.draw("☀", C.Bio.white);
+                drawEmoji(tt, "☀", C.Bio.white, GameColors.Fonts.segoeEmoji_6);
             else if (prediction.hasCmdrNew)
-                tt.draw("⚑", C.Bio.gold);
+                drawEmoji(tt, "⚑", C.Bio.gold);
             else if (prediction.hasCmdrRegionalNew)
-                tt.draw("⚐", prediction.isGold ? C.Bio.gold : col);
+                drawEmoji(tt, "⚐", prediction.isGold ? C.Bio.gold : col);
 
             if (prediction.hasRegionalNew) col = C.Bio.white;
             else if (!highlight && prediction.isGold) col = C.Bio.gold;
@@ -526,13 +534,9 @@ namespace SrvSurvey.plotters
                 //if (!highlight && potentialFirstDiscovery) b = (SolidBrush)GameColors.Bio.brushGold;
                 var sz2 = tt.draw(N.eight, body.shortName, col, GameColors.fontMiddle);
 
+                // strike-through if already analyzed
                 if (scansComplete)
-                {
-                    // strike-through if already analyzed
-                    var y = tt.dty + sz2.Height / 2;
-                    g.DrawLine(highlight ? GameColors.penCyan1 : GameColors.penGameOrange1, tt.dtx, y, tt.dtx - sz2.Width, y);
-                    g.DrawLine(highlight ? GameColors.penDarkCyan1 : GameColors.penGameOrangeDim1, tt.dtx + 1, y + 1, tt.dtx - sz2.Width + 1, y + 1);
-                }
+                    tt.strikeThroughLast();
 
                 tt.dtx = boxLeft;
                 tt.dtx += drawBodyBars(g, body, tt.dtx, tt.dty, highlight);

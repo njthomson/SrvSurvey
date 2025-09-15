@@ -77,6 +77,7 @@ namespace SrvSurvey.plotters
             this.stale = true;
         }
 
+        public Size size => new Size(width, height);
         public Rectangle rect => new Rectangle(left, top, width, height);
 
         public void setPosition(Rectangle? rect = null)

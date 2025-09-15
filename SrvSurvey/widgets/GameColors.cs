@@ -752,6 +752,9 @@ namespace SrvSurvey.widgets
             // TODO: confirm these Pixel sized fonts scale properly with large fonts
             public static Font typewriter_p4 = new Font("Lucida Console", 4F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Pixel);
             public static Font typewriter_p6 = new Font("Lucida Console", 6F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Pixel);
+
+            public static Font segoeEmoji_6 = new Font("Segoe UI Emoji", 6F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font segoeEmoji_8 = new Font("Segoe UI Emoji", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
         }
 
         #endregion

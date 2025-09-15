@@ -8,27 +8,37 @@ using Res = Loc.PlotBioStatus;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(480, 80)]
-    internal partial class PlotBioStatus : PlotBase, PlotterForm
+    internal partial class PlotBioStatus : PlotBase2
     {
-        public static bool allowPlotter
+        #region def + statics
+
+        public static PlotDef plotDef = new PlotDef()
         {
-            get => SystemData.isWithinLastDssDuration()
-                || Game.settings.autoShowBioSummary
-                && Game.activeGame?.systemBody != null
+            name = nameof(PlotBioStatus),
+            allowed = allowed,
+            ctor = (game, def) => new PlotBioStatus(game, def),
+            defaultSize = new Size(480, 80),
+        };
+
+        public static bool allowed(Game game)
+        {
+            return (SystemData.isWithinLastDssDuration() || Game.settings.autoShowBioSummary)
+                && game.systemBody != null
                 && !Game.settings.buildProjectsSuppressOtherOverlays
-                && Game.activeGame.systemBody.bioSignalCount > 0
-                //&& (Game.activeGame.systemStation == null || !Game.settings.autoShowHumanSitesTest)
-                && !Game.activeGame.hidePlottersFromCombatSuits
-                && !Game.activeGame.status.Docked
-                && !Game.activeGame.isShutdown
-                && !Game.activeGame.atMainMenu
-                && !Game.activeGame.status.InTaxi
-                && !Game.activeGame.status.FsdChargingJump
+                && game.systemBody.bioSignalCount > 0
+                //&& (game.systemStation == null || !Game.settings.autoShowHumanSitesTest)
+                && !game.hidePlottersFromCombatSuits
+                && !game.status.Docked
+                && !game.isShutdown
+                && !game.atMainMenu
+                && !game.status.InTaxi
+                && !game.status.FsdChargingJump
                 && !PlotGuardians.allowPlotter && !Program.isPlotter<PlotGuardians>()
                 && !PlotHumanSite.allowPlotter && !Program.isPlotter<PlotHumanSite>()
-                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.CommsPanel, GameMode.SAA, GameMode.Codex);
+                && game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.CommsPanel, GameMode.SAA, GameMode.Codex);
         }
+
+        #endregion
 
         private string? lastCodexScan;
         public static string? lastEntryId;
@@ -38,8 +48,10 @@ namespace SrvSurvey.plotters
         private Clause? temperatureClause;
         private TempRangeDiffs? tempRangeDiffs;
 
-        private PlotBioStatus() : base()
+        private PlotBioStatus(Game game, PlotDef def) : base(game, def)
         {
+            this.font = GameColors.fontSmall;
+
             if (game.cmdr.scanOne?.entryId > 0)
             {
                 lastEntryId = game.cmdr.scanOne.entryId.ToString();
@@ -47,32 +59,34 @@ namespace SrvSurvey.plotters
                 var match = Game.codexRef.matchFromEntryId(lastEntryId);
                 this.hasImage = match.variant.imageUrl != null;
             }
+
+            tempRangeDiffs = new TempRangeDiffs(width - N.ten, N.twoFour);
         }
 
-        public override bool allow { get => PlotBioStatus.allowPlotter; }
-
-        protected override void OnLoad(EventArgs e)
+        protected override void onStatusChange(Status status)
         {
-            this.Width = PlotBase.scaled(480);
-            this.Height = PlotBase.scaled(80);
-            this.initializeOnLoad();
+            if (this.lastTemp != status.Temperature) this.invalidate();
+            this.lastTemp = status.Temperature;
 
-            tempRangeDiffs = new TempRangeDiffs(this.ClientSize.Width - ten, N.twoFour);
-        }
-
-        protected override void Status_StatusChanged(bool blink)
-        {
-            if (this.IsDisposed) return;
-
-            if (this.lastTemp != game.status.Temperature)
-                this.Invalidate();
-            this.lastTemp = game.status.Temperature;
-
+            /* still needed? I think not
             // hide ourselves whilst FSD is charging to jump systems
-            if ((game.status.FsdChargingJump || !this.allow || !Elite.gameHasFocus) && !Debugger.IsAttached)
-                this.setOpacity(0);
-            else if (this.Opacity == 0 && this.allow && Elite.gameHasFocus)
-                this.resetOpacity();
+            var allowed = PlotBioStatus.allowed(game);
+            if ((status.FsdChargingJump || !allowed || !Elite.gameHasFocus) && !Debugger.IsAttached)
+                this.hide();
+            else if (this.hidden && allowed && Elite.gameHasFocus)
+                this.show(); */
+
+            if (status.changed.Contains("mode"))
+            {
+                if (game.cmdr.scanOne?.entryId > 0 && this.lastScanOneEntryId != game.cmdr.scanOne.entryId && Debugger.IsAttached)
+                    this.prepTemp(game.cmdr.scanOne.entryId);
+
+                this.lastScanOneEntryId = game.cmdr.scanOne?.entryId;
+
+                /* still needed? I think not
+                if (game.systemBody == null || game.systemBody.bioSignalCount == 0)
+                    PlotBase2.remove(PlotBioStatus.plotDef);*/
+            }
         }
 
         #region journal events
@@ -92,7 +106,7 @@ namespace SrvSurvey.plotters
                 else
                     this.lastCodexScan += $" {Util.credits(match.species.reward)}";
 
-                this.Invalidate();
+                this.invalidate();
             }
         }
 
@@ -103,7 +117,7 @@ namespace SrvSurvey.plotters
             lastEntryId = match.entryId.ToString();
             this.hasImage = match.variant.imageUrl != null;
 
-            this.Invalidate();
+            this.invalidate();
         }
 
         protected override void onJournalEntry(SendText entry)
@@ -117,98 +131,78 @@ namespace SrvSurvey.plotters
 
         #endregion
 
-        protected override void Game_modeChanged(GameMode newMode, bool force)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
-            if (this.IsDisposed) return;
-
-            base.Game_modeChanged(newMode, force);
-
-            if (game.cmdr.scanOne?.entryId > 0 && this.lastScanOneEntryId != game.cmdr.scanOne.entryId && Debugger.IsAttached)
-                this.prepTemp(game.cmdr.scanOne.entryId);
-            this.lastScanOneEntryId = game.cmdr.scanOne?.entryId;
-
-            if (game.systemBody == null || game.systemBody.bioSignalCount == 0)
-                Program.closePlotter<PlotBioStatus>();
-        }
-
-        protected override void onPaintPlotter(PaintEventArgs e)
-        {
-            if (game?.systemBody == null) return;
+            if (game?.systemBody == null) return frame.Size;
+            tt.padVertical = 6;
+            tt.dty = N.eight;
 
             var scanOne = game.cmdr.scanOne;
             if (game.systemBody.organisms?.Count > 0)
             {
-                g.DrawString(
-                    Res.Header.format(game.systemBody.bioSignalCount, game.systemBody.countAnalyzedBioSignals),
-                    GameColors.fontSmall, GameColors.brushGameOrange, four, eight);
+                tt.draw(N.four, Res.Header.format(game.systemBody.bioSignalCount, game.systemBody.countAnalyzedBioSignals));
 
                 var organism = scanOne == null ? null : game.systemBody?.organisms?.FirstOrDefault(_ => _.species == scanOne.species);
                 if (organism == null)
                 {
-                    this.showAllGenus(g);
+                    this.showAllGenus(g, tt);
 
                     // warn if scan is from another body
                     if (scanOne?.body != null && scanOne.body != game.systemBody?.name)
                     {
                         var matchGenus = Game.codexRef.matchFromGenus(scanOne.genus);
-                        var sz = this.drawFooterText(g, Res.WarningStaleScans.format(matchGenus?.locName, scanOne.body), GameColors.brushRed);
+                        var sz = tt.drawFooter(Res.WarningStaleScans.format(matchGenus?.locName, scanOne.body), C.red);
 
-                        var y = ClientSize.Height - twenty;
-                        var w = (ClientSize.Width - sz.Width - oneSix) / 2;
-                        g.FillRectangle(GameColors.brushShipDismissWarning, four, y, w, oneFour);
-                        g.FillRectangle(GameColors.brushShipDismissWarning, ClientSize.Width - four - w, y, w, oneFour);
+                        var y = height - N.twenty;
+                        var w = (width - sz.Width - N.oneSix) / 2;
+                        g.FillRectangle(GameColors.brushShipDismissWarning, N.four, y, w, N.oneFour);
+                        g.FillRectangle(GameColors.brushShipDismissWarning, width - N.four - w, y, w, N.oneFour);
                     }
                 }
                 else
-                    this.showCurrentGenus(g, organism);
+                    this.showCurrentGenus(g, tt, organism);
 
-                this.drawValueCompletion(g);
+                this.drawValueCompletion(g, tt);
             }
             else
             {
                 // show a message if cmdr forgot to DSS the body
-                var msg = Res.DssRequired;
-                var mid = this.Size / 2;
-                var font = GameColors.fontSmall;
-                var sz = g.MeasureString(msg, GameColors.fontMiddle);
-                var tx = mid.Width - (sz.Width / 2);
-                var ty = oneSix;
-                g.DrawString(msg, GameColors.fontMiddle, GameColors.brushCyan, tx, ty);
+                tt.drawCentered(N.oneSix, Res.DssRequired, C.cyan, GameColors.fontMiddle);
             }
 
             if (scanOne == null)
             {
                 var allScanned = game.systemBody!.countAnalyzedBioSignals == game.systemBody.bioSignalCount;
                 if (allScanned && game.systemBody.firstFootFall)
-                    this.drawFooterText(g, Res.FooterAllScannedFF);
+                    tt.drawFooter(Res.FooterAllScannedFF);
                 else if (allScanned)
-                    this.drawFooterText(g, Res.FooterAllScanned, GameColors.brushGameOrange);
+                    tt.drawFooter(Res.FooterAllScanned);
                 else if (this.lastCodexScan != null)
                 {
-                    this.drawFooterText(g, this.lastCodexScan, GameColors.brushCyan);
+                    tt.drawFooter(this.lastCodexScan, C.cyan);
                     if (lastEntryId != null && !Game.settings.tempRange_TEST)
-                        this.drawHasImage(g, this.Width - threeSix, this.Height - threeSix);
+                        this.drawHasImage(g, this.width - N.threeSix, this.height - N.threeSix);
                 }
                 else if (game.systemBody.firstFootFall && Random.Shared.NextDouble() > 0.5d)
-                    this.drawFooterText(g, Res.FooterApplyFF, GameColors.brushCyan);
-                //else if (!game.systemBody.wasMapped && game.systemBody.countAnalyzedBioSignals == 0 && Game.settings.useExternalData && Game.settings.autoLoadPriorScans && Program.getPlotter<PlotPriorScans>() == null)
-                //    this.drawFooterText(g, "Potential first footfall - send '.ff' to confirm", GameColors.brushCyan);
+                    tt.drawFooter(Res.FooterApplyFF, C.cyan);
                 else
-                    this.drawFooterText(g, Res.FooterUseCompScanner);
+                    tt.drawFooter(Res.FooterUseCompScanner);
             }
+
+            return PlotBioStatus.plotDef.defaultSize;
         }
 
-        private void showCurrentGenus(Graphics g, SystemOrganism organism)
+        private void showCurrentGenus(Graphics g, TextCursor tt, SystemOrganism organism)
         {
-            float y = twoEight;
+            float y = N.twoEight;
 
             // left circle - always filled
-            var r = new RectangleF(eight, y, twoFour, twoFour);
+            var r = new RectangleF(N.eight, y, N.twoFour, N.twoFour);
             g.FillEllipse(GameColors.brushGameOrangeDim, r);
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
             // middle circle - filled after scan two
-            r = new RectangleF(forty, y, twoFour, twoFour);
+            r = new RectangleF(N.forty, y, N.twoFour, N.twoFour);
             if (game.cmdr.scanTwo != null)
             {
                 g.FillEllipse(GameColors.brushGameOrangeDim, r);
@@ -220,13 +214,13 @@ namespace SrvSurvey.plotters
             }
 
             // right circle - always empty
-            r = new RectangleF(sevenTwo, y, twoFour, twoFour);
+            r = new RectangleF(N.sevenTwo, y, N.twoFour, N.twoFour);
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
             // Species name
             var txt = organism.variantLocalized ?? ""; // or species?
-            var x = oneOhFour;
-            var rr = new RectangleF(x, y - eight, this.Width - x - eight - ImageResources.picture.Width, forty);
+            var x = N.oneOhFour;
+            var rr = new RectangleF(x, y - N.eight, this.width - x - N.eight - ImageResources.picture.Width, N.forty);
 
             var f = GameColors.fontBig;
             var sz = g.MeasureString(txt, f, (int)rr.Width);
@@ -236,11 +230,9 @@ namespace SrvSurvey.plotters
             sz = g.MeasureString(txt, f, (int)rr.Width);
             if (sz.Height > rr.Height) f = GameColors.font14;
 
-            rr.Height += ten;
-            g.DrawString(
-                txt,
-                f, GameColors.brushCyan,
-                rr); // x, y - eight);
+            rr.Height += N.ten;
+            tt.dty = rr.Top;
+            tt.drawWrapped(rr.Left, txt, C.cyan, f);
 
             // Reward
             if (organism.reward > 0)
@@ -248,13 +240,11 @@ namespace SrvSurvey.plotters
                 var reward = game.systemBody!.firstFootFall ? organism.reward * 5 : organism.reward;
                 var txt2 = Util.credits(reward);
                 if (game.systemBody.firstFootFall) txt2 += " " + Res.SuffixFF;
-                g.DrawString(
-                    txt2,
-                    GameColors.fontSmall, GameColors.brushCyan,
-                    four, sixTwo);
+                tt.dty = N.sixTwo;
+                tt.draw(N.four, txt2, C.cyan);
             }
 
-            this.drawScale(g, organism.range);
+            this.drawScale(g, tt, organism.range);
 
             if (Game.settings.tempRange_TEST)
             {
@@ -264,7 +254,7 @@ namespace SrvSurvey.plotters
                     this.tempRangeDiffs?.renderBodyOnly(g);
             }
             else if (lastEntryId != null)
-                this.drawHasImage(g, this.Width - threeFour, twoFour);
+                this.drawHasImage(g, this.width - N.threeFour, N.twoFour);
         }
 
         private void drawHasImage(Graphics g, float x, float y)
@@ -272,90 +262,63 @@ namespace SrvSurvey.plotters
             g.DrawIcon(ImageResources.picture, (int)x, (int)y);
             if (!this.hasImage)
             {
-                y += two;
-                g.DrawLine(GameColors.penDarkRed4, x, y, x + thirty, y + twoEight);
-                g.DrawLine(GameColors.penDarkRed4, x, y + twoEight, x + thirty, y);
+                y += N.two;
+                g.DrawLine(GameColors.penDarkRed4, x, y, x + N.thirty, y + N.twoEight);
+                g.DrawLine(GameColors.penDarkRed4, x, y + N.twoEight, x + N.thirty, y);
             }
         }
 
-        private void drawScale(Graphics g, float dist)
+        private void drawScale(Graphics g, TextCursor tt, float dist)
         {
-            float pad = eight;
-
-            g.ResetTransform();
-
             var txt = Util.metersToString(dist);
-            var txtSz = g.MeasureString(txt, GameColors.fontSmall);
-            var x = this.Width - pad - txtSz.Width - ten;
-            var y = this.Height - pad - txtSz.Height + two;
 
-            g.DrawString(txt, GameColors.fontSmall, GameColors.brushCyan,
-                x, y,
-                StringFormat.GenericTypographic);
+            tt.dty = this.height - N.ten - N.ten; // last 10 is for text height
+            var sz = tt.drawRight(this.width - N.oneEight, txt, C.cyan);
 
-            x -= pad;
-            y += pad - two;
+            var x = tt.dtx - sz.Width - N.ten;
+            var y = tt.dty + N.five;
 
             var bar = PlotBase.scaled(dist * 0.25f);
 
             g.DrawLine(GameColors.penCyan2, x, y, x - bar, y); // bar
-            g.DrawLine(GameColors.penCyan2, x, y - four, x, y + four); // right edge
-            g.DrawLine(GameColors.penCyan2, x - bar, y - four, x - bar, y + four); // left edge
+            g.DrawLine(GameColors.penCyan2, x, y - N.four, x, y + N.four); // right edge
+            g.DrawLine(GameColors.penCyan2, x - bar, y - N.four, x - bar, y + N.four); // left edge
         }
 
-        private void drawValueCompletion(Graphics g)
+        private void drawValueCompletion(Graphics g, TextCursor tt)
         {
-            float pad = eight;
-
-            g.ResetTransform();
-
             // use a simpler percentage
             var percent = 100.0f / (float)game.systemBody!.bioSignalCount * (float)game.systemBody.countAnalyzedBioSignals;
             var txt = $" {percent:N0}%";
-            var txtSz = g.MeasureString(txt, GameColors.fontSmall);
-            var x = this.Width - pad - txtSz.Width - ten;
-            var y = pad;
 
             var b = percent < 100 ? GameColors.brushCyan : GameColors.brushGameOrange;
-            g.DrawString(txt, GameColors.fontSmall, b,
-                x, y,
-                StringFormat.GenericTypographic);
 
-            float length = hundred;
-            //var scannedLength = 20; // ratio * data.sumAnalyzed;
+            tt.dty = N.eight;
+            var sz = tt.drawRight(this.width - N.oneEight, txt, b.Color);
 
-            x = this.Width - pad - txtSz.Width - length - ten;
-            y += pad - two;
+            float length = N.hundred;
+            var x = tt.dtx - length - sz.Width - N.eight;
+            var y = tt.dty + N.five;
 
             // known un-scanned - solid blue line
             g.DrawLine(GameColors.penCyan4, x, y, x + length, y);
 
             // already scanned value - orange bar
-            g.FillRectangle(GameColors.brushGameOrange, x, nine, PlotBase.scaled(percent), ten);
+            g.FillRectangle(GameColors.brushGameOrange, x, N.nine, PlotBase.scaled(percent), N.ten);
 
             // active scan organism value - solid blue bar
             if (game.cmdr.scanOne != null)
-                g.FillRectangle(GameColors.brushCyan, x + PlotBase.scaled(percent), ten, length / (float)game.systemBody!.bioSignalCount, eight);
+                g.FillRectangle(GameColors.brushCyan, x + PlotBase.scaled(percent), N.ten - 0.5f, length / (float)game.systemBody!.bioSignalCount, N.eight);
         }
 
-        private void showAllGenus(Graphics g)
+        private void showAllGenus(Graphics g, TextCursor tt)
         {
             // all the Genus names
-            float x = twoFour;
-            float y = twoTwo;
+            tt.dtx = N.twoFour;
+            tt.dty = N.twoTwo;
             var body = game.systemBody;
 
-            if (body?.organisms == null || body.organisms.Count == 0)
-            {
-                Game.log($"Why is game.systemBody!.organisms NULL ??");
-                g.DrawString(
-                    Res.SomethingWrong,
-                    GameColors.fontSmall,
-                    Brushes.OrangeRed,
-                    x, y);
-
-                return;
-            }
+            if (body?.organisms == null || body.organisms.Count == 0) return;
 
             var allScanned = true;
             foreach (var organism in body.organisms)
@@ -371,28 +334,20 @@ namespace SrvSurvey.plotters
                     txt += $"|{organism.range}m";
                 }
 
-                var sz = g.MeasureString(txt, GameColors.fontSmall);
-                if (x + sz.Width > this.Width - oneSix)
+                var sz = TextRenderer.MeasureText(g, txt, this.font);
+                if (tt.dtx + sz.Width > this.width - N.oneSix)
                 {
-                    x = twoFour;
-                    y += sz.Height;
+                    tt.dtx = N.twoFour;
+                    tt.newLine();
                 }
 
-                g.DrawString(
-                    txt,
-                    GameColors.fontSmall,
-                    organism.analyzed ? GameColors.brushGameOrange : GameColors.brushCyan,
-                    x, y);
+                tt.draw(txt, organism.analyzed ? C.orange : C.cyan);
 
+                // strike-through if already analyzed
                 if (organism.analyzed)
-                {
-                    // strike-through if already analyzed
-                    var ly = (int)(y + sz.Height * .35f);
-                    g.DrawLine(GameColors.penGameOrange1, x, ly, x + sz.Width, ly);
-                    g.DrawLine(GameColors.penGameOrangeDim1, x + 1, ly + 1, x + sz.Width + 1, ly + 1);
-                }
+                    tt.strikeThroughLast();
 
-                x += sz.Width + eight;
+                tt.dtx += N.eight;
             }
 
             // geo signals?
@@ -404,29 +359,20 @@ namespace SrvSurvey.plotters
                     // TODO: use a widget
                     var txt = Res.GeoN.format(n + 1);
 
-                    var sz = g.MeasureString(txt, GameColors.fontSmall);
-                    if (x + sz.Width > this.Width - oneSix)
+                    var sz = TextRenderer.MeasureText(g, txt, this.font);
+                    if (tt.dtx + sz.Width > this.width - N.oneSix)
                     {
-                        x = twoFour;
-                        y += sz.Height;
+                        tt.dtx = N.twoFour;
+                        tt.newLine();
                     }
 
-                    g.DrawString(
-                        txt,
-                        GameColors.fontSmall,
-                        true ? GameColors.brushGameOrange : GameColors.brushCyan,
-                        x, y
-                    );
+                    tt.draw(txt);
 
+                    // strike-through if already scanned
                     if (n + 1 <= body.geoSignalNames?.Count)
-                    {
-                        // strike-through if already analyzed
-                        var ly = (int)(y + sz.Height * .35f);
-                        g.DrawLine(GameColors.penGameOrange1, x, ly, x + sz.Width, ly);
-                        g.DrawLine(GameColors.penGameOrangeDim1, x + 1, ly + 1, x + sz.Width + 1, ly + 1);
-                    }
+                        tt.strikeThroughLast();
 
-                    x += sz.Width + eight;
+                    tt.dtx += N.eight;
                     n++;
                 }
             }
@@ -435,32 +381,15 @@ namespace SrvSurvey.plotters
                 this.tempRangeDiffs?.renderBodyOnly(g);
         }
 
-        protected SizeF drawFooterText(Graphics g, string msg, Brush? brush = null)
-        {
-            if (g == null) return SizeF.Empty;
-
-            // draw heading text (center bottom)
-            g.ResetTransform();
-            g.ResetClip();
-
-            var mid = this.Size / 2;
-            var font = GameColors.fontSmall;
-            var sz = g.MeasureString(msg, font);
-            var tx = mid.Width - (sz.Width / 2);
-            var ty = this.Height - sz.Height - 5;
-
-            g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);
-            return sz;
-        }
-
-        private void drawTemperatureBar(long entryId)
+        /*
+        private void drawTemperatureBar(Graphics g, long entryId)
         {
             if (game.systemBody == null) return;
             var bodyDefaultTemp = (float)game.systemBody.surfaceTemperature;
-            var top = twoFour;
+            var top = N.twoFour;
 
             var h = 40f;
-            var x = this.ClientSize.Width - ten;
+            var x = this.width - N.ten;
             g.DrawLine(GameColors.penGameOrange1, x, top, x, top + (h / 2));
 
             var y1 = 20f;
@@ -472,8 +401,8 @@ namespace SrvSurvey.plotters
                 var max = temperatureClause.max.Value;
 
                 // red and blue bars are fixed at either end of the line
-                g.DrawLine(GameColors.penRed2, x - ten, top, x + two, top);
-                g.DrawLine(GameColors.penCyan2, x - ten, top + h, x + two, top + h);
+                g.DrawLine(GameColors.penRed2, x - N.ten, top, x + N.two, top);
+                g.DrawLine(GameColors.penCyan2, x - N.ten, top + h, x + N.two, top + h);
 
                 // draw other lines between those relative to the temperature range
                 var tempRange = max - min;
@@ -482,14 +411,14 @@ namespace SrvSurvey.plotters
                 // "default" surface temperature
                 var dD = bodyDefaultTemp - min;
                 var yD = top + h - (dD * dTemp);
-                g.DrawLine(GameColors.penGameOrange2, x - five, yD, x + five, yD);
+                g.DrawLine(GameColors.penGameOrange2, x - N.five, yD, x + N.five, yD);
 
                 // current cmdr's temp (if outside on foot)
                 if (game.status.Temperature > 0)
                 {
                     var dCmdr = bodyDefaultTemp - min;
                     var yCmdr = top + h - (dCmdr * dTemp);
-                    g.DrawLine(GameColors.penGameOrange2, x - five, yCmdr, x + five, yCmdr);
+                    g.DrawLine(GameColors.penGameOrange2, x - N.five, yCmdr, x + N.five, yCmdr);
                 }
 
                 return;
@@ -500,12 +429,13 @@ namespace SrvSurvey.plotters
             {
                 // relative line for current live temp
                 var y2 = y1 - (float)(game.status.Temperature - game.systemBody.surfaceTemperature);
-                g.DrawLine(GameColors.penYellow4, x - two, top + y2, x + five, top + y2);
+                g.DrawLine(GameColors.penYellow4, x - N.two, top + y2, x + N.five, top + y2);
             }
 
             // base line for body "surface temp"
-            g.DrawLine(GameColors.penGameOrange2, x - five, top + y1, x + five, top + y1);
+            g.DrawLine(GameColors.penGameOrange2, x - N.five, top + y1, x + N.five, top + y1);
         }
+        */
 
         private void prepTemp(long entryId)
         {

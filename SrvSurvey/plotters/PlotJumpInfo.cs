@@ -52,7 +52,7 @@ namespace SrvSurvey.plotters
             this.initFromRoute();
 
             // make sure these are closed
-            Program.closePlotter<PlotBioStatus>();
+            PlotBase2.remove(PlotBioStatus.plotDef);
             Program.closePlotter<PlotGuardianStatus>();
         }
 

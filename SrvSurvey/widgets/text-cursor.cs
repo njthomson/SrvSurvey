@@ -21,6 +21,9 @@ namespace SrvSurvey.widgets
         public SizeF lastTextSize { get; private set; }
         public SizeF frameSize;
 
+        public int padVertical;
+        public int padHorizontal;
+
         public TextCursor(Graphics g, Control ctrl)
         {
             this.g = g;
@@ -106,24 +109,72 @@ namespace SrvSurvey.widgets
             return this.lastTextSize;
         }
 
-        /* /// <summary> Draw bottom/center aligned </summary>
-        public SizeF drawFooter(string txt, Color? col, Font? font = null)
-        {
-            var footerFlags = flags | TextFormatFlags.Bottom | TextFormatFlags.HorizontalCenter;
 
+        public SizeF drawRight(float tx, string txt, Color? col = null, Font? font = null)
+        {
+            return draw(tx, txt, col, font, true);
+        }
+
+        public SizeF drawCentered(string txt, Color? col = null, Font? font = null)
+        {
+            return drawCentered(this.dty, txt, col, font);
+        }
+
+        public SizeF drawCentered(float ty, string txt, Color? col = null, Font? font = null)
+        {
             col = col ?? this.color;
             font = font ?? this.font;
+
+            var centerFlags = flags | TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter;
+
+            this.lastTextSize = TextRenderer.MeasureText(txt, font, Size.Empty, centerFlags);
+
+            var rect = new Rectangle(
+                padHorizontal,
+                this.containerHeight - padVertical - (int)this.lastTextSize.Height,
+                this.containerWidth - (padHorizontal * 2),
+                (int)this.lastTextSize.Height
+            );
+
+            TextRenderer.DrawText(g, txt, font, rect, col.Value, centerFlags);
+
+            return this.lastTextSize;
+        }
+
+        /// <summary> Draw bottom/center aligned </summary>
+        public SizeF drawFooter(string txt, Color? col = null, Font? font = null)
+        {
+            col = col ?? this.color;
+            font = font ?? this.font;
+
+            var footerFlags = flags | TextFormatFlags.HorizontalCenter | TextFormatFlags.Bottom;
+
             this.lastTextSize = TextRenderer.MeasureText(txt, font, Size.Empty, footerFlags);
 
-            var pt = new Point(
-                this.containerWidth / 2,
-                this.containerHeight - 6);
+            var rect = new Rectangle(
+                padHorizontal,
+                this.containerHeight - padVertical - (int)this.lastTextSize.Height,
+                this.containerWidth - (padHorizontal * 2),
+                (int)this.lastTextSize.Height
+            );
 
-            TextRenderer.DrawText(g, txt, font, pt, col.Value, footerFlags);
+            TextRenderer.DrawText(g, txt, font, rect, col.Value, footerFlags);
+
             return this.lastTextSize;
-        }*/
+        }
 
         #endregion
+
+        /// <summary> Render strike-through over last rendered text </summary>
+        public void strikeThroughLast(bool highlight = false)
+        {
+            // strike-through if already analyzed
+            var x = (int)Math.Ceiling(dtx);
+            var w = (int)Math.Ceiling(lastTextSize.Width) + N.one;
+            var ly = dty + Util.centerIn(lastTextSize.Height, 2);
+            g.DrawLine(highlight ? GameColors.penCyan1 : GameColors.penGameOrange1, x, ly, x - w, ly);
+            g.DrawLine(highlight ? GameColors.penDarkCyan1 : GameColors.penGameOrangeDim1, x + 1, ly + 1, x - w + 1, ly + 1);
+        }
 
         #region draw wrapped text (unscaled)
 

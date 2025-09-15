@@ -784,7 +784,6 @@ namespace SrvSurvey
                 lblSysBio.Enabled = txtSystemBioSignals.Enabled = txtSystemBioValues.Enabled = labelSignalsAndRewards.Enabled = false;
                 lblBodyBio.Enabled = txtBodyBioSignals.Enabled = txtBodyBioValues.Enabled = checkFirstFootFall.Enabled = false;
 
-                Program.closePlotter<PlotBioStatus>();
                 Program.closePlotter<PlotGrounded>();
                 Program.closePlotter<PlotTrackers>();
                 return;
@@ -847,9 +846,6 @@ namespace SrvSurvey
                     txtBodyBioValues.Text += "?";
 
                 if (game.systemBody.firstFootFall) txtBodyBioValues.Text += " (FF)";
-
-                if (PlotBioStatus.allowPlotter)
-                    Program.showPlotter<PlotBioStatus>();
 
                 if (PlotGrounded.allowPlotter)
                 {
@@ -936,7 +932,6 @@ namespace SrvSurvey
                             Program.showPlotter<PlotRamTah>();
 
                         Program.closePlotter<PlotGrounded>();
-                        Program.closePlotter<PlotBioStatus>();
                         Program.closePlotter<PlotTrackers>();
                     }
 
@@ -977,8 +972,6 @@ namespace SrvSurvey
 
             if (game?.systemBody?.bioSignalCount > 0)
             {
-                if (PlotBioStatus.allowPlotter)
-                    Program.showPlotter<PlotBioStatus>();
                 if (PlotGrounded.allowPlotter)
                     Program.showPlotter<PlotGrounded>();
             }
@@ -987,9 +980,6 @@ namespace SrvSurvey
         private void onJournalEntry(ApproachBody entry)
         {
             Game.log($"Main.ApproachBody {entry.Body}");
-
-            if (game?.systemBody?.bioSignalCount > 0 && PlotBioStatus.allowPlotter)
-                Program.showPlotter<PlotBioStatus>();
 
             if (Game.settings.targetLatLongActive && PlotTrackTarget.allowPlotter)
                 Program.showPlotter<PlotTrackTarget>();

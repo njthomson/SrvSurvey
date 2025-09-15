@@ -111,7 +111,6 @@ namespace SrvSurvey.plotters
             base.OnLoad(e);
 
             // if these are open - close them
-            Program.closePlotter<PlotBioStatus>();
             Program.closePlotter<PlotGrounded>();
             Program.closePlotter<PlotTrackers>();
 
