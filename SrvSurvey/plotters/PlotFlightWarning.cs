@@ -4,64 +4,59 @@ using Res = Loc.PlotFlightWarning;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(300, 80)]
-    internal class PlotFlightWarning : PlotBase, PlotterForm
+    internal class PlotFlightWarning : PlotBase2
     {
-        public static bool allowPlotter
+        #region def + statics
+
+        public static PlotDef plotDef = new PlotDef()
         {
-            get => Game.settings.autoShowFlightWarnings
-                && Game.activeGame?.systemBody != null
+            name = nameof(PlotFlightWarning),
+            allowed = allowed,
+            ctor = (game, def) => new PlotFlightWarning(game, def),
+            defaultSize = new Size(300, 80),
+        };
+
+        public static bool allowed(Game game)
+        {
+            return Game.settings.autoShowFlightWarnings
+                && game.systemBody != null
                 // NOT suppressed by buildProjectsSuppressOtherOverlays
-                && Game.activeGame.systemBody.type == SystemBodyType.LandableBody
-                && Game.activeGame.systemBody.surfaceGravity >= Game.settings.highGravityWarningLevel * 10
-                && Game.activeGame.isMode(GameMode.Landed, GameMode.SuperCruising, GameMode.GlideMode, GameMode.Flying, GameMode.InFighter, GameMode.InSrv)
+                && game.systemBody.type == SystemBodyType.LandableBody
+                && game.systemBody.surfaceGravity >= Game.settings.highGravityWarningLevel * 10
+                && game.isMode(GameMode.Landed, GameMode.SuperCruising, GameMode.GlideMode, GameMode.Flying, GameMode.InFighter, GameMode.InSrv)
+                && !PlotJumpInfo.allowed(game)
                 ;
         }
 
-        private PlotFlightWarning() : base()
+        #endregion
+
+        private PlotFlightWarning(Game game, PlotDef def) : base(game, def)
         {
-            this.Size = Size.Empty;
-            this.Font = GameColors.fontSmall;
+            this.font = GameColors.fontSmall;
         }
 
-        public override bool allow { get => PlotFlightWarning.allowPlotter; }
+        float pad = N.oneFive;
 
-        protected override void OnLoad(EventArgs e)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
-            base.OnLoad(e);
-
-            this.initializeOnLoad();
-            this.reposition(Elite.getWindowRect(true));
-            this.BackgroundImage = null;
-        }
-
-        float pad = scaled(15);
-
-        protected override void onPaintPlotter(PaintEventArgs e)
-        {
-            if (this.IsDisposed || game.systemBody == null)
-            {
-                Program.closePlotter<PlotFlightWarning>();
-                return;
-            }
-
             var bodyGrav = (game.systemBody!.surfaceGravity / 10).ToString("N2");
             var txt = Res.SurfaceGravityWarning.format(bodyGrav);
 
-            var sz = g.MeasureString(txt, this.Font);
-            sz.Width += two;
-            this.Width = (int)(sz.Width + pad * 2);
-            this.Height = (int)(sz.Height + pad * 2);
+            var sz = new SizeF(TextRenderer.MeasureText(g, txt, this.font));
+            sz.Width += pad + N.ten;
+            sz.Height += pad * 2;
 
-            // TODO: use `this.reposition` + `formAdjustSize`
-            PlotPos.reposition(this, Elite.getWindowRect());
-
-            var rect = new RectangleF(0, 0, sz.Width + pad * 2, sz.Height + pad * 2);
+            var rect = new RectangleF(Point.Empty, sz);
             g.FillRectangle(GameColors.brushShipDismissWarning, rect);
 
-            rect.Inflate(-10, -10);
+            rect.Inflate(-N.ten, -N.ten);
             g.FillRectangle(Brushes.Black, rect);
-            g.DrawString(txt, this.Font, Brushes.Red, pad + one, pad + one);
+
+            tt.dtx = pad + N.one;
+            tt.dty = pad + N.one;
+            tt.draw(txt, C.red);
+
+            return sz;
         }
     }
 }

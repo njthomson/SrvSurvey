@@ -105,9 +105,9 @@ namespace SrvSurvey.plotters
                     this.lastCodexScan += $" {Util.credits(match.species.reward * 5)} (FF bonus)";
                 else
                     this.lastCodexScan += $" {Util.credits(match.species.reward)}";
-
-                this.invalidate();
             }
+
+            this.invalidate();
         }
 
         protected override void onJournalEntry(ScanOrganic entry)

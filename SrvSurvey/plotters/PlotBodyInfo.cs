@@ -4,28 +4,39 @@ using Res = Loc.PlotBodyInfo;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(320, 280)]
-    internal class PlotBodyInfo : PlotBase, PlotterForm
+    internal class PlotBodyInfo : PlotBase2
     {
-        public static bool allowPlotter
+        #region def + statics
+
+        public static PlotDef plotDef = new PlotDef()
         {
-            get => Game.activeGame?.targetBody != null
-                && Game.activeGame.systemData != null
+            name = nameof(PlotBodyInfo),
+            allowed = allowed,
+            ctor = (game, def) => new PlotBodyInfo(game, def),
+            defaultSize = new Size(320, 280),
+        };
+
+        public static bool allowed(Game game)
+        {
+            return game.targetBody != null
+                && game.systemData != null
                 && Game.settings.autoShowPlotBodyInfo
                 && !PlotGuardianSystem.allowPlotter // hide if Guardian plotter is open
-                && (!Game.settings.autoHidePlotBodyInfoInBubble || Util.getSystemDistance(Game.activeGame.systemData.starPos, Util.sol) > Game.settings.bodyInfoBubbleSize)
+                && (!Game.settings.autoHidePlotBodyInfoInBubble || Util.getSystemDistance(game.systemData.starPos, Util.sol) > Game.settings.bodyInfoBubbleSize)
                 && (
                     // any time during DSS or ... 
-                    (Game.activeGame.mode == GameMode.SAA && Game.activeGame.systemBody != null)
+                    (game.mode == GameMode.SAA && game.systemBody != null)
                     // ... or in the SystemMap and sub-setting allows
-                    || (Game.activeGame.isMode(GameMode.SystemMap, GameMode.Orrery) && Game.settings.autoShowPlotBodyInfoInMap && !Game.settings.autoShowPlotFSSInfoInSystemMap)
+                    || (game.isMode(GameMode.SystemMap, GameMode.Orrery) && Game.settings.autoShowPlotBodyInfoInMap && !Game.settings.autoShowPlotFSSInfoInSystemMap)
                     // ... or when super cruising/gliding close to a body and sub-setting allows
-                    || (Game.activeGame.isMode(GameMode.SuperCruising, GameMode.GlideMode) && Game.activeGame.status.hasLatLong && Game.settings.autoShowPlotBodyInfoInOrbit)
-                    || (Game.activeGame.isMode(GameMode.Flying, GameMode.Landed, GameMode.InSrv) && Game.activeGame.status.hasLatLong && Game.settings.autoShowPlotBodyInfoAtSurface && Game.activeGame.status.hudInAnalysisMode)
+                    || (game.isMode(GameMode.SuperCruising, GameMode.GlideMode) && game.status.hasLatLong && Game.settings.autoShowPlotBodyInfoInOrbit)
+                    || (game.isMode(GameMode.Flying, GameMode.Landed, GameMode.InSrv) && game.status.hasLatLong && Game.settings.autoShowPlotBodyInfoAtSurface && game.status.hudInAnalysisMode)
                     // or a keystroke forced it
-                    || (PlotBodyInfo.forceShow && !Game.activeGame.fsdJumping)
+                    || (PlotBodyInfo.forceShow && !game.fsdJumping)
                 );
         }
+
+        #endregion
 
         /// <summary> When true, makes the plotter become visible IF there is a valid body to show </summary>
         public static bool forceShow = false;
@@ -33,59 +44,36 @@ namespace SrvSurvey.plotters
         private string lastDestination;
         private bool withinHumanBubble;
 
-        private PlotBodyInfo() : base()
+        private PlotBodyInfo(Game game, PlotDef def) : base(game, def)
         {
-            this.Font = GameColors.fontSmall2;
+            this.font = GameColors.fontSmall2;
             if (Game.activeGame?.systemData != null)
                 this.withinHumanBubble = Util.getSystemDistance(Game.activeGame.systemData.starPos, Util.sol) < Game.settings.bodyInfoBubbleSize;
         }
 
-        public override bool allow { get => PlotBodyInfo.allowPlotter; }
-
-        protected override void OnLoad(EventArgs e)
+        protected override void onStatusChange(Status status)
         {
-            this.Width = scaled(320);
-            this.Height = scaled(480);
-
-            base.OnLoad(e);
-
-            this.initializeOnLoad();
-            this.reposition(Elite.getWindowRect(true));
-        }
-
-        protected override void Status_StatusChanged(bool blink)
-        {
-            if (this.IsDisposed) return;
-
-            base.Status_StatusChanged(blink);
-
             var destination = $"{game.status.Destination?.System}/{game.status.Destination?.Body}/{game.status.Destination?.Name}";
             if (destination != this.lastDestination)
             {
                 // re-render if destination has changed
                 this.lastDestination = destination;
-                this.Invalidate();
+                this.invalidate();
             }
-
-            if (!this.allow)
-                Program.closePlotter<PlotBodyInfo>(true);
         }
 
-        protected override void onPaintPlotter(PaintEventArgs e)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
-            if (this.IsDisposed || game == null) return;
-
             // use current body, or targetBody if in SystemMap
-            var body = Game.activeGame?.isMode(GameMode.SystemMap, GameMode.Orrery) == true || PlotBodyInfo.forceShow
+            var body = game.isMode(GameMode.SystemMap, GameMode.Orrery) || PlotBodyInfo.forceShow
                 ? game.targetBody
                 : game.systemBody;
             
-            if (body == null || !PlotBodyInfo.allowPlotter)
+            if (body == null)
             {
                 Game.log($"Closing PlotBodyInfo due to no valid target body");
-                this.setOpacity(0);
-                Program.closePlotter<PlotBodyInfo>(true);
-                return;
+                this.hide();
+                return frame.Size;
             }
 
             var temp = body.surfaceTemperature.ToString("N0");
@@ -95,17 +83,16 @@ namespace SrvSurvey.plotters
             var bodyName = body.wasDiscovered
                 ? body.name
                 : $"⚑ {body.name}";
-            drawTextAt2(bodyName, GameColors.fontMiddleBold);
-            newLine(+2, true);
+            tt.draw(bodyName, GameColors.fontMiddleBold);
+            tt.newLine(+2, true);
             var planetish = body.type != SystemBodyType.Star && body.type != SystemBodyType.Asteroid;
 
             if (body.type == SystemBodyType.Unknown)
             {
                 // we don't know enough about this body - exit early
-                drawTextAt2(eight, Res.ScanRequired, GameColors.Cyan);
-                newLine(+2, true);
-                formAdjustSize(+ten, +oneFour);
-                return;
+                tt.draw(N.eight, Res.ScanRequired, GameColors.Cyan);
+                tt.newLine(+2, true);
+                return tt.pad(+N.ten, +N.oneFour);
             }
 
             // terraformable, undiscovered?
@@ -121,8 +108,8 @@ namespace SrvSurvey.plotters
 
             if (subStatus.Count > 0)
             {
-                drawTextAt2(this.ClientSize.Width - ten, $"( {string.Join(", ", subStatus)} )", GameColors.Cyan, null, true);
-                newLine(+2);
+                tt.draw(this.width - N.ten, $"( {string.Join(", ", subStatus)} )", GameColors.Cyan, null, true);
+                tt.newLine(+2);
             }
 
             // reward
@@ -134,19 +121,19 @@ namespace SrvSurvey.plotters
                 txt += Res.WithDSS.format(Util.credits(dssReward));
                 highlight = Game.settings.skipLowValueDSS && dssReward > Game.settings.skipLowValueAmount;
             }
-            drawTextAt2(eight, txt, highlight ? GameColors.Cyan : null);
-            newLine(true);
+            tt.draw(N.eight, txt, highlight ? GameColors.Cyan : null);
+            tt.newLine(true);
 
             // temp | planetClass
             var tempText = Res.Temp.format(temp);
             var gravText = Res.Gravity.format(gravity);
-            var indent1 = twenty + Util.maxWidth(this.Font, tempText, gravText);
+            var indent1 = N.twenty + Util.maxWidth(this.font, tempText, gravText);
             if (body.type != SystemBodyType.Asteroid)
             {
-                dty += four;
-                drawTextAt2(eight, tempText);
-                drawTextAt2(indent1, body.type == SystemBodyType.Star ? Res.StarClass.format(body.starType) : body.planetClass!);
-                newLine(+one, true);
+                tt.dty += N.four;
+                tt.draw(N.eight, tempText);
+                tt.draw(indent1, body.type == SystemBodyType.Star ? Res.StarClass.format(body.starType) : body.planetClass!);
+                tt.newLine(+N.one, true);
             }
 
             // gravity | pressure
@@ -154,42 +141,42 @@ namespace SrvSurvey.plotters
             {
                 var isHighGravity = body.surfaceGravity >= Game.settings.highGravityWarningLevel * 10;
                 // if (body.surfaceGravity > 2.69) gravity = "🚫 " + gravity; // show a warning icon if body gravity is too high to exit ships/SRV
-                drawTextAt2(eight, gravText, isHighGravity ? GameColors.red : null);
+                tt.draw(N.eight, gravText, isHighGravity ? GameColors.red : null);
                 var pressure = Res.PressureValue.format((body.surfacePressure / 100_000f).ToString("N4"));
                 if (pressure == Res.PressureValue.format(0.ToString("N4"))) pressure = Res.None;
                 if (pressure != Res.None || body.type == SystemBodyType.LandableBody)
-                    drawTextAt2(indent1, Res.Pressure.format(pressure));
-                newLine(+four, true);
+                    tt.draw(indent1, Res.Pressure.format(pressure));
+                tt.newLine(+N.four, true);
             }
 
             // bio signals
             if (body.bioSignalCount > 0)
             {
-                dty -= three;
-                drawTextAt2(eight, Res.BioSignals.format(body.bioSignalCount, body.getMinMaxBioRewards(false)), GameColors.Cyan);
-                newLine(+four, true);
+                tt.dty -= N.three;
+                tt.draw(N.eight, Res.BioSignals.format(body.bioSignalCount, body.getMinMaxBioRewards(false)), GameColors.Cyan);
+                tt.newLine(+N.four, true);
             }
 
             // geo signals
             if (body.geoSignalCount > 0)
             {
-                dty -= three;
-                drawTextAt2(eight, Res.GeoSignals.format(body.geoSignalCount), GameColors.Cyan);
-                newLine(+four, true);
+                tt.dty -= N.three;
+                tt.draw(N.eight, Res.GeoSignals.format(body.geoSignalCount), GameColors.Cyan);
+                tt.newLine(+N.four, true);
             }
 
-            var indent2 = ten + Util.maxWidth(this.Font, Res.Volcanism, Res.Atmosphere, Res.Materials);
+            var indent2 = N.ten + Util.maxWidth(this.font, Res.Volcanism, Res.Atmosphere, Res.Materials);
 
             // volcanism
             if (planetish && body.type != SystemBodyType.Giant)
             {
-                drawTextAt2(eight, Res.Volcanism);
+                tt.draw(N.eight, Res.Volcanism);
 
                 if (string.IsNullOrEmpty(body.volcanism) || body.volcanism == "No volcanism")
-                    drawTextAt2(indent2, Res.None);
+                    tt.draw(indent2, Res.None);
                 else
-                    drawTextAt2(indent2, Util.pascal(body.volcanism.Replace("volcanism", "")));
-                newLine(+four, true);
+                    tt.draw(indent2, Util.pascal(body.volcanism.Replace("volcanism", "")));
+                tt.newLine(+N.four, true);
             }
 
             // atmosphere
@@ -198,39 +185,39 @@ namespace SrvSurvey.plotters
                 var atmos = string.IsNullOrEmpty(body.atmosphere) || body.atmosphere == "No atmosphere" ? Res.None : Util.pascal(body.atmosphere.Replace(" atmosphere", ""));
                 if (body.atmosphereType == "EarthLike") atmos = Res.EarthLike;
                 if (atmos == "None" && body.type != SystemBodyType.LandableBody) atmos = " ";
-                drawTextAt2(eight, Res.Atmosphere);
-                drawTextAt2(indent2, atmos);
-                newLine(+two, true);
+                tt.draw(N.eight, Res.Atmosphere);
+                tt.draw(indent2, atmos);
+                tt.newLine(+N.two, true);
                 if (body.atmosphereComposition != null)
                 {
                     foreach (var atm in body.atmosphereComposition)
                     {
                         var name = char.ToUpperInvariant(atm.Key[0]) + atm.Key.Substring(1);
                         var value = atm.Value.ToString("N2").PadLeft(5);
-                        drawTextAt2(fourFour, $"{name}:");
-                        drawTextAt2(indent2 + oneForty, $"{value} %", null, null, true);
-                        newLine(true);
+                        tt.draw(N.fourFour, $"{name}:");
+                        tt.draw(indent2 + N.oneForty, $"{value} %", null, null, true);
+                        tt.newLine(true);
                     }
                 }
-                dty += six;
+                tt.dty += N.six;
 
                 // materials
                 if (body.materials != null)
                 {
-                    drawTextAt2(eight, Res.Materials);
+                    tt.draw(N.eight, Res.Materials);
                     foreach (var mat in body.materials.OrderByDescending(_ => _.Value))
                     {
                         var name = Util.pascal(mat.Key);
                         var value = mat.Value.ToString("N2").PadLeft(5);
 
                         var font = Util.isMatLevelThree(mat.Key) || Util.isMatLevelFour(mat.Key) ? GameColors.fontSmall2Bold : null;
-                        drawTextAt2(indent2, $"{name}:", font);
-                        drawTextAt2(indent2 + oneForty, $"{value} %", null, font, true);
-                        //if (Util.isMatLevelThree(mat.Key) || Util.isMatLevelFour(mat.Key)) drawTextAt2($"≡");
-                        newLine(true);
+                        tt.draw(indent2, $"{name}:", font!);
+                        tt.draw(indent2 + N.oneForty, $"{value} %", null, font, true);
+                        //if (Util.isMatLevelThree(mat.Key) || Util.isMatLevelFour(mat.Key)) tt.draw($"≡");
+                        tt.newLine(true);
                     }
                 }
-                dty += four;
+                tt.dty += N.four;
             }
 
             // star stuff?
@@ -242,17 +229,17 @@ namespace SrvSurvey.plotters
             // rings
             if (body.hasRings)
             {
-                drawTextAt2(eight, Res.Rings);
+                tt.draw(N.eight, Res.Rings);
                 foreach (var ring in body.rings)
                 {
                     var ringName = ring.name.Substring(body.name.Length + 1, 1);
-                    drawTextAt2(eighty, $"{ringName} - " + SystemRing.decode(ring.ringClass));
-                    newLine(true);
+                    tt.draw(N.eighty, $"{ringName} - " + SystemRing.decode(ring.ringClass));
+                    tt.newLine(true);
                 }
             }
 
             // resize window as necessary
-            formAdjustSize(+ten, +oneFour);
+            return tt.pad(+N.ten, +N.oneFour);
         }
     }
 }

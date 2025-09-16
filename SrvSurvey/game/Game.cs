@@ -1205,7 +1205,6 @@ namespace SrvSurvey.game
                 PlotFSSInfo.forceShow = false;
                 PlotBodyInfo.forceShow = false;
                 Program.closePlotter<PlotFSSInfo>();
-                Program.closePlotter<PlotBodyInfo>();
 
             }
             else
@@ -2560,7 +2559,7 @@ namespace SrvSurvey.game
         {
             this.setLocations(entry);
 
-            // some overlays may want to appear at this time
+            // overlays may want to appear or render at this time
             PlotBase2.renderAll(this);
         }
 
@@ -2981,6 +2980,9 @@ namespace SrvSurvey.game
             }
 
             Program.defer(() => Program.invalidateActivePlotters());
+
+            // overlays may want to appear or render at this time
+            PlotBase2.renderAll(this);
         }
 
         private void onJournalEntry(ScanOrganic entry)
@@ -3095,6 +3097,10 @@ namespace SrvSurvey.game
 
             // force a mode change to update ux
             fireUpdate(true);
+
+            // TODO: with new UX code, this should be just
+            //// overlays may want to appear or render at this time
+            //PlotBase2.renderAll(this);
         }
 
         private void onJournalEntry(SellOrganicData entry)

@@ -295,31 +295,31 @@ namespace SrvSurvey
             if (game == null) return true;
 
             // exit early if there's no relevant body
-            var targetBody = game?.systemBody ?? game?.targetBody;
+            var targetBody = game.systemBody ?? game.targetBody;
             if (targetBody == null)
             {
                 PlotBodyInfo.forceShow = false;
                 return true;
             }
 
-            var bodyInfo = Program.getPlotter<PlotBodyInfo>();
+            var bodyInfo = PlotBase2.getPlotter<PlotBodyInfo>();
             if (bodyInfo == null)
             {
                 // force show if no plotter
                 PlotBodyInfo.forceShow = true;
-                Program.showPlotter<PlotBodyInfo>();
+                PlotBase2.add(game, PlotBodyInfo.plotDef);
             }
             else if (PlotBodyInfo.forceShow)
             {
                 // unforce (hide)
                 PlotBodyInfo.forceShow = false;
-                Program.closePlotter<PlotBodyInfo>();
+                PlotBase2.remove(PlotBodyInfo.plotDef);
             }
             else
             {
                 // the plotter exists and was not forced ... toggle forceHide on it
-                bodyInfo.forceHide = !bodyInfo.forceHide;
-                if (!bodyInfo.forceHide) PlotBodyInfo.forceShow = false;
+                bodyInfo.hidden = !bodyInfo.hidden;
+                if (!bodyInfo.hidden) PlotBodyInfo.forceShow = false;
             }
 
             return true;

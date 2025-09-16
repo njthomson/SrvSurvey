@@ -67,7 +67,7 @@ namespace SrvSurvey.widgets
             return draw(this.dtx, txt, null, font);
         }
 
-        public SizeF draw(float tx, string? txt, Font font)
+        public SizeF draw(float tx, string? txt, Font? font = null)
         {
             return draw(tx, txt, null, font);
         }

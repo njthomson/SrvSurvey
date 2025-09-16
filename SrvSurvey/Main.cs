@@ -436,8 +436,6 @@ namespace SrvSurvey
                 Game.update -= Game_modeChanged;
                 if (this.game.journals != null)
                     this.game.journals.onJournalEntry -= Journals_onJournalEntry;
-                if (this.game.status != null)
-                    this.game.status.StatusChanged -= Status_StatusChanged;
                 this.game.Dispose();
             }
 
@@ -473,7 +471,6 @@ namespace SrvSurvey
 
             Game.update += Game_modeChanged;
             this.game.journals!.onJournalEntry += Journals_onJournalEntry;
-            this.game.status.StatusChanged += Status_StatusChanged;
 
             this.updateAllControls();
             this.hook?.startDirectX(Game.settings.hookDirectXDeviceId_TEST);
@@ -548,9 +545,6 @@ namespace SrvSurvey
             else
                 Program.closePlotter<PlotFSSInfo>();
 
-            if (gameIsActive && PlotBodyInfo.allowPlotter)
-                Program.showPlotter<PlotBodyInfo>();
-
             if (gameIsActive && PlotHumanSite.allowPlotter)
                 Program.showPlotter<PlotHumanSite>();
 
@@ -564,21 +558,8 @@ namespace SrvSurvey
             else
                 Program.closePlotter<PlotMiniTrack>();
 
-            if (gameIsActive && PlotFloatie.allowPlotter)
-                Program.showPlotter<PlotFloatie>();
-            else
-                Program.closePlotter<PlotFloatie>();
-
-
             if (gameIsActive && PlotFootCombat.allowPlotter)
                 Program.showPlotter<PlotFootCombat>();
-
-            // show high gravity warning
-            var isLandableAndHighGravity = game?.systemBody?.type == SystemBodyType.LandableBody && game.systemBody.surfaceGravity >= Game.settings.highGravityWarningLevel * 10;
-            if (Game.settings.autoShowFlightWarnings && game?.systemBody != null && isLandableAndHighGravity && game.isMode(GameMode.Landed, GameMode.SuperCruising, GameMode.GlideMode, GameMode.Flying, GameMode.InFighter, GameMode.InSrv))
-                Program.showPlotter<PlotFlightWarning>();
-            else
-                Program.closePlotter<PlotFlightWarning>();
 
             // show Guardian status
             if (Game.settings.enableGuardianSites && Game.settings.autoShowGuardianSummary && PlotGuardianSystem.allowPlotter && game?.systemData?.settlements.Count > 0)
@@ -633,18 +614,6 @@ namespace SrvSurvey
                 }
 
             });
-        }
-
-        private void Status_StatusChanged(bool blink)
-        {
-            // show some plotters based on changing status values?
-            if (game == null || game.isShutdown) return;
-
-            if (game.isMode(GameMode.SystemMap, GameMode.Flying, GameMode.Landed, GameMode.InSrv) && PlotBodyInfo.allowPlotter)
-                Program.showPlotter<PlotBodyInfo>();
-
-            //Debug.WriteLine($"Flags: {game.status.Flags}");
-            //Debug.WriteLine($"Flags2: {game.status.Flags2}");
         }
 
         private void Game_modeChanged(GameMode newMode, bool force)
@@ -1028,7 +997,6 @@ namespace SrvSurvey
         private void onJournalEntry(FSDJump entry)
         {
             // close plotters that can be forced but should not remain when we jump systems
-            Program.closePlotter<PlotBodyInfo>();
             Program.closePlotter<PlotFSSInfo>();
 
             // Trigger forms to update as we jump systems
@@ -2075,7 +2043,8 @@ namespace SrvSurvey
 
         private void btnLogs_Click(object sender, EventArgs e)
         {
-            BaseForm.show<ViewLogs>();
+            //BaseForm.show<ViewLogs>();
+            PlotFloatie.showMessage($"Hello again {DateTime.Now.Millisecond}");
         }
 
         private void btnColonize_Click(object sender, EventArgs e)

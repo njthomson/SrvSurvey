@@ -3,18 +3,27 @@ using SrvSurvey.widgets;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(200, 80)]
-    internal class PlotFloatie : PlotBase, PlotterForm
+    internal class PlotFloatie : PlotBase2
     {
-        public static bool allowPlotter
+        #region def + statics
+
+        public static PlotDef plotDef = new PlotDef()
         {
-            // show in any mode, so long as we have some messages so show
-            get => Game.settings.autoShowFloatie_TEST
+            name = nameof(PlotFloatie),
+            allowed = allowed,
+            ctor = (game, def) => new PlotFloatie(game, def),
+            defaultSize = new Size(200, 80),
+        };
+
+        public static bool allowed(Game game)
+        {
+            return Game.settings.autoShowFloatie_TEST
                 // NOT suppressed by buildProjectsSuppressOtherOverlays
-                && Game.activeGame != null
                 && messages.Count > 0
                 ;
         }
+
+        #endregion
 
         /// <summary>
         /// Make this plotter appear showing the given message for ~6 seconds
@@ -22,7 +31,7 @@ namespace SrvSurvey.plotters
         public static void showMessage(string msg)
         {
             // exit early if this plotter is disabled
-            if (!Game.settings.autoShowFloatie_TEST) return;
+            if (!Game.settings.autoShowFloatie_TEST || Game.activeGame == null) return;
 
             var existing = messages.Find(_ => _.msg == msg);
             if (existing != null)
@@ -32,7 +41,10 @@ namespace SrvSurvey.plotters
             closeTime = DateTime.Now.AddSeconds(durationVisible);
             messages.Add(new(msg, closeTime));
 
-            var form = Program.showPlotter<PlotFloatie>();
+            if (plotDef.instance == null)
+                PlotBase2.add(Game.activeGame, plotDef);
+
+            var form = plotDef.instance as PlotFloatie;
             if (form != null)
             {
                 form.timer.Start();
@@ -46,10 +58,9 @@ namespace SrvSurvey.plotters
 
         private System.Windows.Forms.Timer timer;
 
-        private PlotFloatie() : base()
+        private PlotFloatie(Game game, PlotDef def) : base(game, def)
         {
-            this.Size = Size.Empty;
-            this.Font = GameColors.Fonts.gothic_12B;
+            this.font = GameColors.Fonts.gothic_12B;
 
             this.timer = new System.Windows.Forms.Timer()
             {
@@ -57,19 +68,6 @@ namespace SrvSurvey.plotters
                 Enabled = false,
             };
             this.timer.Tick += timer_Tick;
-        }
-
-        public override bool allow { get => PlotFloatie.allowPlotter; }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            this.Width = scaled(100);
-            this.Height = scaled(80);
-
-            base.OnLoad(e);
-
-            this.initializeOnLoad();
-            this.reposition(Elite.getWindowRect(true));
         }
 
         private void timer_Tick(object? sender, EventArgs e)
@@ -84,41 +82,39 @@ namespace SrvSurvey.plotters
                 // close when nothing left to show
                 Game.log($"PlotFloatie: no more messages");
                 this.timer.Stop();
-                Program.closePlotter<PlotFloatie>();
+                PlotBase2.remove(PlotFloatie.plotDef);
             }
             else
             {
                 // otherwise force a redraw, so we see the timer bar change
-                this.Invalidate();
+                this.invalidate();
             }
         }
 
-        protected override void onPaintPlotter(PaintEventArgs e)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
-            if (this.IsDisposed) return;
-
             // render each message their own line
             foreach (var msg in messages.ToList())
             {
-                drawTextAt2(ten, "► " + msg.msg, C.cyan);
-                dtx += twenty;
-                newLine(+four, true);
+                tt.draw(N.ten, "► " + msg.msg, C.cyan);
+                tt.dtx += N.twenty;
+                tt.newLine(+N.four, true);
             }
 
             // and animate the timer bars
-            this.drawTimerBar();
+            this.drawTimerBar(g);
 
-            this.formAdjustSize(+ten, +four);
+            return tt.pad(+N.ten, +N.four);
         }
 
-        private void drawTimerBar()
+        private void drawTimerBar(Graphics g)
         {
             var remainingTime = (float)(closeTime - DateTime.Now).TotalMilliseconds;
             var r = 1f / 6000 * remainingTime;
 
-            var x = two;
-            var y = this.Height - one;
-            var w = (this.Width - x - x);
+            var x = N.two;
+            var y = this.height - N.one;
+            var w = (this.width - x - x);
 
             //// slide to the right
             //var ww = w * r;
@@ -135,7 +131,7 @@ namespace SrvSurvey.plotters
             var ww = w - w * r;
             x = Util.centerIn(w, ww);
             g.DrawLine(GameColors.penGameOrangeDim2, x, y, x + ww, y);
-            g.DrawLine(GameColors.penGameOrangeDim2, x, one, x + ww, one);
+            g.DrawLine(GameColors.penGameOrangeDim2, x, N.one, x + ww, N.one);
         }
 
         class Message

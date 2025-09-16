@@ -119,7 +119,7 @@ namespace SrvSurvey.plotters
                         if (plotter.hidden) continue;
 
 #if DEBUG
-                        //if (plotter.stale) // for easier debugging of plotter rendering code
+                        if (plotter.stale) // comment for easier debugging of rendering code
                             plotter.render();
 #else
                         // re-render only if needed
