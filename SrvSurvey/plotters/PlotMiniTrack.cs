@@ -5,95 +5,88 @@ using System.Drawing.Drawing2D;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(240, 80)]
-    internal class PlotMiniTrack : PlotBase, PlotterForm
+    internal class PlotMiniTrack : PlotBase2
     {
-        private PenBrush pb = new PenBrush(C.orange, 3, LineCap.Flat);
+        #region def + statics
 
-        public static bool allowPlotter
+        public static PlotDef plotDef = new PlotDef()
         {
-            get => Game.settings.autoShowPlotMiniTrack_TEST
+            name = nameof(PlotMiniTrack),
+            allowed = allowed,
+            ctor = (game, def) => new PlotMiniTrack(game, def),
+            defaultSize = new Size(240, 80), // Not 100, 80?
+        };
+
+        public static bool allowed(Game game)
+        {
+            return Game.settings.autoShowPlotMiniTrack_TEST
                 // NOT suppressed by buildProjectsSuppressOtherOverlays
-                && Game.activeGame?.systemBody != null
-                && Game.activeGame.status.hasLatLong
-                && !Game.activeGame.status.Docked
-                && hasQuickTrackers
-                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.RolePanel)
+                && game.systemBody != null
+                && game.status.hasLatLong
+                && quickTrackers?.Any() == true
+                && game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.RolePanel)
                 ;
         }
 
-        public static bool hasQuickTrackers
-        {
-            get => quickTrackers?.Any() ?? false;
-        }
+        private static PenBrush pb = new PenBrush(C.orange, 3, LineCap.Flat);
 
         public static List<string> quickTrackers
         {
             get => Game.activeGame?.systemBody?.bookmarks?.Keys.Where(k => k[0] == '#').ToList() ?? new();
         }
 
-        private PlotMiniTrack() : base()
+        #endregion
+
+        private PlotMiniTrack(Game game, PlotDef def) : base(game, def)
         {
-            this.Size = Size.Empty;
-            this.Font = GameColors.Fonts.console_8;
+            this.font = GameColors.Fonts.console_8;
         }
 
-        public override bool allow { get => PlotMiniTrack.allowPlotter; }
-
-        protected override void OnLoad(EventArgs e)
+        protected override void onStatusChange(Status status)
         {
-            this.Width = scaled(100);
-            this.Height = scaled(80);
+            base.onStatusChange(status);
 
-            base.OnLoad(e);
-
-            this.initializeOnLoad();
-            this.reposition(Elite.getWindowRect(true));
+            if (status.changed.Contains(nameof(Status.Heading)) || status.changed.Contains(nameof(Status.Latitude)) || status.changed.Contains(nameof(Status.Longitude)))
+                this.invalidate();
         }
 
-        protected override void onPaintPlotter(PaintEventArgs e)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
             var bookmarks = game.systemBody?.bookmarks;
-            if (this.IsDisposed || bookmarks == null) return;
+            if (bookmarks == null) return frame.Size;
 
-            if (!hasQuickTrackers)
-            {
-                Program.closePlotter<PlotMiniTrack>();
-                return;
-            }
-
-            var blockWidth = fifty;
+            var blockWidth = N.fiveTwo;
             var cmdr = Status.here;
             var radius = game.status.PlanetRadius;
 
-            dtx = eight;
+            tt.dtx = N.eight;
             foreach (var key in quickTrackers.Order())
             {
                 var list = bookmarks[key];
                 foreach (var target in list)
                 {
-                    var x = dtx;
+                    var x = tt.dtx;
                     // calculate as if a 2d plane
                     var angle2d = Util.getBearing(cmdr, target);
                     var dist2d = Util.getDistance(cmdr, target, radius);
 
-                    dty = ten;
-                    drawTextAt(x, key);
+                    tt.dty = N.ten;
+                    tt.draw(x, key);
 
-                    dty = sixty;
-                    drawTextAt(x , Util.metersToString(dist2d));
+                    tt.dty = N.sixty;
+                    tt.draw(x , Util.metersToString(dist2d));
 
                     var deg = angle2d - game.status.Heading;
                     if (deg < 0) deg += 360;
                     if (dist2d == 0) deg += game.status.Heading;
-                    BaseWidget.renderBearingTo(g, x + oneTwo, twoEight, ten, (double)deg, this.Font, pb.brush, pb.pen);
+                    BaseWidget.renderBearingTo(g, x + N.oneTwo, N.twoEight, N.ten, (double)deg, this.font, pb.brush, pb.pen);
 
-                    dtx = x + blockWidth;
+                    tt.dtx = x + blockWidth;
                 }
             }
 
-            newLine(+four, true);
-            this.formAdjustSize(0, +four);
+            tt.newLine(+N.four, true);
+            return tt.pad(0, +N.four);
         }
     }
 }

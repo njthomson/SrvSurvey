@@ -166,7 +166,7 @@ namespace SrvSurvey.plotters
             foreach (var name in this.trackers.Keys)
             {
                 // skip quick trackers if PlotMiniTrack is active
-                if (name[0] == '#' && Program.isPlotter<PlotMiniTrack>()) continue;
+                if (name[0] == '#' && PlotBase2.isPlotter<PlotMiniTrack>()) continue;
 
                 var x = indent;
                 var isActive = game.cmdr.scanOne?.genus == null || game.cmdr.scanOne?.genus == name;

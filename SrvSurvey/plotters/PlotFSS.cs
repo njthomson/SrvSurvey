@@ -4,15 +4,25 @@ using Res = Loc.PlotFSS;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(420, 100)]
-    internal class PlotFSS : PlotBase, PlotterForm
+    internal class PlotFSS : PlotBase2
     {
-        public static bool allowPlotter
+        #region def + statics
+
+        public static PlotDef plotDef = new PlotDef()
         {
-            get => Game.activeGame?.cmdr != null
-                && Game.settings.autoShowPlotFSS
-                && Game.activeGame.isMode(GameMode.FSS);
+            name = nameof(PlotFSS),
+            allowed = allowed,
+            ctor = (game, def) => new PlotFSS(game, def),
+            defaultSize = new Size(420, 100), // Not 420, 102 ?
+        };
+
+        public static bool allowed(Game game)
+        {
+            return Game.settings.autoShowPlotFSS
+                && game.isMode(GameMode.FSS);
         }
+
+        #endregion
 
         private FSSBodySignals? lastFSSBodySignals;
 
@@ -29,9 +39,9 @@ namespace SrvSurvey.plotters
 
         private WatchFssPixelSettings? settings { get => Game.settings.watchFssSettings_TEST; }
 
-        private PlotFSS() : base()
+        private PlotFSS(Game game, PlotDef def) : base(game, def)
         {
-            this.Font = GameColors.fontMiddle;
+            this.font = GameColors.fontMiddle;
 
             if (game.systemData == null) throw new Exception("Why no SystemData when creating PlotFSS?");
             // game.systemData.lastFssBody = game.systemData.bodies.Find(b => b.shortName == "1a"); // tmp
@@ -63,28 +73,14 @@ namespace SrvSurvey.plotters
             }
 
             lastSystemAddress = game.systemData.address;
-        }
-
-        public override bool allow { get => PlotFSS.allowPlotter; }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            this.Width = scaled(420);
-            this.Height = scaled(102);
-
-            base.OnLoad(e);
-
-            this.initializeOnLoad();
-            this.reposition(Elite.getWindowRect(true));
 
             // start watching pixels - if we have bodies to FSS
             if (Game.settings.watchFssSettings_TEST != null && (game.systemData?.honked == true || game.systemData?.fssAllBodies == false))
                 this.startWatching();
         }
 
-        protected override void OnFormClosed(FormClosedEventArgs e)
+        protected override void onClose()
         {
-            base.OnFormClosed(e);
             this.stopWatching();
         }
 
@@ -146,59 +142,62 @@ namespace SrvSurvey.plotters
                 }
             }
 
-            this.Invalidate();
+            this.invalidate();
         }
 
-        protected override void onPaintPlotter(PaintEventArgs e)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
             var col = lastWasDiscovered ? GameColors.Orange : GameColors.Cyan;
 
-            dty = eight;
-            drawTextAt2(four, Res.LastScan.format(lastBodyName), col, GameColors.fontSmaller);
+            tt.dty = N.eight;
+            tt.draw(N.four, Res.LastScan.format(lastBodyName), col, GameColors.fontSmaller);
 
             if (game?.systemData?.lastFssBody != null)
-                drawTextAt2(ClientSize.Width - eight, game.systemData.lastFssBody.distanceFromArrivalLS.ToString("N0") + " LS", col, GameColors.fontSmaller, true);
-            newLine(true);
+                tt.draw(width - N.eight, game.systemData.lastFssBody.distanceFromArrivalLS.ToString("N0") + " LS", col, GameColors.fontSmaller, true);
+            tt.newLine(true);
 
-            if (string.IsNullOrEmpty(lastBodyName)) return;
+            if (string.IsNullOrEmpty(lastBodyName)) return frame.Size;
 
-            var ww = oneEight + eight + Util.maxWidth(this.Font, "► " + Res.EstimatedValue, "► " + Res.WithSurfaceScan);
+            var ww = N.oneEight + N.eight + Util.maxWidth(this.font, "► " + Res.EstimatedValue, "► " + Res.WithSurfaceScan);
 
-            drawTextAt2(oneEight, "► " + Res.EstimatedValue);
-            drawTextAt2(ww, $"{lastInitialValue} cr");
-            newLine(true);
-            drawTextAt2(oneEight, "► " + Res.WithSurfaceScan);
-            drawTextAt2(ww, $"{lastMappedValue} cr");
-            newLine(true);
+            tt.draw(N.oneEight, "► " + Res.EstimatedValue);
+            tt.draw(ww, $"{lastInitialValue} cr");
+            tt.newLine(true);
+            tt.draw(N.oneEight, "► " + Res.WithSurfaceScan);
+            tt.draw(ww, $"{lastMappedValue} cr");
+            tt.newLine(true);
 
             if (!string.IsNullOrEmpty(lastNotes))
             {
-                drawTextAt2(oneEight, "► " + lastNotes, GameColors.Cyan);
+                tt.draw(N.oneEight, "► " + lastNotes, GameColors.Cyan);
 
                 // draw volume bars from predictions
                 if (game?.systemData?.lastFssBody?.genusPredictions != null)
                 {
-                    dtx = (float)Math.Round(dtx) + six;
-                    dtx += PlotBioSystem.drawBodyBars(g, game.systemData.lastFssBody, dtx, dty + two, true);
+                    tt.dtx = (float)Math.Round(tt.dtx) + N.six;
+                    tt.dtx += PlotBioSystem.drawBodyBars(g, game.systemData.lastFssBody, tt.dtx, tt.dty + N.two, true);
 
                     var txt = " " + game.systemData.lastFssBody.getMinMaxBioRewards(false);
-                    drawTextAt2(txt, GameColors.Cyan);
+                    tt.draw(txt, GameColors.Cyan);
                 }
             }
 
             // show reminder to icons, if we're watching pixels
             if (Game.settings.watchFssSettings_TEST != null)
             {
-                dty = this.Height - fourFour;
+                tt.dty = this.height - N.fourFour;
                 var duration = DateTime.Now - this.lastScanTime;
                 //Debug.WriteLine($"!! {this.watchState} / {duration.TotalMilliseconds}");
                 if (this.watchState == State.Waiting || duration.TotalMilliseconds < 250)
-                    drawTextAt2(this.Width - two, "⏳", null, GameColors.fontBig, true);
+                    tt.draw(this.width - N.two, "⏳", null, GameColors.fontBig, true);
                 else if (this.watchState == State.Skipped)
-                    drawTextAt2(this.Width - two, "✋", null, GameColors.fontBig, true);
+                    tt.draw(this.width - N.two, "✋", null, GameColors.fontBig, true);
                 else if (this.watchState == State.Yellow)
-                    drawTextAt2(this.Width - two, "📡", Color.Gold, GameColors.fontBig, true);
+                    tt.draw(this.width - N.two, "📡", Color.Gold, GameColors.fontBig, true);
             }
+
+            // size is fixed
+            return plotDef.defaultSize;
         }
 
         #region pixel watching
@@ -223,7 +222,7 @@ namespace SrvSurvey.plotters
 
             Task.Delay(300).ContinueWith(t =>
             {
-                Program.control.BeginInvoke(() => this.Invalidate());
+                Program.defer(() => this.invalidate());
             });
         }
 
@@ -232,13 +231,13 @@ namespace SrvSurvey.plotters
             try
             {
                 // exit early if ...
-                if (this.IsDisposed || game == null) return;
+                if (!watching || isClosed || game == null) return;
 
                 // only scan pixels if needed
                 if (this.watchState == State.Waiting || this.watchState == State.Skipped)
                     this.analyzeGrab(false);
 
-                Program.control.BeginInvoke(() => this.Invalidate());
+                Program.defer(() => this.invalidate());
 
                 // stop repeating?
                 if (game?.systemData?.fssAllBodies == true && this.watchState != State.Waiting && this.watchState != State.Skipped)
@@ -330,7 +329,7 @@ namespace SrvSurvey.plotters
                 //var whiteRatio = (float)(countWhite * countWhite) / (watchArea.Width * watchArea.Height);
                 //Game.log($"countYellow: {countYellow}, countWhite: {countWhite}, whiteRatio: {whiteRatio} ({watchArea.Size})");
                 var newState = this.watchState;
-                if (countYellow > countWhite)
+                if (countYellow > countWhite * 0.25f)
                     newState = State.Yellow;
                 else if (countWhite > 25)
                     newState = State.White;
@@ -450,7 +449,7 @@ namespace SrvSurvey.plotters
                 }
 
                 if (msg != null)
-                    g.DrawString(msg, this.Font, Brushes.Lime, grab.Width / 2, 0);
+                    g.DrawString(msg, this.font, Brushes.Lime, grab.Width / 2, 0);
             }
             grab.Save(filepath);
         }

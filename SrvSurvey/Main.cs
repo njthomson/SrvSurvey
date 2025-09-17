@@ -514,9 +514,7 @@ namespace SrvSurvey
             this.updateColonizationMenuItems();
             this.updateCommanderTexts();
             this.updateBioTexts();
-            this.updateTrackTargetTexts();
             this.updateGuardianTexts(newMode);
-            this.updateSphereLimit();
 
             groupCodex.Invalidate();
 
@@ -535,45 +533,11 @@ namespace SrvSurvey
 
             var gameIsActive = game != null && Elite.isGameRunning && game.Commander != null;
 
-            if (gameIsActive && Game.settings.autoShowPlotFSS && (newMode == GameMode.FSS || game?.mode == GameMode.FSS))
-                Program.showPlotter<PlotFSS>();
-            else
-                Program.closePlotter<PlotFSS>();
-
-            if (gameIsActive && PlotFSSInfo.allowPlotter)
-                Program.showPlotter<PlotFSSInfo>();
-            else
-                Program.closePlotter<PlotFSSInfo>();
-
-            if (gameIsActive && PlotHumanSite.allowPlotter)
-                Program.showPlotter<PlotHumanSite>();
-
-            if (gameIsActive && PlotMassacre.allowPlotter)
-                Program.showPlotter<PlotMassacre>();
-            else
-                Program.closePlotter<PlotMassacre>();
-
-            if (gameIsActive && PlotMiniTrack.allowPlotter)
-                Program.showPlotter<PlotMiniTrack>();
-            else
-                Program.closePlotter<PlotMiniTrack>();
-
-            if (gameIsActive && PlotFootCombat.allowPlotter)
-                Program.showPlotter<PlotFootCombat>();
-
             // show Guardian status
             if (Game.settings.enableGuardianSites && Game.settings.autoShowGuardianSummary && PlotGuardianSystem.allowPlotter && game?.systemData?.settlements.Count > 0)
                 Program.showPlotter<PlotGuardianSystem>();
             else
                 Program.closePlotter<PlotGuardianSystem>();
-
-            if (Game.settings.autoShowPlotGalMap && PlotGalMap.allowPlotter)
-            {
-                // Why does showing PlotGalMap make PlotSphericalSearch fail to paint?
-                Task.Delay(10).ContinueWith(_ => this.BeginInvoke(() => Program.showPlotter<PlotGalMap>()));
-            }
-            else
-                Program.closePlotter<PlotGalMap>();
 
             // Why was this necessary? (Which plotter is getting missed now?)
             //Program.invalidateActivePlotters();
@@ -832,34 +796,6 @@ namespace SrvSurvey
             }
         }
 
-        private void updateTrackTargetTexts()
-        {
-            if (game == null || game.atMainMenu || !Elite.isGameRunning || !game.initialized)
-            {
-                txtTargetLatLong.Text = "";
-                lblTrackTargetStatus.Text = "-";
-                Program.closePlotter<PlotTrackTarget>();
-            }
-            else if (!Game.settings.targetLatLongActive)
-            {
-                txtTargetLatLong.Text = "<none>";
-                lblTrackTargetStatus.Text = "Inactive";
-                Program.closePlotter<PlotTrackTarget>();
-            }
-            else if (PlotTrackTarget.allowPlotter)
-            {
-                txtTargetLatLong.Text = Game.settings.targetLatLong.ToString();
-                lblTrackTargetStatus.Text = "Active";
-                Program.showPlotter<PlotTrackTarget>();
-            }
-            else
-            {
-                txtTargetLatLong.Text = Game.settings.targetLatLong.ToString();
-                lblTrackTargetStatus.Text = "Ready";
-                Program.closePlotter<PlotTrackTarget>();
-            }
-        }
-
         private void updateGuardianTexts(GameMode? newMode = null)
         {
             if (game == null || game.atMainMenu || !Elite.isGameRunning || !game.initialized)
@@ -913,15 +849,6 @@ namespace SrvSurvey
                 Program.showPlotter<PlotGuardianStatus>();
         }
 
-        private void updateSphereLimit()
-        {
-            // show/hide the sphere limit plotter
-            if (PlotSphericalSearch.allowPlotter)
-                Program.showPlotter<PlotSphericalSearch>();
-            else
-                Program.closePlotter<PlotSphericalSearch>();
-        }
-
         private void Journals_onJournalEntry(JournalEntry entry, int index)
         {
             this.onJournalEntry((dynamic)entry);
@@ -946,22 +873,16 @@ namespace SrvSurvey
             }
         }
 
-        private void onJournalEntry(ApproachBody entry)
-        {
-            Game.log($"Main.ApproachBody {entry.Body}");
-
-            if (Game.settings.targetLatLongActive && PlotTrackTarget.allowPlotter)
-                Program.showPlotter<PlotTrackTarget>();
-        }
-
         private void onJournalEntry(SAASignalsFound entry)
         {
+            // TODO: Remove with PlotBase
             Application.DoEvents();
             this.updateAllControls();
         }
 
         private void onJournalEntry(FSSBodySignals entry)
         {
+            // TODO: Remove with PlotBase
             Application.DoEvents();
             this.updateAllControls();
         }
@@ -996,9 +917,6 @@ namespace SrvSurvey
 
         private void onJournalEntry(FSDJump entry)
         {
-            // close plotters that can be forced but should not remain when we jump systems
-            Program.closePlotter<PlotFSSInfo>();
-
             // Trigger forms to update as we jump systems
             var systemMatch = new net.EDSM.StarSystem()
             {
@@ -1035,17 +953,17 @@ namespace SrvSurvey
                     Game.settings.targetLatLong = Status.here.clone();
                     Game.settings.targetLatLongActive = true;
                     Game.settings.Save();
-                    this.updateTrackTargetTexts();
+                    PlotBase2.addOrRemove(game, PlotTrackTarget.plotDef);
                     return;
                 case MsgCmd.targetOff:
                     Game.settings.targetLatLongActive = false;
                     Game.settings.Save();
-                    this.updateTrackTargetTexts();
+                    PlotBase2.addOrRemove(game, PlotTrackTarget.plotDef);
                     return;
                 case MsgCmd.targetOn:
                     Game.settings.targetLatLongActive = true;
                     Game.settings.Save();
-                    this.updateTrackTargetTexts();
+                    PlotBase2.addOrRemove(game, PlotTrackTarget.plotDef);
                     return;
 
                 case MsgCmd.imgs:
@@ -1181,7 +1099,7 @@ namespace SrvSurvey
                 Game.log($"Try infer site from heading: {game.status.Heading}");
                 // TODO: still needed or unhelpful?
                 // game.initHumanSite();
-                if (game.systemData != null && game.systemStation != null && PlotHumanSite.allowPlotter)
+                if (game.systemData != null && game.systemStation != null && PlotHumanSite.allowed(game))
                 {
                     var changed = false;
                     if (game.status.OnFootOutside)
@@ -1194,7 +1112,7 @@ namespace SrvSurvey
                     if (changed)
                         game.systemData.Save();
 
-                    Program.showPlotter<PlotHumanSite>();
+                    PlotBase2.add(game, PlotHumanSite.plotDef);
                     game.cmdr.setMarketId(game.systemStation.marketId, $"inferSiteFromHeading: {game.systemStation}");
                 }
             }
@@ -1225,18 +1143,12 @@ namespace SrvSurvey
 
         private void setTargetLatLong()
         {
-            // update our UX
-            this.updateTrackTargetTexts();
-
             // show plotter if near a body
-            if (game?.systemBody != null && PlotTrackTarget.allowPlotter)
+            var form = PlotBase2.addOrRemove<PlotTrackTarget>(game);
+            if (form != null)
             {
-                var form = Program.showPlotter<PlotTrackTarget>();
-                if (form != null)
-                {
-                    form.targetLocation = Game.settings.targetLatLong;
-                    form.calculate(Game.settings.targetLatLong); // TODO: retire
-                }
+                form.targetLocation = Game.settings.targetLatLong;
+                form.calculate(Game.settings.targetLatLong); // TODO: retire
             }
         }
 
@@ -1250,34 +1162,8 @@ namespace SrvSurvey
                 Game.log($"Main.Set target lat/long: {Game.settings.targetLatLong}, near: {game?.cmdr?.lastSystemLocation}");
                 setTargetLatLong();
             }
-            else
-            {
-                Program.closePlotter<PlotTrackTarget>();
-                this.updateTrackTargetTexts();
-            }
-            Elite.setFocusED();
-        }
 
-        private void btnPasteLatLong_Click(object sender, EventArgs e)
-        {
-            var newLocation = FormGroundTarget.pasteFromClipboard();
-            if (newLocation != null)
-            {
-                Game.settings.targetLatLong = newLocation;
-                Game.settings.targetLatLongActive = true;
-                Game.log($"Main.Set target from clipboard lat/long: {Game.settings.targetLatLong}, near: {game?.cmdr?.lastSystemLocation}");
-                setTargetLatLong();
-                this.updateTrackTargetTexts();
-            }
-            Elite.setFocusED();
-        }
-
-        private void btnClearTarget_Click(object sender, EventArgs e)
-        {
-            Game.settings.targetLatLongActive = false;
-            Game.settings.Save();
-
-            this.updateTrackTargetTexts();
+            PlotBase2.addOrRemove(game, PlotTrackTarget.plotDef);
             Elite.setFocusED();
         }
 
@@ -1298,11 +1184,17 @@ namespace SrvSurvey
                     Program.showActivePlotters();
                     Util.applyTheme(this);
 
-                    PlotBase2.closeAll();
                     Application.DoEvents();
 
                     if (game != null)
-                        PlotBase2.renderAll(game);
+                        PlotBase2.renderAll(game, true);
+                }
+                else
+                {
+                    // restore things that might have changed from settings
+                    PlotBase2.getPlotter<PlotHumanSite>()?.setSize(Game.settings.plotHumanSiteWidth, Game.settings.plotHumanSiteHeight);
+                    if (BigOverlay.current != null)
+                        BigOverlay.current.Opacity = Game.settings.Opacity;
                 }
             }
             finally
@@ -1686,7 +1578,7 @@ namespace SrvSurvey
 
         private void Main_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            var plotFss = Program.getPlotter<PlotFSS>();
+            var plotFss = PlotBase2.getPlotter<PlotFSS>();
             if (plotFss != null && e.Button == MouseButtons.Right)
             {
                 Elite.setFocusED();
@@ -1888,9 +1780,9 @@ namespace SrvSurvey
 
         private void menuSpherical_Click(object sender, EventArgs e)
         {
-            Program.closePlotter<PlotSphericalSearch>();
+            PlotBase2.remove(PlotSphericalSearch.plotDef);
             new FormSphereLimit().ShowDialog(this);
-            this.updateSphereLimit();
+            PlotBase2.addOrRemove(Game.activeGame, PlotSphericalSearch.plotDef);
         }
 
         private void menuBoxel_Click(object sender, EventArgs e)

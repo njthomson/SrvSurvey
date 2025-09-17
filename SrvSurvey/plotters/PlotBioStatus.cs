@@ -34,7 +34,7 @@ namespace SrvSurvey.plotters
                 && !game.status.InTaxi
                 && !game.status.FsdChargingJump
                 && !PlotGuardians.allowPlotter && !Program.isPlotter<PlotGuardians>()
-                && !PlotHumanSite.allowPlotter && !Program.isPlotter<PlotHumanSite>()
+                && !PlotHumanSite.allowed(game)
                 && game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.CommsPanel, GameMode.SAA, GameMode.Codex);
         }
 

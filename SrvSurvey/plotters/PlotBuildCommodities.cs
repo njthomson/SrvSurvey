@@ -14,6 +14,7 @@ namespace SrvSurvey.plotters
             allowed = allowed,
             ctor = (game, def) => new PlotBuildCommodities(game, def),
             defaultSize = new Size(200, 400),
+            invalidationJournalEvents = new() { nameof(Cargo), nameof(CargoTransfer), nameof(CollectCargo), nameof(EjectCargo), nameof(MarketSell), nameof(MarketBuy), },
         };
 
         public static bool allowed(Game game)

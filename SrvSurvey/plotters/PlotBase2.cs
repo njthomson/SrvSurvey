@@ -1,29 +1,14 @@
-﻿using SrvSurvey.game;
+﻿using SrvSurvey.canonn;
+using SrvSurvey.game;
+using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Reflection;
+using System.Resources;
 
 namespace SrvSurvey.plotters
 {
-    internal interface IPlotBase2
-    {
-        string name { get; }
-        int left { get; }
-        int top { get; }
-        int width { get; }
-        int height { get; }
-        float fade { get; set; }
-        bool stale { get; }
-        bool hidden { get; set; }
-        Rectangle rect { get; }
-
-        Image frame { get; }
-        Image background { get; }
-
-        Image render();
-        void setPosition(Rectangle? rect = null);
-    }
 
     internal class PlotDef
     {
@@ -35,23 +20,29 @@ namespace SrvSurvey.plotters
 
         /// <summary> Factors that govern if this plotter is allowed </summary>
         public HashSet<string>? factors;
-        /// <summary> Optional factors that govern if this plotter would be re-rendered - for plotters who do not listen to status changes directly </summary>
-        public HashSet<string>? renderFactors;
+        /// <summary> Optional journal event names that should automatically invalidate the plotter </summary>
+        public HashSet<string>? invalidationJournalEvents;
 
         public PlotBase2? instance;
         public PlotContainer? form;
+
+        public override string ToString()
+        {
+            return $"{name}, instance: {instance != null}, form: {form != null} allowed: {Game.activeGame != null && allowed(Game.activeGame)}";
+        }
     }
 
-    internal abstract class PlotBase2 : IPlotBase2
+    internal abstract class PlotBase2
     {
         protected Game game;
         protected PlotDef def;
+        protected bool isClosed;
         public string name { get; set; }
         public int left { get; set; }
         public int top { get; set; }
-        public int width { get; set; }
+        public int width { get; private set; }
         public int right => left + width;
-        public int height { get; set; }
+        public int height { get; private set; }
         public int bottom => top + height;
         public float fade { get; set; }
 
@@ -62,7 +53,7 @@ namespace SrvSurvey.plotters
         public Font font = GameColors.Fonts.gothic_10;
         public Color color = C.orange;
 
-        public PlotBase2(Game game, PlotDef def)
+        protected PlotBase2(Game game, PlotDef def)
         {
             this.game = game;
             this.def = def;
@@ -75,6 +66,8 @@ namespace SrvSurvey.plotters
 
             this.frame = new Bitmap(this.width, this.height);
             this.stale = true;
+
+            this.rm = this.prepResources(this.GetType().FullName!);
         }
 
         public Size size => new Size(width, height);
@@ -83,12 +76,12 @@ namespace SrvSurvey.plotters
         public void setPosition(Rectangle? rect = null)
         {
             // get initial position
-            var pt = PlotPos.getPlotterLocation(this.name, new Size(this.width, this.height), rect ?? Rectangle.Empty, true);
+            var pt = PlotPos.getPlotterLocation(this.name, this.size, rect ?? Rectangle.Empty, true);
             this.left = pt.X;
             this.top = pt.Y;
         }
 
-        private void setSize(int width, int height)
+        public virtual void setSize(int width, int height)
         {
             if (width == 0 || height == 0) Debugger.Break();
             var changed = this.width != width || this.height != height;
@@ -102,7 +95,43 @@ namespace SrvSurvey.plotters
             }
         }
 
-        public virtual void close() { /* override as necessary */ }
+        public void close()
+        {
+            this.isClosed = true;
+            this.onClose();
+        }
+
+        protected virtual void onClose() { /* override as necessary */ }
+
+        #region Resource Managering
+
+        private readonly ResourceManager rm;
+
+        private static Dictionary<string, ResourceManager> resourceManagers = new();
+
+        public ResourceManager prepResources(string name)
+        {
+            if (!resourceManagers.ContainsKey(name))
+                resourceManagers[name] = new ResourceManager(name, typeof(PlotBase2).Assembly);
+
+            return resourceManagers[name];
+        }
+
+        protected string RES(string name, ResourceManager? rm = null)
+        {
+            var txt = (rm ?? this.rm).GetString(name);
+            if (txt == null) Debugger.Break();
+            return txt ?? "";
+        }
+
+        protected string RES(string name, params object?[] args)
+        {
+            var txt = rm.GetString(name);
+            if (txt == null) Debugger.Break();
+            return string.Format(txt ?? "", args);
+        }
+
+        #endregion
 
         #region rendering
 
@@ -151,6 +180,7 @@ namespace SrvSurvey.plotters
             this.invalidate();
         }
 
+        // TODO: remove "Game game" reference here - they already have it
         protected abstract SizeF doRender(Game game, Graphics g, TextCursor tt);
 
         /// <summary> Generate a new frame image </summary>
@@ -174,9 +204,9 @@ namespace SrvSurvey.plotters
                     this.setSize((int)Math.Ceiling(sz.Width), (int)Math.Ceiling(sz.Height));
                 }
                 ++renderCount;
-                Debug.WriteLine($"Render: {name} #{renderCount} => {this.width}, {this.height}, stale: {stale}");
                 if (renderCount > 5)
                 {
+                    Debug.WriteLine($"Render: {name} #{renderCount} => {this.width}, {this.height}, stale: {stale}");
                     Application.DoEvents();
                     Debugger.Break();
                 }
@@ -222,7 +252,7 @@ namespace SrvSurvey.plotters
 
         private static Dictionary<string, PlotDef> defs = new Dictionary<string, PlotDef>();
 
-        public static void add(Game game, PlotDef def)
+        public static PlotBase2 add(Game game, PlotDef def)
         {
             if (def.instance != null)
             {
@@ -235,6 +265,7 @@ namespace SrvSurvey.plotters
             def.instance = def.ctor(game, def);
 
             BigOverlay.invalidate();
+            return def.instance;
         }
 
         public static PlotDef? get(string name)
@@ -277,44 +308,51 @@ namespace SrvSurvey.plotters
         public static void invalidate(string name)
         {
             var def = defs.GetValueOrDefault(name);
-            def?.instance?.invalidate();
+            if (def?.instance != null)
+                def.instance.invalidate();
+            else
+                BigOverlay.invalidate();
         }
 
-        /* TODO: remove next commit
-        public static bool showHidePlotter(Game game, PlotDef def, bool? shouldShow = null)
+        public static T? addOrRemove<T>(Game? game) where T : PlotBase2
         {
-            if (!shouldShow.HasValue)
-                shouldShow = def.allowed(game);
-            //Game.log($"relevant? {def.name} => {relevant} / {def.instance != null} / shouldShow: {shouldShow}");
+            var type = typeof(T);
+            var plotDef = type.GetField("plotDef", BindingFlags.Static | BindingFlags.Public)?.GetValue(null) as PlotDef;
+            if (plotDef == null) throw new Exception($"Why no plotDef for: {type.Name}");
+            return addOrRemove(game, plotDef) as T;
+        }
 
-            // only attempt to create or destroy if something relevant changed
-            if (shouldShow.Value && def.instance == null)
+        public static PlotBase2? addOrRemove(Game? game, PlotDef def)
+        {
+            var shouldShow = game?.cmdr != null && def.allowed(game);
+
+            if (shouldShow && def.instance == null && game != null)
             {
                 add(game, def);
-                return true;
             }
-            else if (!shouldShow.Value && def.instance != null)
+            else if (shouldShow && def.instance != null)
+            {
+                def.instance.invalidate();
+            }
+            else if (!shouldShow && def.instance != null)
             {
                 remove(def);
-                return true;
             }
 
-            return false;
-        }*/
+            return def.instance;
+        }
 
         public static void renderAll(Game game, bool force = false)
         {
-            if (game.isShutdown || game.status == null) return;
+            if (game.isShutdown || game.status == null || game.cmdr == null) return;
 
             // check if we need to create or remove any
             var invalidateBig = false;
             foreach (var def in defs.Values)
             {
-                // TODO: remove?
-                var relevant = def.factors?.Any(x => game.status.changed.Contains(x)) == true;
-
-                var shouldShow = def.allowed(game);
-                //Game.log($"relevant? {def.name} => {relevant} / {def.instance != null} / shouldShow: {shouldShow}");
+                // nothing should show at the main menu, or before the cmdr is known
+                var shouldShow = !game.atMainMenu && game.cmdr != null && def.allowed(game);
+                //Game.log($"relevant? {def.name} => {def.instance != null} / shouldShow: {shouldShow}");
 
                 // only attempt to create or destroy if something relevant changed
                 if (shouldShow && def.instance == null)
@@ -331,8 +369,7 @@ namespace SrvSurvey.plotters
                 if (shouldShow)
                 {
                     // render if stale or if a relevant factor changed
-                    var shouldRender = def.renderFactors != null && def.renderFactors.Any(x => game.status.changed.Contains(x));
-                    if (def.instance!.stale || shouldRender || force)
+                    if (def.instance!.stale || force)
                     {
                         invalidateBig = true;
                         def.instance.render();
@@ -368,12 +405,12 @@ namespace SrvSurvey.plotters
         /// <summary>
         /// The list of active plotters to be rendered
         /// </summary>
-        public static List<IPlotBase2> active
+        public static List<PlotBase2> active
         {
             get => defs.Values
                 .Where(def => def.instance != null)
                 .Select(def => def.instance!)
-                .ToList<IPlotBase2>();
+                .ToList<PlotBase2>();
         }
 
         #endregion
@@ -390,7 +427,16 @@ namespace SrvSurvey.plotters
         public static void processJournalEntry(IJournalEntry entry)
         {
             foreach (var def in defs.Values)
-                def.instance?.onJournalEntry((dynamic)entry);
+            {
+                if (def.instance == null) continue;
+
+                // pass events to active plotter
+                def.instance.onJournalEntry((dynamic)entry);
+
+                // invalidate it if this is one of the declared journal entry names
+                if (def.invalidationJournalEvents?.Contains(entry.@event) == true)
+                    def.instance.invalidate();
+            }
         }
 
         protected virtual void onStatusChange(Status status) { /* override as needed */ }
@@ -424,6 +470,220 @@ namespace SrvSurvey.plotters
         protected virtual void onJournalEntry(Touchdown entry) { /* overridden as necessary */ }
 
         #endregion
+    }
+
+    internal abstract class PlotBase2Surface : PlotBase2
+    {
+        /// <summary> The center point on this plotter. </summary>
+        protected Size mid;
+
+        /// <summary>
+        /// A automatically set scaling factor to apply to plotter rendering
+        /// </summary>
+        public float scale = 1.0f;
+
+        /// <summary>
+        /// A manually set scaling factor given by users with the `z` command.
+        /// </summary>
+        public float customScale = -1.0f;
+
+        protected decimal radius { get => game.systemBody?.radius ?? 0; }
+
+        protected PlotBase2Surface(Game game, PlotDef def) : base(game, def) { }
+
+        public override void setSize(int width, int height)
+        {
+            base.setSize(width, height);
+            this.mid = this.size / 2;
+        }
+
+        protected void clipToMiddle(Graphics g)
+        {
+            this.clipToMiddle(g, N.four, N.twoSix, N.four, N.twoFour);
+        }
+
+        protected void clipToMiddle(Graphics g, float left, float top, float right, float bottom)
+        {
+            if (g == null) return;
+
+            g.ResetClip();
+            var r = new RectangleF(left, top, this.width - left - right, this.height - top - bottom);
+            g.Clip = new Region(r);
+        }
+
+        protected void resetMiddle(Graphics g)
+        {
+            // draw current location pointer (always at center of plot + unscaled)
+            g.ResetTransform();
+            g.TranslateTransform(mid.Width, mid.Height);
+        }
+
+        protected void resetMiddleRotated(Graphics g)
+        {
+            // draw current location pointer (always at center of plot + unscaled)
+            g.ResetTransform();
+            g.TranslateTransform(mid.Width, mid.Height);
+            g.ScaleTransform(scale, scale);
+            g.RotateTransform(-game.status.Heading);
+        }
+
+        protected void drawCommander(Graphics g)
+        {
+            const float sz = 5f;
+            g.DrawEllipse(GameColors.penLime2, -sz, -sz, sz * 2, sz * 2);
+            g.DrawLine(GameColors.penLime2, 0, 0, 0, sz * -2);
+        }
+
+        /// <summary>
+        /// Centered on cmdr
+        /// </summary>
+        protected virtual void drawCompassLines(Graphics g)
+        {
+            g.RotateTransform(-game.status.Heading);
+
+            // draw compass rose lines centered on the commander
+            g.DrawLine(Pens.DarkRed, -this.width * 2, 0, +this.width * 2, 0);
+            g.DrawLine(Pens.DarkRed, 0, 0, 0, +this.height * 2);
+            g.DrawLine(Pens.Red, 0, -this.height * 2, 0, 0);
+
+            g.RotateTransform(+game.status.Heading);
+        }
+    }
+
+    internal abstract class PlotBase2Site : PlotBase2Surface
+    {
+        protected LatLong2 siteLocation;
+        protected float siteHeading;
+        /// <summary>The cmdr's distance from the site origin</summary>
+        protected decimal distToSiteOrigin;
+        /// <summary>The cmdr's offset against the site origin ignoring site.heading</summary>
+        protected PointF offsetWithoutHeading;
+        /// <summary>The cmdr's offset against the site origin including site.heading</summary>
+        protected PointF cmdrOffset;
+        /// <summary>The cmdr's heading relative to the site.heading</summary>
+        protected float cmdrHeading;
+
+        protected Image? mapImage;
+        protected Point mapCenter;
+        protected float mapScale;
+
+        protected PlotBase2Site(Game game, PlotDef def) : base(game, def) { }
+
+        protected override void onStatusChange(Status status)
+        {
+            if (game?.status == null || game.systemBody == null) return;
+
+            this.distToSiteOrigin = Util.getDistance(siteLocation, Status.here, this.radius);
+            this.offsetWithoutHeading = (PointF)Util.getOffset(this.radius, this.siteLocation); // explicitly EXCLUDING site.heading
+            this.cmdrOffset = (PointF)Util.getOffset(radius, siteLocation, siteHeading); // explicitly INCLUDING site.heading
+            this.cmdrHeading = game.status.Heading - siteHeading;
+        }
+
+        protected void resetMiddleSiteOrigin(Graphics g)
+        {
+            g.ResetTransform();
+            g.TranslateTransform(mid.Width, mid.Height); // shift to center of window
+            g.ScaleTransform(scale, scale); // apply display scale factor (zoom)
+            g.RotateTransform(-game.status.Heading); // rotate by cmdr heading
+            g.TranslateTransform(-offsetWithoutHeading.X, offsetWithoutHeading.Y); // shift relative to cmdr
+            g.RotateTransform(this.siteHeading); // rotate by site heading
+        }
+
+        /// <summary>
+        /// Adjust graphics transform, calls the lambda then reverses the adjustments.
+        /// </summary>
+        protected void adjust(Graphics g, PointF pf, float rot, Action func)
+        {
+            adjust(g, pf.X, pf.Y, rot, func);
+        }
+
+        protected void adjust(Graphics g, float x, float y, float rot, Action func)
+        {
+            // Y value only is inverted
+            g.TranslateTransform(+x, -y);
+            g.RotateTransform(+rot);
+
+            func();
+
+            g.RotateTransform(-rot);
+            g.TranslateTransform(-x, +y);
+        }
+
+        protected void drawMapImage(Graphics g)
+        {
+            if (this.mapImage == null || this.mapScale == 0 || this.mapCenter == Point.Empty) return;
+
+            var mx = this.mapCenter.X * this.mapScale;
+            var my = this.mapCenter.Y * this.mapScale;
+
+            var sx = this.mapImage.Width * this.mapScale;
+            var sy = this.mapImage.Height * this.mapScale;
+
+            g.DrawImage(this.mapImage, -mx, -my, sx, sy);
+        }
+
+        /// <summary>
+        /// Centered on site origin
+        /// </summary>
+        protected override void drawCompassLines(Graphics g)
+        {
+            adjust(g, PointF.Empty, -siteHeading, () =>
+            {
+                // draw compass rose lines centered on the site origin
+                g.DrawLine(GameColors.penDarkRed2Ish, -500, 0, +500, 0);
+                g.DrawLine(GameColors.penDarkRed2Ish, 0, -500, 0, +500);
+                //g.DrawLine(GameColors.penRed2Ish, 0, -500, 0, 0);
+            });
+
+
+            // and a line to represent "north" relative to the site - visualizing the site's rotation
+            if (this.siteHeading >= 0)
+                g.DrawLine(GameColors.penRed2DashedIshIsh, 0, -500, 0, 0);
+        }
+
+        protected void drawShipAndSrvLocation(Graphics g)
+        {
+            if (g == null || game.systemBody == null) return;
+
+            // draw touchdown marker
+            if (game.cmdr.lastTouchdownLocation != null && game.cmdr.lastTouchdownHeading != -1)
+            {
+                const float shipSize = 24f;
+                var shipLatLong = game.cmdr.lastTouchdownLocation!;
+                var ship = Util.getOffset(game.systemBody.radius, shipLatLong, 180);
+
+                // adjust location by ship cockpit offset
+                var po = CanonnStation.getShipOffset(game.currentShip.type);
+                var pd = po.rotate(game.cmdr.lastTouchdownHeading);
+                ship += pd;
+
+                var rect = new RectangleF(
+                    (float)ship.X - shipSize,
+                    (float)-ship.Y - shipSize,
+                    shipSize * 2,
+                    shipSize * 2);
+
+                var shipDeparted = game.touchdownLocation == null || game.touchdownLocation == LatLong2.Empty;
+                var brush = shipDeparted ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
+
+                g.FillEllipse(brush, rect);
+            }
+
+            // draw SRV marker
+            if (game.srvLocation != null)
+            {
+                const float srvSize = 10f;
+
+                var srv = Util.getOffset(game.systemBody.radius, game.srvLocation, 180);
+                var rect = new RectangleF(
+                    (float)srv.X - srvSize,
+                    (float)-srv.Y - srvSize,
+                    srvSize * 2,
+                    srvSize * 2);
+
+                g.FillRectangle(GameColors.brushSrvLocation, rect);
+            }
+        }
     }
 
     internal class PlotContainer : PlotBase

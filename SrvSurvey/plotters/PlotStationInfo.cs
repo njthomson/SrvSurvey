@@ -14,7 +14,6 @@ namespace SrvSurvey.plotters
             allowed = allowed,
             ctor = (game, def) => new PlotStationInfo(game, def),
             defaultSize = new Size(200, 300),
-            factors = new() { "mode", nameof(Status.Destination) },
         };
 
         public static bool allowed(Game game)

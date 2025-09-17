@@ -26,6 +26,7 @@ namespace SrvSurvey.plotters
                 && !Game.activeGame.status.InTaxi
                 && !Game.activeGame.status.FsdChargingJump
                 && !PlotGuardians.allowPlotter
+                // && !PlotBase2.isPlotter<PlotHumanSite>() // <-- TODO when migrating
                 && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.RolePanel)
                 && (!Game.settings.autoHideBioPlotNoGear || Game.activeGame.mode != GameMode.Flying || Game.activeGame.status.landingGearDown)
                 ;

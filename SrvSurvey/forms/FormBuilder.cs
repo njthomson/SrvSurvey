@@ -93,7 +93,7 @@ namespace SrvSurvey
 
         private void refreshPlotter()
         {
-            Program.getPlotter<PlotHumanSite>()?.Invalidate();
+            PlotBase2.invalidate(nameof(PlotHumanSite));
             Elite.setFocusED();
         }
 

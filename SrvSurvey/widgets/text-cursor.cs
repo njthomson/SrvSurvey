@@ -171,9 +171,20 @@ namespace SrvSurvey.widgets
             // strike-through if already analyzed
             var x = (int)Math.Ceiling(dtx);
             var w = (int)Math.Ceiling(lastTextSize.Width) + N.one;
-            var ly = dty + Util.centerIn(lastTextSize.Height, 2);
-            g.DrawLine(highlight ? GameColors.penCyan1 : GameColors.penGameOrange1, x, ly, x - w, ly);
-            g.DrawLine(highlight ? GameColors.penDarkCyan1 : GameColors.penGameOrangeDim1, x + 1, ly + 1, x - w + 1, ly + 1);
+            var y = (int)(dty + Util.centerIn(lastTextSize.Height, 2));
+
+            g.DrawLine(highlight ? GameColors.penCyan1 : GameColors.penGameOrange1, x, y, x - w, y);
+            g.DrawLine(highlight ? GameColors.penDarkCyan1 : GameColors.penGameOrangeDim1, x + 1, y + 1, x - w + 1, y + 1);
+        }
+
+        public void strikeThrough(float x, float y, float w, bool highlight)
+        {
+            x = (int)x;
+            y = (int)y;
+            w = (int)w;
+
+            g.DrawLine(highlight ? GameColors.penCyan1 : GameColors.penGameOrange1, x, y, x + w, y);
+            g.DrawLine(highlight ? GameColors.penDarkCyan1 : GameColors.penGameOrangeDim1, x + 1, y + 1, x + w + 1, y + 1);
         }
 
         #region draw wrapped text (unscaled)

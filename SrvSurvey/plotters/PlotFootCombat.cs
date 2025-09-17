@@ -3,42 +3,39 @@ using SrvSurvey.widgets;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(180, 200)]
-    internal class PlotFootCombat : PlotBase, PlotterForm
+    internal class PlotFootCombat : PlotBase2
     {
-        public static bool allowPlotter
+        #region def + statics
+
+        public static PlotDef plotDef = new PlotDef()
         {
-            get => (Game.settings.autoShowFootCombat_TEST)
-                && Game.activeGame?.systemStation != null
-                && Game.activeGame.lastApproachSettlement?.StationFaction.FactionState == "War"
-                && Game.activeGame.systemStation.name == Game.activeGame.lastApproachSettlement.Name
+            name = nameof(PlotFootCombat),
+            allowed = allowed,
+            ctor = (game, def) => new PlotFootCombat(game, def),
+            defaultSize = new Size(180, 200), // Not 100, 80?
+        };
+
+        public static bool allowed(Game game)
+        {
+            return Game.settings.autoShowFootCombat_TEST
+                && game.systemStation != null
+                && game.lastApproachSettlement?.StationFaction.FactionState == "War"
+                && game.systemStation.name == game.lastApproachSettlement.Name
                 && !Game.settings.buildProjectsSuppressOtherOverlays
-                && Game.activeGame.status.Altitude < 100
+                && game.status.Altitude < 100
                 //&& Game.activeGame.isMode(GameMode.OnFoot)
                 ;
         }
+
+        #endregion
 
         private int countKills;
         //private int countDied;
         private long sumCredits;
 
-        private PlotFootCombat() : base()
+        private PlotFootCombat(Game game, PlotDef def) : base(game, def)
         {
-            this.Size = Size.Empty;
-            this.Font = GameColors.Fonts.console_8;
-        }
-
-        public override bool allow { get => PlotFootCombat.allowPlotter; }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            this.Width = scaled(100);
-            this.Height = scaled(80);
-
-            base.OnLoad(e);
-
-            this.initializeOnLoad();
-            this.reposition(Elite.getWindowRect(true));
+            this.font = GameColors.Fonts.console_8;
         }
 
         protected override void onJournalEntry(FactionKillBond entry)
@@ -46,25 +43,24 @@ namespace SrvSurvey.plotters
             this.countKills++;
             this.sumCredits += entry.Reward;
 
-            this.Invalidate();
+            this.invalidate();
         }
 
-        protected override void onPaintPlotter(PaintEventArgs e)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
-            if (game?.systemStation == null) return;
-            if (game.mode == GameMode.MainMenu) Program.closePlotter<PlotFootCombat>(true);
+            if (game?.systemStation == null) return frame.Size;
 
-            drawTextAt2(eight, $"Combat Zone: {game.systemStation.name}");
+            tt.draw(N.eight, $"Combat Zone: {game.systemStation.name}");
             //drawTextAt2(game.systemStation.name, GameColors.Fonts.console_8B);
-            newLine(eight, true);
+            tt.newLine(N.eight, true);
 
-            drawTextAt2(eight, $"Kills: {this.countKills}");
+            tt.draw(N.eight, $"Kills: {this.countKills}");
 
-            drawTextAt2(eighty, $"Bonds: {this.sumCredits.ToString("N0")}");
-            newLine(eight, true);
+            tt.draw(N.eighty, $"Bonds: {this.sumCredits.ToString("N0")}");
+            tt.newLine(N.eight, true);
 
 
-            this.formAdjustSize(oneSix, four);
+            return tt.pad(N.oneSix, N.four);
         }
     }
 }

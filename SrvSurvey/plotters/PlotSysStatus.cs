@@ -14,7 +14,7 @@ namespace SrvSurvey.plotters
             allowed = allowed,
             ctor = (game, def) => new PlotSysStatus(game, def),
             defaultSize = new Size(170, 40),
-            factors = new() { "mode" },
+            invalidationJournalEvents = new() { nameof(FSSBodySignals), nameof(FSSDiscoveryScan), nameof(Scan), },
         };
 
         public static bool allowed(Game game)
@@ -42,21 +42,6 @@ namespace SrvSurvey.plotters
         {
             if (status.changed.Contains(nameof(Status.Destination)))
                 this.invalidate();
-        }
-
-        protected override void onJournalEntry(FSSBodySignals entry)
-        {
-            this.invalidate();
-        }
-
-        protected override void onJournalEntry(FSSDiscoveryScan entry)
-        {
-            this.invalidate();
-        }
-
-        protected override void onJournalEntry(Scan entry)
-        {
-            this.invalidate();
         }
 
         protected override SizeF doRender(Game game, Graphics g, TextCursor tt)

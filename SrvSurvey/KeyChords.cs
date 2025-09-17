@@ -60,7 +60,7 @@ namespace SrvSurvey
                     }
                 }
 
-                // this is annoying, disable for now                
+                // this is annoying, disable for now
                 if (false && !handled && Debugger.IsAttached)
                     Game.log($"Chord:{chord} => ?");
             }));
@@ -144,7 +144,7 @@ namespace SrvSurvey
         {
             if (game == null) return true;
 
-            Program.getPlotter<PlotHumanSite>()?.adjustZoom(zoomIn);
+            PlotBase2.getPlotter<PlotHumanSite>()?.adjustZoom(zoomIn);
             Program.getPlotter<PlotGuardians>()?.adjustZoom(zoomIn);
             return true;
         }
@@ -153,10 +153,10 @@ namespace SrvSurvey
         {
             if (game == null) return true;
 
-            if (Program.isPlotter<PlotHumanSite>())
+            if (PlotBase2.isPlotter<PlotHumanSite>())
             {
                 PlotHumanSite.autoZoom = true;
-                Program.getPlotter<PlotHumanSite>()?.setZoom(game.mode);
+                PlotBase2.getPlotter<PlotHumanSite>()?.setZoom(game.mode);
             }
             if (Program.isPlotter<PlotGuardians>())
             {
@@ -221,7 +221,7 @@ namespace SrvSurvey
             {
                 Game.log($"Setting next boxel search system to clipboard: {nextSystem}");
                 Clipboard.SetText(nextSystem);
-                Program.invalidate<PlotSphericalSearch>();
+                PlotBase2.invalidate(nameof(PlotSphericalSearch));
             }
 
             return true;
@@ -267,24 +267,24 @@ namespace SrvSurvey
         {
             if (game == null) return true;
 
-            var fssInfo = Program.getPlotter<PlotFSSInfo>();
+            var fssInfo = PlotBase2.getPlotter<PlotFSSInfo>();
             if (fssInfo == null)
             {
                 // force show if no plotter
                 PlotFSSInfo.forceShow = true;
-                Program.showPlotter<PlotFSSInfo>();
+                PlotBase2.add(game, PlotFSSInfo.plotDef);
             }
             else if (PlotFSSInfo.forceShow)
             {
                 // unforce (hide)
                 PlotFSSInfo.forceShow = false;
-                Program.closePlotter<PlotFSSInfo>();
+                PlotBase2.remove(PlotFSSInfo.plotDef);
             }
             else
             {
                 // the plotter exists and was not forced ... toggle forceHide on it
-                fssInfo.forceHide = !fssInfo.forceHide;
-                if (!fssInfo.forceHide) PlotFSSInfo.forceShow = false;
+                fssInfo.hidden= !fssInfo.hidden;
+                if (!fssInfo.hidden) PlotFSSInfo.forceShow = false;
             }
 
             return true;

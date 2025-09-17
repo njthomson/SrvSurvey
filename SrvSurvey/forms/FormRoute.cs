@@ -312,10 +312,7 @@ namespace SrvSurvey.forms
             this.imported = false;
             this.btnSave.Visible = false;
 
-            if (route.active && PlotSphericalSearch.allowPlotter)
-                Program.showPlotter<PlotSphericalSearch>(); // needed? .Invalidate();
-            else
-                Program.invalidate<PlotSphericalSearch>();
+            PlotBase2.addOrRemove(Game.activeGame, PlotSphericalSearch.plotDef);
         }
 
         private void list_ItemChecked(object sender, ItemCheckedEventArgs e)

@@ -308,7 +308,7 @@ namespace SrvSurvey.game
             if (dirty)
             {
                 this.Save();
-                Program.invalidate<PlotMassacre>();
+                PlotBase2.invalidate(nameof(PlotMassacre));
             }
         }
 

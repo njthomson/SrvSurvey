@@ -104,8 +104,7 @@ namespace SrvSurvey.forms
                 Game.log($"Disabling boxel search");
 
                 // close plotter?
-                if (!PlotSphericalSearch.allowPlotter)
-                    Program.closePlotter<PlotSphericalSearch>();
+                PlotBase2.addOrRemove(Game.activeGame, PlotSphericalSearch.plotDef);
             }
 
             this.prepSiblings(bs.boxel ?? cmdr.getCurrentBoxel());
@@ -178,8 +177,7 @@ namespace SrvSurvey.forms
             Game.log($"Enabled boxel search:\r\n\tname: {bs.boxel}");
 
             // make plotter appear, update or close
-            if (PlotSphericalSearch.allowPlotter)
-                Program.showPlotter<PlotSphericalSearch>()?.Invalidate();
+            PlotBase2.addOrRemove(Game.activeGame, PlotSphericalSearch.plotDef);
 
             // update form controls
             tableConfig.Visible = false;
@@ -229,7 +227,7 @@ namespace SrvSurvey.forms
                 txtConfigBoxel.ReadOnly = false;
                 txtCurrent.Text = "";
 
-                Program.invalidate<PlotSphericalSearch>();
+                PlotBase2.invalidate(nameof(PlotSphericalSearch));
             }
 
             panelList.Enabled = bs.active;
@@ -577,7 +575,7 @@ namespace SrvSurvey.forms
                 lblStatus.Text = $"Next: {txt}";
             }
 
-            Program.invalidate<PlotSphericalSearch>();
+            PlotBase2.invalidate(nameof(PlotSphericalSearch));
         }
 
         private void menuHelpLink_Click(object sender, EventArgs e)

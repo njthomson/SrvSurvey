@@ -109,7 +109,7 @@ namespace SrvSurvey.game
         public static Git git { get; private set; }
         public static ColonyNet colony { get; private set; }
 
-        public bool initialized { get; private set; }
+        public bool initialized { get; private set; } // TODO: reconcile with "Game.ready"
 
         /// <summary>
         /// The Commander actively playing the game
@@ -221,7 +221,7 @@ namespace SrvSurvey.game
             this.journals.onJournalEntry += Journals_onJournalEntry;
             this.status.StatusChanged += Status_StatusChanged;
 
-            Game.ready = true;
+            Game.ready = true; // todo: "this.cmdr != null" ?
 
             Status_StatusChanged(false);
         }
@@ -604,6 +604,7 @@ namespace SrvSurvey.game
                 this.cmdr = CommanderSettings.Load(loadEntry.FID, journals.isOdyssey, loadEntry.Commander);
                 this.cmdrCodex = cmdr.loadCodex();
                 this.cmdrColony = ColonyData.Load(loadEntry.FID, loadEntry.Commander);
+                // Maybe? Game.ready = true;
                 this.journey = cmdr.loadActiveJourney();
                 this.journey?.doCatchup(this.journals!);
 
@@ -1204,8 +1205,9 @@ namespace SrvSurvey.game
                 // stop force showing these any time we change systems
                 PlotFSSInfo.forceShow = false;
                 PlotBodyInfo.forceShow = false;
-                Program.closePlotter<PlotFSSInfo>();
-
+                PlotStationInfo.forceShow = false;
+                // Not PlotJumpInfo or PlotBuildCommodities
+                PlotBase2.renderAll(this);
             }
             else
             {
@@ -1231,16 +1233,12 @@ namespace SrvSurvey.game
         {
             if (cmdr.boxelSearch?.active == true)
                 Program.defer(() => cmdr.boxelSearch.updateFromRoute(navRoute.Route));
-
-            Program.invalidate<PlotSphericalSearch>();
         }
 
         private void onJournalEntry(NavRouteClear entry)
         {
             this.fsdTarget = null;
             PlotJumpInfo.forceShow = false;
-
-            Program.invalidate<PlotSphericalSearch>();
         }
 
         private void onJournalEntry(FSDJump entry)
@@ -1322,6 +1320,8 @@ namespace SrvSurvey.game
             FormShowCodex.update();
             FormPredictions.refresh();
             Program.invalidateActivePlotters();
+            // overlays may want to appear or render at this time
+            PlotBase2.renderAll(this);
         }
 
         private void onJournalEntry(FSSDiscoveryScan entry)
@@ -1335,8 +1335,6 @@ namespace SrvSurvey.game
                 // update boxel search?
                 if (cmdr.boxelSearch?.active == true)
                     cmdr.boxelSearch.markComplete(entry.SystemAddress, entry.SystemName, null);
-
-                Program.invalidate<PlotFSSInfo>();
             });
         }
 
@@ -1350,6 +1348,18 @@ namespace SrvSurvey.game
             this.fireUpdate();
 
             this.deferPredictSpecies(this.systemBody);
+        }
+
+        private void onJournalEntry(SAASignalsFound entry)
+        {
+            // overlays may want to appear or render at this time
+            PlotBase2.renderAll(this);
+        }
+
+        private void onJournalEntry(FSSBodySignals entry)
+        {
+            // overlays may want to appear or render at this time
+            PlotBase2.renderAll(this);
         }
 
         private void onJournalEntry(Missions entry)
@@ -1669,6 +1679,7 @@ namespace SrvSurvey.game
             PlotBase2.invalidate(nameof(PlotBuildCommodities));
 
         }
+
         private void onJournalEntry(MarketSell entry)
         {
             // tracked sales to linked FleetCarriers
@@ -2393,7 +2404,7 @@ namespace SrvSurvey.game
             var hasSignals = this.canonnPoi.codex.Where(_ => _.hud_category == "Biology"
                 && _.latitude != null && _.longitude != null
                 && _.body?.Replace(" ", "") == this.systemBody.shortName
-                && (!Game.settings.hideMyOwnCanonnSignals || this.systemBody.organisms?.Any(o => o.entryId == _.entryid && o.scanned) != true)
+                && (!Game.settings.hideMyOwnCanonnSignals || this.systemBody.organisms?.Any(o => o.entryId == _.entryid && o.analyzed) != true)
                 && (!Game.settings.hideMyOwnCanonnSignals || _.scanned == false)
                 );
             return hasSignals.Any();
@@ -2900,7 +2911,6 @@ namespace SrvSurvey.game
                 this.matStatsTracker.track(item, (PointF)location, building);
             }
 
-            Program.getPlotter<PlotHumanSite>()?.Invalidate();
             if (Game.settings.collectMatsCollectionStatsTest)
                 this.matStatsTracker.Save();
         }
@@ -2921,8 +2931,6 @@ namespace SrvSurvey.game
 
             var building = systemStation.template?.getCurrentBld((PointF)cmdrOffset, systemStation.heading);
             this.matStatsTracker.track(entry, (PointF)location, building);
-
-            Program.getPlotter<PlotHumanSite>()?.Invalidate();
 
             if (Game.settings.collectMatsCollectionStatsTest)
                 this.matStatsTracker.Save();
@@ -3233,8 +3241,7 @@ namespace SrvSurvey.game
             this.systemData.Save();
 
             Program.showPlotter<PlotTrackers>()?.prepTrackers();
-            if (PlotMiniTrack.hasQuickTrackers)
-                Program.showPlotter<PlotMiniTrack>();
+            PlotBase2.addOrRemove(this, PlotMiniTrack.plotDef);
         }
 
         public void clearAllBookmarks()
@@ -3246,7 +3253,7 @@ namespace SrvSurvey.game
             this.systemData.Save();
 
             Program.showPlotter<PlotTrackers>()?.prepTrackers();
-            Program.invalidate<PlotMiniTrack>();
+            PlotBase2.invalidate(nameof(PlotMiniTrack));
         }
 
         public void removeBookmarkName(string name)
@@ -3269,7 +3276,7 @@ namespace SrvSurvey.game
             this.systemData.Save();
 
             Program.showPlotter<PlotTrackers>()?.prepTrackers();
-            Program.invalidate<PlotMiniTrack>();
+            PlotBase2.invalidate(nameof(PlotMiniTrack));
         }
 
         public void removeBookmark(string name, LatLong2 location, bool nearest)

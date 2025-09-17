@@ -4,19 +4,30 @@ using Res = Loc.PlotFSSInfo;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(300, 400)]
-    internal class PlotFSSInfo : PlotBase, PlotterForm
+    internal class PlotFSSInfo : PlotBase2
     {
-        public static bool allowPlotter
+        #region def + statics
+
+        public static PlotDef plotDef = new PlotDef()
         {
-            get => Game.activeGame?.cmdr != null
-                && Game.settings.autoShowPlotFSSInfo
+            name = nameof(PlotFSSInfo),
+            allowed = allowed,
+            ctor = (game, def) => new PlotFSSInfo(game, def),
+            defaultSize = new Size(300, 400),
+            invalidationJournalEvents = new() { nameof(FSSAllBodiesFound), }
+        };
+
+        public static bool allowed(Game game)
+        {
+            return Game.settings.autoShowPlotFSSInfo
                 && (
-                    Game.activeGame.mode == GameMode.FSS
-                    || (PlotFSSInfo.forceShow && !Game.activeGame.fsdJumping) // or a keystroke forced it
-                    || (Game.activeGame.mode == GameMode.SystemMap && Game.settings.autoShowPlotFSSInfoInSystemMap && !PlotGuardianSystem.allowPlotter) // hide if Guardian plotter is open
+                    game.mode == GameMode.FSS
+                    || (PlotFSSInfo.forceShow && !game.fsdJumping) // or a keystroke forced it
+                    || (game.mode == GameMode.SystemMap && Game.settings.autoShowPlotFSSInfoInSystemMap && !PlotGuardianSystem.allowPlotter) // hide if Guardian plotter is open
                 );
         }
+
+        #endregion
 
         /// <summary> When true, makes the plotter become visible </summary>
         public static bool forceShow = false;
@@ -24,9 +35,9 @@ namespace SrvSurvey.plotters
         public static List<FssEntry> scans = new List<FssEntry>();
         private static string? systemName;
 
-        private PlotFSSInfo() : base()
+        private PlotFSSInfo(Game game, PlotDef def) : base(game, def)
         {
-            this.Font = GameColors.fontSmall2;
+            this.font = GameColors.fontSmall2;
 
             if (systemName != game?.systemData?.name)
             {
@@ -57,18 +68,6 @@ namespace SrvSurvey.plotters
             systemName = game?.systemData?.name;
         }
 
-        public override bool allow { get => PlotFSSInfo.allowPlotter; }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            // Size set during paint
-
-            base.OnLoad(e);
-
-            this.initializeOnLoad();
-            this.reposition(Elite.getWindowRect(true));
-        }
-
         protected override void onJournalEntry(Scan entry)
         {
             // ignore Belt Clusters
@@ -97,14 +96,12 @@ namespace SrvSurvey.plotters
 
             scans.Insert(0, newScan);
 
-            this.Invalidate();
+            this.invalidate();
         }
 
-        protected override void onPaintPlotter(PaintEventArgs e)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
-            if (this.IsDisposed || game?.systemData == null) return;
-
-            this.resetPlotter(e.Graphics);
+            if (game.systemData == null) return frame.Size;
 
             // 1st line: system name
             var undiscoveredSystem = game.systemData.bodies.Find(b => b.isMainStar)?.wasDiscovered == false;
@@ -112,24 +109,24 @@ namespace SrvSurvey.plotters
                 ? $"⚑ {game.systemData.name}"
                 : game.systemData.name;
             if (game.systemData.fssAllBodies) systemName += " ✔️";
-            drawTextAt2(systemName, undiscoveredSystem ? GameColors.Cyan : null, GameColors.Fonts.gothic_12B);
-            newLine(+eight, true);
+            tt.draw(systemName, undiscoveredSystem ? GameColors.Cyan : null, GameColors.Fonts.gothic_12B);
+            tt.newLine(+N.eight, true);
 
             // 2nd line body count / values
             var bodyCount = game.systemData.bodies.Count(_ => _.scanned && _.type != SystemBodyType.Asteroid).ToString();
             if (game.systemData.fssAllBodies)
-                drawTextAt2(eight, Res.ScannedAllBodies.format(bodyCount, Util.credits(game.systemData.sumRewards())));
+                tt.draw(N.eight, Res.ScannedAllBodies.format(bodyCount, Util.credits(game.systemData.sumRewards())));
             else
-                drawTextAt2(eight, Res.ScannedBodies.format(bodyCount, Util.credits(game.systemData.sumRewards())));
+                tt.draw(N.eight, Res.ScannedBodies.format(bodyCount, Util.credits(game.systemData.sumRewards())));
 
-            newLine(true);
-            drawTextAt2(eight, Res.HidingBodies.format(Util.credits(Game.settings.hideFssLowValueAmount)), GameColors.OrangeDim);
-            newLine(+eight, true);
+            tt.newLine(true);
+            tt.draw(N.eight, Res.HidingBodies.format(Util.credits(Game.settings.hideFssLowValueAmount)), GameColors.OrangeDim);
+            tt.newLine(+N.eight, true);
 
             if (scans.Count == 0)
             {
-                drawTextAt2(eight, Res.ScanToPopulate);
-                newLine(true);
+                tt.draw(N.eight, Res.ScanToPopulate);
+                tt.newLine(true);
             }
 
             foreach (var scan in scans)
@@ -161,61 +158,52 @@ namespace SrvSurvey.plotters
                 if (scan.body.type == SystemBodyType.Star)
                     txt = $"{prefix}{scan.body.shortName} - {scan.body.starType} Star";
 
-                drawTextAt2(oneSix, txt, highlight ? GameColors.Cyan : null, GameColors.fontSmall2);
-                newLine(true);
+                tt.draw(N.oneSix, txt, highlight ? GameColors.Cyan : null, GameColors.fontSmall2);
+                tt.newLine(true);
 
                 // 2nd line: scan values
                 var reward = (scan.body.dssComplete ? "✔️ " : "") + Util.credits(scan.body.reward, true); // scan.reward ?
 
-                drawTextAt2(thirty, reward, dssWorthy ? GameColors.Cyan : null);
+                tt.draw(N.thirty, reward, dssWorthy ? GameColors.Cyan : null);
                 if (scan.body.type != SystemBodyType.Star && !scan.body.dssComplete)
                 {
-                    drawTextAt2(" | ", GameColors.OrangeDim);
-                    drawTextAt2(scan.dssReward.ToString("N0"), dssWorthy ? GameColors.Cyan : null);
+                    tt.draw(" | ", GameColors.OrangeDim);
+                    tt.draw(scan.dssReward.ToString("N0"), dssWorthy ? GameColors.Cyan : null);
                 }
 
                 if (scan.body.bioSignalCount > 0)
                 {
-                    drawTextAt2(" | ", GameColors.OrangeDim);
+                    tt.draw(" | ", GameColors.OrangeDim);
                     var analyzed = scan.body.countAnalyzedBioSignals == scan.body.bioSignalCount;
-                    var sz = drawTextAt2(Res.CountGenus.format(scan.body.bioSignalCount), analyzed ? GameColors.Orange : GameColors.Cyan);
+                    var sz = tt.draw(Res.CountGenus.format(scan.body.bioSignalCount), analyzed ? GameColors.Orange : GameColors.Cyan);
                     if (analyzed)
-                        strikeThrough(dtx, dty + two + sz.Height / 2, -sz.Width, false);
+                        tt.strikeThroughLast();
                 }
 
                 if (!Game.settings.hideGeoCountInFssInfo && scan.body.geoSignalCount > 0)
                 {
-                    drawTextAt2(" | ", GameColors.OrangeDim);
+                    tt.draw(" | ", GameColors.OrangeDim);
                     var analyzed = scan.body.geoSignalNames.Count == scan.body.geoSignalCount;
-                    var sz = drawTextAt2(Res.CountGeo.format(scan.body.geoSignalCount), analyzed ? GameColors.Orange : GameColors.Cyan);
+                    var sz = tt.draw(Res.CountGeo.format(scan.body.geoSignalCount), analyzed ? GameColors.Orange : GameColors.Cyan);
                     if (analyzed)
-                        strikeThrough(dtx, dty + two + sz.Height / 2, -sz.Width, false);
+                        tt.strikeThroughLast();
 
                 }
 
-                newLine(+four, true);
+                tt.newLine(+N.four, true);
 
-                // stop if we are starting to overlap any other plotter, allowing for some padding
-                var thisRect = new Rectangle(Left, Top, Width, (int)dty + 100);
-                foreach (var other in PlotBase2.active)
-                {
-                    if (other != this && other.rect.IntersectsWith(thisRect))
-                        break;
-                }
-                /* TODO: REVISIT when migrating this plotter
-                var plotSysStatusTop = Program.getPlotter<PlotSysStatus>()?.Top;
-                var plotBioSysTop = Program.getPlotter<PlotBioSystem>()?.Top;
-                if (dty > plotSysStatusTop - hundred || dty > plotBioSysTop - hundred)
-                    break;
-                */
+                // stop if we are starting to overlap any other plotter (allowing 100px of buffer)
+                var thisRect = new Rectangle(left, top, (int)tt.frameSize.Width + 100, (int)tt.frameSize.Height + 100);
+                var colliding = PlotBase2.active.Any(other => other != this && other.rect.IntersectsWith(thisRect));
+                if (colliding) break;
             }
 
-            drawTextAt2(eight, Res.Footer1, GameColors.OrangeDim);
-            newLine(true);
-            drawTextAt2(eight, Res.Footer2, GameColors.OrangeDim);
-            newLine(true);
+            tt.draw(N.eight, Res.Footer1, GameColors.OrangeDim);
+            tt.newLine(true);
+            tt.draw(N.eight, Res.Footer2, GameColors.OrangeDim);
+            tt.newLine(true);
 
-            this.formAdjustSize(+oneEight, +ten);
+            return tt.pad(+N.oneEight, +N.ten);
         }
 
     }

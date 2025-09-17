@@ -36,13 +36,7 @@ namespace SrvSurvey
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            btnGroundTarget = new Button();
             btnQuit2 = new Button();
-            txtTargetLatLong = new TextBox();
-            btnClearTarget = new Button();
-            groupBox1 = new GroupBox();
-            btnPasteLatLong = new Button();
-            lblTrackTargetStatus = new Label();
             groupCmdr = new GroupBox();
             btnNextWindow = new Button();
             btnCopyLocation = new Button();
@@ -135,7 +129,6 @@ namespace SrvSurvey
             menuNotifySettings = new ToolStripMenuItem();
             toolStripSeparator3 = new ToolStripSeparator();
             menuNotifyClose = new ToolStripMenuItem();
-            groupBox1.SuspendLayout();
             groupCmdr.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox5.SuspendLayout();
@@ -146,21 +139,6 @@ namespace SrvSurvey
             menuGuardians.SuspendLayout();
             menuNotify.SuspendLayout();
             SuspendLayout();
-            // 
-            // btnGroundTarget
-            // 
-            btnGroundTarget.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnGroundTarget.BackColor = SystemColors.ControlDark;
-            btnGroundTarget.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
-            btnGroundTarget.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
-            btnGroundTarget.FlatStyle = FlatStyle.Flat;
-            btnGroundTarget.Location = new Point(88, 44);
-            btnGroundTarget.Name = "btnGroundTarget";
-            btnGroundTarget.Size = new Size(37, 27);
-            btnGroundTarget.TabIndex = 2;
-            btnGroundTarget.Text = "Set";
-            btnGroundTarget.UseVisualStyleBackColor = false;
-            btnGroundTarget.Click += btnGroundTarget_Click;
             // 
             // btnQuit2
             // 
@@ -177,73 +155,6 @@ namespace SrvSurvey
             btnQuit2.Text = "&Quit";
             btnQuit2.UseVisualStyleBackColor = false;
             btnQuit2.Click += btnQuit_Click;
-            // 
-            // txtTargetLatLong
-            // 
-            txtTargetLatLong.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtTargetLatLong.BackColor = SystemColors.AppWorkspace;
-            txtTargetLatLong.BorderStyle = BorderStyle.FixedSingle;
-            txtTargetLatLong.Location = new Point(14, 19);
-            txtTargetLatLong.Name = "txtTargetLatLong";
-            txtTargetLatLong.ReadOnly = true;
-            txtTargetLatLong.Size = new Size(194, 20);
-            txtTargetLatLong.TabIndex = 0;
-            txtTargetLatLong.Text = "<none>";
-            // 
-            // btnClearTarget
-            // 
-            btnClearTarget.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnClearTarget.BackColor = SystemColors.ControlDark;
-            btnClearTarget.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
-            btnClearTarget.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
-            btnClearTarget.FlatStyle = FlatStyle.Flat;
-            btnClearTarget.Location = new Point(131, 44);
-            btnClearTarget.Name = "btnClearTarget";
-            btnClearTarget.Size = new Size(51, 27);
-            btnClearTarget.TabIndex = 3;
-            btnClearTarget.Text = "Hide";
-            btnClearTarget.UseVisualStyleBackColor = false;
-            btnClearTarget.Click += btnClearTarget_Click;
-            // 
-            // groupBox1
-            // 
-            groupBox1.Controls.Add(btnPasteLatLong);
-            groupBox1.Controls.Add(lblTrackTargetStatus);
-            groupBox1.Controls.Add(btnClearTarget);
-            groupBox1.Controls.Add(btnGroundTarget);
-            groupBox1.Controls.Add(txtTargetLatLong);
-            groupBox1.Location = new Point(430, 342);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(214, 78);
-            groupBox1.TabIndex = 7;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Target lat/Long:";
-            groupBox1.Visible = false;
-            // 
-            // btnPasteLatLong
-            // 
-            btnPasteLatLong.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnPasteLatLong.BackColor = SystemColors.ControlDark;
-            btnPasteLatLong.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
-            btnPasteLatLong.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
-            btnPasteLatLong.FlatStyle = FlatStyle.Flat;
-            btnPasteLatLong.Image = (Image)resources.GetObject("btnPasteLatLong.Image");
-            btnPasteLatLong.Location = new Point(186, 44);
-            btnPasteLatLong.Name = "btnPasteLatLong";
-            btnPasteLatLong.Size = new Size(23, 27);
-            btnPasteLatLong.TabIndex = 4;
-            btnPasteLatLong.UseVisualStyleBackColor = false;
-            btnPasteLatLong.Click += btnPasteLatLong_Click;
-            // 
-            // lblTrackTargetStatus
-            // 
-            lblTrackTargetStatus.AutoSize = true;
-            lblTrackTargetStatus.BorderStyle = BorderStyle.FixedSingle;
-            lblTrackTargetStatus.Location = new Point(14, 49);
-            lblTrackTargetStatus.Name = "lblTrackTargetStatus";
-            lblTrackTargetStatus.Size = new Size(63, 14);
-            lblTrackTargetStatus.TabIndex = 1;
-            lblTrackTargetStatus.Text = "<status>";
             // 
             // groupCmdr
             // 
@@ -864,7 +775,7 @@ namespace SrvSurvey
             menuJourney.Name = "menuJourney";
             menuJourney.RenderMode = ToolStripRenderMode.System;
             menuJourney.ShowImageMargin = false;
-            menuJourney.Size = new Size(203, 194);
+            menuJourney.Size = new Size(203, 172);
             menuJourney.targetButton = btnTravel;
             menuJourney.Opening += menuJourney_Opening;
             // 
@@ -1238,7 +1149,6 @@ namespace SrvSurvey
             Controls.Add(btnSettings);
             Controls.Add(btnLogs);
             Controls.Add(groupCmdr);
-            Controls.Add(groupBox1);
             Controls.Add(btnQuit2);
             Controls.Add(lblNotInstalled);
             Controls.Add(lblFullScreen);
@@ -1253,8 +1163,6 @@ namespace SrvSurvey
             Load += Main_Load;
             SizeChanged += Main_SizeChanged;
             MouseDoubleClick += Main_MouseDoubleClick;
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
             groupCmdr.ResumeLayout(false);
             groupCmdr.PerformLayout();
             groupBox3.ResumeLayout(false);
@@ -1272,11 +1180,7 @@ namespace SrvSurvey
         }
 
         #endregion
-        private Button btnGroundTarget;
         private Button btnQuit2;
-        private TextBox txtTargetLatLong;
-        private Button btnClearTarget;
-        private GroupBox groupBox1;
         private GroupBox groupCmdr;
         private TextBox txtCommander;
         private GroupBox groupBox3;
@@ -1287,7 +1191,6 @@ namespace SrvSurvey
         private Button btnLogs;
         private Button btnSettings;
         private LinkLabel linkLabel1;
-        private Label lblTrackTargetStatus;
         private TextBox txtNearBody;
         private Label lblFullScreen;
         private LinkLabel lblNotInstalled;
@@ -1302,7 +1205,6 @@ namespace SrvSurvey
         private Label lblBodyBio;
         private LinkLabel linkLabel2;
         private CheckBox checkFirstFootFall;
-        private Button btnPasteLatLong;
         public CheckBox checkTempHide;
         private Button btnPredictions;
         private Button btnCopyLocation;

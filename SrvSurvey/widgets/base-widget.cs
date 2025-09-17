@@ -125,6 +125,7 @@ namespace SrvSurvey.widgets
         public static float twoOne = s(21f);
         public static float twoTwo = s(22f);
         public static float twoFour = s(24f);
+        public static float twoFourty = s(240f);
         public static float twoSix = s(26f);
         public static float twoEight = s(28f);
         public static float thirty = s(30f);

@@ -27,7 +27,8 @@ namespace SrvSurvey.plotters
                 && !game.hidePlottersFromCombatSuits
                 && !game.status.Docked
                 && !PlotGuardians.allowPlotter && !Program.isPlotter<PlotGuardians>()
-                && !PlotHumanSite.allowPlotter && !Program.isPlotter<PlotHumanSite>()
+                && !PlotHumanSite.allowed(game)
+                && !PlotStationInfo.allowed(game)
                 && game.canonnPoiHasLocalBioSignals()
                 && game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.SAA, GameMode.Codex)
                 ;
@@ -71,6 +72,9 @@ namespace SrvSurvey.plotters
                 signal.trackers.ForEach(_ => _.calc());
                 signal.trackers.Sort((a, b) => a.distance.CompareTo(b.distance));
             }
+
+            if (status.changed.Contains(nameof(Status.Heading)) || status.changed.Contains(nameof(Status.Latitude)) || status.changed.Contains(nameof(Status.Longitude)))
+                this.invalidate();
         }
 
         public void setPriorScans()

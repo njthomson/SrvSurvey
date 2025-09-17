@@ -645,6 +645,7 @@ namespace SrvSurvey
         /// <summary> Defer the given action behind BeginInvoke </summary>
         public static void defer(Action func)
         {
+            if (control.IsDisposed) return;
             Program.control.BeginInvoke(func);
         }
     }

@@ -434,6 +434,7 @@ namespace SrvSurvey
             {
                 // close all plotters
                 Program.closeAllPlotters();
+                PlotBase2.closeAll();
             }
 
             if (Game.settings.streamOneOverlay)
@@ -816,15 +817,9 @@ namespace SrvSurvey
         private void numHumanSitePlotterSize_ValueChanged(object sender, EventArgs e)
         {
             // live adjust plotter size if it exists
-            var plotter = Program.getPlotter<PlotHumanSite>();
+            var plotter = PlotBase2.getPlotter<PlotHumanSite>();
             if (plotter != null)
-            {
-                plotter.Width = (int)numHumanSitePlotterWidth.Value;
-                plotter.Height = (int)numHumanSitePlotterHeight.Value;
-                plotter.BackgroundImage = GameGraphics.getBackgroundImage(plotter);
-                plotter.reposition(Elite.getWindowRect());
-                plotter.Invalidate();
-            }
+                plotter.setSize((int)numHumanSitePlotterWidth.Value, (int)numHumanSitePlotterHeight.Value);
         }
 
         private void listKeys_DoubleClick(object sender, EventArgs e)

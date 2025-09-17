@@ -6,16 +6,27 @@ using Res = Loc.PlotGalMap;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(240, 180)]
-    internal class PlotGalMap : PlotBase, PlotterForm
+    internal class PlotGalMap : PlotBase2
     {
-        public static bool allowPlotter
+        #region def + statics
+
+        public static PlotDef plotDef = new PlotDef()
         {
-            get => Game.activeGame != null
-                && Game.activeGame.mode == GameMode.GalaxyMap
+            name = nameof(PlotGalMap),
+            allowed = allowed,
+            ctor = (game, def) => new PlotGalMap(game, def),
+            defaultSize = new Size(240, 180),
+        };
+
+        public static bool allowed(Game game)
+        {
+            return Game.settings.autoShowPlotGalMap
                 // NOT suppressed by buildProjectsSuppressOtherOverlays
-                && Game.settings.useExternalData;
+                && game.mode == GameMode.GalaxyMap
+                ;
         }
+
+        #endregion
 
         private static bool smaller = true; // temp?
         private static GraphicsPath triangle;
@@ -25,9 +36,9 @@ namespace SrvSurvey.plotters
             triangle = new GraphicsPath();
             triangle.AddPolygon(new Point[]
             {
-                scaled(new Point(0, 0)),
-                scaled(new Point(0, smaller ? 20 : 36)),
-                scaled(new Point(smaller ? 8 : 12,  smaller ? 10 : 18)),
+                N.s(new Point(0, 0)),
+                N.s(new Point(0, smaller ? 20 : 36)),
+                N.s(new Point(smaller ? 8 : 12,  smaller ? 10 : 18)),
             });
         }
 
@@ -35,7 +46,7 @@ namespace SrvSurvey.plotters
                 Res.Selected,
                 Res.Current,
                 Res.Destination,
-                Res.NextJump) + oneTwo;
+                Res.NextJump) + N.oneTwo;
 
         private double distanceJumped;
         /// <summary> Next hop data </summary>
@@ -43,64 +54,47 @@ namespace SrvSurvey.plotters
         /// <summary> Destination system data </summary>
         private NetSysData? finalNetData;
 
-        private PlotGalMap() : base()
+        private PlotGalMap(Game game, PlotDef def) : base(game, def)
         {
-            this.Font = GameColors.fontSmall2;
-        }
-
-        public override bool allow { get => PlotGalMap.allowPlotter; }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            // Size set during paint
-
-            base.OnLoad(e);
-
-            this.initializeOnLoad();
-
-            this.reposition(Elite.getWindowRect(true));
+            this.font = GameColors.fontSmall2;
 
             // show existing route, otherwise data for current system
             if (game.navRoute.Route.Count > 1)
                 this.onJournalEntry(new NavRoute());
             else if (game.systemData != null)
-                this.finalNetData = NetSysData.get(game.systemData.name, game.systemData.address, (source, netData) => this.Invalidate());
+                this.finalNetData = NetSysData.get(game.systemData.name, game.systemData.address, (source, netData) => this.invalidate());
         }
 
         protected override void onJournalEntry(FSDTarget entry)
         {
-            if (this.IsDisposed) return;
-
             // exit early when the target is the first hop (this happens when setting a route)
             if (this.nextNetData?.systemAddress == entry.SystemAddress)
                 return;
 
             this.distanceJumped = 0;
 
-            this.finalNetData = NetSysData.get(entry.Name, entry.SystemAddress, (source, netData) => this.Invalidate());
+            this.finalNetData = NetSysData.get(entry.Name, entry.SystemAddress, (source, netData) => this.invalidate());
             this.nextNetData = null;
 
-            this.Invalidate();
+            this.invalidate();
         }
 
         protected override void onJournalEntry(NavRoute entry)
         {
-            if (this.IsDisposed) return;
-
             // lookup if target system has been discovered
             if (game.navRoute.Route.Count < 2)
                 return;
 
             // load data for destination system
             var lastHop = game.navRoute.Route.Last();
-            this.finalNetData = NetSysData.get(lastHop.StarSystem, lastHop.SystemAddress, (source, netData) => this.Invalidate());
+            this.finalNetData = NetSysData.get(lastHop.StarSystem, lastHop.SystemAddress, (source, netData) => this.invalidate());
 
             // load data for first jump
             var firstHop = game.navRoute.Route.Skip(1).FirstOrDefault();
             if (firstHop == lastHop || firstHop == null)
                 this.nextNetData = null;
             else
-                this.nextNetData = NetSysData.get(firstHop.StarSystem, firstHop.SystemAddress, (source, netData) => this.Invalidate());
+                this.nextNetData = NetSysData.get(firstHop.StarSystem, firstHop.SystemAddress, (source, netData) => this.invalidate());
 
             this.distanceJumped = 0;
             for (int n = 1; n < game.navRoute.Route.Count; n++)
@@ -112,48 +106,46 @@ namespace SrvSurvey.plotters
 
         protected override void onJournalEntry(NavRouteClear entry)
         {
-            if (this.IsDisposed) return;
-
             this.nextNetData = null;
             this.finalNetData = null;
 
-            this.Invalidate();
+            this.invalidate();
         }
 
-        protected override void onPaintPlotter(PaintEventArgs e)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
             if (this.finalNetData == null)
             {
                 // TODO: keep hidden until we have a route?
-                this.drawTextAt(eight, Res.NoRouteSet);
-                this.newLine(+ten, true);
+                tt.draw(N.eight, Res.NoRouteSet);
+                tt.newLine(+N.ten, true);
             }
             else
             {
                 if (this.finalNetData != null)
-                    this.drawSystemSummary(this.finalNetData);
+                    this.drawSystemSummary(tt, this.finalNetData);
 
                 if (this.nextNetData != null)
-                    this.drawSystemSummary(this.nextNetData);
+                    this.drawSystemSummary(tt, this.nextNetData);
 
                 if (this.distanceJumped > 0)
                 {
                     var txt = Res.RouteFooter.format(
                         game.navRoute.Route.Count - 1,
                         this.distanceJumped.ToString("N1"));
-                    this.drawTextAt(eight, txt, GameColors.brushGameOrange);
-                    this.newLine(true);
+                    tt.draw(N.eight, txt, C.orange);
+                    tt.newLine(true);
                 }
 
-                this.dty += two;
-                this.drawTextAt(eight, Res.DataFrom, GameColors.brushGameOrangeDim);
-                this.newLine(true);
+                tt.dty += N.two;
+                tt.draw(N.eight, Res.DataFrom, C.orangeDark);
+                tt.newLine(true);
             }
 
-            this.formAdjustSize(+ten, +ten);
+            return tt.pad(+N.ten, +N.ten);
         }
 
-        private void drawSystemSummary(NetSysData netData)
+        private void drawSystemSummary(TextCursor tt, NetSysData netData)
         {
             var header = Res.Selected;
 
@@ -164,41 +156,41 @@ namespace SrvSurvey.plotters
             else if (netData.systemAddress == nextNetData?.systemAddress)
                 header = Res.NextJump;
 
-            this.drawTextAt(eight, header);
+            tt.draw(N.eight, header);
 
             // line 1: system name
-            this.drawTextAt(leftWidth, $"► {netData.systemName}", GameColors.fontSmall2Bold);
-            this.newLine(true);
+            tt.draw(leftWidth, $"► {netData.systemName}", GameColors.fontSmall2Bold);
+            tt.newLine(true);
 
             var highlight = netData.discovered == false || netData.scanBodyCount < netData.totalBodyCount || (netData.totalBodyCount == 0 && netData.discovered.HasValue);
 
             // line 2: status
             var discoveryStatus = netData.discoveryStatus ?? "...";
             if (highlight)
-                this.drawTextAt(leftWidth, $"{discoveryStatus}", GameColors.brushCyan, GameColors.fontSmall2Bold);
+                tt.draw(leftWidth, $"{discoveryStatus}", C.cyan, GameColors.fontSmall2Bold);
             else
-                this.drawTextAt(leftWidth, $"{discoveryStatus}");
+                tt.draw(leftWidth, $"{discoveryStatus}");
 
             // line 3: who discovered + last updated
             if (netData.discoveredBy != null && netData.discoveredDate != null)
             {
-                this.newLine(true);
-                this.drawTextAt(leftWidth, Res.DiscoveredBy.format(netData.discoveredBy, netData.discoveredDate?.ToString("d") ?? "?"));
+                tt.newLine(true);
+                tt.draw(leftWidth, Res.DiscoveredBy.format(netData.discoveredBy, netData.discoveredDate?.ToString("d") ?? "?"));
             }
             if (netData.lastUpdated != null && (netData.lastUpdated > netData.discoveredDate || netData.discoveredDate == null))
             {
-                this.newLine(true);
-                this.drawTextAt(leftWidth, Res.LastUpdated.format(netData.lastUpdated?.ToString("d") ?? "?"));
+                tt.newLine(true);
+                tt.draw(leftWidth, Res.LastUpdated.format(netData.lastUpdated?.ToString("d") ?? "?"));
             }
 
             // line 4: bio signals?
             if (netData.genusCount > 0)
             {
-                this.newLine(true);
-                this.drawTextAt(leftWidth, Res.CountGenus.format(netData.genusCount), GameColors.brushCyan, GameColors.fontSmall2Bold);
+                tt.newLine(true);
+                tt.draw(leftWidth, Res.CountGenus.format(netData.genusCount), C.cyan, GameColors.fontSmall2Bold);
             }
 
-            this.newLine(+ten, true);
+            tt.newLine(+N.ten, true);
         }
     }
 }
