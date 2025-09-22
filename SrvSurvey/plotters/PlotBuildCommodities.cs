@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.game.RavenColonial;
 using SrvSurvey.widgets;
 using System.Diagnostics;
 
@@ -47,10 +48,14 @@ namespace SrvSurvey.plotters
                 form.setHeaderTextAndNeeds();
                 form.invalidate();
             }
-            else if (form != null)
+            else if (form == null)
             {
                 // just show the plotter
                 PlotBase2.add(game, PlotBuildCommodities.plotDef);
+            }
+            else
+            {
+                form.show();
             }
         }
 
@@ -475,6 +480,11 @@ namespace SrvSurvey.plotters
                             var diff = fcAmount;
                             var diffTxt = diff.ToString("N0");
                             var cc = fcAmount >= needCount ? C.green : C.red;
+                            if (fcAmount >= needCount && !nameTxt.EndsWith(" ✔️"))
+                            {
+                                col = C.green;
+                                nameTxt += " ✔️";
+                            }
 
                             // if sharing a column ... make FC counts darker
                             if (Game.settings.buildProjectsInlineSumFC_TEST)

@@ -1,4 +1,5 @@
-﻿using SrvSurvey.game;
+﻿using SrvSurvey.canonn;
+using SrvSurvey.game;
 using SrvSurvey.net;
 using SrvSurvey.widgets;
 
@@ -81,7 +82,7 @@ namespace SrvSurvey.plotters
 
             // title
             tt.draw(N.eight, station.name, GameColors.Fonts.gothic_12B);
-            tt.newLine(true);
+            tt.newLine(N.two, true);
 
             // settlement type?
             var match = game.systemData?.stations?.Find(s => s.marketId == station.id);
@@ -98,12 +99,22 @@ namespace SrvSurvey.plotters
 
             // largest pad
             string? largestPad = null;
-            if (station.landingPads?.Large > 0) largestPad = "Large";
-            else if (station.landingPads?.Medium > 0) largestPad = "Medium";
-            else if (station.landingPads?.Small > 0) largestPad = "Small";
+            var padSize = 0;
+            if (station.landingPads?.Large > 0) { largestPad = "Large";  padSize = 3; }
+            else if (station.landingPads?.Medium > 0) { largestPad = "Medium"; padSize = 2; }
+            else if (station.landingPads?.Small > 0) { largestPad = "Small"; padSize = 1; }
             if (largestPad != null)
             {
-                tt.draw(indent, $"Landing pads: {largestPad}", GameColors.Fonts.gothic_9);
+                tt.draw(indent, "Pads: ", C.orangeDark, GameColors.Fonts.gothic_9);
+                // be green/red if ship will fit at this station
+                var shipSize = CanonnStation.mapShipSizes.GetValueOrDefault(game.currentShip.type);
+                var shipFits = padSize >= shipSize;
+                tt.draw(largestPad, shipFits ? C.green : C.red, GameColors.Fonts.gothic_9);
+                if (shipFits)
+                    tt.draw(" ✔️", C.green, GameColors.Fonts.segoeEmoji_8);
+                else
+                    tt.draw(" ❌", C.red, GameColors.Fonts.segoeEmoji_8);
+
                 tt.newLine(true);
             }
 
@@ -116,13 +127,16 @@ namespace SrvSurvey.plotters
             else
             {
                 tt.dty += N.ten;
-                tt.draw(N.eight, $"Economy:");
+                tt.draw(N.eight, $"Economy:", C.orangeDark, GameColors.Fonts.gothic_9);
                 tt.newLine(true);
 
+                var count = 0;
                 foreach (var entry in station.economies.OrderByDescending(kv => kv.Value))
                 {
-                    tt.draw(indent, $"{entry.Key}: {entry.Value}%", GameColors.Fonts.gothic_9);
+                    tt.draw(indent, $"{entry.Key}: ", GameColors.Fonts.gothic_9);
+                    tt.draw($"{entry.Value}%", count < 2 ? C.cyan : C.orange, GameColors.Fonts.gothic_9);
                     tt.newLine(true);
+                    count++;
                 }
                 tt.dty += 10;
             }
@@ -133,16 +147,22 @@ namespace SrvSurvey.plotters
                 var (rep, inf, state) = game.getFactionInfRep(station.controllingFaction);
                 var txtRep = Util.getReputationText(rep);
 
-                tt.draw(N.eight, $"Faction:");
+                tt.draw(N.eight, $"Faction:", C.orangeDark, GameColors.Fonts.gothic_9);
                 tt.newLine(true);
-                tt.draw(indent, station.controllingFaction, GameColors.Fonts.gothic_9);
+                tt.draw(indent, station.controllingFaction);
                 if (state != null && state != "None")
                 {
                     tt.newLine(true);
-                    tt.draw(indent, $"State: {state}", GameColors.Fonts.gothic_9);
+                    tt.draw(indent, $"State: {state}", C.orangeDark, GameColors.Fonts.gothic_9);
                 }
                 tt.newLine(true);
-                tt.draw(indent, $"Inf: {inf:P0} | Rep: {txtRep}", GameColors.Fonts.gothic_9);
+                tt.draw(indent, "Inf: ", C.orangeDark, GameColors.Fonts.gothic_9);
+                tt.draw($"{inf:P0}", GameColors.Fonts.gothic_9);
+                tt.draw(" | Rep: ", C.orangeDark, GameColors.Fonts.gothic_9);
+                var colRep = C.orange;
+                if (rep < -35) colRep = C.red;
+                else if (rep >= 35) colRep = C.green;
+                tt.draw(txtRep, colRep, GameColors.Fonts.gothic_9);
             }
 
 
@@ -150,7 +170,7 @@ namespace SrvSurvey.plotters
             if (station.services != null)
             {
                 tt.newLine(+N.ten, true);
-                tt.draw(N.eight, "Relevant services:");
+                tt.draw(N.eight, "Relevant services:", C.orangeDark, GameColors.Fonts.gothic_9);
                 var interesting = new List<string>() { "Shipyard", "Outfitting", "Refuel", "Restock", "Repair", "Market", "Universal Cartographics", "Search and Rescue", "Interstellar Factors" };
                 // TODO: Tech broker, mat trader, engineer, black market
                 foreach (var service in station.services)
@@ -166,7 +186,7 @@ namespace SrvSurvey.plotters
             if (station.market?.prohibitedCommodities.Count > 0)
             {
                 tt.newLine(+N.ten, true);
-                tt.draw(N.eight, "Prohibited:");
+                tt.draw(N.eight, "Prohibited:", C.orangeDark, GameColors.Fonts.gothic_9);
                 foreach (var commodity in station.market.prohibitedCommodities)
                 {
                     tt.newLine(true);

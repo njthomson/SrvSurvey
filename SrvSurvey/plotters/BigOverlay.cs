@@ -10,7 +10,7 @@ namespace SrvSurvey.plotters
     [System.ComponentModel.DesignerCategory("")]
     internal class BigOverlay : Form
     {
-        public static BigOverlay current;
+        public static BigOverlay? current;
 
         /// <summary> Invalidates the big overlay, using Program.defer </summary>
         public static void invalidate()
@@ -179,13 +179,14 @@ namespace SrvSurvey.plotters
             else if (form.fade > 1)
                 form.fade = 1;
 
-            BigOverlay.current.Invalidate();
+            BigOverlay.current?.Invalidate();
         }
 
         #region PlotPulse
 
         public static Size plotPulseDefaultSize = new Size(32, 32);
         private static int pulseTick;
+        private static System.Windows.Forms.Timer? timer;
 
         private Image pulseBackground;
         private Point ptPlotPulse;
@@ -202,6 +203,25 @@ namespace SrvSurvey.plotters
                         b.SetPixel(x, y, C.orangeDark);
 
             this.pulseBackground = b;
+
+            if (timer == null)
+            {
+                timer = new System.Windows.Forms.Timer()
+                {
+                    Interval = 500,
+                    Enabled = false,
+                };
+
+                timer.Tick += (object? sender, EventArgs e) =>
+                {
+                    if (pulseTick > 0)
+                        pulseTick--;
+                    else
+                        timer.Stop();
+
+                    BigOverlay.invalidate();
+                };
+            }
         }
 
         /// <summary> Resets pulse timer from any journal file update </summary>
@@ -212,23 +232,7 @@ namespace SrvSurvey.plotters
 
             // reset counter
             pulseTick = 20;
-            tickAway();
-        }
-
-        private static void tickAway()
-        {
-            if (pulseTick > 0)
-            {
-                pulseTick--;
-                Task.Delay(500).ContinueWith(t =>
-                {
-                    if (Program.control.IsHandleCreated)
-                        Program.control.Invoke(() => tickAway());
-                    else
-                        pulseTick = 0;
-                });
-                BigOverlay.invalidate();
-            }
+            Program.control.Invoke(() => timer?.Start());
         }
 
         private void renderPulse(Graphics g)

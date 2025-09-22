@@ -2,6 +2,7 @@
 using SrvSurvey.canonn;
 using SrvSurvey.forms;
 using SrvSurvey.game;
+using SrvSurvey.game.RavenColonial;
 using SrvSurvey.net;
 using SrvSurvey.plotters;
 using SrvSurvey.units;
@@ -1716,9 +1717,13 @@ namespace SrvSurvey
             var showUpdateSystemBods = game?.systemData?.fssAllBodies == true;
             menuUpdateSystem.Visible = showUpdateSystemBods;
 
-            // show if either update item is shown
-            menuColonizeLine4.Visible = showPublishFC || showUpdateSystemBods;
-            menuUpdateHeader.Visible = showPublishFC || showUpdateSystemBods;
+            // show if game is active
+            var showUpdateStations = game?.systemData?.address > 0 && Debugger.IsAttached; // TODO: Not ready for everyone yet
+            menuUpdateStations.Visible = showUpdateStations;
+
+            // show if any update item is shown
+            menuColonizeLine4.Visible = showPublishFC || showUpdateSystemBods || showUpdateStations;
+            menuUpdateHeader.Visible = showPublishFC || showUpdateSystemBods || showUpdateStations;
 
             // highlight the outer button if we are docked at a project
             if (localBuildId != null || showNewProject)
@@ -1837,6 +1842,12 @@ namespace SrvSurvey
             });
         }
 
+        private void menuUpdateStations_Click(object sender, EventArgs e)
+        {
+            if (game?.systemData?.address > 0)
+                BaseForm.show<FormRavenUpdater>();
+        }
+
         private void menuCurrentProject_Click(object sender, EventArgs e)
         {
             // use where we are docked or the general primary
@@ -1935,8 +1946,7 @@ namespace SrvSurvey
 
         private void btnLogs_Click(object sender, EventArgs e)
         {
-            //BaseForm.show<ViewLogs>();
-            PlotFloatie.showMessage($"Hello again {DateTime.Now.Millisecond}");
+            BaseForm.show<ViewLogs>();
         }
 
         private void btnColonize_Click(object sender, EventArgs e)

@@ -432,6 +432,58 @@ namespace SrvSurvey.canonn
             { "taxi", new PointM(-0.9996653405051110150258470637, -11.913859432190865089645580760) }, // Taxi is an Adder but matching seat #2
         };
 
+        public static Dictionary<string, int> mapShipSizes = new Dictionary<string, int>()
+        {
+            // 1 / 2 / 3 => small / medium / large
+            { "sidewinder", 1 }, // Sidewinder
+            { "eagle", 1 }, // Eagle
+            { "hauler", 1 }, // Hauler
+            { "adder", 1 }, // Adder
+            { "empire_eagle", 1 }, // Imperial Eagle
+            { "viper", 1 }, // Viper mk3
+            { "cobramkiii", 2 }, // Cobra mk3
+            { "viper_mkiv", 2 }, // Viper mk4
+            { "diamondback", 2 }, // Diamondback Scout
+            { "cobramkiv", 1 }, // Cobra mk4
+            { "type6", 2 }, // Type 6
+            { "dolphin", 1 }, // Dolphin
+            { "diamondbackxl", 1 }, // Diamondback Explorer
+            { "empire_courier", 1 }, // Imperial Courier
+            { "independant_trader", 2 }, // Keelback
+            { "asp_scout", 2 }, // Asp Scout
+            { "vulture", 1 }, // Vulture
+            { "asp", 2 }, // Asp Explorer
+            { "federation_dropship", 2 }, // Federal Dropship
+            { "type7", 3 }, // Type 7
+            { "typex", 2 }, // Alliance Chieftain
+            { "federation_dropship_mkii", 2 }, // Federal Assault ship
+            { "empire_trader", 3 }, // Imperial Clipper
+            { "typex_2", 2 }, // Alliance Crusader
+            { "typex_3", 2 }, // Alliance Challenger
+            { "federation_gunship", 2 }, // Federal Gunship
+            { "krait_light", 2 }, // Krait Phantom
+            { "krait_mkii", 2 }, // Krait mk2
+            { "orca", 3 }, // Orca
+            { "ferdelance", 2 }, // Fer-de-lance
+            { "mamba", 2 }, // Mamba
+            { "python", 2 }, // Python
+            { "python_nx", 2 }, // Python mk2
+            { "type8", 2 }, // Type 8
+            { "type9", 3 }, // Type 9
+            { "belugaliner", 3 }, // Beluga
+            { "type9_military", 3 }, // Type 10
+            { "anaconda", 3 }, // Anaconda
+            { "federation_corvette", 3 }, // Federal Corvette
+            { "cutter", 3 }, // Imperial Cutter
+            { "mandalay", 2 }, // Mandalay
+            { "cobramkv", 1 }, // Cobra mk5
+            { "corsair", 2 }, // Corsair
+            { "panthermkii", 3 }, // Panther Clipper mk2
+
+            { "foot", 0 },
+            { "taxi", 1 },
+        };
+
         #endregion
 
     }

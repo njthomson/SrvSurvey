@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
-namespace SrvSurvey.game
+namespace SrvSurvey.game.RavenColonial
 {
     class ColonyNet
     {
@@ -326,6 +326,16 @@ namespace SrvSurvey.game
             return obj;
         }
 
+        public async Task<DataRCC> getSystem(string nameOrNum)
+        {
+            Game.log($"Colony.getSystemBodies: {nameOrNum}");
+
+            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/v2/system/{Uri.EscapeDataString(nameOrNum)}");
+            var json = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<DataRCC>(json)!;
+            return obj;
+        }
+
         public async Task<string> getSystemArchitect(string nameOrNum)
         {
             Game.log($"Colony.getSystemArchitect: {nameOrNum}");
@@ -351,130 +361,6 @@ namespace SrvSurvey.game
 
             return true;
         }
-
-        /*
-        public async Task<string> foo1()
-        {
-            //var url = $"{svcUri}/api/project/a6f8bb60-b061-43bb-90e9-8f885c1e521c";
-            var url = $"{svcUri}/api/system/2868099032505/3951207938";
-            //var body = new StringContent(json1, Encoding.Default, "application/json");
-            var response = await Colony.client.GetAsync(url);
-
-            var json2 = await response.Content.ReadAsStringAsync();
-            Game.log($"{url} =>\r\n{json2}");
-            return json2;
-        }
-
-        public async Task<string> foo0()
-        {
-            var url = $"{svcUri}/api/project/ab84b296-cfe2-4b8f-9575-17fde152a25e/supply";
-            //var url = $"{svcUri}/api/system/2868099032505/3951207938/supply";
-            var obj = new
-            {
-                titanium = 12,
-                copper = 10,
-            };
-            var json1 = JsonConvert.SerializeObject(obj);
-            var body = new StringContent(json1, Encoding.Default, "application/json");
-            var response = await Colony.client.PostAsync(url, body);
-
-            var json2 = await response.Content.ReadAsStringAsync();
-            Game.log($"{url} =>\r\n{json2}");
-            return json2;
-        }
-
-        public async Task<string> foo4()
-        {
-            var url = $"{svcUri}/api/project/c0db67fe-ae0a-4105-b4ce-5af993eb9a10";
-            var obj = new
-            {
-                ETag = "W/\"datetime'2025-03-01T06%3A26%3A30.3776594Z'\"",
-                buildId = "c0db67fe-ae0a-4105-b4ce-5af993eb9a10",
-                buildType = "coriolis2",
-                buildName = "primary-port",
-                factionName = "Raven XXX Colonial Corporation",
-                notes = "Hello world again!",
-                commodities = new
-                {
-                    aluminium = new { need = 444, total = 479 },
-                    ceramiccomposites = new { need = 479, total = 600 },
-                    junk = new { need = 479, total = 0 },
-                    //cmmcomposites = new { need = 479, total = 479 },
-                    //computercomponents = new { need = 479, total = 479 },
-                    //copper = new { need = 479, total = 479 },
-                    //foodcartridges = new { need = 479, total = 479 },
-                    //fruitandvegetables = new { need = 479, total = 479 },
-                    //insulatingmembrane = new { need = 479, total = 479 },
-                    //liquidoxygen = new { need = 479, total = 479 },
-                    //medicaldiagnosticequipment = new { need = 479, total = 479 },
-                    //nonlethalweapons = new { need = 479, total = 479 },
-                    //polymers = new { need = 479, total = 479 },
-                    //powergenerators = new { need = 479, total = 479 },
-                    //semicondunctors = new { need = 479, total = 479 },
-                    //steel = new { need = 479, total = 479 },
-                    //superconductors = new { need = 479, total = 479 },
-                    //titanium = new { need = 479, total = 479 },
-                    //water = new { need = 479, total = 479 },
-                    //waterpurifiers = new { need = 479, total = 479 },
-                },
-            };
-            var json1 = JsonConvert.SerializeObject(obj);
-            var body = new StringContent(json1, Encoding.Default, "application/json");
-            var response = await Colony.client.PostAsync(url, body);
-
-            var json2 = await response.Content.ReadAsStringAsync();
-            Game.log($"{url} =>\r\n{json2}");
-            return json2;
-        }
-
-        public async Task<string> foo()
-        {
-            //var key = "2868099032505/3951207938";
-            Game.log($"Colony.foo:");
-            var obj = new
-            {
-                buildType = "coriolis",
-                buildName = "primary-port",
-                marketId = 3951207938,
-                systemAddress = 2868099032505,
-                systemName = "52 Herculis",
-                starPos = new double[] { -131.47, 115.09, 44.00 },
-                factionName = "Raven Colonial Corporation",
-                notes = "Hello world!",
-                //commodities = new
-                //{
-                //    aluminium = 479,
-                //    ceramiccomposites = 499,
-                //    cmmcomposites = 4353,
-                //    computercomponents = 59,
-                //    copper = 236,
-                //    foodcartridges = 90,
-                //    fruitandvegetables = 51,
-                //    insulatingmembrane = 360,
-                //    liquidoxygen = 1823,
-                //    medicaldiagnosticequipment = 13,
-                //    nonlethalweapons = 12,
-                //    polymers = 517,
-                //    powergenerators = 19,
-                //    semicondunctors = 70,
-                //    steel = 6681,
-                //    superconductors = 117,
-                //    titanium = 6325,
-                //    water = 750,
-                //    waterpurifiers = 38
-                //},
-                commanders = new[] { "alpha", "bravo" },
-            };
-            var json1 = JsonConvert.SerializeObject(obj);
-            var body = new StringContent(json1, Encoding.Default, "application/json");
-            var response = await Colony.client.PutAsync($"{svcUri}/api/project/", body);
-            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
-
-            var json2 = await response.Content.ReadAsStringAsync();
-            Game.log(json2);
-            return json2;
-        }
-        // */
     }
 
     class AllColonizationCosts : Dictionary<string, Dictionary<string, int>> { }
@@ -636,6 +522,19 @@ namespace SrvSurvey.game
         {
             return $"{displayName} - {name} ({marketId})";
         }
+    }
+
+    public class DataRCC
+    {
+        public int v;
+        public long id64;
+        public string name;
+        public string architect;
+        public bool open;
+        public int rev;
+        public string reserveLevel;
+        public List<SystemSite> sites;
+        public List<Bod> bodies;
     }
 
     public class SystemSite

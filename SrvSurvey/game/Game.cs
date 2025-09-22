@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.canonn;
+using SrvSurvey.game.RavenColonial;
 using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.plotters;

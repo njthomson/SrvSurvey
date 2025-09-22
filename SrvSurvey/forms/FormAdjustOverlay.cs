@@ -207,6 +207,7 @@ namespace SrvSurvey.forms
         private void repositionPlotters()
         {
             Program.repositionPlotters();
+            BigOverlay.current?.reposition(Elite.getWindowRect());
             if (fake != null)
                 fake.Location = PlotPos.getPlotterLocation(fake.Name, fake.Size, Rectangle.Empty);
         }
