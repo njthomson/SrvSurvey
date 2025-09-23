@@ -175,6 +175,13 @@ namespace SrvSurvey.plotters
                 // and show any notes
                 if (game.cmdr.route.nextHop?.notes != null)
                     set.Add(game.cmdr.route.nextHop.notes!);
+
+                var alerts = game.cmdr.route.nextHop?.alerts;
+                if (alerts != null && alerts.Count > 0) {
+                    foreach (var alert in alerts) {
+                        set.Add(alert);
+                    }
+                }
             }
 
             // are we entering a different galactic region?

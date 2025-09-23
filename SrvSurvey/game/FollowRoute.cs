@@ -215,6 +215,19 @@ namespace SrvSurvey.game
                 };
             }
 
+            public List<string> alerts
+            {
+                get {
+                    List<string> alerts = new List<string>();
+                    if (this.refuel)
+                        alerts.Add("⛽ Refuel");
+                    if (this.neutron)
+                        alerts.Add("⚠️ Neutron");
+
+                    return alerts;
+                }
+            }
+
             class JsonConverter : Newtonsoft.Json.JsonConverter
             {
                 public override bool CanConvert(Type objectType)
