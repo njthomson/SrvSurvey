@@ -890,6 +890,13 @@ namespace SrvSurvey
         public int BodyID { get; set; }
         public List<ScanSignal> Signals { get; set; }
     }
+    
+    class NavBeaconScan : JournalEntry
+    {
+        // { "timestamp":"2025-09-23T01:28:35Z", "event":"NavBeaconScan", "SystemAddress":6132105941706, "NumBodies":52 }
+        public long SystemAddress;
+        public int NumBodies;
+    }
 
     class Disembark : JournalEntry, ISystemAddress
     {

@@ -484,6 +484,43 @@ namespace SrvSurvey.canonn
             { "taxi", 1 },
         };
 
+        public static Dictionary<string, string> mapSettlementTypes = new Dictionary<string, string>()
+        {
+            {"$economy_Agri;1", "picumnus" },
+            {"$economy_Agri;2", "consus" },
+            {"$economy_Agri;3", "ceres" },
+            {"$economy_Agri;4", "fornax" },
+            {"$economy_Agri;5", "annona" },
+
+            {"$economy_Military;1", "ioke" },
+            {"$economy_Military;2", "minerva" },
+            {"$economy_Military;3", "polemos" },
+            {"$economy_Military;4", "bellona" },
+            {"$economy_Military;5", "enyo" },
+
+            {"$economy_Extraction;1", "erebus" },
+            {"$economy_Extraction;2", "orcus" },
+            {"$economy_Extraction;3", "aerecura" },
+            {"$economy_Extraction;4", "mantus" },
+            {"$economy_Extraction;5", "ourea" },
+
+            {"$economy_Industrial;1", "fontus" },
+            {"$economy_Industrial;2", "minthe" },
+            {"$economy_Industrial;3", "palici" },
+            {"$economy_Industrial;4", "meteope" },
+            {"$economy_Industrial;5", "gaea" },
+
+            {"$economy_HighTech;1", "chronos" },
+            {"$economy_HighTech;2", "pheobe" },
+            {"$economy_HighTech;3", "asteria" },
+            {"$economy_HighTech;4", "caerus" },
+
+            {"$economy_Tourism;1", "fufluns" },
+            {"$economy_Tourism;2", "aergia" },
+            {"$economy_Tourism;3", "comus" },
+            {"$economy_Tourism;4", "gelos" },
+        };
+
         #endregion
 
     }

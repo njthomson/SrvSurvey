@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SrvSurvey.game.RavenColonial
 {
-    class ColonyNet
+    class RavenColonial
     {
         private static string colonizationCostsPath = Path.Combine(Application.StartupPath, "colonization-costs2.json");
         public static string uxUri = "https://ravencolonial.com";
@@ -25,10 +25,10 @@ namespace SrvSurvey.game.RavenColonial
 
         private static HttpClient client;
 
-        static ColonyNet()
+        static RavenColonial()
         {
-            ColonyNet.client = new HttpClient();
-            ColonyNet.client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
+            RavenColonial.client = new HttpClient();
+            RavenColonial.client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
         }
 
         public List<ColonyCost2> loadDefaultCosts()
@@ -44,7 +44,7 @@ namespace SrvSurvey.game.RavenColonial
             Game.log($"Colony.create:\r\n{json1}");
 
             var body = new StringContent(json1, Encoding.Default, "application/json");
-            var response = await ColonyNet.client.PutAsync($"{svcUri}/api/project/", body);
+            var response = await RavenColonial.client.PutAsync($"{svcUri}/api/project/", body);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             var json2 = await response.Content.ReadAsStringAsync();
@@ -66,7 +66,7 @@ namespace SrvSurvey.game.RavenColonial
 
             var json1 = JsonConvert.SerializeObject(row);
             var body = new StringContent(json1, Encoding.Default, "application/json");
-            var response = await ColonyNet.client.PostAsync($"{svcUri}/api/project/{Uri.EscapeDataString(row.buildId)}", body);
+            var response = await RavenColonial.client.PostAsync($"{svcUri}/api/project/{Uri.EscapeDataString(row.buildId)}", body);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             var json2 = await response.Content.ReadAsStringAsync();
@@ -78,7 +78,7 @@ namespace SrvSurvey.game.RavenColonial
         {
             Game.log($"Colony.markComplete: {buildId}");
 
-            var response = await ColonyNet.client.PostAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/complete", null);
+            var response = await RavenColonial.client.PostAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/complete", null);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             await response.Content.ReadAsStringAsync();
@@ -88,7 +88,7 @@ namespace SrvSurvey.game.RavenColonial
         {
             Game.log($"Colony.link: {cmdr} => {buildId}");
 
-            var response = await ColonyNet.client.PutAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/link/{Uri.EscapeDataString(cmdr)}", null);
+            var response = await RavenColonial.client.PutAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/link/{Uri.EscapeDataString(cmdr)}", null);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             await response.Content.ReadAsStringAsync();
@@ -98,7 +98,7 @@ namespace SrvSurvey.game.RavenColonial
         {
             Game.log($"Colony.link: {cmdr} => {buildId}");
 
-            var response = await ColonyNet.client.DeleteAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/link/{Uri.EscapeDataString(cmdr)}");
+            var response = await RavenColonial.client.DeleteAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/link/{Uri.EscapeDataString(cmdr)}");
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             await response.Content.ReadAsStringAsync();
@@ -108,7 +108,7 @@ namespace SrvSurvey.game.RavenColonial
         {
             Game.log($"Colony.link: {cmdr} => {commodity}=> {buildId}");
 
-            var response = await ColonyNet.client.PutAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/assign/{Uri.EscapeDataString(cmdr)}/{Uri.EscapeDataString(commodity)}", null);
+            var response = await RavenColonial.client.PutAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/assign/{Uri.EscapeDataString(cmdr)}/{Uri.EscapeDataString(commodity)}", null);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             var txt = await response.Content.ReadAsStringAsync();
@@ -119,7 +119,7 @@ namespace SrvSurvey.game.RavenColonial
         {
             Game.log($"Colony.link: {cmdr} => {commodity}=> {buildId}");
 
-            var response = await ColonyNet.client.DeleteAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/assign/{Uri.EscapeDataString(cmdr)}/{Uri.EscapeDataString(commodity)}");
+            var response = await RavenColonial.client.DeleteAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/assign/{Uri.EscapeDataString(cmdr)}/{Uri.EscapeDataString(commodity)}");
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             var txt = await response.Content.ReadAsStringAsync();
@@ -134,7 +134,7 @@ namespace SrvSurvey.game.RavenColonial
                 var url = $"{svcUri}/api/system/{Uri.EscapeDataString(id64.ToString())}/{Uri.EscapeDataString(marketId.ToString())}";
                 Game.log($"Colony.load: {url}");
 
-                var response = await ColonyNet.client.GetAsync(url);
+                var response = await RavenColonial.client.GetAsync(url);
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
 
                 var json = await response.Content.ReadAsStringAsync();
@@ -157,7 +157,7 @@ namespace SrvSurvey.game.RavenColonial
             var json1 = JsonConvert.SerializeObject(diff);
             var body = new StringContent(json1, Encoding.Default, "application/json");
             var url = $"{svcUri}/api/project/{buildId}/contribute/{Uri.EscapeDataString(cmdr)}";
-            var response = await ColonyNet.client.PostAsync(url, body);
+            var response = await RavenColonial.client.PostAsync(url, body);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
         }
 
@@ -173,7 +173,7 @@ namespace SrvSurvey.game.RavenColonial
             var json1 = JsonConvert.SerializeObject(diff);
             var body = new StringContent(json1, Encoding.Default, "application/json");
             var url = $"{svcUri}/api/fc/{Uri.EscapeDataString(marketId.ToString())}/cargo";
-            var response = await ColonyNet.client.PatchAsync(url, body);
+            var response = await RavenColonial.client.PatchAsync(url, body);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             var json2 = await response.Content.ReadAsStringAsync();
@@ -188,7 +188,7 @@ namespace SrvSurvey.game.RavenColonial
             var json1 = JsonConvert.SerializeObject(cargo);
             var body = new StringContent(json1, Encoding.Default, "application/json");
             var url = $"{svcUri}/api/fc/{Uri.EscapeDataString(marketId.ToString())}/cargo";
-            var response = await ColonyNet.client.PostAsync(url, body);
+            var response = await RavenColonial.client.PostAsync(url, body);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             var json2 = await response.Content.ReadAsStringAsync();
@@ -200,7 +200,7 @@ namespace SrvSurvey.game.RavenColonial
         {
             Game.log($"Colony.getFC: {marketId}");
 
-            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/fc/{Uri.EscapeDataString(marketId.ToString())}");
+            var response = await RavenColonial.client.GetAsync($"{svcUri}/api/fc/{Uri.EscapeDataString(marketId.ToString())}");
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<FleetCarrier>(json)!;
             return obj;
@@ -215,9 +215,9 @@ namespace SrvSurvey.game.RavenColonial
 
             var json1 = JsonConvert.SerializeObject(fc);
             var body = new StringContent(json1, Encoding.Default, "application/json");
-            if (!string.IsNullOrEmpty(Game.activeGame?.Commander))
-                body.Headers.Add("rcc-cmdr", Game.activeGame?.Commander);
-            var response = await ColonyNet.client.PutAsync($"{svcUri}/api/fc/{fc.marketId}", body);
+            body.Headers.addIf("rcc-cmdr", Game.activeGame?.Commander);
+            body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
+            var response = await RavenColonial.client.PutAsync($"{svcUri}/api/fc/{fc.marketId}", body);
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<FleetCarrier>(json)!;
             return obj;
@@ -227,7 +227,7 @@ namespace SrvSurvey.game.RavenColonial
         {
             Game.log($"Colony.getCmdrFCAll: {cmdr}");
 
-            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/fc/all");
+            var response = await RavenColonial.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/fc/all");
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<FleetCarrier[]>(json)!;
             return obj;
@@ -237,7 +237,7 @@ namespace SrvSurvey.game.RavenColonial
         {
             Game.log($"Colony.getProject: {buildId}");
 
-            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}");
+            var response = await RavenColonial.client.GetAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}");
             var json = await response.Content.ReadAsStringAsync();
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 return JsonConvert.DeserializeObject<Project>(json)!;
@@ -252,7 +252,7 @@ namespace SrvSurvey.game.RavenColonial
         {
             Game.log($"Colony.getProject: {id64}/{marketId}");
 
-            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/system/{Uri.EscapeDataString(id64.ToString())}/{Uri.EscapeDataString(marketId.ToString())}");
+            var response = await RavenColonial.client.GetAsync($"{svcUri}/api/system/{Uri.EscapeDataString(id64.ToString())}/{Uri.EscapeDataString(marketId.ToString())}");
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             var json = await response.Content.ReadAsStringAsync();
@@ -269,7 +269,7 @@ namespace SrvSurvey.game.RavenColonial
         {
             Game.log($"Colony.getCmdrProjects: {cmdr}");
 
-            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}");
+            var response = await RavenColonial.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}");
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<List<Project>>(json)!;
             return obj;
@@ -279,7 +279,7 @@ namespace SrvSurvey.game.RavenColonial
         {
             Game.log($"Colony.getCmdrProjects: {cmdr}");
 
-            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/summary");
+            var response = await RavenColonial.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/summary");
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<CmdrSummary>(json)!;
             return obj;
@@ -289,7 +289,7 @@ namespace SrvSurvey.game.RavenColonial
         {
             Game.log($"Colony.getCmdrActive: {cmdr}");
 
-            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/active");
+            var response = await RavenColonial.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/active");
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<List<Project>>(json)!;
             return obj;
@@ -299,7 +299,7 @@ namespace SrvSurvey.game.RavenColonial
         {
             Game.log($"Colony.getPrimary: {cmdr}");
 
-            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/primary");
+            var response = await RavenColonial.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/primary");
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<string>(json)!;
 
@@ -311,8 +311,8 @@ namespace SrvSurvey.game.RavenColonial
             Game.log($"Colony.setPrimary: {cmdr} => {buildId}");
 
             var response = buildId == null
-                    ? await ColonyNet.client.DeleteAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/primary/")
-                    : await ColonyNet.client.PutAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/primary/{Uri.EscapeDataString(buildId ?? "")}", null);
+                ? await RavenColonial.client.DeleteAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/primary/")
+                : await RavenColonial.client.PutAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/primary/{Uri.EscapeDataString(buildId ?? "")}", null);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
         }
 
@@ -320,9 +320,23 @@ namespace SrvSurvey.game.RavenColonial
         {
             Game.log($"Colony.getSystemSites: {nameOrNum}");
 
-            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/v2/system/{Uri.EscapeDataString(nameOrNum)}/sites");
+            var response = await RavenColonial.client.GetAsync($"{svcUri}/api/v2/system/{Uri.EscapeDataString(nameOrNum)}/sites");
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<List<SystemSite>>(json)!;
+            return obj;
+        }
+
+        public async Task<DataRCC> updateSystem(string nameOrNum, SitesPut data)
+        {
+            Game.log($"Colony.updateSystem: {nameOrNum}");
+
+            var json1 = JsonConvert.SerializeObject(data);
+            var body = new StringContent(json1, Encoding.Default, "application/json");
+            body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
+
+            var response = await RavenColonial.client.PutAsync($"{svcUri}/api/v2/system/{Uri.EscapeDataString(nameOrNum)}/sites", body);
+            var json = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<DataRCC>(json)!;
             return obj;
         }
 
@@ -330,7 +344,7 @@ namespace SrvSurvey.game.RavenColonial
         {
             Game.log($"Colony.getSystemBodies: {nameOrNum}");
 
-            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/v2/system/{Uri.EscapeDataString(nameOrNum)}");
+            var response = await RavenColonial.client.GetAsync($"{svcUri}/api/v2/system/{Uri.EscapeDataString(nameOrNum)}");
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<DataRCC>(json)!;
             return obj;
@@ -340,7 +354,7 @@ namespace SrvSurvey.game.RavenColonial
         {
             Game.log($"Colony.getSystemArchitect: {nameOrNum}");
 
-            var response = await ColonyNet.client.GetAsync($"{svcUri}/api/v2/system/{Uri.EscapeDataString(nameOrNum)}/architect");
+            var response = await RavenColonial.client.GetAsync($"{svcUri}/api/v2/system/{Uri.EscapeDataString(nameOrNum)}/architect");
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<string>(json)!;
             return obj;
@@ -355,11 +369,31 @@ namespace SrvSurvey.game.RavenColonial
 
             var json1 = JsonConvert.SerializeObject(bods);
             var body = new StringContent(json1, Encoding.Default, "application/json");
-            var response = await ColonyNet.client.PutAsync($"{svcUri}/api/v2/system/{address}/bodies", body);
+            body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
+            var response = await RavenColonial.client.PutAsync($"{svcUri}/api/v2/system/{address}/bodies", body);
             var json = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<List<Bod>>(json)!;
 
             return true;
+        }
+
+        public async Task<string?> getCmdrByApiKey(string apiKey)
+        {
+            Game.log($"Colony.getCmdrByApiKey");
+
+            var req = new HttpRequestMessage(HttpMethod.Get, $"{svcUri}/api/cmdr/");
+            req.Headers.addIf("rcc-key", apiKey);
+
+            var response = await RavenColonial.client.SendAsync(req);
+            var json = await response.Content.ReadAsStringAsync();
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                Game.log($"Colony.getCmdrByApiKey: failed:\n\t{json}");
+                return null;
+            }
+
+            var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(json)!;
+            return data.GetValueOrDefault("displayName");
         }
     }
 
@@ -553,6 +587,11 @@ namespace SrvSurvey.game.RavenColonial
             build,
             complete
         }
+
+        public override string ToString()
+        {
+            return $"{name} ({buildType}, {id}, {bodyNum})";
+        }
     }
 
     /// <summary>Represents a body in a system</summary>
@@ -631,5 +670,28 @@ namespace SrvSurvey.game.RavenColonial
         terraformable,
         tidal,
         landable,
+    }
+
+    public class SitesPut
+    {
+        public List<SystemSite> update = new();
+        public List<string> delete = new();
+
+        // Intentionally missing: orderIDs
+        public string? architect;
+        public bool? open;
+        public ReserveLevel? reserveLevel;
+        // Intentionally missing: snapshot;
+        // Intentionally missing: slots;
+    }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum ReserveLevel
+    {
+        depleted,
+        low,
+        common,
+        major,
+        pristine,
     }
 }

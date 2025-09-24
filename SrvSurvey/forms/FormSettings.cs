@@ -21,6 +21,8 @@ namespace SrvSurvey
         private int codexImageCount;
         private string codexImageSize;
         private Dictionary<Guid, string> devices = new();
+        private CommanderSettings? cmdrSettings;
+        private string? validApiKey;
 
         public FormSettings()
         {
@@ -255,6 +257,18 @@ namespace SrvSurvey
                 ? new()
                 : new(Game.settings.keyActions_TEST!);
 
+            this.cmdrSettings = CommanderSettings.LoadCurrentOrLast();
+            if (this.cmdrSettings != null)
+            {
+                this.txtRavenCmdr.Text = cmdrSettings.commander + " ?";
+                // don't set this.validApiKey here - wait for it to be confirmed
+                this.txtRavenApiKey.Text = cmdrSettings.rccApiKey;
+            }
+            else
+            {
+                groupRaven.setChildrenEnabled(false);
+            }
+
             this.prepKeyChords();
         }
 
@@ -415,6 +429,14 @@ namespace SrvSurvey
             }
 
             Game.settings.Save();
+
+            // and save the API key for the current commander, assuming it is valid
+            if (cmdrSettings != null)
+            {
+                cmdrSettings.rccApiKey = this.validApiKey;
+                cmdrSettings.Save();
+            }
+
             this.DialogResult = DialogResult.OK;
 
             // kill current process and reload
@@ -940,6 +962,70 @@ namespace SrvSurvey
         {
             checkShowInRightPanel.Enabled = checkBox49.Checked;
             checkSuppressNonColonise.Enabled = checkBox49.Checked;
+        }
+
+        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Util.openLink("https://ravencolonial.com/user");
+        }
+
+        private void txtRavenApiKey_TextChanged2(object sender, EventArgs e)
+        {
+            checkApiKey();
+        }
+
+        private void checkApiKey()
+        {
+            if (!txtRavenApiKey.Enabled) return;
+
+            var apiKey = txtRavenApiKey.Text;
+            if (string.IsNullOrWhiteSpace(apiKey))
+            {
+                // clear current value
+                this.validApiKey = null;
+            }
+            else
+            {
+                txtRavenCmdr.Text = "...";
+                txtRavenCmdr.BackColor = SystemColors.Control;
+
+                Util.deferAfter(500, async () =>
+                {
+                    var cmdr = await Game.rcc.getCmdrByApiKey(apiKey);
+                    if (string.IsNullOrEmpty(cmdr))
+                    {
+                        txtRavenCmdr.Text = "(invalid key)";
+                        validApiKey = null;
+                    }
+                    else
+                    {
+                        txtRavenCmdr.Text = cmdr;
+                        validApiKey = apiKey;
+
+                        if (!string.IsNullOrWhiteSpace(this.cmdrSettings?.commander))
+                        {
+                            if (this.cmdrSettings.commander.Equals(cmdr, StringComparison.OrdinalIgnoreCase))
+                            {
+                                txtRavenCmdr.Text += " ✔️";
+                                txtRavenCmdr.BackColor = Color.Lime;
+                            }
+                            else
+                            {
+                                txtRavenCmdr.Text += $" ✖️";
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        private void tabControl_Selected(object sender, TabControlEventArgs e)
+        {
+            if (e.TabPage == tabExternalData && e.Action == TabControlAction.Selected && !txtRavenApiKey.Enabled)
+            {
+                txtRavenApiKey.Enabled = true;
+                checkApiKey();
+            }
         }
     }
 }

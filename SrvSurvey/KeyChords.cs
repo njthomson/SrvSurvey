@@ -214,7 +214,7 @@ namespace SrvSurvey
 
         private static bool copyNextBoxelSystem()
         {
-            if (game == null) return true;
+            if (game?.cmdr == null) return true;
 
             var nextSystem = game.cmdr.boxelSearch?.nextSystem;
             if (game.mode == GameMode.GalaxyMap && nextSystem != null)

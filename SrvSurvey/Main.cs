@@ -1804,7 +1804,7 @@ namespace SrvSurvey
         private void menuMyProjects_Click(object sender, EventArgs e)
         {
             var cmdr = Game.settings.preferredCommander ?? Game.settings.lastCommander;
-            Util.openLink($"{ColonyNet.uxUri}/#cmdr={cmdr}");
+            Util.openLink($"{RavenColonial.uxUri}/#cmdr={cmdr}");
         }
 
         private void menuUpdateSystem_Click(object sender, EventArgs e)
@@ -1855,7 +1855,7 @@ namespace SrvSurvey
             var activeBuildId = localBuildId ?? game?.cmdrColony?.primaryBuildId;
 
             if (!string.IsNullOrEmpty(activeBuildId))
-                Util.openLink($"{ColonyNet.uxUri}/#build={activeBuildId}");
+                Util.openLink($"{RavenColonial.uxUri}/#build={activeBuildId}");
         }
 
         private void menuPrimaryProject_Click(object sender, EventArgs e)
@@ -1868,7 +1868,7 @@ namespace SrvSurvey
                 localBuildId = null;
 
             btnColonize.Enabled = false;
-            Game.colony.setPrimary(game.cmdrColony.cmdr, localBuildId).continueOnMain(this, () =>
+            Game.rcc.setPrimary(game.cmdrColony.cmdr, localBuildId).continueOnMain(this, () =>
             {
                 game.cmdrColony.primaryBuildId = localBuildId;
                 game.cmdrColony.Save();

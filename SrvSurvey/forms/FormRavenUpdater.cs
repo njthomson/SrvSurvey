@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.game.RavenColonial;
 using System.Data;
@@ -17,14 +18,32 @@ namespace SrvSurvey.forms
         static List<string> buildTypesSurfacePorts = new();
         static List<string> buildTypesSurfaceFacilities = new();
 
+        static List<string> stationSignalTypes = new()
+        {
+            "StationCoriolis", "Outpost", "StationBernalSphere", "StationONeilOrbis","StationAsteroid"
+        };
+
+        static Dictionary<string, string> mapSignalTypeBuildType = new()
+        {
+            { "Installation", "installation?" },
+            { "Outpost", "outpost?" },
+            { "StationCoriolis", "no_truss?" },
+            { "StationBernalSphere", "ocellus" },
+            { "StationONeilOrbis", "orbis?" },
+            { "StationAsteroid", "asteroid" },
+        };
+
         static FormRavenUpdater()
         {
             // prep lookups and dictionaries
-            allCosts = Game.colony.loadDefaultCosts()
+            allCosts = Game.rcc.loadDefaultCosts()
                 .OrderBy(c => c.tier)
                 .ToList();
 
-            buildTypesInstallation.Add("installation?");
+            buildTypesInstallation.Add("installation");
+            buildTypesOrbitalPorts.Add("outpost");
+            buildTypesSurfacePorts.Add("settlement");
+            buildTypesSurfaceFacilities.Add("facility");
 
             foreach (var c in allCosts)
             {
@@ -55,14 +74,18 @@ namespace SrvSurvey.forms
 
         private List<SystemSite> sites = new();
         private List<ListViewItem> lastChecked = new();
-        private SystemSite? pending;
-        private Filter filter;
+        private SitesPut pending;
+        private SystemSite? editSite;
+        private Phase phase;
+        private SystemSite? orbitalPendingBody;
 
         public FormRavenUpdater()
         {
             InitializeComponent();
 
             this.id64 = game.systemData!.address;
+            this.pending = new();
+            panel1.Enabled = true;
 
             // prep combo items
             var sourceCosts = allCosts.ToDictionary(c => c.buildType, c => $"Tier {c.tier}: {c.displayName}");
@@ -70,6 +93,7 @@ namespace SrvSurvey.forms
 
             comboStatus.Items.AddRange(Enum.GetNames<SystemSite.Status>());
             game.status.StatusChanged += Status_StatusChanged;
+            if (game.journals != null) game.journals.onJournalEntry += Journals_onJournalEntry;
 
             this.loadSites().justDoIt();
         }
@@ -78,8 +102,11 @@ namespace SrvSurvey.forms
 
         private async Task loadSites()
         {
-            this.sysData = await Game.colony.getSystem(id64.ToString());
-            if (sysData.architect != game.cmdr.commander && !sysData.open)
+            this.sysData = await Game.rcc.getSystem(id64.ToString());
+
+            // TODO: trigger import if needed
+
+            if (!string.IsNullOrEmpty(sysData.architect) && sysData.architect != game.cmdr.commander && !sysData.open)
             {
                 Program.defer(() =>
                 {
@@ -91,33 +118,52 @@ namespace SrvSurvey.forms
 
             // reduce to short names + prep body combo
             mapBodies.Clear();
-            foreach (var body in sysData.bodies)
+            if (sysData.bodies != null)
             {
-                if (body.name != sysData.name)
-                    body.name = body.name.Replace(sysData.name + " ", "");
+                foreach (var body in sysData.bodies)
+                {
+                    if (body.name != sysData.name)
+                        body.name = body.name.Replace(sysData.name + " ", "");
 
-                mapBodies.Add(body.num, body.name);
+                    mapBodies.Add(body.num, body.name);
+                }
+                comboBody.DataSource = new BindingSource(mapBodies, null);
+                comboBody.SelectedIndex = 0;
+                comboBody.Enabled = true;
             }
-            comboBody.DataSource = new BindingSource(mapBodies, null);
-            comboBody.SelectedIndex = 0;
-            comboBody.Enabled = true;
 
             // clone sites so as not to pollute the originals
-            this.sites = sysData.sites.Select(s => JObject.FromObject(s).ToObject<SystemSite>()).ToList()!;
-            this.setFilter(Filter.none);
+            if (sysData.sites?.Count > 0)
+                this.sites = sysData.sites.Select(s => JObject.FromObject(s).ToObject<SystemSite>()).ToList()!;
+
+            this.setFilter(Phase.none);
+            nextPhase();
         }
 
-        private void setFilter(Filter newFilter)
+        private void saveSites()
         {
-            filter = newFilter;
+            // prep data to save
+            var newSites = sites.Where(s1 => !sysData.sites.Any(s2 => s1.id == s2.id || s1.name.Equals(s2.name, StringComparison.OrdinalIgnoreCase))).ToList();
+            Game.log(newSites);
+        }
 
+        private void setFilter(Phase newFilter)
+        {
+            phase = newFilter;
+            this.Text = $"Phase: {newFilter}";
+
+            var priorCount = list.Items.Count;
             list.Items.Clear();
             lastChecked.Clear();
+            orbitalPendingBody = null;
 
             var filteredSites = sites.Where(s =>
             {
-                if (filter == Filter.noBodyInstallation) return s.bodyNum < 0 && buildTypesInstallation.Contains(s.buildType);
-                if (filter == Filter.noBodyOrbitalPorts) return s.bodyNum < 0 && buildTypesOrbitalPorts.Contains(s.buildType);
+                var buildType = s.buildType?.Trim('?') ?? ""; // s.buildType?.EndsWith("?") == true ? s.buildType.Substring(0, s.buildType.Length - 1) : s.buildType ?? "";
+
+                if (phase == Phase.noBodyInstallation) return s.bodyNum < 0 && buildTypesInstallation.Contains(buildType);
+                if (phase == Phase.noBodyOrbitalPorts) return s.bodyNum < 0 && buildTypesOrbitalPorts.Contains(buildType);
+                if (phase == Phase.allSurfaceSites) return s.buildType == "" || (!buildTypesOrbitalPorts.Contains(buildType) && !buildTypesInstallation.Contains(buildType));
 
                 return true;
             });
@@ -126,7 +172,7 @@ namespace SrvSurvey.forms
             {
                 var item = list.Items.Add(site.name, site.id ?? site.name, site);
                 var body = sysData.bodies.Find(b => b.num == site.bodyNum);
-                var match = allCosts.FirstOrDefault(c => c.layouts.Any(l => site.buildType!.StartsWith(l, StringComparison.OrdinalIgnoreCase)));
+                var match = allCosts.FirstOrDefault(c => c.layouts.Any(l => site.buildType?.StartsWith(l, StringComparison.OrdinalIgnoreCase) == true));
                 var category = match == null ? null : $"Tier {match.tier}: {match.displayName}";
 
                 item.SubItems.Add(body?.name ?? "?");
@@ -135,20 +181,31 @@ namespace SrvSurvey.forms
                 item.SubItems.Add(site.status.ToString());
             }
 
-            list.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            if (list.Items.Count > 0)
+                list.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
 
             // move to next phase if empty
-            if (sites.Count > 0 && list.Items.Count == 0 && filter != Filter.none)
+            if (sites.Count > 0 && priorCount > 0 && list.Items.Count == 0 && phase != Phase.none)
+            {
                 nextPhase();
+            }
+            //else if (filter == Filter.noBodyOrbitalPorts && list.Items.Count > 0)
+            //{
+            //    orbitalPendingBody = (SystemSite)list.Items[0].Tag!;
+            //}
         }
+
+        #endregion
+
+        #region editing existing and merging 
 
         private (SystemSite? site, ListViewItem? item) getListItem()
         {
-            if (pending == null) return (null, null);
+            if (editSite == null) return (null, null);
 
-            var item = list.Items.Find(pending.id ?? pending.name, false).FirstOrDefault();
+            var item = list.Items.Find(editSite.id ?? editSite.name, false).FirstOrDefault();
             if (item == null) Debugger.Break();
-            return (pending, item);
+            return (editSite, item);
         }
 
         private void txtName_TextChanged(object sender, EventArgs e)
@@ -176,7 +233,7 @@ namespace SrvSurvey.forms
             item.SubItems[1].Text = mapBodies[body.num];
 
             // refresh view if it is filtered
-            if (filter != Filter.none) setFilter(filter);
+            if (phase != Phase.none) setFilter(phase);
         }
 
         private void comboStatus_SelectedIndexChanged(object sender, EventArgs e)
@@ -246,16 +303,20 @@ namespace SrvSurvey.forms
                 return;
             }
 
-            pending = site;
+            editSite = site;
 
-            var match = allCosts.FirstOrDefault(c => c.layouts.Any(l => site.buildType.StartsWith(l, StringComparison.OrdinalIgnoreCase)));
-
+            var match = allCosts.FirstOrDefault(c => c.layouts.Any(l => site.buildType?.StartsWith(l, StringComparison.OrdinalIgnoreCase) == true));
             // set controls
             txtName.Text = site.name;
             comboBody.SelectedValue = site.bodyNum;
             comboStatus.SelectedItem = site.status.ToString();
-            if (match != null) comboBuildType.SelectedValue = match.buildType;
-            comboBuildSubType.SelectedValue = site.buildType;
+            comboBuildSubType.Items.Clear();
+            if (match != null)
+            {
+                comboBuildType.SelectedValue = match.buildType;
+                comboBuildSubType.Items.AddRange(match.layouts.Select(l => l.ToLowerInvariant()).ToArray());
+                comboBuildSubType.SelectedItem = site.buildType.Trim('?');
+            }
 
             panel1.setChildrenEnabled(true);
         }
@@ -294,7 +355,7 @@ namespace SrvSurvey.forms
             var b = (SystemSite)lastChecked[1].Tag!;
 
             // TODO: start with A values, but replace with B if better
-            pending = new SystemSite()
+            editSite = new SystemSite()
             {
                 id = a.id,
                 name = a.name,
@@ -304,13 +365,13 @@ namespace SrvSurvey.forms
                 status = a.status,
             };
 
-            if (string.IsNullOrWhiteSpace(pending.id)) { pending.id = b.id; pending.status = b.status; }
-            if (string.IsNullOrWhiteSpace(pending.name)) pending.name = b.name;
-            if (string.IsNullOrWhiteSpace(pending.buildType)) pending.buildType = b.buildType;
-            if (pending.bodyNum < 0 && b.bodyNum >= 0) pending.bodyNum = b.bodyNum;
+            if (string.IsNullOrWhiteSpace(editSite.id)) { editSite.id = b.id; editSite.status = b.status; }
+            if (string.IsNullOrWhiteSpace(editSite.name)) editSite.name = b.name;
+            if (string.IsNullOrWhiteSpace(editSite.buildType)) editSite.buildType = b.buildType;
+            if (editSite.bodyNum < 0 && b.bodyNum >= 0) editSite.bodyNum = b.bodyNum;
             //var category = getCategory(buildType);
 
-            showSite(pending);
+            showSite(editSite);
         }
 
         private void btnMerge_Click(object sender, EventArgs e)
@@ -322,41 +383,57 @@ namespace SrvSurvey.forms
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
-            if (filter != Filter.none)
-                setFilter(Filter.none);
-            else
-                nextPhase();
+            this.saveSites();
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            nextPhase();
         }
 
         #region journal processing
+
+
+        private void setPhase(Phase nextPhase, string msg)
+        {
+            this.phase = nextPhase;
+            lblTask.Text = msg;
+
+            if (nextPhase > Phase.scanning)
+                setFilter(nextPhase);
+        }
 
         /// <summary> Decides what instruction to show next </summary>
         private void nextPhase()
         {
             var game = Game.activeGame;
-            if (game?.journals == null) return;
+            if (game?.journals == null || sysData == null) return;
 
             // Collect relevant journal items
-            var (lastHonk, bodyScans, fssSignals, approaches, docks) = this.collectJournalItems();
+            var (bodyCount, lastHonk, lastAllBodies, bodyScans, fssSignals, approaches, docks) = this.collectJournalItems();
 
-            // Are we good?
+            // system scanned enough?
+            if (lastAllBodies == null)
+            {
+                if (lastHonk == null)
+                {
+                    setPhase(Phase.scanning, "Discovery Scan needed ...");
+                    return;
+                }
+                // FSS not complete?
+                if (lastHonk?.Progress < 1)
+                {
+                    setPhase(Phase.scanning, "Complete system FSS ...");
+                    return;
+                }
+            }
 
-            // system honked?
-            if (lastHonk == null)
-            {
-                lblTask.Text = "Discovery Scan needed ...";
-                return;
-            }
-            // FSS not complete?
-            if (lastHonk?.Progress < 1)
-            {
-                lblTask.Text = "Complete system FSS ...";
-                return;
-            }
+            var totalBodyCount = lastAllBodies?.Count ?? lastHonk?.BodyCount;
+
             // FSS complete but we don't have all the bodies
-            if (bodyScans.Length < lastHonk!.BodyCount)
+            if (bodyCount < totalBodyCount)
             {
-                lblTask.Text = "Scan the Nav Beacon ...";
+                setPhase(Phase.scanning, "Scan the Nav Beacon ...");
                 return;
             }
 
@@ -367,39 +444,43 @@ namespace SrvSurvey.forms
             this.createUnknownSignals(fssSignals);
 
             // does everything have a buildId
-            var missingBody = sites.Where(s => s.bodyNum == -1).ToList();
-            if (missingBody.Any())
+            var pendingInstallations = sites.Where(s => s.bodyNum == -1 && buildTypesInstallation.Contains(s.buildType.TrimEnd('?'))).ToList();
+            if (pendingInstallations.Any())
             {
-                // scan installations?
-                var installations = missingBody.Where(s => s.buildType == "installation?" || buildTypesInstallation.Contains(s.buildType)).ToList();
-                if (installations.Count > 0)
-                {
-                    this.setFilter(Filter.noBodyInstallation);
-                    lblTask.Text = $"Select installations around unknown bodies";
-                    return;
-                }
+                setPhase(Phase.noBodyInstallation, "In the External panel, select the following installations:");
+                return;
+            }
 
-                // scan orbital ports
-                var orbitalPorts = missingBody.Where(s => buildTypesOrbitalPorts.Contains(s.buildType)).ToList();
-                if (orbitalPorts.Count > 0)
-                {
-                    this.setFilter(Filter.noBodyInstallation);
-                    lblTask.Text = $"Select orbital ports around unknown bodies";
-                    return;
-                }
+            var pendingOrbitals = sites.Where(s => s.bodyNum == -1 && buildTypesOrbitalPorts.Contains(s.buildType.TrimEnd('?'))).ToList();
+            if (pendingOrbitals.Any())
+            {
+                setPhase(Phase.noBodyOrbitalPorts, "Select orbital ports, then select their parent ...");
+                return;
             }
 
             // otherwise we are all done
-            lblTask.Text = $"All good?";
-            if (filter != Filter.none)
-                setFilter(Filter.none);
+            if (phase < Phase.allSurfaceSites)
+            {
+                lblTask.Text = $"Set External panel filter to Settlements. Select all surface sites. Click Next when done ...";
+                setFilter(Phase.allSurfaceSites);
+                return;
+            }
+
+            if (phase != Phase.none)
+            {
+                lblTask.Text = $"All done?";
+                panel1.setChildrenEnabled(true);
+                setFilter(Phase.none);
+            }
         }
 
-        private (FSSDiscoveryScan? lastHonk, Scan[] bodyScans, FSSSignalDiscovered[] fssSignals, ApproachSettlement[] approaches, Docked[] docks) collectJournalItems()
+        private (int bodyCount, FSSDiscoveryScan? lastHonk, FSSAllBodiesFound? lastAllBodies, Scan[] bodyScans, FSSSignalDiscovered[] fssSignals, ApproachSettlement[] approaches, Docked[] docks) collectJournalItems()
         {
             // Collect relevant journal items
             FSSDiscoveryScan? lastHonk = null;
+            FSSAllBodiesFound? lastAllBodies = null;
             var bodyScans = new Dictionary<int, Scan>();
+            var barycentreScans = new Dictionary<int, ScanBaryCentre>();
             var fssSignals = new Dictionary<string, FSSSignalDiscovered>();
             var approaches = new Dictionary<long, ApproachSettlement>();
             var docks = new Dictionary<long, Docked>();
@@ -409,32 +490,41 @@ namespace SrvSurvey.forms
             {
                 if (entry is FSSDiscoveryScan && lastHonk == null)
                     lastHonk = (FSSDiscoveryScan)entry;
+                if (entry is FSSAllBodiesFound && lastAllBodies == null)
+                    lastAllBodies = (FSSAllBodiesFound)entry;
 
                 // collect the most recent of various journal entries
                 var scan = entry as Scan;
                 if (scan != null)
-                {
+                    if (scan.SystemAddress == id64 && !bodyScans.ContainsKey(scan.BodyID))
+                        bodyScans[scan.BodyID] = scan;
 
-                    if (scan.SystemAddress == sysData.id64 && !bodyScans.ContainsKey(scan.BodyID)) bodyScans[scan.BodyID] = scan;
-                }
+                var barycenterScan = entry as ScanBaryCentre;
+                if (barycenterScan != null && barycenterScan.SystemAddress == id64 && !barycentreScans.ContainsKey(barycenterScan.BodyID))
+                    barycentreScans[barycenterScan.BodyID] = barycenterScan;
 
                 var fssSignal = entry as FSSSignalDiscovered;
-                if (fssSignal != null && fssSignal.SystemAddress == sysData.id64 && !fssSignals.ContainsKey(fssSignal.SignalName)) fssSignals[fssSignal.SignalName] = fssSignal;
+                if (fssSignal != null && fssSignal.SystemAddress == id64 && !fssSignals.ContainsKey(fssSignal.SignalName)) fssSignals[fssSignal.SignalName] = fssSignal;
 
                 var approach = entry as ApproachSettlement;
-                if (approach != null && approach.SystemAddress == sysData.id64 && !approaches.ContainsKey(approach.MarketID)) approaches[approach.MarketID] = approach;
+                if (approach != null && approach.SystemAddress == id64 && !approaches.ContainsKey(approach.MarketID)) approaches[approach.MarketID] = approach;
 
                 var docked = entry as Docked;
-                if (docked != null && docked.SystemAddress == sysData.id64 && !docks.ContainsKey(docked.MarketID)) docks[docked.MarketID] = docked;
+                if (docked != null && docked.SystemAddress == id64 && !docks.ContainsKey(docked.MarketID)) docks[docked.MarketID] = docked;
 
                 // search for the last 10 FSD jumps only
                 if (entry is FSDJump) jumpCount++;
 
-                return jumpCount > 10 || bodyScans.Count == lastHonk?.BodyCount;
+                return jumpCount > 10 || (jumpCount > 0 && bodyScans.Count == lastHonk?.BodyCount);
             }, null);
 
+            var allBodyNums = new HashSet<int>(bodyScans.Keys.Concat(barycentreScans.Keys));
+            var bodyCount = allBodyNums.Count;
+
             return (
+                bodyCount,
                 lastHonk,
+                lastAllBodies,
                 bodyScans.Values.ToArray(),
                 fssSignals.Values.ToArray(),
                 approaches.Values.ToArray(),
@@ -444,23 +534,10 @@ namespace SrvSurvey.forms
 
         private void createUnknownSignals(FSSSignalDiscovered[] fssSignals)
         {
-            // TODO: Make statics...
-            var stationSignalTypes = new List<string>()
-            {
-                "StationCoriolis", "Outpost"
-            };
-            var mapSignalTypeBuildType = new Dictionary<string, string>()
-            {
-                { "Installation", "installation?" },
-                { "StationCoriolis", "no_truss?" },
-                { "Outpost", "b" },
-                { "a", "b" },
-            };
-
             foreach (var signal in fssSignals)
             {
                 // skip FCs, RES sites, CZs, etc
-                if (signal.SignalName_Localised != null || signal.SignalType == "FleetCarrier" || signal.SignalName.Contains("Construction Site")) continue;
+                if (signal.SignalName.StartsWith("$") || signal.SignalName_Localised != null || signal.SignalType == "FleetCarrier" || signal.SignalName.Contains("Construction Site")) continue;
 
                 // skip if already exists
                 var match = sites.Find(s => s.name.Equals(signal.SignalName, StringComparison.OrdinalIgnoreCase));
@@ -468,6 +545,8 @@ namespace SrvSurvey.forms
 
                 // what should this be?
                 var buildType = mapSignalTypeBuildType.GetValueOrDefault(signal.SignalType, "");
+
+                Game.log($"Create unknown site from signal: {signal.SignalName} ({signal.SignalType} => {buildType})");
 
                 sites.Insert(0, new SystemSite()
                 {
@@ -482,29 +561,164 @@ namespace SrvSurvey.forms
 
         private void Status_StatusChanged(bool blink)
         {
-            if (game?.status?.Destination?.System != sysData.id64) return;
+            if (this.IsDisposed || sysData == null || game?.status?.Destination == null || game?.status?.Destination?.System != id64) return;
+            var name = game.status.Destination.Name;
+            var bodyNum = game.status.Destination.Body;
+            if (string.IsNullOrWhiteSpace(name) || name.StartsWith("$")) return;
 
-            var match = sites.Find(s => s.name == game.status.Destination.Name);
-            if (match?.bodyNum == -1)
+            if (phase == Phase.noBodyInstallation && !name.StartsWith(sysData.name))
             {
-                match.bodyNum = game.status.Destination.Body;
-                setFilter(filter);
+                statusChanged_NoBodyInstallation(bodyNum, name);
+            }
+            else if (phase == Phase.noBodyOrbitalPorts)
+            {
+                statusChanged_NoBodyOrbital(bodyNum, name);
+            }
+            else if (phase == Phase.allSurfaceSites && !name.StartsWith(sysData.name))
+            {
+                statusChanged_AllSurfaceSites(bodyNum, name);
+                return;
             }
         }
 
-        // { "timestamp":"2025-09-17T05:34:35Z", "event":"FSSDiscoveryScan", "Progress":0.265935, "BodyCount":17, "NonBodyCount":7, "SystemName":"Synuefe KJ-X b47-1", "SystemAddress":2871318881689 }
-        // { "timestamp":"2025-09-17T05:47:39Z", "event":"FSSDiscoveryScan", "Progress":1.000000, "BodyCount":17, "NonBodyCount":7, "SystemName":"Synuefe KJ-X b47-1", "SystemAddress":2871318881689 }
-        // { "timestamp":"2025-09-17T05:47:39Z", "event":"FSSSignalDiscovered", "SystemAddress":2871318881689, "SignalName":"$MULTIPLAYER_SCENARIO42_TITLE;", "SignalName_Localised":"Nav Beacon", "SignalType":"NavBeacon" }
-        // { "timestamp":"2025-09-17T05:47:39Z", "event":"FSSSignalDiscovered", "SystemAddress":2871318881689, "SignalName":"Wellesley Vision", "SignalType":"StationONeilCylinder", "IsStation":true }
+        private void statusChanged_NoBodyInstallation(int bodyNum, string name)
+        {
+            // set bodyNum value
+            var matchSite = sites.Find(s => s.name == name);
+            if (matchSite?.bodyNum == -1)
+            {
+                var body = sysData.bodies.Find(b => b.num == bodyNum);
+                if (body == null) { Debugger.Break(); return; }
+
+                var matchItem = list.Items.ToList().Find(i => i.Text == matchSite.name);
+                if (matchItem == null) { Debugger.Break(); return; }
+
+                // update item and list
+                matchSite.bodyNum = bodyNum;
+                matchItem.SubItems[1]!.Text = mapBodies[body.num];
+                setFilter(phase);
+            }
+        }
+
+        private void statusChanged_NoBodyOrbital(int bodyNum, string name)
+        {
+            if (orbitalPendingBody != null && name.StartsWith(sysData.name))
+            {
+                orbitalPendingBody.bodyNum = bodyNum;
+                setFilter(phase);
+                return;
+            }
+
+            // has a suitable item been selected?
+            var matchItem = list.Items.ToList().Find(i => i.Text == name!);
+            if (matchItem != null)
+            {
+                orbitalPendingBody = sites.Find(s => s.name == name);
+                if (orbitalPendingBody != null)
+                {
+                    list.SelectedItems.Clear();
+                    matchItem.EnsureVisible();
+                    matchItem.Selected = true;
+                    lblTask.Text = $"Select parent body for: {orbitalPendingBody!.name}";
+                }
+            }
+            else
+            {
+                lblTask.Text = "Select orbital ports, then select their parent ...";
+                orbitalPendingBody = null;
+            }
+        }
+
+        private void statusChanged_AllSurfaceSites(int bodyNum, string name)
+        {
+            if (name.StartsWith(sysData.name) || name.Contains("Construction site", StringComparison.OrdinalIgnoreCase)) return;
+
+            var matchSite = sites.Find(s => s.name == name);
+            if (matchSite == null)
+            {
+                // we may not know what this is but we know which body it is on
+                var newSite = new SystemSite()
+                {
+                    bodyNum = bodyNum,
+                    name = name,
+                    buildType = null!,
+                    id = null!, //$"y{DateTime.Now.Ticks}",
+                    status = SystemSite.Status.complete,
+                };
+
+                // matches a known settlement?
+                var matchSettlement = game.systemData?.stations?.Find(s => s.name == name);
+                if (matchSettlement != null)
+                {
+                    newSite.id = $"&{matchSettlement.marketId}";
+
+                    if (sites.Any(s => s.id == newSite.id))
+                    {
+                        Debugger.Break();
+                        Game.log($"Why the duplicate ID: {newSite.id}");
+                        return;
+                    }
+
+                    var key = $"{matchSettlement.stationEconomy}{matchSettlement.subType}";
+
+                    if (CanonnStation.mapSettlementTypes.TryGetValue(key, out var buildType))
+                        newSite.buildType = buildType;
+                }
+
+                Game.log($"Creating unknown site for: {name} ({newSite.buildType}) on body #{bodyNum} ({mapBodies[bodyNum]})");
+                sites.Insert(0, newSite);
+                setFilter(phase);
+            }
+            else if (matchSite.bodyNum == -1)
+            {
+                Game.log($"Setting bodyNum: {bodyNum} for {matchSite.name} ({matchSite.id})");
+                var matchItem = list.Items.ToList().Find(i => i.Text == name!);
+                if (matchItem != null)
+                {
+                    matchSite.bodyNum = bodyNum;
+                    matchSite.status = SystemSite.Status.complete;
+                    matchItem.SubItems[1].Text = mapBodies[bodyNum];
+                }
+            }
+
+            lblTask.Text = $"Selected: {name}\r\nKeep selecting each and every settlement ...";
+        }
+
+        private void Journals_onJournalEntry(JournalEntry entry, int index)
+        {
+            if (this.IsDisposed) return;
+
+            this.onJournalEntry((dynamic)entry);
+        }
+
+        private void onJournalEntry(JournalEntry entry) { /* ignore */ }
+
+        private void onJournalEntry(FSSDiscoveryScan entry)
+        {
+            this.nextPhase();
+        }
+
+        private void onJournalEntry(FSSAllBodiesFound entry)
+        {
+            this.nextPhase();
+        }
+        private void onJournalEntry(NavBeaconScan entry)
+        {
+            this.nextPhase();
+        }
 
         #endregion
 
 
-        private enum Filter
+        private enum Phase
         {
             none,
+            scanning,
             noBodyInstallation,
             noBodyOrbitalPorts,
+            //unknownOrbitalPorts,
+            allSurfaceSites,
+            allDone,
         }
     }
 }

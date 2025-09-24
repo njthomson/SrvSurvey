@@ -156,7 +156,7 @@ namespace SrvSurvey
     public class TextBox2 : Panel
     {
         private TextBox tb;
-        public Button? eb { get; private set; }
+        private Button? eb;
 
         public TextBox2()
         {
@@ -313,6 +313,13 @@ namespace SrvSurvey
                 tb.Text = "";
                 tb.Focus();
             }
+            else if (this._edgeButtonType == EdgeButton.Paste)
+            {
+                tb.SelectAll();
+                tb.Paste();
+                tb.Focus();
+                tb.SelectionStart = tb.Text.Length;
+            }
         }
 
         private void eb_Paint(object? sender, PaintEventArgs e)
@@ -334,13 +341,23 @@ namespace SrvSurvey
                 e.Graphics.FillEllipse(SystemBrushes.WindowText, 6, y, 3, -3);
                 e.Graphics.FillEllipse(SystemBrushes.WindowText, 9, y, 3, -3);
             }
+            else if (_edgeButtonType == EdgeButton.Paste)
+            {
+                // the paste image
+                e.Graphics.DrawImage(Properties.ImageResources.paste1, 2, 2, 12, 12);
+            }
+            else if (_edgeButtonType != EdgeButton.None)
+            {
+                throw new Exception($"Unexpected EdgeButton type: {_edgeButtonType}");
+            }
         }
 
         public enum EdgeButton
         {
             None,
             Clear,
-            Dots
+            Dots,
+            Paste
         }
 
         #endregion

@@ -74,8 +74,8 @@ namespace SrvSurvey.game
                 {
                     // fetch all ACTIVE projects and primaryBuildId
                     await Task.WhenAll(
-                        Game.colony.getPrimary(this.cmdr).continueOnMain(null, newPrimaryBuildId => this.primaryBuildId = newPrimaryBuildId, true),
-                        Game.colony.getCmdrActive(this.cmdr).continueOnMain(null, newProjects => this.projects = newProjects)
+                        Game.rcc.getPrimary(this.cmdr).continueOnMain(null, newPrimaryBuildId => this.primaryBuildId = newPrimaryBuildId, true),
+                        Game.rcc.getCmdrActive(this.cmdr).continueOnMain(null, newProjects => this.projects = newProjects)
                     );
                     if (!string.IsNullOrEmpty(this.primaryBuildId) && getProject(this.primaryBuildId) == null)
                     {
@@ -87,14 +87,14 @@ namespace SrvSurvey.game
                 else
                 {
                     // fetch just the given project
-                    var freshProject = await Game.colony.getProject(buildId);
+                    var freshProject = await Game.rcc.getProject(buildId);
                     var idx = this.projects.FindIndex(p => p.buildId == buildId);
                     if (idx >= 0 && freshProject != null)
                         this.projects[idx] = freshProject;
                 }
 
                 // request data for all cmdr linked FCs
-                var allFCs = await Game.colony.getAllCmdrFCs(this.cmdr)!;
+                var allFCs = await Game.rcc.getAllCmdrFCs(this.cmdr)!;
                 this.linkedFCs = allFCs.ToDictionary(fc => fc.marketId, fc => fc);
 
                 // sum their respective cargo
@@ -245,7 +245,7 @@ namespace SrvSurvey.game
                 Game.log(diff.formatWithHeader($"Supplying commodities for: {localProject.buildId} ({systemAddress}/{marketId})", "\r\n\t"));
                 PlotBuildCommodities.startPending(diff);
 
-                Game.colony.contribute(localProject.buildId, this.cmdr, diff).continueOnMain(null, () =>
+                Game.rcc.contribute(localProject.buildId, this.cmdr, diff).continueOnMain(null, () =>
                 {
                     // wait a bit then force plotter to re-render
                     Task.Delay(500).ContinueWith(t => PlotBuildCommodities.endPending());
@@ -259,7 +259,7 @@ namespace SrvSurvey.game
             if (proj == null)
             {
                 // it's possible someone else might be tracking it?
-                Game.colony.getProject(entry.SystemAddress, entry.MarketID).continueOnMain(null, otherProj =>
+                Game.rcc.getProject(entry.SystemAddress, entry.MarketID).continueOnMain(null, otherProj =>
                 {
                     Game.log($"Found local project untracked by cmdr: {otherProj?.buildName} ({otherProj?.buildId})");
                     ColonyData.localUntrackedProject = otherProj;
@@ -287,7 +287,7 @@ namespace SrvSurvey.game
             }
 
             if (updatedProject != null)
-                Game.colony.update(updatedProject).justDoIt();
+                Game.rcc.update(updatedProject).justDoIt();
         }
 
         public void updateNeeds(ColonisationConstructionDepot entry, long id64)
@@ -318,7 +318,7 @@ namespace SrvSurvey.game
                     colonisationConstructionDepot = entry, // <-- temp for a few weeks (making up for lost time)
                 };
 
-                Game.colony.update(updateProj).continueOnMain(null, savedProj =>
+                Game.rcc.update(updateProj).continueOnMain(null, savedProj =>
                 {
                     // update in-memory track
                     var idx = this.projects.FindIndex(p => p.buildId == savedProj.buildId);
@@ -347,7 +347,7 @@ namespace SrvSurvey.game
             var match = this.projects.Find(p => p.marketId == entry.MarketID);
             if (match?.complete == false)
             {
-                await Game.colony.markComplete(match.buildId);
+                await Game.rcc.markComplete(match.buildId);
                 match.complete = true;
                 this.Save();
                 PlotBase2.remove(PlotBuildCommodities.plotDef);
@@ -362,7 +362,7 @@ namespace SrvSurvey.game
             PlotBuildCommodities.startPending();
 
             // fetch latest numbers first
-            var fc = await Game.colony.getFC(marketFile.MarketId);
+            var fc = await Game.rcc.getFC(marketFile.MarketId);
             Game.log($"updateFromMarketFC: Checking FC cargo against market: {fc.marketId} : {fc.displayName} ({fc.name})");
 
             // if the FC has something for sale with a different count than we think ... update it
@@ -383,7 +383,7 @@ namespace SrvSurvey.game
 
             if (newCargo.Count > 0)
             {
-                var updatedCargo = await Game.colony.updateCargoFC(fc.marketId, newCargo);
+                var updatedCargo = await Game.rcc.updateCargoFC(fc.marketId, newCargo);
                 // apply new numbers and save
                 linkedFCs[fc.marketId].cargo = updatedCargo;
 
@@ -439,7 +439,7 @@ namespace SrvSurvey.game
             var mapFinal = new Dictionary<string, double>();
             foreach (var name in cargo.Keys) mapFinal.init(name);
 
-            var allCosts = Game.colony.loadDefaultCosts();
+            var allCosts = Game.rcc.loadDefaultCosts();
             foreach (var site in allCosts)
             {
                 var map = new Dictionary<string, double>();
@@ -512,7 +512,7 @@ namespace SrvSurvey.game
 
             Game.log($"Publishing FC: {newFC}");
 
-            var fc = await Game.colony.publishFC(newFC);
+            var fc = await Game.rcc.publishFC(newFC);
 
             // if market data matches this FC, update that too
             if (game.marketFile.MarketId == fc.marketId)
@@ -613,7 +613,7 @@ namespace SrvSurvey.game
 
 
             Game.log($"{sys.address} / {sys.name}\n\n" + JsonConvert.SerializeObject(bods, Formatting.Indented));
-            return await Game.colony.updateSysBodies(sys.address, bods);
+            return await Game.rcc.updateSysBodies(sys.address, bods);
         }
 
         private static string getSubType(SystemBody b)

@@ -7,6 +7,7 @@ using SrvSurvey.plotters;
 using SrvSurvey.Properties;
 using SrvSurvey.units;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 using static SrvSurvey.game.GuardianSiteData;
 using static System.Windows.Forms.ListView;
 
@@ -1620,6 +1621,14 @@ namespace SrvSurvey
             columns.init(idx);
             if (sz.Width > columns[idx]) columns[idx] = sz.Width;
             return sz;
+        }
+
+        public static void addIf(this HttpHeaders headers, string name, string? value)
+        {
+            // skip if name or value are not something
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(value)) return;
+
+            headers.Add(name, value);
         }
     }
 

@@ -10,7 +10,7 @@ namespace SrvSurvey.forms
         private Game game => Game.activeGame!;
 
         private List<SystemSite> systemSites = new();
-        private List<ColonyCost2> allCosts = Game.colony.loadDefaultCosts()
+        private List<ColonyCost2> allCosts = Game.rcc.loadDefaultCosts()
             .OrderBy(c => c.tier)
             .ToList();
 
@@ -38,7 +38,7 @@ namespace SrvSurvey.forms
             txtName.Text = ColonyData.getDefaultProjectName(game.lastDocked);
 
             comboSystemSite.Text = "Loading ...";
-            Game.colony.getSystemSites(game.lastDocked.StarSystem).continueOnMain(this, sites =>
+            Game.rcc.getSystemSites(game.lastDocked.StarSystem).continueOnMain(this, sites =>
             {
                 this.systemSites.Clear();
                 this.systemSites.AddRange(sites);
@@ -52,12 +52,14 @@ namespace SrvSurvey.forms
                 comboSystemSite.SelectedIndex = 0;
                 comboSystemSite.Enabled = true;
 
-                // pre-select if there is only one
+                // pre-select if there is only one, drop the combo if there are choices
                 if (mapSites.Count == 2)
                     comboSystemSite.SelectedIndex = 1;
+                else if (systemSites.Any(s => s.status != SystemSite.Status.complete))
+                    comboSystemSite.DroppedDown = true;
             });
 
-            Game.colony.getSystemArchitect(game.lastDocked.StarSystem).continueOnMain(this, architect =>
+            Game.rcc.getSystemArchitect(game.lastDocked.StarSystem).continueOnMain(this, architect =>
             {
                 if (!string.IsNullOrWhiteSpace(architect))
                     txtArchitect.Text = architect;
@@ -193,7 +195,7 @@ namespace SrvSurvey.forms
 
                 this.setChildrenEnabled(false, btnCancel);
 
-                Game.colony.create(createProject).continueOnMain(this, newProject =>
+                Game.rcc.create(createProject).continueOnMain(this, newProject =>
                 {
                     if (newProject == null)
                     {
@@ -208,7 +210,7 @@ namespace SrvSurvey.forms
                     Game.log($"New build created: {newProject.buildId}");
 
                     // open edit page in browser
-                    Util.openLink($"{ColonyNet.uxUri}/#build={newProject.buildId}");
+                    Util.openLink($"{RavenColonial.uxUri}/#build={newProject.buildId}");
 
                     game.cmdrColony.fetchLatest().continueOnMain(this, () =>
                     {

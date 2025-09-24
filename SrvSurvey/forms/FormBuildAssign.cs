@@ -23,7 +23,7 @@ namespace SrvSurvey.forms
             var commodity = comboCommodity.SelectedItem?.ToString();
             if (commodity != null)
             {
-                Game.colony.assign(buildId, cmdr, commodity).continueOnMain(this, () =>
+                Game.rcc.assign(buildId, cmdr, commodity).continueOnMain(this, () =>
                 {
                     this.Close();
                 });
@@ -35,7 +35,7 @@ namespace SrvSurvey.forms
             var commodity = comboCommodity.SelectedItem?.ToString();
             if (commodity != null)
             {
-                Game.colony.unAssign(buildId, cmdr, commodity).continueOnMain(this, () =>
+                Game.rcc.unAssign(buildId, cmdr, commodity).continueOnMain(this, () =>
                 {
                     this.Close();
                 });

@@ -31,10 +31,10 @@ namespace SrvSurvey
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            ListViewItem listViewItem1 = new ListViewItem("Materials count after pickup");
-            ListViewItem listViewItem2 = new ListViewItem("Mission remaining cargo count");
-            ListViewItem listViewItem3 = new ListViewItem("Boxel search status");
-            ListViewItem listViewItem4 = new ListViewItem("Next boxel to search");
+            ListViewItem listViewItem5 = new ListViewItem("Materials count after pickup");
+            ListViewItem listViewItem6 = new ListViewItem("Mission remaining cargo count");
+            ListViewItem listViewItem7 = new ListViewItem("Boxel search status");
+            ListViewItem listViewItem8 = new ListViewItem("Next boxel to search");
             panel1 = new Panel();
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
@@ -178,7 +178,13 @@ namespace SrvSurvey
             checkBox9 = new CheckBox();
             checkBox8 = new CheckBox();
             checkBox4 = new CheckBox();
-            tabPage7 = new TabPage();
+            tabExternalData = new TabPage();
+            groupRaven = new GroupBox();
+            txtRavenApiKey = new TextBox2();
+            txtRavenCmdr = new TextBox();
+            label31 = new Label();
+            label30 = new Label();
+            linkLabel3 = new LinkLabel();
             groupColonization = new GroupBox();
             checkSuppressNonColonise = new CheckBox();
             checkShowInRightPanel = new CheckBox();
@@ -200,9 +206,9 @@ namespace SrvSurvey
             lblPriorScansCredits = new Label();
             checkSkipCheapSignals = new CheckBox();
             checkShowPriorScans = new CheckBox();
-            checkHideMyOwnCanonnSignals = new CheckBox();
             pictureBox9 = new PictureBox();
             pictureBox8 = new PictureBox();
+            checkHideMyOwnCanonnSignals = new CheckBox();
             tabSettlements = new TabPage();
             numHumanSitePlotterWidth = new NumericUpDown();
             numHumanSitePlotterHeight = new NumericUpDown();
@@ -291,7 +297,8 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox11).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
-            tabPage7.SuspendLayout();
+            tabExternalData.SuspendLayout();
+            groupRaven.SuspendLayout();
             groupColonization.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numPriorScanMinValue).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
@@ -411,7 +418,7 @@ namespace SrvSurvey
             // 
             checkBox35.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             checkBox35.AutoSize = true;
-            checkBox35.Location = new Point(434, 367);
+            checkBox35.Location = new Point(317, 373);
             checkBox35.Name = "checkBox35";
             checkBox35.Size = new Size(201, 19);
             checkBox35.TabIndex = 0;
@@ -425,7 +432,7 @@ namespace SrvSurvey
             linkJournalFolder.BorderStyle = BorderStyle.FixedSingle;
             linkJournalFolder.Location = new Point(39, 253);
             linkJournalFolder.Name = "linkJournalFolder";
-            linkJournalFolder.Size = new Size(600, 35);
+            linkJournalFolder.Size = new Size(648, 35);
             linkJournalFolder.TabIndex = 31;
             linkJournalFolder.TabStop = true;
             linkJournalFolder.Tag = "watchedJournalFolder";
@@ -489,9 +496,9 @@ namespace SrvSurvey
             // 
             btnAdjustOverlays.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnAdjustOverlays.FlatStyle = FlatStyle.System;
-            btnAdjustOverlays.Location = new Point(440, 329);
+            btnAdjustOverlays.Location = new Point(487, 332);
             btnAdjustOverlays.Name = "btnAdjustOverlays";
-            btnAdjustOverlays.Size = new Size(201, 32);
+            btnAdjustOverlays.Size = new Size(200, 32);
             btnAdjustOverlays.TabIndex = 33;
             btnAdjustOverlays.Text = "Adjust active overlay positions";
             btnAdjustOverlays.UseVisualStyleBackColor = true;
@@ -559,7 +566,7 @@ namespace SrvSurvey
             // 
             panelTheme2.BackColor = Color.Cyan;
             panelTheme2.BorderStyle = BorderStyle.Fixed3D;
-            panelTheme2.Location = new Point(604, 182);
+            panelTheme2.Location = new Point(655, 159);
             panelTheme2.Name = "panelTheme2";
             panelTheme2.Size = new Size(32, 32);
             panelTheme2.TabIndex = 29;
@@ -567,7 +574,7 @@ namespace SrvSurvey
             // btnTheme2
             // 
             btnTheme2.FlatStyle = FlatStyle.System;
-            btnTheme2.Location = new Point(478, 181);
+            btnTheme2.Location = new Point(530, 158);
             btnTheme2.Name = "btnTheme2";
             btnTheme2.Size = new Size(119, 45);
             btnTheme2.TabIndex = 28;
@@ -580,7 +587,7 @@ namespace SrvSurvey
             checkDarkTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             checkDarkTheme.AutoSize = true;
             checkDarkTheme.FlatStyle = FlatStyle.System;
-            checkDarkTheme.Location = new Point(542, 98);
+            checkDarkTheme.Location = new Point(585, 71);
             checkDarkTheme.Name = "checkDarkTheme";
             checkDarkTheme.Size = new Size(93, 20);
             checkDarkTheme.TabIndex = 23;
@@ -592,7 +599,7 @@ namespace SrvSurvey
             // 
             btnPostProcess.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnPostProcess.FlatStyle = FlatStyle.System;
-            btnPostProcess.Location = new Point(478, 412);
+            btnPostProcess.Location = new Point(524, 410);
             btnPostProcess.Name = "btnPostProcess";
             btnPostProcess.Size = new Size(163, 29);
             btnPostProcess.TabIndex = 1;
@@ -604,7 +611,7 @@ namespace SrvSurvey
             // 
             panelTheme.BackColor = Color.DarkOrange;
             panelTheme.BorderStyle = BorderStyle.Fixed3D;
-            panelTheme.Location = new Point(603, 124);
+            panelTheme.Location = new Point(655, 101);
             panelTheme.Name = "panelTheme";
             panelTheme.Size = new Size(32, 32);
             panelTheme.TabIndex = 25;
@@ -612,7 +619,7 @@ namespace SrvSurvey
             // btnTheme
             // 
             btnTheme.FlatStyle = FlatStyle.System;
-            btnTheme.Location = new Point(478, 123);
+            btnTheme.Location = new Point(530, 100);
             btnTheme.Name = "btnTheme";
             btnTheme.Size = new Size(118, 45);
             btnTheme.TabIndex = 24;
@@ -645,9 +652,9 @@ namespace SrvSurvey
             // 
             btnResetOverlays.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnResetOverlays.FlatStyle = FlatStyle.System;
-            btnResetOverlays.Location = new Point(440, 291);
+            btnResetOverlays.Location = new Point(487, 294);
             btnResetOverlays.Name = "btnResetOverlays";
-            btnResetOverlays.Size = new Size(199, 32);
+            btnResetOverlays.Size = new Size(200, 32);
             btnResetOverlays.TabIndex = 32;
             btnResetOverlays.Text = "Reset all custom overlay positions";
             btnResetOverlays.UseVisualStyleBackColor = true;
@@ -660,7 +667,7 @@ namespace SrvSurvey
             comboCmdr.FormattingEnabled = true;
             comboCmdr.Location = new Point(10, 30);
             comboCmdr.Name = "comboCmdr";
-            comboCmdr.Size = new Size(629, 23);
+            comboCmdr.Size = new Size(677, 23);
             comboCmdr.TabIndex = 1;
             // 
             // checkHideJournalTimer
@@ -769,10 +776,10 @@ namespace SrvSurvey
             trackOpacity.Margin = new Padding(4, 3, 4, 3);
             trackOpacity.Maximum = 100;
             trackOpacity.Name = "trackOpacity";
-            trackOpacity.Size = new Size(457, 45);
+            trackOpacity.Size = new Size(400, 45);
             trackOpacity.SmallChange = 5;
             trackOpacity.TabIndex = 4;
-            trackOpacity.TickFrequency = 10;
+            trackOpacity.TickFrequency = 5;
             trackOpacity.Scroll += trackOpacity_Scroll;
             // 
             // label1
@@ -789,7 +796,7 @@ namespace SrvSurvey
             // 
             linkResetTheme2.AutoSize = true;
             linkResetTheme2.LinkArea = new LinkArea(1, 5);
-            linkResetTheme2.Location = new Point(601, 213);
+            linkResetTheme2.Location = new Point(652, 190);
             linkResetTheme2.Name = "linkResetTheme2";
             linkResetTheme2.Size = new Size(39, 21);
             linkResetTheme2.TabIndex = 30;
@@ -802,7 +809,7 @@ namespace SrvSurvey
             // 
             linkResetTheme.AutoSize = true;
             linkResetTheme.LinkArea = new LinkArea(1, 5);
-            linkResetTheme.Location = new Point(600, 155);
+            linkResetTheme.Location = new Point(652, 132);
             linkResetTheme.Name = "linkResetTheme";
             linkResetTheme.Size = new Size(39, 21);
             linkResetTheme.TabIndex = 27;
@@ -818,7 +825,7 @@ namespace SrvSurvey
             tabControl.Controls.Add(tabPage3);
             tabControl.Controls.Add(tabPage5);
             tabControl.Controls.Add(tabPage6);
-            tabControl.Controls.Add(tabPage7);
+            tabControl.Controls.Add(tabExternalData);
             tabControl.Controls.Add(tabSettlements);
             tabControl.Controls.Add(tabKeyChords);
             tabControl.Controls.Add(tabPage8);
@@ -830,6 +837,7 @@ namespace SrvSurvey
             tabControl.SelectedIndex = 0;
             tabControl.Size = new Size(707, 476);
             tabControl.TabIndex = 0;
+            tabControl.Selected += tabControl_Selected;
             // 
             // tabPage4
             // 
@@ -1569,7 +1577,7 @@ namespace SrvSurvey
             groupCodexImages.Controls.Add(linkCodexCache);
             groupCodexImages.Location = new Point(12, 365);
             groupCodexImages.Name = "groupCodexImages";
-            groupCodexImages.Size = new Size(629, 78);
+            groupCodexImages.Size = new Size(675, 78);
             groupCodexImages.TabIndex = 23;
             groupCodexImages.TabStop = false;
             groupCodexImages.Text = "Codex Images";
@@ -1578,7 +1586,7 @@ namespace SrvSurvey
             // 
             checkPreDownloadCodexImages.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             checkPreDownloadCodexImages.AutoSize = true;
-            checkPreDownloadCodexImages.Location = new Point(522, 16);
+            checkPreDownloadCodexImages.Location = new Point(568, 16);
             checkPreDownloadCodexImages.Name = "checkPreDownloadCodexImages";
             checkPreDownloadCodexImages.Size = new Size(101, 19);
             checkPreDownloadCodexImages.TabIndex = 24;
@@ -1611,7 +1619,7 @@ namespace SrvSurvey
             linkCodexCache.BorderStyle = BorderStyle.FixedSingle;
             linkCodexCache.Location = new Point(38, 41);
             linkCodexCache.Name = "linkCodexCache";
-            linkCodexCache.Size = new Size(585, 25);
+            linkCodexCache.Size = new Size(631, 25);
             linkCodexCache.TabIndex = 8;
             linkCodexCache.TabStop = true;
             linkCodexCache.Tag = "downloadCodexImageFolder";
@@ -1700,7 +1708,7 @@ namespace SrvSurvey
             linkScreenshotSourceFolder.BorderStyle = BorderStyle.FixedSingle;
             linkScreenshotSourceFolder.Location = new Point(41, 47);
             linkScreenshotSourceFolder.Name = "linkScreenshotSourceFolder";
-            linkScreenshotSourceFolder.Size = new Size(596, 35);
+            linkScreenshotSourceFolder.Size = new Size(646, 35);
             linkScreenshotSourceFolder.TabIndex = 3;
             linkScreenshotSourceFolder.TabStop = true;
             linkScreenshotSourceFolder.Tag = "screenshotSourceFolder";
@@ -1746,7 +1754,7 @@ namespace SrvSurvey
             linkTargetScreenshotFolder.BorderStyle = BorderStyle.FixedSingle;
             linkTargetScreenshotFolder.Location = new Point(42, 104);
             linkTargetScreenshotFolder.Name = "linkTargetScreenshotFolder";
-            linkTargetScreenshotFolder.Size = new Size(595, 35);
+            linkTargetScreenshotFolder.Size = new Size(645, 35);
             linkTargetScreenshotFolder.TabIndex = 6;
             linkTargetScreenshotFolder.TabStop = true;
             linkTargetScreenshotFolder.Tag = "screenshotTargetFolder";
@@ -2205,29 +2213,102 @@ namespace SrvSurvey
             checkBox4.Text = "Show exploration values in FSS ➟";
             checkBox4.UseVisualStyleBackColor = true;
             // 
-            // tabPage7
+            // tabExternalData
             // 
-            tabPage7.BorderStyle = BorderStyle.Fixed3D;
-            tabPage7.Controls.Add(groupColonization);
-            tabPage7.Controls.Add(numPriorScanMinValue);
-            tabPage7.Controls.Add(pictureBox7);
-            tabPage7.Controls.Add(checkUseBioData);
-            tabPage7.Controls.Add(radioUseRadius);
-            tabPage7.Controls.Add(radioUseSmall);
-            tabPage7.Controls.Add(checkShowCanonnOnRadar);
-            tabPage7.Controls.Add(checkUseSystemData);
-            tabPage7.Controls.Add(lblPriorScansCredits);
-            tabPage7.Controls.Add(checkSkipCheapSignals);
-            tabPage7.Controls.Add(checkShowPriorScans);
-            tabPage7.Controls.Add(checkHideMyOwnCanonnSignals);
-            tabPage7.Controls.Add(pictureBox9);
-            tabPage7.Controls.Add(pictureBox8);
-            tabPage7.Location = new Point(4, 24);
-            tabPage7.Name = "tabPage7";
-            tabPage7.Padding = new Padding(3);
-            tabPage7.Size = new Size(699, 448);
-            tabPage7.TabIndex = 6;
-            tabPage7.Text = "External Data";
+            tabExternalData.BorderStyle = BorderStyle.Fixed3D;
+            tabExternalData.Controls.Add(groupRaven);
+            tabExternalData.Controls.Add(groupColonization);
+            tabExternalData.Controls.Add(numPriorScanMinValue);
+            tabExternalData.Controls.Add(pictureBox7);
+            tabExternalData.Controls.Add(checkUseBioData);
+            tabExternalData.Controls.Add(radioUseRadius);
+            tabExternalData.Controls.Add(radioUseSmall);
+            tabExternalData.Controls.Add(checkShowCanonnOnRadar);
+            tabExternalData.Controls.Add(checkUseSystemData);
+            tabExternalData.Controls.Add(lblPriorScansCredits);
+            tabExternalData.Controls.Add(checkSkipCheapSignals);
+            tabExternalData.Controls.Add(checkShowPriorScans);
+            tabExternalData.Controls.Add(pictureBox9);
+            tabExternalData.Controls.Add(pictureBox8);
+            tabExternalData.Controls.Add(checkHideMyOwnCanonnSignals);
+            tabExternalData.Location = new Point(4, 24);
+            tabExternalData.Name = "tabExternalData";
+            tabExternalData.Padding = new Padding(3);
+            tabExternalData.Size = new Size(699, 448);
+            tabExternalData.TabIndex = 6;
+            tabExternalData.Text = "External Data";
+            // 
+            // groupRaven
+            // 
+            groupRaven.Controls.Add(txtRavenApiKey);
+            groupRaven.Controls.Add(txtRavenCmdr);
+            groupRaven.Controls.Add(label31);
+            groupRaven.Controls.Add(label30);
+            groupRaven.Controls.Add(linkLabel3);
+            groupRaven.FlatStyle = FlatStyle.System;
+            groupRaven.Location = new Point(8, 345);
+            groupRaven.Name = "groupRaven";
+            groupRaven.Size = new Size(348, 92);
+            groupRaven.TabIndex = 35;
+            groupRaven.TabStop = false;
+            groupRaven.Text = "Raven Colonial:";
+            // 
+            // txtRavenApiKey
+            // 
+            txtRavenApiKey.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtRavenApiKey.BackColor = SystemColors.Window;
+            txtRavenApiKey.BorderStyle = BorderStyle.FixedSingle;
+            txtRavenApiKey.Enabled = false;
+            txtRavenApiKey.ForeColor = SystemColors.WindowText;
+            txtRavenApiKey.Location = new Point(89, 46);
+            txtRavenApiKey.Name = "txtRavenApiKey";
+            txtRavenApiKey.Padding = new Padding(3);
+            txtRavenApiKey.Size = new Size(253, 23);
+            txtRavenApiKey.TabIndex = 3;
+            txtRavenApiKey.UseEdgeButton = TextBox2.EdgeButton.Paste;
+            txtRavenApiKey.TextChanged2 += txtRavenApiKey_TextChanged2;
+            // 
+            // txtRavenCmdr
+            // 
+            txtRavenCmdr.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtRavenCmdr.Location = new Point(89, 17);
+            txtRavenCmdr.Name = "txtRavenCmdr";
+            txtRavenCmdr.ReadOnly = true;
+            txtRavenCmdr.Size = new Size(253, 23);
+            txtRavenCmdr.TabIndex = 2;
+            // 
+            // label31
+            // 
+            label31.AutoSize = true;
+            label31.Location = new Point(6, 20);
+            label31.Name = "label31";
+            label31.Size = new Size(77, 15);
+            label31.TabIndex = 1;
+            label31.Text = "Commander:";
+            // 
+            // label30
+            // 
+            label30.AutoSize = true;
+            label30.Location = new Point(33, 49);
+            label30.Name = "label30";
+            label30.Size = new Size(50, 15);
+            label30.TabIndex = 0;
+            label30.Text = "API Key:";
+            // 
+            // linkLabel3
+            // 
+            linkLabel3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            linkLabel3.BackColor = Color.Transparent;
+            linkLabel3.LinkArea = new LinkArea(21, 100);
+            linkLabel3.Location = new Point(6, 71);
+            linkLabel3.Name = "linkLabel3";
+            linkLabel3.Size = new Size(336, 21);
+            linkLabel3.TabIndex = 41;
+            linkLabel3.TabStop = true;
+            linkLabel3.Text = "Get your API Key at: https://ravencolonial.com/user";
+            linkLabel3.TextAlign = ContentAlignment.TopRight;
+            linkLabel3.UseCompatibleTextRendering = true;
+            linkLabel3.LinkClicked += linkLabel3_LinkClicked;
             // 
             // groupColonization
             // 
@@ -2241,12 +2322,12 @@ namespace SrvSurvey
             groupColonization.Controls.Add(checkBox44);
             groupColonization.Controls.Add(checkBox43);
             groupColonization.Controls.Add(checkColonization);
-            groupColonization.Location = new Point(362, 159);
+            groupColonization.Location = new Point(362, 180);
             groupColonization.Name = "groupColonization";
-            groupColonization.Size = new Size(332, 279);
+            groupColonization.Size = new Size(332, 258);
             groupColonization.TabIndex = 34;
             groupColonization.TabStop = false;
-            groupColonization.Text = "Colonisation: (experimental)";
+            groupColonization.Text = "Colonisation:";
             // 
             // checkSuppressNonColonise
             // 
@@ -2418,7 +2499,7 @@ namespace SrvSurvey
             // radioUseRadius
             // 
             radioUseRadius.CheckAlign = ContentAlignment.TopLeft;
-            radioUseRadius.Location = new Point(176, 241);
+            radioUseRadius.Location = new Point(176, 159);
             radioUseRadius.Name = "radioUseRadius";
             radioUseRadius.Size = new Size(153, 21);
             radioUseRadius.TabIndex = 9;
@@ -2429,7 +2510,7 @@ namespace SrvSurvey
             // radioUseSmall
             // 
             radioUseSmall.CheckAlign = ContentAlignment.TopLeft;
-            radioUseSmall.Location = new Point(30, 241);
+            radioUseSmall.Location = new Point(30, 159);
             radioUseSmall.Name = "radioUseSmall";
             radioUseSmall.Size = new Size(128, 21);
             radioUseSmall.TabIndex = 8;
@@ -2443,7 +2524,7 @@ namespace SrvSurvey
             checkShowCanonnOnRadar.AutoSize = true;
             checkShowCanonnOnRadar.CheckAlign = ContentAlignment.TopLeft;
             checkShowCanonnOnRadar.FlatStyle = FlatStyle.System;
-            checkShowCanonnOnRadar.Location = new Point(8, 195);
+            checkShowCanonnOnRadar.Location = new Point(8, 113);
             checkShowCanonnOnRadar.Name = "checkShowCanonnOnRadar";
             checkShowCanonnOnRadar.Size = new Size(261, 20);
             checkShowCanonnOnRadar.TabIndex = 6;
@@ -2507,23 +2588,11 @@ namespace SrvSurvey
             checkShowPriorScans.UseVisualStyleBackColor = false;
             checkShowPriorScans.CheckedChanged += checkShowPriorScans_CheckedChanged;
             // 
-            // checkHideMyOwnCanonnSignals
-            // 
-            checkHideMyOwnCanonnSignals.AutoSize = true;
-            checkHideMyOwnCanonnSignals.FlatStyle = FlatStyle.System;
-            checkHideMyOwnCanonnSignals.Location = new Point(30, 216);
-            checkHideMyOwnCanonnSignals.Name = "checkHideMyOwnCanonnSignals";
-            checkHideMyOwnCanonnSignals.Size = new Size(334, 20);
-            checkHideMyOwnCanonnSignals.TabIndex = 7;
-            checkHideMyOwnCanonnSignals.Tag = "hideMyOwnCanonnSignals";
-            checkHideMyOwnCanonnSignals.Text = "Hide my own scans. Uncheck to revisit signals after dying";
-            checkHideMyOwnCanonnSignals.UseVisualStyleBackColor = true;
-            // 
             // pictureBox9
             // 
             pictureBox9.BackgroundImage = (Image)resources.GetObject("pictureBox9.BackgroundImage");
             pictureBox9.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox9.Location = new Point(30, 262);
+            pictureBox9.Location = new Point(30, 180);
             pictureBox9.Name = "pictureBox9";
             pictureBox9.Size = new Size(128, 150);
             pictureBox9.TabIndex = 32;
@@ -2533,11 +2602,23 @@ namespace SrvSurvey
             // 
             pictureBox8.BackgroundImage = (Image)resources.GetObject("pictureBox8.BackgroundImage");
             pictureBox8.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox8.Location = new Point(176, 262);
+            pictureBox8.Location = new Point(176, 180);
             pictureBox8.Name = "pictureBox8";
             pictureBox8.Size = new Size(128, 150);
             pictureBox8.TabIndex = 31;
             pictureBox8.TabStop = false;
+            // 
+            // checkHideMyOwnCanonnSignals
+            // 
+            checkHideMyOwnCanonnSignals.AutoSize = true;
+            checkHideMyOwnCanonnSignals.FlatStyle = FlatStyle.System;
+            checkHideMyOwnCanonnSignals.Location = new Point(30, 134);
+            checkHideMyOwnCanonnSignals.Name = "checkHideMyOwnCanonnSignals";
+            checkHideMyOwnCanonnSignals.Size = new Size(334, 20);
+            checkHideMyOwnCanonnSignals.TabIndex = 7;
+            checkHideMyOwnCanonnSignals.Tag = "hideMyOwnCanonnSignals";
+            checkHideMyOwnCanonnSignals.Text = "Hide my own scans. Uncheck to revisit signals after dying";
+            checkHideMyOwnCanonnSignals.UseVisualStyleBackColor = true;
             // 
             // tabSettlements
             // 
@@ -2822,7 +2903,7 @@ namespace SrvSurvey
             // 
             checkBox22.AutoSize = true;
             checkBox22.FlatStyle = FlatStyle.System;
-            checkBox22.Location = new Point(8, 394);
+            checkBox22.Location = new Point(8, 418);
             checkBox22.Name = "checkBox22";
             checkBox22.Size = new Size(573, 20);
             checkBox22.TabIndex = 11;
@@ -2874,9 +2955,10 @@ namespace SrvSurvey
             // 
             // checkKeyChordsDirectX
             // 
+            checkKeyChordsDirectX.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             checkKeyChordsDirectX.AutoSize = true;
             checkKeyChordsDirectX.FlatStyle = FlatStyle.System;
-            checkKeyChordsDirectX.Location = new Point(261, 6);
+            checkKeyChordsDirectX.Location = new Point(309, 1);
             checkKeyChordsDirectX.Name = "checkKeyChordsDirectX";
             checkKeyChordsDirectX.Size = new Size(226, 20);
             checkKeyChordsDirectX.TabIndex = 1;
@@ -3076,15 +3158,15 @@ namespace SrvSurvey
             // listView1
             // 
             listView1.CheckBoxes = true;
-            listViewItem1.StateImageIndex = 0;
-            listViewItem1.Tag = "materialCountAfterPickup";
-            listViewItem2.StateImageIndex = 0;
-            listViewItem2.Tag = "cargoMissionRemaining";
-            listViewItem3.StateImageIndex = 0;
-            listViewItem3.Tag = "currentBoxelSearchStatus";
-            listViewItem4.StateImageIndex = 0;
-            listViewItem4.Tag = "showNextBoxelToSearch";
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4 });
+            listViewItem5.StateImageIndex = 0;
+            listViewItem5.Tag = "materialCountAfterPickup";
+            listViewItem6.StateImageIndex = 0;
+            listViewItem6.Tag = "cargoMissionRemaining";
+            listViewItem7.StateImageIndex = 0;
+            listViewItem7.Tag = "currentBoxelSearchStatus";
+            listViewItem8.StateImageIndex = 0;
+            listViewItem8.Tag = "showNextBoxelToSearch";
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem5, listViewItem6, listViewItem7, listViewItem8 });
             listView1.Location = new Point(12, 331);
             listView1.Name = "listView1";
             listView1.Size = new Size(400, 107);
@@ -3251,8 +3333,10 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox11).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
-            tabPage7.ResumeLayout(false);
-            tabPage7.PerformLayout();
+            tabExternalData.ResumeLayout(false);
+            tabExternalData.PerformLayout();
+            groupRaven.ResumeLayout(false);
+            groupRaven.PerformLayout();
             groupColonization.ResumeLayout(false);
             groupColonization.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numPriorScanMinValue).EndInit();
@@ -3352,7 +3436,7 @@ namespace SrvSurvey
         private CheckBox checkHideJournalTimer;
         private FlatButton btnClearTrackers;
         private LinkLabel linkLabel1;
-        private TabPage tabPage7;
+        private TabPage tabExternalData;
         private CheckBox checkUseSystemData;
         private PictureBox pictureBox7;
         private Label lblPriorScansCredits;
@@ -3505,5 +3589,11 @@ namespace SrvSurvey
         private CheckBox checkShowInRightPanel;
         private CheckBox checkSuppressNonColonise;
         private CheckBox checkBox39;
+        private GroupBox groupRaven;
+        private TextBox2 txtRavenApiKey;
+        private TextBox txtRavenCmdr;
+        private Label label31;
+        private Label label30;
+        private LinkLabel linkLabel3;
     }
 }

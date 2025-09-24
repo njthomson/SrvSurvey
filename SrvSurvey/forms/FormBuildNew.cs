@@ -31,7 +31,7 @@ namespace SrvSurvey.forms
             this.cmdr = CommanderSettings.LoadCurrentOrLast(); // Remove?
             this.colonyData = game.cmdrColony;
 
-            this.allCosts = Game.colony.loadDefaultCosts();
+            this.allCosts = Game.rcc.loadDefaultCosts();
             var sourceCosts = allCosts.ToDictionary(c => c.buildType, c => $"Tier {c.tier}: {c.displayName} ({string.Join(", ", c.layouts)})");
             this.comboBuildType.DataSource = new BindingSource(sourceCosts, null);
             this.comboBuildType.DisplayMember = "Value";
@@ -68,7 +68,7 @@ namespace SrvSurvey.forms
                 {
                     // not one we know about - make a network request for it...
                     this.setEnabled(false);
-                    Game.colony.load(game.lastDocked.SystemAddress, game.lastDocked.MarketID).continueOnMain(this, newProject =>
+                    Game.rcc.load(game.lastDocked.SystemAddress, game.lastDocked.MarketID).continueOnMain(this, newProject =>
                     {
                         if (newProject != null)
                         {
@@ -393,21 +393,21 @@ namespace SrvSurvey.forms
                 if (checkPrimary.Checked)
                 {
                     colonyData.primaryBuildId = project.buildId;
-                    Game.colony.setPrimary(colonyData.cmdr, project.buildId).justDoIt();
+                    Game.rcc.setPrimary(colonyData.cmdr, project.buildId).justDoIt();
                 }
                 else if (colonyData.primaryBuildId == project.buildId)
                 {
                     colonyData.primaryBuildId = "";
-                    Game.colony.setPrimary(colonyData.cmdr, project.buildId).justDoIt();
+                    Game.rcc.setPrimary(colonyData.cmdr, project.buildId).justDoIt();
                 }
 
                 // cmdrs to add and remove
                 var cmdrsToAdd = listCmdrs.Items.Cast<string>().Where(c => !project.commanders.ContainsKey(c)).ToList();
                 var cmdrsToRemove = project.commanders.Keys.Where(c => !listCmdrs.Items.Contains(c)).ToList();
-                cmdrsToAdd.ForEach(cmdr => Game.colony.linkCmdr(project.buildId, cmdr).justDoIt());
-                cmdrsToRemove.ForEach(cmdr => Game.colony.unlinkCmdr(project.buildId, cmdr).justDoIt());
+                cmdrsToAdd.ForEach(cmdr => Game.rcc.linkCmdr(project.buildId, cmdr).justDoIt());
+                cmdrsToRemove.ForEach(cmdr => Game.rcc.unlinkCmdr(project.buildId, cmdr).justDoIt());
 
-                Game.colony.update(updateProject).continueOnMain(this, savedProject =>
+                Game.rcc.update(updateProject).continueOnMain(this, savedProject =>
                 {
                     processServerResponse(savedProject);
                 });
@@ -477,7 +477,7 @@ namespace SrvSurvey.forms
 
                 Game.log($"Creating: '{createProject.buildName}' in '{createProject.systemName}' ({createProject.systemAddress}/{createProject.marketId})");
                 setEnabled(false);
-                Game.colony.create(createProject).continueOnMain(this, saved =>
+                Game.rcc.create(createProject).continueOnMain(this, saved =>
                 {
                     processServerResponse(saved!);
                     //Game.log($"New build created: {saved.buildId}");
@@ -512,8 +512,8 @@ namespace SrvSurvey.forms
         private void linkLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             var url = this.project == null || this.project.buildId == ""
-                ? $"{ColonyNet.uxUri}#find={cmdr.currentSystem}"
-                : $"{ColonyNet.uxUri}#build={project.buildId}";
+                ? $"{RavenColonial.uxUri}#find={cmdr.currentSystem}"
+                : $"{RavenColonial.uxUri}#build={project.buildId}";
             Util.openLink(url);
         }
 
@@ -559,7 +559,7 @@ namespace SrvSurvey.forms
                     Game.log($"menuCommodities: buildId: {project.buildId}, cmdr: {cmdr}, commodity: {commodity}, checked: {item.Checked}");
                     if (item.Checked)
                     {
-                        Game.colony.unAssign(project.buildId, cmdr, commodity).continueOnMain(this, () =>
+                        Game.rcc.unAssign(project.buildId, cmdr, commodity).continueOnMain(this, () =>
                         {
                             project.commanders?.GetValueOrDefault(cmdr, StringComparison.OrdinalIgnoreCase)?.Remove(commodity);
                             setProject(project, true);
@@ -567,7 +567,7 @@ namespace SrvSurvey.forms
                     }
                     else
                     {
-                        Game.colony.assign(project.buildId, cmdr, commodity).continueOnMain(this, () =>
+                        Game.rcc.assign(project.buildId, cmdr, commodity).continueOnMain(this, () =>
                         {
                             project.commanders?.GetValueOrDefault(cmdr, StringComparison.OrdinalIgnoreCase)?.Add(commodity);
                             setProject(project, true);
@@ -581,7 +581,7 @@ namespace SrvSurvey.forms
 
         private void linkRaven_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Util.openLink(ColonyNet.uxUri);
+            Util.openLink(RavenColonial.uxUri);
         }
     }
 }

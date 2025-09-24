@@ -16,7 +16,8 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
-                game.status.StatusChanged -= Status_StatusChanged;
+                if (game.status != null) game.status.StatusChanged -= Status_StatusChanged;
+                if (game.journals != null) game.journals.onJournalEntry -= Journals_onJournalEntry;
             }
             base.Dispose(disposing);
         }
@@ -42,20 +43,22 @@
             btnSubmit = new Button();
             panel1 = new Panel();
             comboStatus = new ComboBox();
-            label1 = new Label();
             comboBuildSubType = new ComboBox();
             comboBuildType = new ComboBox();
             comboBody = new ComboBox();
             txtName = new TextBox();
+            label1 = new Label();
+            btnNext = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
             // lblDesc
             // 
-            lblDesc.AutoSize = true;
-            lblDesc.Location = new Point(12, 9);
+            lblDesc.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lblDesc.BorderStyle = BorderStyle.Fixed3D;
+            lblDesc.Location = new Point(0, 0);
             lblDesc.Name = "lblDesc";
-            lblDesc.Size = new Size(130, 15);
+            lblDesc.Size = new Size(691, 400);
             lblDesc.TabIndex = 0;
             lblDesc.Text = "Follow the instructions:";
             // 
@@ -63,7 +66,7 @@
             // 
             lblTask.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lblTask.BorderStyle = BorderStyle.Fixed3D;
-            lblTask.Location = new Point(0, 38);
+            lblTask.Location = new Point(0, 9);
             lblTask.Name = "lblTask";
             lblTask.Size = new Size(680, 51);
             lblTask.TabIndex = 1;
@@ -86,27 +89,31 @@
             // colName
             // 
             colName.Text = "Name";
-            colName.Width = 160;
+            colName.Width = 220;
             // 
             // colBody
             // 
             colBody.Text = "Body";
+            colBody.Width = 80;
             // 
             // colBuildType
             // 
             colBuildType.Text = "BuildType";
+            colBuildType.Width = 120;
             // 
             // colType
             // 
             colType.Text = "Type";
+            colType.Width = 160;
             // 
             // colStatus
             // 
             colStatus.Text = "Status";
+            colStatus.Width = 80;
             // 
             // btnClose
             // 
-            btnClose.Location = new Point(593, 5);
+            btnClose.Location = new Point(605, 350);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(75, 23);
             btnClose.TabIndex = 3;
@@ -128,7 +135,7 @@
             // 
             // btnSubmit
             // 
-            btnSubmit.Location = new Point(512, 5);
+            btnSubmit.Location = new Point(605, 321);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.Size = new Size(75, 23);
             btnSubmit.TabIndex = 5;
@@ -140,14 +147,15 @@
             // 
             panel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             panel1.Controls.Add(comboStatus);
-            panel1.Controls.Add(label1);
             panel1.Controls.Add(comboBuildSubType);
             panel1.Controls.Add(comboBuildType);
             panel1.Controls.Add(comboBody);
             panel1.Controls.Add(txtName);
+            panel1.Controls.Add(label1);
+            panel1.Enabled = false;
             panel1.Location = new Point(93, 321);
             panel1.Name = "panel1";
-            panel1.Size = new Size(387, 128);
+            panel1.Size = new Size(387, 117);
             panel1.TabIndex = 6;
             // 
             // comboStatus
@@ -159,15 +167,6 @@
             comboStatus.Size = new Size(146, 23);
             comboStatus.TabIndex = 9;
             comboStatus.SelectedIndexChanged += comboStatus_SelectedIndexChanged;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(3, 9);
-            label1.Name = "label1";
-            label1.Size = new Size(68, 15);
-            label1.TabIndex = 8;
-            label1.Text = "Merge into:";
             // 
             // comboBuildSubType
             // 
@@ -215,11 +214,31 @@
             txtName.TabIndex = 0;
             txtName.TextChanged += txtName_TextChanged;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(3, 9);
+            label1.Name = "label1";
+            label1.Size = new Size(68, 15);
+            label1.TabIndex = 8;
+            label1.Text = "Merge into:";
+            // 
+            // btnNext
+            // 
+            btnNext.Location = new Point(524, 321);
+            btnNext.Name = "btnNext";
+            btnNext.Size = new Size(75, 23);
+            btnNext.TabIndex = 7;
+            btnNext.Text = "&Next";
+            btnNext.UseVisualStyleBackColor = true;
+            btnNext.Click += btnNext_Click;
+            // 
             // FormRavenUpdater
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(692, 450);
+            Controls.Add(btnNext);
             Controls.Add(panel1);
             Controls.Add(btnSubmit);
             Controls.Add(btnMerge);
@@ -232,7 +251,6 @@
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -255,5 +273,6 @@
         private ComboBox comboBuildType;
         private ColumnHeader colStatus;
         private ComboBox comboStatus;
+        private Button btnNext;
     }
 }

@@ -88,8 +88,17 @@ namespace SrvSurvey.plotters
             var match = game.systemData?.stations?.Find(s => s.marketId == station.id);
             if (match != null)
             {
-                tt.draw(indent, $"{station.type}: {match.economy} #{match.subType}", GameColors.Fonts.gothic_9);
+                tt.draw(indent, $"{station.type}: ", GameColors.Fonts.gothic_9);
+                var x = tt.dtx;
+                tt.draw(x, $"{match.economy} #{match.subType}", GameColors.Fonts.gothic_9);
                 tt.newLine(true);
+
+                var key = $"{match.stationEconomy}{match.subType}";
+                if (CanonnStation.mapSettlementTypes.TryGetValue(key, out var buildType))
+                {
+                    tt.draw(x, $"( {Util.pascal(buildType)} )",  GameColors.Fonts.gothic_9);
+                    tt.newLine(true);
+                }
             }
             else
             {
@@ -100,7 +109,7 @@ namespace SrvSurvey.plotters
             // largest pad
             string? largestPad = null;
             var padSize = 0;
-            if (station.landingPads?.Large > 0) { largestPad = "Large";  padSize = 3; }
+            if (station.landingPads?.Large > 0) { largestPad = "Large"; padSize = 3; }
             else if (station.landingPads?.Medium > 0) { largestPad = "Medium"; padSize = 2; }
             else if (station.landingPads?.Small > 0) { largestPad = "Small"; padSize = 1; }
             if (largestPad != null)
