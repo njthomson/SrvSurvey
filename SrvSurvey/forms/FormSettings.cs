@@ -489,8 +489,7 @@ namespace SrvSurvey
             if (numOpacity.Value != trackOpacity.Value)
             {
                 numOpacity.Value = trackOpacity.Value;
-                if (BigOverlay.current != null)
-                    BigOverlay.current.Opacity = trackOpacity.Value / 100d;
+                BigOverlay.current?.setOpacity(trackOpacity.Value);
             }
         }
 
@@ -499,8 +498,7 @@ namespace SrvSurvey
             if (numOpacity.Value != trackOpacity.Value)
             {
                 trackOpacity.Value = (int)numOpacity.Value;
-                if (BigOverlay.current != null)
-                    BigOverlay.current.Opacity = trackOpacity.Value / 100d;
+                BigOverlay.current?.setOpacity(trackOpacity.Value);
             }
         }
 

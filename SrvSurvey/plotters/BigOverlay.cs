@@ -4,6 +4,7 @@ using SrvSurvey.Properties;
 using SrvSurvey.widgets;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace SrvSurvey.plotters
 {
@@ -19,7 +20,7 @@ namespace SrvSurvey.plotters
                 Program.defer(() => BigOverlay.current?.Invalidate());
         }
 
-        private static Color maskColor = Color.FromArgb(1, 1, 1);
+        private Color maskColor = Game.settings.bigOverlayMaskColor;
 
         public BigOverlay()
         {
@@ -41,14 +42,31 @@ namespace SrvSurvey.plotters
 
             // This needs to be a colour that won't naturally appear
             this.BackColor = maskColor;
-            this.TransparencyKey = maskColor;
-
-            this.Opacity = Game.settings.Opacity;
+            // We must NOT use this.TransparencyKey or this.Opacity ... otherwise alpha-blending will break
 
             this.Text = "SrvSurveyOne";
 
             this.initPlotPulse();
             this.reposition(Elite.getWindowRect());
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            int exStyle = NativeMethods.GetWindowLong(this.Handle, NativeMethods.GWL_EXSTYLE);
+            NativeMethods.SetWindowLong(this.Handle, NativeMethods.GWL_EXSTYLE, exStyle | NativeMethods.WS_EX_LAYERED);
+
+            setOpacity(Game.settings.plotterOpacity);
+        }
+
+        /// <summary> Set opacity from 0 to 100 % </summary>
+        public void setOpacity(float opacity)
+        {
+            // Set transparency: 128 = 50% opacity
+            var uui = (uint)ColorTranslator.ToWin32(maskColor);
+            var opacity2 = (byte)Math.Round(255f / 100f * opacity);
+            NativeMethods.SetLayeredWindowAttributes(this.Handle, uui, opacity2, NativeMethods.LWA_ALPHA | NativeMethods.LWA_COLORKEY);
         }
 
         protected override void Dispose(bool disposing)
@@ -57,6 +75,8 @@ namespace SrvSurvey.plotters
             PlotBase2.closeAll();
             BigOverlay.current = null!;
         }
+
+        protected override bool ShowWithoutActivation => true;
 
         protected override CreateParams CreateParams
         {
@@ -68,28 +88,28 @@ namespace SrvSurvey.plotters
             }
         }
 
-        public void reposition(Rectangle rect)
+        public void reposition(Rectangle gameRect)
         {
-            Game.log($"bigOne @ {rect} / {this.Visible} / {this.Opacity}");
+            Game.log($"bigOverlay @{gameRect} / {this.Visible}");
 
-            if (rect.X <= -30_000)
+            if (gameRect.X <= -30_000)
             {
                 this.Hide();
             }
             else
             {
                 this.SuspendLayout();
-                this.Location = rect.Location;
-                this.Size = rect.Size;
+                this.Location = gameRect.Location;
+                this.Size = gameRect.Size;
                 this.ResumeLayout();
 
                 // get PlotPulse location
-                this.ptPlotPulse = PlotPos.getPlotterLocation("PlotPulse", plotPulseDefaultSize, rect, true);
+                this.ptPlotPulse = PlotPos.getPlotterLocation("PlotPulse", plotPulseDefaultSize, gameRect, true);
 
                 if (Game.activeGame != null)
                 {
                     foreach (var plotter in PlotBase2.active)
-                        plotter.setPosition(rect);
+                        plotter.setPosition(gameRect);
 
                     PlotBase2.renderAll(Game.activeGame);
                 }
@@ -106,6 +126,7 @@ namespace SrvSurvey.plotters
             try
             {
                 var g = e.Graphics;
+                g.Clear(maskColor);
 
                 var game = Game.activeGame;
                 if (game != null)
@@ -113,6 +134,7 @@ namespace SrvSurvey.plotters
                     if (!Game.settings.hideJournalWriteTimer)
                         this.renderPulse(g);
 
+                    g.SmoothingMode = SmoothingMode.None;
                     foreach (var plotter in PlotBase2.active)
                     {
                         // skip anything not visible
@@ -241,18 +263,33 @@ namespace SrvSurvey.plotters
             if (Game.activeGame?.isMode(GameMode.GalaxyMap, GameMode.SystemMap) == true)
                 return;
 
+            g.SmoothingMode = SmoothingMode.None;
             g.DrawImage(pulseBackground, ptPlotPulse);
 
             // we want a fuzzy outline on this rectangle
             g.SmoothingMode = SmoothingMode.HighQuality;
-
             g.FillRectangle(C.Brushes.orange,
                 ptPlotPulse.X + 10, ptPlotPulse.Y + 27 - pulseTick,
                 10, pulseTick);
-
-            g.SmoothingMode = SmoothingMode.Default;
         }
 
         #endregion
+
+        class NativeMethods
+        {
+            public const int WS_EX_LAYERED = 0x80000;
+            public const int GWL_EXSTYLE = -20;
+            public const int LWA_COLORKEY = 0x1;
+            public const int LWA_ALPHA = 0x2;
+
+            [DllImport("user32.dll", SetLastError = true)]
+            public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+            [DllImport("user32.dll", SetLastError = true)]
+            public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+            [DllImport("user32.dll", SetLastError = true)]
+            public static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
+        }
     }
 }

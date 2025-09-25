@@ -338,7 +338,10 @@ namespace SrvSurvey
             var forceOpen = Game.settings.keepOverlays || Debugger.IsAttached;
 
             if (hasFocus && bigOverlay?.Visible == false)
-                bigOverlay?.Show();
+            {
+                bigOverlay.reposition(rect);
+                bigOverlay.Show();
+            }
 
             // show/hide plotters if game has changed focus state
             if (gameHadFocus != hasFocus)
@@ -349,10 +352,7 @@ namespace SrvSurvey
                     Program.showActivePlotters();
 
                     if (!forceOpen)
-                    {
                         Program.repositionPlotters(rect);
-                        bigOverlay?.reposition(rect);
-                    }
                 }
                 else
                 {
@@ -717,9 +717,6 @@ namespace SrvSurvey
                 foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
                 lblSysBio.Enabled = txtSystemBioSignals.Enabled = txtSystemBioValues.Enabled = labelSignalsAndRewards.Enabled = false;
                 lblBodyBio.Enabled = txtBodyBioSignals.Enabled = txtBodyBioValues.Enabled = checkFirstFootFall.Enabled = false;
-
-                Program.closePlotter<PlotGrounded>();
-                Program.closePlotter<PlotTrackers>();
                 return;
             }
 
@@ -758,19 +755,10 @@ namespace SrvSurvey
             if (game?.systemBody == null)
             {
                 txtBodyBioSignals.Text = txtBodyBioValues.Text = "-";
-
-                //Program.closePlotter<PlotBioStatus>();
-                //Program.closePlotter<PlotGrounded>();
-                //Program.closePlotter<PlotTrackers>();
-                //Program.closePlotter<PlotPriorScans>();
             }
             else if (game.systemBody?.bioSignalCount == 0)
             {
                 foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
-
-                //Program.closePlotter<PlotBioStatus>();
-                //Program.closePlotter<PlotGrounded>();
-                //Program.closePlotter<PlotPriorScans>();
             }
             else
             {
@@ -781,6 +769,7 @@ namespace SrvSurvey
 
                 if (game.systemBody.firstFootFall) txtBodyBioValues.Text += " (FF)";
 
+                /* safe to remove?
                 if (PlotGrounded.allowPlotter)
                 {
                     // show trackers only if we have some
@@ -794,6 +783,7 @@ namespace SrvSurvey
                     else
                         Program.closePlotter<PlotGrounded>();
                 }
+                */
             }
         }
 
@@ -836,9 +826,6 @@ namespace SrvSurvey
                         Program.showPlotter<PlotGuardianStatus>();
                         if (Game.settings.autoShowRamTah && (this.game.systemSite.isRuins && game.cmdr.decodeTheRuinsMissionActive == TahMissionStatus.Active || !this.game.systemSite.isRuins && game.cmdr.decodeTheLogsMissionActive == TahMissionStatus.Active))
                             Program.showPlotter<PlotRamTah>();
-
-                        Program.closePlotter<PlotGrounded>();
-                        Program.closePlotter<PlotTrackers>();
                     }
 
                     btnRuinsMap.Enabled = game.systemSite.siteHeading != -1 && PlotGuardians.allowPlotter;
@@ -861,17 +848,6 @@ namespace SrvSurvey
         {
             Game.log($"Main.Shutdown: Commander:{this.game?.Commander}");
             this.removeGame();
-        }
-
-        private void onJournalEntry(LaunchSRV entry)
-        {
-            Game.log($"Main.LaunchSRV {game?.status?.BodyName}");
-
-            if (game?.systemBody?.bioSignalCount > 0)
-            {
-                if (PlotGrounded.allowPlotter)
-                    Program.showPlotter<PlotGrounded>();
-            }
         }
 
         private void onJournalEntry(SAASignalsFound entry)
@@ -899,7 +875,6 @@ namespace SrvSurvey
             Game.log($"Main.SupercruiseEntry {entry.Starsystem}");
 
             // close these plotters upon super-cruise
-            Program.closePlotter<PlotGrounded>();
             Program.closePlotter<PlotGuardians>();
             Program.closePlotter<PlotGuardianStatus>();
             Program.closePlotter<PlotRamTah>();
@@ -1186,9 +1161,13 @@ namespace SrvSurvey
                     Util.applyTheme(this);
 
                     Application.DoEvents();
-
                     if (game != null)
+                    {
+                        bigOverlay?.Close();
+                        bigOverlay = new BigOverlay();
+                        bigOverlay.Show();
                         PlotBase2.renderAll(game, true);
+                    }
                 }
                 else
                 {

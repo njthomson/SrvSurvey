@@ -110,10 +110,6 @@ namespace SrvSurvey.plotters
         {
             base.OnLoad(e);
 
-            // if these are open - close them
-            Program.closePlotter<PlotGrounded>();
-            Program.closePlotter<PlotTrackers>();
-
             this.initializeOnLoad();
             this.siteData.loadPub();
 

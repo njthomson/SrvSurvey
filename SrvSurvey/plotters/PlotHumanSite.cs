@@ -528,7 +528,7 @@ namespace SrvSurvey.plotters
             if (this.siteHeading >= 0)
             {
                 // when we know the settlement type and heading
-                this.drawKnownSettlement(g, distToSiteOrigin);
+                this.drawKnownSettlement(g, tt, distToSiteOrigin);
             }
 
             g.ResetTransform();
@@ -595,8 +595,18 @@ namespace SrvSurvey.plotters
             tt.draw(N.eight, footerTxt);
         }
 
-        private void drawKnownSettlement(Graphics g, decimal distToSiteOrigin)
+        private void drawKnownSettlement(Graphics g, TextCursor tt, decimal distToSiteOrigin)
         {
+            /* NOT READY
+            // draw black background checks
+            g.ResetTransform();
+            g.TranslateTransform(mid.Width, mid.Height); // shift to center of window
+            g.ScaleTransform(scale, scale); // apply display scale factor (zoom)
+            g.RotateTransform(-game.status.Heading); // rotate by cmdr heading
+            g.TranslateTransform(-offsetWithoutHeading.X, offsetWithoutHeading.Y); // shift relative to cmdr
+            g.FillRectangle(GameColors.adjustGroundChecks(GameColors.fontScaleFactor), -width, -height, width * 2, height * 2);
+            */
+
             // draw relative to site origin
             this.resetMiddleSiteOrigin(g);
 
@@ -624,7 +634,7 @@ namespace SrvSurvey.plotters
 
             // draw relative to cmdr's location ...
             this.resetMiddleRotated(g);
-            this.drawShipAndSrvLocation(g);
+            this.drawShipAndSrvLocation(g, tt);
 
             // draw relative to center of window ...
             this.resetMiddle(g);

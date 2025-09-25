@@ -26,6 +26,7 @@ namespace SrvSurvey
         public Color defaultOrangeDim = GameColors.Defaults.OrangeDim;
         public Color defaultCyan = GameColors.Defaults.Cyan;
         public Color defaultDarkCyan = GameColors.Defaults.DarkCyan;
+        public Color bigOverlayMaskColor = Color.FromArgb(1, 254, 254);
 
         public string? preferredCommander = null;
         public string? lastCommander = null;

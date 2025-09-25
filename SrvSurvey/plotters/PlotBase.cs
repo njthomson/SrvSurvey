@@ -654,7 +654,7 @@ namespace SrvSurvey.plotters
             var r = new RectangleF(x, y, sz * 2, sz * 2);
             g.DrawEllipse(pen, r);
 
-            // always point up if the distance is zero            
+            // always point up if the distance is zero
             if (dist == 0) deg = 0;
             var dx = (float)Math.Sin(Util.degToRad(deg)) * nine;
             var dy = (float)Math.Cos(Util.degToRad(deg)) * nine;

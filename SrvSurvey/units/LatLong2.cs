@@ -46,7 +46,8 @@ namespace SrvSurvey.units
 
         public override bool Equals(object? obj)
         {
-            return this.ToString() == obj?.ToString();
+            var other = obj as LatLong2;
+            return other != null && this.Lat == other.Lat && this.Long == other.Long;
         }
 
         public override int GetHashCode()

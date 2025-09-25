@@ -94,7 +94,7 @@ namespace SrvSurvey.widgets
             if (showBearing)
             {
                 x += threeEight;
-                renderBearingTo(g, x, y, ten, (double)deg, this.font, bb.brush, bb.pen);
+                renderBearingTo(g, x, y, ten, (double)deg, bb.brush, bb.pen);
             }
         }
     }

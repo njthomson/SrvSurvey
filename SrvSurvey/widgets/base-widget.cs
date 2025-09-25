@@ -28,7 +28,12 @@ namespace SrvSurvey.widgets
             TextRenderer.DrawText(g, txt, font, pt, color.Value, flags.Value);
         }
 
-        public static void renderBearingTo(Graphics g, float x, float y, float r, double deg, Font? font = null, Brush? brush = null, Pen? pen = null)
+        public static void renderBearingTo(Graphics g, float x, float y, float r, double deg, Brush? brush = null, Pen? pen = null)
+        {
+            renderBearingTo(g, x, y, r, deg, null, brush, pen, null);
+        }
+
+        public static void renderBearingTo(Graphics g, float x, float y, float r, double deg, string? msg = null, Brush? brush = null, Pen? pen = null, Font? font = null)
         {
             if (g == null) return;
             font ??= GameColors.fontSmall;
@@ -45,8 +50,18 @@ namespace SrvSurvey.widgets
             var pt = Util.rotateLine(deg, r * 1.8f);
             g.DrawLine(pen, x, y, x + pt.X, y - pt.Y);
 
-            //x += two + (r * 3);
-            //g.DrawString(Util.metersToString(dist), GameColors.fontSmall, brush, x, y);
+            if (msg != null)
+            {
+                x += two + rect.Width;
+                // center text vertically at middle of circle
+                var sz = g.MeasureString(msg, font);
+                var dy = rect.Height > sz.Height
+                    ? Util.centerIn(rect.Height, sz.Height)
+                    : Util.centerIn(sz.Height, rect.Height);
+                y += -r + dy;
+
+                g.DrawString(msg, GameColors.fontSmall, brush, x, y);
+            }
         }
     }
 

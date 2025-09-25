@@ -407,13 +407,12 @@ namespace SrvSurvey.plotters
                 var ff = GameColors.Fonts.gothic_9;
 
                 var cargoCount = game.cargoFile.getCount(name);
-
-                if (pendingUpdates > 0 && pendingDiff.ContainsKey(name))
+                var isPending = pendingUpdates > 0 && pendingDiff.ContainsKey(name);
+                if (isPending)
                 {
                     // highlight what we just supplied
                     ff = GameColors.Fonts.gothic_9B;
                     col = C.cyan;
-                    nameTxt = "► " + nameTxt;
                     needTxt = "...";
                 }
                 //else if (cargoCount > 0)
@@ -428,6 +427,7 @@ namespace SrvSurvey.plotters
                     nameTxt += " ✔️";
                 }
                 else*/
+                var shipHasEnough = cargoCount >= needCount;
                 if (cargoCount > needCount)
                 {
                     // warn if we have more than needed
@@ -437,7 +437,6 @@ namespace SrvSurvey.plotters
                 else if (cargoCount == needCount)
                 {
                     col = C.green;
-                    nameTxt += " ✔️";
                 }
 
                 // render needed count
@@ -453,6 +452,7 @@ namespace SrvSurvey.plotters
                 }
 
                 // (skip FC numbers if sharing 2nd column and we already rendered there)
+                var fcHasEnough = false;
                 if (xFC > 0 && Game.settings.buildProjectsShowSumFC_TEST && (!Game.settings.buildProjectsInlineSumFC_TEST || cargoCount > 0))
                 {
                     // show amount on all FCs in same column?
@@ -480,11 +480,7 @@ namespace SrvSurvey.plotters
                             var diff = fcAmount;
                             var diffTxt = diff.ToString("N0");
                             var cc = fcAmount >= needCount ? C.green : C.red;
-                            if (fcAmount >= needCount && !nameTxt.EndsWith(" ✔️"))
-                            {
-                                col = C.green;
-                                nameTxt += " ✔️";
-                            }
+                            fcHasEnough = fcAmount >= needCount && !nameTxt.EndsWith(" ✔️");
 
                             // if sharing a column ... make FC counts darker
                             if (Game.settings.buildProjectsInlineSumFC_TEST)
@@ -500,8 +496,13 @@ namespace SrvSurvey.plotters
                 //if (cargoCount > needCount) col = C.red;
 
                 // render the name
-                var sz2 = tt.draw(N.ten, nameTxt, col, ff)
+                var sz2 = tt.draw(N.twenty, nameTxt, col, ff)
                     .widestColumn(0, columns);
+
+                if (isPending)
+                    tt.draw(N.two, "🔁", C.cyan, ff);
+                else if (shipHasEnough || fcHasEnough)
+                    tt.draw(N.two, "✔️", shipHasEnough ? C.green : C.greenDark, ff);
 
                 // draw assigned pin behind the need number
                 if (needs.assigned.Contains(name))
@@ -584,12 +585,12 @@ namespace SrvSurvey.plotters
                     var ff = GameColors.Fonts.gothic_9;
                     var inLocalMarket = localMarketValid && localMarketItems.Contains(name);
 
-                    if (pendingUpdates > 0 && pendingDiff.ContainsKey(name))
+                    var isPending = pendingUpdates > 0 && pendingDiff.ContainsKey(name);
+                    if (isPending)
                     {
                         // highlight what we just supplied
                         ff = GameColors.Fonts.gothic_9B;
                         col = C.cyan;
-                        nameTxt = "► " + nameTxt;
                         needTxt = "...";
                     }
                     //else if (cargoCount > 0)
@@ -715,10 +716,11 @@ namespace SrvSurvey.plotters
                     var sz2 = tt.draw(N.twenty, nameTxt, col, ff)
                             .widestColumn(0, columns);
 
-                    if (haveEnough && !nameTxt.EndsWith("❌"))
+                    if (isPending)
+                        tt.draw(N.two, "🔁", C.cyan, ff);
+                    else if (haveEnough && !nameTxt.EndsWith("❌"))
                     {
-                        var sz3 = tt.draw(" ✔️", col == C.green ? C.green : C.greenDark, ff);
-                        (sz2 + sz3).widestColumn(0, columns);
+                        tt.draw(N.two, "✔️", col == C.green ? C.green : C.greenDark, ff);
                     }
 
                     tt.newLine(true);

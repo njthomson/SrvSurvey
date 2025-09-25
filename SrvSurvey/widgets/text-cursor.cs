@@ -131,7 +131,7 @@ namespace SrvSurvey.widgets
 
             var rect = new Rectangle(
                 padHorizontal,
-                this.containerHeight - padVertical - (int)this.lastTextSize.Height,
+                (int)Math.Floor(ty),
                 this.containerWidth - (padHorizontal * 2),
                 (int)this.lastTextSize.Height
             );

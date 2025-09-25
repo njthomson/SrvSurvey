@@ -5,12 +5,21 @@ using Res = Loc.PlotTrackers;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(380, 100)]
-    internal class PlotTrackers : PlotBase, PlotterForm
+    internal class PlotTrackers : PlotBase2
     {
-        public static bool allowPlotter
+        #region def + statics
+
+        public static PlotDef plotDef = new PlotDef()
         {
-            get => PlotGrounded.allowPlotter
+            name = nameof(PlotTrackers),
+            allowed = allowed,
+            ctor = (game, def) => new PlotTrackers(game, def),
+            defaultSize = new Size(380, 100),
+        };
+
+        public static bool allowed(Game game)
+        {
+            return PlotGrounded.allowed(game)
                 // same as PlotGrounded + do we have any bookmarks?
                 && (
                     (!Game.settings.autoShowPlotMiniTrack_TEST && Game.activeGame?.systemBody?.bookmarks?.Count > 0)
@@ -18,31 +27,22 @@ namespace SrvSurvey.plotters
                 );
         }
 
+        #endregion
+
         public const int highlightDistance = 150;
 
         public Dictionary<string, List<TrackingDelta>> trackers = new Dictionary<string, List<TrackingDelta>>();
 
-        private PlotTrackers() : base()
+        private PlotTrackers(Game game, PlotDef def) : base(game, def)
         {
-            this.Size = Size.Empty;
-            this.Font = GameColors.fontSmall;
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            this.Width = scaled(380);
-            this.Height = scaled(100);
-            base.OnLoad(e);
+            this.font = GameColors.fontSmall;
 
             this.prepTrackers();
-            this.initializeOnLoad();
         }
-
-        public override bool allow { get => PlotTrackers.allowPlotter; }
 
         public void prepTrackers()
         {
-            if (this.IsDisposed) return;
+            if (this.isClosed) return;
 
             this.trackers.Clear();
             if (game.systemBody?.bookmarks != null)
@@ -62,72 +62,57 @@ namespace SrvSurvey.plotters
                 }
             }
 
-            Program.invalidate<PlotGrounded>();
+            PlotBase2.invalidate(nameof(PlotGrounded));
 
             if (this.trackers.Count == 0)
-                Program.defer(() => Program.closePlotter<PlotTrackers>());
+                Program.defer(() => PlotBase2.remove(PlotTrackers.plotDef));
         }
 
-        public override void reposition(Rectangle gameRect)
+        public override void setSize(int width, int height)
+        {
+            var plotGrounded = PlotBase2.getPlotter<PlotGrounded>();
+            if (plotGrounded != null)
+                width = plotGrounded.width;
+
+            base.setSize(width, height);
+        }
+
+        public override void setPosition(Rectangle? gameRect = null, string? name = null)
         {
             // NOT calling base class
-
-            // match opacity of PlotGrounded
-            this.setOpacity(PlotPos.getOpacity(nameof(PlotGrounded)));
 
             if (gameRect != Rectangle.Empty)
             {
                 // position ourselves under PlotGrounded, if it exists
-                var plotGrounded = Program.getPlotter<PlotGrounded>();
+                var plotGrounded = PlotBase2.getPlotter<PlotGrounded>();
                 if (plotGrounded != null)
                 {
-                    plotGrounded.reposition(gameRect);
-                    this.Width = plotGrounded.Width;
-                    this.Left = plotGrounded.Left;
-                    this.Top = plotGrounded.Bottom + (int)four;
+                    this.left = plotGrounded.left;
+                    this.top = plotGrounded.bottom + (int)N.four;
                 }
                 else
                 {
                     // otherwise position ourselves where PlotGrounded would be
-                    PlotPos.reposition(this, gameRect, nameof(PlotGrounded));
+                    base.setPosition(gameRect, nameof(PlotGrounded));
                 }
 
-                this.Invalidate();
+                this.invalidate();
             }
         }
 
-        protected override void Game_modeChanged(GameMode newMode, bool force)
+        protected override void onStatusChange(Status status)
         {
-            if (this.IsDisposed) return;
-
-            if (this.Opacity > 0 && !PlotGrounded.allowPlotter)
-                this.setOpacity(0);
-            else if (this.Opacity == 0 && PlotGrounded.allowPlotter)
-                this.reposition(Elite.getWindowRect());
-
-            if (game.systemBody == null)
-                Program.closePlotter<PlotTrackers>();
-            else
-                this.Invalidate();
-        }
-
-        protected override void Status_StatusChanged(bool blink)
-        {
-            if (this.IsDisposed) return;
-
             // re-calc distances and re-order TrackingDeltas
             foreach (var name in this.trackers.Keys)
             {
                 this.trackers[name].ForEach(_ => _.calc());
                 this.trackers[name].Sort((a, b) => a.distance.CompareTo(b.distance));
             }
-
-            base.Status_StatusChanged(blink);
         }
 
         protected override void onJournalEntry(ScanOrganic entry)
         {
-            if (this.IsDisposed || game.systemBody == null) return;
+            if (game.systemBody == null) return;
 
             // if we are close enough to a tracker ... auto remove it
             if (this.trackers.ContainsKey(entry.Genus))
@@ -148,27 +133,27 @@ namespace SrvSurvey.plotters
             }
         }
 
-        protected override void onPaintPlotter(PaintEventArgs e)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
-            if (game?.systemData == null || game.systemBody == null || game.systemBody.bookmarks == null || game.systemBody.bookmarks?.Count == 0) return;
+            if (game?.systemData == null || game.systemBody == null || game.systemBody.bookmarks == null || game.systemBody.bookmarks?.Count == 0) return frame.Size;
 
-            this.drawTextAt(eight, Res.HeaderLine.format(game.systemBody.bookmarks?.Count ?? 0), GameColors.fontSmall);
-            newLine(+eight, true);
+            tt.draw(N.eight, Res.HeaderLine.format(game.systemBody.bookmarks?.Count ?? 0), GameColors.fontSmall);
+            tt.newLine(+N.eight, true);
 
             // measure width of all names
             var names = this.trackers.Keys.Select(name => getDisplayName(name)).ToArray();
-            var maxW = Util.maxWidth(this.Font, names);
-            var indent = maxW + ten;
+            var maxW = Util.maxWidth(this.font, names);
+            var indent = maxW + N.ten;
             const int bearingWidth = 75;
-            indent += (this.Width - indent) % bearingWidth;
-            if (indent < sixty) indent = sixty;
+            indent += (this.width - indent) % bearingWidth;
+            if (indent < N.sixty) indent = N.sixty;
 
             foreach (var name in this.trackers.Keys)
             {
                 // skip quick trackers if PlotMiniTrack is active
                 if (name[0] == '#' && PlotBase2.isPlotter<PlotMiniTrack>()) continue;
 
-                var x = indent;
+                var x = indent + N.eight;
                 var isActive = game.cmdr.scanOne?.genus == null || game.cmdr.scanOne?.genus == name;
                 var isClose = false;
                 Brush brush;
@@ -182,9 +167,9 @@ namespace SrvSurvey.plotters
                     if (dd.distance < highlightDistance) pen = isActive ? GameColors.penCyan2 : GameColors.penDarkCyan1;
 
                     var deg = dd.angle - game.status!.Heading;
-                    this.drawBearingTo(x, dty, "", (double)dd.distance, (double)deg, brush, pen);
+                    BaseWidget.renderBearingTo(g, x, tt.dty, N.five, (double)deg, Util.metersToString(dd.distance), brush, pen);
                     x += bearingWidth;
-                    if (x > this.Width - bearingWidth) break;
+                    if (x > this.width - bearingWidth) break;
                 }
 
                 var displayName = getDisplayName(name);
@@ -192,12 +177,11 @@ namespace SrvSurvey.plotters
                 var col = isActive ? GameColors.Orange : GameColors.OrangeDim;
                 if (isClose) col = isActive ? GameColors.Cyan : GameColors.DarkCyan;
 
-                this.drawTextAt2(indent, displayName, col, null, true);
-                newLine(+nine, true);
+                tt.draw(indent, displayName, col, null, true);
+                tt.newLine(+N.nine, true);
             }
 
-            this.formSize.Width = this.Width;
-            formAdjustSize(0, +four);
+            return tt.pad(0, +N.four);
         }
 
         private string getDisplayName(string name)

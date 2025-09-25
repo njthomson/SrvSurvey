@@ -225,8 +225,8 @@ namespace SrvSurvey.widgets
             brushGroundChecks.RotateTransform(360 - game.status.Heading);
 
             var offset = (PointF)Util.getOffset(game.status.PlanetRadius, game.dropPoint, 0);
-            var x = -offset.X * scale;
-            var y = offset.Y * scale;
+            var x = Math.Floor(-offset.X * scale);
+            var y = Math.Floor(offset.Y * scale);
             brushGroundChecks.TranslateTransform((int)x, (int)y);
 
             return GameColors.brushGroundChecks;

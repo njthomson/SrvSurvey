@@ -1,71 +1,44 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
-using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using Res = Loc.PlotGrounded;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(320, 440)]
-    internal partial class PlotGrounded : PlotBase, PlotterForm
+    internal partial class PlotGrounded : PlotBase2Surface
     {
-        public static bool allowPlotter
+        #region def + statics
+
+        public static PlotDef plotDef = new PlotDef()
         {
-            get => Game.settings.autoShowBioPlot
-                && Game.activeGame?.systemBody != null
-                && Game.activeGame.status != null
-                && !Game.activeGame.status.Docked
-                && !Game.activeGame.isShutdown // not needed?
-                && !Game.activeGame.atMainMenu // not needed?
+            name = nameof(PlotGrounded),
+            allowed = allowed,
+            ctor = (game, def) => new PlotGrounded(game, def),
+            defaultSize = new Size(320, 440),
+            invalidationJournalEvents = new HashSet<string>() { nameof(Disembark), nameof(Embark), nameof(Liftoff), nameof(Touchdown) },
+        };
+
+        public static bool allowed(Game game)
+        {
+            return Game.settings.autoShowBioPlot
+                && game.systemBody != null
+                && !game.status.Docked
                 && !Game.settings.buildProjectsSuppressOtherOverlays
-                && (Game.activeGame.systemStation == null || !Game.settings.autoShowHumanSitesTest)
-                && !Game.activeGame.hidePlottersFromCombatSuits
-                && Game.activeGame.status.hasLatLong
-                && Game.activeGame.status.Altitude < 10_000
-                && !Game.activeGame.status.InTaxi
-                && !Game.activeGame.status.FsdChargingJump
+                && game.status.hasLatLong
+                && game.status.Altitude < 10_000
+                && !game.status.InTaxi
+                && !game.status.FsdChargingJump
                 && !PlotGuardians.allowPlotter
-                // && !PlotBase2.isPlotter<PlotHumanSite>() // <-- TODO when migrating
-                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.RolePanel)
-                && (!Game.settings.autoHideBioPlotNoGear || Game.activeGame.mode != GameMode.Flying || Game.activeGame.status.landingGearDown)
+                && !PlotHumanSite.allowed(game)
+                && game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.RolePanel)
+                && (!Game.settings.autoHideBioPlotNoGear || game.mode != GameMode.Flying || game.status.landingGearDown)
                 ;
             // TODO: include these?
             // if (game.systemSite == null && !game.isMode(GameMode.SuperCruising, GameMode.GlideMode) && (game.isLanded || showPlotTrackers || showPlotPriorScans || game.cmdr.scanOne != null))
         }
 
-        private TrackingDelta? srvLocation;
-
-        private TrackingDelta? td;
-
-        private float mw;
-        private float mh;
-
-        private PlotGrounded()
-        {
-            this.scale = 0.25f;
-        }
-
-        public override bool allow { get => PlotGrounded.allowPlotter; }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            this.Size = PlotBase.scaled(getWindowSize());
-            this.mw = this.Width / 2;
-            this.mh = this.Height / 2;
-            this.initializeOnLoad();
-            var gameRect = Elite.getWindowRect(true);
-            this.reposition(gameRect);
-
-            // reposition trackers if it already exists
-            var plotTrackers = Program.getPlotter<PlotTrackers>();
-            if (plotTrackers != null)
-            {
-                plotTrackers.reposition(gameRect);
-            }
-        }
-
-        private Size getWindowSize()
+        private static Size getWindowSize()
         {
             switch (Game.settings.bioPlotSize)
             {
@@ -78,255 +51,94 @@ namespace SrvSurvey.plotters
             }
         }
 
-        protected override void initializeOnLoad()
+        #endregion
+
+        private PlotGrounded(Game game, PlotDef def) : base(game, def)
         {
-            base.initializeOnLoad();
+            this.font = GameColors.fontSmall;
+            this.scale = 0.25f;
+
+            // we use a preset size
+            this.setSize(getWindowSize());
+            this.background = GameGraphics.getBackgroundImage(this.size);
 
             // get landing location
             Game.log($"initialize here: {Status.here}, touchdownLocation: {game.touchdownLocation}, radius: {game.systemBody!.radius.ToString("N0")}");
 
-            if (game.touchdownLocation == null)
-            {
-                Game.log("Why no touchdownLocation?");
-                Debugger.Break();
-                // TODO: still needed?
-                return;
-            }
-
-            if (game.systemBody.lastTouchdown != null)
-                this.td = new TrackingDelta(
-                    game.systemBody.radius,
-                    game.systemBody.lastTouchdown);
+            // reposition trackers if it already exists // Revisit !!!
+            var plotTrackers = PlotBase2.getPlotter<PlotTrackers>();
+            if (plotTrackers != null)
+                Program.defer(() => plotTrackers.setPosition(null));
         }
 
-        #region journal events
-
-        protected override void onJournalEntry(Touchdown entry)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
-            var newLocation = new LatLong2(entry);
+            if (game.systemBody == null || game.status == null) return this.size;
 
-            if (this.td == null) return;
-
-            this.td.Current = newLocation;
-            this.td.Target = newLocation;
-
-            this.Invalidate();
-        }
-
-        protected override void onJournalEntry(Disembark entry)
-        {
-            if (entry.SRV && this.srvLocation == null)
-            {
-                this.srvLocation = new TrackingDelta(game.systemBody!.radius, Status.here.clone());
-                this.Invalidate();
-            }
-        }
-
-        protected override void onJournalEntry(Embark entry)
-        {
-            if (entry.SRV && this.srvLocation != null)
-            {
-                this.srvLocation = null;
-                this.Invalidate();
-            }
-        }
-
-        #endregion
-
-        protected override void Game_modeChanged(GameMode newMode, bool force)
-        {
-            if (this.IsDisposed) return;
-            base.Game_modeChanged(newMode, force);
-
-            if (game.systemBody == null)
-            {
-                // TODO: still needed?
-                //Debugger.Break();
-                Program.closePlotter<PlotGrounded>();
-            }
-        }
-
-        protected override void Status_StatusChanged(bool blink)
-        {
-            base.Status_StatusChanged(blink);
-
-            if (this.td != null)
-                this.td.Current = Status.here;
-
-            if (this.srvLocation != null)
-                this.srvLocation.Current = Status.here;
-
-            this.Invalidate();
-        }
-
-        protected override void onPaintPlotter(PaintEventArgs e)
-        {
-            if (game.systemBody == null || game.status == null) return;
-
-            this.mw = this.Width / 2;
-            this.mh = this.Height / 2;
+            // draw the background inline
+            g.DrawImage(background, 0, 0);
 
             // clip to preserve top/bottom text area
-
-            var bottomClip = game.cmdr.scanOne == null ? threeFour : fiveTwo;
-            g.Clip = new Region(new RectangleF(four, twoFour, this.Width - eight, this.Height - bottomClip));
+            var bottomClip = game.cmdr.scanOne == null ? N.threeFour : N.fiveTwo;
+            g.Clip = new Region(new RectangleF(N.four, N.twoFour, this.width - N.eight, this.height - bottomClip));
 
             // draw basic compass cross hairs centered in the window
+            this.resetMiddle(g);
             this.drawCompassLines(g);
 
             this.drawBioScans(g);
 
-            // draw touchdown marker
-            var shipDeparted = game.touchdownLocation == null || game.touchdownLocation == LatLong2.Empty;
-            if (game.systemBody.lastTouchdown != null)
-            {
-                if (this.td == null)
-                    this.td = new TrackingDelta(game.systemBody.radius, game.systemBody.lastTouchdown);
-
-                // delta to ship
-                g.ResetTransform();
-                g.TranslateTransform(mw, mh);
-                g.ScaleTransform(scale, scale);
-                g.RotateTransform(360 - game.status!.Heading);
-
-                var rect = PlotBase.scaled(new RectangleF((float)td.dx - 64, (float)-td.dy - 64, 128, 128));
-                var b = shipDeparted ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
-                g.FillEllipse(b, rect);
-
-                if (!shipDeparted && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
-                {
-                    // draw 2km circle for when ship may depart
-                    const float liftoffSize = 2000f;
-                    rect = PlotBase.scaled(new RectangleF((float)td.dx - liftoffSize, (float)-td.dy - liftoffSize, liftoffSize * 2, liftoffSize * 2));
-                    var p = GameColors.penShipDepartFar;
-                    if (this.td.distance > 1800)
-                        p = GameColors.penShipDepartNear;
-
-                    g.DrawEllipse(p, rect);
-                }
-            }
-
-            // draw SRV marker
-            if (this.srvLocation != null)
-            {
-                // delta to ship
-                g.ResetTransform();
-                g.TranslateTransform(mw, mh);
-                g.ScaleTransform(scale, scale);
-                g.RotateTransform(360 - game.status!.Heading);
-
-                const float srvSize = 32f;
-                var rect = new RectangleF((float)srvLocation.dx - srvSize, (float)-srvLocation.dy - srvSize, srvSize * 2, srvSize * 2);
-                g.FillRectangle(GameColors.brushSrvLocation, PlotBase.scaled(rect));
-            }
+            this.resetMiddleRotated(g);
+            // draw touchdown marker (may reset transforms)
+            this.drawShipAndSrvLocation(g, tt);
 
             // draw current location pointer (always at center of plot + unscaled)
-            g.ResetTransform();
-            g.TranslateTransform(mw, mh);
-            g.RotateTransform(360 - game.status!.Heading);
-
-            var locSz = five;
-            g.DrawEllipse(GameColors.penLime2, -locSz, -locSz, locSz * 2, locSz * 2);
-            var dx = (float)Math.Sin(Util.degToRad(game.status.Heading)) * locSz * 2;
-            var dy = (float)Math.Cos(Util.degToRad(game.status.Heading)) * locSz * 2;
-            g.DrawLine(GameColors.penLime2, 0, 0, +dx, -dy);
+            this.resetMiddle(g);
+            base.drawCommander(g);
 
             g.ResetTransform();
 
             // draw fade bars top and bottom
             var tp = new Pen(Color.FromArgb(128, 0, 0, 0), 4);
-            g.DrawLine(tp, 0, twoFour + 1, this.Width, twoFour + 1);
-            g.DrawLine(tp, 0, this.Height - 2 - bottomClip + twoFour, this.Width, this.Height - 2 - bottomClip + twoFour);
+            g.DrawLine(tp, 0, N.twoFour + 1, this.width, N.twoFour + 1);
+            g.DrawLine(tp, 0, this.height - 2 - bottomClip + N.twoFour, this.width, this.height - 2 - bottomClip + N.twoFour);
 
             // remove clip to preserving top/bottom text area
-            g.Clip = new Region(new RectangleF(0, four, this.Width, this.Height - eight));
+            g.ResetClip();
 
-            if (this.td != null)
-                this.drawBearingTo(g, four, nine, Res.Ship, this.td.Target);
+            if (game.cmdr.lastTouchdownLocation != null)
+                this.drawBearingTo(g, tt, N.eight, N.oneOne, Res.Ship, game.cmdr.lastTouchdownLocation);
 
-            if (this.srvLocation != null)
-                this.drawBearingTo(g, four + mw, nine, Res.SRV, this.srvLocation.Target);
+            if (game.srvLocation != null)
+                this.drawBearingTo(g, tt, N.four + mid.Width, N.oneOne, Res.SRV, game.srvLocation);
 
-            float y = this.Height - twoFour;
+            float y = this.height - N.twoTwo;
             if (game.cmdr.scanOne != null)
             {
-                if (game.cmdr.scanOne.body != game.systemBody.name && game.cmdr.scanOne.body != null)
-                    g.DrawString(Res.ScanOneInvalid, GameColors.fontSmall, GameColors.brushRed, ten, y);
+                if (game.cmdr.scanOne.body != game.systemBody.name)
+                    g.DrawString(Res.ScanOneInvalid, GameColors.fontSmall, GameColors.brushRed, N.ten, y);
                 else
-                    this.drawBearingTo(g, ten, y, this.Width < 280 ? Res.ScanOne_Short : Res.ScanOne_Long, game.cmdr.scanOne.location!);
-                // TODO:                               Measure ^^^ based on strings
+                    this.drawBearingTo(g, tt, N.ten, y, this.width < 280 ? Res.ScanOne_Short : Res.ScanOne_Long, game.cmdr.scanOne.location);
+                // TODO:                                     Measure ^^^ based on strings
             }
 
             if (game.cmdr.scanTwo != null)
             {
-                if (game.cmdr.scanTwo.body != game.systemBody.name && game.cmdr.scanTwo.body != null)
-                    g.DrawString(Res.ScanTwoInvalid, GameColors.fontSmall, GameColors.brushRed, ten + mw, y);
+                if (game.cmdr.scanTwo.body != game.systemBody.name)
+                    g.DrawString(Res.ScanTwoInvalid, GameColors.fontSmall, GameColors.brushRed, N.ten + mid.Width, y);
                 else
-                    this.drawBearingTo(g, ten + mw, y, this.Width < 280 ? Res.ScanTwo_Short : Res.ScanTwo_Long, game.cmdr.scanTwo.location!);
-                // TODO:                                    Measure ^^^ based on strings
+                    this.drawBearingTo(g, tt, N.ten + mid.Width, y, this.width < 280 ? Res.ScanTwo_Short : Res.ScanTwo_Long, game.cmdr.scanTwo.location);
+                // TODO:                                                 Measure ^^^ based on strings
             }
 
-            // TODO: fix bug where warning shown and ship already departed
-            if (!shipDeparted && this.td?.distance > 1800 && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
-            {
-                var msg = Res.NearingShipDistance;
-                var font = GameColors.fontSmall;
-                var sz = g.MeasureString(msg, font);
-                var tx = mw - (sz.Width / 2);
-                var ty = fourTwo;
-
-                int pad = 14;
-                var rect = new RectangleF(tx - pad, ty - pad, sz.Width + pad * 2, sz.Height + pad * 2);
-                g.FillRectangle(GameColors.brushShipDismissWarning, rect);
-
-                rect.Inflate(-10, -10);
-                g.FillRectangle(Brushes.Black, rect);
-                g.DrawString(msg, font, Brushes.Red, tx + 1, ty + 1);
-            }
-        }
-
-        private void drawCompassLines(Graphics g)
-        {
-            g.ResetTransform();
-            g.TranslateTransform(mw, mh);
-
-            // draw black background checks
-            g.FillRectangle(GameColors.adjustGroundChecks(scale), -Width, -Height, Width * 2, Height * 2);
-
-            // draw compass rose lines
-            g.RotateTransform(360 - game.status!.Heading);
-            g.DrawLine(Pens.DarkRed, -this.Width, 0, +this.Width, 0);
-            g.DrawLine(Pens.DarkRed, 0, 0, 0, +this.Height);
-            g.DrawLine(Pens.Red, 0, -this.Height, 0, 0);
-
-            g.ResetTransform();
+            return this.size;
         }
 
         private void drawBioScans(Graphics g)
         {
             if (game.systemBody == null) return;
 
-            // delta to ship
-            g.ResetTransform();
-
-            g.TranslateTransform(mw, mh);
-            g.ScaleTransform(scale, scale);
-            var rotation = 360 - game.status!.Heading;
-            g.RotateTransform(rotation);
-
-            //this.bbs.ForEach(b =>
-            //{
-            //    b.ResetTransform();
-            //    //this.bb1.RotateTransform(-rotation);
-            //    //b.TranslateTransform((float)this.td.dx, (float)this.td.dy);
-
-            //    var tt = new TrackingDelta(game.systemBody.radius, LatLong2.Empty);
-            //    b.TranslateTransform((float)tt.dx, -(float)tt.dy);
-
-            //    //var lx = (float)game.status.Latitude * 1000;
-            //    //var ly = (float)game.status.Longitude * 1000;
-            //    //b.TranslateTransform(lx, ly);
-            //});
+            this.resetMiddleRotated(g);
 
             // use the same Tracking delta for all bioScans against the same currentLocation
             var currentLocation = new LatLong2(this.game.status);
@@ -349,8 +161,6 @@ namespace SrvSurvey.plotters
 
             if (game.cmdr.scanTwo != null)
                 drawBioScan(g, d, game.cmdr.scanTwo);
-
-            g.ResetTransform();
         }
 
         private void drawPriorScans(Graphics g)
@@ -413,7 +223,7 @@ namespace SrvSurvey.plotters
 
         private void drawTrackers(Graphics g)
         {
-            var form = Program.getPlotter<PlotTrackers>();
+            var form = PlotBase2.getPlotter<PlotTrackers>();
             if (game.systemBody?.bookmarks == null || form == null) return;
 
             foreach (var name in form.trackers.Keys)
@@ -512,27 +322,18 @@ namespace SrvSurvey.plotters
             g.DrawEllipse(p, rect);
         }
 
-        private void drawBearingTo(Graphics g, float x, float y, string txt, LatLong2 location)
+        private void drawBearingTo(Graphics g, TextCursor tt, float x, float y, string txt, LatLong2 location)
         {
-            //var txt = scan == game.nearBody.scanOne ? "Scan one:" : "Scan two:";
-            g.DrawString(txt, GameColors.fontSmall, GameColors.brushGameOrange, x, y);
+            // draw prefix
+            tt.dtx = x;
+            tt.dty = y;
+            var txtSz = tt.draw(txt, C.orange, GameColors.fontSmall);
 
-            var txtSz = g.MeasureString(txt, GameColors.fontSmall);
-
-            var sz = six;
-            x += txtSz.Width + eight;
-            var r = new RectangleF(x, y, sz * 2, sz * 2);
-            g.DrawEllipse(GameColors.penGameOrange2, r);
-
-            var dd = new TrackingDelta(game.systemBody!.radius, location);
-
-            Angle deg = dd.angle - game.status!.Heading;
-            var dx = (float)Math.Sin(Util.degToRad(deg)) * ten;
-            var dy = (float)Math.Cos(Util.degToRad(deg)) * ten;
-            g.DrawLine(GameColors.penGameOrange2, x + sz, y + sz, x + sz + dx, y + sz - dy);
-
-            x += sz * 3;
-            g.DrawString(Util.metersToString(dd.distance), GameColors.fontSmall, GameColors.brushGameOrange, x, y);
+            x += txtSz.Width + N.four;
+            var deg = (double)Util.getBearing(Status.here, location) - game.status!.Heading;
+            var dist = Util.getDistance(Status.here, location, game.systemBody!.radius);
+            var msg = Util.metersToString(dist);
+            BaseWidget.renderBearingTo(g, x, y, N.five, deg, msg);
         }
     }
 }

@@ -79,7 +79,7 @@ namespace SrvSurvey.plotters
                     var deg = angle2d - game.status.Heading;
                     if (deg < 0) deg += 360;
                     if (dist2d == 0) deg += game.status.Heading;
-                    BaseWidget.renderBearingTo(g, x + N.oneTwo, N.twoEight, N.ten, (double)deg, this.font, pb.brush, pb.pen);
+                    BaseWidget.renderBearingTo(g, x + N.oneTwo, N.twoEight, N.ten, (double)deg, pb.brush, pb.pen);
 
                     tt.dtx = x + blockWidth;
                 }

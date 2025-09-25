@@ -16,6 +16,7 @@ namespace SrvSurvey.plotters
             allowed = allowed,
             ctor = (game, def) => new PlotBioSystem(game, def),
             defaultSize = new Size(200, 200),
+            invalidationJournalEvents = new() { nameof(SAAScanComplete), nameof(SAASignalsFound) },
         };
 
         public static bool allowed(Game game)
@@ -337,10 +338,15 @@ namespace SrvSurvey.plotters
                 // geo signals?
                 if (body.geoSignals?.Count > 0)
                 {
-                    foreach (var geoName in body.geoSignalNames)
+                    var names = body.geoSignalNames.ToList();
+                    for (var n = 0; n < body.geoSignalCount; n++)
                     {
                         // TODO: show gold flags if this is a first discovery?
-                        tt.draw(N.oneTwo, $"► {geoName}");
+                        if (n < names.Count)
+                            tt.draw(N.oneTwo, $"► {names[n]}");
+                        else
+                            tt.draw(N.oneTwo, $"► ?", C.orangeDark);
+
                         tt.newLine(+N.four, true);
                     }
                 }

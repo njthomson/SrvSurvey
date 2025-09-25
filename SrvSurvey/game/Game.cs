@@ -693,6 +693,7 @@ namespace SrvSurvey.game
                 if (this.systemData == null || this.systemBody == null)
                 {
                     Game.log("Why is nearBody null?");
+                    Debugger.Break();
                     return;
                 }
 
@@ -1302,6 +1303,7 @@ namespace SrvSurvey.game
                 FormShowCodex.update();
                 FormPredictions.refresh();
                 Program.invalidateActivePlotters();
+                PlotBase2.invalidate(nameof(PlotBioSystem), nameof(PlotBioStatus));
             });
         }
 
@@ -2466,74 +2468,81 @@ namespace SrvSurvey.game
         private LatLong2? _touchdownLocation;
         public LatLong2? srvLocation;
 
+        private LatLong2 findLastTouchdownLocation()
+        {
+            if (status.Docked && status.hasLatLong)
+            {
+                Game.log($"Using current location as we're docked already: {Status.here}");
+                return Status.here.clone();
+            }
+            if (this.journals != null)
+            {
+                Game.log($"Searching journals for last touchdown location... (mode: {this.mode})");
+                LatLong2? lastLocation = null;
+                journals.walkDeep(true, entry =>
+                {
+                    var touchdown = entry as Touchdown;
+                    if (touchdown != null && touchdown.Body == status.BodyName)
+                        {
+                            lastLocation = new LatLong2(touchdown);
+                        Game.log($"Found last touchdown location: {lastLocation} on: {touchdown.Body}");
+                        return true;
+                    }
+
+                    // stop searching older journal files if we see we reached this system or body
+                    return entry is ApproachBody || entry is FSDJump;
+                });
+                if (lastLocation != null) return lastLocation;
+            }
+
+            // use last known touchdown on current body?
+            if (status.hasLatLong && systemBody?.name == status.BodyName && systemBody.lastTouchdown != null)
+            {
+                Game.log($"Last touchdown not found since ApproachBody - using last from systemBody");
+                return systemBody.lastTouchdown;
+            }
+
+            // use cmdr's last touchdown?
+            if (cmdr.lastTouchdownLocation != null)
+            {
+                Game.log($"Last touchdown not found anywhere - cmdr.lastTouchdownLocation: {cmdr.lastTouchdownLocation}");
+                return cmdr.lastTouchdownLocation;
+            }
+
+            Game.log($"Last touchdown not found since");
+            return LatLong2.Empty;
+
+            /*
+            var lastTouchdown = journals!.FindEntryByType<Touchdown>(-1, true);
+            var lastLiftoff = journals.FindEntryByType<Liftoff>(-1, true);
+            if (lastTouchdown != null)
+            {
+                if (lastLiftoff == null || lastTouchdown.timestamp > lastLiftoff.timestamp)
+                {
+                    _touchdownLocation = new LatLong2(lastTouchdown);
+                    Game.log($"Found last touchdown location: {_touchdownLocation}");
+                }
+                else
+                {
+                    // TODO: search deep for landing in prior journal file.
+                    Game.log($"Last touchdown location: NOT FOUND");
+                    //    _touchdownLocation = new LatLong2(lastTouchdown);
+                }
+            }
+            else if (this.mode == GameMode.Landed)
+            {
+                _touchdownLocation = Status.here.clone();
+                Game.log($"Last touchdown location: NOT FOUND but we're landed so using current location: {_touchdownLocation}");
+            }
+            */
+        }
+
         public LatLong2 touchdownLocation
         {
             get
             {
-                if (this._touchdownLocation == null && status.Docked && status.hasLatLong)
-                {
-                    this._touchdownLocation = Status.here.clone();
-                    Game.log($"Using current location as we're docked already: {_touchdownLocation}");
-                }
-                if (this._touchdownLocation == null && this.journals != null)
-                {
-                    Game.log($"Searching journals for last touchdown location... (mode: {this.mode})");
-                    journals.searchDeep(
-                        (Touchdown entry) =>
-                        {
-                            _touchdownLocation = new LatLong2(entry);
-                            Game.log($"Found last touchdown location: {_touchdownLocation}");
-                            return true;
-                        },
-                        // stop searching older journal files if we see we reached this system
-                        (JournalFile journals) => journals.search((ApproachBody _) => true)
-                    );
-
-                    // stop endless repeats
-                    if (this._touchdownLocation == null)
-                    {
-                        if (status.hasLatLong && systemBody != null && systemBody.name == status.BodyName && systemBody.lastTouchdown != null)
-                        {
-                            Game.log($"Last touchdown not found since ApproachBody - using last from systemBody");
-                            this._touchdownLocation = systemBody.lastTouchdown;
-                        }
-                        else
-                        {
-                            Game.log($"Last touchdown not found since ApproachBody");
-                            this._touchdownLocation = LatLong2.Empty;
-                        }
-                    }
-
-                    /*
-                    var lastTouchdown = journals!.FindEntryByType<Touchdown>(-1, true);
-                    var lastLiftoff = journals.FindEntryByType<Liftoff>(-1, true);
-                    if (lastTouchdown != null)
-                    {
-                        if (lastLiftoff == null || lastTouchdown.timestamp > lastLiftoff.timestamp)
-                        {
-                            _touchdownLocation = new LatLong2(lastTouchdown);
-                            Game.log($"Found last touchdown location: {_touchdownLocation}");
-                        }
-                        else
-                        {
-                            // TODO: search deep for landing in prior journal file.
-                            Game.log($"Last touchdown location: NOT FOUND");
-                            //    _touchdownLocation = new LatLong2(lastTouchdown);
-                        }
-                    }
-                    else if (this.mode == GameMode.Landed)
-                    {
-                        _touchdownLocation = Status.here.clone();
-                        Game.log($"Last touchdown location: NOT FOUND but we're landed so using current location: {_touchdownLocation}");
-                    }
-                    */
-                }
-
-                if (_touchdownLocation == null && cmdr.lastTouchdownLocation != null)
-                {
-                    Game.log($"Last touchdown not found anywhere - cmdr.lastTouchdownLocation: {cmdr.lastTouchdownLocation}");
-                    _touchdownLocation = cmdr.lastTouchdownLocation;
-                }
+                if (_touchdownLocation == null)
+                    _touchdownLocation = findLastTouchdownLocation();
 
                 return _touchdownLocation!;
             }
@@ -2968,7 +2977,7 @@ namespace SrvSurvey.game
                         else
                         {
                             this.addBookmark(match.genus.name, entry);
-                            Program.showPlotter<PlotTrackers>()?.prepTrackers();
+                            PlotBase2.addOrRemove<PlotTrackers>(this)?.prepTrackers();
                             Game.log($"Auto-adding tracker from CodexEntry: {entry.Name_Localised} ({entry.EntryID})");
                             this.fireUpdate(true);
                         }
@@ -3092,7 +3101,7 @@ namespace SrvSurvey.game
                     this.removeBookmarkName(entry.Genus);
 
                     // force a re-render
-                    Program.getPlotter<PlotTrackers>()?.prepTrackers();
+                    PlotBase2.addOrRemove<PlotTrackers>(this)?.prepTrackers();
                 }
 
                 // adjust predictions/rewards calculations for this body
@@ -3239,7 +3248,7 @@ namespace SrvSurvey.game
             //Game.log($"Group '{name}' has too many entries. Ignoring location: {location}");
             this.systemData.Save();
 
-            Program.showPlotter<PlotTrackers>()?.prepTrackers();
+            PlotBase2.addOrRemove<PlotTrackers>(this)?.prepTrackers();
             PlotBase2.addOrRemove(this, PlotMiniTrack.plotDef);
         }
 
@@ -3251,7 +3260,7 @@ namespace SrvSurvey.game
             this.systemBody.bookmarks = null;
             this.systemData.Save();
 
-            Program.showPlotter<PlotTrackers>()?.prepTrackers();
+            PlotBase2.addOrRemove<PlotTrackers>(this)?.prepTrackers();
             PlotBase2.invalidate(nameof(PlotMiniTrack));
         }
 
@@ -3274,7 +3283,7 @@ namespace SrvSurvey.game
             if (this.systemBody.bookmarks.Count == 0) this.systemBody.bookmarks = null;
             this.systemData.Save();
 
-            Program.showPlotter<PlotTrackers>()?.prepTrackers();
+            PlotBase2.addOrRemove<PlotTrackers>(this)?.prepTrackers();
             PlotBase2.invalidate(nameof(PlotMiniTrack));
         }
 
@@ -3308,7 +3317,7 @@ namespace SrvSurvey.game
 
             this.systemData.Save();
 
-            Program.showPlotter<PlotTrackers>()?.prepTrackers();
+            PlotBase2.addOrRemove<PlotTrackers>(this)?.prepTrackers();
         }
 
         #endregion

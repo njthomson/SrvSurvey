@@ -156,7 +156,7 @@ namespace SrvSurvey.plotters
 
             this.invalidate();
 
-            Program.getPlotter<PlotGrounded>()?.Invalidate();
+            PlotBase2.invalidate(nameof(PlotGrounded));
         }
 
         protected override void onJournalEntry(ScanOrganic entry)
@@ -292,7 +292,7 @@ namespace SrvSurvey.plotters
 
                     // the X value for the next bearing
                     var nx = tt.dtx + bearingWidth;
-                    BaseWidget.renderBearingTo(g, tt.dtx, tt.dty, N.five, (double)deg, null, brush, pen);
+                    BaseWidget.renderBearingTo(g, tt.dtx, tt.dty, N.five, (double)deg, brush, pen);
                     tt.dtx += N.oneSix;
                     tt.draw(Util.metersToString(dd.distance), col);
 

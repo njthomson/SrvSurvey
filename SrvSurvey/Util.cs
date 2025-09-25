@@ -1265,7 +1265,7 @@ namespace SrvSurvey
 
         /// <summary>
         /// Center the inner size within the outer size.
-        /// </summary>        
+        /// </summary>
         public static float centerIn(float outer, float inner)
         {
             return (int)Math.Ceiling((outer / 2f) - (inner / 2f));

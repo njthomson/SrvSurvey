@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Reflection;
 using System.Resources;
+using Res = Loc.PlotGrounded;
 
 namespace SrvSurvey.plotters
 {
@@ -73,12 +74,17 @@ namespace SrvSurvey.plotters
         public Size size => new Size(width, height);
         public Rectangle rect => new Rectangle(left, top, width, height);
 
-        public void setPosition(Rectangle? rect = null)
+        public virtual void setPosition(Rectangle? gameRect = null, string? name = null)
         {
             // get initial position
-            var pt = PlotPos.getPlotterLocation(this.name, this.size, rect ?? Rectangle.Empty, true);
+            var pt = PlotPos.getPlotterLocation(name ?? this.name, this.size, gameRect ?? Rectangle.Empty, true);
             this.left = pt.X;
             this.top = pt.Y;
+        }
+
+        public virtual void setSize(Size sz)
+        {
+            setSize(sz.Width, sz.Height);
         }
 
         public virtual void setSize(int width, int height)
@@ -222,7 +228,6 @@ namespace SrvSurvey.plotters
             return this.frame;
         }
 
-
         #endregion
 
         #region static def and instance mgmt
@@ -305,13 +310,20 @@ namespace SrvSurvey.plotters
             }
         }
 
-        public static void invalidate(string name)
+        public static void invalidate(params string[] names)
         {
-            var def = defs.GetValueOrDefault(name);
-            if (def?.instance != null)
-                def.instance.invalidate();
-            else
-                BigOverlay.invalidate();
+            var notFound = false;
+
+            foreach (var name in names)
+            {
+                var def = defs.GetValueOrDefault(name);
+                if (def?.instance != null)
+                    def.instance.invalidate();
+                else
+                    notFound = true;
+            }
+
+            if (notFound) BigOverlay.invalidate();
         }
 
         public static T? addOrRemove<T>(Game? game) where T : PlotBase2
@@ -351,7 +363,13 @@ namespace SrvSurvey.plotters
             foreach (var def in defs.Values)
             {
                 // nothing should show at the main menu, or before the cmdr is known
-                var shouldShow = !game.atMainMenu && game.cmdr != null && def.allowed(game);
+                var shouldShow = game.cmdr != null
+                    && game.status != null
+                    && !game.atMainMenu
+                    && !game.isShutdown
+                    && !game.hidePlottersFromCombatSuits
+                    && def.allowed(game);
+
                 //Game.log($"relevant? {def.name} => {def.instance != null} / shouldShow: {shouldShow}");
 
                 // only attempt to create or destroy if something relevant changed
@@ -511,6 +529,7 @@ namespace SrvSurvey.plotters
             g.Clip = new Region(r);
         }
 
+        /// <summary> center in middle and NOT scaled </summary>
         protected void resetMiddle(Graphics g)
         {
             // draw current location pointer (always at center of plot + unscaled)
@@ -518,9 +537,9 @@ namespace SrvSurvey.plotters
             g.TranslateTransform(mid.Width, mid.Height);
         }
 
+        /// <summary> center in middle, scaled and rotated by player's heading </summary>
         protected void resetMiddleRotated(Graphics g)
         {
-            // draw current location pointer (always at center of plot + unscaled)
             g.ResetTransform();
             g.TranslateTransform(mid.Width, mid.Height);
             g.ScaleTransform(scale, scale);
@@ -529,24 +548,106 @@ namespace SrvSurvey.plotters
 
         protected void drawCommander(Graphics g)
         {
-            const float sz = 5f;
+            float sz = N.five;
             g.DrawEllipse(GameColors.penLime2, -sz, -sz, sz * 2, sz * 2);
             g.DrawLine(GameColors.penLime2, 0, 0, 0, sz * -2);
         }
 
-        /// <summary>
-        /// Centered on cmdr
-        /// </summary>
+        /// <summary> Centered on current origin </summary>
         protected virtual void drawCompassLines(Graphics g)
         {
+            // draw black background checks
+            g.FillRectangle(GameColors.adjustGroundChecks(scale), -width, -height, width * 2, height * 2);
+
             g.RotateTransform(-game.status.Heading);
 
             // draw compass rose lines centered on the commander
-            g.DrawLine(Pens.DarkRed, -this.width * 2, 0, +this.width * 2, 0);
-            g.DrawLine(Pens.DarkRed, 0, 0, 0, +this.height * 2);
-            g.DrawLine(Pens.Red, 0, -this.height * 2, 0, 0);
+            var w2 = this.width * 2;
+            var h2 = this.height * 2;
+            g.DrawLine(Pens.DarkRed, -w2, 0, +w2, 0);
+            g.DrawLine(Pens.DarkRed, 0, 0, 0, +h2);
+            g.DrawLine(Pens.Red, 0, -h2, 0, 0);
 
             g.RotateTransform(+game.status.Heading);
+        }
+
+        /// <summary> May reset graphics transform </summary>
+        protected virtual void drawShipAndSrvLocation(Graphics g, TextCursor tt)
+        {
+            if (g == null || game.systemBody == null) return;
+
+            // draw SRV marker
+            if (game.srvLocation != null)
+            {
+                var srvSize = 10f / this.scale;
+
+                var srv = Util.getOffset(this.radius, game.srvLocation, 180);
+                var rect = new RectangleF(
+                    (float)srv.X - srvSize,
+                    (float)-srv.Y - srvSize,
+                    srvSize * 2,
+                    srvSize * 2);
+
+                g.FillRectangle(GameColors.brushSrvLocation, rect);
+            }
+
+            // draw touchdown marker
+            if (game.cmdr.lastTouchdownLocation != null)
+            {
+                RectangleF rect;
+                var shipSize = 24f / this.scale;
+                var shipLatLong = game.cmdr.lastTouchdownLocation;
+                var ship = Util.getOffset(game.status.PlanetRadius, shipLatLong, 180);
+
+                // take advantage of last heading and offset by ship's center
+                var po = CanonnStation.getShipOffset(game.currentShip.type);
+                var pd = po.rotate(game.cmdr.lastTouchdownHeading);
+                ship += pd;
+
+                rect = new RectangleF(
+                    (float)ship.X - shipSize,
+                    (float)-ship.Y - shipSize,
+                    shipSize * 2,
+                    shipSize * 2);
+
+                // draw ship circle
+                var shipDeparted = game.touchdownLocation == null || game.touchdownLocation == LatLong2.Empty;
+                var brush = shipDeparted ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
+                g.FillEllipse(brush, rect);
+
+                // draw 2km ship departure perimeter
+                var shipDist = Util.getDistance(Status.here, shipLatLong, this.radius);
+                if (!shipDeparted && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
+                {
+                    const float liftoffSize = 2000f;
+                    rect = new RectangleF((float)ship.X - liftoffSize, -(float)ship.Y - liftoffSize, liftoffSize * 2, liftoffSize * 2);
+                    var p = GameColors.penShipDepartFar;
+                    if (shipDist > 1800)
+                        p = GameColors.penShipDepartNear;
+
+                    g.DrawEllipse(p, rect);
+
+                    // TODO: fix bug where warning shown and ship already departed
+                    // and the warning message box
+                    if (shipDist > 1800)
+                    {
+                        g.ResetTransform();
+                        var msg = Res.NearingShipDistance;
+                        var font = GameColors.fontSmall;
+                        var sz = g.MeasureString(msg, font);
+                        var tx = Util.centerIn(this.width, sz.Width);
+                        var ty = N.fourTwo;
+
+                        int pad = 14;
+                        rect = new RectangleF(tx - pad, ty - pad, sz.Width + pad * 2, sz.Height + pad * 2);
+                        g.FillRectangle(GameColors.brushShipDismissWarning, rect);
+
+                        rect.Inflate(-10, -10);
+                        g.FillRectangle(Brushes.Black, rect);
+                        g.DrawString(msg, font, Brushes.Red, tx + 1, ty + 1);
+                    }
+                }
+            }
         }
     }
 
@@ -635,54 +736,9 @@ namespace SrvSurvey.plotters
                 //g.DrawLine(GameColors.penRed2Ish, 0, -500, 0, 0);
             });
 
-
             // and a line to represent "north" relative to the site - visualizing the site's rotation
             if (this.siteHeading >= 0)
                 g.DrawLine(GameColors.penRed2DashedIshIsh, 0, -500, 0, 0);
-        }
-
-        protected void drawShipAndSrvLocation(Graphics g)
-        {
-            if (g == null || game.systemBody == null) return;
-
-            // draw touchdown marker
-            if (game.cmdr.lastTouchdownLocation != null && game.cmdr.lastTouchdownHeading != -1)
-            {
-                const float shipSize = 24f;
-                var shipLatLong = game.cmdr.lastTouchdownLocation!;
-                var ship = Util.getOffset(game.systemBody.radius, shipLatLong, 180);
-
-                // adjust location by ship cockpit offset
-                var po = CanonnStation.getShipOffset(game.currentShip.type);
-                var pd = po.rotate(game.cmdr.lastTouchdownHeading);
-                ship += pd;
-
-                var rect = new RectangleF(
-                    (float)ship.X - shipSize,
-                    (float)-ship.Y - shipSize,
-                    shipSize * 2,
-                    shipSize * 2);
-
-                var shipDeparted = game.touchdownLocation == null || game.touchdownLocation == LatLong2.Empty;
-                var brush = shipDeparted ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
-
-                g.FillEllipse(brush, rect);
-            }
-
-            // draw SRV marker
-            if (game.srvLocation != null)
-            {
-                const float srvSize = 10f;
-
-                var srv = Util.getOffset(game.systemBody.radius, game.srvLocation, 180);
-                var rect = new RectangleF(
-                    (float)srv.X - srvSize,
-                    (float)-srv.Y - srvSize,
-                    srvSize * 2,
-                    srvSize * 2);
-
-                g.FillRectangle(GameColors.brushSrvLocation, rect);
-            }
         }
     }
 
