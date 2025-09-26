@@ -627,7 +627,7 @@ namespace SrvSurvey.plotters
             if (this.builder != null)
                 this.drawBuildingBox(g, cmdrOffset);
 
-            this.drawCompassLines(g);
+            this.drawSiteCompassLines(g);
 
             // draw limit circle outside which ships/taxi's can be requested
             g.DrawEllipse(GameColors.HumanSite.penOuterLimit, -limitDist, -limitDist, limitDist * 2, limitDist * 2);

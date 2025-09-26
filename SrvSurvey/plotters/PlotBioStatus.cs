@@ -33,8 +33,8 @@ namespace SrvSurvey.plotters
                 && !game.atMainMenu
                 && !game.status.InTaxi
                 && !game.status.FsdChargingJump
-                && !PlotGuardians.allowPlotter && !Program.isPlotter<PlotGuardians>()
-                && !PlotHumanSite.allowed(game)
+                && (!Game.settings.enableGuardianSites || !PlotGuardians.allowed(game))
+                && (!Game.settings.autoShowHumanSitesTest || !PlotHumanSite.allowed(game))
                 && game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.CommsPanel, GameMode.SAA, GameMode.Codex);
         }
 

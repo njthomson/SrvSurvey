@@ -29,8 +29,9 @@ namespace SrvSurvey.plotters
                 && game.status.Altitude < 10_000
                 && !game.status.InTaxi
                 && !game.status.FsdChargingJump
-                && !PlotGuardians.allowPlotter
-                && !PlotHumanSite.allowed(game)
+                && (!Game.settings.enableGuardianSites || !PlotGuardians.allowed(game))
+                && (!Game.settings.autoShowHumanSitesTest || !PlotHumanSite.allowed(game))
+                && (game.systemBody.bioSignalCount > 0 || game.systemBody.bookmarks?.Count > 0)
                 && game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.RolePanel)
                 && (!Game.settings.autoHideBioPlotNoGear || game.mode != GameMode.Flying || game.status.landingGearDown)
                 ;

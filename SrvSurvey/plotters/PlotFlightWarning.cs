@@ -24,7 +24,7 @@ namespace SrvSurvey.plotters
                 && game.systemBody.type == SystemBodyType.LandableBody
                 && game.systemBody.surfaceGravity >= Game.settings.highGravityWarningLevel * 10
                 && game.isMode(GameMode.Landed, GameMode.SuperCruising, GameMode.GlideMode, GameMode.Flying, GameMode.InFighter, GameMode.InSrv)
-                && !PlotJumpInfo.allowed(game)
+                && (!Game.settings.autoShowPlotJumpInfo || !PlotJumpInfo.allowed(game))
                 ;
         }
 

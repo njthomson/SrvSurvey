@@ -19,11 +19,12 @@ namespace SrvSurvey.plotters
 
         public static bool allowed(Game game)
         {
+            var guardianSystemDisabled = !Game.settings.enableGuardianSites && !Game.settings.autoShowGuardianSummary;
             return Game.settings.autoShowPlotFSSInfo
                 && (
                     game.mode == GameMode.FSS
                     || (PlotFSSInfo.forceShow && !game.fsdJumping) // or a keystroke forced it
-                    || (game.mode == GameMode.SystemMap && Game.settings.autoShowPlotFSSInfoInSystemMap && !PlotGuardianSystem.allowPlotter) // hide if Guardian plotter is open
+                    || (game.mode == GameMode.SystemMap && Game.settings.autoShowPlotFSSInfoInSystemMap && (guardianSystemDisabled || !PlotGuardianSystem.allowed(game))) // hide if Guardian plotter is open
                 );
         }
 

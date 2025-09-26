@@ -529,19 +529,9 @@ namespace SrvSurvey
             if (newMode == GameMode.MainMenu)
             {
                 Program.closeAllPlotters();
+                PlotBase2.closeAll();
                 return;
             }
-
-            var gameIsActive = game != null && Elite.isGameRunning && game.Commander != null;
-
-            // show Guardian status
-            if (Game.settings.enableGuardianSites && Game.settings.autoShowGuardianSummary && PlotGuardianSystem.allowPlotter && game?.systemData?.settlements.Count > 0)
-                Program.showPlotter<PlotGuardianSystem>();
-            else
-                Program.closePlotter<PlotGuardianSystem>();
-
-            // Why was this necessary? (Which plotter is getting missed now?)
-            //Program.invalidateActivePlotters();
         }
 
         private void groupCodex_Paint(object sender, PaintEventArgs e)
@@ -793,9 +783,6 @@ namespace SrvSurvey
             {
                 //lblGuardianCount.Text = "";
                 //txtGuardianSite.Text = "";
-                Program.closePlotter<PlotGuardians>();
-                Program.closePlotter<PlotGuardianStatus>();
-                Program.closePlotter<PlotRamTah>();
 
                 btnRuinsMap.Enabled = false;
                 btnRuinsOrigin.Enabled = false;
@@ -804,37 +791,18 @@ namespace SrvSurvey
             {
                 //lblGuardianCount.Text = game?.systemBody?.settlements?.Count.ToString() ?? "0";
                 //txtGuardianSite.Text = "";
-                Program.closePlotter<PlotGuardians>();
-                Program.closePlotter<PlotGuardianStatus>();
-                Program.closePlotter<PlotRamTah>();
                 btnRuinsMap.Enabled = false;
                 btnRuinsOrigin.Enabled = false;
             }
             else if (Game.settings.enableGuardianSites)
             {
-                //lblGuardianCount.Text = game.systemBody.settlements?.Count.ToString();
                 if (this.game.systemSite != null)
                 {
-                    //if (this.game.systemSite.isRuins)
-                    //    txtGuardianSite.Text = $"Ruins #{this.game.systemSite.index} - {this.game.systemSite.type}, {this.game.systemSite.siteHeading}°";
-                    //else
-                    //    txtGuardianSite.Text = $"{this.game.systemSite.type}, {this.game.systemSite.siteHeading}°";
-
-                    if (PlotGuardians.allowPlotter)
-                    {
-                        Program.showPlotter<PlotGuardians>();
-                        Program.showPlotter<PlotGuardianStatus>();
-                        if (Game.settings.autoShowRamTah && (this.game.systemSite.isRuins && game.cmdr.decodeTheRuinsMissionActive == TahMissionStatus.Active || !this.game.systemSite.isRuins && game.cmdr.decodeTheLogsMissionActive == TahMissionStatus.Active))
-                            Program.showPlotter<PlotRamTah>();
-                    }
-
-                    btnRuinsMap.Enabled = game.systemSite.siteHeading != -1 && PlotGuardians.allowPlotter;
-                    btnRuinsOrigin.Enabled = game.systemSite.siteHeading != -1 && PlotGuardians.allowPlotter;
+                    var allowed = PlotGuardians.allowed(game);
+                    btnRuinsMap.Enabled = game.systemSite.siteHeading != -1 && allowed;
+                    btnRuinsOrigin.Enabled = game.systemSite.siteHeading != -1 && allowed;
                 }
             }
-
-            if (PlotGuardianStatus.allowPlotter && PlotGuardianStatus.glideSite != null && (newMode == GameMode.GlideMode))
-                Program.showPlotter<PlotGuardianStatus>();
         }
 
         private void Journals_onJournalEntry(JournalEntry entry, int index)
@@ -873,11 +841,6 @@ namespace SrvSurvey
         private void onJournalEntry(SupercruiseEntry entry)
         {
             Game.log($"Main.SupercruiseEntry {entry.Starsystem}");
-
-            // close these plotters upon super-cruise
-            Program.closePlotter<PlotGuardians>();
-            Program.closePlotter<PlotGuardianStatus>();
-            Program.closePlotter<PlotRamTah>();
 
             FormRuins.activeForm?.showFilteredSites();
         }
@@ -1174,7 +1137,7 @@ namespace SrvSurvey
                     // restore things that might have changed from settings
                     PlotBase2.getPlotter<PlotHumanSite>()?.setSize(Game.settings.plotHumanSiteWidth, Game.settings.plotHumanSiteHeight);
                     if (BigOverlay.current != null)
-                        BigOverlay.current.Opacity = Game.settings.Opacity;
+                        BigOverlay.current.setOpacity(Game.settings.plotterOpacity);
                 }
             }
             finally

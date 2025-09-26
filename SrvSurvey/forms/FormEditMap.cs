@@ -10,7 +10,7 @@ namespace SrvSurvey
         public SitePOI? poi;
 
         private GuardianSiteData siteData { get => game?.systemSite!; }
-        private PlotGuardians plotter { get => Program.getPlotter<PlotGuardians>()!; }
+        private PlotGuardians plotter { get => PlotBase2.getPlotter<PlotGuardians>()!; }
         private GuardianSiteTemplate template { get => plotter.template!; }
 
         public FormEditMap()
@@ -38,7 +38,7 @@ namespace SrvSurvey
             {
                 plotter.formEditMap = null;
                 plotter.forcePoi = null;
-                plotter.Invalidate();
+                plotter.invalidate();
             }
         }
 
@@ -114,7 +114,7 @@ namespace SrvSurvey
 
         private void tabs_SelectedIndexChanged(object sender, EventArgs e)
         {
-            plotter.Invalidate();
+            plotter.invalidate();
         }
 
         private ListViewItem createListViewItemForPoi(SitePOI poi)
@@ -225,7 +225,7 @@ namespace SrvSurvey
 
             plotter.template.scaleFactor = (float)numScaleFactor.Value;
             plotter.template.imageOffset = new Point((int)numOriginLeft.Value, (int)numOriginTop.Value);
-            plotter.Invalidate();
+            plotter.invalidate();
         }
 
         private void btnApplyImage_Click(object sender, EventArgs e)
@@ -242,7 +242,7 @@ namespace SrvSurvey
 
             plotter.template.scaleFactor = (float)numScaleFactor.Value;
             plotter.template.imageOffset = new Point((int)numOriginLeft.Value, (int)numOriginTop.Value);
-            plotter.Invalidate();
+            plotter.invalidate();
         }
 
         private void trackBar1_ValueChanged(object sender, EventArgs e)
@@ -263,7 +263,7 @@ namespace SrvSurvey
                 case 10: plotter.scale = 10f; break;
             }
 
-            plotter.Invalidate();
+            plotter.invalidate();
         }
 
         #endregion
@@ -314,7 +314,7 @@ namespace SrvSurvey
             }
 
             plotter.forcePoi = newPoi;
-            plotter.Invalidate();
+            plotter.invalidate();
         }
 
         private void comboPoiType_SelectedValueChanged(object sender, EventArgs e)
@@ -324,7 +324,7 @@ namespace SrvSurvey
             Enum.TryParse<POIType>(comboPoiType.Text, out poi!.type);
             numPoiRot.Enabled = poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk || poi.type == POIType.pylon || poi.type == POIType.component;
             plotter.forcePoi = poi;
-            plotter.Invalidate();
+            plotter.invalidate();
         }
 
         private void txtPoiName_TextChanged(object sender, EventArgs e)
@@ -333,7 +333,7 @@ namespace SrvSurvey
             poi.name = txtPoiName.Text;
             updateRowFromPoi(poi);
             plotter.forcePoi = poi;
-            plotter.Invalidate();
+            plotter.invalidate();
         }
 
         private void numPoiDist_ValueChanged(object sender, EventArgs e)
@@ -342,7 +342,7 @@ namespace SrvSurvey
             poi.dist = numPoiDist.Value;
             updateRowFromPoi(poi);
             plotter.forcePoi = poi;
-            plotter.Invalidate();
+            plotter.invalidate();
         }
 
         private void numPoiAngle_ValueChanged(object sender, EventArgs e)
@@ -351,7 +351,7 @@ namespace SrvSurvey
             poi.angle = numPoiAngle.Value;
             updateRowFromPoi(poi);
             plotter.forcePoi = poi;
-            plotter.Invalidate();
+            plotter.invalidate();
         }
 
         private void numPoiRot_ValueChanged(object sender, EventArgs e)
@@ -360,7 +360,7 @@ namespace SrvSurvey
             poi.rot = numPoiRot.Value;
             updateRowFromPoi(poi);
             plotter.forcePoi = poi;
-            plotter.Invalidate();
+            plotter.invalidate();
         }
 
         private void comboPoiStatus_SelectedValueChanged(object sender, EventArgs e)
@@ -374,7 +374,7 @@ namespace SrvSurvey
 
             updateRowFromPoi(poi);
             plotter.forcePoi = poi;
-            plotter.Invalidate();
+            plotter.invalidate();
         }
 
         private void btnPoiApply_Click(object sender, EventArgs e)
@@ -394,7 +394,7 @@ namespace SrvSurvey
 
             updateRowFromPoi(poi);
             plotter.forcePoi = poi;
-            plotter.Invalidate();
+            plotter.invalidate();
         }
 
         private void checkPoiPrecision_CheckedChanged(object sender, EventArgs e)
@@ -464,14 +464,14 @@ namespace SrvSurvey
         {
             if (checkHighlightAll.Checked)
                 checkHideAllPoi.Checked = false;
-            plotter.Invalidate();
+            plotter.invalidate();
         }
 
         private void checkHideAllPoi_CheckedChanged(object sender, EventArgs e)
         {
             if (checkHideAllPoi.Checked)
                 checkHighlightAll.Checked = false;
-            plotter.Invalidate();
+            plotter.invalidate();
         }
 
         private void btnRemovePoi_Click(object sender, EventArgs e)
@@ -512,7 +512,7 @@ namespace SrvSurvey
         private void numGroupNameDist_ValueChanged(object sender, EventArgs e)
         {
             template.obeliskGroupNameLocations[listGroupNames.Text] = new PointF((float)numGroupNameAngle.Value, (float)numGroupNameDist.Value);
-            plotter.Invalidate();
+            plotter.invalidate();
         }
 
         private void numGroupNameAngle_ValueChanged(object sender, EventArgs e)
@@ -521,7 +521,7 @@ namespace SrvSurvey
             else if (numGroupNameAngle.Value > 359) numGroupNameAngle.Value = 0;
 
             template.obeliskGroupNameLocations[listGroupNames.Text] = new PointF((float)numGroupNameAngle.Value, (float)numGroupNameDist.Value);
-            plotter.Invalidate();
+            plotter.invalidate();
         }
 
         #endregion

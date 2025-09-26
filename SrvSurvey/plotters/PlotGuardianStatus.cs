@@ -7,72 +7,54 @@ namespace SrvSurvey.plotters
     // TODO: As one of the first overlays made, this one is well due for a refactor. Alas at the time of making it work
     // for localization, I'm just making it work, but it would be worth a going over before too long.
 
-    [ApproxSize(500, 108)]
-    internal class PlotGuardianStatus : PlotBase, PlotterForm
+    internal class PlotGuardianStatus : PlotBase2
     {
-        public static bool allowPlotter
+        #region def + statics
+
+        public static PlotDef plotDef = new PlotDef()
         {
-            get => PlotGuardians.allowPlotter
-                || (
-                    Game.activeGame?.mode == GameMode.GlideMode
-                    && PlotGuardianStatus.glideSite != null
-                );
+            name = nameof(PlotGuardianStatus),
+            allowed = allowed,
+            ctor = (game, def) => new PlotGuardianStatus(game, def),
+            defaultSize = new Size(500, 108),
+        };
+
+        public static bool allowed(Game game)
+        {
+                return PlotGuardians.allowed(game)
+                || (game.mode == GameMode.GlideMode && PlotGuardianStatus.glideSite != null);
         }
+
+        #endregion
 
         private int selectedIndex = 0;
         private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer(); // TODO: remove? It's in the base class
         private bool highlightBlink = false;
         public static GuardianSiteData? glideSite;
         private float blockWidth;
-        private float maxTextWidth;
 
-        private PlotGuardianStatus() : base()
+        private PlotGuardianStatus(Game game, PlotDef def) : base(game, def)
         {
-            this.Width = scaled(500);
-            this.Height = scaled(108);
-
-            timer.Tick += Timer_Tick;
-        }
-
-        public override bool allow { get => PlotGuardianStatus.allowPlotter; }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            timer.Tick += (sender, e) =>
             {
-                timer.Tick -= Timer_Tick;
-            }
-
-            base.Dispose(disposing);
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            this.initializeOnLoad();
-            this.reposition(Elite.getWindowRect(true));
+                timer.Stop();
+                this.highlightBlink = false;
+                this.invalidate();
+            };
 
             var ww = Util.maxWidth(GameColors.fontMiddle, Res.ChoosePresent, Res.ChooseAbsent, Res.ChooseEmpty);
-            this.blockWidth = ww * 1.30f;
+            this.blockWidth = (ww + N.six) * 1.30f;
         }
 
-        protected override void Game_modeChanged(GameMode newMode, bool force)
+        protected override void onStatusChange(Status status)
         {
-            if (this.IsDisposed) return;
-
-            if (PlotGuardianStatus.glideSite != null && newMode != GameMode.GlideMode)
+            if (PlotGuardianStatus.glideSite != null && !status.GlideMode && status.changed.Contains("Flags2"))
                 PlotGuardianStatus.glideSite = null;
 
-            base.Game_modeChanged(newMode, force);
-        }
+            if (status.changed.Contains(nameof(Status.FireGroup)))
+                this.selectedIndex = game.status.FireGroup % 3;
 
-        protected override void Status_StatusChanged(bool blink)
-        {
-            if (this.IsDisposed) return;
-
-            this.selectedIndex = game.status.FireGroup % 3;
-
+            var blink = status.changed.Contains("blink");
             if (!blink && timer.Enabled == false)
             {
                 // if we are within a blink detection window - highlight the footer
@@ -85,110 +67,101 @@ namespace SrvSurvey.plotters
                 }
             }
 
-            base.Status_StatusChanged(blink);
+            this.invalidate();
         }
 
-        private void Timer_Tick(object? sender, EventArgs e)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
-            timer.Stop();
-            this.highlightBlink = false;
-            this.Invalidate();
-        }
+            tt.padVertical = 6;
+            tt.setMinWidth(plotDef.defaultSize.Width);
 
-        protected override void onPaintPlotter(PaintEventArgs e)
-        {
-            try
+            if (PlotGuardianStatus.glideSite != null && game.mode == GameMode.GlideMode)
             {
-                if (PlotGuardianStatus.glideSite != null && game.mode == GameMode.GlideMode)
+                this.drawOnApproach(g, tt);
+                return new SizeF(tt.frameSize.Width, this.height);
+            }
+
+            var plotGuardians = PlotBase2.getPlotter<PlotGuardians>();
+            if (plotGuardians == null || game.systemSite == null) return frame.Size;
+
+            switch (plotGuardians.mode)
+            {
+                case Mode.siteType:
+                    drawSiteType(g, tt);
+                    return new SizeF(tt.frameSize.Width, this.height);
+
+                case Mode.heading:
+                    drawCenterMessage(tt, "\r\n" + Res.AlignWithButtress);
+                    showSelectionCue(tt);
+                    return new SizeF(tt.frameSize.Width, this.height);
+
+                case Mode.origin:
+                    var alt = Util.targetAltitudeForSite(game.systemSite!.type).ToString("N0");
+                    drawCenterMessage(tt, Res.AlignAndRise.format(alt));
+                    var sz = tt.drawFooter(Res.ToggleLightsUpdateHint);
+                    tt.setMinWidth(sz.Width);
+                    return new SizeF(tt.frameSize.Width, this.height);
+            }
+
+            var nearestPoi = plotGuardians.nearestPoi;
+            if (nearestPoi != null && (nearestPoi.type == POIType.obelisk || nearestPoi.type == POIType.brokeObelisk))
+            {
+                drawNearObelisk(g, tt, nearestPoi);
+            }
+            else if (game.vehicle == ActiveVehicle.Foot)
+            {
+                if (game.status.SelectedWeapon == "$humanoid_companalyser_name;" && !string.IsNullOrEmpty(nearestPoi?.name))
                 {
-                    this.drawOnApproach();
-                    return;
-                }
-
-                if (PlotGuardians.instance == null || game.systemSite == null) return;
-                maxTextWidth = 0;
-
-                switch (PlotGuardians.instance.mode)
-                {
-                    case Mode.siteType:
-                        drawSiteType();
-                        return;
-
-                    case Mode.heading:
-                        drawCenterMessage("\r\n" + Res.AlignWithButtress);
-                        showSelectionCue();
-                        return;
-
-                    case Mode.origin:
-                        var alt = Util.targetAltitudeForSite(game.systemSite!.type).ToString("N0");
-                        drawCenterMessage(Res.AlignAndRise.format(alt));
-                        var sz = drawFooterText(Res.ToggleLightsUpdateHint);
-                        if (sz.Width > maxTextWidth) maxTextWidth = sz.Width;
-                        return;
-                }
-
-                if (PlotGuardians.instance.nearestPoi != null && (PlotGuardians.instance.nearestPoi.type == POIType.obelisk || PlotGuardians.instance.nearestPoi.type == POIType.brokeObelisk))
-                {
-                    drawNearObelisk();
-                }
-                else if (game.vehicle == ActiveVehicle.Foot)
-                {
-                    if (game.status.SelectedWeapon == "$humanoid_companalyser_name;" && !string.IsNullOrEmpty(PlotGuardians.instance.nearestPoi?.name))
-                    {
-                        var msg = Res.ToggleShieldsForRelicTower;
-                        var angle = game.systemSite.getRelicHeading(PlotGuardians.instance.nearestPoi!.name);
-                        if (game.systemSite.isRuins && game.systemSite.relicTowerHeading != -1)
-                            msg += "\r\n" + Res.RelicTowerHeadingKnown.format(game.systemSite!.relicTowerHeading);
-                        else if (!game.systemSite.isRuins && angle != null)
-                            msg += "\r\n" + Res.RelicTowerHeadingKnown.format(angle);
-                        else
-                            msg += "\r\n" + Res.RelicTowerFaceHint;
-                        drawCenterMessage(msg);
-                    }
+                    var col = highlightBlink ? C.cyan : C.orange;
+                    var msg = Res.ToggleShieldsForRelicTower;
+                    var angle = game.systemSite.getRelicHeading(nearestPoi!.name);
+                    if (game.systemSite.isRuins && game.systemSite.relicTowerHeading != -1)
+                        msg += "\r\n" + Res.RelicTowerHeadingKnown.format(game.systemSite!.relicTowerHeading);
+                    else if (!game.systemSite.isRuins && angle != null)
+                        msg += "\r\n" + Res.RelicTowerHeadingKnown.format(angle);
                     else
-                    {
-                        drawCenterMessage(Res.RelicTowerNonToolHint);
-                    }
-
-                    var sz = drawFooterText(Res.RelicTowerFootHint);
-                    if (sz.Width > maxTextWidth) maxTextWidth = sz.Width;
-                }
-                else if (PlotGuardians.instance.nearestPoi == null)
-                {
-                    var sz = drawHeaderText(Res.NoNearPoiHeader);
-                    if (sz.Width > maxTextWidth) maxTextWidth = sz.Width;
-
-                    sz = drawFooterText(Res.ToggleLightsUpdateHint);
-                    if (sz.Width > maxTextWidth) maxTextWidth = sz.Width;
-
-                    drawOptions(
-                        Res.ChoosePresent,
-                        Res.ChooseAbsent,
-                        Res.ChooseEmpty,
-                        -2
-                    );
+                        msg += "\r\n" + Res.RelicTowerFaceHint;
+                    drawCenterMessage(tt, msg, col);
                 }
                 else
                 {
-                    drawSelectedItem();
+                    drawCenterMessage(tt, Res.RelicTowerNonToolHint);
                 }
+
+                var sz = tt.drawFooter(Res.RelicTowerFootHint);
+                tt.setMinWidth(sz.Width);
             }
-            finally
+            else if (nearestPoi == null)
             {
-                if (maxTextWidth > this.Width)
-                    this.formAdjustSize(maxTextWidth, this.Height);
+                var sz = tt.drawHeader(Res.NoNearPoiHeader);
+                tt.setMinWidth(sz.Width);
+
+                sz = tt.drawFooter(Res.ToggleLightsUpdateHint);
+                tt.setMinWidth(sz.Width);
+
+                drawOptions(g, tt,
+                    Res.ChoosePresent,
+                    Res.ChooseAbsent,
+                    Res.ChooseEmpty,
+                    -2
+                );
             }
+            else
+            {
+                drawSelectedItem(g, tt, nearestPoi);
+            }
+
+            return new SizeF(tt.frameSize.Width, this.height);
         }
 
-        private void drawNearObelisk()
+        private void drawNearObelisk(Graphics g, TextCursor tt, SitePOI poi)
         {
-            var poi = PlotGuardians.instance?.nearestPoi;
             var siteData = game.systemSite;
             if (siteData == null || poi == null) return;
 
             var obelisk = siteData.getActiveObelisk(poi.name);
             var ramTahNeeded = siteData.ramTahNeeded(obelisk?.msg);
-            var brush = ramTahNeeded ? GameColors.brushCyan : null;
+            var col = ramTahNeeded ? C.cyan : C.orange;
 
             // assume active, unless ...
             var headerStatus = Res.ObeliskActive;
@@ -196,23 +169,23 @@ namespace SrvSurvey.plotters
                 headerStatus = Res.ObeliskBroken;
 
             SizeF sz;
-            this.dtx = ten;
-            this.dty = twoSix;
+            tt.dtx = N.ten;
+            tt.dty = N.twoSix;
             if (obelisk != null)
             {
                 headerStatus = Res.ObeliskActive;
 
                 // show hint to scan it
                 if (obelisk.scanned)
-                    sz = this.drawFooterText(Res.YouHaveScanned);
+                    sz = tt.drawFooter(Res.YouHaveScanned);
                 else
-                    sz = this.drawFooterText(Res.YouHaveNotScanned, GameColors.brushCyan);
-                if (sz.Width > maxTextWidth) maxTextWidth = sz.Width;
+                    sz = tt.drawFooter(Res.YouHaveNotScanned, C.cyan);
+                tt.setMinWidth(sz.Width);
 
-                this.drawTextAt(Res.RequiresPrefix, brush, GameColors.fontMiddle);
+                tt.draw(Res.RequiresPrefix, col, GameColors.fontMiddle);
                 if (obelisk.items == null)
                 {
-                    this.drawTextAt("??", brush, GameColors.fontMiddle);
+                    tt.draw("??", col, GameColors.fontMiddle);
                 }
                 else
                 {
@@ -223,68 +196,68 @@ namespace SrvSurvey.plotters
                     var item2 = obelisk.items.Count > 1 ? obelisk.items.Last().ToString() : null;
                     var hasItem2 = item2 == null ? true : game.getInventoryItem(item2)?.Count >= (item1 == item2 ? 2 : 1);
 
-                    this.drawRamTahDot(0, five, item1);
-                    this.drawTextAt(Util.getLoc(item1), hasItem1 ? brush : Brushes.Red, GameColors.fontMiddle);
+                    tt.dtx += PlotRamTah.drawRamTahDot(g, tt.dtx, tt.dty + N.five, item1);
+                    tt.draw(Util.getLoc(item1), hasItem1 ? col : C.red, GameColors.fontMiddle);
                     if (item2 != null)
                     {
-                        this.drawTextAt("+", brush, GameColors.fontMiddle);
-                        this.dtx += two;
-                        this.drawRamTahDot(0, five, item2);
-                        this.drawTextAt(Util.getLoc(item2), hasItem2 ? brush : Brushes.Red, GameColors.fontMiddle);
+                        tt.dtx += N.two;
+                        tt.draw("+", col, GameColors.fontMiddle);
+                        tt.dtx += N.four;
+                        tt.dtx += PlotRamTah.drawRamTahDot(g, tt.dtx, tt.dty + N.five, item2);
+                        tt.draw(Util.getLoc(item2), hasItem2 ? col : C.red, GameColors.fontMiddle);
                     }
                 }
-                this.drawTextAt(Res.RequiresSuffix.format(obelisk.msgDisplay), brush, GameColors.fontMiddle);
+                tt.draw(" " + Res.RequiresSuffix.format(obelisk.msgDisplay), col, GameColors.fontMiddle);
 
                 // show current status if Ram Tah mission is active
                 if (game.cmdr.ramTahActive)
                 {
-                    this.dtx = ten;
-                    this.dty = fourSix;
+                    tt.dtx = N.ten;
+                    tt.dty = N.fourSix;
                     if (ramTahNeeded)
-                        this.drawTextAt("► " + Res.LineRamTahNeeded, brush, GameColors.fontMiddle);
+                        tt.draw("► " + Res.LineRamTahNeeded, col, GameColors.fontMiddle);
                     else
-                        this.drawTextAt("► " + Res.LineRamTahAcquired, brush, GameColors.fontMiddle);
+                        tt.draw("► " + Res.LineRamTahAcquired, col, GameColors.fontMiddle);
                 }
 
                 if (game.guardianMatsFull)
                 {
-                    this.dtx = ten;
-                    this.dty += twoTwo;
+                    tt.dtx = N.ten;
+                    tt.dty += N.twoTwo;
 
                     if (this.highlightBlink)
-                        sz = this.drawTextAt(Res.MatsFullOne, GameColors.brushCyan, GameColors.fontSmaller);
+                        sz = tt.draw(Res.MatsFullOne, C.cyan, GameColors.fontSmaller);
                     else
-                        sz = this.drawTextAt(Res.MatsFullTwo, GameColors.brushGameOrange, GameColors.fontSmaller);
-                    if (sz.Width > maxTextWidth) maxTextWidth = sz.Width;
+                        sz = tt.draw(Res.MatsFullTwo, C.orange, GameColors.fontSmaller);
+                    tt.setMinWidth(sz.Width);
                 }
             }
             else
             {
                 headerStatus = Res.ObeliskInactive;
-                sz = this.drawFooterText(Res.FooterActiveObeliskGroups.format(string.Join(" ", siteData.obeliskGroups)));
-                if (sz.Width > maxTextWidth) maxTextWidth = sz.Width;
+                sz = tt.drawFooter(Res.FooterActiveObeliskGroups.format(string.Join(" ", siteData.obeliskGroups)));
+                tt.setMinWidth(sz.Width);
             }
 
-            sz = this.drawHeaderText(Res.NearObeliskHeader.format(poi.name, headerStatus));
-            if (sz.Width > maxTextWidth) maxTextWidth = sz.Width;
+            sz = tt.drawHeader(Res.NearObeliskHeader.format(poi.name, headerStatus));
+            tt.setMinWidth(sz.Width);
         }
 
-        private void drawSelectedItem()
+        private void drawSelectedItem(Graphics g, TextCursor tt, SitePOI poi)
         {
-            var poi = PlotGuardians.instance?.nearestPoi;
             if (poi == null) return;
 
             var poiStatus = game.systemSite!.poiStatus.GetValueOrDefault(poi.name);
             var poiStatusText = Util.getLoc(poiStatus);
-            var sz = drawHeaderText(Util.getLoc(poi.type).ToUpper() + $" ({poi.name}) : " + poiStatusText);
-            if (sz.Width > maxTextWidth) maxTextWidth = sz.Width;
+            var sz = tt.drawHeader(Util.getLoc(poi.type).ToUpper() + $" ({poi.name}) : " + poiStatusText);
+            tt.setMinWidth(sz.Width);
 
             var nextStatus = (SitePoiStatus)(game.status.FireGroup % 3) + 1;
             var highlightIdx = poiStatus == SitePoiStatus.unknown || (nextStatus != poiStatus) ? game.status.FireGroup % 3 : -1;
 
             // only things in puddles can be empty
             var allowEmpty = poi.type == POIType.orb || poi.type == POIType.casket || poi.type == POIType.tablet || poi.type == POIType.totem || poi.type == POIType.urn;
-            drawOptions(
+            drawOptions(g,tt,
                 Res.ChoosePresent,
                 Res.ChooseAbsent,
                 allowEmpty ? Res.ChooseEmpty : null,
@@ -292,12 +265,12 @@ namespace SrvSurvey.plotters
             );
         }
 
-        private void drawOptions(string msg1, string msg2, string? msg3, int highlightIdx)
+        private void drawOptions(Graphics g, TextCursor tt, string msg1, string msg2, string? msg3, int highlightIdx)
         {
-            int blockTop = scaled(45);
-            int letterOffset = scaled(10);
+            int blockTop = N.s(45);
+            int letterOffset = N.s(10);
 
-            var mw = this.Width / 2;
+            var mw = this.width / 2;
             var ptMain = new Point[]
             {
                 new Point((int)(mw - (blockWidth * 1.5f)) , blockTop ),
@@ -332,48 +305,44 @@ namespace SrvSurvey.plotters
 
             // show selection rectangle
             var rect = new RectangleF(
-                ptMain[selectedIndex].X - oneTwo, ptMain[selectedIndex].Y - oneTwo,
-                this.blockWidth, fourFour);
+                ptMain[selectedIndex].X - N.oneTwo, ptMain[selectedIndex].Y - N.oneTwo,
+                this.blockWidth, N.fourFour);
             var p = highlightIdx == selectedIndex ? Pens.Cyan : GameColors.penGameOrange1;
             if (highlightIdx == -2 || (msg3 == null && highlightIdx == 2)) p = Pens.Gray;
             g.DrawRectangle(p, rect);
 
             if (highlightIdx != -2)
-                showSelectionCue();
+                showSelectionCue(tt);
 
             // make sure we're wide enough for 3x blocks
-            var ww = (this.blockWidth * 3) + (oneTwo * 5);
-            if (ww > maxTextWidth) maxTextWidth = ww;
+            var ww = (this.blockWidth * 3) + (N.oneTwo * 5);
+            tt.setMinWidth(ww);
         }
 
-        private void showSelectionCue()
+        private void showSelectionCue(TextCursor tt)
         {
             // show cue to select
-            var b = this.highlightBlink ? GameColors.brushCyan : GameColors.brushGameOrange;
+            var col = this.highlightBlink ? C.cyan : C.orange;
             var footerTxt = this.highlightBlink
                 ? Res.FooterToggleModeTwice
                 : Res.FooterToggleModeOnce;
-            var sz = drawFooterText(footerTxt, b);
-            if (sz.Width > maxTextWidth) maxTextWidth = sz.Width;
+
+            var sz = tt.drawFooter(footerTxt, col);
+            tt.setMinWidth(sz.Width);
         }
 
-        private void drawCenterMessage(string msg)
+        private SizeF drawCenterMessage(TextCursor tt, string msg, Color? col = null, Font? font = null)
         {
-            var font = GameColors.fontMiddle;
-            var sz = g.MeasureString(msg, font);
-            var tx = Util.centerIn(this.Width, sz.Width);
-            var ty = threeFour;
-
-            g.DrawString(msg, font, GameColors.brushGameOrange, tx, ty);
-            if (sz.Width > maxTextWidth) maxTextWidth = sz.Width;
+            font ??= GameColors.fontMiddle;
+            return tt.drawCentered(N.threeFour, msg, col, font);
         }
 
-        private void drawSiteType()
+        private void drawSiteType(Graphics g, TextCursor tt)
         {
-            var sz = drawHeaderText(Res.HeaderUnknownSiteType, GameColors.brushCyan);
-            if (sz.Width > maxTextWidth) maxTextWidth = sz.Width;
+            var sz = tt.drawHeader(Res.HeaderUnknownSiteType, C.cyan);
+            tt.setMinWidth(sz.Width);
 
-            drawOptions(
+            drawOptions(g, tt,
                 Properties.Guardian.Alpha,
                 Properties.Guardian.Beta,
                 Properties.Guardian.Gamma,
@@ -381,7 +350,7 @@ namespace SrvSurvey.plotters
             );
         }
 
-        private void drawOnApproach()
+        private void drawOnApproach(Graphics g, TextCursor tt)
         {
             var site = PlotGuardianStatus.glideSite;
             if (site == null) return;
@@ -389,14 +358,15 @@ namespace SrvSurvey.plotters
             SizeF sz;
             if (site.isRuins)
             {
-                sz = drawHeaderText(Res.OnApproachHeaderRuins);
-                if (sz.Width > maxTextWidth) maxTextWidth = sz.Width;
-                drawCenterMessage(Res.OnApproachMiddleRuins.format(site.index, Util.getLoc(site.type.ToString())), GameColors.brushCyan);
+                sz = tt.drawHeader(Res.OnApproachHeaderRuins, C.orange, GameColors.fontMiddle);
+                tt.setMinWidth(sz.Width);
+                sz = drawCenterMessage(tt, Res.OnApproachMiddleRuins.format(site.index, Util.getLoc(site.type.ToString())), C.cyan);
+                tt.setMinWidth(sz.Width);
             }
             else
             {
-                sz = drawHeaderText(Res.OnApproachHeaderStructure);
-                if (sz.Width > maxTextWidth) maxTextWidth = sz.Width;
+                sz = tt.drawHeader(Res.OnApproachHeaderStructure);
+                tt.setMinWidth(sz.Width);
                 var msg = $"{site.type} ";
 
                 if (site.type == GuardianSiteData.SiteType.Robolobster || site.type == GuardianSiteData.SiteType.Squid || site.type == GuardianSiteData.SiteType.Stickyhand)
@@ -410,10 +380,11 @@ namespace SrvSurvey.plotters
 
                 // TODO: Highlight if the obelisk groups are not known?
 
-                drawCenterMessage(msg, GameColors.brushCyan);
+                sz = drawCenterMessage(tt, msg, C.cyan);
+                tt.setMinWidth(sz.Width);
             }
-            sz = drawFooterText(Res.OnApproachFooter);
-            if (sz.Width > maxTextWidth) maxTextWidth = sz.Width;
+            sz = tt.drawFooter(Res.OnApproachFooter);
+            tt.setMinWidth(sz.Width);
         }
     }
 }

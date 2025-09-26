@@ -145,7 +145,7 @@ namespace SrvSurvey
             if (game == null) return true;
 
             PlotBase2.getPlotter<PlotHumanSite>()?.adjustZoom(zoomIn);
-            Program.getPlotter<PlotGuardians>()?.adjustZoom(zoomIn);
+            PlotBase2.getPlotter<PlotGuardians>()?.adjustZoom(zoomIn);
             return true;
         }
 
@@ -158,10 +158,10 @@ namespace SrvSurvey
                 PlotHumanSite.autoZoom = true;
                 PlotBase2.getPlotter<PlotHumanSite>()?.setZoom(game.mode);
             }
-            if (Program.isPlotter<PlotGuardians>())
+            if (PlotBase2.isPlotter<PlotGuardians>())
             {
                 PlotGuardians.autoZoom = true;
-                Program.getPlotter<PlotGuardians>()?.setMapScale();
+                PlotBase2.getPlotter<PlotGuardians>()?.setMapScale();
             }
             return true;
         }
@@ -272,6 +272,7 @@ namespace SrvSurvey
             {
                 // force show if no plotter
                 PlotFSSInfo.forceShow = true;
+                PlotBase2.addOrRemove(game, PlotGuardianSystem.plotDef);
                 PlotBase2.add(game, PlotFSSInfo.plotDef);
             }
             else if (PlotFSSInfo.forceShow)
@@ -279,6 +280,7 @@ namespace SrvSurvey
                 // unforce (hide)
                 PlotFSSInfo.forceShow = false;
                 PlotBase2.remove(PlotFSSInfo.plotDef);
+                PlotBase2.addOrRemove(game, PlotGuardianSystem.plotDef);
             }
             else
             {
@@ -307,6 +309,7 @@ namespace SrvSurvey
             {
                 // force show if no plotter
                 PlotBodyInfo.forceShow = true;
+                PlotBase2.addOrRemove(game, PlotGuardianSystem.plotDef);
                 PlotBase2.add(game, PlotBodyInfo.plotDef);
             }
             else if (PlotBodyInfo.forceShow)
@@ -314,6 +317,7 @@ namespace SrvSurvey
                 // unforce (hide)
                 PlotBodyInfo.forceShow = false;
                 PlotBase2.remove(PlotBodyInfo.plotDef);
+                PlotBase2.addOrRemove(game, PlotGuardianSystem.plotDef);
             }
             else
             {

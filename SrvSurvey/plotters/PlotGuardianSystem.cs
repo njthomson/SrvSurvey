@@ -4,119 +4,87 @@ using Res = Loc.PlotGuardianSystem;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(300, 200)]
-    internal class PlotGuardianSystem : PlotBase, PlotterForm
+    internal class PlotGuardianSystem : PlotBase2
     {
-        public static bool allowPlotter
+        #region def + statics
+
+        public static PlotDef plotDef = new PlotDef()
+        {
+            name = nameof(PlotGuardianSystem),
+            allowed = allowed,
+            ctor = (game, def) => new PlotGuardianSystem(game, def),
+            defaultSize = new Size(300, 200), // Not 320, 88 ?
+        };
+
+        public static bool allowed(Game game)
         {
             // Game.settings.enableGuardianSites && Game.settings.autoShowGuardianSummary && PlotGuardianSystem.allowPlotter && game?.systemData?.settlements.Count > 0
-            get => Game.settings.enableGuardianSites
+            return Game.settings.enableGuardianSites
                 && Game.settings.autoShowGuardianSummary
                 && !Game.settings.buildProjectsSuppressOtherOverlays
                 && Game.activeGame?.systemData != null
                 && Game.activeGame.systemData.settlements.Count > 0
+                && !PlotFSSInfo.forceShow && !PlotBodyInfo.forceShow
                 && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap);
         }
 
-        private PlotGuardianSystem() : base()
-        {
-            this.Size = Size.Empty;
-            this.BackgroundImageLayout = ImageLayout.Stretch;
+        #endregion
 
-            this.Font = GameColors.fontMiddle;
+        private PlotGuardianSystem(Game game, PlotDef def) : base(game, def)
+        {
+            this.font = GameColors.fontMiddle;
         }
 
-        public override bool allow { get => PlotGuardianSystem.allowPlotter; }
-
-        protected override void OnLoad(EventArgs e)
+        protected override void onStatusChange(Status status)
         {
-            this.Width = scaled(420);
-            this.Height = scaled(88);
-            base.OnLoad(e);
-
-            this.initializeOnLoad();
-            this.reposition(Elite.getWindowRect(true));
+            if (status.changed.Contains(nameof(Status.Destination)))
+                this.invalidate();
         }
 
-        protected override void Game_modeChanged(GameMode newMode, bool force)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
-            if (this.IsDisposed) return;
-
-            var targetMode = this.game.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap, GameMode.CommsPanel);
-            if (this.Opacity > 0 && !targetMode)
-                this.setOpacity(0);
-            else if (this.Opacity == 0 && targetMode)
-                this.reposition(Elite.getWindowRect());
-
-            this.Invalidate();
-        }
-
-        protected override void onPaintPlotter(PaintEventArgs e)
-        {
-            if (game.systemData == null) return;
-
-            this.dtx = six;
-            this.dty = eight;
-            var sz = new SizeF(six, six);
+            if (game.systemData == null) return frame.Size;
 
             var sites = game?.systemData?.settlements;
-            this.drawTextAt(Res.Header.format(sites?.Count ?? 0), GameColors.brushGameOrange, GameColors.fontSmall);
-            if (this.dtx > sz.Width) sz.Width = this.dtx;
-
-            // TODO: Use ► not -
+            tt.draw(Res.Header.format(sites?.Count ?? 0), C.orange, GameColors.fontSmall);
+            tt.newLine(N.two, true);
 
             if (sites?.Count > 0)
             {
-                this.dty = twenty;
                 foreach (var site in sites)
                 {
-                    var txt = $"{site.displayText}";
-
                     var highlight = game?.status?.Destination?.Body == site.body.id;
                     if (highlight && game?.status?.Destination.Name.StartsWith("$Ancient") == true && game?.status?.Destination.Name != site.name)
                         highlight = false;
-                    var brush = highlight ? GameColors.brushCyan : null;
+                    var col = highlight ? C.cyan : C.orange;
 
                     // draw main text (bigger font)
-                    this.dtx = eight;
-                    this.dty += this.drawTextAt(txt, brush).Height;
-                    if (this.dtx > sz.Width) sz.Width = this.dtx;
+                    tt.draw(N.eight, site.displayText, col);
+                    tt.newLine(N.two, true);
 
                     // draw status (smaller font)
                     if (site.bluePrint != null)
                     {
-                        this.dtx = twenty;
-                        this.dty += this.drawTextAt("- " + Res.BluePrintLine.format(site.bluePrint), brush, GameColors.fontSmall).Height + two;
-                        if (this.dtx > sz.Width) sz.Width = this.dtx;
+                        tt.draw(N.twenty, "► " + Res.BluePrintLine.format(site.bluePrint), col, GameColors.fontSmall);
+                        tt.newLine(N.two, true);
                     }
 
                     if (site.status != null)
                     {
-                        this.dtx = twenty;
-                        this.dty += this.drawTextAt("- " + Res.SurveyLine.format(site.status), brush, GameColors.fontSmall).Height + two;
-                        if (this.dtx > sz.Width) sz.Width = this.dtx;
+                        tt.draw(N.twenty, "► " + Res.SurveyLine.format(site.status), col, GameColors.fontSmall);
+                        tt.newLine(N.two, true);
                     }
 
                     // draw extra (smaller font)
                     if (site.extra != null)
                     {
-                        this.dtx = twenty;
-                        this.dty += this.drawTextAt("- " + site.extra, brush, GameColors.fontSmall).Height;
-                        if (this.dtx > sz.Width) sz.Width = this.dtx;
+                        tt.draw(N.twenty, "► " + site.extra, col, GameColors.fontSmall);
+                        tt.newLine(N.two, true);
                     }
                 }
             }
 
-            // TODO: use adjustFormSize
-            // resize window as necessary
-            sz.Width += ten;
-            sz.Height = this.dty + ten;
-            if (this.Size != sz.ToSize())
-            {
-                this.Size = sz.ToSize();
-                this.BackgroundImage = GameGraphics.getBackgroundImage(this);
-                this.Invalidate();
-            }
+            return tt.pad(N.ten, N.ten);
         }
     }
 }

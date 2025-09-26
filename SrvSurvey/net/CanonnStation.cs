@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using SrvSurvey.game;
+using SrvSurvey.plotters;
 using SrvSurvey.units;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -86,6 +87,7 @@ namespace SrvSurvey.canonn
             {
                 Game.log($"dockingRequested: {mappingKey} matched subType: #{station.subType}");
                 station.calcMethod = CalcMethod.PadConfig;
+                PlotBase2.invalidate(nameof(PlotHumanSite));
                 return true;
             }
 
@@ -257,6 +259,8 @@ namespace SrvSurvey.canonn
                                 Program.invalidateActivePlotters();
                             });
                         }
+
+                        PlotBase2.invalidate(nameof(PlotHumanSite));
                         return true;
                     }
                     else
@@ -273,6 +277,7 @@ namespace SrvSurvey.canonn
                 Debugger.Break();
             }
 
+            PlotBase2.invalidate(nameof(PlotHumanSite));
             return false;
         }
 

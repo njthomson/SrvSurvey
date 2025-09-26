@@ -285,7 +285,7 @@ namespace SrvSurvey.game
             if (changed)
             {
                 BaseForm.get<FormRamTah>()?.setCurrentObelisk(this.currentObelisk);
-                Program.getPlotter<PlotGuardianStatus>()?.Invalidate();
+                PlotBase2.invalidate(nameof(PlotGuardianStatus), nameof(PlotGuardians), nameof(PlotRamTah));
             }
         }
 
@@ -419,13 +419,13 @@ namespace SrvSurvey.game
 
             Game.activeGame?.systemData?.prepSettlements();
 
-            var plot = Program.getPlotter<PlotGuardians>();
+            var plot = PlotBase2.getPlotter<PlotGuardians>();
             if (plot?.targetObelisk == obelisk.name)
                 plot.setTargetObelisk(null);
 
             BaseForm.get<FormBeacons>()?.beginPrepareAllRows();
             BaseForm.get<FormRamTah>()?.updateChecks();
-            Program.invalidateActivePlotters();
+            PlotBase2.invalidate(nameof(PlotGuardianStatus), nameof(PlotGuardians), nameof(PlotRamTah));
         }
 
         private Dictionary<string, HashSet<string>> _ramTahObelisks;
@@ -443,7 +443,7 @@ namespace SrvSurvey.game
             this._ramTahObelisks = this.getObelisksForRamTah();
 
             BaseForm.get<FormRamTah>()?.updateChecks();
-            Program.invalidateActivePlotters();
+            PlotBase2.invalidate(nameof(PlotGuardianStatus), nameof(PlotGuardians), nameof(PlotRamTah));
         }
 
         [JsonIgnore]

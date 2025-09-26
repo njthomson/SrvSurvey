@@ -28,7 +28,7 @@ namespace SrvSurvey.plotters
                 && game.systemData.bioSignalsTotal > 0
                 && !game.status.InTaxi
                 && !game.hidePlottersFromCombatSuits
-                && (!Game.settings.enableGuardianSites || !PlotGuardians.allowPlotter)
+                && (!Game.settings.enableGuardianSites || !PlotGuardians.allowed(game))
                 && (
                     game.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
                     || (

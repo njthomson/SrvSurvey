@@ -4,60 +4,56 @@ using Res = Loc.PlotRamTah;
 
 namespace SrvSurvey.plotters
 {
-    [ApproxSize(200, 280)]
-    internal class PlotRamTah : PlotBase, PlotterForm
+    internal class PlotRamTah : PlotBase2
     {
-        public static bool allowPlotter
+        #region def + statics
+
+        public static PlotDef plotDef = new PlotDef()
+        {
+            name = nameof(PlotRamTah),
+            allowed = allowed,
+            ctor = (game, def) => new PlotRamTah(game, def),
+            defaultSize = new Size(200, 280),
+        };
+
+        public static bool allowed(Game game)
         {
             // TODO: show this earlier, like on approach?
-            get => Game.settings.autoShowRamTah
+            return Game.settings.autoShowRamTah
                 && Game.settings.enableGuardianSites
-                && Game.activeGame?.systemBody != null
-                && Game.activeGame.cmdr.ramTahActive
                 && !Game.settings.buildProjectsSuppressOtherOverlays
-                && !Game.activeGame.hidePlottersFromCombatSuits
-                && Game.activeGame.status?.hasLatLong == true
-                && Game.activeGame.systemSite?.location != null
-                && Game.activeGame.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter, GameMode.CommsPanel, GameMode.InternalPanel)
+                && game?.systemBody != null
+                && game.cmdr.ramTahActive
+                && game.status?.hasLatLong == true
+                && game.systemSite?.location != null
+                // require isRuins to match decodeTheRuinsMissionActive or !isRuins to match decodeTheLogsMissionActive
+                && (game.systemSite.isRuins == (game.cmdr.decodeTheRuinsMissionActive == TahMissionStatus.Active) || game.systemSite.isRuins != (game.cmdr.decodeTheLogsMissionActive == TahMissionStatus.Active))
+                && game.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter, GameMode.CommsPanel, GameMode.InternalPanel)
                 ;
         }
 
-        private PlotRamTah() : base()
-        {
-            this.Size = Size.Empty;
-            this.BackgroundImageLayout = ImageLayout.Stretch;
+        #endregion
 
-            this.Font = GameColors.fontMiddle;
+        private PlotRamTah(Game game, PlotDef def) : base(game, def)
+        {
+            this.font = GameColors.fontMiddle;
         }
 
-        public override bool allow { get => PlotRamTah.allowPlotter; }
-
-        protected override void OnLoad(EventArgs e)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
-            this.Width = scaled(420);
-            this.Height = scaled(88);
-            base.OnLoad(e);
+            if (game?.systemSite == null) return frame.Size;
 
-            this.initializeOnLoad();
-            this.reposition(Elite.getWindowRect(true));
-        }
-
-        protected override void onPaintPlotter(PaintEventArgs e)
-        {
-            if (game?.systemSite == null) return;
-
-            this.dtx = six;
-            this.dty = eight;
-            var sz = new SizeF(six, six);
+            tt.dtx = N.six;
+            tt.dty = N.eight;
+            var sz = new SizeF(N.six, N.six);
 
             var ramTahObelisks = game.systemSite.ramTahObelisks;
-            this.drawTextAt(Res.Header.format(ramTahObelisks?.Count ?? 0), GameColors.fontSmall);
-            if (this.dtx > sz.Width) sz.Width = this.dtx;
-            this.dty = twoFour;
+            tt.draw(Res.Header.format(ramTahObelisks?.Count ?? 0), GameColors.fontSmall);
+            tt.newLine(N.ten, true);
 
             if (ramTahObelisks?.Count > 0)
             {
-                var targetObelisk = PlotGuardians.instance?.targetObelisk;
+                var targetObelisk = PlotBase2.getPlotter<PlotGuardians>()?.targetObelisk;
                 foreach (var bar in ramTahObelisks)
                 {
                     var obelisk = game.systemSite.getActiveObelisk(bar.Value.First());
@@ -72,87 +68,109 @@ namespace SrvSurvey.plotters
 
                     var isTargetObelisk = targetObelisk != null && bar.Value.Contains(targetObelisk);
                     var isCurrentObelisk = bar.Value.Any(_ => _ == game.systemSite.currentObelisk?.name);
-                    Brush brush = GameColors.brushGameOrange;
+                    var col = C.orange;
                     if (isTargetObelisk && !isCurrentObelisk && game.systemSite.currentObelisk != null)
-                        brush = GameColors.brushDarkCyan;
+                        col = C.cyanDark;
                     else if (isCurrentObelisk || isTargetObelisk)
-                        brush = GameColors.brushCyan;
+                        col = C.cyan;
                     // change colours if items are missing? Perhaps overkill?
                     //else if (!hasItem1 || !hasItem2)
                     //    brush = GameColors.brushRed;
 
                     // draw main text (bigger font)
-                    this.dtx = oneFour;
-                    var logName = $"{Util.getLogNameFromChar(bar.Key[0])} #{bar.Key.Substring(1)}:";
-                    var sz2 = this.drawTextAt(logName, brush, GameColors.fontMiddle);
-                    this.dty += six;
+                    var logName = $"{Util.getLogNameFromChar(bar.Key[0])} #{bar.Key.Substring(1)}".Trim();
+                    tt.draw(N.oneFour, logName, col, GameColors.fontMiddle);
+                    // strike-through the log name if we do not have sufficient items
                     if (!hasItem1 || !hasItem2)
-                    {
-                        // strike-through the log name if we do not have sufficient items
-                        var p1 = GameColors.penGameOrange1;
-                        var p2 = GameColors.penGameOrangeDim1;
-                        if (isCurrentObelisk || isTargetObelisk)
-                        {
-                            p1 = GameColors.penCyan1;
-                            p2 = GameColors.penDarkCyan1;
-                        }
+                        tt.strikeThroughLast(isCurrentObelisk || isTargetObelisk);
 
-                        g.DrawLine(p1, dtx - eight, dty + sz.Height - 1, dtx - sz2.Width, dty + sz.Height - 1);
-                        g.DrawLine(p1, dtx - eight + 1, dty + sz.Height, dtx - sz2.Width + 1, dty + sz.Height);
-                    }
-
-                    this.drawRamTahDot(0, 0, item1);
-                    var item1Text = Util.getLoc(item1);
-                    this.drawTextAt(item1Text, hasItem1 ? GameColors.brushGameOrange : Brushes.Red, GameColors.fontSmall);
+                    tt.draw(": ", col, GameColors.fontMiddle);
+                    tt.dty += N.six;
+                    tt.dtx += drawRamTahDot(g, tt.dtx, tt.dty, item1);
+                    tt.draw(Util.getLoc(item1), hasItem1 ? C.orange: C.red, GameColors.fontSmall);
 
                     if (item2 != null)
                     {
-                        this.drawTextAt("+", brush, GameColors.fontSmall);
-                        this.dtx += two;
-                        this.drawRamTahDot(0, 0, item2);
-                        var item2Text = Util.getLoc(item2);
-                        this.drawTextAt(item2Text, hasItem2 ? GameColors.brushGameOrange : Brushes.Red, GameColors.fontSmall);
+                        tt.dtx += N.two;
+                        tt.draw("+", col, GameColors.fontSmall);
+                        tt.dtx += N.four;
+                        tt.dtx += drawRamTahDot(g, tt.dtx, tt.dty, item2);
+                        tt.draw(Util.getLoc(item2), hasItem2 ? C.orange : C.red, GameColors.fontSmall);
                     }
 
-                    if (this.dtx > sz.Width) sz.Width = this.dtx;
-                    this.dty += oneSix;
+                    tt.newLine(N.eight, true);
 
                     // draw each obelisk name, highlighting the target one
-                    this.dtx = twoFour;
                     foreach (var ob in bar.Value)
                     {
                         if (targetObelisk == ob || game.systemSite.currentObelisk?.name == ob)
-                            this.drawTextAt(ob, brush, GameColors.fontSmallBold);
+                            tt.draw(N.twoFour, ob, col, GameColors.fontSmallBold);
                         else
-                            this.drawTextAt(ob, brush, GameColors.fontSmall);
+                            tt.draw(N.twoFour, ob, col, GameColors.fontSmall);
                     }
 
-                    this.dty += oneFour;
-                    if (this.dtx > sz.Width) sz.Width = this.dtx;
+                    tt.newLine(N.oneFour, true);
                 }
 
-                this.dtx = eight;
-                this.dty += ten;
-                this.dty += this.drawTextAt(Res.Footer, GameColors.fontSmall).Height;
-                if (this.dtx > sz.Width) sz.Width = this.dtx;
+                tt.dtx = N.eight;
+                tt.dty += N.ten;
+                tt.dty += tt.draw(Res.Footer, GameColors.fontSmall).Height;
+                if (tt.dtx > sz.Width) sz.Width = tt.dtx;
             }
             else
             {
-                this.dtx = twoFour;
-                this.dty += this.drawTextAt(Res.NoNewLogs, GameColors.brushGameOrange, GameColors.fontMiddle).Height;
-                if (this.dtx > sz.Width) sz.Width = this.dtx;
+                tt.dtx = N.twoFour;
+                tt.dty += tt.draw(Res.NoNewLogs, C.orange, GameColors.fontMiddle).Height;
+                if (tt.dtx > sz.Width) sz.Width = tt.dtx;
             }
 
-            // resize window as necessary
-            sz.Width += ten;
-            sz.Height = this.dty + ten;
-            if (this.Size != sz.ToSize())
-            {
-                this.Size = sz.ToSize();
-                this.BackgroundImage = GameGraphics.getBackgroundImage(this);
-                this.reposition(Elite.getWindowRect());
-            }
+            return tt.pad(N.ten, N.ten);
         }
+
+        public static float drawRamTahDot(Graphics g, float x, float y, string item)
+        {
+            if (item == POIType.relic.ToString())
+            {
+                x +=  N.ten;
+                y +=  N.two;
+
+                g.TranslateTransform(x, y);
+                g.FillPolygon(GameColors.brushPoiPresent, ramTahRelicPoints);
+                g.DrawPolygon(GameColors.penPoiRelicPresent, ramTahRelicPoints);
+
+                g.TranslateTransform(-x, -y);
+                return N.twoFour;
+            }
+            else if (itemPoiTypeMap.ContainsKey(item))
+            {
+                var r = new RectangleF(x, y - N.one, N.ten, N.ten);
+                var poiType = itemPoiTypeMap[item];
+
+                g.FillEllipse(GameColors.Map.brushes[poiType][SitePoiStatus.present], r);
+                g.DrawEllipse(GameColors.Map.pens[poiType][SitePoiStatus.present], r);
+                return N.oneSix;
+            }
+
+            // TODO: Thargoid items?
+            return 0;
+        }
+
+        private static PointF[] ramTahRelicPoints = {
+            new PointF(-8, -4),
+            new PointF(+8, -4),
+            new PointF(0, +10),
+            new PointF(-8, -4),
+        };
+
+        private static Dictionary<string, POIType> itemPoiTypeMap = new Dictionary<string, POIType>()
+        {
+            { ObeliskItem.casket.ToString(), POIType.casket },
+            { ObeliskItem.orb.ToString(), POIType.orb },
+            { ObeliskItem.relic.ToString(), POIType.relic },
+            { ObeliskItem.tablet.ToString(), POIType.tablet},
+            { ObeliskItem.totem.ToString(), POIType.totem },
+            { ObeliskItem.urn.ToString(), POIType.urn },
+        };
     }
 }
 

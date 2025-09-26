@@ -859,6 +859,9 @@ namespace SrvSurvey
                 case nameof(SiteType.Alpha): return Properties.Guardian.Alpha;
                 case nameof(SiteType.Beta): return Properties.Guardian.Beta;
                 case nameof(SiteType.Gamma): return Properties.Guardian.Gamma;
+                case "SiteType." + nameof(SiteType.Alpha): return Properties.Guardian.Alpha;
+                case "SiteType." + nameof(SiteType.Beta): return Properties.Guardian.Beta;
+                case "SiteType." + nameof(SiteType.Gamma): return Properties.Guardian.Gamma;
                 case nameof(SiteType.Unknown): return Properties.Guardian.Unknown;
                 // These are not localized - just use the given string
                 case "SiteType." + nameof(SiteType.Lacrosse): // Tiny

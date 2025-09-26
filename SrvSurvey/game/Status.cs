@@ -236,14 +236,15 @@ namespace SrvSurvey
             var newBlinkState = (this.Flags & blinkSignal) > 0;
             var duration = DateTime.Now - this.lastBlinkChange;
 
-            //Game.log($"newBlinkState: {newBlinkState}, this.blinkState: {this.blinkState}, this.lastblinkChange: {this.lastblinkChange}, duration: {DateTime.Now - this.lastblinkChange}");
-            if (newBlinkState != this.blinkState)
+            //Game.log($"newBlinkState: {newBlinkState}, this.blinkState: {this.blinkState}, this.lastblinkChange: {this.lastBlinkChange}, duration: {DateTime.Now - this.lastBlinkChange}");
+            if (newBlinkState != this.blinkState && !changed.Contains(nameof(Status.@event)))
             {
                 this.blinkState = newBlinkState;
                 this.lastBlinkChange = DateTime.Now;
 
                 if (duration.TotalMilliseconds < Game.settings.blinkDuration)
                 {
+                    changed.Add("blink");
                     Game.log($"Blink detected blinked!");
                     return true;
                 }

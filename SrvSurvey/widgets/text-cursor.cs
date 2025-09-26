@@ -163,6 +163,27 @@ namespace SrvSurvey.widgets
             return this.lastTextSize;
         }
 
+        public SizeF drawHeader(string txt, Color? col = null, Font? font = null)
+        {
+            col = col ?? this.color;
+            font = font ?? this.font;
+
+            var headerFlags = flags | TextFormatFlags.HorizontalCenter | TextFormatFlags.Top;
+
+            this.lastTextSize = TextRenderer.MeasureText(txt, font, Size.Empty, headerFlags);
+
+            var rect = new Rectangle(
+                padHorizontal,
+                padVertical,
+                this.containerWidth - (padHorizontal * 2),
+                (int)this.lastTextSize.Height
+            );
+
+            TextRenderer.DrawText(g, txt, font, rect, col.Value, headerFlags);
+
+            return this.lastTextSize;
+        }
+
         #endregion
 
         /// <summary> Render strike-through over last rendered text </summary>

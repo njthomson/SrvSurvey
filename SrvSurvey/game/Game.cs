@@ -2007,6 +2007,7 @@ namespace SrvSurvey.game
                         // Checked: this is mostly okay
                         this.systemSite = GuardianSiteData.Load(this.systemBody.name, nearestSettlement);
                         Program.closeAllPlotters();
+                        PlotBase2.closeAll();
                         fireEvent = true;
                     }
                 }

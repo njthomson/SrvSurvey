@@ -26,9 +26,9 @@ namespace SrvSurvey.plotters
                 && !Game.settings.buildProjectsSuppressOtherOverlays
                 && !game.hidePlottersFromCombatSuits
                 && !game.status.Docked
-                && !PlotGuardians.allowPlotter && !Program.isPlotter<PlotGuardians>()
-                && !PlotHumanSite.allowed(game)
-                && !PlotStationInfo.allowed(game)
+                && (!Game.settings.enableGuardianSites || !PlotGuardians.allowed(game))
+                && (!Game.settings.autoShowHumanSitesTest || !PlotHumanSite.allowed(game))
+                && (!Game.settings.autoShowPlotStationInfo_TEST || !PlotStationInfo.allowed(game))
                 && game.canonnPoiHasLocalBioSignals()
                 && game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.SAA, GameMode.Codex)
                 ;

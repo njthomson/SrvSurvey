@@ -53,7 +53,7 @@ namespace SrvSurvey.plotters
 
             // make sure these are closed
             PlotBase2.remove(PlotBioStatus.plotDef);
-            Program.closePlotter<PlotGuardianStatus>();
+            PlotBase2.remove(PlotGuardianStatus.plotDef);
         }
 
         protected override void onStatusChange(Status status)

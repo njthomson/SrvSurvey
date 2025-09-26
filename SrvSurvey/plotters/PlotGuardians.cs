@@ -1,5 +1,4 @@
-﻿using DecimalMath;
-using SrvSurvey.forms;
+﻿using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.net;
 using SrvSurvey.units;
@@ -23,21 +22,46 @@ namespace SrvSurvey.plotters
         origin,
     }
 
-    [ApproxSize(320, 440)]
-    internal partial class PlotGuardians : PlotBase, IDisposable
+    internal partial class PlotGuardians : PlotBase2Site
     {
-        public static bool allowPlotter
+        #region def + statics
+
+        public static PlotDef plotDef = new PlotDef()
         {
-            get => Game.settings.enableGuardianSites
-                && Game.activeGame?.systemBody != null
+            name = nameof(PlotGuardians),
+            allowed = allowed,
+            ctor = (game, def) => new PlotGuardians(game, def),
+            defaultSize = new Size(320, 440), // Not 420, 102 ?
+            invalidationJournalEvents = new() { nameof(Disembark), nameof(Embark) }
+        };
+
+        public static bool allowed(Game game)
+        {
+            return Game.settings.enableGuardianSites
                 && !Game.settings.buildProjectsSuppressOtherOverlays
-                && !Game.activeGame.hidePlottersFromCombatSuits
-                && Game.activeGame.status?.hasLatLong == true
-                && Game.activeGame.systemSite?.location != null
-                && !Game.activeGame.status.FsdChargingJump
-                && Game.activeGame.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter, GameMode.CommsPanel, GameMode.RolePanel)
+                && game.systemBody != null
+                && game.status?.hasLatLong == true
+                && game.systemSite?.location != null
+                && !game.status.FsdChargingJump
+                && game.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter, GameMode.CommsPanel, GameMode.RolePanel)
                 ;
         }
+
+
+        private static Size getWindowSize()
+        {
+            switch (Game.settings.idxGuardianPlotter)
+            {
+                case 0: return new Size(300, 400);
+                case 1: return new Size(500, 500);
+                default:
+                case 2: return new Size(600, 700);
+                case 3: return new Size(800, 1000);
+                case 4: return new Size(1200, 1200);
+            }
+        }
+
+        #endregion
 
         public static bool autoZoom = true;
 
@@ -52,42 +76,26 @@ namespace SrvSurvey.plotters
         public FormEditMap? formEditMap;
         private double nearestObeliskDist = 1000d;
         public string? targetObelisk;
+        private TrackingDelta? td;
 
         public Mode mode;
-        private PointF commanderOffset;
+        private PointF commanderOffset; // TODO: retire this for base.cmdrOffset
 
         private GuardianSiteData siteData { get => game?.systemSite!; }
 
-        private PlotGuardians() : base()
+        private PlotGuardians(Game game, PlotDef def) : base(game, def)
         {
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-
-            if (PlotGuardians.instance != null)
-            {
-                Game.log("Why are there multiple PlotGuardians?");
-                Program.closePlotter<PlotGuardians>();
-                Application.DoEvents();
-                PlotGuardians.instance.Dispose();
-            }
-
-            PlotGuardians.instance = this;
-
             // set window size based on setting
-            switch (Game.settings.idxGuardianPlotter)
-            {
-                case 0: this.Width = scaled(300); this.Height = scaled(400); break;
-                case 1: this.Width = scaled(500); this.Height = scaled(500); break;
-                case 2: this.Width = scaled(600); this.Height = scaled(700); break;
-                case 3: this.Width = scaled(800); this.Height = scaled(1000); break;
-                case 4: this.Width = scaled(1200); this.Height = scaled(1200); break;
-            }
+            this.setSize(getWindowSize());
 
             this.setMapScale();
+
+            this.siteData.loadPub();
+            this.siteLocation = this.siteData.location;
+            this.siteHeading = this.siteData.siteHeading;
+
             this.nextMode();
         }
-
-        public override bool allow { get => PlotGuardians.allowPlotter; }
 
         public void devRefreshBackground(string imagePath)
         {
@@ -95,26 +103,7 @@ namespace SrvSurvey.plotters
 
             Game.log("devRefreshBackground");
             this.loadSiteTemplate(imagePath);
-            this.Invalidate();
-        }
-
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            base.OnFormClosing(e);
-
-            PlotGuardians.instance = null;
-            Program.closePlotter<PlotGuardianStatus>();
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            this.initializeOnLoad();
-            this.siteData.loadPub();
-
-            this.nextMode();
-            this.reposition(Elite.getWindowRect(true));
+            this.invalidate();
         }
 
         private void nextMode()
@@ -139,8 +128,8 @@ namespace SrvSurvey.plotters
             else
             {
                 // we can show the map after that
-                this.loadSiteTemplate();
                 this.setMode(Mode.map);
+                this.loadSiteTemplate();
             }
         }
 
@@ -163,7 +152,8 @@ namespace SrvSurvey.plotters
 
             this.mode = newMode;
             Program.invalidateActivePlotters();
-            game.fireUpdate();
+            game.fireUpdate(); // still needed?
+            PlotBase2.invalidate(nameof(PlotGuardianStatus), nameof(PlotGuardians), nameof(PlotRamTah));
 
             // show or hide the heading vertical stripe helper
             if (!Game.settings.disableRuinsMeasurementGrid)
@@ -426,7 +416,7 @@ namespace SrvSurvey.plotters
                 {
                     siteData.rawPoi.Remove(match);
                     this.siteData.Save();
-                    this.Invalidate();
+                    this.invalidate();
                 }
             }
         }
@@ -457,7 +447,7 @@ namespace SrvSurvey.plotters
 
             GuardianSiteTemplate.SaveEdits();
             this.siteData.Save();
-            this.Invalidate();
+            this.invalidate();
         }
 
         private void addNewPoi(string msg, bool addToMaster)
@@ -505,7 +495,7 @@ namespace SrvSurvey.plotters
                 siteData.poiStatus[newPoi.name] = SitePoiStatus.present;
                 GuardianSiteTemplate.SaveEdits();
                 this.siteData.Save();
-                this.Invalidate();
+                this.invalidate();
             }
             else
             {
@@ -517,7 +507,7 @@ namespace SrvSurvey.plotters
                 Game.log($"Adding new raw {poiType} named '{newPoi.name}' as present: {newPoi}");
                 siteData.rawPoi.Add(newPoi);
                 this.siteData.Save();
-                this.Invalidate();
+                this.invalidate();
             }
 
             FormRuins.activeForm?.Invalidate(true);
@@ -562,8 +552,8 @@ namespace SrvSurvey.plotters
                 Game.log($"Set target obelisk: '{target}'");
                 this.targetObelisk = target;
             }
-            this.Invalidate();
-            Program.getPlotter<PlotRamTah>()?.Invalidate();
+            this.invalidate();
+            PlotBase2.invalidate(nameof(PlotRamTah));
         }
 
         private void xtraCmds(string msg)
@@ -576,7 +566,7 @@ namespace SrvSurvey.plotters
                 {
                     Game.log($"scaleFactor: {this.template.scaleFactor} => {newScale}");
                     this.template.scaleFactor = newScale;
-                    this.Status_StatusChanged(false);
+                    this.onStatusChange(game.status);
                 }
             }
 
@@ -597,7 +587,7 @@ namespace SrvSurvey.plotters
                 Game.log("Reloading site template");
                 GuardianSiteTemplate.Import(true);
                 this.loadSiteTemplate();
-                this.Invalidate();
+                this.invalidate();
             }
 
             if (msg == "watch")
@@ -624,7 +614,7 @@ namespace SrvSurvey.plotters
             {
                 this.highlightPoi = msg.Substring(2).Trim();
                 Game.log($"Highlighting POI: '{this.highlightPoi}'");
-                this.Invalidate();
+                this.invalidate();
             }
         }
 
@@ -640,7 +630,7 @@ namespace SrvSurvey.plotters
                 Game.log($"POI confirmed: '{this.nearestPoi.name}' ({this.nearestPoi.type})");
                 siteData.poiStatus[this.nearestPoi.name] = SitePoiStatus.present;
                 siteData.Save();
-                this.Invalidate();
+                this.invalidate();
                 BaseForm.get<FormBeacons>()?.beginPrepareAllRows();
             }
         }
@@ -658,33 +648,20 @@ namespace SrvSurvey.plotters
             siteData.setObeliskScanned(obelisk, true);
 
             siteData.Save();
-            Program.getPlotter<PlotGuardianStatus>()?.Invalidate();
-            this.Invalidate();
+            PlotBase2.invalidate(nameof(PlotGuardianStatus));
+            this.invalidate();
         }
 
         protected override void onJournalEntry(Embark entry)
         {
-            if (entry.SRV && this.srvLocation0 != null)
-            {
-                this.srvLocation0 = null;
-                this.Invalidate();
-            }
-
             this.setMapScale();
+            this.invalidate();
         }
 
         protected override void onJournalEntry(Disembark entry)
         {
-            if (entry.SRV && this.srvLocation0 == null)
-            {
-                this.srvLocation0 = new TrackingDelta(
-                    game.systemBody!.radius,
-                    Status.here.clone());
-                this.Invalidate();
-            }
-
             this.scale = 2f;
-            this.Invalidate();
+            this.invalidate();
         }
 
         public void setMapScale()
@@ -696,7 +673,7 @@ namespace SrvSurvey.plotters
                 if (newScale != this.scale)
                 {
                     this.scale = newScale;
-                    this.Invalidate();
+                    this.invalidate();
                 }
             }
         }
@@ -711,8 +688,24 @@ namespace SrvSurvey.plotters
                 return 3f;
             else if (game.vehicle == ActiveVehicle.Foot)
                 return 2f;
+            else if (this.siteData.isRuins)
+            {
+                if (td?.distance > 1000)
+                    return 0.2f;
+                else if (td?.distance > 800)
+                    return 0.5f;
+                else
+                    return 0.65f;
+            }
             else
-                return this.siteData.isRuins ? 0.65f : 1.5f;
+            {
+                if (td?.distance > 800)
+                    return 0.2f;
+                else if (td?.distance > 500)
+                    return 0.5f;
+                else
+                    return 1.5f;
+            }
         }
 
         public void adjustZoom(bool zoomIn)
@@ -729,7 +722,7 @@ namespace SrvSurvey.plotters
                 PlotGuardians.autoZoom = newZoom == autoZoomLevel;
 
             this.scale = newZoom;
-            this.Invalidate();
+            this.invalidate();
         }
 
         private void setSiteHeading(int newHeading)
@@ -737,10 +730,11 @@ namespace SrvSurvey.plotters
             Game.log($"Changing site heading from: '{siteData.siteHeading}' to: '{newHeading}'");
             siteData.siteHeading = (int)newHeading;
             siteData.Save();
+            siteHeading = newHeading;
 
             this.nextMode();
-            this.Invalidate();
-            game.fireUpdate(true);
+            PlotBase2.invalidate(nameof(PlotGuardians), nameof(PlotGuardianStatus));
+            game.fireUpdate(true); // still needed?
         }
 
         private void loadSiteTemplate(string? imagePath = null)
@@ -792,7 +786,7 @@ namespace SrvSurvey.plotters
             //Game.log(siteTouchdownOffset);
             //Game.log($"siteTouchdownOffset: {siteTouchdownOffset}");
 
-            this.Status_StatusChanged(false);
+            this.onStatusChange(game.status);
         }
 
         private void loadHeadingGuidance()
@@ -837,7 +831,7 @@ namespace SrvSurvey.plotters
             Game.log($"Confirming POI {poiStatus}: '{this.nearestPoi.name}' ({this.nearestPoi.type})");
             siteData.poiStatus[this.nearestPoi.name] = poiStatus;
             siteData.Save();
-            this.Invalidate();
+            this.invalidate();
             BaseForm.get<FormBeacons>()?.beginPrepareAllRows();
             // update GuardianSystemStatus entry
             game.systemData.prepSettlements();
@@ -858,18 +852,16 @@ namespace SrvSurvey.plotters
             */
         }
 
-        protected override void Status_StatusChanged(bool blink)
+        protected override void onStatusChange(Status status)
         {
-            if (this.IsDisposed || game?.status == null || game.systemBody == null) return;
-
-            base.Status_StatusChanged(blink);
+            if (game?.status == null || game.systemBody == null) return;
+            base.onStatusChange(status);
 
             if (game.systemSite == null)
             {
                 Game.log("Too far, closing PlotGuardians");
-                game.fireUpdate(true);
-                Program.closePlotter<PlotGuardians>();
-                Program.closePlotter<PlotGuardianStatus>();
+                PlotBase2.renderAll(game);
+                // game.fireUpdate(true); // still needed?
                 return;
             }
 
@@ -888,6 +880,7 @@ namespace SrvSurvey.plotters
                 }
             }
 
+            var blink = status.changed.Contains("blink");
             // if blink is detected and we're in the right mode
             if (blink && game.isMode(GameMode.InSrv, GameMode.InFighter, GameMode.Flying))
             {
@@ -965,7 +958,7 @@ namespace SrvSurvey.plotters
                 //    (float)(offset.Long * template.scaleFactor),
                 //    (float)(offset.Lat * -template.scaleFactor));
                 //Game.log($"commanderOffset old: {commanderOffset}");
-                var td = new TrackingDelta(game.systemBody.radius, siteData.location);
+                td = new TrackingDelta(game.systemBody.radius, siteData.location);
                 this.commanderOffset = new PointF(
                     (float)td.dx,
                     -(float)td.dy);
@@ -1031,7 +1024,7 @@ namespace SrvSurvey.plotters
                 formEditMap.txtDeltaLong.Text = td.dx.ToString("N2") + "m";
             }
 
-            this.Invalidate();
+            this.invalidate();
         }
 
         private FileSystemWatcher watcher;
@@ -1053,45 +1046,43 @@ namespace SrvSurvey.plotters
 
         private void Watcher_Changed(object sender, FileSystemEventArgs e)
         {
-            if (this.IsDisposed) return;
+            if (this.isClosed) return;
             Program.crashGuard(true, () =>
             {
                 Game.log("Reloading watched site template");
                 Application.DoEvents(); Application.DoEvents(); Application.DoEvents(); Application.DoEvents();
                 GuardianSiteTemplate.Import(true);
                 this.loadSiteTemplate();
-                this.Invalidate();
+                this.invalidate();
             });
         }
 
-        protected override void onPaintPlotter(PaintEventArgs e)
+        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
-            if (this.IsDisposed || game.isShutdown || this.siteData == null) return;
+            if (this.siteData == null) return this.size;
+            tt.padVertical = (int)N.five;
 
             switch (this.mode)
             {
-                case Mode.siteType:
-                    this.drawSiteTypeHelper();
-                    return;
-
-                case Mode.heading:
-                    this.drawSiteHeadingHelper();
-                    return;
-
-                case Mode.origin:
-                    this.drawTrackOrigin();
-                    return;
-
-                case Mode.map:
-                    this.drawSiteMap();
-                    return;
+                case Mode.siteType: this.drawSiteTypeHelper(g, tt); break;
+                case Mode.heading: this.drawSiteHeadingHelper(g, tt); break;
+                case Mode.origin: this.drawTrackOrigin(g, tt); break;
+                case Mode.map: this.drawSiteMap(g, tt); break;
             }
+
+            return this.size;
         }
 
-        private void drawTrackOrigin()
+        private void drawTrackOrigin(Graphics g, TextCursor tt)
         {
             g.ResetTransform();
-            this.clipToMiddle();
+            this.clipToMiddle(g);
+
+            // draw dashed line always vertical to match site heading
+            resetMiddle(g);
+            g.DrawLine(GameColors.penRed2DashedIsh, 0, -this.height, 0, 0);
+            g.ResetTransform();
+
             g.TranslateTransform(mid.Width, mid.Height);
             g.RotateTransform(360 - siteData.siteHeading);
             var sI = 10;
@@ -1139,20 +1130,28 @@ namespace SrvSurvey.plotters
                     (float)(x - vr), (float)(y - vr),
                     +vr * 2, +vr * 2);
             g.DrawEllipse(shipPen, rect);
-            var dHeading = new Angle(game.status.Heading);
-            //var dHeading = new Angle(game.status.Heading) - siteData.siteHeading;
-            //var dHeading = new Angle(siteData.siteHeading) - game.status.Heading;
-            var dx = (decimal)DecimalEx.Sin(dHeading.radians) * 10;
-            var dy = (decimal)DecimalEx.Cos(dHeading.radians) * 10;
-            g.DrawLine(shipPen, (float)x, (float)y, (float)(x + dx), (float)(y - dy));
-            this.drawCompassLines(siteData.siteHeading);
+            var dl = Util.rotateLine(game.status.Heading, 10d);
+            g.DrawLine(shipPen, (float)x, (float)y, (float)(x) + dl.X, (float)(y) - dl.Y);
+
+            // undo scale transformation
+            g.ScaleTransform(1 / sf, 1 / sf);
+
+            // draw compass lines
+            g.DrawLine(Pens.DarkRed, -this.width, 0, +this.width, 0);
+            g.DrawLine(Pens.DarkRed, 0, 0, 0, +this.height);
+            g.DrawLine(GameColors.penRed2, 0, -this.height, 0, 0);
+
+            // undo site rotation - just so dashed line matches site heading
+            //g.RotateTransform(+ siteData.siteHeading);
+            //g.DrawLine(GameColors.penRed2DashedIsh, 0, -this.height, 0, 0);
+            //g.RotateTransform(360 - siteData.siteHeading);
 
             Point[] pps = { new Point((int)x, (int)y) };
             g.TransformPoints(CoordinateSpace.Page, CoordinateSpace.World, pps);
 
             g.ResetTransform();
-            this.clipToMiddle();
-            g.TranslateTransform(mid.Width, mid.Height);
+            this.clipToMiddle(g);
+            this.resetMiddle(g);
             g.ScaleTransform(sf, sf);
 
             var pp = pps[0]; // new Point((int)pps[0].X, (int)pps[0].Y); // new Point((int)sz.Width, -(int)sz.Height);
@@ -1193,25 +1192,22 @@ namespace SrvSurvey.plotters
             var footerTxt = Res.TrackOriginFooter.format(alt, targetAlt);
 
             // header text and rotation arrows
-            this.drawOriginRotationGuide();
+            this.drawOriginRotationGuide(g, tt);
 
-            // choose a font color: too low: blue, too high: red, otherwise orange
-            Brush footerBrush;
-            var altDiff = (int)game.status.Altitude - targetAlt;
+            // choose a footer color: too low: blue, too high: red, otherwise orange
+            Color col = C.orange;
+            var altDiff = game.status.Altitude - targetAlt;
             if (altDiff < -50)
-                footerBrush = GameColors.brushCyan;
+                col = C.cyan;
             else if (altDiff > 50)
-                footerBrush = Brushes.Red;
-            else
-                footerBrush = GameColors.brushGameOrange;
+                col = C.red;
 
-            this.drawFooterText(footerTxt, footerBrush);
+            tt.drawFooter(footerTxt, col);
         }
 
-        private void drawOriginRotationGuide()
+        private void drawOriginRotationGuide(Graphics g, TextCursor tt)
         {
-            g.ResetTransform();
-            g.TranslateTransform(mid.Width, mid.Height);
+            resetMiddle(g);
 
             var adjustAngle = siteData.siteHeading - game.status.Heading;
             if (adjustAngle < 0) adjustAngle += 360;
@@ -1221,7 +1217,6 @@ namespace SrvSurvey.plotters
             Brush brush = GameColors.brushGameOrange;
             if (Math.Abs(adjustAngle) > 2)
             {
-                brush = GameColors.brushCyan;
                 var ax = 30f;
                 var ay = -mid.Height * 0.8f;
                 var ad = 80;
@@ -1245,12 +1240,13 @@ namespace SrvSurvey.plotters
                 headerTxt += " | " + Res.TrackOriginHeaderSuffix.format(turnDirection, Math.Abs(adjustAngle));
             }
 
-            this.drawHeaderText(headerTxt, brush);
+            g.ResetTransform();
+            tt.drawHeader(headerTxt, C.cyan);
         }
 
-        private void drawSiteMap()
+        private void drawSiteMap(Graphics g, TextCursor tt)
         {
-            if (g == null || this.template == null || this.siteMap == null) return;
+            if (this.template == null || this.siteMap == null) return;
 
             if (this.underlay == null)
             {
@@ -1271,7 +1267,7 @@ namespace SrvSurvey.plotters
 
             // Render background bitmap, rotated for commander heading, than translated, then rotated for the site heading
             g.ResetTransform();
-            this.clipToMiddle();
+            this.clipToMiddle(g);
             g.TranslateTransform(mid.Width, mid.Height);
             g.ScaleTransform(this.scale, this.scale);
 
@@ -1293,7 +1289,7 @@ namespace SrvSurvey.plotters
             g.RotateTransform(+r2); // rotate by site heading
 
             g.DrawImage(this.siteMap, -mx, -my, sx, sy); // <-- -- -- **
-            g.DrawEllipse(Pens.DarkRed, -2, -2, 4, 4);
+            //g.DrawEllipse(C.Pens.redDark1, -2, -2, 4, 4);
             //g.DrawEllipse(Pens.DarkRed, -5, -5, 10, 10);
 
             //g.DrawRectangle(Pens.Blue, -mx, -my, sx, sy);
@@ -1301,35 +1297,34 @@ namespace SrvSurvey.plotters
             //g.DrawLine(Pens.Blue, -mx, -my + sy, sx - mx, -my);
 
             g.ResetTransform();
-            this.clipToMiddle();
+            this.clipToMiddle(g);
             g.TranslateTransform(mid.Width, mid.Height);
             g.ScaleTransform(this.scale, this.scale);
             g.RotateTransform(-game.status.Heading);
 
-            // draw compass rose lines centered on the commander
-            float x = commanderOffset.X;
-            float y = commanderOffset.Y;
-            g.DrawLine(Pens.DarkRed, -this.Width * 2, y, +this.Width * 2, y);
-            g.DrawLine(Pens.DarkRed, x, y, x, +this.Height * 2);
-            g.DrawLine(Pens.Red, x, -this.Height * 2, x, y);
+            // draw compass rose lines centered on the site
+            this.resetMiddleSiteOrigin(g);
+            this.drawSiteCompassLines(g);
 
-            this.drawTouchdownAndSrvLocation0(true);
+            this.resetMiddleRotated(g);
+            this.drawShipAndSrvLocation(g, tt);
 
-            this.drawArtifacts(siteOrigin);
+            this.drawArtifacts(g, tt, siteOrigin);
 
-            this.drawObeliskGroupNames(siteOrigin);
+            this.drawObeliskGroupNames(g, siteOrigin);
 
-            this.drawCommander0();
+            this.resetMiddle(g);
+            this.drawCommander(g);
             g.ResetClip();
         }
 
-        private void drawObeliskGroupNames(PointF siteOrigin)
+        private void drawObeliskGroupNames(Graphics g, PointF siteOrigin)
         {
-            if (g == null || template == null || (this.touchdownLocation0 == null && this.srvLocation0 == null)) return;
+            if (g == null || template == null) return;
 
             // reset transform with origin at that point, scaled and rotated to match the commander
             g.ResetTransform();
-            this.clipToMiddle();
+            this.clipToMiddle(g);
             g.TranslateTransform(siteOrigin.X, siteOrigin.Y);
             g.ScaleTransform(this.scale, this.scale);
             var rot = 360 - game.status.Heading;
@@ -1374,18 +1369,18 @@ namespace SrvSurvey.plotters
             }
         }
 
-        private void drawArtifacts(PointF siteOrigin)
+        private void drawArtifacts(Graphics g, TextCursor tt, PointF siteOrigin)
         {
             if (this.template == null || this.template.poi.Count == 0)
             {
                 // there is no map for these
-                this.drawFooterText(Res.NoMapForType.format(siteData.type));
+                tt.drawFooter(Res.NoMapForType.format(siteData.type));
                 return;
             }
 
             // reset transform with origin at that point, scaled and rotated to match the commander
             g.ResetTransform();
-            this.clipToMiddle();
+            this.clipToMiddle(g);
             g.TranslateTransform(siteOrigin.X, siteOrigin.Y);
             g.ScaleTransform(this.scale, this.scale);
             g.RotateTransform(360 - game.status.Heading);
@@ -1403,7 +1398,7 @@ namespace SrvSurvey.plotters
             this.nearestObeliskDist = 1000d;
             int countRelics = 0, confirmedRelics = 0, countPuddles = 0, confirmedPuddles = 0;
             Angle aa;
-            string tt;
+            string txt;
 
             // and draw all the POIs
             var poiToRender = siteData.rawPoi == null
@@ -1436,7 +1431,7 @@ namespace SrvSurvey.plotters
                 var pt = (PointF)Util.rotateLine(deg, poi.dist);
 
                 // render POI
-                this.drawSitePoi(poi, pt);
+                this.drawSitePoi(g, poi, pt);
 
                 // is this the closest POI?
                 var x = pt.X - commanderOffset.X;
@@ -1490,7 +1485,7 @@ namespace SrvSurvey.plotters
                 {
                     aa = Util.ToAngle(x, y) - siteData.siteHeading;
                     if (y < 0) aa += 180;
-                    tt = $"{aa} | {x}, {y}";
+                    txt = $"{aa} | {x}, {y}";
                     nearestDist = d;
                     this.nearestPoi = poi;
                     nearestPt = pt;
@@ -1518,12 +1513,12 @@ namespace SrvSurvey.plotters
 
             // draw footer text
             var footerTxt = "";
-            var footerBrush = GameColors.brushGameOrange;
+            var col = C.orange;
 
             if (this.targetObelisk != null && nearestUnknownDist != double.MaxValue) // && this.targetObelisk == siteData.currentObelisk?.name)
             {
                 footerTxt = Res.ObliskFooter.format(this.targetObelisk, Util.metersToString(nearestUnknownDist));
-                footerBrush = GameColors.brushCyan;
+                col = C.cyan;
                 if (this.targetObelisk == this.nearestPoi?.name)
                     g.DrawEllipse(GameColors.penLime2Dot, -nearestPt.X - 8, -nearestPt.Y - 8, 16, 16);
             }
@@ -1570,7 +1565,7 @@ namespace SrvSurvey.plotters
                     if (this.targetObelisk != null)
                     {
                         footerTxt = Res.ObliskFooter.format(this.targetObelisk, Util.metersToString(nearestUnknownDist));
-                        footerBrush = GameColors.brushCyan;
+                        col = C.cyan;
                     }
                     else
                     {
@@ -1596,52 +1591,48 @@ namespace SrvSurvey.plotters
                         else if (relicHeading == null || siteData.relicTowerHeading == -1)
                             action = $" ({Res.HeadingUnknown})";
                     }
-                    footerBrush = poiStatus == SitePoiStatus.unknown ? GameColors.brushCyan : GameColors.brushGameOrange;
+                    col = poiStatus == SitePoiStatus.unknown ? C.cyan : C.orange;
                     footerTxt = $"{Util.getLoc(this.nearestPoi.type)} {this.nearestPoi.name}: {Util.getLoc(poiStatus)} {action}";
                 }
             }
-            this.drawFooterText(footerTxt, footerBrush);
-
-            var headerBrush = confirmedRelics + confirmedPuddles < countRelics + countPuddles
-                ? GameColors.brushCyan
-                : GameColors.brushGameOrange;
+            g.ResetTransform();
+            tt.drawFooter(footerTxt, col);
 
             // Draw header
-            this.drawHeader(confirmedRelics, countRelics, confirmedPuddles, countPuddles);
-
-            g.ResetTransform();
+            this.drawHeader(tt, confirmedRelics, countRelics, confirmedPuddles, countPuddles);
         }
 
-        private void drawHeader(int confirmedRelics, int countRelics, int confirmedPuddles, int countPuddles)
+        private void drawHeader(TextCursor tt, int confirmedRelics, int countRelics, int confirmedPuddles, int countPuddles)
         {
+            tt.dty = N.five;
             var status = siteData.getCompletionStatus();
 
             if (confirmedRelics < countRelics || confirmedPuddles < countPuddles)
             {
                 // how many relic and puddles remain
-                this.drawHeaderText(Res.HeaderGeneral.format(status.percent, confirmedRelics, countRelics, confirmedPuddles, countPuddles), GameColors.brushCyan); // TODO: use this.drawAt for different colors?
+                tt.draw(N.eight, Res.HeaderGeneral.format(status.percent, confirmedRelics, countRelics, confirmedPuddles, countPuddles), C.cyan, GameColors.fontMiddle);
             }
             else if (siteData.isRuins)
             {
                 // Ruins ...
                 if (siteData.relicTowerHeading == -1)
-                    this.drawHeaderText(Res.HeaderNeedRelicTowerHeading, GameColors.brushCyan);
+                    tt.draw(N.eight, Res.HeaderNeedRelicTowerHeading, C.cyan);
                 else
-                    this.drawHeaderText(Res.HeaderRuinsComplete.format(siteData.index), GameColors.brushGameOrange);
+                    tt.draw(N.eight, Res.HeaderRuinsComplete.format(siteData.index), C.orange);
             }
             else
             {
                 // Structures...
                 var countRelicTowersPresent = siteData.poiStatus.Count(_ => _.Key.StartsWith('t') && _.Value == SitePoiStatus.present);
                 if (status.countRelicsNeedingHeading > 0)
-                    this.drawHeaderText(Res.HeaderNeedRelicTowers.format(status.countRelicsNeedingHeading), GameColors.brushCyan);
+                    tt.draw(N.eight, Res.HeaderNeedRelicTowers.format(status.countRelicsNeedingHeading), C.cyan);
                 else
-                    this.drawHeaderText(Res.HeaderStructureComplete.format(siteData.type), GameColors.brushGameOrange);
+                    tt.draw(N.eight, Res.HeaderStructureComplete.format(siteData.type), C.orange);
             }
 
             var zt = Res.ZoomLevel.format(this.scale.ToString("N1"));
             if (autoZoom) zt += " " + Res.ZoomLevelAuto;
-            this.drawTextAt2(this.Width - eight, zt, null, null, true);
+            tt.drawRight(this.width - N.eight, zt);
         }
 
         private bool isRuinsPoi(POIType poiType, bool incObelisks, bool incBrokeObelisks = false)
@@ -1667,7 +1658,7 @@ namespace SrvSurvey.plotters
             }
         }
 
-        private void drawSitePoi(SitePOI poi, PointF pt)
+        private void drawSitePoi(Graphics g, SitePOI poi, PointF pt)
         {
             // render no POI if form editor says so
             if (formEditMap != null && formEditMap.checkHideAllPoi.Checked)
@@ -1698,17 +1689,17 @@ namespace SrvSurvey.plotters
             {
                 case POIType.obelisk:
                 case POIType.brokeObelisk:
-                    this.drawObelisk(poi, pt, poiStatus); break;
+                    this.drawObelisk(g, poi, pt, poiStatus); break;
                 case POIType.pylon:
-                    this.drawPylon(poi, pt, poiStatus); break;
+                    this.drawPylon(g, poi, pt, poiStatus); break;
                 case POIType.component:
-                    this.drawComponent(poi, pt, poiStatus); break;
+                    this.drawComponent(g, poi, pt, poiStatus); break;
                 case POIType.relic:
-                    this.drawRelicTower(poi, pt, poiStatus); break;
+                    this.drawRelicTower(g, poi, pt, poiStatus); break;
                 case POIType.destructablePanel:
-                    this.drawDestructablePanel(poi, pt); break;
+                    this.drawDestructablePanel(g, poi, pt); break;
                 default:
-                    this.drawPuddle(poi, pt, poiStatus); break;
+                    this.drawPuddle(g, poi, pt, poiStatus); break;
             }
         }
 
@@ -1725,7 +1716,7 @@ namespace SrvSurvey.plotters
             new PointF(1 - 1.5f, 4 - 1.5f),
         };
 
-        private void drawObelisk(SitePOI poi, PointF pt, SitePoiStatus poiStatus)
+        private void drawObelisk(Graphics g, SitePOI poi, PointF pt, SitePoiStatus poiStatus)
         {
             var rot = poi.rot + this.siteData.siteHeading + 167.5m; // adjust for rotation of points by: 167.5m
 
@@ -1769,7 +1760,7 @@ namespace SrvSurvey.plotters
             new PointF(0, -3),
         };
 
-        private void drawPylon(SitePOI poi, PointF pt, SitePoiStatus poiStatus)
+        private void drawPylon(Graphics g, SitePOI poi, PointF pt, SitePoiStatus poiStatus)
         {
             var rot = poi.rot + this.siteData.siteHeading;
 
@@ -1795,7 +1786,7 @@ namespace SrvSurvey.plotters
             new PointF(0, +5),
         };
 
-        private void drawComponent(SitePOI poi, PointF pt, SitePoiStatus poiStatus)
+        private void drawComponent(Graphics g, SitePOI poi, PointF pt, SitePoiStatus poiStatus)
         {
             var rot = poi.rot + this.siteData.siteHeading - 45;
 
@@ -1813,15 +1804,15 @@ namespace SrvSurvey.plotters
                 var rr = game.status.Heading - 150;
 
                 // top, middle, bottom
-                drawComponentMaterial(siteData.components[poi.name].items[0], rr + 0);
-                drawComponentMaterial(siteData.components[poi.name].items[1], rr + 242);
-                drawComponentMaterial(siteData.components[poi.name].items[2], rr + 122);
+                drawComponentMaterial(g, siteData.components[poi.name].items[0], rr + 0);
+                drawComponentMaterial(g, siteData.components[poi.name].items[1], rr + 242);
+                drawComponentMaterial(g, siteData.components[poi.name].items[2], rr + 122);
             }
 
             g.TranslateTransform(+pt.X, +pt.Y);
         }
 
-        private void drawComponentMaterial(GComponent cmp, float rot)
+        private void drawComponentMaterial(Graphics g, GComponent cmp, float rot)
         {
             if (cmp == GComponent.unknown) return;
 
@@ -1853,7 +1844,7 @@ namespace SrvSurvey.plotters
             new PointF(-5, -3),
         };
 
-        private void drawDestructablePanel(SitePOI poi, PointF pt)
+        private void drawDestructablePanel(Graphics g, SitePOI poi, PointF pt)
         {
             if (!Game.settings.guardianComponentMaterials_TEST) return;
 
@@ -1863,16 +1854,16 @@ namespace SrvSurvey.plotters
             g.Adjust(-pt.X, pt.Y, game.status.Heading, () =>
             {
                 if (cmp == GComponent.unknown)
-                    g.DrawRectangle(GameColors.penCyan1, -two, -two, four, four);
+                    g.DrawRectangle(GameColors.penCyan1, -N.two, -N.two, N.four, N.four);
                 else
                 {
-                    g.FillRectangle(this.getComponentBrush(cmp), -two, -two, four, four);
-                    g.DrawRectangle(Pens.Black, -two, -two, four, four);
+                    g.FillRectangle(this.getComponentBrush(cmp), -N.two, -N.two, N.four, N.four);
+                    g.DrawRectangle(Pens.Black, -N.two, -N.two, N.four, N.four);
                 }
             });
         }
 
-        private void drawDestructablePanels()
+        private void drawDestructablePanels(Graphics g)
         {
             if (template?.destructablePanels == null || true) return;
 
@@ -1895,19 +1886,19 @@ namespace SrvSurvey.plotters
                         g.FillEllipse(GameColors.brushAroundPoiUnknown, -5, -5, +10, +10);
                         g.DrawEllipse(GameColors.penAroundPoiUnknown, -4.5f, -4.5f, +9, +9);
 
-                        g.DrawRectangle(GameColors.penCyan1, -two, -two, four, four);
+                        g.DrawRectangle(GameColors.penCyan1, -N.two, -N.two, N.four, N.four);
                     }
                     else
                     {
-                        g.FillRectangle(bb, -two, -two, four, four);
-                        g.DrawRectangle(Pens.Black, -two, -two, four, four);
+                        g.FillRectangle(bb, -N.two, -N.two, N.four, N.four);
+                        g.DrawRectangle(Pens.Black, -N.two, -N.two, N.four, N.four);
 
                     }
                 });
             }
         }
 
-        private void drawRelicTower(SitePOI poi, PointF pt, SitePoiStatus poiStatus)
+        private void drawRelicTower(Graphics g, SitePOI poi, PointF pt, SitePoiStatus poiStatus)
         {
             // draw dashed blue line at ruins only
             if (poiStatus == SitePoiStatus.unknown && siteData.isRuins)
@@ -1940,7 +1931,7 @@ namespace SrvSurvey.plotters
             g.TranslateTransform(+pt.X, +pt.Y);
         }
 
-        private void drawPuddle(SitePOI poi, PointF pt, SitePoiStatus poiStatus)
+        private void drawPuddle(Graphics g, SitePOI poi, PointF pt, SitePoiStatus poiStatus)
         {
             var d = 10f;
             if (siteData.isRuins && poiStatus != SitePoiStatus.unknown) d *= 1.5f;
@@ -1972,43 +1963,40 @@ namespace SrvSurvey.plotters
             }
         }
 
-        private void drawSiteTypeHelper()
+        private void drawSiteTypeHelper(Graphics g, TextCursor tt)
         {
-            if (g == null) return;
-
-            this.drawHeaderText($"{siteData.nameLocalised} | {Util.getLoc(siteData.type)} | ???°");
-            this.drawFooterText($"{game.systemBody?.name}");
+            tt.drawHeader($"{siteData.nameLocalised} | {Util.getLoc(siteData.type)} | ???°");
+            tt.drawFooter($"{game.systemBody?.name}");
             g.ResetTransform();
-            this.clipToMiddle();
+            this.clipToMiddle(g);
 
             string msg;
             SizeF sz;
             var tx = 10f;
             var ty = 20f;
 
-            this.drawFooterText($"{game.systemBody?.name}");
+            tt.drawFooter($"{game.systemBody?.name}");
 
             // if we don't know the site type yet ...
             msg = "\r\n" + Res.IdentifySiteType.format(Properties.Guardian.Alpha, Properties.Guardian.Beta, Properties.Guardian.Gamma);
-            sz = g.MeasureString(msg, GameColors.font1, this.Width);
+            sz = g.MeasureString(msg, GameColors.font1, this.width);
             g.DrawString(msg, GameColors.font1, GameColors.brushCyan, tx, ty, StringFormat.GenericTypographic);
         }
 
-        private void drawSiteHeadingHelper()
+        private void drawSiteHeadingHelper(Graphics g, TextCursor tt)
         {
-            if (g == null) return;
-
-            this.drawHeaderText($"{siteData.nameLocalised} | {Util.getLoc(siteData.type)} | ???°");
-            this.drawFooterText($"{game.systemBody?.name}");
+            tt.drawHeader($"{siteData.nameLocalised} | {Util.getLoc(siteData.type)} | ???°", null, GameColors.fontMiddle);
+            tt.drawFooter($"{game.systemBody?.name}");
             g.ResetTransform();
-            this.clipToMiddle();
+            this.clipToMiddle(g);
 
             string msg;
-            var tx = ten;
-            var ty = twoEight;
+            tt.dtx = N.ten;
+            tt.dty = N.twoEight;
 
             var isRuins = siteData.isRuins;
             msg = Res.IdentifySiteHeading;
+
             if (isRuins)
                 msg += "\r\n\r\n" + Res.IdentifyWithButtress;
             else
@@ -2025,24 +2013,53 @@ namespace SrvSurvey.plotters
                 if (siteData.name.StartsWith("$Ancient_Medium") || siteData.name.StartsWith("$Ancient_Small"))
                     msg += "\r\n\r\n" + Res.IdentifyWithPort;
             }
-            var sz = g.MeasureString(msg, GameColors.fontMiddle, this.Width);
 
-            g.DrawString(msg, GameColors.fontMiddle, GameColors.brushCyan, tx, ty, StringFormat.GenericTypographic);
+            tt.draw(N.ten, msg, C.cyan, GameColors.fontMiddle);
+            tt.newLine(N.ten, true);
 
             // show location of buttress or other thing to align with
             if (this.headingGuidance != null)
-                g.DrawImage(this.headingGuidance, forty, ty + sz.Height);
+            {
+                var sf = 1f;
+                switch (Game.settings.idxGuardianPlotter)
+                {
+                    case 0: sf = 1f; break;
+                    case 1: sf = 2f; break;
+                    case 2: sf = 2.5f; break;
+                    case 3: sf = 3.5f; break;
+                    case 4: sf = 5.5f; break;
+                }
+                g.DrawImage(this.headingGuidance, N.forty, tt.dty, this.headingGuidance.Width * sf, this.headingGuidance.Height * sf);
+            }
+        }
+
+        private void drawCompassLines0(Graphics g, int heading = -1)
+        {
+            if (g == null) return;
+
+            if (heading == -1) heading = game.status!.Heading;
+
+            g.ResetTransform();
+            this.clipToMiddle(g);
+
+            g.TranslateTransform(mid.Width, mid.Height);
+
+            // draw compass rose lines
+            g.RotateTransform(360 - heading);
+            g.DrawLine(Pens.DarkRed, -this.width, 0, +this.width, 0);
+            g.DrawLine(Pens.DarkRed, 0, 0, 0, +this.height);
+            g.DrawLine(Pens.Red, 0, -this.height, 0, 0);
+            g.ResetClip();
         }
 
         #region static accessing stuff
 
-        public static PlotGuardians? instance;
-
         public static void switchMode(Mode newMode)
         {
-            if (PlotGuardians.instance != null)
+            var plotter = PlotBase2.getPlotter<PlotGuardians>();
+            if (plotter != null)
             {
-                PlotGuardians.instance.setMode(newMode);
+                plotter.setMode(newMode);
                 Elite.setFocusED();
                 if (Game.activeGame != null)
                     Game.activeGame.fireUpdate(false);

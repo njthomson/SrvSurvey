@@ -18,10 +18,11 @@ namespace SrvSurvey.plotters
 
         public static bool allowed(Game game)
         {
+            var guardianSystemDisabled = !Game.settings.enableGuardianSites && !Game.settings.autoShowGuardianSummary;
             return game.targetBody != null
                 && game.systemData != null
                 && Game.settings.autoShowPlotBodyInfo
-                && !PlotGuardianSystem.allowPlotter // hide if Guardian plotter is open
+                && (guardianSystemDisabled || !PlotGuardianSystem.allowed(game))
                 && (!Game.settings.autoHidePlotBodyInfoInBubble || Util.getSystemDistance(game.systemData.starPos, Util.sol) > Game.settings.bodyInfoBubbleSize)
                 && (
                     // any time during DSS or ... 

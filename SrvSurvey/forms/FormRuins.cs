@@ -1213,7 +1213,7 @@ namespace SrvSurvey
 
             subItem.Checked = true;
 
-            Program.getPlotter<PlotGuardians>()?.Invalidate();
+            PlotBase2.invalidate(nameof(PlotGuardians));
             siteData.Save();
             Elite.setFocusED();
         }
@@ -1229,7 +1229,7 @@ namespace SrvSurvey
 
             siteData.Save();
             map.Invalidate();
-            Program.getPlotter<PlotGuardians>()?.Invalidate();
+            PlotBase2.invalidate(nameof(PlotGuardians));
             Elite.setFocusED();
         }
 
@@ -1266,21 +1266,21 @@ namespace SrvSurvey
         {
             template.imageOffset.X = (int)numX.Value;
             this.map.Invalidate();
-            Program.getPlotter<PlotGuardians>()?.Invalidate();
+            PlotBase2.invalidate(nameof(PlotGuardians));
         }
 
         private void numY_ValueChanged(object sender, EventArgs e)
         {
             template.imageOffset.Y = (int)numY.Value;
             this.map.Invalidate();
-            Program.getPlotter<PlotGuardians>()?.Invalidate();
+            PlotBase2.invalidate(nameof(PlotGuardians));
         }
 
         private void numScale_ValueChanged(object sender, EventArgs e)
         {
             template.scaleFactor = (float)numScale.Value;
             this.map.Invalidate();
-            Program.getPlotter<PlotGuardians>()?.Invalidate();
+            PlotBase2.invalidate(nameof(PlotGuardians));
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -1295,7 +1295,7 @@ namespace SrvSurvey
 
             this.angle = (float)numA.Value;
             this.map.Invalidate();
-            Program.getPlotter<PlotGuardians>()?.Invalidate();
+            PlotBase2.invalidate(nameof(PlotGuardians));
         }
     }
 }

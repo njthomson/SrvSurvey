@@ -356,6 +356,12 @@ namespace SrvSurvey.plotters
 
         public static void renderAll(Game game, bool force = false)
         {
+            if (Program.control.InvokeRequired)
+            {
+                Program.defer(() => renderAll(game, force));
+                return;
+            }
+
             if (game.isShutdown || game.status == null || game.cmdr == null) return;
 
             // check if we need to create or remove any
@@ -726,19 +732,19 @@ namespace SrvSurvey.plotters
         /// <summary>
         /// Centered on site origin
         /// </summary>
-        protected override void drawCompassLines(Graphics g)
+        protected void drawSiteCompassLines(Graphics g)
         {
             adjust(g, PointF.Empty, -siteHeading, () =>
             {
                 // draw compass rose lines centered on the site origin
-                g.DrawLine(GameColors.penDarkRed2Ish, -500, 0, +500, 0);
-                g.DrawLine(GameColors.penDarkRed2Ish, 0, -500, 0, +500);
+                g.DrawLine(GameColors.penDarkRed2Ish, -1500, 0, +1500, 0);
+                g.DrawLine(GameColors.penDarkRed2Ish, 0, -1500, 0, +1500);
                 //g.DrawLine(GameColors.penRed2Ish, 0, -500, 0, 0);
             });
 
             // and a line to represent "north" relative to the site - visualizing the site's rotation
             if (this.siteHeading >= 0)
-                g.DrawLine(GameColors.penRed2DashedIshIsh, 0, -500, 0, 0);
+                g.DrawLine(GameColors.penRed2DashedIshIsh, 0, -1500, 0, 0);
         }
     }
 
