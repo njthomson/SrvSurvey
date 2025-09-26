@@ -303,6 +303,12 @@ namespace SrvSurvey.net
                     site.pubData.rth = string.Join(',', site.pubData.relicTowerHeadings.OrderBy(_ => int.Parse(_.Key.Substring(1), CultureInfo.InvariantCulture)).Select(_ => $"{_.Key}:{_.Value}"));
                 }
 
+                // trim any poi that appear to be obelisks - occasionally they are reported at present, absent or empty but we don't care about them in this regard
+                var bogus = site.poiStatus.Keys.Where(k => k.Length == 3 && char.IsUpper(k[0]) && char.IsDigit(k[1]) && char.IsDigit(k[2]));
+                Game.log(bogus.formatWithHeader($"Ignoring {bogus.Count()} bogus items:"));
+                foreach (var key in bogus)
+                    site.poiStatus.Remove(key);
+
                 var poiPresent = new HashSet<string>(template.poi.Where(p => site.getPoiStatus(p.name) == SitePoiStatus.present).Select(p => p.name));
                 var poiAbsent = new HashSet<string>(template.poi.Where(p => site.getPoiStatus(p.name) == SitePoiStatus.absent).Select(p => p.name));
                 var poiEmpty = new HashSet<string>(template.poi.Where(p => site.getPoiStatus(p.name) == SitePoiStatus.empty).Select(p => p.name));
