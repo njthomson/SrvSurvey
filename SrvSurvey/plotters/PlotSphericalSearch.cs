@@ -144,6 +144,7 @@ namespace SrvSurvey.plotters
         protected override void onStatusChange(Status status)
         {
             if (game.systemData == null) return;
+            base.onStatusChange(status);
 
             // TODO: Use: status.changed.Contains(nameof(Status.Destination)) ?
 

@@ -102,12 +102,16 @@ namespace SrvSurvey.plotters
 
         protected override void onStatusChange(Status status)
         {
+            base.onStatusChange(status);
             // re-calc distances and re-order TrackingDeltas
             foreach (var name in this.trackers.Keys)
             {
                 this.trackers[name].ForEach(_ => _.calc());
                 this.trackers[name].Sort((a, b) => a.distance.CompareTo(b.distance));
             }
+
+            if (status.changed.Contains(nameof(Status.Heading)) || status.changed.Contains(nameof(Status.Latitude)) || status.changed.Contains(nameof(Status.Longitude)))
+                this.invalidate();
         }
 
         protected override void onJournalEntry(ScanOrganic entry)

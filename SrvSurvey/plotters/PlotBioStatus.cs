@@ -65,6 +65,7 @@ namespace SrvSurvey.plotters
 
         protected override void onStatusChange(Status status)
         {
+            base.onStatusChange(status);
             if (this.lastTemp != status.Temperature) this.invalidate();
             this.lastTemp = status.Temperature;
 

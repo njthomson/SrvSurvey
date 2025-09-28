@@ -66,6 +66,7 @@ namespace SrvSurvey.plotters
 
         protected override void onStatusChange(Status status)
         {
+            base.onStatusChange(status);
             // re-calc distances and re-order TrackingDeltas
             foreach (var signal in this.signals)
             {

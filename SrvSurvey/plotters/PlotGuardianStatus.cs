@@ -48,6 +48,7 @@ namespace SrvSurvey.plotters
 
         protected override void onStatusChange(Status status)
         {
+            base.onStatusChange(status);
             if (PlotGuardianStatus.glideSite != null && !status.GlideMode && status.changed.Contains("Flags2"))
                 PlotGuardianStatus.glideSite = null;
 

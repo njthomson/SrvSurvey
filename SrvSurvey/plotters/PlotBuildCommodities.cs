@@ -500,7 +500,7 @@ namespace SrvSurvey.plotters
                     .widestColumn(0, columns);
 
                 if (isPending)
-                    tt.draw(N.two, "🔁", C.cyan, ff);
+                    tt.draw(N.two, "►", C.cyan, ff);
                 else if (shipHasEnough || fcHasEnough)
                     tt.draw(N.two, "✔️", shipHasEnough ? C.green : C.greenDark, ff);
 
@@ -717,7 +717,7 @@ namespace SrvSurvey.plotters
                             .widestColumn(0, columns);
 
                     if (isPending)
-                        tt.draw(N.two, "🔁", C.cyan, ff);
+                        tt.draw(N.two, "►", C.cyan, ff);
                     else if (haveEnough && !nameTxt.EndsWith("❌"))
                     {
                         tt.draw(N.two, "✔️", col == C.green ? C.green : C.greenDark, ff);

@@ -521,6 +521,12 @@ namespace SrvSurvey.plotters
             this.mid = this.size / 2;
         }
 
+        protected override void onStatusChange(Status status)
+        {
+            base.onStatusChange(status);
+            this.invalidate();
+        }
+
         protected void clipToMiddle(Graphics g)
         {
             this.clipToMiddle(g, N.four, N.twoSix, N.four, N.twoFour);
@@ -678,6 +684,7 @@ namespace SrvSurvey.plotters
 
         protected override void onStatusChange(Status status)
         {
+            base.onStatusChange(status);
             if (game?.status == null || game.systemBody == null) return;
 
             this.distToSiteOrigin = Util.getDistance(siteLocation, Status.here, this.radius);

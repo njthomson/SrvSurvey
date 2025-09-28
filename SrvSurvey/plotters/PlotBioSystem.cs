@@ -94,6 +94,7 @@ namespace SrvSurvey.plotters
 
         protected override void onStatusChange(Status status)
         {
+            base.onStatusChange(status);
             if (!Game.settings.drawBodyBiosOnlyWhenNear && this.durationTimer.Enabled && game.mode != GameMode.ExternalPanel)
             {
                 this.stopTimer();

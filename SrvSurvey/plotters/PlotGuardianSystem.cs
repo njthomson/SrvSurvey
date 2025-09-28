@@ -37,6 +37,7 @@ namespace SrvSurvey.plotters
 
         protected override void onStatusChange(Status status)
         {
+            base.onStatusChange(status);
             if (status.changed.Contains(nameof(Status.Destination)))
                 this.invalidate();
         }
