@@ -102,7 +102,7 @@ namespace SrvSurvey.game
         public void setNextHop(StarRef star)
         {
             // exit early if we didn't start yet, or we jumped into a system that is not a known hop
-            var idx = hops.FindIndex(h => h.id64 == star.id64);
+            var idx = hops.FindIndex(h => h.id64 == star.id64 || h.name.like(star.name));
             if (!active) return;
 
             var dirty = false;
@@ -147,8 +147,17 @@ namespace SrvSurvey.game
         /// An extended form of StarRef with extra details for routing
         /// </summary>
         [JsonConverter(typeof(Hop.JsonConverter))]
-        public class Hop : StarRef
+        public class Hop
         {
+            public string name;
+            public long? id64;
+            public double? x;
+            public double? y;
+            public double? z;
+
+            [JsonIgnore]
+            public double[]? xyz => x.HasValue && y.HasValue && z.HasValue ? new double[] { x.Value, y.Value, z.Value } : null;
+
             public string? notes;
             public bool refuel;
             public bool neutron;
@@ -156,8 +165,13 @@ namespace SrvSurvey.game
             public Hop()
             { }
 
-            public Hop(string name, long id64, double x, double y, double z, string? notes = null) : base(x, y, z, name, id64)
+            public Hop(string name, long? id64, double? x, double? y, double? z, string? notes = null)
             {
+                this.x = x;
+                this.y = y;
+                this.z = z;
+                this.name = name;
+                this.id64 = id64;
                 this.notes = notes;
             }
 
@@ -215,6 +229,18 @@ namespace SrvSurvey.game
                 };
             }
 
+            public static implicit operator Hop(StarRef pos)
+            {
+                return new Hop()
+                {
+                    name = pos.name,
+                    id64 = pos.id64,
+                    x = pos.x,
+                    y = pos.y,
+                    z = pos.z,
+                };
+            }
+
             class JsonConverter : Newtonsoft.Json.JsonConverter
             {
                 public override bool CanConvert(Type objectType)
@@ -232,10 +258,10 @@ namespace SrvSurvey.game
                         var hop = new Hop
                         {
                             name = obj["name"]?.Value<string>()!,
-                            id64 = obj["id64"]?.Value<long>() ?? 0,
-                            x = obj["x"]?.Value<double>() ?? 0,
-                            y = obj["y"]?.Value<double>() ?? 0,
-                            z = obj["z"]?.Value<double>() ?? 0,
+                            id64 = obj["id64"]?.Value<long?>(),
+                            x = obj["x"]?.Value<double?>(),
+                            y = obj["y"]?.Value<double?>(),
+                            z = obj["z"]?.Value<double?>(),
                             // plus any optional fields
                             refuel = obj["refuel"]?.Value<bool>() ?? false,
                             neutron = obj["neutron"]?.Value<bool>() ?? false,
@@ -259,10 +285,10 @@ namespace SrvSurvey.game
 
                     var obj = new JObject();
                     obj["name"] = JToken.FromObject(hop.name);
-                    obj["id64"] = JToken.FromObject(hop.id64);
-                    obj["x"] = JToken.FromObject(hop.x);
-                    obj["y"] = JToken.FromObject(hop.y);
-                    obj["z"] = JToken.FromObject(hop.z);
+                    if (hop.id64 != null) obj["id64"] = JToken.FromObject(hop.id64);
+                    if (hop.x != null) obj["x"] = JToken.FromObject(hop.x);
+                    if (hop.y != null) obj["y"] = JToken.FromObject(hop.y);
+                    if (hop.z != null) obj["z"] = JToken.FromObject(hop.z);
 
                     // plus any optional fields
                     if (hop.refuel) obj["refuel"] = true;

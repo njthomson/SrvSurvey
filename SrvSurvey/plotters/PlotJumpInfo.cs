@@ -169,13 +169,18 @@ namespace SrvSurvey.plotters
                     netData.special[Res.SpecialGuardian] = list;
             }
 
-            if (game?.cmdr != null && game.cmdr.route.active && game.cmdr.route.nextHop?.id64 == next.SystemAddress)
+            if (game.cmdr?.route.active == true && game.cmdr?.route.nextHop != null)
             {
-                var set = netData.special.init(Res.SpecialRouteHop);
-                set.Add(Res.SpecialHopInfo.format(game.cmdr.route.last + 1, game.cmdr.route.hops.Count));
-                // and show any notes
-                if (game.cmdr.route.nextHop?.notes != null)
-                    set.Add(game.cmdr.route.nextHop.notes!);
+                var nextHop = game.cmdr.route.nextHop;
+                if (nextHop.id64 == next.SystemAddress || nextHop.name.like(next.StarSystem))
+                {
+                    var set = netData.special.init(Res.SpecialRouteHop);
+                    var lastIdx = game.cmdr.route.hops.IndexOf(nextHop);
+                    set.Add(Res.SpecialHopInfo.format(lastIdx + 1, game.cmdr.route.hops.Count));
+                    // and show any notes
+                    if (nextHop.notes != null)
+                        set.Add(nextHop.notes!);
+                }
             }
 
             // are we entering a different galactic region?

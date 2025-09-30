@@ -87,7 +87,7 @@ namespace SrvSurvey.plotters
                 : $"⚑ {body.name}";
             tt.draw(bodyName, GameColors.fontMiddleBold);
             tt.newLine(+2, true);
-            var planetish = body.type != SystemBodyType.Star && body.type != SystemBodyType.Asteroid;
+            var planetish = body.type != SystemBodyType.Star && body.type != SystemBodyType.Asteroid && body.type != SystemBodyType.PlanetaryRing;
 
             if (body.type == SystemBodyType.Unknown)
             {

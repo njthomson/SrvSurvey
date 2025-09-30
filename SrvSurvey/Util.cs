@@ -387,7 +387,7 @@ namespace SrvSurvey
             }
         }
 
-        public static double getSystemDistance(double[] here, double[]? there)
+        public static double getSystemDistance(double[]? here, double[]? there)
         {
             if (here == null || there == null) return -1;
 
@@ -820,7 +820,7 @@ namespace SrvSurvey
                 MessageBox.Show(
                     Main.ActiveForm,
                     Properties.Misc.UnexpectedWentWrong,
-                    "SrvSurvey",
+                    $"SrvSurvey - {Program.releaseVersion}",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
@@ -1632,6 +1632,17 @@ namespace SrvSurvey
             if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(value)) return;
 
             headers.Add(name, value);
+        }
+
+        /// <summary> Wraps: left.Equals(right, StringComparison.OrdinalIgnoreCase) </summary>
+        public static bool like(this string left, string? right)
+        {
+            if (left == null && right == null)
+                return true;
+            else if (left == null || right == null)
+                return false;
+            else
+                return left.Equals(right, StringComparison.OrdinalIgnoreCase);
         }
     }
 

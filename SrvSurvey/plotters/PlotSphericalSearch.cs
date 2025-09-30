@@ -378,13 +378,19 @@ namespace SrvSurvey.plotters
             tt.draw(N.eight, txt, ff);
             tt.newLine(true);
 
-            var dist = route.nextHop?.getDistanceFrom(game.cmdr.getCurrentStarRef()).ToString("N2") ?? "?";
-            tt.draw(N.eight, $"Next hop: {dist} ly away", ff);
+            if (route.nextHop?.xyz == null)
+                tt.draw(N.eight, $"Next hop: unknown distance", ff);
+            else
+            {
+                var dist = Util.getSystemDistance(route.nextHop.xyz, game.cmdr.getCurrentStarRef()).ToString("N2");
+                tt.draw(N.eight, $"Next hop: {dist} ly away", ff);
+            }
             tt.newLine(true);
 
             // highlight if nextHop is NOT the current route final destination
             var col = C.orange;
-            if (game.navRoute.Route.LastOrDefault()?.SystemAddress != route.nextHop?.id64)
+            var lastHop = game.navRoute.Route.LastOrDefault();
+            if (lastHop?.SystemAddress != route.nextHop?.id64 && lastHop?.StarSystem.like(route.nextHop?.name) != true)
                 col = C.cyan;
 
             tt.dty += N.four;

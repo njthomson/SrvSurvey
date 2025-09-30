@@ -456,8 +456,8 @@ namespace SrvSurvey.plotters
                 if (xFC > 0 && Game.settings.buildProjectsShowSumFC_TEST && (!Game.settings.buildProjectsInlineSumFC_TEST || cargoCount > 0))
                 {
                     // show amount on all FCs in same column?
-                    var fcAmount = this.sumCargoLinkedFCs.GetValueOrDefault(name, -1);
-                    if (fcAmount > 0)
+                    var fcAmount = this.sumCargoLinkedFCs.GetValueOrDefault(name);
+                    if (fcAmount >= 0)
                     {
                         if (Game.settings.buildProjectsShowSumFCDelta_TEST)
                         {
@@ -485,6 +485,8 @@ namespace SrvSurvey.plotters
                             // if sharing a column ... make FC counts darker
                             if (Game.settings.buildProjectsInlineSumFC_TEST)
                                 cc = fcAmount >= needCount ? C.greenDark : C.redDark;
+                            else if (fcAmount == 0)
+                                cc = C.redDark;
 
                             tt.draw(xFC, diffTxt, cc, ff, true)
                                 .widestColumn(2, columns);

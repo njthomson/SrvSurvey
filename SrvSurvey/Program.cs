@@ -105,7 +105,7 @@ namespace SrvSurvey
             catch (Exception ex)
             {
                 Game.log($"Failed to boot SrvSurvey: {ex.Message}\r\n{ex.StackTrace}");
-                MessageBox.Show($"An unexpected error occurred. Please report the following on https://github.com/njthomson/SrvSurvey/issues:\r\n\r\n{ex}", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"An unexpected error occurred. Please report the following on https://github.com/njthomson/SrvSurvey/issues:\r\n\r\n{ex}", $"SrvSurvey - {releaseVersion}", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -619,7 +619,7 @@ namespace SrvSurvey
                 var count3 = Directory.Exists(dataFolder) ? Directory.GetFiles(dataFolder, "*.*", SearchOption.AllDirectories).Length : -1;
                 var count4 = Directory.Exists(dataFolder2) ? Directory.GetFiles(dataFolder2, "*.*", SearchOption.AllDirectories).Length : -1;
 
-                MessageBox.Show($"An unexpected error occurred. Please report the following on https://github.com/njthomson/SrvSurvey/issues:\n\nDiagnostic counts: [{count1}, {count2}, {count3}, {count4}]\nLast operation: {lastOperation}\n\n{ex.Message}\n\n{ex.StackTrace}", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"An unexpected error occurred. Please report the following on https://github.com/njthomson/SrvSurvey/issues:\n\nDiagnostic counts: [{count1}, {count2}, {count3}, {count4}]\nLast operation: {lastOperation}\n\n{ex.Message}\n\n{ex.StackTrace}", $"SrvSurvey - {releaseVersion}", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Process.GetCurrentProcess().Kill();
                 return true;
             }

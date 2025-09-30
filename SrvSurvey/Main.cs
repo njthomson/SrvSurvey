@@ -375,9 +375,17 @@ namespace SrvSurvey
             // every ~5 seconds - force a process check
             if ((DateTime.Now - lastProcCheck).TotalSeconds > 5)
             {
-                lastProcCheck = DateTime.Now;
-                var procs = Process.GetProcessesByName("EliteDangerous64");
-                Elite.hadManyGameProcs = procs.Length > 1;
+                try
+                {
+                    lastProcCheck = DateTime.Now;
+                    var procs = Process.GetProcessesByName("EliteDangerous64");
+                    Elite.hadManyGameProcs = procs.Length > 1;
+                }
+                catch (Exception ex)
+                {
+                    // report but ignore any errors here
+                    Game.log($"timer1_Tick: GetProcessesByName failed:\r\n\t{ex.Message}\r\n{ex.StackTrace}");
+                }
             }
 
             // handle single/multiple processes

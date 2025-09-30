@@ -74,7 +74,10 @@ namespace SrvSurvey.forms
             if (rslt != DialogResult.OK) return;
             if (string.IsNullOrEmpty(dialog.FileName) || !File.Exists(dialog.FileName)) return;
 
-            var lines = File.ReadAllLines(dialog.FileName);
+            var lines = File.ReadAllLines(dialog.FileName)
+                .Where(line => !string.IsNullOrWhiteSpace(line))
+                .Select(line => line.Trim())
+                .ToArray();
 
             var msg = Properties.FormRouteExtras.ImportNames.format(lines.Length);
             Game.log(msg);
@@ -125,12 +128,9 @@ namespace SrvSurvey.forms
                 {
                     var star = await Game.spansh.getSystemRef(name);
                     if (star == null)
-                    {
-                        Game.log($"Unknown star system: {name}");
-                        continue;
-                    }
+                        Game.log($"doImportNames: Unknown star system: {name}");
 
-                    hops.Add(new FollowRoute.Hop(star.name, star.id64, star.x, star.y, star.z));
+                    hops.Add(new FollowRoute.Hop(star?.name ?? name, star?.id64, star?.x, star?.y, star?.z));
                     count++;
                     this.Invoke(() => prepList());
                 }
@@ -259,8 +259,8 @@ namespace SrvSurvey.forms
                         || (n - 1 == lastIdx && n > 0 && list.Items[n - 1].Text != cmdr.currentSystem);
                     item.BackColor = highlight ? Color.Black : SystemColors.WindowFrame;
 
-                    var dist = star.getDistanceFrom(lastStar);
-                    var subDist = item.SubItems.Add($"{dist:N2} ly");
+                    var dist = Util.getSystemDistance(star.xyz, lastStar.xyz);
+                    var subDist = item.SubItems.Add(dist == -1 ? "?" : $"{dist:N2} ly "); // the extra space makes it wide enough for the column header
                     subDist.Tag = dist;
 
                     var subNotes = item.SubItems.Add("");
@@ -348,7 +348,7 @@ namespace SrvSurvey.forms
         /// <summary> Called from external code to update which systems are checked, if this window is open and we are FSD jumping between systems </summary>
         public void updateChecks(StarRef star)
         {
-            var idx = hops.FindIndex(h => h.id64 == star.id64);
+            var idx = hops.FindIndex(h => h.id64 == star.id64 || h.name.like(star.name));
             if (idx >= 0)
             {
                 // update checks if we just arrived in a route hop
