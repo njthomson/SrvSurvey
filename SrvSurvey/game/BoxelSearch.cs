@@ -343,7 +343,7 @@ namespace SrvSurvey.game
         private bool findSystemsFromSpansh(Spansh.SystemsResponse response)
         {
             var dirty = false;
-            foreach (var result in response.results)
+            foreach (var result in response.results ?? new())
             {
                 var bx = Boxel.parse(result.id64, result.name);
                 if (bx == null || bx.prefix != this.current.prefix) continue;

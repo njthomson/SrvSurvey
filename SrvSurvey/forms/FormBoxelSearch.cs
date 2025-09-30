@@ -112,8 +112,17 @@ namespace SrvSurvey.forms
 
         private void btnBegin_Click(object sender, EventArgs e)
         {
-            var bx = Boxel.parse(txtConfigBoxel.Text);
+            var bx = Boxel.parse(txtConfigBoxel.Text, true);
             if (bx == null) return;
+
+            /* NOT READY // confirm we can calculate the id64 - otherwise reject it
+            var id64 = bx.getAddress();
+            if (id64 == 0)
+            {
+                // system name is not fully parsable - this cannot be used for boxel searches
+                MessageBox.Show(this, $"This system cannot be used for boxel searches.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            } */
 
             var diff = (int)bx.massCode - comboLowMassCode.Text[0];
             if (diff > 1)
@@ -641,7 +650,7 @@ namespace SrvSurvey.forms
         private void txtConfigBoxel_TextChanged(object sender, EventArgs e)
         {
             // confirm text is a valid boxel
-            var bx = Boxel.parse(txtConfigBoxel.Text);
+            var bx = Boxel.parse(txtConfigBoxel.Text, true);
             this.configValid = bx != null;
             btnBegin.Enabled = this.configValid;
             comboLowMassCode.Enabled = this.configValid;

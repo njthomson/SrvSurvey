@@ -16,6 +16,7 @@ namespace SrvSurvey.net
 
         public static string srcRootFolder = Path.Combine(Application.StartupPath, "..\\..\\..\\..\\..");
         private static string devGitDataFilepath = Path.Combine(srcRootFolder, "data.json");
+        public static string boxelNamesPath = Path.Combine(pubDataFolder, "Boxel.Names.txt");
 
         private static HttpClient client;
 
@@ -100,6 +101,14 @@ namespace SrvSurvey.net
                     Game.settings.Save();
                 }
 
+                if (!File.Exists(Git.boxelNamesPath))
+                {
+                    Game.log($"Downloading Boxel.Names.txt ...");
+                    var txt = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/game/Boxel.Names.txt");
+                    File.WriteAllText(Git.boxelNamesPath, txt);
+                    Game.log($"Downloading Boxel.Names.txt - complete");
+                }
+
                 Game.log($"pubDataGuardian - local: {Game.settings.pubDataGuardian}, remote: {pubData.guardian}");
                 if (hadNoPubFolder || (pubData.guardian > Game.settings.pubDataGuardian))
                 {
@@ -130,6 +139,7 @@ namespace SrvSurvey.net
                     // finally, re-init Canonn to get updated allRuins
                     Game.canonn.init();
                     Game.log($"Downloading guardian.zip - complete");
+
                 }
             }
             catch (Exception ex)

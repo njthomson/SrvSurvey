@@ -74,9 +74,17 @@ namespace SrvSurvey.game
             /// <summary>
             /// Returns the Sector co-ordinates from a sector name
             /// </summary>
-            public static Point3 getSectorCoords(string sectorName)
+            public static Point3? getSectorCoords(string sectorName, char mcode)
             {
+                /* Not yet working ...
+                // is this a hand-authored sector?
+                var ha = ha_regions.Find(r => r.name.like(sectorName));
+                if (ha != null)
+                    return ha.get_origin(mcode);
+                // */
+
                 var offset = get_offset_from_name(sectorName);
+                if (offset == -1) return null;
 
                 var x = (offset % galaxy_size[0]);
                 var y = (offset / galaxy_size[0]) % galaxy_size[1];
@@ -91,6 +99,7 @@ namespace SrvSurvey.game
             private static long get_offset_from_name(string sectorName)
             {
                 var frags = Sectors.get_sector_fragments(sectorName)!;
+                if (frags == null) return -1;
 
                 var sc = _get_sector_class(frags);
                 if (sc == 2)
@@ -266,8 +275,13 @@ namespace SrvSurvey.game
                 { "dg",  31 }, { "tch", 20 }, { "wr",  31 },
             };
 
-            // TODO: ...
-            //public static Dictionary<string, string> ha_regions = new();
+            // TODO: This doesn't work properly yet
+            public static List<HARegion> ha_regions = new()
+            {
+                new HARegion("Trianguli Sector", 50.0, new Sphere(60.85156, -47.94922, -81.32031, 50.0)),
+                new HARegion("IC 2391 Sector", 100.0, new Sphere(565.85938, -68.47656, 3.95117, 100.0)),
+                // TODO: add the others...
+            };
 
             #endregion
 
@@ -323,7 +337,6 @@ namespace SrvSurvey.game
                     if (match == null)
                     {
                         Game.log($"Sector fragment not matched: {name}");
-                        //Debugger.Break();
                         return null;
                     }
 
@@ -816,13 +829,11 @@ namespace SrvSurvey.game
             private static int[] base_sector_index = new int[] { 39, 32, 18 };
             public static Point3 base_coords = internal_origin_offset + (new Point3(base_sector_index) * sector_size);
 
-            /* TODO: needed?
             public static int get_mcode_cube_width(char mcode)
             {
                 int d = 'h' - mcode;
                 return sector_size / (int)Math.Pow(2, d);
             }
-            */
 
             #endregion
 
@@ -899,61 +910,70 @@ namespace SrvSurvey.game
             }
         }
 
-        /* TODO: Still needed?
-
-        abstract class Sector
+        class HARegion
         {
             public string name;
+            public double size;
+            public Sphere[] spheres;
 
-            public Sector(string name)
+            private Sphere origin;
+
+            public HARegion(string name, double size, params Sphere[] spheres)
             {
                 this.name = name;
-            }
+                this.size = size;
+                this.spheres = spheres;
 
-            public abstract Point3 origin { get; }
-        }
-
-        class HARegion : Sector
-        {
-            public HARegion(string name) : base(name) { }
-
-            public override Point3 origin
-            {
-                get
+                if (spheres.Length == 1)
                 {
-                    return new Point3();
+                    this.origin = spheres[0];
+                }
+                else
+                {
+                    // origin is smallest x,y,z (independently)
+                    Debugger.Break();
                 }
             }
+
+            public Point3 get_origin(char mcode)
+            {
+                // TODO: make this work                
+                var cube_width = Boxel.Sectors.get_mcode_cube_width(mcode);
+                var x = (int)Math.Floor(origin.x);
+                var y = (int)Math.Floor(origin.y);
+                var z = (int)Math.Floor(origin.z);
+
+                var dx = (x - Boxel.Sectors.base_coords.x) % cube_width;
+                var dy = (y - Boxel.Sectors.base_coords.y) % cube_width;
+                var dz = (z - Boxel.Sectors.base_coords.z) % cube_width;
+
+                x -= (int)dx;
+                y -= (int)dy;
+                z -= (int)dz;
+
+                return new Point3(x, y, z);
+            }
         }
 
-        class PGSector : Sector
+        internal class Sphere
         {
             public double x;
             public double y;
             public double z;
-            public string sector_class;
+            public double size;
 
-            public PGSector(Point3 p, string name, int sectorClass) : base(name)
+            public Sphere(double x, double y, double z, double size)
             {
-                this.x = p.x;
-                this.y = p.y;
-                this.z = p.z;
-                this.sector_class = sectorClass.ToString();
+                this.x = x;
+                this.y = y;
+                this.z = z;
+                this.size = size;
             }
 
-            public override Point3 origin
+            public static implicit operator Point3(Sphere s)
             {
-                get => this.get_origin();
-            }
-
-            public Point3 get_origin(int cube_width = 0)
-            {
-                var ox = Sectors.base_coords.x + (Sectors.sector_size * this.x);
-                var oy = Sectors.base_coords.y + (Sectors.sector_size * this.y);
-                var oz = Sectors.base_coords.z + (Sectors.sector_size * this.z);
-                return new Point3((int)ox, (int)oy, (int)oz);
+                return new Point3((int)s.x, (int)s.y, (int)s.z);
             }
         }
-        */
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+using SrvSurvey.net;
 using SrvSurvey.units;
+using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -29,14 +31,24 @@ namespace SrvSurvey.game
         /// <summary>
         /// Parses a boxel from a generated system name, or returns null if name is not valid.
         /// </summary>
-        public static Boxel? parse(string? name)
+        ///  <param name="tryHarder">When true will try to match non generated names against known systems and sectors </param>
+        public static Boxel? parse(string? name, bool tryHarder = false)
         {
             if (string.IsNullOrEmpty(name)) return null;
 
             var parts = nameParts.Match(name);
 
             // not a match?
-            if (parts.Groups.Count != 5 && parts.Groups.Count != 6) return null;
+            if (parts.Groups.Count != 5 && parts.Groups.Count != 6)
+            {
+                if (tryHarder)
+                {
+                    var id64 = Boxel.matchKnownSystem(name);
+                    if (id64 > 0)
+                        return Boxel.parse(id64, name);
+                }
+                return null;
+            }
 
             // confirm mass code is valid
             var mc = parts.Groups[3].Value[0];
@@ -444,7 +456,10 @@ namespace SrvSurvey.game
                 var bodyId = 0;
 
                 var rel_pos = this.getRelativeCoords();
-                var abs_pos = Sectors.getSectorCoords(this.sector);
+                var abs_pos = Sectors.getSectorCoords(this.sector, this.massCode);
+
+                // we failed to get sector co-ordinates
+                if (abs_pos == null) return 0;
 
                 var mc = (int)this.massCode - 'a';
                 int rs = 'h' - this.massCode; // relative shift value, dependent on the mass code
@@ -466,6 +481,29 @@ namespace SrvSurvey.game
             return this._address;
         }
         private long _address;
+
+        private static long matchKnownSystem(string systemName)
+        {
+            if (!File.Exists(Git.boxelNamesPath)) return 0;
+
+            // try matching a known system?
+            var lines = File.ReadAllLines(Git.boxelNamesPath);
+            foreach (var line in lines)
+            {
+                var match = parseLine.Match(line);
+                if (match.Groups.Count != 3) continue;
+
+                var name = match.Groups[1].Value;
+                var other = match.Groups[2].Value;
+
+                if (name.like(systemName) && long.TryParse(other, out var id64))
+                    return id64;
+            }
+
+            return 0;
+        }
+
+        private static Regex parseLine = new Regex(@"""(.*?)"":\D*?(\d*),", RegexOptions.Compiled | RegexOptions.Multiline);
 
         /// <summary>
         /// JSON serializes Boxel's as a basic string, parsing them back into a Boxel upon deserialization
