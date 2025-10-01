@@ -49,6 +49,9 @@ namespace SrvSurvey
 
         private FileSystemWatcher? fileWatcher;
         //private bool haveRead;
+        //private bool creditsMatched;
+        //[JsonIgnore]
+        //public long knownCredits = -1;
 
         public Status(bool watch)
         {
@@ -117,18 +120,24 @@ namespace SrvSurvey
                     // to help multi-boxing ... ignore changes if credits AND GuiFocus or fire-group change at the same time
                     if (haveRead)
                     {
-                        var fireGroupChanged = obj?.FireGroup != this.FireGroup;
-                        //var fuelChanged = obj?.Fuel?.FuelMain != this.Fuel?.FuelMain || obj?.Fuel?.FuelReservoir != this.Fuel?.FuelReservoir;
-                        var balanceChanged = obj?.Balance != this.Balance;
-                        var guiFocusChanged = obj?.GuiFocus != this.GuiFocus;
-                        if (balanceChanged && (fireGroupChanged || guiFocusChanged))
+                        if (!creditsMatched)
+                            creditsMatched = knownCredits == obj?.Balance;
+                        if (creditsMatched)
                         {
-                            Game.log($"Ignoring status.json change: {obj?.FireGroup} != {this.FireGroup} || {obj?.Balance} != {this.Balance} || {obj?.GuiFocus} vs {this.GuiFocus}");
-                            return;
-                        }
+                            var fireGroupChanged = obj?.FireGroup != this.FireGroup;
+                            //var fuelChanged = obj?.Fuel?.FuelMain != this.Fuel?.FuelMain || obj?.Fuel?.FuelReservoir != this.Fuel?.FuelReservoir;
+                            var balanceChanged = obj?.Balance != this.Balance;
+                            var guiFocusChanged = obj?.GuiFocus != this.GuiFocus;
+                            if (balanceChanged && (fireGroupChanged || guiFocusChanged))
+                            {
+                                Game.log($"Ignoring status.json change: {knownCredits}=={this.Balance} || {obj?.FireGroup} != {this.FireGroup} || {obj?.Balance} != {this.Balance} || {obj?.GuiFocus} vs {this.GuiFocus}");
+                                return;
+                            }
 
-                    // ok to proceed
-                    Game.log($"Accept Status.json change: {obj?.FireGroup} vs {this.FireGroup} || {obj?.Balance} vs {this.Balance} || {obj?.GuiFocus} vs {this.GuiFocus}");
+                            // ok to proceed
+                            Game.log($"Accept Status.json change: {knownCredits}=={this.Balance} || {obj?.FireGroup} vs {this.FireGroup} || {obj?.Balance} vs {this.Balance} || {obj?.GuiFocus} vs {this.GuiFocus}");
+                            knownCredits = obj!.Balance;
+                        }
                     }
                     //*/
 
@@ -266,7 +275,7 @@ namespace SrvSurvey
         [JsonIgnore]
         public bool OnFootInside { get => (this.Flags2 & StatusFlags2.OnFoot) > 0 && (this.Flags2 & StatusFlags2.BreathableAtmosphere) > 0; }
         [JsonIgnore]
-        public bool OnFootOutside { get => (this.Flags2 & StatusFlags2.OnFootExterior) > 0; }
+        public bool OnFootExterior { get => (this.Flags2 & StatusFlags2.OnFootExterior) > 0; }
         [JsonIgnore]
         public bool OnFootSocial { get => (this.Flags2 & StatusFlags2.OnFoot) > 0 && (this.Flags2 & StatusFlags2.OnFootSocialSpace) > 0; }
         [JsonIgnore]

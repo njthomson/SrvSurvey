@@ -140,7 +140,7 @@ namespace SrvSurvey.plotters
                 this.siteHeading = station.heading;
 
             // auto-adjust zoom?
-            if (status.changed.Contains("mode"))
+            if (status.changed.has("mode", "SelectedWeapon", "Flags2"))
                 this.setZoom(game.mode);
 
             // load missing map image if the template was recently set
@@ -164,15 +164,15 @@ namespace SrvSurvey.plotters
         {
             if (game.status.SelectedWeapon == "$humanoid_companalyser_name;")
             {
-                // zoom in LOTS if inside a building or using the Profile analyzer tool
+                // zoom in LOTS if using the Profile analyzer tool
                 return Game.settings.humanSiteZoomTool;
             }
-            else if (game.status.OnFootInside)
+            else if (game.status.OnFootOnPlanet && !game.status.OnFootExterior)
             {
-                // zoom in LOTS if inside a building or using the Profile analyzer tool
+                // zoom in LOTS if inside a building
                 return Game.settings.humanSiteZoomInside;
             }
-            else if (mode == GameMode.OnFoot || game.status.OnFootOutside)
+            else if (mode == GameMode.OnFoot || game.status.OnFootExterior)
             {
                 // zoom in SOME if on foot outside
                 return Game.settings.humanSiteZoomFoot;

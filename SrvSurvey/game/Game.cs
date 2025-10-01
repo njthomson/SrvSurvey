@@ -1082,6 +1082,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(LoadGame entry)
         {
             this.currentShip = new(entry);
+            //this.status.knownCredits = entry.Credits;
 
             if (this.Commander == null)
                 this.initializeFromJournal(entry);

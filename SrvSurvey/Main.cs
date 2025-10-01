@@ -1049,7 +1049,7 @@ namespace SrvSurvey
                 if (game.systemData != null && game.systemStation != null && PlotHumanSite.allowed(game))
                 {
                     var changed = false;
-                    if (game.status.OnFootOutside)
+                    if (game.status.OnFootExterior)
                         changed = game.systemStation.inferFromFoot(game.status.Heading, game.status.Latitude, game.status.Longitude, (double)game.status.PlanetRadius);
                     else if (game.status.Docked)
                         changed = game.systemStation.inferFromShip(game.status.Heading, game.status.Latitude, game.status.Longitude, game.currentShip.type, (double)game.status.PlanetRadius, CalcMethod.AutoDock);

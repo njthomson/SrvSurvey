@@ -58,7 +58,7 @@ namespace SrvSurvey
         public double FuelCapacity { get; set; }
         public bool StartLanded { get; set; }
         public string GameMode { get; set; }
-        public double Credits { get; set; }
+        public long Credits { get; set; }
         public double Loan { get; set; }
         public string language { get; set; }
         public string gameversion { get; set; }

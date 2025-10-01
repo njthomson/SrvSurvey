@@ -1644,6 +1644,11 @@ namespace SrvSurvey
             else
                 return left.Equals(right, StringComparison.OrdinalIgnoreCase);
         }
+
+        public static bool has<T>(this HashSet<T> hashSet, params T[] items)
+        {
+            return hashSet.Any(i => items.Contains(i));
+        }
     }
 
     public class WatchColor
