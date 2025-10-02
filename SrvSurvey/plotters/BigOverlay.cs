@@ -58,6 +58,7 @@ namespace SrvSurvey.plotters
             NativeMethods.SetWindowLong(this.Handle, NativeMethods.GWL_EXSTYLE, exStyle | NativeMethods.WS_EX_LAYERED);
 
             setOpacity(Game.settings.plotterOpacity);
+            //reposition(Elite.getWindowRect());
         }
 
         /// <summary> Set opacity from 0 to 100 % </summary>
@@ -91,6 +92,7 @@ namespace SrvSurvey.plotters
         public void reposition(Rectangle gameRect)
         {
             Game.log($"bigOverlay @{gameRect} / {this.Visible}");
+            //Elite.setOnTopGame(this.Handle);
 
             if (gameRect.X <= -30_000)
             {

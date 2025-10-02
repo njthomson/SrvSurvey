@@ -32,6 +32,8 @@ namespace SrvSurvey.plotters
                         )
                     // docked at a construction site and not in gal-map
                     || (ColonyData.isConstructionSite(game.lastDocked) && !game.isMode(GameMode.GalaxyMap))
+                    // when docked on a Squadron FC and are within The Bank
+                    || (game.musicTrack == "Squadrons" && game.lastDocked?.StationServices?.Contains("squadronBank") == true)
                     // setting allows, we have some projects and looking at right panel
                     || (Game.settings.buildProjectsOnRightScreen && game.isMode(GameMode.InternalPanel) && game.cmdrColony.projects.Any())
                 )
@@ -296,17 +298,17 @@ namespace SrvSurvey.plotters
             var showFCs = Game.settings.buildProjectsShowSumFC_TEST && this.sumCargoLinkedFCs.Count > 0;
             if (showFCs && Game.settings.buildProjectsInlineSumFC_TEST) haveAnyCargo |= this.sumCargoLinkedFCs.Count > 0;
 
-            var rightIndent = haveAnyCargo ? szBigNumbers.Width : 0;
+            var rightIndent = szBigNumbers.Width;
             var pinWidth = hasPin ? N.oneSix : 0;
             var columns = new Dictionary<int, float>() {
                 { 0, 0 },           // name of the commodity
                 { 1, rightIndent }, // Need column
-                { 2, rightIndent }, // FCs column
-                { 3, rightIndent }, // Have column
+                { 2, showFCs ? rightIndent : 0 }, // FCs column
+                { 3, haveAnyCargo ? rightIndent : 0 }, // Have column
             };
 
             // render list headers: <commodity name>, <need>, <have>
-            var xNeed = this.width - N.eight - rightIndent - pinWidth;
+            var xNeed = this.width - N.eight - (haveAnyCargo ? rightIndent : 0) - pinWidth;
             var xFC = 0f;
             if (showFCs)
             {
@@ -415,18 +417,7 @@ namespace SrvSurvey.plotters
                     col = C.cyan;
                     needTxt = "...";
                 }
-                //else if (cargoCount > 0)
-                //{
-                //    // highlight things in cargo hold
-                //    col = C.cyan;
-                //}
 
-                /*if (needCount == 0)
-                {
-                    col = C.orangeDark;
-                    nameTxt += " ✔️";
-                }
-                else*/
                 var shipHasEnough = cargoCount >= needCount;
                 if (cargoCount > needCount)
                 {
@@ -440,7 +431,6 @@ namespace SrvSurvey.plotters
                 }
 
                 // render needed count
-                var inHold = cargoCount > 0;
                 tt.draw(xNeed, needTxt, col, ff, true)
                     .widestColumn(1, columns);
 
@@ -471,6 +461,7 @@ namespace SrvSurvey.plotters
                             if (Game.settings.buildProjectsInlineSumFC_TEST)
                                 cc = cc = diff >= 0 ? C.greenDark : C.redDark;
 
+                            if (isPending) { diffTxt = "..."; cc = C.cyan; }
                             tt.draw(xFC, diffTxt, cc, ff, true)
                                 .widestColumn(2, columns);
                         }
@@ -480,7 +471,7 @@ namespace SrvSurvey.plotters
                             var diff = fcAmount;
                             var diffTxt = diff.ToString("N0");
                             var cc = fcAmount >= needCount ? C.green : C.red;
-                            fcHasEnough = fcAmount >= needCount && !nameTxt.EndsWith(" ✔️");
+                            fcHasEnough = fcAmount >= needCount;
 
                             // if sharing a column ... make FC counts darker
                             if (Game.settings.buildProjectsInlineSumFC_TEST)
@@ -488,14 +479,12 @@ namespace SrvSurvey.plotters
                             else if (fcAmount == 0)
                                 cc = C.redDark;
 
+                            if (isPending) { diffTxt = "..."; cc = C.cyan; }
                             tt.draw(xFC, diffTxt, cc, ff, true)
                                 .widestColumn(2, columns);
                         }
                     }
                 }
-
-                // warn if we have more than needed
-                //if (cargoCount > needCount) col = C.red;
 
                 // render the name
                 var sz2 = tt.draw(N.twenty, nameTxt, col, ff)
@@ -595,11 +584,6 @@ namespace SrvSurvey.plotters
                         col = C.cyan;
                         needTxt = "...";
                     }
-                    //else if (cargoCount > 0)
-                    //{
-                    //    // highlight things in cargo hold
-                    //    col = C.cyan;
-                    //}
 
                     if (cargoCount > needCount)
                     {
@@ -614,10 +598,8 @@ namespace SrvSurvey.plotters
                     }
                     else if (isDocked && localMarketValid && localMarketItems.Count > 0 && !inLocalMarket)
                     {
-                        // make needed items missing in the current market red
-                        //if (cargoCount == 0) col = C.red;
+                        // make needed items missing in the current market dimmer
                         col = C.orangeDark;
-                        //nameTxt += " ❌";
                     }
 
                     // render needed count
@@ -671,6 +653,7 @@ namespace SrvSurvey.plotters
 
                                 // highlight and make and bold if almost there
                                 if (almost) cc = colAlmost;
+                                if (isPending) { diffTxt = "..."; cc = C.cyan; }
 
                                 tt.draw(xFC, diffTxt, cc, almost ? GameColors.Fonts.gothic_10B : ff, true)
                                     .widestColumn(2, columns);
@@ -690,6 +673,7 @@ namespace SrvSurvey.plotters
 
                                 if (fcAmount == 0) cc = C.redDark;
 
+                                if (isPending) { diffTxt = "..."; cc = C.cyan; }
                                 tt.draw(xFC, diffTxt, cc, ff, true)
                                     .widestColumn(2, columns);
                             }
@@ -704,13 +688,6 @@ namespace SrvSurvey.plotters
                     if (needs.assigned.Contains(name))
                         tt.draw(xNeed, "📌", col, ff);
 
-                    // warn if we have more than needed
-                    //if (cargoCount > needCount) col = C.red;
-
-                    // show a tick if we have enough (on ship or in FCs)
-                    //if (haveEnough && !nameTxt.EndsWith("❌"))
-                    //    nameTxt += " ✔️";
-                    //else
                     if (almost)
                         nameTxt += " 🏁";
 
@@ -721,9 +698,7 @@ namespace SrvSurvey.plotters
                     if (isPending)
                         tt.draw(N.two, "►", C.cyan, ff);
                     else if (haveEnough && !nameTxt.EndsWith("❌"))
-                    {
                         tt.draw(N.two, "✔️", col == C.green ? C.green : C.greenDark, ff);
-                    }
 
                     tt.newLine(true);
                 }

@@ -251,6 +251,12 @@ namespace SrvSurvey
             form.Top = rect.Bottom - form.Height - fromBottom;
         }
 
+        public static void setOnTopGame(IntPtr hwnd)
+        {
+            var hwndED = Elite.getWindowHandle();
+            Elite.SetWindowPos(hwndED, hwnd, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW);
+        }
+
         [DllImport("User32.dll")]
         static extern bool GetWindowRect(IntPtr hWnd, ref RECT lpRect);
         [DllImport("User32.dll")]
@@ -271,6 +277,14 @@ namespace SrvSurvey
         private const int SM_CYCAPTION = 4;
         private const int SM_CYFIXEDFRAME = 8;
         private static int windowTitleHeight = GetSystemMetrics(SM_CYCAPTION) + GetSystemMetrics(SM_CYFIXEDFRAME) * 3;
+
+        [DllImport("user32.dll")]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+        public const uint SWP_NOSIZE = 0x0001;
+        public const uint SWP_NOMOVE = 0x0002;
+        public const uint SWP_NOACTIVATE = 0x0010;
+        public const uint SWP_SHOWWINDOW = 0x0040;
     }
 
     [StructLayout(LayoutKind.Sequential)]

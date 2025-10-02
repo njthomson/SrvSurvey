@@ -38,6 +38,10 @@ namespace SrvSurvey
             Game.log("Starting main form...");
             form = this;
             InitializeComponent();
+            btnSearch.Font = GameColors.Fonts.segoeEmoji_16_ns;
+            btnGuardian.Font = GameColors.Fonts.segoeEmoji_16_ns;
+            btnTravel.Font = GameColors.Fonts.segoeEmoji_16_ns;
+            btnColonize.Font = GameColors.Fonts.segoeEmoji_16_ns;
             if (Debugger.IsAttached) this.Text += " (dbg)";
             lblNotInstalled.BringToFront();
             lblFullScreen.BringToFront();

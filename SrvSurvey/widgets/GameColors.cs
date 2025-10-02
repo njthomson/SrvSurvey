@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 
 namespace SrvSurvey.widgets
 {
@@ -149,6 +150,8 @@ namespace SrvSurvey.widgets
 
         static GameColors()
         {
+            loadLocalFonts();
+
             // prepare brush for plotter backgrounds: grey/black horizontal stripes
             var bm = new Bitmap(1, 3);
             using (var g = Graphics.FromImage(bm))
@@ -755,7 +758,24 @@ namespace SrvSurvey.widgets
 
             public static Font segoeEmoji_6 = new Font("Segoe UI Emoji", 6F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
             public static Font segoeEmoji_8 = new Font("Segoe UI Emoji", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            /// <summary> Not scaled </summary>
+            public static Font segoeEmoji_16_ns = new Font("Segoe UI Emoji", 16F);
         }
+
+        private static void loadLocalFonts()
+        {
+            if (!File.Exists("seguiemj.ttf")) return;
+
+            // Load the font from file + replace references that should use it
+            pfc = new PrivateFontCollection();
+            pfc.AddFontFile("seguiemj.ttf");
+
+            Fonts.segoeEmoji_6 = new Font(pfc.Families[0], 6F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            Fonts.segoeEmoji_8 = new Font(pfc.Families[0], 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            Fonts.segoeEmoji_16_ns = new Font(pfc.Families[0], 16F);
+        }
+
+        private static PrivateFontCollection? pfc;
 
         #endregion
 
