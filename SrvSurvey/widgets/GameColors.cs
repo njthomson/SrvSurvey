@@ -764,7 +764,10 @@ namespace SrvSurvey.widgets
 
         private static void loadLocalFonts()
         {
-            if (!File.Exists("seguiemj.ttf")) return;
+            var filepath = Path.Combine(Application.StartupPath, "seguiemj.ttf");
+            var ttfExists = File.Exists(filepath);
+            Game.log($"GameColors: Loading local fonts, exists: '{filepath}' => {ttfExists}");
+            if (!ttfExists) return;
 
             // Load the font from file + replace references that should use it
             pfc = new PrivateFontCollection();
@@ -773,6 +776,7 @@ namespace SrvSurvey.widgets
             Fonts.segoeEmoji_6 = new Font(pfc.Families[0], 6F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
             Fonts.segoeEmoji_8 = new Font(pfc.Families[0], 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
             Fonts.segoeEmoji_16_ns = new Font(pfc.Families[0], 16F);
+            Game.log($"GameColors: Loading local fonts: success!");
         }
 
         private static PrivateFontCollection? pfc;

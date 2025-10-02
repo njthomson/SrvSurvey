@@ -121,15 +121,23 @@ namespace SrvSurvey.game
                     return default(T);
                 }
 
-                // read the file contents ...
-                using (var sr = new StreamReader(new FileStream(this.filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+                try
                 {
-                    var json = sr.ReadToEnd();
-                    if (json == null || json == "") return default(T);
+                    // read the file contents ...
+                    using (var sr = new StreamReader(new FileStream(this.filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+                    {
+                        var json = sr.ReadToEnd();
+                        if (json == null || json == "") return default(T);
 
-                    // ... and parse
-                    var obj = JsonConvert.DeserializeObject<T>(json);
-                    return obj;
+                        // ... and parse
+                        var obj = JsonConvert.DeserializeObject<T>(json);
+                        return obj;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Game.log($"Error reading/parsing file: {this.filepath}\r\n{ex}");
+                    return default(T);
                 }
             }
 
