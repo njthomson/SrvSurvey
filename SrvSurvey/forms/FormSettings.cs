@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace SrvSurvey
 {
-    public partial class FormSettings : Form
+    internal partial class FormSettings : BaseForm
     {
         private static Game? game { get => Game.activeGame; }
 
@@ -373,6 +373,7 @@ namespace SrvSurvey
 
             // restart the app if these are different:
             var restartApp = !sameCmdr || langChanged || themeChanged
+                || checkStreamOneOverlay.Checked != Game.settings.streamOneOverlay
                 || checkColonization.Checked != Game.settings.buildProjects_TEST
                 || comboOverlayScale.SelectedIndex != Game.settings.plotterScale
                 || this.checkEnableGuardianFeatures.Checked != Game.settings.enableGuardianSites
@@ -500,11 +501,6 @@ namespace SrvSurvey
                 trackOpacity.Value = (int)numOpacity.Value;
                 BigOverlay.current?.setOpacity(trackOpacity.Value);
             }
-        }
-
-        private void btnNextProc_Click(object sender, EventArgs e)
-        {
-            FormMultiFloatie.useNextWindow();
         }
 
         private void btnClearUnclaimed_Click(object sender, EventArgs e)

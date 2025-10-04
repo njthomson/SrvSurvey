@@ -31,10 +31,10 @@ namespace SrvSurvey
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            ListViewItem listViewItem5 = new ListViewItem("Materials count after pickup");
-            ListViewItem listViewItem6 = new ListViewItem("Mission remaining cargo count");
-            ListViewItem listViewItem7 = new ListViewItem("Boxel search status");
-            ListViewItem listViewItem8 = new ListViewItem("Next boxel to search");
+            ListViewItem listViewItem1 = new ListViewItem("Materials count after pickup");
+            ListViewItem listViewItem2 = new ListViewItem("Mission remaining cargo count");
+            ListViewItem listViewItem3 = new ListViewItem("Boxel search status");
+            ListViewItem listViewItem4 = new ListViewItem("Next boxel to search");
             panel1 = new Panel();
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
@@ -242,8 +242,9 @@ namespace SrvSurvey
             label28 = new Label();
             checkKeyChords = new CheckBox();
             tabPage8 = new TabPage();
+            checkBox52 = new CheckBox();
             checkBox39 = new CheckBox();
-            checkBox51 = new CheckBox();
+            checkStreamOneOverlay = new CheckBox();
             checkBox50 = new CheckBox();
             numGravityWarningLevel = new NumericUpDown();
             label12 = new Label();
@@ -3024,8 +3025,9 @@ namespace SrvSurvey
             // 
             tabPage8.BackColor = SystemColors.Control;
             tabPage8.BorderStyle = BorderStyle.Fixed3D;
+            tabPage8.Controls.Add(checkBox52);
             tabPage8.Controls.Add(checkBox39);
-            tabPage8.Controls.Add(checkBox51);
+            tabPage8.Controls.Add(checkStreamOneOverlay);
             tabPage8.Controls.Add(checkBox50);
             tabPage8.Controls.Add(numGravityWarningLevel);
             tabPage8.Controls.Add(label12);
@@ -3043,29 +3045,42 @@ namespace SrvSurvey
             tabPage8.TabIndex = 9;
             tabPage8.Text = "More";
             // 
+            // checkBox52
+            // 
+            checkBox52.AutoSize = true;
+            checkBox52.FlatStyle = FlatStyle.System;
+            checkBox52.Location = new Point(12, 263);
+            checkBox52.Name = "checkBox52";
+            checkBox52.Size = new Size(166, 20);
+            checkBox52.TabIndex = 48;
+            checkBox52.Tag = "viewJourneyGalacticTime";
+            checkBox52.Text = "Use future dates, eg: 3309";
+            checkBox52.UseVisualStyleBackColor = true;
+            // 
             // checkBox39
             // 
             checkBox39.AutoSize = true;
             checkBox39.FlatStyle = FlatStyle.System;
             checkBox39.Location = new Point(12, 222);
             checkBox39.Name = "checkBox39";
-            checkBox39.Size = new Size(166, 20);
+            checkBox39.Size = new Size(190, 35);
             checkBox39.TabIndex = 47;
-            checkBox39.Tag = "viewJourneyGalacticTime";
-            checkBox39.Text = "Use future dates, eg: 3309";
+            checkBox39.Tag = "disableBigOverlay";
+            checkBox39.Text = "Disable single large overlay.\r\n(Use if frame rate is impacted)";
+            checkBox39.TextAlign = ContentAlignment.TopLeft;
             checkBox39.UseVisualStyleBackColor = true;
             // 
-            // checkBox51
+            // checkStreamOneOverlay
             // 
-            checkBox51.AutoSize = true;
-            checkBox51.FlatStyle = FlatStyle.System;
-            checkBox51.Location = new Point(12, 196);
-            checkBox51.Name = "checkBox51";
-            checkBox51.Size = new Size(206, 20);
-            checkBox51.TabIndex = 46;
-            checkBox51.Tag = "streamOneOverlay";
-            checkBox51.Text = "For streaming: use joined overlay";
-            checkBox51.UseVisualStyleBackColor = true;
+            checkStreamOneOverlay.AutoSize = true;
+            checkStreamOneOverlay.FlatStyle = FlatStyle.System;
+            checkStreamOneOverlay.Location = new Point(12, 196);
+            checkStreamOneOverlay.Name = "checkStreamOneOverlay";
+            checkStreamOneOverlay.Size = new Size(206, 20);
+            checkStreamOneOverlay.TabIndex = 46;
+            checkStreamOneOverlay.Tag = "streamOneOverlay";
+            checkStreamOneOverlay.Text = "For streaming: use joined overlay";
+            checkStreamOneOverlay.UseVisualStyleBackColor = true;
             // 
             // checkBox50
             // 
@@ -3158,15 +3173,15 @@ namespace SrvSurvey
             // listView1
             // 
             listView1.CheckBoxes = true;
-            listViewItem5.StateImageIndex = 0;
-            listViewItem5.Tag = "materialCountAfterPickup";
-            listViewItem6.StateImageIndex = 0;
-            listViewItem6.Tag = "cargoMissionRemaining";
-            listViewItem7.StateImageIndex = 0;
-            listViewItem7.Tag = "currentBoxelSearchStatus";
-            listViewItem8.StateImageIndex = 0;
-            listViewItem8.Tag = "showNextBoxelToSearch";
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem5, listViewItem6, listViewItem7, listViewItem8 });
+            listViewItem1.StateImageIndex = 0;
+            listViewItem1.Tag = "materialCountAfterPickup";
+            listViewItem2.StateImageIndex = 0;
+            listViewItem2.Tag = "cargoMissionRemaining";
+            listViewItem3.StateImageIndex = 0;
+            listViewItem3.Tag = "currentBoxelSearchStatus";
+            listViewItem4.StateImageIndex = 0;
+            listViewItem4.Tag = "showNextBoxelToSearch";
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4 });
             listView1.Location = new Point(12, 331);
             listView1.Name = "listView1";
             listView1.Size = new Size(400, 107);
@@ -3585,7 +3600,7 @@ namespace SrvSurvey
         private LinkLabel linkLabel2;
         private CheckBox checkBox49;
         private CheckBox checkBox50;
-        private CheckBox checkBox51;
+        private CheckBox checkStreamOneOverlay;
         private CheckBox checkShowInRightPanel;
         private CheckBox checkSuppressNonColonise;
         private CheckBox checkBox39;
@@ -3595,5 +3610,6 @@ namespace SrvSurvey
         private Label label31;
         private Label label30;
         private LinkLabel linkLabel3;
+        private CheckBox checkBox52;
     }
 }

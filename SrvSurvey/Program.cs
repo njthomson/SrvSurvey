@@ -226,7 +226,7 @@ namespace SrvSurvey
                 form.showing = true;
                 try
                 {
-                    form.Show();
+                    form.Show(new Win32Window() { Handle = Elite.getWindowHandle() });
                 }
                 catch (Exception ex)
                 {
@@ -665,7 +665,7 @@ namespace SrvSurvey
         string Name { get; set; }
         bool IsDisposed { get; }
         void Close();
-        void Show();
+        void Show(IWin32Window parent);
         event EventHandler? Load;
         bool didFirstPaint { get; set; }
         /// <summary> A flag true immediately about the time we begin showing a window </summary>

@@ -7,8 +7,13 @@ namespace SrvSurvey.forms
     [System.ComponentModel.DesignerCategory("")]
     class FormMultiFloatie : Form
     {
+        public static FormMultiFloatie? current;
+
         public static FormMultiFloatie create()
         {
+            current?.Close();
+
+            Game.log("FormMultiFloatie.create");
             var form = new FormMultiFloatie()
             {
                 Name = "MultiFloatie",
@@ -20,7 +25,6 @@ namespace SrvSurvey.forms
                 Width = 400,
                 Height = SystemInformation.CaptionHeight,
 
-                TopMost = true,
                 ShowIcon = false,
                 ShowInTaskbar = false,
                 MinimizeBox = false,
@@ -32,7 +36,7 @@ namespace SrvSurvey.forms
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
             };
 
-            form.Show();
+            form.Show(new Win32Window() { Handle = Elite.getWindowHandle() });
             return form;
         }
 
@@ -41,6 +45,7 @@ namespace SrvSurvey.forms
 
         public FormMultiFloatie()
         {
+            current = this;
             this.cmdr = Game.activeGame?.Commander ?? Program.forceFid ?? "?";
 
             this.lbl = new Label()
@@ -71,6 +76,13 @@ namespace SrvSurvey.forms
 
             this.Height = SystemInformation.CaptionHeight;
             this.positionOverGame(Elite.getWindowRect());
+            System.Windows.Forms.Cursor.Show();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            current = null;
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -104,28 +116,11 @@ namespace SrvSurvey.forms
                 this.Top = rect.Top;
         }
 
-        public static void useNextWindow()
-        {
-            if (!Elite.hadManyGameProcs) return;
-
-            Program.hideActivePlotters();
-            BigOverlay.current?.Hide();
-
-            // increment process idx and make plotters adjust
-            Elite.nextWindow();
-            Application.DoEvents();
-            Elite.setFocusED();
-        }
-
         public static void focusNextWindow()
         {
             if (!Elite.hadManyGameProcs) return;
 
-            Program.hideActivePlotters();
-            BigOverlay.current?.Hide();
-            Application.DoEvents();
-
-            var edProcs = Process.GetProcessesByName("EliteDangerous64");
+            var edProcs = Process.GetProcessesByName(Elite.ProcessName);
             var nextIdx = Elite.procIdx + 1;
             if (nextIdx >= edProcs.Length) nextIdx = 0;
             var nextGameProc = edProcs[nextIdx];

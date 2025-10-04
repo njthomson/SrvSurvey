@@ -1,4 +1,5 @@
 ﻿using DecimalMath;
+using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.plotters;
 using SrvSurvey.Properties;
@@ -8,7 +9,7 @@ using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
-    internal partial class FormRuins : Form
+    internal partial class FormRuins : BaseForm
     {
         #region showing and position tracking 
 

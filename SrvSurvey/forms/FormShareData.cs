@@ -1,4 +1,5 @@
-﻿using SrvSurvey.game;
+﻿using SrvSurvey.forms;
+using SrvSurvey.game;
 using SrvSurvey.Properties;
 using System.Data;
 using System.IO.Compression;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace SrvSurvey
 {
-    public partial class FormShareData : Form
+    internal partial class FormShareData : BaseForm
     {
         public static FormShareData? activeForm;
 

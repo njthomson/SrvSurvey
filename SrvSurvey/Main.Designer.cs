@@ -433,7 +433,7 @@ namespace SrvSurvey
             // 
             // timer1
             // 
-            timer1.Interval = 200;
+            timer1.Interval = 100;
             timer1.Tick += timer1_Tick;
             // 
             // btnLogs
@@ -1068,15 +1068,6 @@ namespace SrvSurvey
             menuNotifyCmdr.Size = new Size(144, 22);
             menuNotifyCmdr.Text = "Cmdr: xxx";
             menuNotifyCmdr.ToolTipText = "Commander tracked by this SrvSurvey";
-            // 
-            // menuNotifyNextWindow
-            // 
-            menuNotifyNextWindow.Name = "menuNotifyNextWindow";
-            menuNotifyNextWindow.Size = new Size(144, 22);
-            menuNotifyNextWindow.Text = "Next window";
-            menuNotifyNextWindow.ToolTipText = "When there are multiple game windows - shift overlays to the next game window";
-            menuNotifyNextWindow.Visible = false;
-            menuNotifyNextWindow.Click += menuNotifyNextWindow_Click;
             // 
             // toolStripSeparator4
             // 

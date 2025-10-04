@@ -93,7 +93,9 @@ namespace SrvSurvey.forms
             // all names, or only those visible?
             var names = checkShowAll.Checked
                 ? PlotPos.getAllPlotterNames()
-                : PlotBase2.active.Select(d => d.name).Concat(Program.getAllPlotterNames()).Order().ToArray();
+                : Game.settings.disableBigOverlay 
+                    ? Program.getAllPlotterNames().Order().ToArray()
+                    : PlotBase2.active.Select(d => d.name).Concat(Program.getAllPlotterNames()).Order().ToArray();
 
             for (var n = 0; n < names.Length; n++)
             {
@@ -207,9 +209,10 @@ namespace SrvSurvey.forms
         private void repositionPlotters()
         {
             Program.repositionPlotters();
-            BigOverlay.current?.reposition(Elite.getWindowRect());
+            var rect = Elite.getWindowRect();
+            BigOverlay.current?.reposition(rect);
             if (fake != null)
-                fake.Location = PlotPos.getPlotterLocation(fake.Name, fake.Size, Rectangle.Empty);
+                fake.Location = PlotPos.getPlotterLocation(fake.Name, fake.Size, rect);
         }
 
         private void checkIfMe(CheckBox sender, params CheckBox[] boxes)

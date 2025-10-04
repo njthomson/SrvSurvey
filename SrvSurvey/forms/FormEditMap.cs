@@ -1,10 +1,11 @@
-﻿using SrvSurvey.game;
+﻿using SrvSurvey.forms;
+using SrvSurvey.game;
 using SrvSurvey.plotters;
 using SrvSurvey.units;
 
 namespace SrvSurvey
 {
-    internal partial class FormEditMap : Form
+    internal partial class FormEditMap : BaseForm
     {
         private Game game = Game.activeGame!;
         public SitePOI? poi;

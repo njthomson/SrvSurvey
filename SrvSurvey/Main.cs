@@ -26,9 +26,8 @@ namespace SrvSurvey
         private Dictionary<string, Screenshot> pendingScreenshots = new Dictionary<string, Screenshot>();
         private bool wasWithinDssDuration;
         private bool gameHadFocus;
-        private FormMultiFloatie? multiFloatie;
+        private FormMultiFloatie? multiFloatie => FormMultiFloatie.current;
         private DateTime lastProcCheck;
-        private BigOverlay? bigOverlay;
 
         public static Main form;
         public KeyboardHook hook;
@@ -338,43 +337,29 @@ namespace SrvSurvey
         {
             // a periodic timer to check the location of the game window, repositioning plotters if needed
             var rect = Elite.getWindowRect();
-            var hasFocus = rect != Rectangle.Empty && rect.X > -30_000 && Elite.gameHasFocus;
-            var forceOpen = Game.settings.keepOverlays || Debugger.IsAttached;
 
-            if (hasFocus && bigOverlay?.Visible == false)
+            // hide overlays if game is minimized or hide-all is checked
+            if (rect == Rectangle.Empty || Program.tempHideAllPlotters)
             {
-                bigOverlay.reposition(rect);
-                bigOverlay.Show();
-            }
-
-            // show/hide plotters if game has changed focus state
-            if (gameHadFocus != hasFocus)
-            {
-                //Game.log($"gameHadFocus:{gameHadFocus}, hasFocus:{hasFocus}, forceOpen:{forceOpen}, rect:{rect}");
-                if (hasFocus || forceOpen)
-                {
-                    Program.showActivePlotters();
-
-                    if (!forceOpen)
-                        Program.repositionPlotters(rect);
-                }
-                else
-                {
-                    Program.hideActivePlotters();
-                    bigOverlay?.Hide();
-                }
-            }
-            else if (forceOpen && rect.X < -30000)
-            {
+                //Game.log($"EliteDangerous window minimized: {this.lastWindowRect} => {rect}");
                 Program.hideActivePlotters();
-                bigOverlay?.Hide();
+                BigOverlay.current?.Hide();
+            }
+            else if (rect != this.lastWindowRect)
+            {
+                // reposition plotters if game window has moved
+                Game.log($"EliteDangerous window reposition: {this.lastWindowRect} => {rect}");
+                Program.repositionPlotters(rect);
+                multiFloatie?.positionOverGame(rect);
+                BigOverlay.current?.reposition(rect);
             }
 
-            // force plotters to appear if we just gained focus
-            if (!gameHadFocus && Elite.gameHasFocus && game != null)
-                game.fireUpdate(true);
 
-            this.gameHadFocus = Elite.gameHasFocus;
+            // show/hide multi-floatie if we have focus
+            if (multiFloatie != null) multiFloatie.Visible = Elite.focusElite || Elite.focusSrvSurvey;
+
+            this.lastWindowRect = rect;
+            this.gameHadFocus = Elite.focusElite;
 
             // every ~5 seconds - force a process check
             if ((DateTime.Now - lastProcCheck).TotalSeconds > 5)
@@ -382,33 +367,22 @@ namespace SrvSurvey
                 try
                 {
                     lastProcCheck = DateTime.Now;
-                    var procs = Process.GetProcessesByName("EliteDangerous64");
+                    var procs = Process.GetProcessesByName(Elite.ProcessName);
                     Elite.hadManyGameProcs = procs.Length > 1;
+
+                    // handle single/multiple processes
+                    btnNextWindow.Visible = Elite.hadManyGameProcs;
+                    if (!Game.settings.hideMultiFloatie)
+                    {
+                        if (this.multiFloatie == null && Elite.hadManyGameProcs) FormMultiFloatie.create();
+                        if (this.multiFloatie != null && !Elite.hadManyGameProcs) multiFloatie.Close();
+                    }
                 }
                 catch (Exception ex)
                 {
                     // report but ignore any errors here
                     Game.log($"timer1_Tick: GetProcessesByName failed:\r\n\t{ex.Message}\r\n{ex.StackTrace}");
                 }
-            }
-
-            // handle single/multiple processes
-            btnNextWindow.Visible = Elite.hadManyGameProcs;
-            if (!Game.settings.hideMultiFloatie)
-            {
-                if (this.multiFloatie == null && Elite.hadManyGameProcs) this.multiFloatie = FormMultiFloatie.create();
-                if (this.multiFloatie != null && !Elite.hadManyGameProcs) { this.multiFloatie.Close(); this.multiFloatie = null; }
-                if (this.multiFloatie != null) this.multiFloatie.Visible = Elite.focusElite || FormStartNewCmdr.active;
-            }
-
-            // reposition plotters if game window has moved
-            if (rect != this.lastWindowRect && Elite.gameHasFocus && rect.X > -30_000)
-            {
-                Game.log($"EliteDangerous window reposition: {this.lastWindowRect} => {rect}");
-                this.lastWindowRect = rect;
-                Program.repositionPlotters(rect);
-                this.multiFloatie?.positionOverGame(rect);
-                bigOverlay?.reposition(rect);
             }
 
             // if the game process is NOT running, but we have an active game object processing journals ... append a fake shutdown entry and stop processing journal entries
@@ -454,8 +428,7 @@ namespace SrvSurvey
 
             // remove bigOverlay
             PlotBase2.closeAll();
-            bigOverlay?.Close();
-            bigOverlay = null;
+            BigOverlay.current?.Close();
 
             this.game = null;
 
@@ -506,10 +479,7 @@ namespace SrvSurvey
             PlotBase.startWindowOne();
 
             // reset bigOverlay
-            bigOverlay?.Close();
-            bigOverlay = new BigOverlay();
-            bigOverlay.Show();
-            PlotBase2.renderAll(game);
+            BigOverlay.create(game);
         }
 
         private void updateAllControls(GameMode? newMode = null)
@@ -1137,12 +1107,7 @@ namespace SrvSurvey
 
                     Application.DoEvents();
                     if (game != null)
-                    {
-                        bigOverlay?.Close();
-                        bigOverlay = new BigOverlay();
-                        bigOverlay.Show();
-                        PlotBase2.renderAll(game, true);
-                    }
+                        BigOverlay.create(game);
                 }
                 else
                 {
@@ -1164,9 +1129,7 @@ namespace SrvSurvey
             var fid = Program.forceFid ?? CommanderSettings.currentOrLastFid;
             if (fid != null)
             {
-                multiFloatie?.Show();
-                var form = new FormStartNewCmdr(fid);
-                form.ShowDialog(this);
+                new FormStartNewCmdr(fid).ShowDialog(this);
             }
             else
             {
@@ -1183,11 +1146,6 @@ namespace SrvSurvey
                 this.WindowState = FormWindowState.Normal;
 
             this.Activate();
-        }
-
-        private void menuNotifyNextWindow_Click(object sender, EventArgs e)
-        {
-            FormMultiFloatie.useNextWindow();
         }
 
         private void linkNewBuildAvailable_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -1517,18 +1475,11 @@ namespace SrvSurvey
         {
             Program.tempHideAllPlotters = !Program.tempHideAllPlotters;
             checkTempHide.Checked = Program.tempHideAllPlotters;
-
+            BigOverlay.invalidate();
             if (Program.tempHideAllPlotters)
-            {
                 Program.hideActivePlotters();
-                bigOverlay?.Hide();
-            }
             else
-            {
                 Program.showActivePlotters();
-                bigOverlay?.Show();
-                bigOverlay?.Invalidate();
-            }
         }
 
         private void Main_MouseDoubleClick(object sender, MouseEventArgs e)

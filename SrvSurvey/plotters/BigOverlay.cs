@@ -13,21 +13,43 @@ namespace SrvSurvey.plotters
     {
         public static BigOverlay? current;
 
+        public static void create(Game game)
+        {
+            current?.Close();
+
+            // do not create anything if this setting is enabled
+            if (Game.settings.disableBigOverlay)
+            {
+                PlotBase2.renderAll(game, true);
+                return;
+            }
+
+            Game.log("BigOverlay.create");
+            var bigOverlay = new BigOverlay();
+            bigOverlay.Show(new Win32Window() { Handle = Elite.getWindowHandle() });
+
+            PlotBase2.renderAll(game, true);
+        }
+
         /// <summary> Invalidates the big overlay, using Program.defer </summary>
         public static void invalidate()
         {
-            if (BigOverlay.current != null)
-                Program.defer(() => BigOverlay.current?.Invalidate());
+            Program.defer(() =>
+            {
+                if (BigOverlay.current != null)
+                {
+                    BigOverlay.current.Visible = !Elite.eliteMinimized && !Program.tempHideAllPlotters;
+                    BigOverlay.current.Invalidate();
+                }
+            });
         }
 
         private Color maskColor = Game.settings.bigOverlayMaskColor;
 
-        public BigOverlay()
+        private BigOverlay()
         {
             BigOverlay.current = this;
 
-            this.TopMost = true;
-            this.Cursor = Cursors.Cross;
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = FormStartPosition.Manual;
@@ -47,7 +69,12 @@ namespace SrvSurvey.plotters
             this.Text = "SrvSurveyOne";
 
             this.initPlotPulse();
-            this.reposition(Elite.getWindowRect());
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            base.OnMouseLeave(e);
+            System.Windows.Forms.Cursor.Show();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -58,7 +85,8 @@ namespace SrvSurvey.plotters
             NativeMethods.SetWindowLong(this.Handle, NativeMethods.GWL_EXSTYLE, exStyle | NativeMethods.WS_EX_LAYERED);
 
             setOpacity(Game.settings.plotterOpacity);
-            //reposition(Elite.getWindowRect());
+            reposition(Elite.getWindowRect());
+            System.Windows.Forms.Cursor.Show();
         }
 
         /// <summary> Set opacity from 0 to 100 % </summary>
@@ -92,32 +120,25 @@ namespace SrvSurvey.plotters
         public void reposition(Rectangle gameRect)
         {
             Game.log($"bigOverlay @{gameRect} / {this.Visible}");
-            //Elite.setOnTopGame(this.Handle);
 
-            if (gameRect.X <= -30_000)
+            this.SuspendLayout();
+            this.Visible = !Elite.eliteMinimized && !Program.tempHideAllPlotters;
+            this.Location = gameRect.Location;
+            this.Size = gameRect.Size;
+            this.ResumeLayout();
+
+            // get PlotPulse location
+            this.ptPlotPulse = PlotPos.getPlotterLocation("PlotPulse", plotPulseDefaultSize, gameRect, true);
+
+            if (Game.activeGame != null)
             {
-                this.Hide();
+                foreach (var plotter in PlotBase2.active)
+                    plotter.setPosition(gameRect);
+
+                PlotBase2.renderAll(Game.activeGame);
             }
-            else
-            {
-                this.SuspendLayout();
-                this.Location = gameRect.Location;
-                this.Size = gameRect.Size;
-                this.ResumeLayout();
 
-                // get PlotPulse location
-                this.ptPlotPulse = PlotPos.getPlotterLocation("PlotPulse", plotPulseDefaultSize, gameRect, true);
-
-                if (Game.activeGame != null)
-                {
-                    foreach (var plotter in PlotBase2.active)
-                        plotter.setPosition(gameRect);
-
-                    PlotBase2.renderAll(Game.activeGame);
-                }
-
-                this.Invalidate();
-            }
+            this.Invalidate();
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -150,16 +171,16 @@ namespace SrvSurvey.plotters
                         if (plotter.stale) plotter.render();
 #endif
 
-                        if (plotter.fade == 0)
+                        if (plotter.fade == 1 || PlotBase.windowOne != null)
+                        {
+                            // not fading
+                            g.DrawImageUnscaled(plotter.background, plotter.left, plotter.top);
+                            g.DrawImageUnscaled(plotter.frame, plotter.left, plotter.top);
+                        }
+                        else if (plotter.fade == 0)
                         {
                             // start fading in
                             Util.deferAfter(20, () => fadeNext2((PlotBase2)plotter, 0.1f), plotter.name);
-                        }
-                        else if (plotter.fade == 1)
-                        {
-                            // fading has finished
-                            g.DrawImageUnscaled(plotter.background, plotter.left, plotter.top);
-                            g.DrawImageUnscaled(plotter.frame, plotter.left, plotter.top);
                         }
                         else
                         {
@@ -185,6 +206,13 @@ namespace SrvSurvey.plotters
                             g.DrawRectangle(GameColors.penYellow4, rect);
                         }
                     }
+                }
+
+                // if streaming setting is active - clobber that hidden window with our own contents
+                if (PlotBase.windowOne != null && PlotBase.backOne != null)
+                {
+                    this.DrawToBitmap(PlotBase.backOne, new Rectangle(Point.Empty, this.Size));
+                    PlotBase.windowOne.Invalidate();
                 }
             }
             catch (Exception ex)

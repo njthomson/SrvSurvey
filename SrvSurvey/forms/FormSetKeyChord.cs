@@ -1,10 +1,11 @@
-﻿using SrvSurvey.game;
+﻿using SrvSurvey.forms;
+using SrvSurvey.game;
 using SrvSurvey.Properties;
 using System.ComponentModel;
 
 namespace SrvSurvey
 {
-    public partial class FormSetKeyChord : Form
+    internal partial class FormSetKeyChord : BaseForm
     {
         public string keyChord { get => textChord.Text; }
 

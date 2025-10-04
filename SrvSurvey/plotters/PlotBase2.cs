@@ -146,7 +146,7 @@ namespace SrvSurvey.plotters
             //Game.log($"invalidate: {this.name}");
             this.stale = true;
 
-            if (Game.settings.useNotOneOverlay_TEST)
+            if (this.def.form != null)
                 Program.invalidate(this.name);
             else
                 BigOverlay.invalidate();
@@ -297,7 +297,7 @@ namespace SrvSurvey.plotters
             {
                 Game.log($"Overlays.remove: {def.name}");
 
-                if (Game.settings.useNotOneOverlay_TEST)
+                if (def.form != null)
                 {
                     Program.closePlotter(def.name);
                     def.form = null;
@@ -399,14 +399,13 @@ namespace SrvSurvey.plotters
                         def.instance.render();
                     }
 
-                    if (Game.settings.useNotOneOverlay_TEST && def.instance != null)
+                    if (def.instance != null && (Game.settings.disableBigOverlay || PlotPos.usesOS(def.name)))
                     {
                         if (def.form == null)
                         {
                             def.form = new PlotContainer(def);
                             Program.showPlotter<PlotContainer>(null, def.name);
                         }
-
                         def.form?.doRender();
                     }
                 }
@@ -432,7 +431,7 @@ namespace SrvSurvey.plotters
         public static List<PlotBase2> active
         {
             get => defs.Values
-                .Where(def => def.instance != null)
+                .Where(def => def.instance != null && def.form == null)
                 .Select(def => def.instance!)
                 .ToList<PlotBase2>();
         }
@@ -777,14 +776,26 @@ namespace SrvSurvey.plotters
 
         public override bool allow => Game.activeGame == null ? false : def.allowed(Game.activeGame);
 
-        public void doRender()
+        private void checkLocationAndSize()
         {
             if (def.instance == null) return;
 
-            this.Invalidate();
-
             if (this.Width != def.instance.width || this.Height != def.instance.height)
-                this.SetBounds(this.Left, this.Top, def.instance.width, def.instance.height);
+            {
+                Game.log($"resize: {def.name} => {def.instance.size}");
+                var gameRect = Elite.getWindowRect();
+                var pt = PlotPos.getPlotterLocation(this.Name, def.instance.size, gameRect, false);
+                this.SetBounds(pt.X, pt.Y, def.instance.width, def.instance.height);
+            }
+
+            if (this.Visible == def.instance.hidden)
+                this.Visible = !def.instance.hidden;
+        }
+
+        public void doRender()
+        {
+            checkLocationAndSize();
+            this.Invalidate();
         }
 
         protected override void onPaintPlotter(PaintEventArgs e)
@@ -793,6 +804,8 @@ namespace SrvSurvey.plotters
 
             if (def.instance.frame == null || def.instance.stale)
                 def.instance.render();
+
+            checkLocationAndSize();
 
             g.DrawImage(def.instance.background, 0, 0);
             g.DrawImage(def.instance.frame!, 0, 0);

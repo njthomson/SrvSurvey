@@ -20,6 +20,12 @@ namespace SrvSurvey.forms
             this.trackPosition = this.GetType().GetCustomAttribute<TrackPositionAttribute>() != null;
         }
 
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            base.OnMouseEnter(e);
+            System.Windows.Forms.Cursor.Show();
+        }
+
         protected override CreateParams CreateParams
         {
             get
@@ -164,14 +170,16 @@ namespace SrvSurvey.forms
 
         private void hookChildMouseEvents(Control ctrl)
         {
+            ctrl.MouseEnter += (s, e) => System.Windows.Forms.Cursor.Show();
+
             // unless the control has editable text and not one of these ...
             if (ctrl.Cursor != Cursors.IBeam && !(ctrl is Button) && !(ctrl is ComboBox) && !(ctrl is StatusStrip) && !(ctrl is SplitContainer))
             {
                 // ... hook into their mouse events
-                ctrl.MouseDown += new MouseEventHandler((object? sender, MouseEventArgs e) => startDragging(sender, e));
-                ctrl.MouseUp += new MouseEventHandler((object? sender, MouseEventArgs e) => stopDragging());
-                ctrl.MouseMove += new MouseEventHandler((object? sender, MouseEventArgs e) => onMouseMove(e));
-                ctrl.MouseLeave += new EventHandler((object? sender, EventArgs e) => stopDragging());
+                ctrl.MouseDown += (s, e) => startDragging(s, e);
+                ctrl.MouseUp += (s, e) => stopDragging();
+                ctrl.MouseMove += (s, e) => onMouseMove(e);
+                ctrl.MouseLeave += (s, e) => stopDragging();
             }
 
             foreach (Control child in ctrl.Controls)

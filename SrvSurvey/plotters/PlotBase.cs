@@ -41,7 +41,6 @@ namespace SrvSurvey.plotters
 
         protected PlotBase()
         {
-            this.TopMost = true;
             this.Cursor = Cursors.Cross;
             this.BackColor = Color.Black;
             this.ShowIcon = false;
@@ -91,6 +90,7 @@ namespace SrvSurvey.plotters
         {
             base.OnLoad(e);
             this.FormBorderStyle = FormBorderStyle.None;
+            System.Windows.Forms.Cursor.Show();
         }
 
         protected override void OnActivated(EventArgs e)
@@ -257,7 +257,7 @@ namespace SrvSurvey.plotters
 
             if (gameRect != Rectangle.Empty)
             {
-                PlotPos.reposition(this, gameRect);
+                PlotPos.reposition(this, gameRect, this.Name);
                 this.Invalidate();
             }
         }
@@ -454,7 +454,7 @@ namespace SrvSurvey.plotters
                     }
                 }
 
-                if (FormAdjustOverlay.targetName == this.Name)
+                if (FormAdjustOverlay.targetName == this.Name && g != null)
                     ifAdjustmentTarget(g, this);
             }
             catch (Exception ex)
@@ -483,7 +483,7 @@ namespace SrvSurvey.plotters
                 var x = this.Left - er.Left;
                 var y = this.Top - er.Top;
 
-                if (this.Opacity == 0 || !this.Visible)
+                if (this.Opacity == 0 || !this.Visible || x < 0 || y < 0)
                 {
                     using (var g2 = Graphics.FromImage(backOne))
                     {
@@ -1121,13 +1121,12 @@ namespace SrvSurvey.plotters
 
         #region One Window to Rule Them All
 
-        private static WindowOne? windowOne;
-        private static Bitmap? backOne;
-        private static Color colorOne = Color.FromArgb(1, 1, 1);
-        private static Brush brushOne = new SolidBrush(colorOne);
+        public static WindowOne? windowOne;
+        public static Bitmap? backOne;
+        private static Brush brushOne = new SolidBrush(Game.settings.bigOverlayMaskColor);
         protected Rectangle lastOne;
 
-        class WindowOne : Form
+        public class WindowOne : Form
         {
             public WindowOne(Bitmap bm) : base()
             {
@@ -1138,8 +1137,8 @@ namespace SrvSurvey.plotters
                 this.StartPosition = FormStartPosition.Manual;
                 this.ShowIcon = false;
                 this.ShowInTaskbar = false;
-                this.BackColor = colorOne;
-                this.TransparencyKey = colorOne;
+                this.BackColor = Game.settings.bigOverlayMaskColor;
+                this.TransparencyKey = Game.settings.bigOverlayMaskColor;
                 this.AllowTransparency = true;
                 this.Size = bm.Size;
                 this.Opacity = 0;
@@ -1747,6 +1746,13 @@ namespace SrvSurvey.plotters
                 return Game.settings.Opacity;
         }
 
+        /// <summary> Returns True is horizontal or vertical are using Screen based values </summary>
+        public static bool usesOS(string name)
+        {
+            var pp = plotterPositions.GetValueOrDefault(name);
+            return pp?.h == Horiz.OS || pp?.v == Vert.OS;
+        }
+
         public static void reposition(PlotterForm form, Rectangle rect, string? formTypeName = null)
         {
             formTypeName = formTypeName ?? form.GetType().Name;
@@ -1767,6 +1773,7 @@ namespace SrvSurvey.plotters
         /// <param name="formName">The name of the plotter</param>
         /// <param name="sz">The size of the plotter</param>
         /// <param name="rect">The rectangle of the game window</param>
+        /// <param name="plot2">If this is a refactored plotter, using relative locations</param>
         public static Point getPlotterLocation(string formName, Size sz, Rectangle rect, bool plot2 = false)
         {
             // skip plotters that are fixed
@@ -1778,8 +1785,11 @@ namespace SrvSurvey.plotters
             if (rect == Rectangle.Empty)
                 rect = Elite.getWindowRect();
 
-            if (plot2)
-                rect.Location = Point.Empty;
+            if (plot2 && !Game.settings.disableBigOverlay)
+            {
+                if (pp.h != Horiz.OS) rect.X = 0;
+                if (pp.v != Vert.OS) rect.Y = 0;
+            }
 
             var left = 0;
             if (pp.h == Horiz.Left)

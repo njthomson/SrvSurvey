@@ -6,7 +6,7 @@ using System.Net;
 
 namespace SrvSurvey
 {
-    public partial class FormErrorSubmit : Form
+    internal partial class FormErrorSubmit : BaseForm
     {
         public static void Show(Exception ex)
         {

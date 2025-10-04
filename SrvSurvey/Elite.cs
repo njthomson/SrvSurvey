@@ -7,6 +7,10 @@ namespace SrvSurvey
 {
     class Elite
     {
+        public static string ProcessName =
+            //"notepad"; /*
+            "EliteDangerous64"; // */
+
         public static readonly string displaySettingsFolder = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "Frontier Developments\\Elite Dangerous\\Options\\Graphics");
@@ -34,7 +38,7 @@ namespace SrvSurvey
 
             if (_gameProc == null)
             {
-                var edProcs = Process.GetProcessesByName("EliteDangerous64");
+                var edProcs = Process.GetProcessesByName(Elite.ProcessName);
                 if (edProcs.Length == 0)
                     _gameProc = null;
                 else if (edProcs.Length == 1)
@@ -105,6 +109,8 @@ namespace SrvSurvey
         public static bool gameHasFocus { get => focusElite || focusSrvSurvey; }
         public static bool focusSrvSurvey;
         public static bool focusElite;
+        public static bool eliteMinimized;
+        public static Rectangle lastRect;
 
         /// <summary>
         /// Return the rectangle of the game window
@@ -118,15 +124,17 @@ namespace SrvSurvey
 
             var hwndED = Elite.getWindowHandle();
             var hwndActive = Elite.GetForegroundWindow();
-            var isIconic = IsIconic(hwndED); // is it minimized?
+            eliteMinimized = IsIconic(hwndED); // is it minimized?
             var weHaveFocus = (!Program.control.InvokeRequired && hwndActive == Main.ActiveForm?.Handle) || System.Diagnostics.Debugger.IsAttached || Game.settings.keepOverlays;
 
             focusElite = hwndActive == hwndED;
             focusSrvSurvey = hwndActive == Main.ActiveForm?.Handle;
 
-            // hide plotters when game is not active (unless we are debugging or forced)
-            if (!force && (isIconic || hwndED != hwndActive || hwndED == IntPtr.Zero) && !weHaveFocus)
+            //Debug.WriteLine($"hwndED: {hwndED}, hwndActive: {hwndActive}, eliteMinimized: {eliteMinimized}, focusElite: {focusElite}, focusSrvSurvey: {focusSrvSurvey}");
+
+            if (eliteMinimized)
             {
+                lastRect = Rectangle.Empty;
                 return Rectangle.Empty;
             }
 
@@ -149,10 +157,11 @@ namespace SrvSurvey
                 rect.Left + (int)((float)rect.Width / 2f),
                 rect.Top + (int)((float)rect.Height / 2f));
 
+            lastRect = rect;
             return rect;
         }
 
-        private static IntPtr getWindowHandle()
+        public static IntPtr getWindowHandle()
         {
             var p = getGameProc();
             return p == null ? IntPtr.Zero : p.MainWindowHandle;
@@ -179,82 +188,24 @@ namespace SrvSurvey
 
         public static GraphicsMode graphicsMode { get; private set; }
 
-        public static void floatLeftMiddle(Form form, Rectangle rect)
+        public static void setOnTopGame(Form? form)
         {
-            if (rect == Rectangle.Empty)
-                rect = Elite.getWindowRect();
+            if (form == null) return;
 
-            form.Left = rect.Left + 40;
-            form.Top = rect.Top + (rect.Height / 2) - (form.Height / 2);
-        }
-
-        public static void floatRightMiddle(Form form, Rectangle rect, int fromRight, int aboveMiddle = 0)
-        {
-            if (rect == Rectangle.Empty)
-                rect = Elite.getWindowRect();
-
-            form.Left = rect.Right - form.Width - fromRight;
-            form.Top = rect.Top + (rect.Height / 2) - (form.Height / 2) + aboveMiddle;
-        }
-
-        public static void floatCenterTop(Form form, Rectangle rect, int fromTop, int rightOfCenter = 0)
-        {
-            if (rect == Rectangle.Empty)
-                rect = Elite.getWindowRect();
-
-            form.Left = rect.Left + (rect.Width / 2) - (form.Width / 2) + rightOfCenter;
-            form.Top = rect.Top + fromTop;
-        }
-
-        public static void floatCenterBottom(Form form, Rectangle rect, int fromBottom, int rightOfCenter = 0)
-        {
-            if (rect == Rectangle.Empty)
-                rect = Elite.getWindowRect();
-
-            form.Left = rect.Left + (rect.Width / 2) - (form.Width / 2) + rightOfCenter;
-            form.Top = rect.Bottom - form.Height - fromBottom;
-        }
-
-        public static void floatLeftTop(Form form, Rectangle rect, int fromTop = 40, int fromLeft = 40)
-        {
-            if (rect == Rectangle.Empty)
-                rect = Elite.getWindowRect();
-
-            form.Left = rect.Left + fromLeft;
-            form.Top = rect.Top + fromTop;
-        }
-
-        public static void floatRightTop(Form form, Rectangle rect, int fromTop = 20, int fromRight = 20)
-        {
-            if (rect == Rectangle.Empty)
-                rect = Elite.getWindowRect();
-
-            form.Left = rect.Right - form.Width - fromRight;
-            form.Top = rect.Top + fromTop;
-        }
-
-        public static void floatLeftBottom(Form form, Rectangle rect, int fromBottom = 20, int fromLeft = 40)
-        {
-            if (rect == Rectangle.Empty)
-                rect = Elite.getWindowRect();
-
-            form.Left = rect.Left + fromLeft;
-            form.Top = rect.Bottom - form.Height - fromBottom;
-        }
-
-        public static void floatRightBottom(Form form, Rectangle rect, int fromBottom = 20, int fromRight = 20)
-        {
-            if (rect == Rectangle.Empty)
-                rect = Elite.getWindowRect();
-
-            form.Left = rect.Right - form.Width - fromRight;
-            form.Top = rect.Bottom - form.Height - fromBottom;
-        }
-
-        public static void setOnTopGame(IntPtr hwnd)
-        {
+            Game.log($">> setOnTopGame: {form.Text}");
             var hwndED = Elite.getWindowHandle();
-            Elite.SetWindowPos(hwndED, hwnd, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW);
+            SetWindowLongPtr64(form.Handle, GWLP_HWNDPARENT, hwndED);
+
+            //Elite.SetWindowPos(form.Handle, hwndED, targetRect.Left,
+            //    targetRect.Top,
+            //    targetRect.Right - targetRect.Left,
+            //    targetRect.Bottom - targetRect.Top,
+            //    SWP_NOACTIVATE | SWP_SHOWWINDOW);
+
+
+            // toggle parenting twice, so our window is ontop of where the game window is
+            //Elite.SetWindowPos(form.Handle, hwndED, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW | SWP_NOOWNERZORDER);
+            //Elite.SetWindowPos(hwndED, form.Handle, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW | SWP_NOOWNERZORDER);
         }
 
         [DllImport("User32.dll")]
@@ -278,6 +229,15 @@ namespace SrvSurvey
         private const int SM_CYFIXEDFRAME = 8;
         private static int windowTitleHeight = GetSystemMetrics(SM_CYCAPTION) + GetSystemMetrics(SM_CYFIXEDFRAME) * 3;
 
+        private const int GWLP_HWNDPARENT = -8;
+
+        [DllImport("user32.dll", SetLastError = true, EntryPoint = "SetWindowLongPtr")]
+        private static extern IntPtr SetWindowLongPtr64(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+
+        /*
+        [DllImport("user32.dll")]
+        public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+
         [DllImport("user32.dll")]
         public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
@@ -285,6 +245,14 @@ namespace SrvSurvey
         public const uint SWP_NOMOVE = 0x0002;
         public const uint SWP_NOACTIVATE = 0x0010;
         public const uint SWP_SHOWWINDOW = 0x0040;
+        public const uint SWP_ASYNCWINDOWPOS = 0x4000;
+        public const uint SWP_NOOWNERZORDER = 0x0200;
+
+        public static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
+        public static readonly IntPtr HWND_TOP = new IntPtr(0);
+        public static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        public static readonly IntPtr HWND_NOTOPMOST = new IntPtr(-2);
+        */
     }
 
     [StructLayout(LayoutKind.Sequential)]

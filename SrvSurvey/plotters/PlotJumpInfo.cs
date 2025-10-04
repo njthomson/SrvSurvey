@@ -302,7 +302,7 @@ namespace SrvSurvey.plotters
             var szRight = tt.draw(this.width - N.eight, Res.JumpDistance.format(totalDistance.ToString("N1")), null, null, true);
 
             // calc left edge of line + whole line width to fix between rendered text
-            var left = szLeft.Width + N.oneFour;
+            var left = szLeft.Width + N.oneEight;
             var lineWidth = this.width - left - szRight.Width - N.oneSix;
             var pixelsPerLY = lineWidth / this.totalDistance;
 

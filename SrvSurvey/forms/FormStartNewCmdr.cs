@@ -1,10 +1,11 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.plotters;
 using System.ComponentModel;
 using System.Diagnostics;
 
 namespace SrvSurvey.forms
 {
-    public partial class FormStartNewCmdr : Form
+    internal partial class FormStartNewCmdr : SizableForm
     {
         public static bool active = false;
 
@@ -22,7 +23,7 @@ namespace SrvSurvey.forms
                 Program.defer(() =>
                 {
                     // enable controls to spawn another SrvSurvey only if there are more game processes than SrvSurvey processes
-                    var gameProcs = Process.GetProcessesByName("EliteDangerous64");
+                    var gameProcs = Process.GetProcessesByName(Elite.ProcessName);
                     var surveyProcs = Process.GetProcessesByName("SrvSurvey");
 
                     if (surveyProcs.Length < gameProcs.Length)
@@ -74,7 +75,23 @@ namespace SrvSurvey.forms
 
         private void btnToggleWindow_Click(object sender, EventArgs e)
         {
-            FormMultiFloatie.useNextWindow();
+            if (Game.activeGame == null)
+            {
+                this.Close();
+                return;
+            }
+
+            Program.closeAllPlotters();
+            FormMultiFloatie.current?.Close();
+            BigOverlay.current?.Close();
+
+            Elite.nextWindow();
+            Elite.setFocusED();
+
+            Application.DoEvents();
+
+            BigOverlay.create(Game.activeGame);
+            FormMultiFloatie.create();
         }
     }
 }

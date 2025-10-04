@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.canonn;
+using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.plotters;
 using System.ComponentModel;
@@ -6,7 +7,7 @@ using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
-    internal partial class FormBuilder : Form
+    internal partial class FormBuilder : BaseForm
     {
         public static FormBuilder? activeForm;
 
