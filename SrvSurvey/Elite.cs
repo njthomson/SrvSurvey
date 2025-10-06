@@ -280,7 +280,7 @@ namespace SrvSurvey
 
         const uint TOKEN_QUERY = 0x0008;
 
-        private static bool IsLocalUserProcess(this Process process)
+        public static bool IsLocalUserProcess(this Process process)
         {
             IntPtr tokenHandle = IntPtr.Zero;
             try

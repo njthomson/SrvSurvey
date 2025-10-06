@@ -260,6 +260,7 @@ namespace SrvSurvey
         public bool streamOneOverlay = false;
 
         public bool disableBigOverlay = false;
+        public bool disableBetterAlphaBlending = false;
 
         #region loading / saving
 

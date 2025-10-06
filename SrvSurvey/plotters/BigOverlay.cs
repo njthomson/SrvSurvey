@@ -64,7 +64,12 @@ namespace SrvSurvey.plotters
 
             // This needs to be a colour that won't naturally appear
             this.BackColor = maskColor;
-            // We must NOT use this.TransparencyKey or this.Opacity ... otherwise alpha-blending will break
+
+            if (Game.settings.disableBetterAlphaBlending)
+            {
+                this.TransparencyKey = maskColor;
+                this.AllowTransparency = true;
+            }
 
             this.Text = "SrvSurveyOne";
 
@@ -92,10 +97,17 @@ namespace SrvSurvey.plotters
         /// <summary> Set opacity from 0 to 100 % </summary>
         public void setOpacity(float opacity)
         {
-            // Set transparency: 128 = 50% opacity
-            var uui = (uint)ColorTranslator.ToWin32(maskColor);
-            var opacity2 = (byte)Math.Round(255f / 100f * opacity);
-            NativeMethods.SetLayeredWindowAttributes(this.Handle, uui, opacity2, NativeMethods.LWA_ALPHA | NativeMethods.LWA_COLORKEY);
+            if (Game.settings.disableBetterAlphaBlending)
+            {
+                this.Opacity = opacity * 0.01;
+            }
+            else
+            {
+                // Set transparency: 128 = 50% opacity
+                var uui = (uint)ColorTranslator.ToWin32(maskColor);
+                var opacity2 = (byte)Math.Round(255f / 100f * opacity);
+                NativeMethods.SetLayeredWindowAttributes(this.Handle, uui, opacity2, NativeMethods.LWA_ALPHA | NativeMethods.LWA_COLORKEY);
+            }
         }
 
         protected override void Dispose(bool disposing)

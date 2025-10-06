@@ -7,6 +7,7 @@ using SrvSurvey.net;
 using SrvSurvey.plotters;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Globalization;
@@ -30,6 +31,7 @@ namespace SrvSurvey
         private DateTime lastProcCheck;
 
         public static Main form;
+        public static bool isClosing;
         public KeyboardHook hook;
 
         public Main()
@@ -94,6 +96,12 @@ namespace SrvSurvey
 
             Util.applyTheme(this);
             btnNextWindow.BackColor = C.cyanDark;
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            Main.isClosing = true;
         }
 
         private void Main_Load(object sender, EventArgs e)

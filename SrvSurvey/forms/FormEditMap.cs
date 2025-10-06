@@ -5,6 +5,7 @@ using SrvSurvey.units;
 
 namespace SrvSurvey
 {
+    [System.ComponentModel.DesignerCategory("Form")]
     internal partial class FormEditMap : BaseForm
     {
         private Game game = Game.activeGame!;

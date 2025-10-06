@@ -23,7 +23,6 @@ namespace SrvSurvey.forms
         protected override void OnMouseEnter(EventArgs e)
         {
             base.OnMouseEnter(e);
-            System.Windows.Forms.Cursor.Show();
         }
 
         protected override CreateParams CreateParams
@@ -156,6 +155,9 @@ namespace SrvSurvey.forms
             if (this.isDraggable)
                 foreach (Control ctrl in this.Controls)
                     hookChildMouseEvents(ctrl);
+
+            hookChildMouseEnterEvents(this);
+            Program.defer(() => System.Windows.Forms.Cursor.Show());
         }
 
         #region mouse dragging
@@ -168,10 +170,16 @@ namespace SrvSurvey.forms
         private bool mouseDown;
         private Size startPoint;
 
-        private void hookChildMouseEvents(Control ctrl)
+        private void hookChildMouseEnterEvents(Control ctrl)
         {
             ctrl.MouseEnter += (s, e) => System.Windows.Forms.Cursor.Show();
 
+            foreach (Control child in ctrl.Controls)
+                hookChildMouseEnterEvents(child);
+        }
+
+        private void hookChildMouseEvents(Control ctrl)
+        {
             // unless the control has editable text and not one of these ...
             if (ctrl.Cursor != Cursors.IBeam && !(ctrl is Button) && !(ctrl is ComboBox) && !(ctrl is StatusStrip) && !(ctrl is SplitContainer))
             {

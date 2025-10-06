@@ -10,6 +10,7 @@ using System.Reflection;
 
 namespace SrvSurvey
 {
+    [System.ComponentModel.DesignerCategory("Form")]
     internal partial class FormSettings : BaseForm
     {
         private static Game? game { get => Game.activeGame; }

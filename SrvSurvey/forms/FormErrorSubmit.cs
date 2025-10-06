@@ -6,10 +6,18 @@ using System.Net;
 
 namespace SrvSurvey
 {
+    [System.ComponentModel.DesignerCategory("Form")]
     internal partial class FormErrorSubmit : BaseForm
     {
         public static void Show(Exception ex)
         {
+            // log but do nothing if the main form has already started to close itself
+            if (Main.isClosing)
+            {
+                Game.log($"FormErrorSubmit.show: {ex}");
+                return;
+            }
+
             if (Program.control.InvokeRequired)
             {
                 Program.control.Invoke(() => FormErrorSubmit.Show(ex));

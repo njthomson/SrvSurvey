@@ -8,6 +8,7 @@ using System.Text;
 
 namespace SrvSurvey
 {
+    [System.ComponentModel.DesignerCategory("Form")]
     internal partial class FormShareData : BaseForm
     {
         public static FormShareData? activeForm;

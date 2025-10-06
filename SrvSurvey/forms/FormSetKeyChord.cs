@@ -5,6 +5,7 @@ using System.ComponentModel;
 
 namespace SrvSurvey
 {
+    [System.ComponentModel.DesignerCategory("Form")]
     internal partial class FormSetKeyChord : BaseForm
     {
         public string keyChord { get => textChord.Text; }

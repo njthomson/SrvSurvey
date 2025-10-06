@@ -9,6 +9,7 @@ using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
+    [System.ComponentModel.DesignerCategory("Form")]
     internal partial class FormRuins : BaseForm
     {
         #region showing and position tracking 
