@@ -120,7 +120,7 @@ namespace SrvSurvey.forms
         {
             if (!Elite.hadManyGameProcs) return;
 
-            var edProcs = Process.GetProcessesByName(Elite.ProcessName);
+            var edProcs = Elite.GetGameProcs();
             var nextIdx = Elite.procIdx + 1;
             if (nextIdx >= edProcs.Length) nextIdx = 0;
             var nextGameProc = edProcs[nextIdx];

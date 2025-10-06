@@ -367,7 +367,7 @@ namespace SrvSurvey
                 try
                 {
                     lastProcCheck = DateTime.Now;
-                    var procs = Process.GetProcessesByName(Elite.ProcessName);
+                    var procs = Elite.GetGameProcs();
                     Elite.hadManyGameProcs = procs.Length > 1;
 
                     // handle single/multiple processes

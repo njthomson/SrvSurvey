@@ -5,11 +5,25 @@ using System.Xml.Linq;
 
 namespace SrvSurvey
 {
-    class Elite
+    static class Elite
     {
-        public static string ProcessName =
-            //"notepad"; /*
-            "EliteDangerous64"; // */
+        static Elite()
+        {
+            var allGameProcs = GetGameProcs().ToList();
+            if (allGameProcs.Count > 1)
+            {
+                // if there are multiple game processes but only one running for the local user - pick that by default
+                var firstLocal = allGameProcs
+                    .Where(p => p.IsLocalUserProcess())
+                    .FirstOrDefault();
+                if (firstLocal != null)
+                {
+                    _procIdx = allGameProcs.IndexOf(firstLocal);
+                    Game.log($"Init procIdx: {_procIdx}, of {allGameProcs.Count}");
+                    if (_procIdx < 0) _procIdx = 0;
+                }
+            }
+        }
 
         public static readonly string displaySettingsFolder = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -30,6 +44,11 @@ namespace SrvSurvey
 
         private static Process? _gameProc;
 
+        public static Process[] GetGameProcs()
+        {
+            return Process.GetProcessesByName("EliteDangerous64");
+        }
+
         private static Process? getGameProc()
         {
             // clear reference if that process died
@@ -38,7 +57,7 @@ namespace SrvSurvey
 
             if (_gameProc == null)
             {
-                var edProcs = Process.GetProcessesByName(Elite.ProcessName);
+                var edProcs = Elite.GetGameProcs();
                 if (edProcs.Length == 0)
                     _gameProc = null;
                 else if (edProcs.Length == 1)
@@ -253,6 +272,29 @@ namespace SrvSurvey
         public static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
         public static readonly IntPtr HWND_NOTOPMOST = new IntPtr(-2);
         */
+
+        #region getting Process user-name
+
+        [DllImport("advapi32.dll", SetLastError = true)]
+        static extern bool OpenProcessToken(IntPtr ProcessHandle, uint DesiredAccess, out IntPtr TokenHandle);
+
+        const uint TOKEN_QUERY = 0x0008;
+
+        private static bool IsLocalUserProcess(this Process process)
+        {
+            IntPtr tokenHandle = IntPtr.Zero;
+            try
+            {
+                OpenProcessToken(process.Handle, TOKEN_QUERY, out tokenHandle);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        #endregion
     }
 
     [StructLayout(LayoutKind.Sequential)]

@@ -82,7 +82,9 @@ namespace SrvSurvey
 
                 if (!restarted && !invokePostProcessor && forceFid == null)
                 {
-                    var processes = Process.GetProcessesByName("SrvSurvey");
+                    var processes = Process.GetProcessesByName("SrvSurvey")
+                        .Where(p => p.IsLocalUserProcess())
+                        .ToArray();
                     if (processes.Length > 1)
                     {
                         MessageBox.Show("SrvSurvey is already running.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Warning);

@@ -23,8 +23,10 @@ namespace SrvSurvey.forms
                 Program.defer(() =>
                 {
                     // enable controls to spawn another SrvSurvey only if there are more game processes than SrvSurvey processes
-                    var gameProcs = Process.GetProcessesByName(Elite.ProcessName);
-                    var surveyProcs = Process.GetProcessesByName("SrvSurvey");
+                    var gameProcs = Elite.GetGameProcs();
+                    var surveyProcs = Process.GetProcessesByName("SrvSurvey")
+                        .Where(p => p.IsLocalUserProcess())
+                        .ToArray();
 
                     if (surveyProcs.Length < gameProcs.Length)
                     {
