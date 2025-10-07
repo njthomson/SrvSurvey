@@ -152,12 +152,15 @@ namespace SrvSurvey.forms
         {
             base.OnLoad(e);
 
-            if (this.isDraggable)
-                foreach (Control ctrl in this.Controls)
-                    hookChildMouseEvents(ctrl);
+            if (!this.DesignMode)
+            {
+                if (this.isDraggable)
+                    foreach (Control ctrl in this.Controls)
+                        hookChildMouseEvents(ctrl);
 
-            hookChildMouseEnterEvents(this);
-            Program.defer(() => System.Windows.Forms.Cursor.Show());
+                hookChildMouseEnterEvents(this);
+                Program.defer(() => System.Windows.Forms.Cursor.Show());
+            }
         }
 
         #region mouse dragging

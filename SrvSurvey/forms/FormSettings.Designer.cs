@@ -31,10 +31,10 @@ namespace SrvSurvey
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            ListViewItem listViewItem5 = new ListViewItem("Materials count after pickup");
-            ListViewItem listViewItem6 = new ListViewItem("Mission remaining cargo count");
-            ListViewItem listViewItem7 = new ListViewItem("Boxel search status");
-            ListViewItem listViewItem8 = new ListViewItem("Next boxel to search");
+            ListViewItem listViewItem9 = new ListViewItem("Materials count after pickup");
+            ListViewItem listViewItem10 = new ListViewItem("Mission remaining cargo count");
+            ListViewItem listViewItem11 = new ListViewItem("Boxel search status");
+            ListViewItem listViewItem12 = new ListViewItem("Next boxel to search");
             panel1 = new Panel();
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
@@ -242,6 +242,7 @@ namespace SrvSurvey
             label28 = new Label();
             checkKeyChords = new CheckBox();
             tabPage8 = new TabPage();
+            checkFancyAlphaBlending = new CheckBox();
             checkBox52 = new CheckBox();
             checkBox39 = new CheckBox();
             checkStreamOneOverlay = new CheckBox();
@@ -264,7 +265,6 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
-            checkBox51 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -3026,7 +3026,7 @@ namespace SrvSurvey
             // 
             tabPage8.BackColor = SystemColors.Control;
             tabPage8.BorderStyle = BorderStyle.Fixed3D;
-            tabPage8.Controls.Add(checkBox51);
+            tabPage8.Controls.Add(checkFancyAlphaBlending);
             tabPage8.Controls.Add(checkBox52);
             tabPage8.Controls.Add(checkBox39);
             tabPage8.Controls.Add(checkStreamOneOverlay);
@@ -3047,6 +3047,19 @@ namespace SrvSurvey
             tabPage8.TabIndex = 9;
             tabPage8.Text = "More";
             // 
+            // checkFancyAlphaBlending
+            // 
+            checkFancyAlphaBlending.AutoSize = true;
+            checkFancyAlphaBlending.FlatStyle = FlatStyle.System;
+            checkFancyAlphaBlending.Location = new Point(12, 222);
+            checkFancyAlphaBlending.Name = "checkFancyAlphaBlending";
+            checkFancyAlphaBlending.Size = new Size(347, 20);
+            checkFancyAlphaBlending.TabIndex = 49;
+            checkFancyAlphaBlending.Tag = "disableBetterAlphaBlending";
+            checkFancyAlphaBlending.Text = "Disable fancy alpha-blending (Use if frame rate is impacted)";
+            checkFancyAlphaBlending.TextAlign = ContentAlignment.TopLeft;
+            checkFancyAlphaBlending.UseVisualStyleBackColor = true;
+            // 
             // checkBox52
             // 
             checkBox52.AutoSize = true;
@@ -3065,10 +3078,10 @@ namespace SrvSurvey
             checkBox39.FlatStyle = FlatStyle.System;
             checkBox39.Location = new Point(12, 248);
             checkBox39.Name = "checkBox39";
-            checkBox39.Size = new Size(177, 20);
+            checkBox39.Size = new Size(174, 20);
             checkBox39.TabIndex = 47;
             checkBox39.Tag = "disableBigOverlay";
-            checkBox39.Text = "Disable single large overlay.";
+            checkBox39.Text = "Disable single large overlay";
             checkBox39.TextAlign = ContentAlignment.TopLeft;
             checkBox39.UseVisualStyleBackColor = true;
             // 
@@ -3175,15 +3188,15 @@ namespace SrvSurvey
             // listView1
             // 
             listView1.CheckBoxes = true;
-            listViewItem5.StateImageIndex = 0;
-            listViewItem5.Tag = "materialCountAfterPickup";
-            listViewItem6.StateImageIndex = 0;
-            listViewItem6.Tag = "cargoMissionRemaining";
-            listViewItem7.StateImageIndex = 0;
-            listViewItem7.Tag = "currentBoxelSearchStatus";
-            listViewItem8.StateImageIndex = 0;
-            listViewItem8.Tag = "showNextBoxelToSearch";
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem5, listViewItem6, listViewItem7, listViewItem8 });
+            listViewItem9.StateImageIndex = 0;
+            listViewItem9.Tag = "materialCountAfterPickup";
+            listViewItem10.StateImageIndex = 0;
+            listViewItem10.Tag = "cargoMissionRemaining";
+            listViewItem11.StateImageIndex = 0;
+            listViewItem11.Tag = "currentBoxelSearchStatus";
+            listViewItem12.StateImageIndex = 0;
+            listViewItem12.Tag = "showNextBoxelToSearch";
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem9, listViewItem10, listViewItem11, listViewItem12 });
             listView1.Location = new Point(12, 331);
             listView1.Name = "listView1";
             listView1.Size = new Size(400, 107);
@@ -3292,19 +3305,6 @@ namespace SrvSurvey
             menuClearCodexCache.Text = "Clear cached images";
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
-            // 
-            // checkBox51
-            // 
-            checkBox51.AutoSize = true;
-            checkBox51.FlatStyle = FlatStyle.System;
-            checkBox51.Location = new Point(12, 222);
-            checkBox51.Name = "checkBox51";
-            checkBox51.Size = new Size(350, 20);
-            checkBox51.TabIndex = 49;
-            checkBox51.Tag = "disableBetterAlphaBlending";
-            checkBox51.Text = "Disable fancy alpha-blending. (Use if frame rate is impacted)";
-            checkBox51.TextAlign = ContentAlignment.TopLeft;
-            checkBox51.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -3626,6 +3626,6 @@ namespace SrvSurvey
         private Label label30;
         private LinkLabel linkLabel3;
         private CheckBox checkBox52;
-        private CheckBox checkBox51;
+        private CheckBox checkFancyAlphaBlending;
     }
 }
