@@ -250,8 +250,9 @@ namespace SrvSurvey.plotters
 
                 if (def == null)
                     throw new Exception($"Def not found: {type.Name}");
-                else
-                    defs[def.name] = def;
+
+                defs[def.name] = def;
+                PlotPos.typicalSize[def.name] = def.defaultSize;
             }
         }
 

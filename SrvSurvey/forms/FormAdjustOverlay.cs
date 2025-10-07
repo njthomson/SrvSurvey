@@ -93,7 +93,7 @@ namespace SrvSurvey.forms
             // all names, or only those visible?
             var names = checkShowAll.Checked
                 ? PlotPos.getAllPlotterNames()
-                : Game.settings.disableBigOverlay 
+                : Game.settings.disableBigOverlay
                     ? Program.getAllPlotterNames().Order().ToArray()
                     : PlotBase2.active.Select(d => d.name).Concat(Program.getAllPlotterNames()).Order().ToArray();
 
@@ -136,8 +136,6 @@ namespace SrvSurvey.forms
             checkBottom.Checked = pp.v == PlotPos.Vert.Bottom;
             checkVScreen.Checked = pp.v == PlotPos.Vert.OS;
 
-            var er = Elite.getWindowRect();
-
             numX.Maximum = 10_000; // er.Width;
             numY.Maximum = 10_000; // er.Height;
 
@@ -174,8 +172,9 @@ namespace SrvSurvey.forms
             fake ??= new();
 
             fake.Name = name;
+            var r = getGameRect();
             fake.Size = PlotPos.getLastSize(name);
-            fake.Location = PlotPos.getPlotterLocation(name, fake.Size, Rectangle.Empty);
+            fake.Location = PlotPos.getPlotterLocation(name, fake.Size, r);
             fake.BackgroundImage = GameGraphics.getBackgroundImage(fake.Size, true);
 
             fake.Show();
@@ -206,13 +205,27 @@ namespace SrvSurvey.forms
             Program.invalidateActivePlotters();
         }
 
+        /// <summary> if game is not running, use primary screen as the rectangle </summary>
+
+        private Rectangle getGameRect()
+        {
+            return Elite.isGameRunning
+                    ? Elite.getWindowRect()
+                    : Screen.PrimaryScreen!.Bounds;
+        }
+
         private void repositionPlotters()
         {
-            Program.repositionPlotters();
-            var rect = Elite.getWindowRect();
-            BigOverlay.current?.reposition(rect);
+            var r = getGameRect();
             if (fake != null)
-                fake.Location = PlotPos.getPlotterLocation(fake.Name, fake.Size, rect);
+            {
+                fake.Location = PlotPos.getPlotterLocation(fake.Name, fake.Size, r);
+            }
+            else
+            {
+                Program.repositionPlotters(r);
+                BigOverlay.current?.reposition(r);
+            }
         }
 
         private void checkIfMe(CheckBox sender, params CheckBox[] boxes)
@@ -245,8 +258,6 @@ namespace SrvSurvey.forms
             pp.h = Enum.Parse<PlotPos.Horiz>(box.Tag?.ToString()!);
 
             this.repositionPlotters();
-            if (fake != null)
-                fake.Location = PlotPos.getPlotterLocation(fake.Name, fake.Size, Rectangle.Empty);
         }
 
         private void checkVertical_CheckedChanged(object sender, EventArgs e)
@@ -262,8 +273,6 @@ namespace SrvSurvey.forms
             pp.v = Enum.Parse<PlotPos.Vert>(box.Tag?.ToString()!);
 
             this.repositionPlotters();
-            if (fake != null)
-                fake.Location = PlotPos.getPlotterLocation(fake.Name, fake.Size, Rectangle.Empty);
         }
 
         private void num_ValueChanged(object sender, EventArgs e)

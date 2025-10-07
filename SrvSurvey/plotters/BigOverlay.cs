@@ -2,6 +2,7 @@
 using SrvSurvey.game;
 using SrvSurvey.Properties;
 using SrvSurvey.widgets;
+using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -36,7 +37,7 @@ namespace SrvSurvey.plotters
         {
             Program.defer(() =>
             {
-                if (BigOverlay.current != null)
+                if (BigOverlay.current?.IsHandleCreated == true)
                 {
                     BigOverlay.current.Visible = !Elite.eliteMinimized && !Program.tempHideAllPlotters;
                     BigOverlay.current.Invalidate();
@@ -110,11 +111,18 @@ namespace SrvSurvey.plotters
             }
         }
 
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            PlotBase2.closeAll();
+            BigOverlay.current = null;
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
             PlotBase2.closeAll();
-            BigOverlay.current = null!;
+            BigOverlay.current = null;
         }
 
         protected override bool ShowWithoutActivation => true;

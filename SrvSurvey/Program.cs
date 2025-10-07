@@ -333,11 +333,6 @@ namespace SrvSurvey
                 Program.closePlotter(name);
         }
 
-        public static void repositionPlotters()
-        {
-            repositionPlotters(Elite.getWindowRect());
-        }
-
         public static void repositionPlotters(Rectangle rect)
         {
             if (rect.X < -30_000 || rect.Y < -30_000 || rect.Width == 0 || rect.Height == 0) return;

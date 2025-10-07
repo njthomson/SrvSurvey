@@ -684,6 +684,7 @@ namespace SrvSurvey
 
         private void btnAdjustOverlays_Click(object sender, EventArgs e)
         {
+            btnAdjustOverlays.Enabled = false;
             var form = new FormAdjustOverlay();
 
             Elite.setFocusED();
@@ -702,6 +703,7 @@ namespace SrvSurvey
                 {
                     form.StartPosition = FormStartPosition.CenterScreen;
                 }
+                form.FormClosing += (s, e) => btnAdjustOverlays.Enabled = true;
                 form.Show();
             });
         }

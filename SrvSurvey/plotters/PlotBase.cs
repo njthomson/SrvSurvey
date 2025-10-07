@@ -1537,7 +1537,7 @@ namespace SrvSurvey.plotters
         /// <summary>
         /// The "typical" size of this plotter, used when adjusting positions and the plotter itself isn't visible
         /// </summary>
-        private static readonly Dictionary<string, Size> typicalSize = new();
+        public static readonly Dictionary<string, Size> typicalSize = new();
 
         private static Dictionary<string, PlotPos> plotterPositions = new Dictionary<string, PlotPos>();
         private static Dictionary<string, PlotPos>? backupPositions;
@@ -1694,12 +1694,10 @@ namespace SrvSurvey.plotters
             var json = File.ReadAllText(filepath);
             var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(json)!;
 
-            var newPositions = new Dictionary<string, PlotPos>();
+            // Remove any plotters that no longer exist
+            obj.Remove("PlotRavenSystem");
 
-            foreach (var _ in obj)
-                newPositions[_.Key] = new PlotPos(_.Value);
-
-            return newPositions;
+            return obj.ToDictionary(_ => _.Key, _ => new PlotPos(_.Value));
         }
 
         /// <summary>
@@ -1709,7 +1707,7 @@ namespace SrvSurvey.plotters
         {
             plotterPositions = readPlotterPositions(filepath);
 
-            Program.defer(() => Program.repositionPlotters());
+            Program.defer(() => Program.repositionPlotters(Elite.getWindowRect()));
         }
 
         private static void Watcher_Changed(object sender, FileSystemEventArgs e)
