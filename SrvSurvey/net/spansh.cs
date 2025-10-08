@@ -15,8 +15,7 @@ namespace SrvSurvey.net
 
         static Spansh()
         {
-            Spansh.client = new HttpClient();
-            //Spansh.client.DefaultRequestHeaders.Add("accept-encoding", "gzip, deflate");
+            Spansh.client = new HttpClient(Util.getResilienceHandler());
             Spansh.client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
         }
 

@@ -9,6 +9,14 @@ namespace SrvSurvey.canonn
 {
     internal class CodexRef
     {
+        static CodexRef()
+        {
+            CodexRef.client = new HttpClient(Util.getResilienceHandler());
+            CodexRef.client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
+        }
+
+        private static HttpClient client;
+
         private static string codexRefPath = Path.Combine(Program.dataFolder, "codexRef.json");
         private static string bioRefPath = Path.Combine(Program.dataFolder, "bioRef.json");
         public static string defaultCodexImagesFolder = Path.Combine(Program.dataFolder, "codexImages");
@@ -102,9 +110,6 @@ namespace SrvSurvey.canonn
                 {
                     Game.log($"Downloading {imageUrl} => {filepath}");
 
-                    var client = new HttpClient();
-                    client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
-
                     if (!Uri.IsWellFormedUriString(imageUrl, UriKind.Absolute))
                     {
                         //Debugger.Break();
@@ -146,7 +151,7 @@ namespace SrvSurvey.canonn
             if (!File.Exists(codexRefPath) || reset)
             {
                 Game.log("loadCodexRef: preparing from network ...");
-                json = await new HttpClient().GetStringAsync("https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/ref");
+                json = await client.GetStringAsync("https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/ref");
                 File.WriteAllText(codexRefPath, json);
                 Game.log("loadCodexRef: complete");
                 Game.settings.lastCodexRefDownload = DateTime.Now;
@@ -492,7 +497,7 @@ namespace SrvSurvey.canonn
                 {
                     // https://edastro.b-cdn.net/mapcharts/files/nebulae-coordinates.csv
                     // https://edastro.com/mapcharts/files/nebulae-coordinates.csv
-                    var csv = await new HttpClient().GetStringAsync("https://edastro.com/mapcharts/files/nebulae-coordinates.csv");
+                    var csv = await client.GetStringAsync("https://edastro.com/mapcharts/files/nebulae-coordinates.csv");
                     this.allNebula = csv.Split("\n", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
                         .Skip(1)
                         .Select(line =>
@@ -534,14 +539,14 @@ namespace SrvSurvey.canonn
         private async Task<Tuple<string, string>> getPoiUrlDetails()
         {
             // fetch HTML and JS files to get the expected timestamp
-            var html = await new HttpClient().GetStringAsync("https://edastro.com/galmap/");
+            var html = await client.GetStringAsync("https://edastro.com/galmap/");
 
             var r0 = new Regex(@"<script src=""/galmap/galmap.js\?ver=(.*?)""></script>", RegexOptions.Compiled);
             var m0 = r0.Match(html);
             var jsTimestamp = m0.Groups[1].Value;
 
 
-            var jsCode = await new HttpClient().GetStringAsync($"https://edastro.com/galmap/galmap.js?ver={jsTimestamp}");
+            var jsCode = await client.GetStringAsync($"https://edastro.com/galmap/galmap.js?ver={jsTimestamp}");
             var r1 = new Regex("var cdn = 'https://(.*?)';");
             var r2 = new Regex("var timestamp = '(.*?)';", RegexOptions.Compiled);
 
@@ -624,7 +629,7 @@ namespace SrvSurvey.canonn
             if (!File.Exists(codexNotFoundPath) || reset)
             {
                 Game.log($"prepCodexNotFounds: preparing from network ... (reset: {reset})");
-                var csv = await new HttpClient().GetStringAsync("https://docs.google.com/spreadsheets/d/1TpPZUFd61KUQWy1sV8VhScZiVbRWJ435wTN8xjN0Qv0/gviz/tq?tqx=out:csv&sheet=Individual+Items");
+                var csv = await client.GetStringAsync("https://docs.google.com/spreadsheets/d/1TpPZUFd61KUQWy1sV8VhScZiVbRWJ435wTN8xjN0Qv0/gviz/tq?tqx=out:csv&sheet=Individual+Items");
 
                 this.codexNotFound = parseNotFountCsv(csv);
                 var json = JsonConvert.SerializeObject(this.codexNotFound, Formatting.Indented);

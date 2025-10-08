@@ -8,13 +8,21 @@ namespace SrvSurvey.net.EDSM
 
     internal class EDSM
     {
+        static EDSM()
+        {
+            EDSM.client = new HttpClient(Util.getResilienceHandler());
+            EDSM.client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
+        }
+
+        private static HttpClient client;
+
         public async Task<StarSystem[]> getSystems(string systemName)
         {
             // docs: https://www.edsm.net/en/api-v1
             // https://www.edsm.net/api-v1/systems?showCoordinates=1&systemName=Colonia
             Game.log($"Getting systems by name: {systemName}");
 
-            var json = await new HttpClient().GetStringAsync($"https://www.edsm.net/api-v1/systems?showCoordinates=1&showId=1&systemName={Uri.EscapeDataString(systemName)}");
+            var json = await client.GetStringAsync($"https://www.edsm.net/api-v1/systems?showCoordinates=1&showId=1&systemName={Uri.EscapeDataString(systemName)}");
             return JsonConvert.DeserializeObject<StarSystem[]>(json)!;
         }
 
@@ -24,7 +32,7 @@ namespace SrvSurvey.net.EDSM
             // https://www.edsm.net/api-system-v1/bodies?systemName=Colonia
             Game.log($"Getting system bodies by name: {systemName}");
 
-            var json = await new HttpClient().GetStringAsync($"https://www.edsm.net/api-system-v1/bodies?systemName={Uri.EscapeDataString(systemName)}");
+            var json = await client.GetStringAsync($"https://www.edsm.net/api-system-v1/bodies?systemName={Uri.EscapeDataString(systemName)}");
             return JsonConvert.DeserializeObject<EdsmSystem>(json)!;
         }
 
@@ -34,7 +42,7 @@ namespace SrvSurvey.net.EDSM
             // https://www.edsm.net/api-system-v1/traffic?systemName=Colonia
             Game.log($"Getting system bodies by name: {systemName}");
 
-            var json = await new HttpClient().GetStringAsync($"https://www.edsm.net/api-system-v1/traffic?systemName={Uri.EscapeDataString(systemName)}");
+            var json = await client.GetStringAsync($"https://www.edsm.net/api-system-v1/traffic?systemName={Uri.EscapeDataString(systemName)}");
             return JsonConvert.DeserializeObject<EdsmSystemTraffic>(json)!;
         }
 
@@ -44,7 +52,7 @@ namespace SrvSurvey.net.EDSM
             // https://www.edsm.net/api-system-v1/stations?systemName=Colonia
             Game.log($"Getting system bodies by name: {systemName}");
 
-            var json = await new HttpClient().GetStringAsync($"https://www.edsm.net/api-system-v1/stations?systemName={Uri.EscapeDataString(systemName)}");
+            var json = await client.GetStringAsync($"https://www.edsm.net/api-system-v1/stations?systemName={Uri.EscapeDataString(systemName)}");
             return JsonConvert.DeserializeObject<EdsmSystemStations>(json)!;
         }
 

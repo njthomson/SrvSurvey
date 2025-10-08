@@ -17,7 +17,7 @@ namespace SrvSurvey.canonn
     {
         static Canonn()
         {
-            Canonn.client = new HttpClient();
+            Canonn.client = new HttpClient(Util.getResilienceHandler());
             Canonn.client.DefaultRequestHeaders.Add("accept-encoding", "gzip, deflate");
             Canonn.client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
         }
@@ -191,7 +191,7 @@ namespace SrvSurvey.canonn
                 "application/json");
 
 
-            var response = await new HttpClient().PostAsync("https://api.canonn.tech/graphql", body);
+            var response = await Canonn.client.PostAsync("https://api.canonn.tech/graphql", body);
             //Game.log($"{response.StatusCode} : {response.IsSuccessStatusCode}");
             var json = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
@@ -216,7 +216,7 @@ namespace SrvSurvey.canonn
                 Encoding.ASCII,
                 "application/json");
 
-            var response = await new HttpClient().PostAsync("https://api.canonn.tech/graphql", body);
+            var response = await Canonn.client.PostAsync("https://api.canonn.tech/graphql", body);
             //Game.log($"{response.StatusCode} : {response.IsSuccessStatusCode}");
             var json = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
@@ -262,7 +262,7 @@ namespace SrvSurvey.canonn
                     "application/json");
 
 
-                var response = await new HttpClient().PostAsync("https://api.canonn.tech/graphql", body);
+                var response = await Canonn.client.PostAsync("https://api.canonn.tech/graphql", body);
                 //Game.log($"{response.StatusCode} : {response.IsSuccessStatusCode}");
                 json = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)

@@ -1,4 +1,6 @@
 ﻿using DecimalMath;
+using Microsoft.Extensions.Http.Resilience;
+using Polly;
 using SrvSurvey.canonn;
 using SrvSurvey.forms;
 using SrvSurvey.game;
@@ -1332,6 +1334,30 @@ namespace SrvSurvey
                 var thumbFilename = Path.GetFullPath(filepath.Replace(filename, filename + "-thumb"));
                 thumb.Save(thumbFilename);
             }
+        }
+
+        public static ResilienceHandler getResilienceHandler()
+        {
+            var retryPipeline = new ResiliencePipelineBuilder<HttpResponseMessage>()
+                .AddRetry(new HttpRetryStrategyOptions
+                {
+                    BackoffType = DelayBackoffType.Exponential,
+                    MaxRetryAttempts = 3,
+                    // Default delay is 2 seconds
+                })
+                .Build();
+
+            var socketHandler = new SocketsHttpHandler
+            {
+                // PooledConnectionLifetime default is 2 minutes
+                PooledConnectionIdleTimeout = TimeSpan.FromMinutes(15),
+            };
+            var resilienceHandler = new ResilienceHandler(retryPipeline)
+            {
+                InnerHandler = socketHandler,
+            };
+
+            return resilienceHandler;
         }
     }
 

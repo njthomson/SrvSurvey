@@ -2,6 +2,7 @@
 // Original source from: https://github.com/klightspeed/EliteDangerousRegionMap/blob/master/RegionMap.cs
 //
 
+using SrvSurvey;
 using System.Text.Json;
 
 namespace EliteDangerousRegionMap
@@ -124,9 +125,7 @@ namespace EliteDangerousRegionMap
         public static async Task<SystemData[]> FindRegionsForSystems(string sysname)
         {
             var url = $"https://www.edsm.net/api-v1/systems?systemName={Uri.EscapeDataString(sysname)}&coords=1&showId=1";
-            //var client = new WebClient();
-            //var jsonstr = client.DownloadString(url);
-            var client = new HttpClient();
+            var client = new HttpClient(Util.getResilienceHandler());
             client.DefaultRequestHeaders.Add("Cache-Control", "no-cache");
             var jsonstr = await client.GetStringAsync(url);
 

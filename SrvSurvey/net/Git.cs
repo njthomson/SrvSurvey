@@ -22,7 +22,7 @@ namespace SrvSurvey.net
 
         static Git()
         {
-            Git.client = new HttpClient();
+            Git.client = new HttpClient(Util.getResilienceHandler());
             Git.client.DefaultRequestHeaders.Add("Cache-Control", "no-cache");
             Git.client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
         }

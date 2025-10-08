@@ -149,7 +149,7 @@ namespace SrvSurvey.forms
                 $"system={Uri.EscapeDataString(systemName)}",
                 Encoding.ASCII,
                 "application/x-www-form-urlencoded");
-            var response = await new HttpClient().PostAsync("https://edgalaxy.net/visitedstars", body);
+            var response = await new HttpClient(Util.getResilienceHandler()).PostAsync("https://edgalaxy.net/visitedstars", body);
 
             // prep folder
             Directory.CreateDirectory(folderDownload);

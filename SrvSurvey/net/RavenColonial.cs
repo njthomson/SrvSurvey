@@ -27,7 +27,7 @@ namespace SrvSurvey.game.RavenColonial
 
         static RavenColonial()
         {
-            RavenColonial.client = new HttpClient();
+            RavenColonial.client = new HttpClient(Util.getResilienceHandler());
             RavenColonial.client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
         }
 

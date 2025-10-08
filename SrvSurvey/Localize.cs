@@ -107,7 +107,7 @@ namespace SrvSurvey
             // Input and output languages are defined as parameters.
             var uri = new Uri($"{endpoint}/translate?api-version=3.0&from=en&to={targetLang}");
 
-            using var client = new HttpClient();
+            using var client = new HttpClient(Util.getResilienceHandler());
             using var request = new HttpRequestMessage(HttpMethod.Post, uri);
 
             var requestBody = JsonConvert.SerializeObject(new object[] { new { Text = textToTranslate } });
