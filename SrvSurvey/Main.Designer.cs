@@ -906,7 +906,7 @@ namespace SrvSurvey
             menuMyProjects.ImageScaling = ToolStripItemImageScaling.None;
             menuMyProjects.Name = "menuMyProjects";
             menuMyProjects.Size = new Size(259, 38);
-            menuMyProjects.Text = "My projects";
+            menuMyProjects.Text = "Raven Colonial";
             menuMyProjects.ToolTipText = "View all your current projects";
             menuMyProjects.Click += menuMyProjects_Click;
             // 

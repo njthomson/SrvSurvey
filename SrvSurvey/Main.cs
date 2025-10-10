@@ -424,6 +424,10 @@ namespace SrvSurvey
         {
             Game.log($"Main.removeGame, has old game: {this.game != null} (cmdr: {this.game?.Commander})");
             Program.closeAllPlotters();
+            BigOverlay.close();
+            PlotBase2.closeAll();
+            if (Game.settings.displayVR) VR.shutdown();
+
             this.hook?.stopDirectX();
 
             if (this.game != null)
@@ -432,13 +436,9 @@ namespace SrvSurvey
                 if (this.game.journals != null)
                     this.game.journals.onJournalEntry -= Journals_onJournalEntry;
                 this.game.Dispose();
+                this.game = null;
             }
 
-            // remove bigOverlay
-            PlotBase2.closeAll();
-            BigOverlay.current?.Close();
-
-            this.game = null;
 
             this.updateAllControls();
         }
@@ -487,7 +487,8 @@ namespace SrvSurvey
             PlotBase.startWindowOne();
 
             // reset bigOverlay
-            BigOverlay.create(game);
+            BigOverlay.init(game);
+            if (Game.settings.displayVR) VR.init();
         }
 
         private void updateAllControls(GameMode? newMode = null)
@@ -1101,6 +1102,8 @@ namespace SrvSurvey
             try
             {
                 btnSettings.Enabled = false;
+                if (Game.settings.displayVR) VR.shutdown();
+
                 var form = new FormSettings();
                 var rslt = form.ShowDialog(this);
 
@@ -1115,7 +1118,10 @@ namespace SrvSurvey
 
                     Application.DoEvents();
                     if (game != null)
-                        BigOverlay.create(game);
+                    {
+                        BigOverlay.init(game);
+                        if (Game.settings.displayVR) VR.init();
+                    }
                 }
                 else
                 {
@@ -1717,7 +1723,7 @@ namespace SrvSurvey
         private void menuMyProjects_Click(object sender, EventArgs e)
         {
             var cmdr = Game.settings.preferredCommander ?? Game.settings.lastCommander;
-            Util.openLink($"{RavenColonial.uxUri}/#cmdr={cmdr}");
+            Util.openLink($"{RavenColonial.uxUri}/");
         }
 
         private void menuUpdateSystem_Click(object sender, EventArgs e)

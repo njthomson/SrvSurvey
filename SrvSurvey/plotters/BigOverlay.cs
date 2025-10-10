@@ -14,11 +14,11 @@ namespace SrvSurvey.plotters
     {
         public static BigOverlay? current;
 
-        public static void create(Game game)
+        public static void init(Game game)
         {
             current?.Close();
 
-            // do not create anything if this setting is enabled
+            // do not create anything if this setting is enabled, but we should still render as a convenience to make separate forms re-render
             if (Game.settings.disableBigOverlay)
             {
                 PlotBase2.renderAll(game, true);
@@ -32,12 +32,20 @@ namespace SrvSurvey.plotters
             PlotBase2.renderAll(game, true);
         }
 
+        public static void close()
+        {
+            current?.Close();
+            current = null;
+        }
+
         /// <summary> Invalidates the big overlay, using Program.defer </summary>
         public static void invalidate()
         {
+            if (BigOverlay.current == null) return;
+
             Program.defer(() =>
             {
-                if (BigOverlay.current?.IsHandleCreated == true)
+                if (BigOverlay.current?.IsHandleCreated == true && !BigOverlay.current.IsDisposed && !BigOverlay.current.Disposing)
                 {
                     BigOverlay.current.Visible = !Elite.eliteMinimized && !Program.tempHideAllPlotters;
                     BigOverlay.current.Invalidate();
@@ -194,7 +202,6 @@ namespace SrvSurvey.plotters
                         if (plotter.fade == 1 || PlotBase.windowOne != null)
                         {
                             // not fading
-                            g.DrawImageUnscaled(plotter.background, plotter.left, plotter.top);
                             g.DrawImageUnscaled(plotter.frame, plotter.left, plotter.top);
                         }
                         else if (plotter.fade == 0)
@@ -215,7 +222,6 @@ namespace SrvSurvey.plotters
                             // we need a black box or the blending looks too bright
                             g.FillRectangle(Brushes.Black, rect);
 
-                            g.DrawImage(plotter.background, rect, 0, 0, sz.Width, sz.Height, GraphicsUnit.Pixel, attr);
                             g.DrawImage(plotter.frame, rect, 0, 0, sz.Width, sz.Height, GraphicsUnit.Pixel, attr);
                         }
 

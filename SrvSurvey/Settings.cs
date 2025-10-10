@@ -261,6 +261,7 @@ namespace SrvSurvey
 
         public bool disableBigOverlay = false;
         public bool disableBetterAlphaBlending = false;
+        public bool displayVR = false;
 
         #region loading / saving
 

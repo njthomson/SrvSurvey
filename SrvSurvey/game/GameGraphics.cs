@@ -17,7 +17,7 @@ namespace SrvSurvey.game
             return getBackgroundImage(form.Size);
         }
 
-        public static Image getBackgroundImage(Size sz, bool noStripes = false)
+        public static Bitmap getBackgroundImage(Size sz, bool noStripes = false)
         {
             var bk = new Bitmap(sz.Width, sz.Height);
             using (var g = Graphics.FromImage(bk))

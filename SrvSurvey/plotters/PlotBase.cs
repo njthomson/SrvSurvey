@@ -6,6 +6,8 @@ using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
+using System.Globalization;
+using System.Numerics;
 using System.Reflection;
 using System.Resources;
 using System.Text;
@@ -1819,12 +1821,22 @@ namespace SrvSurvey.plotters
         public int x;
         public int y;
         public float? opacity;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public VR? vr;
 
         public PlotPos(string txt)
         {
             // eg: "left:40,top:50",
+            // eg: "left:40,top:50, 0.7",
+            // eg: "left:40,top:50, 0.7 { s: 1, r: <1, 2, 3>, p: <4, 5, 6> }",
 
-            var parts = txt.Split(new char[] { ':', ',' });
+            var i = txt.IndexOf('{');
+            if (i > 0)
+            {
+                this.vr = VR.parse(txt.Substring(i));
+                txt = txt.Substring(0, i);
+            }
+            var parts = txt.Split(new char[] { ':', ',' }, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 4) throw new Exception($"Bad plotter position: '{txt}'");
             this.h = Enum.Parse<Horiz>(parts[0], true);
             this.x = int.Parse(parts[1]);
@@ -1840,7 +1852,11 @@ namespace SrvSurvey.plotters
 
         public override string ToString()
         {
-            return $"{h}:{x}, {v}:{y}".ToLowerInvariant() + (opacity > 0 ? $", {opacity}" : "");
+            this.vr = new() { s = 12, r = new(), p = new() };
+            var root = $"{h}:{x}, {v}:{y}".ToLowerInvariant();
+            var op = this.opacity > 0 ? $", {opacity}" : "";
+            var vr = this.vr != null ? $" {this.vr}" : "";
+            return root + op + vr;
         }
 
         public enum Horiz
@@ -1858,6 +1874,36 @@ namespace SrvSurvey.plotters
             Bottom,
             OS,
         };
+
+        public class VR
+        {
+            /// <summary> Scale </summary>
+            public float s;
+            /// <summary> Rotation</summary>
+            public Vector3 r;
+            /// <summary> Position </summary>
+            public Vector3 p;
+
+            public override string ToString()
+            {
+                return $"{{ s: {s.ToString(CultureInfo.InvariantCulture)}, r: {r}, p: {p}}}";
+            }
+
+            public static VR? parse(string txt)
+            {
+                // "{ s: 12, r: <0, 0, 0>, p: <0, 0, 0>}"
+                var parts = txt.Split(new char[] { '{', '}', ',', ':', '<', '>' }, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length != 10) return null;
+
+                var vr = new VR()
+                {
+                    s = float.Parse(parts[1], CultureInfo.InvariantCulture),
+                    r = new(float.Parse(parts[3], CultureInfo.InvariantCulture), float.Parse(parts[4], CultureInfo.InvariantCulture), float.Parse(parts[5], CultureInfo.InvariantCulture)),
+                    p = new(float.Parse(parts[7], CultureInfo.InvariantCulture), float.Parse(parts[8], CultureInfo.InvariantCulture), float.Parse(parts[9], CultureInfo.InvariantCulture)),
+                };
+                return vr;
+            }
+        }
     }
 
     /// <summary>

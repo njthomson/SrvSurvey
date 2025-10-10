@@ -26,6 +26,7 @@ namespace SrvSurvey.plotters
 
         public PlotBase2? instance;
         public PlotContainer? form;
+        public VROverlay? vr;
 
         public override string ToString()
         {
@@ -36,20 +37,20 @@ namespace SrvSurvey.plotters
     internal abstract class PlotBase2
     {
         protected Game game;
-        protected PlotDef def;
+        protected PlotDef plotDef;
         protected bool isClosed;
-        public string name { get; set; }
-        public int left { get; set; }
-        public int top { get; set; }
+        public string name { get; private set; }
+        public int left { get; protected set; }
+        public int top { get; protected set; }
         public int width { get; private set; }
         public int right => left + width;
         public int height { get; private set; }
         public int bottom => top + height;
-        public float fade { get; set; }
+        public float fade;
 
-        public bool stale { get; set; }
-        public Image frame { get; set; }
-        public Image background { get; set; }
+        public bool stale { get; private set; }
+        public Bitmap frame { get; private set; }
+        protected Bitmap background;
 
         public Font font = GameColors.Fonts.gothic_10;
         public Color color = C.orange;
@@ -57,7 +58,7 @@ namespace SrvSurvey.plotters
         protected PlotBase2(Game game, PlotDef def)
         {
             this.game = game;
-            this.def = def;
+            this.plotDef = def;
             this.name = def.name;
 
             this.width = def.defaultSize.Width;
@@ -103,6 +104,18 @@ namespace SrvSurvey.plotters
 
         public void close()
         {
+            if (plotDef.form != null)
+            {
+                Program.closePlotter(plotDef.name);
+                plotDef.form = null;
+            }
+
+            if (plotDef.vr != null)
+            {
+                plotDef.vr.Dispose();
+                plotDef.vr = null;
+            }
+
             this.isClosed = true;
             this.onClose();
         }
@@ -146,10 +159,12 @@ namespace SrvSurvey.plotters
             //Game.log($"invalidate: {this.name}");
             this.stale = true;
 
-            if (this.def.form != null)
+            if (this.plotDef.form != null)
                 Program.invalidate(this.name);
             else
                 BigOverlay.invalidate();
+
+            this.plotDef.vr?.project();
         }
 
         public bool hidden
@@ -170,6 +185,8 @@ namespace SrvSurvey.plotters
         {
             this._hidden = true;
             this.invalidate();
+
+            this.plotDef.vr?.hide();
         }
 
         /// <summary>
@@ -184,22 +201,28 @@ namespace SrvSurvey.plotters
             }
 
             this.invalidate();
+
+            this.plotDef.vr?.show();
         }
 
         // TODO: remove "Game game" reference here - they already have it
         protected abstract SizeF doRender(Game game, Graphics g, TextCursor tt);
 
         /// <summary> Generate a new frame image </summary>
-        public Image render()
+        public Bitmap render()
         {
             if (game.isShutdown || game.status == null) return this.frame;
 
             //Game.log($"Render: {this.name}, stale: {this.stale}");
             var renderCount = 0;
-            Bitmap nextFrame = null!;
+            Bitmap? nextFrame = null;
             do
             {
-                nextFrame = new Bitmap(this.width, this.height);
+                // re-create background when missing or size has changed
+                if (this.background == null || this.background.Size != this.size)
+                    this.background = GameGraphics.getBackgroundImage(this.size);
+
+                nextFrame = new Bitmap(this.background);
                 using (var g = Graphics.FromImage(nextFrame))
                 {
                     g.SmoothingMode = SmoothingMode.HighQuality;
@@ -220,10 +243,6 @@ namespace SrvSurvey.plotters
 
             //Game.log($"Render: {this.name}, renderCount: {renderCount}");
             this.frame = nextFrame;
-
-            // re-create background when missing or size has changed
-            if (this.background == null || this.background.Size != this.frame.Size)
-                this.background = GameGraphics.getBackgroundImage(frame.Size);
 
             return this.frame;
         }
@@ -297,12 +316,6 @@ namespace SrvSurvey.plotters
             if (def.instance != null)
             {
                 Game.log($"Overlays.remove: {def.name}");
-
-                if (def.form != null)
-                {
-                    Program.closePlotter(def.name);
-                    def.form = null;
-                }
 
                 def.instance.close();
                 def.instance = null;
@@ -391,23 +404,31 @@ namespace SrvSurvey.plotters
                     remove(def);
                 }
 
-                if (shouldShow)
+                if (shouldShow && def.instance != null)
                 {
                     // render if stale or if a relevant factor changed
-                    if (def.instance!.stale || force)
+                    if (def.instance.stale || force)
                     {
                         invalidateBig = true;
                         def.instance.render();
                     }
 
-                    if (def.instance != null && (Game.settings.disableBigOverlay || PlotPos.usesOS(def.name)))
+                    // render onto separate form?
+                    if (Game.settings.disableBigOverlay || PlotPos.usesOS(def.name))
                     {
                         if (def.form == null)
                         {
                             def.form = new PlotContainer(def);
                             Program.showPlotter<PlotContainer>(null, def.name);
                         }
-                        def.form?.doRender();
+                        def.form.updateFrame();
+                    }
+
+                    // render into VR?
+                    if (Game.settings.displayVR && VR.app != null)
+                    {
+                        if (def.vr == null) def.vr = new VROverlay(def);
+                        def.vr.project();
                     }
                 }
             }
@@ -793,7 +814,7 @@ namespace SrvSurvey.plotters
                 this.Visible = !def.instance.hidden;
         }
 
-        public void doRender()
+        public void updateFrame()
         {
             checkLocationAndSize();
             this.Invalidate();
@@ -808,7 +829,6 @@ namespace SrvSurvey.plotters
 
             checkLocationAndSize();
 
-            g.DrawImage(def.instance.background, 0, 0);
             g.DrawImage(def.instance.frame!, 0, 0);
         }
 

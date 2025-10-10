@@ -85,14 +85,14 @@ namespace SrvSurvey.forms
 
             Program.closeAllPlotters();
             FormMultiFloatie.current?.Close();
-            BigOverlay.current?.Close();
+            BigOverlay.close();
 
             Elite.nextWindow();
             Elite.setFocusED();
 
             Application.DoEvents();
 
-            BigOverlay.create(Game.activeGame);
+            BigOverlay.init(Game.activeGame);
             FormMultiFloatie.create();
         }
     }
