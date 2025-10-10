@@ -223,7 +223,7 @@ namespace SrvSurvey.plotters
         /// <summary> Reset opacity to default it's value </summary>
         public virtual void resetOpacity()
         {
-            setOpacity(PlotPos.getOpacity(this));
+            setOpacity(PlotPos.getOpacity(this.Name));
         }
 
         /// <summary> Set opacity to the given value. </summary>
@@ -1746,11 +1746,11 @@ namespace SrvSurvey.plotters
                 return Game.settings.Opacity;
         }
 
-        /// <summary> Returns True is horizontal or vertical are using Screen based values </summary>
-        public static bool usesOS(string name)
+        /// <summary> Returns True is horizontal or vertical are using Screen based values, or has a custom opacity </summary>
+        public static bool shouldBeSeparate(string name)
         {
             var pp = plotterPositions.GetValueOrDefault(name);
-            return pp?.h == Horiz.OS || pp?.v == Vert.OS;
+            return pp?.h == Horiz.OS || pp?.v == Vert.OS || pp.opacity.HasValue;
         }
 
         public static void reposition(PlotterForm form, Rectangle rect, string? formTypeName = null)

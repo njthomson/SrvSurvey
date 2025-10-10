@@ -368,7 +368,7 @@ namespace SrvSurvey.plotters
             return def.instance;
         }
 
-        public static void renderAll(Game game, bool force = false)
+        public static void renderAll(Game? game, bool force = false)
         {
             if (Program.control.InvokeRequired)
             {
@@ -376,7 +376,7 @@ namespace SrvSurvey.plotters
                 return;
             }
 
-            if (game.isShutdown || game.status == null || game.cmdr == null) return;
+            if (game == null || game.isShutdown || game.status == null || game.cmdr == null) return;
 
             // check if we need to create or remove any
             var invalidateBig = false;
@@ -414,7 +414,7 @@ namespace SrvSurvey.plotters
                     }
 
                     // render onto separate form?
-                    if (Game.settings.disableBigOverlay || PlotPos.usesOS(def.name))
+                    if (Game.settings.disableBigOverlay || PlotPos.shouldBeSeparate(def.name))
                     {
                         if (def.form == null)
                         {
@@ -787,6 +787,8 @@ namespace SrvSurvey.plotters
 
             this.Left = def.instance!.left;
             this.Top = def.instance.top;
+
+            this.resetOpacity();
         }
 
         protected override void Dispose(bool disposing)
@@ -830,6 +832,8 @@ namespace SrvSurvey.plotters
             checkLocationAndSize();
 
             g.DrawImage(def.instance.frame!, 0, 0);
+
+            // g.DrawRectangle(Pens.Blue, 0, 0, this.Width-1, this.Height-1); // diagnostic
         }
 
     }

@@ -63,6 +63,8 @@ namespace SrvSurvey.forms
             targetName = null;
             PlotPos.restore();
             Program.invalidateActivePlotters();
+            PlotBase2.closeAll();
+            PlotBase2.renderAll(Game.activeGame);
         }
 
         private void resetForm()
@@ -333,6 +335,7 @@ namespace SrvSurvey.forms
             {
                 numOpacity.Enabled = true;
                 numOpacity.Value = (decimal)(pp.opacity.HasValue ? pp.opacity.Value : Game.settings.Opacity) * 100;
+                pp.opacity = Game.settings.Opacity;
             }
             else
             {
@@ -342,6 +345,7 @@ namespace SrvSurvey.forms
             }
 
             this.repositionPlotters();
+            PlotBase2.renderAll(Game.activeGame, true);
         }
 
         private void numOpacity_ValueChanged(object sender, EventArgs e)
@@ -353,7 +357,12 @@ namespace SrvSurvey.forms
 
             pp.opacity = (float)numOpacity.Value / 100f;
 
-            this.repositionPlotters();
+            // attempt a live update
+            var form = PlotBase2.get(targetName)?.form;
+            if (form != null)
+                form.Opacity = (double)pp.opacity;
+            else if (fake != null)
+                fake.Opacity = (double)pp.opacity;
         }
 
         private void checkShowAll_CheckedChanged(object sender, EventArgs e)
