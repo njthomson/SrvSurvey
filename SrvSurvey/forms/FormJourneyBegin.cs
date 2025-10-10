@@ -132,7 +132,7 @@ namespace SrvSurvey.forms
         private void comboStartFrom_selectedSystemChanged(SrvSurvey.units.StarRef starSystem)
         {
             lblLastVisited.Text = "";
-            var data = SystemData.Load(starSystem.name, starSystem.id64, cmdr.fid, true);
+            var data = SystemData.Load(starSystem.name, starSystem.id64, cmdr.fid, cmdr.commander, true);
             if (data == null)
             {
                 setWarning($"You nave not visited: {starSystem.name}");

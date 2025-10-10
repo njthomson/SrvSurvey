@@ -407,7 +407,7 @@ namespace SrvSurvey.forms
                 cmdrsToAdd.ForEach(cmdr => Game.rcc.linkCmdr(project.buildId, cmdr).justDoIt());
                 cmdrsToRemove.ForEach(cmdr => Game.rcc.unlinkCmdr(project.buildId, cmdr).justDoIt());
 
-                Game.rcc.update(updateProject).continueOnMain(this, savedProject =>
+                Game.rcc.updateProject(updateProject).continueOnMain(this, savedProject =>
                 {
                     processServerResponse(savedProject);
                 });

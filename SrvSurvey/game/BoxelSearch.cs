@@ -294,7 +294,7 @@ namespace SrvSurvey.game
             for (var n = 0; n < this.currentCount; n++)
             {
                 var bx = current.to(n);
-                var fileData = SystemData.Load("", bx.getAddress(), CommanderSettings.currentOrLastFid, true);
+                var fileData = SystemData.Load("", bx.getAddress(), CommanderSettings.currentOrLastFid, CommanderSettings.currentOrLastCmdrName, true);
                 if (fileData == null) continue;
 
                 // re-parse and merge data
@@ -493,7 +493,7 @@ namespace SrvSurvey.game
             var fire = false;
             if (this.completeOnFssAllBodies)
             {
-                var data = SystemData.Load(name, address, CommanderSettings.currentOrLastFid, true);
+                var data = SystemData.Load(name, address, CommanderSettings.currentOrLastFid, CommanderSettings.currentOrLastCmdrName, true);
                 Game.log($"markComplete (completeOnFssAllBodies): system: {data?.name}, bodyCount: {data?.bodyCount}, fssBodyCount: {data?.fssBodyCount}, fssComplete: {data?.fssComplete}, fssAllBodies: {data?.fssAllBodies}");
                 // require FSS to be completed to mark this system as complete
                 if (data?.fssAllBodies == true)

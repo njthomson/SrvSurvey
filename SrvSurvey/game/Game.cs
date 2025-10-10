@@ -1762,6 +1762,15 @@ namespace SrvSurvey.game
             }
         }
 
+        private void onJournalEntry(ColonisationBeaconDeployed entry)
+        {
+            // update the architect in RavenColonial
+            Game.rcc.updateSystem(systemData!.name, new()
+            {
+                architect = this.Commander,
+            }).justDoIt();
+        }
+
         public bool marketEventSeen = false;
 
         private void onJournalEntry(Market entry)

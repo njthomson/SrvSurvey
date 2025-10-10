@@ -385,7 +385,7 @@ namespace SrvSurvey
                         var soldAfter = countCargoSold - countCargoSoldTB;
                         var transferredAfter = countCargoTransferred - countCargoTransferredTB;
 
-                        var finalTally = $"Comparing cargo transaction before and after Trailblazers was released on Feb 26th 2025:\n\n" +
+                        var finalTally = $"Comparing cargo transactions before and after Trailblazers was released on Feb 26th 2025:\n\n" +
                             $"Duration (days) before: {daysBefore:N0} vs after: {daysAfter:N0}\n\n" +
                             $"Cargo: Bought / Sold / Transferred\n\n" +
                             $"Before: {countCargoBoughtTB:N0} / {countCargoSoldTB:N0} / {countCargoTransferredTB:N0}\n\n" +

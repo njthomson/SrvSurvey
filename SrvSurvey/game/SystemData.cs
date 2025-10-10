@@ -22,7 +22,7 @@ namespace SrvSurvey.game
         /// <summary>
         /// Open or create a SystemData object for the a star system by name or address.
         /// </summary>
-        public static SystemData? Load(string systemName, long systemAddress, string fid, bool skipPredictSpecies = false)
+        public static SystemData? Load(string systemName, long systemAddress, string fid, string? commanderName, bool skipPredictSpecies = false)
         {
             if (systemName != "") Game.log($"Loading SystemData for: '{systemName}' ({systemAddress})");
 
@@ -102,6 +102,14 @@ namespace SrvSurvey.game
                 foreach (var body in systemData.bodies)
                     body.predictSpecies();
 
+            // save an update if Commander name has changed
+            if (commanderName != null && systemData.commander != commanderName)
+            {
+                Game.log($"Updating SystemData cmdr: {systemData.commander} => {commanderName}");
+                systemData.commander = commanderName;
+                systemData.Save();
+            }
+
             return systemData;
         }
 
@@ -138,9 +146,9 @@ namespace SrvSurvey.game
             }
         }
 
-        public static SystemData From(StarRef starRef, string fid)
+        public static SystemData From(StarRef starRef, string fid, string? cmdr)
         {
-            return Load(starRef.name, starRef.id64, fid, true)!;
+            return Load(starRef.name, starRef.id64, fid, cmdr, true)!;
         }
 
         public static SystemData From(ISystemDataStarter entry, string? fid = null, string? cmdrName = null)
@@ -149,7 +157,8 @@ namespace SrvSurvey.game
             {
                 // load from file or cache
                 fid ??= Game.activeGame!.fid!;
-                var data = Load(entry.StarSystem, entry.SystemAddress, fid);
+                cmdrName ??= Game.activeGame!.Commander!;
+                var data = Load(entry.StarSystem, entry.SystemAddress, fid, cmdrName);
 
                 if (data == null)
                 {
@@ -235,7 +244,7 @@ namespace SrvSurvey.game
             lock (cache)
             {
                 // load from file or cache
-                var data = SystemData.Load(bodyData.systemName, bodyData.systemAddress, cmdr.fid, true);
+                var data = SystemData.Load(bodyData.systemName, bodyData.systemAddress, cmdr.fid, cmdr.commander);
 
                 if (data == null)
                 {

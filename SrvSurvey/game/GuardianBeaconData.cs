@@ -39,7 +39,6 @@ namespace SrvSurvey.game
 
                 data = new GuardianBeaconData()
                 {
-                    commander = Game.activeGame?.Commander!,
                     filepath = filepath,
                     systemAddress = entry.SystemAddress,
                     systemName = entry.System,
@@ -58,7 +57,6 @@ namespace SrvSurvey.game
 
         #region data members
 
-        public string commander;
         public DateTimeOffset firstVisited;
         public DateTimeOffset lastVisited;
         public string systemName;

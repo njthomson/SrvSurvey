@@ -21,14 +21,23 @@ namespace SrvSurvey.game
             var mode = isOdyssey ? "live" : "legacy";
             var filepath = Path.Combine(Program.dataFolder, $"{fid}-{mode}.json");
 
-            return Data.Load<CommanderSettings>(filepath)
-                ?? new CommanderSettings()
-                {
-                    filepath = filepath,
-                    commander = commanderName,
-                    fid = fid,
-                    isOdyssey = isOdyssey,
-                };
+            var data = Data.Load<CommanderSettings>(filepath) ?? new CommanderSettings()
+            {
+                filepath = filepath,
+                commander = commanderName,
+                fid = fid,
+                isOdyssey = isOdyssey,
+            };
+
+            // save an update if Commander name has changed
+            if (data.commander != commanderName)
+            {
+                Game.log($"Updating CommanderSettings cmdr: {data.commander} => {commanderName}");
+                data.commander = commanderName;
+                data.Save();
+            }
+
+            return data;
         }
 
         public static string currentOrLastFid

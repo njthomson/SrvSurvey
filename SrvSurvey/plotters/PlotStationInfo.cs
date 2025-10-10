@@ -163,7 +163,8 @@ namespace SrvSurvey.plotters
                 if (state != null && state != "None")
                 {
                     tt.newLine(true);
-                    tt.draw(indent, $"State: {state}", C.orangeDark, GameColors.Fonts.gothic_9);
+                    tt.draw(indent, "State: ", C.orangeDark, GameColors.Fonts.gothic_9);
+                    tt.draw(state, C.orange, GameColors.Fonts.gothic_9);
                 }
                 tt.newLine(true);
                 tt.draw(indent, "Inf: ", C.orangeDark, GameColors.Fonts.gothic_9);

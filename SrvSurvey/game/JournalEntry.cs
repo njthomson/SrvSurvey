@@ -1461,6 +1461,18 @@ namespace SrvSurvey
         public int Amount;
     }
 
+    class ColonisationSystemClaim : JournalEntry
+    {
+        // { "timestamp":"2025-10-05T07:03:11Z", "event":"ColonisationSystemClaim", "StarSystem":"North America Sector PI-T c3-4", "SystemAddress":1180210008826 }
+        public long SystemAddress;
+        public string StarSystem;
+    }
+
+    class ColonisationBeaconDeployed : JournalEntry
+    {
+        // { "timestamp":"2025-10-05T07:08:58Z", "event":"ColonisationBeaconDeployed" }
+    }
+
     class FactionKillBond : JournalEntry
     {
         // { "timestamp":"2025-06-23T02:10:04Z", "event":"FactionKillBond", "Reward":17361, "AwardingFaction":"Youbee Dominion", "VictimFaction":"Kumo Council" }

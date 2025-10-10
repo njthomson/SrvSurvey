@@ -37,7 +37,7 @@ namespace SrvSurvey.game
         public static string getDefaultProjectName(Docked lastDocked)
         {
             var defaultName = lastDocked.StationName.StartsWith(ExtPanelColonisationShip, StringComparison.OrdinalIgnoreCase) || lastDocked.StationName == ColonyData.SystemColonisationShip
-                ? $"Primary port: {lastDocked.StarSystem}"
+                ? $"Primary port"
                 : lastDocked.StationName
                     .Replace(ColonyData.ExtPanelColonisationShip + "; ", "")
                     .Replace(PlanetaryConstructionSite, "")
@@ -57,8 +57,13 @@ namespace SrvSurvey.game
             if (data == null)
                 data = new ColonyData() { filepath = filepath };
 
-            // migrate from original file format
-            data.cmdr ??= cmdr;
+            // save an update if Commander name has changed
+            if (data.cmdr != cmdr)
+            {
+                Game.log($"Updating ColonyData cmdr: {data.cmdr} => {cmdr}");
+                data.cmdr = cmdr;
+                data.Save();
+            }
 
             return data;
         }
@@ -287,7 +292,7 @@ namespace SrvSurvey.game
             }
 
             if (updatedProject != null)
-                Game.rcc.update(updatedProject).justDoIt();
+                Game.rcc.updateProject(updatedProject).justDoIt();
         }
 
         public void updateNeeds(ColonisationConstructionDepot entry, long id64)
@@ -318,7 +323,7 @@ namespace SrvSurvey.game
                     colonisationConstructionDepot = entry, // <-- temp for a few weeks (making up for lost time)
                 };
 
-                Game.rcc.update(updateProj).continueOnMain(null, savedProj =>
+                Game.rcc.updateProject(updateProj).continueOnMain(null, savedProj =>
                 {
                     // update in-memory track
                     var idx = this.projects.FindIndex(p => p.buildId == savedProj.buildId);
@@ -384,13 +389,16 @@ namespace SrvSurvey.game
             if (newCargo.Count > 0)
             {
                 var updatedCargo = await Game.rcc.updateCargoFC(fc.marketId, newCargo);
-                // apply new numbers and save
-                linkedFCs[fc.marketId].cargo = updatedCargo;
+                if (updatedCargo != null)
+                {
+                    // apply new numbers and save
+                    linkedFCs[fc.marketId].cargo = updatedCargo;
 
-                var sumCargo = getSumCargoFC(linkedFCs.Values);
-                this.sumCargoLinkedFCs = sumCargo;
+                    var sumCargo = getSumCargoFC(linkedFCs.Values);
+                    this.sumCargoLinkedFCs = sumCargo;
 
-                this.Save();
+                    this.Save();
+                }
             }
 
             await Task.Delay(500);

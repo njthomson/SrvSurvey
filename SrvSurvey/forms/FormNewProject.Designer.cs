@@ -44,42 +44,44 @@
             radioOrbital = new RadioButton();
             radioSurface = new RadioButton();
             label3 = new Label();
+            comboBody = new ComboBox();
+            label4 = new Label();
             SuspendLayout();
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(52, 151);
+            label6.Location = new Point(76, 151);
             label6.Name = "label6";
-            label6.Size = new Size(58, 15);
+            label6.Size = new Size(37, 15);
             label6.TabIndex = 10;
-            label6.Text = "Architect:";
+            label6.Text = "Body:";
             // 
             // txtArchitect
             // 
             txtArchitect.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtArchitect.Location = new Point(119, 148);
+            txtArchitect.Location = new Point(119, 178);
             txtArchitect.Name = "txtArchitect";
             txtArchitect.Size = new Size(384, 23);
-            txtArchitect.TabIndex = 11;
+            txtArchitect.TabIndex = 13;
             // 
             // txtNotes
             // 
             txtNotes.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtNotes.Location = new Point(119, 178);
+            txtNotes.Location = new Point(119, 207);
             txtNotes.Multiline = true;
             txtNotes.Name = "txtNotes";
             txtNotes.ScrollBars = ScrollBars.Vertical;
-            txtNotes.Size = new Size(384, 127);
-            txtNotes.TabIndex = 13;
+            txtNotes.Size = new Size(384, 98);
+            txtNotes.TabIndex = 15;
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(69, 181);
+            label7.Location = new Point(72, 210);
             label7.Name = "label7";
             label7.Size = new Size(41, 15);
-            label7.TabIndex = 12;
+            label7.TabIndex = 14;
             label7.Text = "Notes:";
             // 
             // txtName
@@ -103,6 +105,7 @@
             // comboBuildType
             // 
             comboBuildType.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            comboBuildType.DisplayMember = "Value";
             comboBuildType.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBuildType.Enabled = false;
             comboBuildType.FormattingEnabled = true;
@@ -110,12 +113,13 @@
             comboBuildType.Name = "comboBuildType";
             comboBuildType.Size = new Size(242, 23);
             comboBuildType.TabIndex = 4;
+            comboBuildType.ValueMember = "Key";
             comboBuildType.SelectedIndexChanged += comboBuildType_SelectedIndexChanged;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(8, 69);
+            label2.Location = new Point(8, 68);
             label2.Name = "label2";
             label2.Size = new Size(105, 15);
             label2.TabIndex = 3;
@@ -129,7 +133,7 @@
             btnCreate.Location = new Point(347, 318);
             btnCreate.Name = "btnCreate";
             btnCreate.Size = new Size(75, 23);
-            btnCreate.TabIndex = 14;
+            btnCreate.TabIndex = 16;
             btnCreate.Text = "Create";
             btnCreate.UseVisualStyleBackColor = true;
             btnCreate.Click += btnCreate_Click;
@@ -142,7 +146,7 @@
             btnCancel.Location = new Point(428, 318);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(75, 23);
-            btnCancel.TabIndex = 15;
+            btnCancel.TabIndex = 17;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
@@ -161,6 +165,7 @@
             // comboSystemSite
             // 
             comboSystemSite.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            comboSystemSite.DisplayMember = "Value";
             comboSystemSite.DropDownStyle = ComboBoxStyle.DropDownList;
             comboSystemSite.Enabled = false;
             comboSystemSite.FormattingEnabled = true;
@@ -168,12 +173,13 @@
             comboSystemSite.Name = "comboSystemSite";
             comboSystemSite.Size = new Size(384, 23);
             comboSystemSite.TabIndex = 2;
+            comboSystemSite.ValueMember = "Key";
             comboSystemSite.SelectedIndexChanged += comboSystemSite_SelectedIndexChanged;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(30, 39);
+            label1.Location = new Point(39, 39);
             label1.Name = "label1";
             label1.Size = new Size(74, 15);
             label1.TabIndex = 1;
@@ -212,12 +218,35 @@
             label3.TabIndex = 0;
             label3.Text = "Choose a planned site from Raven Colonial, or enter build details for this project.";
             // 
+            // comboBody
+            // 
+            comboBody.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            comboBody.DisplayMember = "Value";
+            comboBody.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBody.FormattingEnabled = true;
+            comboBody.Location = new Point(119, 148);
+            comboBody.Name = "comboBody";
+            comboBody.Size = new Size(384, 23);
+            comboBody.TabIndex = 11;
+            comboBody.ValueMember = "Key";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(55, 181);
+            label4.Name = "label4";
+            label4.Size = new Size(58, 15);
+            label4.TabIndex = 12;
+            label4.Text = "Architect:";
+            // 
             // FormNewProject
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
             ClientSize = new Size(517, 355);
+            Controls.Add(label4);
+            Controls.Add(comboBody);
             Controls.Add(label3);
             Controls.Add(radioSurface);
             Controls.Add(radioOrbital);
@@ -260,5 +289,7 @@
         private RadioButton radioOrbital;
         private RadioButton radioSurface;
         private Label label3;
+        private ComboBox comboBody;
+        private Label label4;
     }
 }

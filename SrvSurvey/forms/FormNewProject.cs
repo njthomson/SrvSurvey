@@ -23,13 +23,16 @@ namespace SrvSurvey.forms
             this.radioOrbital.Checked = isOrbital;
             this.radioSurface.Checked = !isOrbital;
 
-            this.comboBuildType.DisplayMember = "Value";
-            this.comboBuildType.ValueMember = "Key";
             this.comboBuildType.Enabled = true;
             this.comboBuildType.DropDownWidth = N.s(500);
 
-            this.comboSystemSite.DisplayMember = "Value";
-            this.comboSystemSite.ValueMember = "Key";
+            // use map of bodyNum / name (type)
+            var bodyMap = game.systemData!.bodies
+                .Where(_ => _.type != SystemBodyType.Unknown && _.type != SystemBodyType.Barycentre && _.type != SystemBodyType.PlanetaryRing)
+                .ToDictionary(b => b.id, b => $"{b.name} ({b.planetClass})");
+            this.comboBody.DataSource = new BindingSource(bodyMap, null);
+            if (game.systemBody != null)
+                this.comboBody.SelectedValue = game.systemBody.id;
 
             txtArchitect.Text = game.Commander;
 
@@ -55,7 +58,7 @@ namespace SrvSurvey.forms
                 // pre-select if there is only one, drop the combo if there are choices
                 if (mapSites.Count == 2)
                     comboSystemSite.SelectedIndex = 1;
-                else if (systemSites.Any(s => s.status != SystemSite.Status.complete))
+                if (systemSites.Any(s => s.status != SystemSite.Status.complete))
                     comboSystemSite.DroppedDown = true;
             });
 
@@ -173,8 +176,7 @@ namespace SrvSurvey.forms
                     systemAddress = lastDocked.SystemAddress,
                     systemName = lastDocked.StarSystem,
                     starPos = game.systemData!.starPos,
-                    bodyNum = game.systemBody?.id,
-                    bodyName = game.systemBody?.name,
+                    bodyNum = this.comboBody.SelectedValue as int? ?? game.systemBody?.id,
 
                     colonisationConstructionDepot = lastDepot,
 
@@ -183,6 +185,9 @@ namespace SrvSurvey.forms
 
                     systemSiteId = comboSystemSite.SelectedValue?.ToString(),
                 };
+
+                if (createProject.bodyNum >= 0)
+                    createProject.bodyName = game.systemData.bodies.Find(b => b.id == createProject.bodyNum)?.name;
 
                 if (lastDepot != null && game.lastDocked != null && lastDepot.MarketID == game.lastDocked.MarketID)
                 {

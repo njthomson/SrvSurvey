@@ -23,7 +23,7 @@ namespace SrvSurvey.forms
             else
             {
                 var cmdr = CommanderSettings.LoadCurrentOrLast();
-                this.systemData = SystemData.Load(cmdr.currentSystem, cmdr.currentSystemAddress, cmdr.fid, false)!;
+                this.systemData = SystemData.Load(cmdr.currentSystem, cmdr.currentSystemAddress, cmdr.fid, cmdr.commander, false)!;
             }
             if (this.systemData == null) throw new Exception("Why no SystemData?");
 

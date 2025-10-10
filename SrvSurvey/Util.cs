@@ -1664,7 +1664,7 @@ namespace SrvSurvey
         }
 
         /// <summary> Wraps: left.Equals(right, StringComparison.OrdinalIgnoreCase) </summary>
-        public static bool like(this string left, string? right)
+        public static bool like(this string? left, string? right)
         {
             if (left == null && right == null)
                 return true;

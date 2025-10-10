@@ -18,13 +18,23 @@ namespace SrvSurvey.game
 
             var filepath = Path.Combine(Program.dataFolder, $"{fid}-codex.json");
 
-            return Data.Load<CommanderCodex>(filepath)
+            var data = Data.Load<CommanderCodex>(filepath)
                 ?? new CommanderCodex()
                 {
                     filepath = filepath,
                     commander = commanderName,
                     fid = fid,
                 };
+
+            // save an update if Commander name has changed
+            if (data.commander != commanderName)
+            {
+                Game.log($"Updating CommanderCodex cmdr: {data.commander} => {commanderName}");
+                data.commander = commanderName;
+                data.Save();
+            }
+
+            return data;
         }
 
         private static CommanderCodex LoadRegion(string fid, string commanderName, int regionId)

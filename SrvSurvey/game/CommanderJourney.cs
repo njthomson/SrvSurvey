@@ -29,6 +29,15 @@ namespace SrvSurvey.game
             // prep certain properties after loading
             journey.currentSystem = journey.visitedSystems.LastOrDefault();
 
+            // save an update if Commander name has changed
+            var commanderName = Game.activeGame?.Commander;
+            if (commanderName != null && journey.commander != commanderName)
+            {
+                Game.log($"Updating CommanderJourney cmdr: {journey.commander} => {commanderName}");
+                journey.commander = commanderName;
+                journey.Save();
+            }
+
             return journey;
         }
 
@@ -286,7 +295,7 @@ namespace SrvSurvey.game
 
             // NOTE: When re-processing journal entries, it's possible SystemData is more populated that we know about at this point :(
 
-            var sysData = SystemData.Load(currentSystem.starRef.name, currentSystem.starRef.id64, this.fid, false);
+            var sysData = SystemData.Load(currentSystem.starRef.name, currentSystem.starRef.id64, this.fid, this.commander, false);
             var body = sysData?.bodies.Find(b => b.id == entry.BodyID);
             if (sysData == null || body == null)
             {

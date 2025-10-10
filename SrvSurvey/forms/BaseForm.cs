@@ -207,6 +207,7 @@ namespace SrvSurvey.forms
         private void stopDragging()
         {
             mouseDown = false;
+            System.Windows.Forms.Cursor.Show();
         }
 
         private void onMouseMove(MouseEventArgs e)
