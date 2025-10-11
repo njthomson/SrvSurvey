@@ -14,6 +14,8 @@ namespace SrvSurvey.plotters
 {
     internal class VR : OVRSharp.Application, IDisposable
     {
+        public static bool enabled => PlotAdjustVR.force || Game.settings.displayVR;
+
         public static VR? app;
 
         public static void init()
@@ -21,13 +23,7 @@ namespace SrvSurvey.plotters
             Game.log($"VR.init: existing: {app != null}");
             try
             {
-                if (app != null)
-                {
-                    shutdown();
-                    System.Windows.Forms.Application.DoEvents();
-                }
-
-                if (!Game.settings.displayVR) return;
+                if (app != null || !VR.enabled) return;
 
                 app = new VR();
             }
@@ -81,6 +77,7 @@ namespace SrvSurvey.plotters
         private Texture2D? texture;
         private Texture_t overlayTex;
         private PlotPos.VR? lastPP;
+        private bool projecting = false;
 
         public VROverlay(PlotDef def)
         {
@@ -97,7 +94,11 @@ namespace SrvSurvey.plotters
         {
             if (overlay != null)
             {
-                overlay.Destroy();
+                try
+                {
+                    overlay.Destroy();
+                }
+                catch { }
                 overlay = null!;
             }
         }
@@ -128,28 +129,44 @@ namespace SrvSurvey.plotters
 
         public void project()
         {
-            if (overlay == null || def.instance == null || VR.app == null) return;
-            var visible = isVisible;
-            Game.log($"VR.project: {overlay.Name}, visible: {visible}, size: {def.instance.size}");
+            // prevent overlapping renderings
+            if (projecting) return;
 
-            // use current or re-render the frame
-            var bitmap = def.instance.frame == null || def.instance.stale
-                ? def.instance.render()
-                : def.instance.frame;
+            try
+            {
+                projecting = true;
+                if (overlay == null || def.instance == null || VR.app == null) return;
+                var visible = isVisible;
+                Game.log($"VR.project: {overlay.Name}, visible: {visible}, size: {def.instance.size}");
 
-            // adjust if size has changed
-            if (texture == null || texture.Description.Width != bitmap.Width || texture.Description.Height != bitmap.Height)
-                texture = updateTextureSize(bitmap.Size);
+                // use current or re-render the frame
+                var bitmap = def.instance.frame == null || def.instance.stale
+                    ? def.instance.render()
+                    : def.instance.frame;
 
-            updateTextureImage(bitmap, VR.app.context);
+                // adjust if size has changed
+                if (texture == null || texture.Description.Width != bitmap.Width || texture.Description.Height != bitmap.Height)
+                    texture = updateTextureSize(bitmap.Size);
 
-            // reposition if necessary
-            var pp = PlotPos.get(overlay.Name)?.vr;
-            if (pp != null && pp != lastPP)
-                repositionOverlay(pp);
+                updateTextureImage(bitmap, VR.app.context);
 
-            // ensure we are visible
-            if (!visible) show();
+                // reposition if necessary
+                var pp = PlotPos.get(overlay.Name)?.vr;
+                if (pp != null && pp?.ToString() != lastPP?.ToString())
+                    repositionOverlay(pp);
+
+                // ensure we are visible
+                if (!visible && !def.instance.hidden) show();
+            }
+            catch (Exception ex)
+            {
+                Game.log($"VR.project: error on '{def.name}': {ex.Message}\r\n\t{ex.StackTrace}");
+                PlotBase2.remove(def);
+            }
+            finally
+            {
+                projecting = false;
+            }
         }
 
         private Texture2D updateTextureSize(Size sz)
@@ -177,7 +194,7 @@ namespace SrvSurvey.plotters
         private void updateTextureImage(Bitmap bitmap, DeviceContext context)
         {
             if (VR.app?.context == null) return;
-            Game.log($"VR.updateTextureImage: {overlay.Name}");
+            //Game.log($"VR.updateTextureImage: {overlay.Name} ({def.instance?.stale})");
 
             var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
             var data = bitmap.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
@@ -194,7 +211,6 @@ namespace SrvSurvey.plotters
                 };
                 DataBox dataBox = new DataBox(data.Scan0, data.Stride, 0);
                 context.UpdateSubresource(dataBox, texture, 0, region);
-                context.Flush();
 
                 overlayTex = new Texture_t()
                 {
@@ -203,6 +219,8 @@ namespace SrvSurvey.plotters
                     handle = texture!.NativePointer
                 };
                 overlay.SetTexture(overlayTex);
+
+                context.Flush();
             }
             finally
             {
@@ -210,9 +228,9 @@ namespace SrvSurvey.plotters
             }
         }
 
-        private void repositionOverlay(PlotPos.VR? pp)
+        private void repositionOverlay(PlotPos.VR pp)
         {
-            Game.log($"VR.repositionOverlay: {overlay.Name}: {pp}");
+            //Game.log($"VR.repositionOverlay: {overlay.Name}: {pp}");
 
             // yaw = Y, pitch = X, roll = Z - the Y and X really should be swapped like this
             var rot = Matrix4x4.CreateFromYawPitchRoll(
@@ -234,7 +252,7 @@ namespace SrvSurvey.plotters
             tr = Matrix4x4.Multiply(tr, pos);
 
             overlay.Transform = tr.ToHmdMatrix34_t();
-            lastPP = pp;
+            lastPP = PlotPos.VR.parse(pp.ToString());
         }
     }
 }

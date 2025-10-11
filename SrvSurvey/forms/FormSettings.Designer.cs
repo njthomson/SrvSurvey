@@ -31,14 +31,16 @@ namespace SrvSurvey
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            ListViewItem listViewItem9 = new ListViewItem("Materials count after pickup");
-            ListViewItem listViewItem10 = new ListViewItem("Mission remaining cargo count");
-            ListViewItem listViewItem11 = new ListViewItem("Boxel search status");
-            ListViewItem listViewItem12 = new ListViewItem("Next boxel to search");
+            ListViewItem listViewItem1 = new ListViewItem("Materials count after pickup");
+            ListViewItem listViewItem2 = new ListViewItem("Mission remaining cargo count");
+            ListViewItem listViewItem3 = new ListViewItem("Boxel search status");
+            ListViewItem listViewItem4 = new ListViewItem("Next boxel to search");
             panel1 = new Panel();
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
             tabPage1 = new TabPage();
+            checkEnableVR = new CheckBox();
+            btnAdjustVR = new FlatButton();
             checkBox45 = new CheckBox();
             checkBox35 = new CheckBox();
             linkJournalFolder = new LinkLabel();
@@ -361,6 +363,8 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(checkEnableVR);
+            tabPage1.Controls.Add(btnAdjustVR);
             tabPage1.Controls.Add(checkBox45);
             tabPage1.Controls.Add(checkBox35);
             tabPage1.Controls.Add(linkJournalFolder);
@@ -404,6 +408,34 @@ namespace SrvSurvey
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
             // 
+            // checkEnableVR
+            // 
+            checkEnableVR.AutoSize = true;
+            checkEnableVR.Checked = true;
+            checkEnableVR.CheckState = CheckState.Checked;
+            checkEnableVR.FlatStyle = FlatStyle.System;
+            checkEnableVR.Location = new Point(558, 387);
+            checkEnableVR.Margin = new Padding(4, 3, 4, 3);
+            checkEnableVR.Name = "checkEnableVR";
+            checkEnableVR.Size = new Size(130, 20);
+            checkEnableVR.TabIndex = 35;
+            checkEnableVR.Tag = "displayVR";
+            checkEnableVR.Text = "Enable VR overlays";
+            checkEnableVR.UseVisualStyleBackColor = true;
+            checkEnableVR.CheckedChanged += checkEnableVR_CheckedChanged;
+            // 
+            // btnAdjustVR
+            // 
+            btnAdjustVR.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnAdjustVR.FlatStyle = FlatStyle.System;
+            btnAdjustVR.Location = new Point(584, 413);
+            btnAdjustVR.Name = "btnAdjustVR";
+            btnAdjustVR.Size = new Size(103, 27);
+            btnAdjustVR.TabIndex = 34;
+            btnAdjustVR.Text = "Adjust VR";
+            btnAdjustVR.UseVisualStyleBackColor = true;
+            btnAdjustVR.Click += btnAdjustVR_Click;
+            // 
             // checkBox45
             // 
             checkBox45.AutoSize = true;
@@ -418,14 +450,13 @@ namespace SrvSurvey
             // 
             // checkBox35
             // 
-            checkBox35.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             checkBox35.AutoSize = true;
-            checkBox35.Location = new Point(317, 373);
+            checkBox35.Location = new Point(317, 372);
             checkBox35.Name = "checkBox35";
-            checkBox35.Size = new Size(201, 19);
+            checkBox35.Size = new Size(165, 19);
             checkBox35.TabIndex = 0;
             checkBox35.Tag = "hideOverlaysFromMouseInFSS_TEST";
-            checkBox35.Text = "Hide overlays from mouse cursor";
+            checkBox35.Text = "Hide overlays from mouse";
             checkBox35.UseVisualStyleBackColor = true;
             // 
             // linkJournalFolder
@@ -498,11 +529,11 @@ namespace SrvSurvey
             // 
             btnAdjustOverlays.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnAdjustOverlays.FlatStyle = FlatStyle.System;
-            btnAdjustOverlays.Location = new Point(487, 332);
+            btnAdjustOverlays.Location = new Point(531, 332);
             btnAdjustOverlays.Name = "btnAdjustOverlays";
-            btnAdjustOverlays.Size = new Size(200, 32);
+            btnAdjustOverlays.Size = new Size(157, 32);
             btnAdjustOverlays.TabIndex = 33;
-            btnAdjustOverlays.Text = "Adjust active overlay positions";
+            btnAdjustOverlays.Text = "Adjust overlay positions";
             btnAdjustOverlays.UseVisualStyleBackColor = true;
             btnAdjustOverlays.Click += btnAdjustOverlays_Click;
             // 
@@ -601,9 +632,9 @@ namespace SrvSurvey
             // 
             btnPostProcess.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnPostProcess.FlatStyle = FlatStyle.System;
-            btnPostProcess.Location = new Point(524, 410);
+            btnPostProcess.Location = new Point(530, 218);
             btnPostProcess.Name = "btnPostProcess";
-            btnPostProcess.Size = new Size(163, 29);
+            btnPostProcess.Size = new Size(157, 32);
             btnPostProcess.TabIndex = 1;
             btnPostProcess.Text = "Scan all old journal files";
             btnPostProcess.UseVisualStyleBackColor = true;
@@ -654,11 +685,11 @@ namespace SrvSurvey
             // 
             btnResetOverlays.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnResetOverlays.FlatStyle = FlatStyle.System;
-            btnResetOverlays.Location = new Point(487, 294);
+            btnResetOverlays.Location = new Point(530, 294);
             btnResetOverlays.Name = "btnResetOverlays";
-            btnResetOverlays.Size = new Size(200, 32);
+            btnResetOverlays.Size = new Size(158, 32);
             btnResetOverlays.TabIndex = 32;
-            btnResetOverlays.Text = "Reset all custom overlay positions";
+            btnResetOverlays.Text = "Reset all overlay positions";
             btnResetOverlays.UseVisualStyleBackColor = true;
             btnResetOverlays.Click += btnResetOverlays_Click;
             // 
@@ -3188,15 +3219,15 @@ namespace SrvSurvey
             // listView1
             // 
             listView1.CheckBoxes = true;
-            listViewItem9.StateImageIndex = 0;
-            listViewItem9.Tag = "materialCountAfterPickup";
-            listViewItem10.StateImageIndex = 0;
-            listViewItem10.Tag = "cargoMissionRemaining";
-            listViewItem11.StateImageIndex = 0;
-            listViewItem11.Tag = "currentBoxelSearchStatus";
-            listViewItem12.StateImageIndex = 0;
-            listViewItem12.Tag = "showNextBoxelToSearch";
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem9, listViewItem10, listViewItem11, listViewItem12 });
+            listViewItem1.StateImageIndex = 0;
+            listViewItem1.Tag = "materialCountAfterPickup";
+            listViewItem2.StateImageIndex = 0;
+            listViewItem2.Tag = "cargoMissionRemaining";
+            listViewItem3.StateImageIndex = 0;
+            listViewItem3.Tag = "currentBoxelSearchStatus";
+            listViewItem4.StateImageIndex = 0;
+            listViewItem4.Tag = "showNextBoxelToSearch";
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4 });
             listView1.Location = new Point(12, 331);
             listView1.Name = "listView1";
             listView1.Size = new Size(400, 107);
@@ -3627,5 +3658,7 @@ namespace SrvSurvey
         private LinkLabel linkLabel3;
         private CheckBox checkBox52;
         private CheckBox checkFancyAlphaBlending;
+        private CheckBox checkEnableVR;
+        private FlatButton btnAdjustVR;
     }
 }

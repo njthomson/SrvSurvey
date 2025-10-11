@@ -1,5 +1,4 @@
 ﻿using SrvSurvey.forms;
-using SrvSurvey.game;
 using SrvSurvey.Properties;
 using System.ComponentModel;
 
@@ -21,7 +20,7 @@ namespace SrvSurvey
             // force form width as it doesn't happen correctly by itself
             this.Width = flowButtons.Right + (flowButtons.Left * 2) + 4;
 
-            KeyboardHook.buttonsPressed += (bool hook, string chord) =>
+            KeyboardHook.buttonsPressed += (bool hook, string chord, short analog) =>
             {
                 btnAccept.Enabled = hook;
                 this.textChord.Text = chord;

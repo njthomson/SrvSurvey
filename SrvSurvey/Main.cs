@@ -50,6 +50,7 @@ namespace SrvSurvey
             lblNotInstalled.ForeColor = Color.White;
             comboDev.Items.AddRange(comboDevItems);
             comboDev.SelectedIndex = 0;
+            PlotBase2.invalidate(); // do this first, so we hit the static constructor before prepPlotterPositions
             PlotPos.prepPlotterPositions();
 
             if (Path.Exists(Game.settings.watchedJournalFolder))
@@ -426,7 +427,7 @@ namespace SrvSurvey
             Program.closeAllPlotters();
             BigOverlay.close();
             PlotBase2.closeAll();
-            if (Game.settings.displayVR) VR.shutdown();
+            if (VR.enabled) VR.shutdown();
 
             this.hook?.stopDirectX();
 
@@ -488,7 +489,7 @@ namespace SrvSurvey
 
             // reset bigOverlay
             BigOverlay.init(game);
-            if (Game.settings.displayVR) VR.init();
+            if (VR.enabled) VR.init();
         }
 
         private void updateAllControls(GameMode? newMode = null)
@@ -1102,7 +1103,7 @@ namespace SrvSurvey
             try
             {
                 btnSettings.Enabled = false;
-                if (Game.settings.displayVR) VR.shutdown();
+                if (VR.enabled) VR.shutdown();
 
                 var form = new FormSettings();
                 var rslt = form.ShowDialog(this);
@@ -1119,8 +1120,8 @@ namespace SrvSurvey
                     Application.DoEvents();
                     if (game != null)
                     {
+                        if (VR.enabled) VR.init();
                         BigOverlay.init(game);
-                        if (Game.settings.displayVR) VR.init();
                     }
                 }
                 else

@@ -81,6 +81,8 @@ namespace SrvSurvey
             checkShowInRightPanel.Enabled = checkBox49.Checked;
             checkSuppressNonColonise.Enabled = checkBox49.Checked;
 
+            btnAdjustVR.Enabled = checkEnableVR.Checked;
+
             if (game == null)
             {
                 btnClearUnclaimed.Enabled = false;
@@ -470,6 +472,9 @@ namespace SrvSurvey
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
+
+            PlotAdjustVR.force = false;
+            VR.shutdown();
 
             // ensure basic keyboard hooks are in the correct state
             var keyHookSettingsValid = Game.settings.keyActions_TEST != null && (Game.settings.keyhook_TEST || Game.settings.hookDirectX_TEST);
@@ -1023,6 +1028,16 @@ namespace SrvSurvey
                 txtRavenApiKey.Enabled = true;
                 checkApiKey();
             }
+        }
+
+        private void checkEnableVR_CheckedChanged(object sender, EventArgs e)
+        {
+            btnAdjustVR.Enabled = checkEnableVR.Checked;
+        }
+
+        private void btnAdjustVR_Click(object sender, EventArgs e)
+        {
+            PlotAdjustVR.show();
         }
     }
 }

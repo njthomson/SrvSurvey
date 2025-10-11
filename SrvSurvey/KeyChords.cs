@@ -95,6 +95,7 @@ namespace SrvSurvey
             { KeyAction.track8, "ALT CTRL F8" },
             { KeyAction.nextWindow, "ALT CTRL W" },
             { KeyAction.streamOne, "ALT CTRL O" },
+            { KeyAction.adjustVR, "ALT V" },
         };
 
         public static bool doKeyAction(KeyAction keyAction)
@@ -130,6 +131,7 @@ namespace SrvSurvey
                 case KeyAction.track8: return trackLocation(8);
                 case KeyAction.nextWindow: return focusNextGameWindow();
                 case KeyAction.streamOne: return toggleStreamOne();
+                case KeyAction.adjustVR: return adjustVR();
 
                 default:
                     Game.log($"Unsupported key action: {keyAction}");
@@ -285,7 +287,7 @@ namespace SrvSurvey
             else
             {
                 // the plotter exists and was not forced ... toggle forceHide on it
-                fssInfo.hidden= !fssInfo.hidden;
+                fssInfo.hidden = !fssInfo.hidden;
                 if (!fssInfo.hidden) PlotFSSInfo.forceShow = false;
             }
 
@@ -456,6 +458,11 @@ namespace SrvSurvey
             Game.settings.Save();
             return true;
         }
+        private static bool adjustVR()
+        {
+            PlotAdjustVR.show();
+            return true;
+        }
     }
 
     /// <summary>
@@ -498,6 +505,8 @@ namespace SrvSurvey
         nextWindow,
         /// <summary> Toggle setting streamOneOverlay </summary>
         streamOne,
+        /// <summary> Toggle VR overlay adjustment </summary>
+        adjustVR,
         /// <summary> Track the current location as #1 </summary>
         track1,
         /// <summary> Track the current location as #2 </summary>

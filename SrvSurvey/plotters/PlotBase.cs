@@ -1581,9 +1581,8 @@ namespace SrvSurvey.plotters
             var dirty = false;
             Dictionary<string, PlotPos>? defaultPositions = null;
             typicalSize["PlotPulse"] = BigOverlay.plotPulseDefaultSize;
-            foreach (var type in allPlotterTypes)
+            foreach(var name in typicalSize.Keys)
             {
-                var name = type.Name;
                 if (!plotterPositions.ContainsKey(name))
                 {
                     if (defaultPositions == null) defaultPositions = readPlotterPositions(defaultPlotterPositionPath);
@@ -1595,9 +1594,6 @@ namespace SrvSurvey.plotters
                     }
                 }
 
-                // use the size from the attribute
-                var approxSize = type.GetCustomAttribute<ApproxSizeAttribute>();
-                typicalSize[name] = approxSize?.size ?? new Size(200, 60);
 
                 if (Game.settings.overlayTombs)
                     Program.createTomb(name);
@@ -1626,6 +1622,17 @@ namespace SrvSurvey.plotters
             if (original == null) return;
 
             plotterPositions[name] = original;
+        }
+
+        public static void resetVRToDefault(string name)
+        {
+            if (string.IsNullOrEmpty(name) || !plotterPositions.ContainsKey(name)) return;
+
+            var defaults = readPlotterPositions(defaultPlotterPositionPath);
+            var original = defaults.GetValueOrDefault(name);
+            if (original == null) return;
+
+            plotterPositions[name].vr = original.vr;
         }
 
         public static void resetAll()
@@ -1709,13 +1716,18 @@ namespace SrvSurvey.plotters
         {
             plotterPositions = readPlotterPositions(filepath);
 
-            Program.defer(() => Program.repositionPlotters(Elite.getWindowRect()));
+            Program.defer(() =>
+            {
+                Program.repositionPlotters(Elite.getWindowRect());
+                PlotBase2.renderAll(Game.activeGame, true);
+            });
         }
 
         private static void Watcher_Changed(object sender, FileSystemEventArgs e)
         {
             try
             {
+                Game.log($"Plotters.json changed: {e.FullPath}");
                 setPlotterPositions(e.FullPath);
             }
             catch (Exception ex)
@@ -1750,7 +1762,7 @@ namespace SrvSurvey.plotters
         public static bool shouldBeSeparate(string name)
         {
             var pp = plotterPositions.GetValueOrDefault(name);
-            return pp?.h == Horiz.OS || pp?.v == Vert.OS || pp.opacity.HasValue;
+            return pp?.h == Horiz.OS || pp?.v == Vert.OS || pp?.opacity.HasValue == true;
         }
 
         public static void reposition(PlotterForm form, Rectangle rect, string? formTypeName = null)
@@ -1852,7 +1864,6 @@ namespace SrvSurvey.plotters
 
         public override string ToString()
         {
-            this.vr = new() { s = 12, r = new(), p = new() };
             var root = $"{h}:{x}, {v}:{y}".ToLowerInvariant();
             var op = this.opacity > 0 ? $", {opacity}" : "";
             var vr = this.vr != null ? $" {this.vr}" : "";
@@ -1886,7 +1897,7 @@ namespace SrvSurvey.plotters
 
             public override string ToString()
             {
-                return $"{{ s: {s.ToString(CultureInfo.InvariantCulture)}, r: {r}, p: {p}}}";
+                return $"{{ s: {s.ToString(CultureInfo.InvariantCulture)}, p: {p}, r: {r}}}";
             }
 
             public static VR? parse(string txt)
@@ -1898,8 +1909,8 @@ namespace SrvSurvey.plotters
                 var vr = new VR()
                 {
                     s = float.Parse(parts[1], CultureInfo.InvariantCulture),
-                    r = new(float.Parse(parts[3], CultureInfo.InvariantCulture), float.Parse(parts[4], CultureInfo.InvariantCulture), float.Parse(parts[5], CultureInfo.InvariantCulture)),
-                    p = new(float.Parse(parts[7], CultureInfo.InvariantCulture), float.Parse(parts[8], CultureInfo.InvariantCulture), float.Parse(parts[9], CultureInfo.InvariantCulture)),
+                    p = new(float.Parse(parts[3], CultureInfo.InvariantCulture), float.Parse(parts[4], CultureInfo.InvariantCulture), float.Parse(parts[5], CultureInfo.InvariantCulture)),
+                    r = new(float.Parse(parts[7], CultureInfo.InvariantCulture), float.Parse(parts[8], CultureInfo.InvariantCulture), float.Parse(parts[9], CultureInfo.InvariantCulture)),
                 };
                 return vr;
             }

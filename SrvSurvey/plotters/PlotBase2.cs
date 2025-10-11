@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.canonn;
+using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
@@ -229,6 +230,14 @@ namespace SrvSurvey.plotters
 
                     var tt = new TextCursor(g, this);
                     var sz = this.doRender(game, g, tt);
+
+                    // render a yellow box if we are being adjusted
+                    if (FormAdjustOverlay.targetName == this.name)
+                    {
+                        var rf = new RectangleF(0, 0, sz.Width, sz.Height);
+                        g.DrawRectangle(GameColors.penYellow4, rf);
+                    }
+
                     this.stale = false;
                     this.setSize((int)Math.Ceiling(sz.Width), (int)Math.Ceiling(sz.Height));
                 }
@@ -425,7 +434,7 @@ namespace SrvSurvey.plotters
                     }
 
                     // render into VR?
-                    if (Game.settings.displayVR && VR.app != null)
+                    if (VR.enabled && VR.app != null)
                     {
                         if (def.vr == null) def.vr = new VROverlay(def);
                         def.vr.project();

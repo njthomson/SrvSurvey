@@ -16,7 +16,7 @@ namespace SrvSurvey
         private readonly IntPtr hookId;
 
         internal delegate IntPtr HookHandlerDelegate(int nCode, IntPtr wParam, ref KBDLLHOOKSTRUCT lParam);
-        internal delegate void HookFired(bool hook, string chord);
+        internal delegate void HookFired(bool hook, string chord, short analog);
 
         private Task? taskDirectX;
         private HashSet<string> pressed = new();
@@ -25,6 +25,7 @@ namespace SrvSurvey
         private bool pendingButtonsRelease = false;
 
         public static bool redirect = false;
+        public static bool analogs = false;
         public static event HookFired? buttonsPressed;
         private static int taskCount = 0;
 
@@ -237,7 +238,7 @@ namespace SrvSurvey
 
                     foreach (var state in device.GetBufferedData())
                     {
-                        Debug.WriteLine(state); // dbg
+                        //Debug.WriteLine(state); // dbg
 
                         var isButton = state.Offset >= JoystickOffset.Buttons0 && state.Offset <= JoystickOffset.Buttons127;
                         if (isButton)
@@ -261,7 +262,7 @@ namespace SrvSurvey
                 {
                     // log the error if we think we should have a device
                     if (device != null)
-                        Game.log($"beginPollDirectX failed: {ex.Message}");
+                        Game.log($"beginPollDirectX failed: {ex.Message}\r\n\t{ex.StackTrace}");
 
                     //if ((uint)ex.HResult == 0x8007001E)
                     //    Game.log($"Lost connection to device - start polling loop to reconnect");
@@ -299,7 +300,7 @@ namespace SrvSurvey
                 //Game.log($">>> FIRE <<< {hook} => [ {chord} ]"); // dbg
 
                 // fire event on the UX thread
-                Program.defer(() => buttonsPressed(hook, chord));
+                Program.defer(() => buttonsPressed(hook, chord, 0));
             }
         }
 
@@ -404,10 +405,27 @@ namespace SrvSurvey
         private SharpDX.XInput.Capabilities? gamepadCapabilities;
         private SharpDX.XInput.State lastState;
 
+        private int spinCount;
         private void pollXInput()
         {
             if (gamepad == null) return;
             if (!gamepad.GetState(out var state)) return;
+
+            if (analogs)
+            {
+                if (state.PacketNumber != lastState.PacketNumber || ++spinCount > 4)
+                {
+                    processGamePadAxis2("LX", lastState.Gamepad.LeftThumbX, state.Gamepad.LeftThumbX, 3000);
+                    processGamePadAxis2("LY", lastState.Gamepad.LeftThumbY, state.Gamepad.LeftThumbY, 3000);
+                    processGamePadAxis2("RX", lastState.Gamepad.RightThumbX, state.Gamepad.RightThumbX, 3000);
+                    processGamePadAxis2("RY", lastState.Gamepad.RightThumbY, state.Gamepad.RightThumbY, 3000);
+
+                    processGamePadAxis2("LT", lastState.Gamepad.LeftTrigger, state.Gamepad.LeftTrigger, -1);
+                    processGamePadAxis2("RT", lastState.Gamepad.RightTrigger, state.Gamepad.RightTrigger, -1);
+
+                    spinCount = 0;
+                }
+            }
 
             // skip if no changes from before
             if (state.PacketNumber == lastState.PacketNumber) return;
@@ -458,11 +476,28 @@ namespace SrvSurvey
             lastState = state;
         }
 
+        private void processGamePadAxis2(string name, short last, short current, int deadzone)
+        {
+            // avoid deadzone?
+            if (deadzone == -1)
+            {
+                if (current < 10) return;
+            }
+            else if (current > -deadzone && current < deadzone)
+                return;
+
+            if (buttonsPressed != null && redirect && analogs)
+            {
+                // fire event on the UX thread
+                Program.control.Invoke(() => buttonsPressed(true, name, current));
+            }
+        }
+
         private void processGamePadAxis(string name, byte last, byte current)
         {
             if (last == current) return;
 
-            //Debug.WriteLine($"{name}: {last} v {current}"); // bdg
+            //Debug.WriteLine($"{name}: {last} v {current}"); // dbg
 
             var triggered = current >= 250; // allow with 5 to trigger
             if (triggered)
