@@ -1797,7 +1797,7 @@ namespace SrvSurvey.plotters
             if (rect == Rectangle.Empty)
                 rect = Elite.getWindowRect();
 
-            if (plot2 && !Game.settings.disableBigOverlay)
+            if (plot2 && !Game.settings.disableLargeOverlay)
             {
                 if (pp.h != Horiz.OS) rect.X = 0;
                 if (pp.v != Vert.OS) rect.Y = 0;

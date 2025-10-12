@@ -298,7 +298,7 @@ namespace SrvSurvey.plotters
             Game.log($"Overlays.add: {def.name}");
             def.instance = def.ctor(game, def);
 
-            BigOverlay.invalidate();
+            renderAll(game);
             return def.instance;
         }
 
@@ -423,7 +423,7 @@ namespace SrvSurvey.plotters
                     }
 
                     // render onto separate form?
-                    if (Game.settings.disableBigOverlay || PlotPos.shouldBeSeparate(def.name))
+                    if (Game.settings.disableLargeOverlay || PlotPos.shouldBeSeparate(def.name))
                     {
                         if (def.form == null)
                         {

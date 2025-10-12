@@ -259,7 +259,7 @@ namespace SrvSurvey
 
         public bool streamOneOverlay = false;
 
-        public bool disableBigOverlay = false;
+        public bool disableLargeOverlay = true;
         public bool disableBetterAlphaBlending = false;
         public bool displayVR = false;
 

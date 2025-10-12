@@ -95,7 +95,7 @@ namespace SrvSurvey.forms
             // all names, or only those visible?
             var names = checkShowAll.Checked
                 ? PlotPos.getAllPlotterNames()
-                : Game.settings.disableBigOverlay
+                : Game.settings.disableLargeOverlay
                     ? Program.getAllPlotterNames().Order().ToArray()
                     : PlotBase2.active.Select(d => d.name).Concat(Program.getAllPlotterNames()).Order().ToArray();
 

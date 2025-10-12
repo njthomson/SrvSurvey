@@ -19,7 +19,7 @@ namespace SrvSurvey.plotters
             current?.Close();
 
             // do not create anything if this setting is enabled, but we should still render as a convenience to make separate forms re-render
-            if (Game.settings.disableBigOverlay)
+            if (Game.settings.disableLargeOverlay)
             {
                 PlotBase2.renderAll(game, true);
                 return;

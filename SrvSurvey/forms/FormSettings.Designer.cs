@@ -3111,7 +3111,7 @@ namespace SrvSurvey
             checkBox39.Name = "checkBox39";
             checkBox39.Size = new Size(174, 20);
             checkBox39.TabIndex = 47;
-            checkBox39.Tag = "disableBigOverlay";
+            checkBox39.Tag = "disableLargeOverlay";
             checkBox39.Text = "Disable single large overlay";
             checkBox39.TextAlign = ContentAlignment.TopLeft;
             checkBox39.UseVisualStyleBackColor = true;
