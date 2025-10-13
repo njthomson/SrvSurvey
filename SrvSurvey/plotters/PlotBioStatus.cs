@@ -132,7 +132,7 @@ namespace SrvSurvey.plotters
 
         #endregion
 
-        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
+        protected override SizeF doRender(Graphics g, TextCursor tt)
         {
             if (game?.systemBody == null) return frame.Size;
             tt.padVertical = 6;

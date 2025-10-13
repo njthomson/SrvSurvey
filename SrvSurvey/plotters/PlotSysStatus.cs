@@ -45,7 +45,7 @@ namespace SrvSurvey.plotters
                 this.invalidate();
         }
 
-        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
+        protected override SizeF doRender(Graphics g, TextCursor tt)
         {
             var minViableWidth = N.s(170);
             if (game?.systemData == null || game.status == null) // still needed --> || !PlotSysStatus.allowed(game))

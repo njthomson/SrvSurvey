@@ -37,7 +37,7 @@ namespace SrvSurvey.plotters
 
         float pad = N.oneFive;
 
-        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
+        protected override SizeF doRender(Graphics g, TextCursor tt)
         {
             var bodyGrav = (game.systemBody!.surfaceGravity / 10).ToString("N2");
             var txt = Res.SurfaceGravityWarning.format(bodyGrav);

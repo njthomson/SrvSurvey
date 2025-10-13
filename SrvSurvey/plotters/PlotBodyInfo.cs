@@ -64,7 +64,7 @@ namespace SrvSurvey.plotters
             }
         }
 
-        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
+        protected override SizeF doRender(Graphics g, TextCursor tt)
         {
             // use current body, or targetBody if in SystemMap
             var body = game.isMode(GameMode.SystemMap, GameMode.Orrery) || PlotBodyInfo.forceShow

@@ -217,7 +217,7 @@ namespace SrvSurvey.plotters
                 initFromRoute();
         }
 
-        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
+        protected override SizeF doRender(Graphics g, TextCursor tt)
         {
             if (this.netData == null)
             {

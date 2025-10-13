@@ -151,8 +151,10 @@ namespace SrvSurvey.plotters
 
             this.SuspendLayout();
             this.Visible = !Elite.eliteMinimized && !Program.tempHideAllPlotters;
-            this.Location = gameRect.Location;
-            this.Size = gameRect.Size;
+
+            var rect = new Rectangle(gameRect.Left + 1, gameRect.Top + 1, gameRect.Width - 2, gameRect.Height - 2);
+            this.Location = rect.Location;
+            this.Size = rect.Size;
             this.ResumeLayout();
 
             // get PlotPulse location
@@ -180,57 +182,56 @@ namespace SrvSurvey.plotters
                 g.Clear(maskColor);
 
                 var game = Game.activeGame;
-                if (game != null)
-                {
-                    if (!Game.settings.hideJournalWriteTimer)
-                        this.renderPulse(g);
+                if (game == null) return;
 
-                    g.SmoothingMode = SmoothingMode.None;
-                    foreach (var plotter in PlotBase2.active)
-                    {
-                        // skip anything not visible
-                        if (plotter.hidden) continue;
+                if (!Game.settings.hideJournalWriteTimer)
+                    this.renderPulse(g);
+
+                g.SmoothingMode = SmoothingMode.None;
+                foreach (var plotter in PlotBase2.active)
+                {
+                    // skip anything not visible
+                    if (plotter.hidden) continue;
 
 #if DEBUG
-                        if (plotter.stale) // comment for easier debugging of rendering code
-                            plotter.render();
+                    if (plotter.stale) // comment for easier debugging of rendering code
+                        plotter.render();
 #else
                         // re-render only if needed
                         if (plotter.stale) plotter.render();
 #endif
 
-                        if (plotter.fade == 1 || PlotBase.windowOne != null)
-                        {
-                            // not fading
-                            g.DrawImageUnscaled(plotter.frame, plotter.left, plotter.top);
-                        }
-                        else if (plotter.fade == 0)
-                        {
-                            // start fading in
-                            Util.deferAfter(20, () => fadeNext2((PlotBase2)plotter, 0.1f), plotter.name);
-                        }
-                        else
-                        {
-                            // draw faded image
-                            var attr = new ImageAttributes();
-                            var colorMatrix = new ColorMatrix() { Matrix33 = plotter.fade, };
-                            attr.SetColorMatrix(colorMatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                    if (plotter.fade == 1 || PlotBase.windowOne != null)
+                    {
+                        // not fading
+                        g.DrawImageUnscaled(plotter.frame, plotter.left, plotter.top);
+                    }
+                    else if (plotter.fade == 0)
+                    {
+                        // start fading in
+                        Util.deferAfter(20, () => fadeNext2((PlotBase2)plotter, 0.1f), plotter.name);
+                    }
+                    else
+                    {
+                        // draw faded image
+                        var attr = new ImageAttributes();
+                        var colorMatrix = new ColorMatrix() { Matrix33 = plotter.fade, };
+                        attr.SetColorMatrix(colorMatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
-                            var sz = plotter.frame.Size;
-                            var rect = new Rectangle(plotter.left, plotter.top, sz.Width, sz.Height);
+                        var sz = plotter.frame.Size;
+                        var rect = new Rectangle(plotter.left, plotter.top, sz.Width, sz.Height);
 
-                            // we need a black box or the blending looks too bright
-                            g.FillRectangle(Brushes.Black, rect);
+                        // we need a black box or the blending looks too bright
+                        g.FillRectangle(Brushes.Black, rect);
 
-                            g.DrawImage(plotter.frame, rect, 0, 0, sz.Width, sz.Height, GraphicsUnit.Pixel, attr);
-                        }
+                        g.DrawImage(plotter.frame, rect, 0, 0, sz.Width, sz.Height, GraphicsUnit.Pixel, attr);
+                    }
 
-                        if (plotter.name == FormAdjustOverlay.targetName)
-                        {
-                            var sz = plotter.frame.Size;
-                            var rect = new Rectangle(plotter.left, plotter.top, sz.Width, sz.Height);
-                            g.DrawRectangle(GameColors.penYellow4, rect);
-                        }
+                    if (plotter.name == FormAdjustOverlay.targetName)
+                    {
+                        var sz = plotter.frame.Size;
+                        var rect = new Rectangle(plotter.left, plotter.top, sz.Width, sz.Height);
+                        g.DrawRectangle(GameColors.penYellow4, rect);
                     }
                 }
 
@@ -240,6 +241,8 @@ namespace SrvSurvey.plotters
                     this.DrawToBitmap(PlotBase.backOne, new Rectangle(Point.Empty, this.Size));
                     PlotBase.windowOne.Invalidate();
                 }
+
+                //g.DrawRectangle(Pens.Blue, 0, 0, this.Width - 1, this.Height - 1); // diagnostic
             }
             catch (Exception ex)
             {

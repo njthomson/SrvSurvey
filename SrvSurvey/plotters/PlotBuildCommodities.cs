@@ -218,7 +218,7 @@ namespace SrvSurvey.plotters
             this.sumCargoLinkedFCs = ColonyData.getSumCargoFC(cargoLinkedFCs);
         }
 
-        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
+        protected override SizeF doRender(Graphics g, TextCursor tt)
         {
             var colonyData = game.cmdrColony;
             if (colonyData == null || game.systemData == null) return frame.Size;

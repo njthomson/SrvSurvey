@@ -33,7 +33,7 @@ namespace SrvSurvey.plotters
             this.font = GameColors.Fonts.console_8;
         }
 
-        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
+        protected override SizeF doRender(Graphics g, TextCursor tt)
         {
             if (game.cmdr.trackMassacres == null) return frame.Size;
 

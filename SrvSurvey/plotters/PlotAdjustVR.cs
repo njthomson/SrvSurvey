@@ -219,7 +219,7 @@ namespace SrvSurvey.plotters
             PlotBase2.invalidate(targetName, nameof(PlotAdjustFake));
         }
 
-        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
+        protected override SizeF doRender(Graphics g, TextCursor tt)
         {
             tt.flags |= TextFormatFlags.VerticalCenter;
 
@@ -323,7 +323,7 @@ namespace SrvSurvey.plotters
 
         private PlotAdjustFake(Game game, PlotDef def) : base(game, def) { }
 
-        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
+        protected override SizeF doRender(Graphics g, TextCursor tt)
         {
             tt.drawCentered(def.name, C.cyan, GameColors.Fonts.gothic_14B);
             return this.size;

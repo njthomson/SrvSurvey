@@ -39,7 +39,7 @@ namespace SrvSurvey.plotters
             this.font = GameColors.fontMiddle;
         }
 
-        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
+        protected override SizeF doRender(Graphics g, TextCursor tt)
         {
             if (game?.systemSite == null) return frame.Size;
 

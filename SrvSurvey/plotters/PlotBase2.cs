@@ -207,7 +207,7 @@ namespace SrvSurvey.plotters
         }
 
         // TODO: remove "Game game" reference here - they already have it
-        protected abstract SizeF doRender(Game game, Graphics g, TextCursor tt);
+        protected abstract SizeF doRender(Graphics g, TextCursor tt);
 
         /// <summary> Generate a new frame image </summary>
         public Bitmap render()
@@ -229,7 +229,7 @@ namespace SrvSurvey.plotters
                     g.SmoothingMode = SmoothingMode.HighQuality;
 
                     var tt = new TextCursor(g, this);
-                    var sz = this.doRender(game, g, tt);
+                    var sz = this.doRender(g, tt);
 
                     // render a yellow box if we are being adjusted
                     if (FormAdjustOverlay.targetName == this.name)
@@ -273,7 +273,7 @@ namespace SrvSurvey.plotters
             foreach (var type in allPlotterTypes)
             {
                 var def = type
-                    .GetField("plotDef", BindingFlags.Public | BindingFlags.Static)
+                    .GetField("def", BindingFlags.Public | BindingFlags.Static)
                     ?.GetValue(null) as plotters.PlotDef;
 
                 if (def == null)

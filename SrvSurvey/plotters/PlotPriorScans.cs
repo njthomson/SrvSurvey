@@ -182,7 +182,7 @@ namespace SrvSurvey.plotters
             }
         }
 
-        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
+        protected override SizeF doRender(Graphics g, TextCursor tt)
         {
             if (game?.systemBody == null) return frame.Size;
 

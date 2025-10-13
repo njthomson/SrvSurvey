@@ -74,7 +74,7 @@ namespace SrvSurvey.plotters
             Game.log($"PlotStationInfo.Selected station: {this.station?.name} ({this.station?.id})");
         }
 
-        protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
+        protected override SizeF doRender(Graphics g, TextCursor tt)
         {
             // render nothing if there is no station
             if (this.station == null) return frame.Size;
