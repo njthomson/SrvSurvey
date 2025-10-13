@@ -152,7 +152,7 @@ namespace SrvSurvey.plotters
 
                 // reposition if necessary
                 var pp = PlotPos.get(overlay.Name)?.vr;
-                if (pp != null && pp?.ToString() != lastPP?.ToString())
+                if (pp != null && pp.ToString() != lastPP?.ToString())
                     repositionOverlay(pp);
 
                 // ensure we are visible

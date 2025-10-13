@@ -11,7 +11,7 @@ namespace SrvSurvey.plotters
     {
         #region def + statics
 
-        public static PlotDef plotDef = new PlotDef()
+        public static PlotDef def = new PlotDef()
         {
             name = nameof(PlotJumpInfo),
             allowed = allowed,
@@ -52,8 +52,8 @@ namespace SrvSurvey.plotters
             this.initFromRoute();
 
             // make sure these are closed
-            PlotBase2.remove(PlotBioStatus.plotDef);
-            PlotBase2.remove(PlotGuardianStatus.plotDef);
+            PlotBase2.remove(PlotBioStatus.def);
+            PlotBase2.remove(PlotGuardianStatus.def);
         }
 
         protected override void onStatusChange(Status status)

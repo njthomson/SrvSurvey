@@ -37,10 +37,10 @@ namespace SrvSurvey.plotters
 
     internal abstract class PlotBase2
     {
-        protected Game game;
-        protected PlotDef plotDef;
+        protected readonly Game game;
+        protected readonly PlotDef plotDef;
+        public readonly string name;
         protected bool isClosed;
-        public string name { get; private set; }
         public int left { get; protected set; }
         public int top { get; protected set; }
         public int width { get; private set; }
@@ -103,7 +103,7 @@ namespace SrvSurvey.plotters
             }
         }
 
-        public void close()
+        private void close()
         {
             if (plotDef.form != null)
             {

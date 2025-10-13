@@ -7,7 +7,7 @@ namespace SrvSurvey.plotters
     {
         #region def + statics
 
-        public static PlotDef plotDef = new PlotDef()
+        public static PlotDef def = new PlotDef()
         {
             name = nameof(PlotFootCombat),
             allowed = allowed,

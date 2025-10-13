@@ -9,7 +9,7 @@ namespace SrvSurvey.plotters
     {
         #region def + statics
 
-        public static PlotDef plotDef = new PlotDef()
+        public static PlotDef def = new PlotDef()
         {
             name = nameof(PlotTrackers),
             allowed = allowed,
@@ -65,7 +65,7 @@ namespace SrvSurvey.plotters
             PlotBase2.invalidate(nameof(PlotGrounded));
 
             if (this.trackers.Count == 0)
-                Program.defer(() => PlotBase2.remove(PlotTrackers.plotDef));
+                Program.defer(() => PlotBase2.remove(PlotTrackers.def));
         }
 
         public override void setSize(int width, int height)

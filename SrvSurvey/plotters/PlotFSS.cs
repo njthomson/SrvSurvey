@@ -8,7 +8,7 @@ namespace SrvSurvey.plotters
     {
         #region def + statics
 
-        public static PlotDef plotDef = new PlotDef()
+        public static PlotDef def = new PlotDef()
         {
             name = nameof(PlotFSS),
             allowed = allowed,
@@ -197,7 +197,7 @@ namespace SrvSurvey.plotters
             }
 
             // size is fixed
-            return plotDef.defaultSize;
+            return def.defaultSize;
         }
 
         #region pixel watching

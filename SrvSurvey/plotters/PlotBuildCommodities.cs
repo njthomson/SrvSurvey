@@ -9,7 +9,7 @@ namespace SrvSurvey.plotters
     {
         #region def + statics
 
-        public static PlotDef plotDef = new PlotDef()
+        public static PlotDef def = new PlotDef()
         {
             name = nameof(PlotBuildCommodities),
             allowed = allowed,
@@ -53,7 +53,7 @@ namespace SrvSurvey.plotters
             else if (form == null)
             {
                 // just show the plotter
-                PlotBase2.add(game, PlotBuildCommodities.plotDef);
+                PlotBase2.add(game, PlotBuildCommodities.def);
             }
             else
             {

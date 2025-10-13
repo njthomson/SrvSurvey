@@ -12,7 +12,7 @@ namespace SrvSurvey.plotters
     {
         #region def + statics
 
-        public static PlotDef plotDef = new PlotDef()
+        public static PlotDef def = new PlotDef()
         {
             name = nameof(PlotBioStatus),
             allowed = allowed,
@@ -190,7 +190,7 @@ namespace SrvSurvey.plotters
                     tt.drawFooter(Res.FooterUseCompScanner);
             }
 
-            return PlotBioStatus.plotDef.defaultSize;
+            return PlotBioStatus.def.defaultSize;
         }
 
         private void showCurrentGenus(Graphics g, TextCursor tt, SystemOrganism organism)

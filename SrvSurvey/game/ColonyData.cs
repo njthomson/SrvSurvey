@@ -355,7 +355,7 @@ namespace SrvSurvey.game
                 await Game.rcc.markComplete(match.buildId);
                 match.complete = true;
                 this.Save();
-                PlotBase2.remove(PlotBuildCommodities.plotDef);
+                PlotBase2.remove(PlotBuildCommodities.def);
                 await this.fetchLatest();
             }
         }

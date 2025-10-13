@@ -104,7 +104,7 @@ namespace SrvSurvey.forms
                 Game.log($"Disabling boxel search");
 
                 // close plotter?
-                PlotBase2.addOrRemove(Game.activeGame, PlotSphericalSearch.plotDef);
+                PlotBase2.addOrRemove(Game.activeGame, PlotSphericalSearch.def);
             }
 
             this.prepSiblings(bs.boxel ?? cmdr.getCurrentBoxel());
@@ -186,7 +186,7 @@ namespace SrvSurvey.forms
             Game.log($"Enabled boxel search:\r\n\tname: {bs.boxel}");
 
             // make plotter appear, update or close
-            PlotBase2.addOrRemove(Game.activeGame, PlotSphericalSearch.plotDef);
+            PlotBase2.addOrRemove(Game.activeGame, PlotSphericalSearch.def);
 
             // update form controls
             tableConfig.Visible = false;

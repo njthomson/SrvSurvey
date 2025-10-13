@@ -10,7 +10,7 @@ namespace SrvSurvey.plotters
     {
         #region def + statics
 
-        public static PlotDef plotDef = new PlotDef()
+        public static PlotDef def = new PlotDef()
         {
             name = nameof(PlotTrackTarget),
             allowed = allowed,
@@ -97,7 +97,7 @@ namespace SrvSurvey.plotters
             gt.renderAngleOfAttack(g, N.ten, N.fourFour, game.status.PlanetRadius, this.targetLocation, Status.here, true);
 
             // fixed size
-            return plotDef.defaultSize;
+            return def.defaultSize;
         }
     }
 }

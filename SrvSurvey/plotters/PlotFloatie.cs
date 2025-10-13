@@ -7,7 +7,7 @@ namespace SrvSurvey.plotters
     {
         #region def + statics
 
-        public static PlotDef plotDef = new PlotDef()
+        public static PlotDef def = new PlotDef()
         {
             name = nameof(PlotFloatie),
             allowed = allowed,
@@ -41,10 +41,10 @@ namespace SrvSurvey.plotters
             closeTime = DateTime.Now.AddSeconds(durationVisible);
             messages.Add(new(msg, closeTime));
 
-            if (plotDef.instance == null)
-                PlotBase2.add(Game.activeGame, plotDef);
+            if (def.instance == null)
+                PlotBase2.add(Game.activeGame, def);
 
-            var form = plotDef.instance as PlotFloatie;
+            var form = def.instance as PlotFloatie;
             if (form != null)
             {
                 form.timer.Start();
@@ -82,7 +82,7 @@ namespace SrvSurvey.plotters
                 // close when nothing left to show
                 Game.log($"PlotFloatie: no more messages");
                 this.timer.Stop();
-                PlotBase2.remove(PlotFloatie.plotDef);
+                PlotBase2.remove(PlotFloatie.def);
             }
             else
             {

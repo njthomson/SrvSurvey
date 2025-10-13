@@ -1037,7 +1037,7 @@ namespace SrvSurvey
 
         private void btnAdjustVR_Click(object sender, EventArgs e)
         {
-            PlotAdjustVR.show();
+            PlotAdjustVR.start();
         }
     }
 }

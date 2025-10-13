@@ -1,7 +1,6 @@
 ﻿using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.widgets;
-using System.Diagnostics;
 using System.Numerics;
 
 namespace SrvSurvey.plotters
@@ -10,7 +9,7 @@ namespace SrvSurvey.plotters
     {
         #region def + statics
 
-        public static PlotDef plotDef = new PlotDef()
+        public static PlotDef def = new PlotDef()
         {
             name = nameof(PlotAdjustVR),
             allowed = allowed,
@@ -25,7 +24,7 @@ namespace SrvSurvey.plotters
 
         public static bool force;
 
-        public static void show()
+        public static void start()
         {
             PlotAdjustVR.force = true;
 
@@ -60,8 +59,8 @@ namespace SrvSurvey.plotters
         protected override void onClose()
         {
             base.onClose();
-            PlotBase2.remove(PlotAdjustFake.plotDef);
-            PlotAdjustFake.plotDef.name = nameof(PlotAdjustFake);
+            PlotBase2.remove(PlotAdjustFake.def);
+            PlotAdjustFake.def.name = nameof(PlotAdjustFake);
 
             KeyboardHook.buttonsPressed -= KeyboardHook_buttonsPressed;
             KeyboardHook.redirect = false;
@@ -82,7 +81,7 @@ namespace SrvSurvey.plotters
         private void setNextOverlay(string nextTarget)
         {
             // remove fake?
-            PlotBase2.remove(PlotAdjustFake.plotDef);
+            PlotBase2.remove(PlotAdjustFake.def);
 
             // change name here, then invalidate old one (removing the yellow box)
             FormAdjustOverlay.targetName = nextTarget;
@@ -95,9 +94,9 @@ namespace SrvSurvey.plotters
             if (targetDef != null && targetDef.instance == null)
             {
                 // we need a fake to stand
-                PlotAdjustFake.plotDef.name = nextTarget;
-                PlotAdjustFake.plotDef.defaultSize = PlotPos.typicalSize.ContainsKey(nextTarget) ? PlotPos.typicalSize[nextTarget] : new Size(200, 100);
-                var instance = PlotBase2.add(game, PlotAdjustFake.plotDef);
+                PlotAdjustFake.def.name = nextTarget;
+                PlotAdjustFake.def.defaultSize = PlotPos.typicalSize.ContainsKey(nextTarget) ? PlotPos.typicalSize[nextTarget] : new Size(200, 100);
+                var instance = PlotBase2.add(game, PlotAdjustFake.def);
                 PlotBase2.renderAll(game);
             }
         }
@@ -308,7 +307,7 @@ namespace SrvSurvey.plotters
 
     internal class PlotAdjustFake : PlotBase2
     {
-        public static PlotDef plotDef = new PlotDef()
+        public static PlotDef def = new PlotDef()
         {
             name = nameof(PlotAdjustFake),
             allowed = allowed,
@@ -318,7 +317,7 @@ namespace SrvSurvey.plotters
 
         public static bool allowed(Game game)
         {
-            var foo = FormAdjustOverlay.targetName == plotDef.name;
+            var foo = FormAdjustOverlay.targetName == def.name;
             return foo;
         }
 
@@ -326,7 +325,7 @@ namespace SrvSurvey.plotters
 
         protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
-            tt.drawCentered(plotDef.name, C.cyan, GameColors.Fonts.gothic_14B);
+            tt.drawCentered(def.name, C.cyan, GameColors.Fonts.gothic_14B);
             return this.size;
         }
     }

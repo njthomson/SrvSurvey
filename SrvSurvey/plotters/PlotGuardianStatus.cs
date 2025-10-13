@@ -11,7 +11,7 @@ namespace SrvSurvey.plotters
     {
         #region def + statics
 
-        public static PlotDef plotDef = new PlotDef()
+        public static PlotDef def = new PlotDef()
         {
             name = nameof(PlotGuardianStatus),
             allowed = allowed,
@@ -74,7 +74,7 @@ namespace SrvSurvey.plotters
         protected override SizeF doRender(Game game, Graphics g, TextCursor tt)
         {
             tt.padVertical = 6;
-            tt.setMinWidth(plotDef.defaultSize.Width);
+            tt.setMinWidth(def.defaultSize.Width);
 
             if (PlotGuardianStatus.glideSite != null && game.mode == GameMode.GlideMode)
             {

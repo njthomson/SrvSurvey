@@ -8,7 +8,7 @@ namespace SrvSurvey.plotters
     {
         #region def + statics
 
-        public static PlotDef plotDef = new PlotDef()
+        public static PlotDef def = new PlotDef()
         {
             name = nameof(PlotSphericalSearch),
             allowed = allowed,
@@ -240,7 +240,7 @@ namespace SrvSurvey.plotters
         {
             if (!allowed(game))
             {
-                PlotBase2.remove(plotDef);
+                PlotBase2.remove(def);
                 return frame.Size;
             }
 

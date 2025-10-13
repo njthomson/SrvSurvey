@@ -884,17 +884,17 @@ namespace SrvSurvey
                     Game.settings.targetLatLong = Status.here.clone();
                     Game.settings.targetLatLongActive = true;
                     Game.settings.Save();
-                    PlotBase2.addOrRemove(game, PlotTrackTarget.plotDef);
+                    PlotBase2.addOrRemove(game, PlotTrackTarget.def);
                     return;
                 case MsgCmd.targetOff:
                     Game.settings.targetLatLongActive = false;
                     Game.settings.Save();
-                    PlotBase2.addOrRemove(game, PlotTrackTarget.plotDef);
+                    PlotBase2.addOrRemove(game, PlotTrackTarget.def);
                     return;
                 case MsgCmd.targetOn:
                     Game.settings.targetLatLongActive = true;
                     Game.settings.Save();
-                    PlotBase2.addOrRemove(game, PlotTrackTarget.plotDef);
+                    PlotBase2.addOrRemove(game, PlotTrackTarget.def);
                     return;
 
                 case MsgCmd.imgs:
@@ -1043,7 +1043,7 @@ namespace SrvSurvey
                     if (changed)
                         game.systemData.Save();
 
-                    PlotBase2.add(game, PlotHumanSite.plotDef);
+                    PlotBase2.add(game, PlotHumanSite.def);
                     game.cmdr.setMarketId(game.systemStation.marketId, $"inferSiteFromHeading: {game.systemStation}");
                 }
             }
@@ -1094,7 +1094,7 @@ namespace SrvSurvey
                 setTargetLatLong();
             }
 
-            PlotBase2.addOrRemove(game, PlotTrackTarget.plotDef);
+            PlotBase2.addOrRemove(game, PlotTrackTarget.def);
             Elite.setFocusED();
         }
 
@@ -1705,9 +1705,9 @@ namespace SrvSurvey
 
         private void menuSpherical_Click(object sender, EventArgs e)
         {
-            PlotBase2.remove(PlotSphericalSearch.plotDef);
+            PlotBase2.remove(PlotSphericalSearch.def);
             new FormSphereLimit().ShowDialog(this);
-            PlotBase2.addOrRemove(Game.activeGame, PlotSphericalSearch.plotDef);
+            PlotBase2.addOrRemove(Game.activeGame, PlotSphericalSearch.def);
         }
 
         private void menuBoxel_Click(object sender, EventArgs e)

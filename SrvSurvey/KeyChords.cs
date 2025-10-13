@@ -190,13 +190,13 @@ namespace SrvSurvey
                 {
                     // force show if no plotter
                     PlotJumpInfo.forceShow = true;
-                    PlotBase2.add(game, PlotJumpInfo.plotDef);
+                    PlotBase2.add(game, PlotJumpInfo.def);
                 }
                 else if (PlotJumpInfo.forceShow)
                 {
                     // unforce (hide)
                     PlotJumpInfo.forceShow = false;
-                    PlotBase2.remove(PlotJumpInfo.plotDef);
+                    PlotBase2.remove(PlotJumpInfo.def);
                 }
                 else
                 {
@@ -274,15 +274,15 @@ namespace SrvSurvey
             {
                 // force show if no plotter
                 PlotFSSInfo.forceShow = true;
-                PlotBase2.addOrRemove(game, PlotGuardianSystem.plotDef);
-                PlotBase2.add(game, PlotFSSInfo.plotDef);
+                PlotBase2.addOrRemove(game, PlotGuardianSystem.def);
+                PlotBase2.add(game, PlotFSSInfo.def);
             }
             else if (PlotFSSInfo.forceShow)
             {
                 // unforce (hide)
                 PlotFSSInfo.forceShow = false;
-                PlotBase2.remove(PlotFSSInfo.plotDef);
-                PlotBase2.addOrRemove(game, PlotGuardianSystem.plotDef);
+                PlotBase2.remove(PlotFSSInfo.def);
+                PlotBase2.addOrRemove(game, PlotGuardianSystem.def);
             }
             else
             {
@@ -311,15 +311,15 @@ namespace SrvSurvey
             {
                 // force show if no plotter
                 PlotBodyInfo.forceShow = true;
-                PlotBase2.addOrRemove(game, PlotGuardianSystem.plotDef);
-                PlotBase2.add(game, PlotBodyInfo.plotDef);
+                PlotBase2.addOrRemove(game, PlotGuardianSystem.def);
+                PlotBase2.add(game, PlotBodyInfo.def);
             }
             else if (PlotBodyInfo.forceShow)
             {
                 // unforce (hide)
                 PlotBodyInfo.forceShow = false;
-                PlotBase2.remove(PlotBodyInfo.plotDef);
-                PlotBase2.addOrRemove(game, PlotGuardianSystem.plotDef);
+                PlotBase2.remove(PlotBodyInfo.def);
+                PlotBase2.addOrRemove(game, PlotGuardianSystem.def);
             }
             else
             {
@@ -340,13 +340,13 @@ namespace SrvSurvey
             {
                 // force show if no plotter
                 PlotStationInfo.forceShow = true;
-                PlotBase2.add(game, PlotStationInfo.plotDef);
+                PlotBase2.add(game, PlotStationInfo.def);
             }
             else if (PlotStationInfo.forceShow)
             {
                 // unforce (hide)
                 PlotStationInfo.forceShow = false;
-                PlotBase2.remove(PlotStationInfo.plotDef);
+                PlotBase2.remove(PlotStationInfo.def);
             }
             else
             {
@@ -366,13 +366,13 @@ namespace SrvSurvey
             {
                 // force show if no plotter
                 PlotBuildCommodities.forceShow = true;
-                PlotBase2.add(game, PlotBuildCommodities.plotDef);
+                PlotBase2.add(game, PlotBuildCommodities.def);
             }
             else if (PlotBuildCommodities.forceShow)
             {
                 // unforce (hide)
                 PlotBuildCommodities.forceShow = false;
-                PlotBase2.remove(PlotBuildCommodities.plotDef);
+                PlotBase2.remove(PlotBuildCommodities.def);
             }
             else
             {
@@ -460,7 +460,7 @@ namespace SrvSurvey
         }
         private static bool adjustVR()
         {
-            PlotAdjustVR.show();
+            PlotAdjustVR.start();
             return true;
         }
     }

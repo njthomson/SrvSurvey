@@ -312,7 +312,7 @@ namespace SrvSurvey.forms
             this.imported = false;
             this.btnSave.Visible = false;
 
-            PlotBase2.addOrRemove(Game.activeGame, PlotSphericalSearch.plotDef);
+            PlotBase2.addOrRemove(Game.activeGame, PlotSphericalSearch.def);
         }
 
         private void list_ItemChecked(object sender, ItemCheckedEventArgs e)

@@ -14,7 +14,7 @@ namespace SrvSurvey.plotters
     {
         #region def + statics
 
-        public static PlotDef plotDef = new PlotDef()
+        public static PlotDef def = new PlotDef()
         {
             name = nameof(PlotHumanSite),
             allowed = allowed,
@@ -364,7 +364,7 @@ namespace SrvSurvey.plotters
         protected override void onJournalEntry(SupercruiseEntry entry)
         {
             base.onJournalEntry(entry);
-            PlotBase2.remove(plotDef);
+            PlotBase2.remove(def);
         }
 
         protected override void onJournalEntry(BackpackChange entry)

@@ -1268,10 +1268,10 @@ namespace SrvSurvey.game
                 var recreate = PlotJumpInfo.forceShow;
                 Util.deferAfter(1000, () =>
                 {
-                    PlotBase2.remove(PlotJumpInfo.plotDef);
+                    PlotBase2.remove(PlotJumpInfo.def);
 
                     if (recreate)
-                        Program.defer(() => PlotBase2.add(this, PlotJumpInfo.plotDef));
+                        Program.defer(() => PlotBase2.add(this, PlotJumpInfo.def));
                 });
             }
         }
@@ -3260,7 +3260,7 @@ namespace SrvSurvey.game
             this.systemData.Save();
 
             PlotBase2.addOrRemove<PlotTrackers>(this)?.prepTrackers();
-            PlotBase2.addOrRemove(this, PlotMiniTrack.plotDef);
+            PlotBase2.addOrRemove(this, PlotMiniTrack.def);
         }
 
         public void clearAllBookmarks()
