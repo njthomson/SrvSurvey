@@ -82,6 +82,9 @@ namespace SrvSurvey.plotters
             var pt = PlotPos.getPlotterLocation(name ?? this.name, this.size, gameRect ?? Rectangle.Empty, true);
             this.left = pt.X;
             this.top = pt.Y;
+
+            // this removes the need to check during rendering itself
+            plotDef.form?.checkLocationAndSize();
         }
 
         public virtual void setSize(Size sz)
@@ -288,6 +291,11 @@ namespace SrvSurvey.plotters
 
         public static PlotBase2 add(Game game, PlotDef def)
         {
+            return add(game, def, false);
+        }
+
+        private static PlotBase2 add(Game game, PlotDef def, bool noRenderAll)
+        {
             if (def.instance != null)
             {
                 Game.log($"Overlays.add: {def.name} - why already present?");
@@ -352,7 +360,7 @@ namespace SrvSurvey.plotters
         public static T? addOrRemove<T>(Game? game) where T : PlotBase2
         {
             var type = typeof(T);
-            var plotDef = type.GetField("plotDef", BindingFlags.Static | BindingFlags.Public)?.GetValue(null) as PlotDef;
+            var plotDef = type.GetField("def", BindingFlags.Static | BindingFlags.Public)?.GetValue(null) as PlotDef;
             if (plotDef == null) throw new Exception($"Why no plotDef for: {type.Name}");
             return addOrRemove(game, plotDef) as T;
         }
@@ -385,19 +393,19 @@ namespace SrvSurvey.plotters
                 return;
             }
 
-            if (game == null || game.isShutdown || game.status == null || game.cmdr == null) return;
+            // don't render anything if ...
+            if (game?.status == null || game.isShutdown || game.cmdr == null || game.atMainMenu || game.hidePlottersFromCombatSuits)
+            {
+                PlotBase2.closeAll();
+                return;
+            }
 
             // check if we need to create or remove any
             var invalidateBig = false;
             foreach (var def in defs.Values)
             {
                 // nothing should show at the main menu, or before the cmdr is known
-                var shouldShow = game.cmdr != null
-                    && game.status != null
-                    && !game.atMainMenu
-                    && !game.isShutdown
-                    && !game.hidePlottersFromCombatSuits
-                    && def.allowed(game);
+                var shouldShow = def.allowed(game);
 
                 //Game.log($"relevant? {def.name} => {def.instance != null} / shouldShow: {shouldShow}");
 
@@ -405,7 +413,7 @@ namespace SrvSurvey.plotters
                 if (shouldShow && def.instance == null)
                 {
                     invalidateBig = true;
-                    add(game, def);
+                    add(game, def, true);
                 }
                 else if (!shouldShow && def.instance != null)
                 {
@@ -423,7 +431,7 @@ namespace SrvSurvey.plotters
                     }
 
                     // render onto separate form?
-                    if (Game.settings.disableLargeOverlay || PlotPos.shouldBeSeparate(def.name))
+                    if (/*!Elite.eliteMinimized && Elite.gameHasFocus &&*/ (Game.settings.disableLargeOverlay || PlotPos.shouldBeSeparate(def.name)))
                     {
                         if (def.form == null)
                         {
@@ -462,7 +470,7 @@ namespace SrvSurvey.plotters
         public static List<PlotBase2> active
         {
             get => defs.Values
-                .Where(def => def.instance != null && def.form == null)
+                .Where(def => def.instance != null && (def.form == null) != Game.settings.disableLargeOverlay)
                 .Select(def => def.instance!)
                 .ToList<PlotBase2>();
         }
@@ -796,8 +804,6 @@ namespace SrvSurvey.plotters
 
             this.Left = def.instance!.left;
             this.Top = def.instance.top;
-
-            this.resetOpacity();
         }
 
         protected override void Dispose(bool disposing)
@@ -809,31 +815,39 @@ namespace SrvSurvey.plotters
 
         public override bool allow => Game.activeGame == null ? false : def.allowed(Game.activeGame);
 
-        private void checkLocationAndSize()
+        public void checkLocationAndSize()
         {
             if (def.instance == null) return;
 
-            if (this.Width != def.instance.width || this.Height != def.instance.height)
+            var targetLocation = Game.settings.disableLargeOverlay
+                ? new Point(def.instance.left, def.instance.top)
+                : new Point(def.instance.left + Elite.lastRect.Left, def.instance.top + Elite.lastRect.Top);
+
+            if (this.Location != targetLocation || this.Width != def.instance.width || this.Height != def.instance.height)
             {
-                Game.log($"resize: {def.name} => {def.instance.size}");
-                var gameRect = Elite.getWindowRect();
-                var pt = PlotPos.getPlotterLocation(this.Name, def.instance.size, gameRect, false);
-                this.SetBounds(pt.X, pt.Y, def.instance.width, def.instance.height);
+                //Game.log($"resize: {def.name} => {targetLocation}, {def.instance.size}");
+                this.SetBounds(targetLocation.X, targetLocation.Y, def.instance.width, def.instance.height);
             }
 
-            if (this.Visible == def.instance.hidden)
+            if (this.IsHandleCreated && this.Visible == def.instance.hidden)
             {
                 this.Visible = !def.instance.hidden;
-                // What is making this have Opacity zero?
-                if (this.Visible)
-                    this.resetOpacity();
             }
+
+            if (this.didFirstPaint && !this.fading && !def.instance.hidden && this.Opacity == 0)
+                this.resetOpacity();
         }
 
         public void updateFrame()
         {
             checkLocationAndSize();
             this.Invalidate();
+        }
+
+        public override void reposition(Rectangle gameRect)
+        {
+            // NOT calling base class (or PlotTrackers will be wrong)
+            checkLocationAndSize();
         }
 
         protected override void onPaintPlotter(PaintEventArgs e)
@@ -843,11 +857,10 @@ namespace SrvSurvey.plotters
             if (def.instance.frame == null || def.instance.stale)
                 def.instance.render();
 
-            checkLocationAndSize();
 
             g.DrawImage(def.instance.frame!, 0, 0);
 
-            // g.DrawRectangle(Pens.Blue, 0, 0, this.Width-1, this.Height-1); // diagnostic
+            //g.DrawRectangle(Pens.Blue, 0, 0, this.Width-1, this.Height-1); // diagnostic
         }
 
     }

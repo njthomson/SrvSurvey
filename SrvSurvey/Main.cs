@@ -358,9 +358,15 @@ namespace SrvSurvey
             {
                 // reposition plotters if game window has moved
                 Game.log($"EliteDangerous window reposition: {this.lastWindowRect} => {rect}");
+                if (Game.settings.disableLargeOverlay)
+                {
+                    PlotBase2.renderAll(game);
+                    foreach (var plotter in PlotBase2.active) plotter.setPosition(rect);
+                }
+                else
+                    BigOverlay.current?.reposition(rect);
                 Program.repositionPlotters(rect);
                 multiFloatie?.positionOverGame(rect);
-                BigOverlay.current?.reposition(rect);
             }
 
 

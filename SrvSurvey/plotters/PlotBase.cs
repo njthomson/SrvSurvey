@@ -223,7 +223,7 @@ namespace SrvSurvey.plotters
         /// <summary> Reset opacity to default it's value </summary>
         public virtual void resetOpacity()
         {
-            setOpacity(PlotPos.getOpacity(this.Name));
+            setOpacity(PlotPos.getOpacity(this));
         }
 
         /// <summary> Set opacity to the given value. </summary>
@@ -1744,7 +1744,7 @@ namespace SrvSurvey.plotters
         {
             if (!form.didFirstPaint) return 0;
 
-            return getOpacity(form.GetType().Name, defaultValue);
+            return getOpacity(form.Name, defaultValue);
         }
 
         public static float getOpacity(string formTypeName, float defaultValue = -1)
@@ -1787,9 +1787,9 @@ namespace SrvSurvey.plotters
         /// <summary> Returns where the named plotter should be </summary>
         /// <param name="formName">The name of the plotter</param>
         /// <param name="sz">The size of the plotter</param>
-        /// <param name="rect">The rectangle of the game window</param>
+        /// <param name="gameRect">The rectangle of the game window</param>
         /// <param name="plot2">If this is a refactored plotter, using relative locations</param>
-        public static Point getPlotterLocation(string formName, Size sz, Rectangle rect, bool plot2 = false)
+        public static Point getPlotterLocation(string formName, Size sz, Rectangle gameRect, bool plot2 = false)
         {
             // skip plotters that are fixed
             if (!plotterPositions.ContainsKey(formName))
@@ -1797,32 +1797,32 @@ namespace SrvSurvey.plotters
 
             var pp = plotterPositions[formName];
 
-            if (rect == Rectangle.Empty)
-                rect = Elite.getWindowRect();
+            if (gameRect == Rectangle.Empty)
+                gameRect = Elite.getWindowRect();
 
             if (plot2 && !Game.settings.disableLargeOverlay)
             {
-                if (pp.h != Horiz.OS) rect.X = 0;
-                if (pp.v != Vert.OS) rect.Y = 0;
+                if (pp.h != Horiz.OS) gameRect.X = 0;
+                if (pp.v != Vert.OS) gameRect.Y = 0;
             }
 
             var left = 0;
             if (pp.h == Horiz.Left)
-                left = rect.Left + pp.x;
+                left = gameRect.Left + pp.x;
             else if (pp.h == Horiz.Center)
-                left = rect.Left + (rect.Width / 2) - (sz.Width / 2) + pp.x;
+                left = gameRect.Left + (gameRect.Width / 2) - (sz.Width / 2) + pp.x;
             else if (pp.h == Horiz.Right)
-                left = rect.Right - sz.Width - pp.x;
+                left = gameRect.Right - sz.Width - pp.x;
             else if (pp.h == Horiz.OS)
                 left = pp.x;
 
             var top = 0;
             if (pp.v == Vert.Top)
-                top = rect.Top + pp.y;
+                top = gameRect.Top + pp.y;
             else if (pp.v == Vert.Middle)
-                top = rect.Top + (rect.Height / 2) - (sz.Height / 2) + pp.y;
+                top = gameRect.Top + (gameRect.Height / 2) - (sz.Height / 2) + pp.y;
             else if (pp.v == Vert.Bottom)
-                top = rect.Bottom - sz.Height - pp.y;
+                top = gameRect.Bottom - sz.Height - pp.y;
             else if (pp.v == Vert.OS)
                 top = pp.y;
 

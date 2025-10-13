@@ -592,7 +592,7 @@ namespace SrvSurvey
         {
             form.fading = false;
             if (form.IsDisposed) return;
-            if (form.forceHide)
+            if (Elite.eliteMinimized || form.forceHide)
             {
                 // stop early and hide form if the game loses focus, or the form is being forced hidden
                 form.setOpacity(0);
