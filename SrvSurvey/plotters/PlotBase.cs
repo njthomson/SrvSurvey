@@ -233,6 +233,13 @@ namespace SrvSurvey.plotters
             if (this.forceHide)
                 newOpacity = 0;
 
+            /* if (newOpacity == 0)
+            {
+                // TEMP!
+                Debug.WriteLine("Who is doing this?");
+                Debugger.Break();
+            } // */
+
             if (this.Opacity != newOpacity || (newOpacity == 1 && this.Opacity != 0.9999f))
             {
                 // for reasons unknown ... an opacity of `1` sometimes means the window is not visible, even though it thinks it is :/
@@ -1593,10 +1600,6 @@ namespace SrvSurvey.plotters
                         dirty = true;
                     }
                 }
-
-
-                if (Game.settings.overlayTombs)
-                    Program.createTomb(name);
             }
 
             if (dirty)

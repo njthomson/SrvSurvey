@@ -80,7 +80,8 @@ namespace SrvSurvey.game
             this.csvData["durationIngress"] = durationIngress.ToString("hh\\:mm\\:ss");
             this.csvData["jumps"] = this.jumps.ToString();
             this.csvData["distance"] = this.distance.ToString();
-            this.csvData["cargo"] = JsonConvert.SerializeObject(this.cargo);
+            // wrap with double quotes and escape any internal ones
+            this.csvData["cargo"] = '"' + JsonConvert.SerializeObject(this.cargo).Replace("\"", "\"\"") + '"';
 
             try
             {

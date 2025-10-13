@@ -68,11 +68,11 @@ namespace SrvSurvey
 
         public bool autoShowPlotMassacre_TEST = false;
         public bool autoShowPlotMiniTrack_TEST = false;
-        public bool autoShowPlotStationInfo_TEST = false;
-        public bool autoShowFloatie_TEST = false;
+        public bool autoShowPlotStationInfo_TEST = true;
+        public bool autoShowFloatie_TEST = true;
         public bool autoShowFootCombat_TEST = false;
 
-        public bool autoShowHumanSitesTest = false;
+        public bool autoShowHumanSitesTest = true;
         public int plotHumanSiteWidth = 500;
         public int plotHumanSiteHeight = 600;
         public float humanSiteZoomShip = 1;
@@ -239,9 +239,6 @@ namespace SrvSurvey
 
         /// <summary> Use to make overlays remain even though the game loses focus </summary>
         public bool keepOverlays = false;
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public bool overlayTombs = false;
 
         public bool systemNotesTopMost = false;
         public bool viewJourneyTopMost = false;

@@ -151,7 +151,6 @@ namespace SrvSurvey
         #region plotter tracking
 
         private static Dictionary<string, PlotterForm> activePlotters = new Dictionary<string, PlotterForm>();
-        private static Dictionary<string, Form> tombs = new Dictionary<string, Form>();
 
         public static T? showPlotter<T>(Rectangle? gameRect = null, string? formTypeName = null) where T : PlotterForm
         {
@@ -168,13 +167,6 @@ namespace SrvSurvey
                     return match;
                 else if (match != null && match.IsDisposed)
                     activePlotters.Remove(formTypeName);
-            }
-
-            // remove tomb if present
-            if (Game.settings.overlayTombs && tombs.ContainsKey(formTypeName))
-            {
-                tombs[formTypeName].Close();
-                tombs.Remove(formTypeName);
             }
 
             // only create if missing
@@ -266,36 +258,7 @@ namespace SrvSurvey
                 Game.log($"Program.Closing plotter: {name}");
                 Program.activePlotters.Remove(plotter.Name);
                 plotter.Close();
-
-                if (Game.settings.overlayTombs)
-                    createTomb(plotter.Name);
             }
-        }
-
-        public static Form createTomb(string name)
-        {
-            var tomb = new Form()
-            {
-                Name = name,
-                Text = name,
-                Opacity = 0,
-                //BackColor = Color.Red,
-                Width = 120,
-                Height = 120,
-
-                TopMost = true,
-                ShowIcon = false,
-                ShowInTaskbar = false,
-                MinimizeBox = false,
-                MaximizeBox = false,
-                ControlBox = false,
-                FormBorderStyle = FormBorderStyle.None,
-            };
-            //tomb.Controls.Add(new Label() { Text = name, AutoSize = true });
-
-            tombs[name] = tomb;
-            tomb.Show();
-            return tomb;
         }
 
         /// <summary>

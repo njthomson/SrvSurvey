@@ -822,7 +822,12 @@ namespace SrvSurvey.plotters
             }
 
             if (this.Visible == def.instance.hidden)
+            {
                 this.Visible = !def.instance.hidden;
+                // What is making this have Opacity zero?
+                if (this.Visible)
+                    this.resetOpacity();
+            }
         }
 
         public void updateFrame()

@@ -1,6 +1,5 @@
 ﻿using SrvSurvey.game;
-using SrvSurvey.plotters;
-using System.Diagnostics;
+using System.ComponentModel;
 
 namespace SrvSurvey.forms
 {
@@ -79,9 +78,9 @@ namespace SrvSurvey.forms
             System.Windows.Forms.Cursor.Show();
         }
 
-        protected override void OnClosed(EventArgs e)
+        protected override void OnClosing(CancelEventArgs e)
         {
-            base.OnClosed(e);
+            base.OnClosing(e);
             current = null;
         }
 
