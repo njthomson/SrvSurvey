@@ -117,6 +117,7 @@ namespace SrvSurvey.game
         string Body { get; set; }
         int BodyID { get; set; }
         FSDJumpBodyType BodyType { get; set; }
+        long Population { get; set; }
     }
 
     [JsonConverter(typeof(StringEnumConverter))]

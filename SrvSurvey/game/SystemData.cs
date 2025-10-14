@@ -195,6 +195,8 @@ namespace SrvSurvey.game
                     data.Save();
                 }
 
+                data.population = entry.Population;
+
                 return data;
             }
         }
@@ -543,6 +545,9 @@ namespace SrvSurvey.game
         public bool dssAllBodies;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public long population;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string notes;
 
         /// <summary> A list of all bodies detected in this system </summary>
@@ -663,6 +668,7 @@ namespace SrvSurvey.game
             body.parents = entry.Parents;
             body.wasDiscovered = entry.WasDiscovered;
             if (!body.wasMapped && entry.WasMapped) body.wasMapped = true;
+            body.wasFootfalled = entry.WasFootfalled;
             body.surfaceGravity = entry.SurfaceGravity;
             body.surfaceTemperature = entry.SurfaceTemperature;
             body.surfacePressure = entry.SurfacePressure;
@@ -2069,6 +2075,8 @@ namespace SrvSurvey.game
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool wasMapped;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public bool? wasFootfalled;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool scanned;

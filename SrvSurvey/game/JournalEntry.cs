@@ -85,7 +85,7 @@ namespace SrvSurvey
         public string SystemGovernment_Localised { get; set; }
         public string SystemSecurity { get; set; }
         public string SystemSecurity_Localised { get; set; }
-        public double Population { get; set; }
+        public long Population { get; set; }
         public string Body { get; set; }
         public int BodyID { get; set; }
         public FSDJumpBodyType BodyType { get; set; }
@@ -808,6 +808,8 @@ namespace SrvSurvey
         public bool WasDiscovered { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool WasMapped { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool? WasFootfalled { get; set; }
 
         // Planet specific ...
 

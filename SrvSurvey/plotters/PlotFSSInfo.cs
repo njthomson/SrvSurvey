@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.widgets;
+using System.Diagnostics;
 using Res = Loc.PlotFSSInfo;
 
 namespace SrvSurvey.plotters
@@ -79,7 +80,13 @@ namespace SrvSurvey.plotters
             Application.DoEvents();
             if (game?.systemData == null) return;
 
-            var body = game.systemData.bodies.Find(_ => _.id == entry.BodyID)!;
+            var body = game.systemData.bodies.Find(_ => _.id == entry.BodyID);
+            if (body == null)
+            {
+                Game.log($"Why no body for: {entry.BodyName} ?");
+                Debugger.Break();
+                return;
+            }
             var newScan = new FssEntry
             {
                 body = body,

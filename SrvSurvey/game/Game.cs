@@ -1727,7 +1727,7 @@ namespace SrvSurvey.game
                     || entry.ConstructionProgress != lastColonisationConstructionDepot.ConstructionProgress
                     || entry.ResourcesRequired.Count != lastColonisationConstructionDepot.ResourcesRequired.Count
                     || entry.ResourcesRequired
-                        .Any(r => r.ProvidedAmount != lastColonisationConstructionDepot.ResourcesRequired.First(m => m.Name == r.Name).ProvidedAmount);
+                        .Any(r => r.ProvidedAmount != lastColonisationConstructionDepot.ResourcesRequired.FirstOrDefault(m => m.Name == r.Name)?.ProvidedAmount);
 
                 if (changed && systemData != null)
                 {
@@ -2494,8 +2494,8 @@ namespace SrvSurvey.game
                 {
                     var touchdown = entry as Touchdown;
                     if (touchdown != null && touchdown.Body == status.BodyName)
-                        {
-                            lastLocation = new LatLong2(touchdown);
+                    {
+                        lastLocation = new LatLong2(touchdown);
                         Game.log($"Found last touchdown location: {lastLocation} on: {touchdown.Body}");
                         return true;
                     }
@@ -3335,37 +3335,39 @@ namespace SrvSurvey.game
 
         #region screen stuff
 
-        private bool onPlanet = false;
-
         private void onJournalEntry(Disembark entry)
         {
-            log($"Disembark - entry.onPlanet: {entry.OnPlanet}");
-            this.onPlanet = entry.OnPlanet;
+            log($"Disembark: OnPlanet:{entry.OnPlanet}, OnStation:{entry.OnStation}, SRV:{entry.SRV}, wasFootfalled: {systemBody?.wasFootfalled}, firstFootfall: {systemBody?.firstFootFall}");
 
             // remember where we left the SRV
             if (entry.SRV)
+            {
                 this.srvLocation = Status.here.clone();
+            }
+            else if (entry.OnPlanet && !entry.OnStation && systemBody != null && !systemBody.firstFootFall && systemData?.population == 0)
+            {
+                // are we getting first footfall? (It's not possible in systems with any population, but WasFootfalled will still be false)
+                if (systemBody.wasFootfalled == false)
+                {
+                    systemBody.firstFootFall = true;
+                    systemData.Save();
+                }
+                else
+                {
+                    Program.defer(() => this.inferFirstFootFall());
+                }
+            }
         }
 
         private void onJournalEntry(Embark entry)
         {
             log($"Embark - entry.onPlanet: {entry.OnPlanet}");
-            this.onPlanet = false;
 
             this.systemData?.prepSettlements();
 
             // clear where we left the SRV
             if (entry.SRV)
                 this.srvLocation = null;
-        }
-
-        private void onJournalEntry(Backpack entry)
-        {
-            log($"Backpack - this.onPlanet: {this.onPlanet}, firstFootfall: {this.systemBody?.firstFootFall}");
-            if (this.onPlanet && this.systemBody?.firstFootFall == false)
-            {
-                Program.defer(() => this.inferFirstFootFall());
-            }
         }
 
         public void inferFirstFootFall()
