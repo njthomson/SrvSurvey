@@ -89,7 +89,7 @@ namespace SrvSurvey
         {
             Program.crashGuard(() =>
             {
-                BigOverlay.resetPulse();
+                PlotPulse.resetPulse();
                 this.parseStatusFile();
             });
         }

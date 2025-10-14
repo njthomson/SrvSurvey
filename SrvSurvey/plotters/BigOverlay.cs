@@ -81,8 +81,6 @@ namespace SrvSurvey.plotters
             }
 
             this.Text = "SrvSurveyOne";
-
-            this.initPlotPulse();
         }
 
         protected override void OnMouseLeave(EventArgs e)
@@ -157,9 +155,6 @@ namespace SrvSurvey.plotters
             this.Size = rect.Size;
             this.ResumeLayout();
 
-            // get PlotPulse location
-            this.ptPlotPulse = PlotPos.getPlotterLocation("PlotPulse", plotPulseDefaultSize, gameRect, true);
-
             if (Game.activeGame != null)
             {
                 foreach (var plotter in PlotBase2.active)
@@ -183,9 +178,6 @@ namespace SrvSurvey.plotters
 
                 var game = Game.activeGame;
                 if (game == null) return;
-
-                if (!Game.settings.hideJournalWriteTimer)
-                    this.renderPulse(g);
 
                 g.SmoothingMode = SmoothingMode.None;
                 foreach (var plotter in PlotBase2.active)
@@ -263,76 +255,6 @@ namespace SrvSurvey.plotters
             BigOverlay.current?.Invalidate();
         }
 
-        #region PlotPulse
-
-        public static Size plotPulseDefaultSize = new Size(32, 32);
-        private static int pulseTick;
-        private static System.Windows.Forms.Timer? timer;
-
-        private Image pulseBackground;
-        private Point ptPlotPulse;
-
-        private void initPlotPulse()
-        {
-            // replace the Orange from the bitmap with a themed colour
-            var b = new Bitmap(ImageResources.pulse);
-            var or = Color.FromArgb(255, 127, 39);
-
-            for (int x = 0; x < b.Width; x++)
-                for (int y = 0; y < b.Height; y++)
-                    if (b.GetPixel(x, y) == or)
-                        b.SetPixel(x, y, C.orangeDark);
-
-            this.pulseBackground = b;
-
-            if (timer == null)
-            {
-                timer = new System.Windows.Forms.Timer()
-                {
-                    Interval = 500,
-                    Enabled = false,
-                };
-
-                timer.Tick += (object? sender, EventArgs e) =>
-                {
-                    if (pulseTick > 0)
-                        pulseTick--;
-                    else
-                        timer.Stop();
-
-                    BigOverlay.invalidate();
-                };
-            }
-        }
-
-        /// <summary> Resets pulse timer from any journal file update </summary>
-        public static void resetPulse()
-        {
-            // skip if timer is disabled
-            if (Game.settings.hideJournalWriteTimer) return;
-
-            // reset counter
-            pulseTick = 20;
-            Program.control.Invoke(() => timer?.Start());
-        }
-
-        private void renderPulse(Graphics g)
-        {
-            // don't render anything when in maps
-            if (Game.activeGame?.isMode(GameMode.GalaxyMap, GameMode.SystemMap) == true)
-                return;
-
-            g.SmoothingMode = SmoothingMode.None;
-            g.DrawImage(pulseBackground, ptPlotPulse);
-
-            // we want a fuzzy outline on this rectangle
-            g.SmoothingMode = SmoothingMode.HighQuality;
-            g.FillRectangle(C.Brushes.orange,
-                ptPlotPulse.X + 10, ptPlotPulse.Y + 27 - pulseTick,
-                10, pulseTick);
-        }
-
-        #endregion
 
         class NativeMethods
         {

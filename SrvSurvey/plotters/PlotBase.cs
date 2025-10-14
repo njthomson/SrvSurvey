@@ -1587,7 +1587,6 @@ namespace SrvSurvey.plotters
 
             var dirty = false;
             Dictionary<string, PlotPos>? defaultPositions = null;
-            typicalSize["PlotPulse"] = BigOverlay.plotPulseDefaultSize;
             foreach(var name in typicalSize.Keys)
             {
                 if (!plotterPositions.ContainsKey(name))
