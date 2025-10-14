@@ -25,9 +25,12 @@ namespace SrvSurvey.plotters
                 return;
             }
 
+            var hwnd = Elite.getWindowHandle();
+            if (hwnd == IntPtr.Zero) return;
+
             Game.log("BigOverlay.create");
             var bigOverlay = new BigOverlay();
-            bigOverlay.Show(new Win32Window() { Handle = Elite.getWindowHandle() });
+            bigOverlay.Show(new Win32Window() { Handle = hwnd });
 
             PlotBase2.renderAll(game, true);
         }

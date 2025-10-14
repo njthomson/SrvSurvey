@@ -53,7 +53,7 @@
     "latitude": 25.465786,
     "longitude": -132.903366,
     "siteHeading": 338,
-    "surveyProgress": 53,
+    "surveyProgress": 52,
     "surveyComplete": false
   },
   {
@@ -91,7 +91,7 @@
     "latitude": -58.067825,
     "longitude": 114.49604,
     "siteHeading": 106,
-    "surveyProgress": 47,
+    "surveyProgress": 46,
     "surveyComplete": false
   },
   {
@@ -205,7 +205,7 @@
     "latitude": 39.420448,
     "longitude": -49.136593,
     "siteHeading": 125,
-    "surveyProgress": 47,
+    "surveyProgress": 46,
     "surveyComplete": false
   },
   {
@@ -281,7 +281,7 @@
     "latitude": 19.553461,
     "longitude": -132.669281,
     "siteHeading": 69,
-    "surveyProgress": 91,
+    "surveyProgress": 89,
     "surveyComplete": false
   },
   {
@@ -373,8 +373,8 @@
     "latitude": 33.619419,
     "longitude": 40.013123,
     "siteHeading": 156,
-    "surveyProgress": 100,
-    "surveyComplete": true
+    "surveyProgress": 97,
+    "surveyComplete": false
   },
   {
     "siteID": 82,
@@ -579,8 +579,8 @@
     "latitude": 44.868057,
     "longitude": -118.881874,
     "siteHeading": 8,
-    "surveyProgress": 100,
-    "surveyComplete": true
+    "surveyProgress": 97,
+    "surveyComplete": false
   },
   {
     "siteID": 87,
@@ -746,8 +746,8 @@
     "latitude": -46.799656,
     "longitude": -132.282379,
     "siteHeading": 36,
-    "surveyProgress": 70,
-    "surveyComplete": false
+    "surveyProgress": 100,
+    "surveyComplete": true
   },
   {
     "siteID": 52,
