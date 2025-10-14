@@ -240,6 +240,8 @@ namespace SrvSurvey
                     updateFormFromSettings(ctrl);
             }
 
+            if (parentControl != this) return;
+
             // load potential cmdr's
             this.findCmdrs();
 
@@ -258,7 +260,7 @@ namespace SrvSurvey
 
             this.nextKeyActions = Game.settings.keyActions_TEST == null
                 ? new()
-                : new(Game.settings.keyActions_TEST!);
+                : new(Game.settings.keyActions_TEST);
 
             this.cmdrSettings = CommanderSettings.LoadCurrentOrLast();
             if (this.cmdrSettings != null)
