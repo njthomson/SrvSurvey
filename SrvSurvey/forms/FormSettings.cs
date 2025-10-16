@@ -870,6 +870,7 @@ namespace SrvSurvey
         {
             if (!checkKeyChords.Visible) return;
 
+            Main.form.hook ??= new KeyboardHook();
             listKeys.Enabled = checkKeyChords.Checked || checkKeyChordsDirectX.Checked;
         }
 

@@ -371,7 +371,7 @@ namespace SrvSurvey
 
 
             // show/hide multi-floatie if we have focus
-            if (multiFloatie != null) multiFloatie.Visible = Elite.focusElite || Elite.focusSrvSurvey;
+            if (multiFloatie != null && !multiFloatie.IsDisposed) multiFloatie.Visible = Elite.focusElite || Elite.focusSrvSurvey;
 
             this.lastWindowRect = rect;
             this.gameHadFocus = Elite.focusElite;
@@ -390,7 +390,7 @@ namespace SrvSurvey
                     if (!Game.settings.hideMultiFloatie)
                     {
                         if (this.multiFloatie == null && Elite.hadManyGameProcs) FormMultiFloatie.create();
-                        if (this.multiFloatie != null && !Elite.hadManyGameProcs) multiFloatie.Close();
+                        if (this.multiFloatie != null && !Elite.hadManyGameProcs && !multiFloatie.IsDisposed) multiFloatie.Close();
                     }
                 }
                 catch (Exception ex)

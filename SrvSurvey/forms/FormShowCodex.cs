@@ -426,8 +426,8 @@ namespace SrvSurvey
                         if (org.entryId == 0) continue;
 
                         // skip if no url
-                        var match = Game.codexRef.matchFromEntryId(org.entryId);
-                        if (match.variant.imageUrl == null) continue;
+                        var match = Game.codexRef.matchFromEntryId(org.entryId, true);
+                        if (match?.variant.imageUrl == null) continue;
 
                         // otherwise download it
                         await Game.codexRef.downloadCodexImage(org.entryId.ToString(), match.variant.imageUrl);
