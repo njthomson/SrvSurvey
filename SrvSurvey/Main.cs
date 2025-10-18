@@ -1729,7 +1729,11 @@ namespace SrvSurvey
 
         private void menuMyProjects_Click(object sender, EventArgs e)
         {
-            var cmdr = Game.settings.preferredCommander ?? Game.settings.lastCommander;
+            BaseForm.show<FormMyProjects>();
+        }
+
+        private void menuRavenColonial_Click(object sender, EventArgs e)
+        {
             Util.openLink($"{RavenColonial.uxUri}/");
         }
 

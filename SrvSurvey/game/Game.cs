@@ -940,7 +940,8 @@ namespace SrvSurvey.game
                     {
                         // fabricate a Docked event with what we have on this Location event
                         this.lastEverDocked = locationEvent.asDocked(this.currentShip.type);
-                        this.lastDocked = this.lastEverDocked;
+                        if (lastUndocked == null)
+                            this.lastDocked = this.lastEverDocked;
                     }
                     return false;
                 }
@@ -2222,7 +2223,7 @@ namespace SrvSurvey.game
             cmdr.lastSystemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
             cmdr.Save();
 
-            if (entry.Docked && lastDocked == null && lastEverDocked != null)
+            if (entry.Docked && lastDocked == null && lastEverDocked != null && status.Docked)
                 lastDocked = lastEverDocked;
 
             if (Game.settings.useExternalData)
@@ -2735,7 +2736,7 @@ namespace SrvSurvey.game
             if (Game.settings.buildProjects_TEST && ColonyData.isConstructionSite(entry))
             {
                 // Auto update project details if incorrect
-                cmdrColony.checkConstructionSiteUponDocking(entry, this.systemBody);
+                cmdrColony.checkConstructionSiteUponDocking(entry, this);
             }
 
             // stop here if we're not at an Odyssey settlement

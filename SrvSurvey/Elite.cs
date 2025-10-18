@@ -141,43 +141,51 @@ namespace SrvSurvey
                 return new Rectangle(80, 80, 640, 480);
             }
 
-            var hwndED = Elite.getWindowHandle();
-            var hwndActive = Elite.GetForegroundWindow();
-            eliteMinimized = IsIconic(hwndED); // is it minimized?
-            var weHaveFocus = (!Program.control.InvokeRequired && hwndActive == Main.ActiveForm?.Handle) || System.Diagnostics.Debugger.IsAttached || Game.settings.keepOverlays;
-
-            focusElite = hwndActive == hwndED;
-            focusSrvSurvey = hwndActive == Main.ActiveForm?.Handle;
-
-            //Debug.WriteLine($"hwndED: {hwndED}, hwndActive: {hwndActive}, eliteMinimized: {eliteMinimized}, focusElite: {focusElite}, focusSrvSurvey: {focusSrvSurvey}");
-
-            if (eliteMinimized)
+            try
             {
-                lastRect = Rectangle.Empty;
+                var hwndED = Elite.getWindowHandle();
+                var hwndActive = Elite.GetForegroundWindow();
+                eliteMinimized = IsIconic(hwndED); // is it minimized?
+                var weHaveFocus = (!Program.control.InvokeRequired && hwndActive == Main.ActiveForm?.Handle) || System.Diagnostics.Debugger.IsAttached || Game.settings.keepOverlays;
+
+                focusElite = hwndActive == hwndED;
+                focusSrvSurvey = hwndActive == Main.ActiveForm?.Handle;
+
+                //Debug.WriteLine($"hwndED: {hwndED}, hwndActive: {hwndActive}, eliteMinimized: {eliteMinimized}, focusElite: {focusElite}, focusSrvSurvey: {focusSrvSurvey}");
+
+                if (eliteMinimized)
+                {
+                    lastRect = Rectangle.Empty;
+                    return Rectangle.Empty;
+                }
+
+                var windowRect = new RECT();
+                Elite.GetWindowRect(hwndED, ref windowRect);
+
+                var clientRect = new RECT();
+                Elite.GetClientRect(hwndED, ref clientRect);
+
+                var dx = ((windowRect.Right - windowRect.Left) / 2) - ((clientRect.Right - clientRect.Left) / 2);
+                var dy = graphicsMode == GraphicsMode.Windowed ? windowTitleHeight : 0;
+
+                var rect = new Rectangle(
+                    // use the Window rect for the top left corner
+                    windowRect.Left + dx, windowRect.Top + dy,
+                    // use the Client rect for the width/height
+                    clientRect.Right, clientRect.Bottom);
+
+                Elite.gameCenter = new Point(
+                    rect.Left + (int)((float)rect.Width / 2f),
+                    rect.Top + (int)((float)rect.Height / 2f));
+
+                lastRect = rect;
+                return rect;
+            }
+            catch (Exception ex)
+            {
+                Game.log($"getWindowRect failed: {ex.Message}\r\n\t{ex.StackTrace}");
                 return Rectangle.Empty;
             }
-
-            var windowRect = new RECT();
-            Elite.GetWindowRect(hwndED, ref windowRect);
-
-            var clientRect = new RECT();
-            Elite.GetClientRect(hwndED, ref clientRect);
-
-            var dx = ((windowRect.Right - windowRect.Left) / 2) - ((clientRect.Right - clientRect.Left) / 2);
-            var dy = graphicsMode == GraphicsMode.Windowed ? windowTitleHeight : 0;
-
-            var rect = new Rectangle(
-                // use the Window rect for the top left corner
-                windowRect.Left + dx, windowRect.Top + dy,
-                // use the Client rect for the width/height
-                clientRect.Right, clientRect.Bottom);
-
-            Elite.gameCenter = new Point(
-                rect.Left + (int)((float)rect.Width / 2f),
-                rect.Top + (int)((float)rect.Height / 2f));
-
-            lastRect = rect;
-            return rect;
         }
 
         public static IntPtr getWindowHandle()

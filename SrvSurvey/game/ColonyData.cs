@@ -80,7 +80,8 @@ namespace SrvSurvey.game
                     // fetch all ACTIVE projects and primaryBuildId
                     await Task.WhenAll(
                         Game.rcc.getPrimary(this.cmdr).continueOnMain(null, newPrimaryBuildId => this.primaryBuildId = newPrimaryBuildId, true),
-                        Game.rcc.getCmdrActive(this.cmdr).continueOnMain(null, newProjects => this.projects = newProjects)
+                        Game.rcc.getCmdrActive(this.cmdr).continueOnMain(null, newProjects => this.projects = newProjects),
+                        Game.rcc.getHiddenIDs(this.cmdr).continueOnMain(null, newHiddenIDs => this.hiddenIDs = newHiddenIDs)
                     );
                     if (!string.IsNullOrEmpty(this.primaryBuildId) && getProject(this.primaryBuildId) == null)
                     {
@@ -153,6 +154,10 @@ namespace SrvSurvey.game
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public Dictionary<string, int> sumCargoLinkedFCs = new();
 
+        /// <summary> Build IDs that should not be rendered in the overlay </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public List<string> hiddenIDs = new();
+
         #endregion
 
         [JsonIgnore]
@@ -208,13 +213,20 @@ namespace SrvSurvey.game
 
         public Needs getLocalNeeds(long address, long marketId)
         {
+
+            var projs = this.projects
+                .Where(p => (address == -1 || p.systemAddress == address) && (marketId == -1 || p.marketId == marketId))
+                .ToArray();
+
+            return getNeeds(projs);
+        }
+
+        public Needs getNeeds(params Project[] projs)
+        {
             var needs = new Needs();
 
-            foreach (var project in projects)
+            foreach (var project in projs)
             {
-                if (address != -1 && project.systemAddress != address) continue;
-                if (marketId != -1 && project.marketId != marketId) continue;
-
                 // prep aggregated commodity needs
                 foreach (var (commodity, need) in project.commodities)
                 {
@@ -258,16 +270,19 @@ namespace SrvSurvey.game
             }
         }
 
-        public void checkConstructionSiteUponDocking(Docked entry, SystemBody? body)
+        public void checkConstructionSiteUponDocking(Docked entry, Game game)
         {
             var proj = this.getProject(entry.SystemAddress, entry.MarketID);
             if (proj == null)
             {
+                PlotBuildCommodities.startPending();
                 // it's possible someone else might be tracking it?
                 Game.rcc.getProject(entry.SystemAddress, entry.MarketID).continueOnMain(null, otherProj =>
                 {
                     Game.log($"Found local project untracked by cmdr: {otherProj?.buildName} ({otherProj?.buildId})");
                     ColonyData.localUntrackedProject = otherProj;
+
+                    PlotBuildCommodities.endPending();
                 });
                 return;
             }
@@ -283,6 +298,7 @@ namespace SrvSurvey.game
             }
 
             // update body name/num
+            var body = game.systemBody;
             if (body != null && (proj.bodyNum != body.id || proj.bodyName != body.name))
             {
                 Game.log($"Auto-update bodyName/bodyNum: {proj.bodyName} => {body.name} / {proj.bodyNum} => {body.id}");
@@ -292,7 +308,16 @@ namespace SrvSurvey.game
             }
 
             if (updatedProject != null)
-                Game.rcc.updateProject(updatedProject).justDoIt();
+            {
+                PlotBuildCommodities.startPending();
+                Game.rcc.updateProject(updatedProject).continueOnMain(null, () =>
+                {
+                    PlotBuildCommodities.endPending();
+                });
+            }
+
+            if (PlotBuildCommodities.allowed(game))
+                PlotBuildCommodities.showButCleanFirst(game);
         }
 
         public void updateNeeds(ColonisationConstructionDepot entry, long id64)

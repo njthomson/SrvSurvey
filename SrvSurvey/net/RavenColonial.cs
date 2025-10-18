@@ -323,6 +323,32 @@ namespace SrvSurvey.game.RavenColonial
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
         }
 
+        public async Task<List<string>> getHiddenIDs(string cmdr)
+        {
+            Game.log($"Colony.getHiddenIDs: {cmdr}");
+
+            var response = await RavenColonial.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/hiddenIDs");
+            var json = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<List<string>>(json)!;
+
+            return obj;
+        }
+
+        public async Task<List<string>> setHiddenIDs(string cmdr, IEnumerable<string> buildIDs)
+        {
+            Game.log($"Colony.setHiddenIDs: {cmdr} => {string.Join(",", buildIDs)}");
+
+            var json1 = JsonConvert.SerializeObject(buildIDs);
+            var body = new StringContent(json1, Encoding.Default, "application/json");
+            var response = await RavenColonial.client.PostAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/hiddenIDs", body);
+            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
+
+            var json2 = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<List<string>>(json2)!;
+
+            return obj;
+        }
+
         public async Task<List<SystemSite>> getSystemSites(string nameOrNum)
         {
             Game.log($"Colony.getSystemSites: {nameOrNum}");
