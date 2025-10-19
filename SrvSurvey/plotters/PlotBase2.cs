@@ -858,8 +858,8 @@ namespace SrvSurvey.plotters
             if (def.instance.frame == null || def.instance.stale)
                 def.instance.render();
 
-
-            g.DrawImage(def.instance.frame!, 0, 0);
+            if (def.instance.frame != null)
+                g.DrawImage(def.instance.frame, 0, 0);
 
             //g.DrawRectangle(Pens.Blue, 0, 0, this.Width-1, this.Height-1); // diagnostic
         }

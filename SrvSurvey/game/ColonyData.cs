@@ -393,7 +393,12 @@ namespace SrvSurvey.game
 
             // fetch latest numbers first
             var fc = await Game.rcc.getFC(marketFile.MarketId);
-            Game.log($"updateFromMarketFC: Checking FC cargo against market: {fc.marketId} : {fc.displayName} ({fc.name})");
+            Game.log($"updateFromMarketFC: Checking FC cargo against market: {fc?.marketId} : {fc?.displayName} ({fc?.name})");
+            if (fc == null)
+            {
+                PlotBuildCommodities.endPending();
+                return;
+            }
 
             // if the FC has something for sale with a different count than we think ... update it
             var newCargo = new Dictionary<string, int>();
@@ -548,7 +553,7 @@ namespace SrvSurvey.game
             var fc = await Game.rcc.publishFC(newFC);
 
             // if market data matches this FC, update that too
-            if (game.marketFile.MarketId == fc.marketId)
+            if (fc != null && game.marketFile.MarketId == fc.marketId)
                 await game.cmdrColony.updateFromMarketFC(game.marketFile);
 
             return fc;

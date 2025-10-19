@@ -203,12 +203,18 @@ namespace SrvSurvey.game.RavenColonial
             return obj;
         }
 
-        public async Task<FleetCarrier> getFC(long marketId)
+        public async Task<FleetCarrier?> getFC(long marketId)
         {
             Game.log($"Colony.getFC: {marketId}");
 
             var response = await RavenColonial.client.GetAsync($"{svcUri}/api/fc/{Uri.EscapeDataString(marketId.ToString())}");
             var json = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                Game.log($"Colony.getFC: HTTP:{(int)response.StatusCode}({response.StatusCode}): failed: {json}");
+                return null;
+            }
+
             var obj = JsonConvert.DeserializeObject<FleetCarrier>(json)!;
             return obj;
         }
@@ -216,17 +222,25 @@ namespace SrvSurvey.game.RavenColonial
         /// <summary>
         /// Replace server FC data with this. (Cargo untouched if it is null)
         /// </summary>
-        public async Task<FleetCarrier> publishFC(FleetCarrier fc)
+        public async Task<FleetCarrier?> publishFC(FleetCarrier fc)
         {
             Game.log($"Colony.updateFleetCarrier: {fc}");
 
             var json1 = JsonConvert.SerializeObject(fc);
+            Game.log($"Colony.updateFleetCarrier: request json:\r\n\t{json1}\r\n");
             var body = new StringContent(json1, Encoding.Default, "application/json");
             body.Headers.addIf("rcc-cmdr", Game.activeGame?.Commander);
             body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
+
             var response = await RavenColonial.client.PutAsync($"{svcUri}/api/fc/{fc.marketId}", body);
-            var json = await response.Content.ReadAsStringAsync();
-            var obj = JsonConvert.DeserializeObject<FleetCarrier>(json)!;
+            var json2 = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Game.log($"Colony.updateFleetCarrier: HTTP:{(int)response.StatusCode}({response.StatusCode}): failed: {json2}");
+                return null;
+            }
+            var obj = JsonConvert.DeserializeObject<FleetCarrier>(json2)!;
             return obj;
         }
 
