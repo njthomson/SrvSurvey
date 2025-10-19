@@ -97,9 +97,17 @@ namespace SrvSurvey
 
                 // prep known organisms
                 if (body.organisms?.Count > 0)
+                {
                     foreach (var org in body.organisms)
+                    {
                         if (org.entryId > 0)
-                            stuff[body].Add(Game.codexRef.matchFromEntryId(org.entryId).variant);
+                        {
+                            var match = Game.codexRef.matchFromEntryId(org.entryId, true, true)?.variant;
+                            if (match != null)
+                                stuff[body].Add(match);
+                        }
+                    }
+                }
 
                 // prep predictions
                 if (body.genusPredictions?.Count > 0)

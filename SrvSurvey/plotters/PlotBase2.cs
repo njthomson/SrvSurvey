@@ -306,7 +306,8 @@ namespace SrvSurvey.plotters
             Game.log($"Overlays.add: {def.name}");
             def.instance = def.ctor(game, def);
 
-            renderAll(game);
+            if (!noRenderAll)
+                renderAll(game);
             return def.instance;
         }
 

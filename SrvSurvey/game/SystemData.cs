@@ -1162,7 +1162,7 @@ namespace SrvSurvey.game
 
                     var poiBodyName = $"{canonnPoi.system} {poi.body}";
                     var poiBody = this.bodies.FirstOrDefault(_ => _.name == poiBodyName);
-                    if (poiBody != null && poi.entryid != null)
+                    if (poiBody != null && poi.entryid != null && poi.entryid.Value.ToString().Length > 5)
                     {
                         var match = Game.codexRef.matchFromEntryId(poi.entryid.Value);
                         var organism = poiBody.findOrganism(match);
