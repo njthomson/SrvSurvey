@@ -1742,7 +1742,7 @@ namespace SrvSurvey
 
             if (game?.systemData == null) return;
             btnColonize.Enabled = false;
-            ColonyData.updateSysBodies(game.systemData).continueOnMain(this, success =>
+            Task.Run(() => ColonyData.updateSysBodies(game.systemData).continueOnMain(this, success =>
             {
                 btnColonize.Enabled = true;
                 Game.log($"System updated: {success}");
@@ -1750,7 +1750,7 @@ namespace SrvSurvey
                     MessageBox.Show(this, $"System bodies have been updated.\n\nPlease refresh any relevant web pages.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 else
                     MessageBox.Show(this, $"Updating system bodies was not successful. Check logs for more details.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            });
+            }));
         }
 
         private void menuPublishFC_Click(object sender, EventArgs e)

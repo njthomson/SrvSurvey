@@ -633,7 +633,7 @@ namespace SrvSurvey.game
                 if (scan == null) return false;
 
                 var match = bods.Find(b => b.name == scan.BodyName);
-                if (match == null) { Debugger.Break(); return false; }
+                if (match == null) { return false; }
 
                 Game.log($"Found #{tidalsNeeded} '{scan.BodyName}' => {scan.TidalLock}");
                 if (scan.TidalLock)
@@ -641,12 +641,18 @@ namespace SrvSurvey.game
 
                 tidalsNeeded--;
 
-                return tidalsNeeded <= 0;
+                if (tidalsNeeded <= 0)
+                    return true;
+                else
+                    return false;
             }, _ =>
             {
-                // search through 20 journal files max
+                // search through 100 journal files max
                 countJournals++;
-                return countJournals < 20;
+                if (countJournals < 100)
+                    return false;
+                else
+                    return true;
             });
 
 

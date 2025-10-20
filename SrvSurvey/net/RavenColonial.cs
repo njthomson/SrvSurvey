@@ -234,6 +234,7 @@ namespace SrvSurvey.game.RavenColonial
 
             var response = await RavenColonial.client.PutAsync($"{svcUri}/api/fc/{fc.marketId}", body);
             var json2 = await response.Content.ReadAsStringAsync();
+            Game.log($"Colony.updateFleetCarrier: response json:\r\n\t{json2}\r\n");
 
             if (!response.IsSuccessStatusCode)
             {
