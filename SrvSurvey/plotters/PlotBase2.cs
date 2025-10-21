@@ -249,7 +249,7 @@ namespace SrvSurvey.plotters
                 {
                     Debug.WriteLine($"Render: {name} #{renderCount} => {this.width}, {this.height}, stale: {stale}");
                     Application.DoEvents();
-                    Debugger.Break();
+                    //Debugger.Break();
                 }
             } while (stale && renderCount < 10);
 
@@ -439,7 +439,7 @@ namespace SrvSurvey.plotters
                             def.form = new PlotContainer(def);
                             Program.showPlotter<PlotContainer>(null, def.name);
                         }
-                        def.form.updateFrame();
+                        def.form?.updateFrame();
                     }
 
                     // render into VR?
