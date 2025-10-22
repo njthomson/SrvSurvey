@@ -693,26 +693,8 @@ namespace SrvSurvey
         {
             btnAdjustOverlays.Enabled = false;
             var form = new FormAdjustOverlay();
-
-            Elite.setFocusED();
-
-            Program.defer(() =>
-            {
-                var er = Elite.getWindowRect();
-                if (er != Rectangle.Empty)
-                {
-                    form.StartPosition = FormStartPosition.Manual;
-
-                    form.Left = er.Left + (er.Width / 2) - (form.Width / 2);
-                    form.Top = er.Top + (er.Height / 2) - (form.Height / 2);
-                }
-                else
-                {
-                    form.StartPosition = FormStartPosition.CenterScreen;
-                }
-                form.FormClosing += (s, e) => btnAdjustOverlays.Enabled = true;
-                form.Show();
-            });
+            form.FormClosing += (s, e) => btnAdjustOverlays.Enabled = true;
+            form.Show();
         }
 
         private void button2_Click(object sender, EventArgs e)

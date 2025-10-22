@@ -274,6 +274,13 @@ namespace SrvSurvey.forms
                 this.prepFakeTitle();
         }
 
+        protected override void OnTextChanged(EventArgs e)
+        {
+            base.OnTextChanged(e);
+
+            this.Invalidate();
+        }
+
         private void prepFakeTitle()
         {
             // adjust locations for vertically anchored controls

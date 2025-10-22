@@ -19,7 +19,6 @@ namespace SrvSurvey.forms
         public FormAdjustOverlay()
         {
             PlotPos.backup();
-            this.renderOwnTitleBar = false;
 
             InitializeComponent();
             this.Icon = Icons.spanner;
@@ -45,11 +44,17 @@ namespace SrvSurvey.forms
             comboPlotter.SelectedIndex = 0;
 
             resetForm();
+
+            var er = this.getGameRect();
+            this.Left = er.Left + Util.centerIn(er.Width, this.Width);
+            this.Top = er.Top + Util.centerIn(er.Height, this.Height);
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            Elite.setFocusED();
 
             Program.defer(() => this.Activate());
         }

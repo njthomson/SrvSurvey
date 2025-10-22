@@ -296,19 +296,22 @@ namespace SrvSurvey.plotters
 
         private static PlotBase2 add(Game game, PlotDef def, bool noRenderAll)
         {
-            if (def.instance != null)
+            lock (PlotBase2.defs)
             {
-                Game.log($"Overlays.add: {def.name} - why already present?");
-                Debugger.Break();
-                remove(def);
+                if (def.instance != null)
+                {
+                    Game.log($"Overlays.add: {def.name} - why already present?");
+                    Debugger.Break();
+                    remove(def);
+                }
+
+                Game.log($"Overlays.add: {def.name}");
+                def.instance = def.ctor(game, def);
+
+                if (!noRenderAll)
+                    renderAll(game);
+                return def.instance;
             }
-
-            Game.log($"Overlays.add: {def.name}");
-            def.instance = def.ctor(game, def);
-
-            if (!noRenderAll)
-                renderAll(game);
-            return def.instance;
         }
 
         public static PlotDef? get(string name)
@@ -331,14 +334,17 @@ namespace SrvSurvey.plotters
 
         public static void remove(PlotDef def)
         {
-            if (def.instance != null)
+            lock (PlotBase2.defs)
             {
-                Game.log($"Overlays.remove: {def.name}");
+                if (def.instance != null)
+                {
+                    Game.log($"Overlays.remove: {def.name}");
 
-                def.instance.close();
-                def.instance = null;
+                    def.instance.close();
+                    def.instance = null;
 
-                BigOverlay.invalidate();
+                    BigOverlay.invalidate();
+                }
             }
         }
 

@@ -407,7 +407,7 @@
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormAdjustOverlay";
-            StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.Manual;
             Text = "Adjust Overlays";
             TopMost = true;
             ((System.ComponentModel.ISupportInitialize)numY).EndInit();
