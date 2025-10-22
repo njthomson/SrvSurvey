@@ -1842,7 +1842,6 @@ namespace SrvSurvey
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormCodexBingo>();
-            //Game.spansh.testColonizationRoute("Col 285 Sector MD-S d4-60");
 
             //var folly = game!.cmdrColony.getProject("a4da9c2f-5bcc-4b55-a15e-c13f6c68a9d4")!;
             //var match = ColonyData.matchByCargo(folly.commodities);
