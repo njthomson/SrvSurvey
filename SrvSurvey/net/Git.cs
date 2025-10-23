@@ -17,6 +17,7 @@ namespace SrvSurvey.net
         public static string srcRootFolder = Path.Combine(Application.StartupPath, "..\\..\\..\\..\\..");
         private static string devGitDataFilepath = Path.Combine(srcRootFolder, "data.json");
         public static string boxelNamesPath = Path.Combine(pubDataFolder, "Boxel.Names.txt");
+        public static Version? nextBuild;
 
         private static HttpClient client;
 
@@ -48,9 +49,9 @@ namespace SrvSurvey.net
                 {
                     var currentVersion = Version.Parse(Program.releaseVersion);
                     if (Program.isAppStoreBuild && pubData.msVer > currentVersion)
-                        updateAvailable = true;
+                        Git.nextBuild = pubData.msVer;
                     else if (!Program.isAppStoreBuild && pubData.ghVer > currentVersion)
-                        updateAvailable = true;
+                        Git.nextBuild = pubData.ghVer;
                 }
 
                 if (pubData.codexRef > Game.settings.pubCodexRef)
@@ -159,7 +160,7 @@ namespace SrvSurvey.net
             {
                 Game.log($"updatePubData - complete");
             }
-            return updateAvailable;
+            return Git.nextBuild != null;
         }
 
         public static void updateDevGitData(Action<GitDataIndex> func)
@@ -527,6 +528,41 @@ namespace SrvSurvey.net
 
             await File.WriteAllBytesAsync(filepath, bytes);
             ZipFile.ExtractToDirectory(filepath, Git.pubSettlementsFolder, true);
+        }
+
+        public static async Task updateToNextVersion(Version ver)
+        {
+            // prep folders
+            var folder = Path.Combine(Program.dataFolder, "autoUpdate");
+            if (Directory.Exists(folder)) Directory.Delete(folder, true);
+            Directory.CreateDirectory(folder);
+
+            var filename = $"SrvSurvey-{ver}.zip";
+            var url = $"https://github.com/njthomson/SrvSurvey/releases/download/{ver}/{filename}";
+
+            var folderTemp = Path.Combine(folder, "tmp");
+            Game.log($"Downloading: {url} => {folderTemp}");
+
+            // unzip (avoiding placing a .zip file directly on the file system)
+            var stream = await Git.client.GetStreamAsync(url);
+            ZipFile.ExtractToDirectory(stream, folderTemp, true);
+            Game.log($"Download complete: '{url}'");
+
+            // relocate and rename .deploy files
+            var folderTempInner = Path.Combine(folderTemp, "Application Files", Path.GetFileNameWithoutExtension(filename).Replace("-", "_").Replace(".", "_"));
+            var files = Directory.GetFiles(folderTempInner, "*.*", SearchOption.AllDirectories);
+            foreach (var file in files)
+                File.Move(file, file.Replace(".deploy", ""));
+
+            Directory.Move(folderTempInner, Path.Combine(folder, "new"));
+            Directory.Delete(folderTemp, true);
+
+            // prep and run autoUpdate.cmd
+            var cmd = Path.Combine(folder, "update.cmd");
+            File.Copy(Path.Combine(Application.StartupPath, "autoUpdate.cmd"), cmd, true);
+            Game.log($"Terminate and run: {cmd}");
+            Process.Start(cmd, new string[] { folder, Application.StartupPath });
+            Application.Exit();
         }
     }
 

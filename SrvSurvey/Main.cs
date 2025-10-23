@@ -261,10 +261,7 @@ namespace SrvSurvey
                     {
                         // show update available link as needed
                         if (_.Result)
-                            BeginInvoke(() =>
-                            {
-                                linkNewBuildAvailable.Visible = true;
-                            });
+                            Program.defer(() => linkNewBuildAvailable.Visible = true);
                     });
 
                     Game.canonn.init();
@@ -1175,7 +1172,16 @@ namespace SrvSurvey
             if (Program.isAppStoreBuild)
                 Util.openLink("https://www.microsoft.com/store/productId/9NGT6RRH6B7N");
             else
-                Util.openLink("https://github.com/njthomson/SrvSurvey/releases");
+            {
+                var rslt = Git.nextBuild == null || !Game.settings.autoUpdate_TEST
+                    ? DialogResult.No
+                    : MessageBox.Show($"A new build of SrvSurvey is ready on GitHub.\n\nPress YES to auto install: {Git.nextBuild}\n\nPress NO to view releases on GitHub or CANCEL to do nothing.", $"SrvSurvey - {Program.releaseVersion}", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                if (rslt == DialogResult.Yes && Git.nextBuild != null)
+                    Git.updateToNextVersion(Git.nextBuild).justDoIt();
+                else if (rslt == DialogResult.No)
+                    Util.openLink("https://github.com/njthomson/SrvSurvey/releases");
+            }
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
