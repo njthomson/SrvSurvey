@@ -30,8 +30,6 @@ namespace SrvSurvey.net
 
         public async Task<bool> refreshPublishedData()
         {
-            var updateAvailable = false;
-
             Game.log($"updatePubData ...");
             try
             {
