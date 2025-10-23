@@ -10,7 +10,6 @@ namespace SrvSurvey
 {
     class Settings
     {
-        public bool autoUpdate_TEST = false;
         public bool buildProjects_TEST = true;
         public bool autoShowPlotBuildCommodities = true;
         public bool buildProjectsShowSumFC_TEST = true;
