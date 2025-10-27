@@ -3345,7 +3345,7 @@ namespace SrvSurvey.game
             {
                 this.srvLocation = Status.here.clone();
             }
-            else if (entry.OnPlanet && !entry.OnStation && systemBody != null && !systemBody.firstFootFall && systemData?.population == 0)
+            if (entry.OnPlanet && !entry.OnStation && systemBody != null && !systemBody.firstFootFall && systemData?.population == 0)
             {
                 // are we getting first footfall? (It's not possible in systems with any population, but WasFootfalled will still be false)
                 if (systemBody.wasFootfalled == false)

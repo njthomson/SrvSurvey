@@ -620,7 +620,7 @@ namespace SrvSurvey.canonn
 
         public bool isRegionalNewDiscovery(string galacticRegion, long entryId)
         {
-            var isNewDiscovery = this.codexNotFound[galacticRegion].Any(e => e.entryId == entryId);
+            var isNewDiscovery = this.codexNotFound.GetValueOrDefault(galacticRegion)?.Any(e => e.entryId == entryId) == true;
             return isNewDiscovery;
         }
 

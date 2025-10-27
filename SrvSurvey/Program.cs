@@ -150,13 +150,12 @@ namespace SrvSurvey
 
         #region plotter tracking
 
-        private static Dictionary<string, PlotterForm> activePlotters = new Dictionary<string, PlotterForm>();
+        private static readonly Dictionary<string, PlotterForm> activePlotters = new Dictionary<string, PlotterForm>();
 
-        public static T? showPlotter<T>(Rectangle? gameRect = null, string? formTypeName = null) where T : PlotterForm
+        public static T? showPlotter<T>(Rectangle? gameRect = null, PlotDef? def = null) where T : PlotterForm
         {
             var formType = typeof(T);
-            if (formTypeName == null)
-                formTypeName = formType.Name;
+            var formTypeName = def?.name ?? formType.Name;
 
             // exit early if the game does not have focus, but return a reference if we already have one
             if (!Elite.focusElite && !Elite.focusSrvSurvey)
@@ -176,18 +175,18 @@ namespace SrvSurvey
             {
                 created = " (created)";
 
-                // Get the public instance constructor that takes zero parameters
-                ConstructorInfo ctor = formType.GetConstructor(
-                    BindingFlags.Instance | BindingFlags.NonPublic, null,
-                    CallingConventions.HasThis, new Type[0], null)!;
-
                 if (formType.Name == nameof(PlotContainer))
                 {
-                    var def = PlotBase2.get(formTypeName)!;
-                    form = (T)(PlotterForm)def.form!;
+                    if (def?.form == null) throw new Exception($"Why no form for: {def?.name}");
+                    form = (T)(PlotterForm)def.form;
                 }
                 else
                 {
+                    // Get the public instance constructor that takes zero parameters
+                    ConstructorInfo ctor = formType.GetConstructor(
+                        BindingFlags.Instance | BindingFlags.NonPublic, null,
+                        CallingConventions.HasThis, new Type[0], null)!;
+
                     // create and force form.Name to match class name
                     form = (T)ctor.Invoke(null);
                     form.Name = formTypeName;

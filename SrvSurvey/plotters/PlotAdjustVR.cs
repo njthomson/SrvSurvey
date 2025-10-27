@@ -59,12 +59,11 @@ namespace SrvSurvey.plotters
         protected override void onClose()
         {
             base.onClose();
+            KeyboardHook.redirect = false;
+            KeyboardHook.analogs = false;
             PlotBase2.remove(PlotAdjustFake.def);
             PlotAdjustFake.def.name = nameof(PlotAdjustFake);
 
-            KeyboardHook.buttonsPressed -= KeyboardHook_buttonsPressed;
-            KeyboardHook.redirect = false;
-            KeyboardHook.analogs = false;
             FormAdjustOverlay.targetName = null;
         }
 
@@ -101,10 +100,10 @@ namespace SrvSurvey.plotters
             }
         }
 
-        private void KeyboardHook_buttonsPressed(bool hook, string chord, short analog)
+        private void KeyboardHook_buttonsPressed(bool hook, string chord, int analog)
         {
-            // only process when buttons are released
-            if (!hook) return;
+            // only process when buttons are released and we want these events
+            if (!hook || !KeyboardHook.redirect || !KeyboardHook.analogs) return;
 
             if (chord == "B1")
             {
@@ -174,7 +173,7 @@ namespace SrvSurvey.plotters
                     if (rotate)
                         pp.r.Y += (float)analog / 50_000;
                     else
-                        pp.p.X += (float)analog / 100_000;
+                        pp.p.X += (float)analog / 200_000;
                 }
                 else if (chord == "RY")
                 {
@@ -182,7 +181,7 @@ namespace SrvSurvey.plotters
                     if (rotate)
                         pp.r.X += (float)analog / 50_000;
                     else
-                        pp.p.Y += (float)analog / 100_000;
+                        pp.p.Y += (float)analog / 200_000;
                 }
                 else if (chord == "LY")
                 {
@@ -190,7 +189,7 @@ namespace SrvSurvey.plotters
                     if (rotate)
                         pp.r.Z += (float)analog / 50_000;
                     else
-                        pp.p.Z += (float)analog / 100_000;
+                        pp.p.Z += (float)analog / 200_000;
                 }
                 else if (chord == "RT")
                 {
@@ -301,6 +300,8 @@ namespace SrvSurvey.plotters
             tt.newLine(true);
             tt.draw(N.ten, "X + B : Reset current overlay", C.cyanDark, GameColors.Fonts.gothic_9);
             tt.newLine(true);
+
+            tt.setMinWidth(260);
             return tt.pad(N.ten, N.ten);
         }
     }

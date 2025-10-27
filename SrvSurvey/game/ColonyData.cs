@@ -455,9 +455,10 @@ namespace SrvSurvey.game
         public static Dictionary<string, string[]> mapCargoType = new Dictionary<string, string[]>()
         {
             { "Chemicals", new string[] { "liquidoxygen","pesticides","surfacestabilisers","water" } },
-            { "Consumer Items", new string[] { "evacuationshelter","survivalequipment","beer","liquor","wine" } },
+            { "Consumer Items", new string[] { "evacuationshelter","survivalequipment" } },
             { "Foods", new string[] { "animalmeat","coffee","fish","foodcartridges","fruitandvegetables","grain","tea" } },
             { "Industrial Materials", new string[] { "ceramiccomposites","cmmcomposite","insulatingmembrane","polymers","semiconductors","superconductors" } },
+            { "Legal Drugs", new string[] { "beer","liquor","wine" } },
             { "Machinery", new string[] { "buildingfabricators","cropharvesters","emergencypowercells","geologicalequipment", "microbialfurnaces", "heliostaticfurnaces", "mineralextractors","powergenerators","thermalcoolingunits","waterpurifiers" } },
             { "Medicines", new string[] { "agriculturalmedicines","basicmedicines","combatstabilisers", "combatstabilizers" } },
             { "Metals", new string[] { "aluminium","copper","steel","titanium" } },
@@ -466,11 +467,6 @@ namespace SrvSurvey.game
             { "Waste", new string[] { "biowaste" } },
             { "Weapons", new string[] { "battleweapons","nonlethalweapons","reactivearmour" } },
         };
-
-        public static string getTypeForCargo(string name)
-        {
-            return mapCargoType.Keys.FirstOrDefault(key => mapCargoType[key].Contains(name))!;
-        }
 
         public static string matchByCargo(Dictionary<string, int> cargo)
         {

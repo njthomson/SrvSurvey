@@ -137,7 +137,7 @@ namespace SrvSurvey.plotters
                 projecting = true;
                 if (overlay == null || def.instance == null || VR.app == null) return;
                 var visible = isVisible;
-                Game.log($"VR.project: {overlay.Name}, visible: {visible}, size: {def.instance.size}");
+                //Game.log($"VR.project: {overlay.Name}, visible: {visible}, size: {def.instance.size}");
 
                 // use current or re-render the frame
                 var bitmap = def.instance.frame == null || def.instance.stale

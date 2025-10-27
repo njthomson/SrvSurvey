@@ -13,48 +13,36 @@ namespace SrvSurvey.forms
             current?.Close();
 
             Game.log("FormMultiFloatie.create");
-            var form = new FormMultiFloatie()
-            {
-                Name = "MultiFloatie",
-                Text = "MultiFloatie",
-                Opacity = 0.7f,
-                BackColor = Color.Lime,
-                Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point),
-
-                Width = 400,
-                Height = SystemInformation.CaptionHeight,
-
-                ShowIcon = false,
-                ShowInTaskbar = false,
-                MinimizeBox = false,
-                MaximizeBox = false,
-                ControlBox = false,
-                FormBorderStyle = FormBorderStyle.None,
-                StartPosition = FormStartPosition.Manual,
-                AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink,
-            };
+            var form = new FormMultiFloatie();
 
             form.Show(new Win32Window() { Handle = Elite.getWindowHandle() });
             return form;
         }
 
-        private Label lbl;
-        public string cmdr;
+        public string cmdr { get; private set; }
 
         public FormMultiFloatie()
         {
             current = this;
-            this.cmdr = Game.activeGame?.Commander ?? Program.forceFid ?? "?";
+            Name = "MultiFloatie";
+            Opacity = 0.7f;
+            BackColor = Color.Lime;
+            Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
 
-            this.lbl = new Label()
-            {
-                Text = cmdr,
-                AutoSize = true,
-                Padding = new Padding(20, 0, 20, 0),
-            };
+            Height = SystemInformation.CaptionHeight;
 
-            this.Controls.Add(lbl);
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            MinimizeBox = false;
+            MaximizeBox = false;
+            ControlBox = false;
+            FormBorderStyle = FormBorderStyle.None;
+            StartPosition = FormStartPosition.Manual;
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            Padding = new Padding(20, 0, 20, 0);
+
+            setCmdr(Game.activeGame?.Commander ?? Program.forceFid ?? "?");
         }
 
         protected override bool ShowWithoutActivation => true;
@@ -76,6 +64,8 @@ namespace SrvSurvey.forms
             this.Height = SystemInformation.CaptionHeight;
             this.positionOverGame(Elite.getWindowRect());
             System.Windows.Forms.Cursor.Show();
+
+            Program.defer(() => this.Activate());
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -84,28 +74,35 @@ namespace SrvSurvey.forms
             current = null;
         }
 
+        public override Size GetPreferredSize(Size proposedSize)
+        {
+            var sz = TextRenderer.MeasureText(this.Text, this.Font);
+            return new Size(
+                Math.Max(100, sz.Width + this.Padding.Horizontal),
+                SystemInformation.CaptionHeight + this.Padding.Vertical + SystemInformation.VerticalResizeBorderThickness
+            );
+        }
+
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);
 
-            //if (Elite.focusElite)
-            //    e.Graphics.Clear(C.cyanDark);
+            if (Elite.focusElite)
+                e.Graphics.Clear(Color.Lime);
 
-            //var cmdrName = CommanderSettings.currentOrLastCmdrName;
-            //var x = Util.centerIn(this.Width, Util.stringWidth(this.Font, cmdrName));
-            //TextRenderer.DrawText(e.Graphics, cmdrName, this.Font, new Point(x, 0), Color.Black);
+            var r = new Rectangle(0, 2, this.Width, this.Height);
+            TextRenderer.DrawText(e.Graphics, this.Text, this.Font, r, Color.Black, Color.Lime, TextFormatFlags.HorizontalCenter);
         }
 
         public void setCmdr(string cmdr)
         {
             this.cmdr = cmdr;
-            this.lbl.Text = " ~ " + this.cmdr + " ~ ";
+            this.Text = " ~ " + this.cmdr + " ~ ";
+            this.Size = this.GetPreferredSize(Size.Empty);
         }
 
         public void positionOverGame(Rectangle rect)
         {
-            this.lbl.Text = " ~ " + this.cmdr + " ~ ";
-
             this.Left = rect.Left + Util.centerIn(rect.Width, this.Width);
 
             // Windows => above in the title bar / Borderless => match the top

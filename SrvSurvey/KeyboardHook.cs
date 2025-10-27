@@ -16,7 +16,7 @@ namespace SrvSurvey
         private readonly IntPtr hookId;
 
         internal delegate IntPtr HookHandlerDelegate(int nCode, IntPtr wParam, ref KBDLLHOOKSTRUCT lParam);
-        internal delegate void HookFired(bool hook, string chord, short analog);
+        internal delegate void HookFired(bool hook, string chord, int analog);
 
         private Task? taskDirectX;
         private HashSet<string> pressed = new();
@@ -240,6 +240,14 @@ namespace SrvSurvey
                     {
                         //Debug.WriteLine(state); // dbg
 
+                        /*
+                        if (analogs)
+                        {
+                            if (state.Offset == JoystickOffset.X) processAxis2("RX", state, 6000);
+                            if (state.Offset == JoystickOffset.Y) processAxis2("RY", state, 6000);
+                            if (state.Offset == JoystickOffset.RotationZ) processAxis2("LY", state, 6000);
+                        }//*/
+
                         var isButton = state.Offset >= JoystickOffset.Buttons0 && state.Offset <= JoystickOffset.Buttons127;
                         if (isButton)
                             processButtons(state);
@@ -272,6 +280,28 @@ namespace SrvSurvey
                     // wait 1 second then try again
                     await Task.Delay(1000);
                 }
+            }
+        }
+
+        private readonly Dictionary<string, double> lastAxis = new();
+
+        private void processAxis2(string name, JoystickUpdate state, int deadzone)
+        {
+            // avoid deadzone?
+            var current = state.Value - 32_000;
+            if (deadzone == -1)
+            {
+                if (current < 10) return;
+            }
+            else if (current > -deadzone && current < deadzone)
+            {
+                return;
+            }
+
+            if (buttonsPressed != null && redirect && analogs)
+            {
+                // fire event on the UX thread
+                Program.control.Invoke(() => buttonsPressed(true, name, current));
             }
         }
 

@@ -443,7 +443,7 @@ namespace SrvSurvey.plotters
                         if (def.form == null)
                         {
                             def.form = new PlotContainer(def);
-                            Program.showPlotter<PlotContainer>(null, def.name);
+                            Program.showPlotter<PlotContainer>(null, def);
                         }
                         def.form?.updateFrame();
                     }
