@@ -260,21 +260,21 @@ namespace SrvSurvey.plotters
             {
                 headerText = game.lastDocked?.StationName ?? "";
                 headerText = headerText.Substring(headerText.IndexOf(":") + 2);
-                tt.draw("🚧  ", C.yellow, GameColors.Fonts.gothic_10);
+                tt.draw("🚧  ", C.Colonise.highlight, GameColors.Fonts.gothic_10);
                 tt.draw(headerText, GameColors.Fonts.gothic_12B);
-                tt.draw("  🚧", C.yellow, GameColors.Fonts.gothic_10);
+                tt.draw("  🚧", C.Colonise.highlight, GameColors.Fonts.gothic_10);
                 tt.newLine(+N.ten, true);
 
-                tt.draw(N.ten, "☑️ Construction complete ☑️", C.green, GameColors.Fonts.gothic_10);
+                tt.draw(N.ten, "☑️ Construction complete ☑️", C.Colonise.surplus, GameColors.Fonts.gothic_10);
                 tt.newLine(+N.ten, true);
 
                 return tt.pad(+N.ten, +N.ten);
             }
 
             tt.dtx = 10;
-            if (dockedAtConstructionSite) tt.draw("🚧  ", C.yellow, GameColors.Fonts.gothic_10);
+            if (dockedAtConstructionSite) tt.draw("🚧  ", C.Colonise.highlight, GameColors.Fonts.gothic_10);
             tt.draw(headerText, GameColors.Fonts.gothic_12B);
-            if (dockedAtConstructionSite) tt.draw("  🚧", C.yellow, GameColors.Fonts.gothic_10);
+            if (dockedAtConstructionSite) tt.draw("  🚧", C.Colonise.highlight, GameColors.Fonts.gothic_10);
             tt.newLine(+N.four, true);
 
             if (projectNames.Any())
@@ -294,16 +294,16 @@ namespace SrvSurvey.plotters
                 var msg = ColonyData.localUntrackedProject == null
                     ? "Untracked project"
                     : "Not a member of this project";
-                tt.draw(N.ten, "⚠️ ", C.yellow, GameColors.Fonts.gothic_10);
+                tt.draw(N.ten, "⚠️ ", C.Colonise.highlight, GameColors.Fonts.gothic_10);
                 tt.draw(msg, C.cyan, GameColors.Fonts.gothic_10);
-                tt.draw(" ⚠️", C.yellow, GameColors.Fonts.gothic_10);
+                tt.draw(" ⚠️", C.Colonise.highlight, GameColors.Fonts.gothic_10);
                 tt.newLine(+N.ten, true);
             }
 
             // show warning if docked at an untracked FC
             if (game.lastDocked?.StationEconomy == "$economy_Carrier;" && !game.cmdrColony.linkedFCs.ContainsKey(game.lastDocked.MarketID))
             {
-                tt.draw(N.ten, "⚠️ Untracked Fleet Carrier", C.yellow, GameColors.Fonts.gothic_10);
+                tt.draw(N.ten, "⚠️ Untracked Fleet Carrier", C.Colonise.highlight, GameColors.Fonts.gothic_10);
                 tt.newLine(+N.ten, true);
             }
 
@@ -397,7 +397,7 @@ namespace SrvSurvey.plotters
             if (hasPin)
             {
                 tt.dty += N.eight;
-                tt.draw(N.ten, "📌 Assigned commodities", C.orangeDark);
+                tt.draw(N.ten, "📌 Assigned commodities", C.Colonise.itemDark);
                 tt.newLine(true);
             }
 
@@ -429,7 +429,7 @@ namespace SrvSurvey.plotters
                 if (flip) g.FillRectangle(brushBackgroundStripe, N.four, tt.dty - N.one, this.width - N.eight, szBigNumbers.Height + N.one);
                 flip = !flip;
 
-                var col = C.orange;
+                var col = C.Colonise.item;
                 var ff = GameColors.Fonts.gothic_9;
 
                 var cargoCount = game.cargoFile.getCount(name);
@@ -446,12 +446,12 @@ namespace SrvSurvey.plotters
                 if (cargoCount > needCount)
                 {
                     // warn if we have more than needed
-                    col = C.green;
+                    col = C.Colonise.surplus;
                     nameTxt += " ✋";
                 }
                 else if (cargoCount == needCount)
                 {
-                    col = C.green;
+                    col = C.Colonise.surplus;
                 }
 
                 // render needed count
@@ -480,11 +480,11 @@ namespace SrvSurvey.plotters
                             var diff = (fcAmount - needCount);
                             var diffTxt = diff.ToString("N0");
                             if (diffTxt[0] != '-' && diffTxt[0] != '0') diffTxt = '+' + diffTxt;
-                            var cc = diff >= 0 ? C.green : C.red;
+                            var cc = diff >= 0 ? C.Colonise.surplus : C.Colonise.deficit;
 
                             // if sharing a column ... make FC counts darker
                             if (Game.settings.buildProjectsInlineSumFC_TEST)
-                                cc = cc = diff >= 0 ? C.greenDark : C.redDark;
+                                cc = cc = diff >= 0 ? C.Colonise.surplusDark : C.Colonise.deficitDark;
 
                             if (isPending) { diffTxt = "..."; cc = C.cyan; }
                             tt.draw(xFC, diffTxt, cc, ff, true)
@@ -495,14 +495,14 @@ namespace SrvSurvey.plotters
                             // show sum total
                             var diff = fcAmount;
                             var diffTxt = diff.ToString("N0");
-                            var cc = fcAmount >= needCount ? C.green : C.red;
+                            var cc = fcAmount >= needCount ? C.Colonise.surplus : C.Colonise.deficit;
                             fcHasEnough = fcAmount >= needCount;
 
                             // if sharing a column ... make FC counts darker
                             if (Game.settings.buildProjectsInlineSumFC_TEST)
-                                cc = fcAmount >= needCount ? C.greenDark : C.redDark;
+                                cc = fcAmount >= needCount ? C.Colonise.surplusDark : C.Colonise.deficitDark;
                             else if (fcAmount == 0)
-                                cc = C.redDark;
+                                cc = C.Colonise.deficitDark;
 
                             if (isPending) { diffTxt = "..."; cc = C.cyan; }
                             tt.draw(xFC, diffTxt, cc, ff, true)
@@ -518,7 +518,7 @@ namespace SrvSurvey.plotters
                 if (isPending)
                     tt.draw(N.two, "►", C.cyan, ff);
                 else if (shipHasEnough || fcHasEnough)
-                    tt.draw(N.two, "✔️", shipHasEnough ? C.green : C.greenDark, ff);
+                    tt.draw(N.two, "✔️", shipHasEnough ? C.Colonise.surplus : C.greenDark, ff);
 
                 // draw assigned pin behind the need number
                 if (needs.assigned.Contains(name))
@@ -600,7 +600,7 @@ namespace SrvSurvey.plotters
 
                     var cargoCount = game.cargoFile.getCount(name);
 
-                    var col = C.orange;
+                    var col = C.Colonise.item;
                     var ff = GameColors.Fonts.gothic_9;
                     var inLocalMarket = localMarketValid && localMarketItems.Contains(name);
 
@@ -616,18 +616,18 @@ namespace SrvSurvey.plotters
                     if (cargoCount > needCount)
                     {
                         // warn if we have more than needed
-                        col = C.green;
+                        col = C.Colonise.surplus;
                         nameTxt += " ✋";
                     }
                     else if (cargoCount == needCount)
                     {
-                        col = C.green;
+                        col = C.Colonise.surplus;
                         haveEnough = true;
                     }
                     else if (isDocked && localMarketValid && localMarketItems.Count > 0 && !inLocalMarket)
                     {
                         // make needed items missing in the current market dimmer
-                        col = C.orangeDark;
+                        col = C.Colonise.itemDark;
                     }
 
                     // render needed count
@@ -643,7 +643,7 @@ namespace SrvSurvey.plotters
                     }
 
                     var almost = false;
-                    var colAlmost = C.yellow;
+                    var colAlmost = C.Colonise.highlight;
 
                     // (skip FC numbers if sharing 2nd column and we already rendered there)
                     if (xFC > 0 && Game.settings.buildProjectsShowSumFC_TEST && (!Game.settings.buildProjectsInlineSumFC_TEST || cargoCount == 0))
@@ -663,7 +663,7 @@ namespace SrvSurvey.plotters
                                 {
                                     showDelta = true;
                                     almost = true;
-                                    if (cargoCount >= deficit) colAlmost = C.green;
+                                    if (cargoCount >= deficit) colAlmost = C.Colonise.surplus;
                                     col = colAlmost;
                                 }
                             }
@@ -674,11 +674,11 @@ namespace SrvSurvey.plotters
                                 var diff = (fcAmount - needCount);
                                 var diffTxt = diff.ToString("N0");
                                 if (diffTxt[0] != '-' && diffTxt[0] != '0') diffTxt = '+' + diffTxt;
-                                var cc = diff >= 0 ? C.green : C.red;
+                                var cc = diff >= 0 ? C.Colonise.surplus : C.Colonise.deficit;
 
                                 // if sharing a column ... make FC counts darker
                                 if (Game.settings.buildProjectsInlineSumFC_TEST)
-                                    cc = diff >= 0 ? C.greenDark : C.redDark;
+                                    cc = diff >= 0 ? C.Colonise.surplusDark : C.Colonise.deficitDark;
 
                                 // highlight and make and bold if almost there
                                 if (almost) cc = colAlmost;
@@ -692,14 +692,14 @@ namespace SrvSurvey.plotters
                                 // show sum total
                                 var txt = fcAmount.ToString("N0");
                                 // if sharing a column ... make FC counts darker
-                                var cc = Game.settings.buildProjectsInlineSumFC_TEST ? C.redDark : C.red;
+                                var cc = Game.settings.buildProjectsInlineSumFC_TEST ? C.Colonise.deficitDark : C.Colonise.deficit;
                                 if (fcAmount >= needCount)
                                 {
-                                    cc = Game.settings.buildProjectsInlineSumFC_TEST ? C.greenDark : C.green;
+                                    cc = Game.settings.buildProjectsInlineSumFC_TEST ? C.Colonise.surplusDark : C.Colonise.surplus;
                                     haveEnough = true;
                                 }
 
-                                if (fcAmount == 0) cc = C.redDark;
+                                if (fcAmount == 0) cc = C.Colonise.deficitDark;
 
                                 if (isPending) { txt = "..."; cc = C.cyan; }
                                 tt.draw(xFC, txt, cc, ff, true)
@@ -726,7 +726,7 @@ namespace SrvSurvey.plotters
                     if (isPending)
                         tt.draw(N.two, "►", C.cyan, ff);
                     else if (haveEnough && !nameTxt.EndsWith("❌"))
-                        tt.draw(N.two, "✔️", col == C.green ? C.green : C.greenDark, ff);
+                        tt.draw(N.two, "✔️", col == C.Colonise.surplus ? C.Colonise.surplus : C.Colonise.surplusDark, ff);
 
                     tt.newLine(true);
                 }

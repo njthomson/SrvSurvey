@@ -21,7 +21,8 @@ namespace SrvSurvey.plotters
 
         public static bool allowed(Game game)
         {
-            return !Game.settings.hideJournalWriteTimer;
+            return !Game.settings.hideJournalWriteTimer
+                && !game.isMode(GameMode.GalaxyMap, GameMode.SystemMap);
         }
 
         private static int pulseTick;
@@ -86,7 +87,7 @@ namespace SrvSurvey.plotters
         protected override SizeF doRender(Graphics g, TextCursor tt)
         {
             // don't render anything when in maps
-            if (Game.activeGame?.isMode(GameMode.GalaxyMap, GameMode.SystemMap) == true)
+            if (this.game.isMode(GameMode.GalaxyMap, GameMode.SystemMap) == true)
                 return plotPulseDefaultSize;
 
             g.SmoothingMode = SmoothingMode.None;

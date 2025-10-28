@@ -209,7 +209,6 @@ namespace SrvSurvey.plotters
             this.plotDef.vr?.show();
         }
 
-        // TODO: remove "Game game" reference here - they already have it
         protected abstract SizeF doRender(Graphics g, TextCursor tt);
 
         /// <summary> Generate a new frame image </summary>

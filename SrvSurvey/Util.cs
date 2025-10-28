@@ -1698,4 +1698,13 @@ namespace SrvSurvey
     {
         public IntPtr Handle { get; set; }
     }
+
+    class SrvException : Exception
+    {
+        /// <summary> When true show a popup message, not the Oops error dialog </summary>
+        public bool showMsg;
+
+        public SrvException(string message) : base(message) { }
+        public SrvException(string message, bool showMsg) : base(message) { this.showMsg = showMsg; }
+    }
 }

@@ -1,4 +1,5 @@
-﻿using SrvSurvey.game;
+﻿using Newtonsoft.Json.Linq;
+using SrvSurvey.game;
 using System.Drawing.Drawing2D;
 
 namespace SrvSurvey.widgets
@@ -17,13 +18,13 @@ namespace SrvSurvey.widgets
             if (!theme.ContainsKey(name))
             {
                 // named color not found, pull from the original theme?
+                // (This is unlikely to happen now, unless code is trying to use a new colour not added to the default theme)
                 var defaultTheme = Theme.loadTheme(true);
                 if (!defaultTheme.ContainsKey(name))
                     throw new Exception($"Unexpected color name: {name}");
 
                 // update theme and save
-                theme[name] = defaultTheme[name];
-                // TODO: save?
+                theme.update(name, defaultTheme[name]);
             }
             return theme[name];
         }
@@ -66,7 +67,7 @@ namespace SrvSurvey.widgets
 
             public static Pen black1 = Color.Black.toPen(1);
 
-            public static Pen red1= red.toPen(1);
+            public static Pen red1 = red.toPen(1);
 
             public static Pen redDark1 = redDark.toPen(1);
         }
@@ -94,6 +95,23 @@ namespace SrvSurvey.widgets
 
             public static Color white = c("bio.white");
             public static Color prediction = c("bio.prediction");
+        }
+        internal class Colonise
+        {
+            /// <summary> Default: C.green </summary>
+            public static Color surplus = c("colonise.surplus");
+            /// <summary> Default: C.greenDark </summary>
+            public static Color surplusDark = c("colonise.surplusDark");
+            /// <summary> Default: C.red </summary>
+            public static Color deficit = c("colonise.deficit");
+            /// <summary> Default: C.redDark </summary>
+            public static Color deficitDark = c("colonise.deficitDark");
+            /// <summary> Default: C.yellow </summary>
+            public static Color highlight = c("colonise.highlight");
+            /// <summary> Default: C.orange </summary>
+            public static Color item = c("colonise.item");
+            /// <summary> Default: C.orangeDark </summary>
+            public static Color itemDark = c("colonise.itemDark");
         }
     }
 

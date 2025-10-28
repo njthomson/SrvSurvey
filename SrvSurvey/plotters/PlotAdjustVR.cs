@@ -41,6 +41,7 @@ namespace SrvSurvey.plotters
         private bool rotate;
         private string? confirmation;
         private bool confirming => confirmation != null;
+        private bool selfClosing;
 
         private PlotAdjustVR(Game game, PlotDef def) : base(game, def)
         {
@@ -54,6 +55,10 @@ namespace SrvSurvey.plotters
             KeyboardHook.analogs = true;
             KeyboardHook.redirect = true;
             KeyboardHook.buttonsPressed += KeyboardHook_buttonsPressed;
+
+            selfClosing = VR.app == null || !Game.settings.hookDirectX_TEST || Game.settings.hookDirectXDeviceId_TEST == Guid.Empty;
+            if (selfClosing)
+                Util.deferAfter(5000, () => PlotBase2.remove(PlotAdjustVR.def));
         }
 
         protected override void onClose()
@@ -65,6 +70,7 @@ namespace SrvSurvey.plotters
             PlotAdjustFake.def.name = nameof(PlotAdjustFake);
 
             FormAdjustOverlay.targetName = null;
+            force = false;
         }
 
         private PlotPos.VR getPP()
@@ -104,6 +110,13 @@ namespace SrvSurvey.plotters
         {
             // only process when buttons are released and we want these events
             if (!hook || !KeyboardHook.redirect || !KeyboardHook.analogs) return;
+
+            if (chord == Game.settings.keyActions_TEST?.GetValueOrDefault(KeyAction.adjustVR))
+            {
+                force = false;
+                PlotBase2.renderAll(game, true);
+                return;
+            }
 
             if (chord == "B1")
             {
@@ -220,11 +233,37 @@ namespace SrvSurvey.plotters
 
         protected override SizeF doRender(Graphics g, TextCursor tt)
         {
+            tt.setMinWidth(260);
             tt.flags |= TextFormatFlags.VerticalCenter;
 
             tt.drawCentered("Adjust VR Overlays");
             tt.newLine(N.twenty, true);
 
+            if (selfClosing)
+            {
+                tt.dty -= N.ten;
+
+                if (VR.app == null)
+                {
+                    tt.setMinWidth(tt.drawCentered("VR is not active", C.red).Width);
+                    tt.newLine(N.ten, true);
+                }
+                if (!Game.settings.hookDirectX_TEST)
+                {
+                    tt.setMinWidth(tt.drawCentered("Please enable controller/joystick key chords", C.red).Width);
+                    tt.newLine(N.ten, true);
+                }
+
+                if (Game.settings.hookDirectXDeviceId_TEST == Guid.Empty)
+                {
+                    tt.setMinWidth(tt.drawCentered("No controller or joystick selected", C.red).Width);
+                    tt.newLine(N.ten, true);
+                }
+
+                tt.setMinWidth(tt.drawCentered($"This will self close after 5 seconds").Width);
+                tt.newLine(N.ten, true);
+                return tt.pad(N.twenty, N.ten);
+            }
 
             // show confirmations
             if (confirmation != null)
@@ -301,7 +340,6 @@ namespace SrvSurvey.plotters
             tt.draw(N.ten, "X + B : Reset current overlay", C.cyanDark, GameColors.Fonts.gothic_9);
             tt.newLine(true);
 
-            tt.setMinWidth(260);
             return tt.pad(N.ten, N.ten);
         }
     }

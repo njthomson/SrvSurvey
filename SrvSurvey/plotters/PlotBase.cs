@@ -1900,7 +1900,7 @@ namespace SrvSurvey.plotters
 
             public override string ToString()
             {
-                return $"{{ s: {s.ToString(CultureInfo.InvariantCulture)}, p: {p}, r: {r}}}";
+                return $"{{ s: {s.ToString(CultureInfo.InvariantCulture)}, p: {p.ToString("", CultureInfo.InvariantCulture)}, r: {r.ToString("", CultureInfo.InvariantCulture)}}}";
             }
 
             public static VR? parse(string txt)

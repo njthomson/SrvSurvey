@@ -16,7 +16,7 @@ namespace SrvSurvey.widgets
             public static Color Orange = Color.FromArgb(255, 255, 111, 0);
             public static Color OrangeDim = Color.FromArgb(255, 95, 48, 3);
             public static Color Cyan = Color.FromArgb(255, 84, 223, 237);
-            public static Color DarkCyan = Color.DarkCyan;
+            public static Color DarkCyan = Color.FromArgb(255, 0, 139, 139);  // DarkCyan
         }
 
         // IMPORTANT: figure out scaling and fontScaling before anything else

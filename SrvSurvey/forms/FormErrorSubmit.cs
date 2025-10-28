@@ -24,6 +24,14 @@ namespace SrvSurvey
                 return;
             }
 
+            var srvEx = ex as SrvException;
+            if (srvEx?.showMsg == true)
+            {
+                // show a message box not the Oops dialog
+                MessageBox.Show(ex.Message, $"SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             Game.log($"FormErrorSubmit.show: {ex}");
             var form = new FormErrorSubmit(ex);
             form.ShowDialog(Main.ActiveForm);

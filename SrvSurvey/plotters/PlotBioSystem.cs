@@ -505,7 +505,7 @@ namespace SrvSurvey.plotters
             // get widest body name
             var maxNameWidth = 0f;
             var maxBioCount = 0;
-            foreach (var body in game.systemData.bodies)
+            foreach (var body in game.systemData.bodies.ToList())
             {
                 if (body.bioSignalCount == 0) continue;
                 maxNameWidth = Math.Max(maxNameWidth, g.MeasureString(body.shortName, GameColors.fontMiddle).Width);

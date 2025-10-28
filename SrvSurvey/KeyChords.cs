@@ -100,46 +100,54 @@ namespace SrvSurvey
 
         public static bool doKeyAction(KeyAction keyAction)
         {
-            switch (keyAction)
+            try
             {
-                case KeyAction.toggleAllVisibility:
-                    // toggle the checkbox on the main form
-                    Main.form.checkTempHide.Checked = !Main.form.checkTempHide.Checked;
-                    break;
+                switch (keyAction)
+                {
+                    case KeyAction.toggleAllVisibility:
+                        // toggle the checkbox on the main form
+                        Main.form.checkTempHide.Checked = !Main.form.checkTempHide.Checked;
+                        break;
 
-                case KeyAction.mapZoomIn: return adjustMapZooms(true);
-                case KeyAction.mapZoomOut: return adjustMapZooms(false);
-                case KeyAction.mapZoomAuto: return adjustMapAutoZoom();
-                case KeyAction.mapBeHuge: return adjustMapHugeness();
-                case KeyAction.showJumpInfo: return toggleJumpInfo();
-                case KeyAction.copyNextBoxel: return copyNextBoxelSystem();
-                case KeyAction.pasteGalMap: return pasteGalMap();
-                case KeyAction.showFssInfo: return toggleFSSInfo();
-                case KeyAction.showBodyInfo: return toggleBodyInfo();
-                case KeyAction.showStationInfo: return toggleStationInfo();
-                case KeyAction.showColonyShopping: return toggleColonyShopping();
-                case KeyAction.refreshColonyData: return Game.activeGame?.cmdrColony.fetchLatest().justDoIt() ?? true;
-                case KeyAction.collapseColonyData: return toggleCollapseColonyRows();
-                case KeyAction.showSystemNotes: return showSystemNotes();
-                case KeyAction.track1: return trackLocation(1);
-                case KeyAction.track2: return trackLocation(2);
-                case KeyAction.track3: return trackLocation(3);
-                case KeyAction.track4: return trackLocation(4);
-                case KeyAction.track5: return trackLocation(5);
-                case KeyAction.track6: return trackLocation(6);
-                case KeyAction.track7: return trackLocation(7);
-                case KeyAction.track8: return trackLocation(8);
-                case KeyAction.nextWindow: return focusNextGameWindow();
-                case KeyAction.streamOne: return toggleStreamOne();
-                case KeyAction.adjustVR: return adjustVR();
+                    case KeyAction.mapZoomIn: return adjustMapZooms(true);
+                    case KeyAction.mapZoomOut: return adjustMapZooms(false);
+                    case KeyAction.mapZoomAuto: return adjustMapAutoZoom();
+                    case KeyAction.mapBeHuge: return adjustMapHugeness();
+                    case KeyAction.showJumpInfo: return toggleJumpInfo();
+                    case KeyAction.copyNextBoxel: return copyNextBoxelSystem();
+                    case KeyAction.pasteGalMap: return pasteGalMap();
+                    case KeyAction.showFssInfo: return toggleFSSInfo();
+                    case KeyAction.showBodyInfo: return toggleBodyInfo();
+                    case KeyAction.showStationInfo: return toggleStationInfo();
+                    case KeyAction.showColonyShopping: return toggleColonyShopping();
+                    case KeyAction.refreshColonyData: return Game.activeGame?.cmdrColony.fetchLatest().justDoIt() ?? true;
+                    case KeyAction.collapseColonyData: return toggleCollapseColonyRows();
+                    case KeyAction.showSystemNotes: return showSystemNotes();
+                    case KeyAction.track1: return trackLocation(1);
+                    case KeyAction.track2: return trackLocation(2);
+                    case KeyAction.track3: return trackLocation(3);
+                    case KeyAction.track4: return trackLocation(4);
+                    case KeyAction.track5: return trackLocation(5);
+                    case KeyAction.track6: return trackLocation(6);
+                    case KeyAction.track7: return trackLocation(7);
+                    case KeyAction.track8: return trackLocation(8);
+                    case KeyAction.nextWindow: return focusNextGameWindow();
+                    case KeyAction.streamOne: return toggleStreamOne();
+                    case KeyAction.adjustVR: return adjustVR();
 
-                default:
-                    Game.log($"Unsupported key action: {keyAction}");
-                    Debugger.Break();
-                    break;
+                    default:
+                        Game.log($"Unsupported key action: {keyAction}");
+                        Debugger.Break();
+                        break;
+                }
+
+                return true;
             }
-
-            return true;
+            catch (Exception ex)
+            {
+                FormErrorSubmit.Show(ex);
+                return true;
+            }
         }
 
         private static bool adjustMapZooms(bool zoomIn)
@@ -458,9 +466,11 @@ namespace SrvSurvey
             Game.settings.Save();
             return true;
         }
+
         private static bool adjustVR()
         {
-            PlotAdjustVR.start();
+            if (Game.settings.displayVR && !PlotAdjustVR.force)
+                PlotAdjustVR.start();
             return true;
         }
     }
