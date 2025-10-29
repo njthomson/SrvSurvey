@@ -47,7 +47,7 @@ namespace SrvSurvey.widgets
                     if (defaultTheme != null)
                         foreach (var name in defaultTheme.Keys)
                             if (!theme.ContainsKey(name))
-                                theme.update(name, defaultTheme[name], JValue.CreateNull());
+                                theme.update(name, defaultTheme[name], defaultTheme.getToken(name));
 
                     Game.log($"Loaded theme (default: {useDefaultTheme})");
                     //Game.log(JsonConvert.SerializeObject(theme, Formatting.Indented));
@@ -163,6 +163,11 @@ namespace SrvSurvey.widgets
                 var pair = base[key];
                 return pair.color;
             }
+        }
+
+        public JToken getToken(string name)
+        {
+            return base[name].token;
         }
 
         public void update(string name, Color colour, JToken? token = null)

@@ -611,7 +611,7 @@ namespace SrvSurvey
             btnTheme2.Name = "btnTheme2";
             btnTheme2.Size = new Size(119, 45);
             btnTheme2.TabIndex = 28;
-            btnTheme2.Text = "Change secondary color";
+            btnTheme2.Text = "Change secondary colour";
             btnTheme2.UseVisualStyleBackColor = true;
             btnTheme2.Click += btnTheme2_Click;
             // 
@@ -656,7 +656,7 @@ namespace SrvSurvey
             btnTheme.Name = "btnTheme";
             btnTheme.Size = new Size(118, 45);
             btnTheme.TabIndex = 24;
-            btnTheme.Text = "Change primary color";
+            btnTheme.Text = "Change primary colour";
             btnTheme.UseVisualStyleBackColor = true;
             btnTheme.Click += btnTheme_Click;
             // 
@@ -1665,7 +1665,7 @@ namespace SrvSurvey
             btnBannerColor.Name = "btnBannerColor";
             btnBannerColor.Size = new Size(103, 27);
             btnBannerColor.TabIndex = 9;
-            btnBannerColor.Text = "Change color";
+            btnBannerColor.Text = "Change colour";
             btnBannerColor.UseVisualStyleBackColor = true;
             btnBannerColor.Click += button2_Click;
             // 
