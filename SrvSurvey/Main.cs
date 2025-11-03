@@ -1173,7 +1173,7 @@ namespace SrvSurvey
                 Util.openLink("https://www.microsoft.com/store/productId/9NGT6RRH6B7N");
             else
             {
-                var rslt = Git.nextBuild == null
+                var rslt = Git.nextBuild == null || Program.isLinux
                     ? DialogResult.No
                     : MessageBox.Show($"A new build of SrvSurvey is ready on GitHub.\n\nPress YES to auto install: {Git.nextBuild}\n\nPress NO to view releases on GitHub or CANCEL to do nothing.", $"SrvSurvey - {Program.releaseVersion}", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 

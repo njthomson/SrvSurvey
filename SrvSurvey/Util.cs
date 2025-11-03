@@ -152,9 +152,9 @@ namespace SrvSurvey
             {
                 // fallback to an alternative method if necessary
                 if (Program.isLinux)
-                    Process.Start(new ProcessStartInfo("cmd", $"/c start {link}") { CreateNoWindow = true });
-                else
                     Process.Start(new ProcessStartInfo("xdg-open", link) { CreateNoWindow = true });
+                else
+                    Process.Start(new ProcessStartInfo("cmd", $"/c start \"\" {link}") { CreateNoWindow = true });
             }
         }
 
