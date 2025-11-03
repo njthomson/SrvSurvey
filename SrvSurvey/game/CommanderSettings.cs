@@ -100,6 +100,8 @@ namespace SrvSurvey.game
         /// </summary>
         private static void seedCommanderSettings()
         {
+            if (!Directory.Exists(Game.settings.watchedJournalFolder)) return;
+
             var journalFiles = new DirectoryInfo(Game.settings.watchedJournalFolder)
                 .EnumerateFiles("*.log", SearchOption.TopDirectoryOnly)
                 .OrderByDescending(_ => _.LastWriteTimeUtc)

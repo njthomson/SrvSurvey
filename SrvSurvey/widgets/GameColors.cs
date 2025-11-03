@@ -760,6 +760,8 @@ namespace SrvSurvey.widgets
             public static Font segoeEmoji_8 = new Font("Segoe UI Emoji", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
             /// <summary> Not scaled </summary>
             public static Font segoeEmoji_16_ns = new Font("Segoe UI Emoji", 16F);
+            public static Font gothic_12_ns = new Font("Century Gothic", 12F);
+            public static Font gothic_12B_ns = new Font("Century Gothic", 12F, FontStyle.Bold);
         }
 
         private static void loadLocalFonts()

@@ -188,6 +188,7 @@ namespace SrvSurvey
             label30 = new Label();
             linkLabel3 = new LinkLabel();
             groupColonization = new GroupBox();
+            checkTrackAndPublishShipCargo = new CheckBox();
             checkSuppressNonColonise = new CheckBox();
             checkShowInRightPanel = new CheckBox();
             checkBox49 = new CheckBox();
@@ -2345,6 +2346,7 @@ namespace SrvSurvey
             // 
             // groupColonization
             // 
+            groupColonization.Controls.Add(checkTrackAndPublishShipCargo);
             groupColonization.Controls.Add(checkSuppressNonColonise);
             groupColonization.Controls.Add(checkShowInRightPanel);
             groupColonization.Controls.Add(checkBox49);
@@ -2355,19 +2357,32 @@ namespace SrvSurvey
             groupColonization.Controls.Add(checkBox44);
             groupColonization.Controls.Add(checkBox43);
             groupColonization.Controls.Add(checkColonization);
-            groupColonization.Location = new Point(362, 180);
+            groupColonization.Location = new Point(362, 159);
             groupColonization.Name = "groupColonization";
-            groupColonization.Size = new Size(332, 258);
+            groupColonization.Size = new Size(332, 279);
             groupColonization.TabIndex = 34;
             groupColonization.TabStop = false;
             groupColonization.Text = "Colonisation:";
+            // 
+            // checkTrackAndPublishShipCargo
+            // 
+            checkTrackAndPublishShipCargo.AutoSize = true;
+            checkTrackAndPublishShipCargo.CheckAlign = ContentAlignment.TopLeft;
+            checkTrackAndPublishShipCargo.FlatStyle = FlatStyle.System;
+            checkTrackAndPublishShipCargo.Location = new Point(20, 48);
+            checkTrackAndPublishShipCargo.Name = "checkTrackAndPublishShipCargo";
+            checkTrackAndPublishShipCargo.Size = new Size(286, 20);
+            checkTrackAndPublishShipCargo.TabIndex = 44;
+            checkTrackAndPublishShipCargo.Tag = "buildProjectsTrackShipCargo";
+            checkTrackAndPublishShipCargo.Text = "Track and publish cargo on ship (Needs API Key)";
+            checkTrackAndPublishShipCargo.UseVisualStyleBackColor = true;
             // 
             // checkSuppressNonColonise
             // 
             checkSuppressNonColonise.AutoSize = true;
             checkSuppressNonColonise.CheckAlign = ContentAlignment.TopLeft;
             checkSuppressNonColonise.FlatStyle = FlatStyle.System;
-            checkSuppressNonColonise.Location = new Point(36, 227);
+            checkSuppressNonColonise.Location = new Point(20, 253);
             checkSuppressNonColonise.Name = "checkSuppressNonColonise";
             checkSuppressNonColonise.Size = new Size(221, 20);
             checkSuppressNonColonise.TabIndex = 43;
@@ -2380,7 +2395,7 @@ namespace SrvSurvey
             checkShowInRightPanel.AutoSize = true;
             checkShowInRightPanel.CheckAlign = ContentAlignment.TopLeft;
             checkShowInRightPanel.FlatStyle = FlatStyle.System;
-            checkShowInRightPanel.Location = new Point(36, 202);
+            checkShowInRightPanel.Location = new Point(37, 100);
             checkShowInRightPanel.Name = "checkShowInRightPanel";
             checkShowInRightPanel.Size = new Size(241, 20);
             checkShowInRightPanel.TabIndex = 42;
@@ -2393,7 +2408,7 @@ namespace SrvSurvey
             checkBox49.AutoSize = true;
             checkBox49.CheckAlign = ContentAlignment.TopLeft;
             checkBox49.FlatStyle = FlatStyle.System;
-            checkBox49.Location = new Point(19, 176);
+            checkBox49.Location = new Point(20, 74);
             checkBox49.Name = "checkBox49";
             checkBox49.Size = new Size(198, 20);
             checkBox49.TabIndex = 41;
@@ -2420,7 +2435,7 @@ namespace SrvSurvey
             checkBox48.AutoSize = true;
             checkBox48.CheckAlign = ContentAlignment.TopLeft;
             checkBox48.FlatStyle = FlatStyle.System;
-            checkBox48.Location = new Point(36, 150);
+            checkBox48.Location = new Point(54, 228);
             checkBox48.Name = "checkBox48";
             checkBox48.Size = new Size(265, 20);
             checkBox48.TabIndex = 39;
@@ -2433,7 +2448,7 @@ namespace SrvSurvey
             checkBox47.AutoSize = true;
             checkBox47.CheckAlign = ContentAlignment.TopLeft;
             checkBox47.FlatStyle = FlatStyle.System;
-            checkBox47.Location = new Point(36, 124);
+            checkBox47.Location = new Point(54, 202);
             checkBox47.Name = "checkBox47";
             checkBox47.Size = new Size(289, 20);
             checkBox47.TabIndex = 38;
@@ -2446,7 +2461,7 @@ namespace SrvSurvey
             checkBox46.AutoSize = true;
             checkBox46.CheckAlign = ContentAlignment.TopLeft;
             checkBox46.FlatStyle = FlatStyle.System;
-            checkBox46.Location = new Point(36, 98);
+            checkBox46.Location = new Point(54, 176);
             checkBox46.Name = "checkBox46";
             checkBox46.Size = new Size(130, 20);
             checkBox46.TabIndex = 37;
@@ -2459,7 +2474,7 @@ namespace SrvSurvey
             checkBox44.AutoSize = true;
             checkBox44.CheckAlign = ContentAlignment.TopLeft;
             checkBox44.FlatStyle = FlatStyle.System;
-            checkBox44.Location = new Point(36, 74);
+            checkBox44.Location = new Point(54, 152);
             checkBox44.Name = "checkBox44";
             checkBox44.Size = new Size(228, 20);
             checkBox44.TabIndex = 36;
@@ -2472,7 +2487,7 @@ namespace SrvSurvey
             checkBox43.AutoSize = true;
             checkBox43.CheckAlign = ContentAlignment.TopLeft;
             checkBox43.FlatStyle = FlatStyle.System;
-            checkBox43.Location = new Point(19, 48);
+            checkBox43.Location = new Point(37, 126);
             checkBox43.Name = "checkBox43";
             checkBox43.Size = new Size(222, 20);
             checkBox43.TabIndex = 35;
@@ -3660,5 +3675,6 @@ namespace SrvSurvey
         private CheckBox checkFancyAlphaBlending;
         private CheckBox checkEnableVR;
         private FlatButton btnAdjustVR;
+        private CheckBox checkTrackAndPublishShipCargo;
     }
 }

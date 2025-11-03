@@ -79,7 +79,11 @@ namespace SrvSurvey
             groupColonization.setChildrenEnabled(Game.settings.buildProjects_TEST, checkColonization);
 
             checkShowInRightPanel.Enabled = checkBox49.Checked;
-            checkSuppressNonColonise.Enabled = checkBox49.Checked;
+            checkBox43.Enabled = checkBox49.Checked;
+            checkBox44.Enabled = checkBox49.Checked;
+            checkBox46.Enabled = checkBox49.Checked;
+            checkBox47.Enabled = checkBox49.Checked;
+            checkBox48.Enabled = checkBox49.Checked;
 
             btnAdjustVR.Enabled = checkEnableVR.Checked;
 
@@ -266,7 +270,7 @@ namespace SrvSurvey
             if (this.cmdrSettings != null)
             {
                 this.txtRavenCmdr.Text = cmdrSettings.commander + " ?";
-                // don't set this.validApiKey here - wait for it to be confirmed
+                this.validApiKey = cmdrSettings.rccApiKey;
                 this.txtRavenApiKey.Text = cmdrSettings.rccApiKey;
             }
             else
@@ -932,7 +936,7 @@ namespace SrvSurvey
 
         private void checkColonization_CheckedChanged(object sender, EventArgs e)
         {
-            disableEverythingElse(sender as CheckBox);
+            disableEverythingElse(sender as CheckBox, linkLabel2);
         }
 
         private void checkBox13_CheckedChanged(object sender, EventArgs e)
@@ -948,7 +952,11 @@ namespace SrvSurvey
         private void checkBox49_CheckedChanged(object sender, EventArgs e)
         {
             checkShowInRightPanel.Enabled = checkBox49.Checked;
-            checkSuppressNonColonise.Enabled = checkBox49.Checked;
+            checkBox43.Enabled = checkBox49.Checked;
+            checkBox44.Enabled = checkBox49.Checked;
+            checkBox46.Enabled = checkBox49.Checked;
+            checkBox47.Enabled = checkBox49.Checked;
+            checkBox48.Enabled = checkBox49.Checked;
         }
 
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -964,6 +972,7 @@ namespace SrvSurvey
         private void checkApiKey()
         {
             if (!txtRavenApiKey.Enabled) return;
+            checkTrackAndPublishShipCargo.Enabled = false;
 
             var apiKey = txtRavenApiKey.Text;
             if (string.IsNullOrWhiteSpace(apiKey))
@@ -975,6 +984,7 @@ namespace SrvSurvey
             {
                 txtRavenCmdr.Text = "...";
                 txtRavenCmdr.BackColor = SystemColors.Control;
+                txtRavenCmdr.ForeColor = SystemColors.ControlText;
 
                 Util.deferAfter(500, async () =>
                 {
@@ -983,6 +993,8 @@ namespace SrvSurvey
                     {
                         txtRavenCmdr.Text = "(invalid key)";
                         validApiKey = null;
+                        txtRavenCmdr.BackColor = Color.Yellow;
+                        txtRavenCmdr.ForeColor = Color.Black;
                     }
                     else
                     {
@@ -995,6 +1007,7 @@ namespace SrvSurvey
                             {
                                 txtRavenCmdr.Text += " ✔️";
                                 txtRavenCmdr.BackColor = Color.Lime;
+                                checkTrackAndPublishShipCargo.Enabled = true;
                             }
                             else
                             {

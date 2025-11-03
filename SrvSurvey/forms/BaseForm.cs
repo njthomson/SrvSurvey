@@ -290,6 +290,7 @@ namespace SrvSurvey.forms
                 {
                     ctrl.Top += titleHeight;
 
+                    // reduce height if control is anchored top AND bottom
                     if ((ctrl.Anchor & AnchorStyles.Bottom) == AnchorStyles.Bottom)
                         ctrl.Height -= titleHeight;
                 }
@@ -305,7 +306,7 @@ namespace SrvSurvey.forms
                 {
                     Anchor = AnchorStyles.Top | AnchorStyles.Right,
                     Text = "X",
-                    Font = GameColors.fontMiddle,
+                    Font = GameColors.Fonts.gothic_12_ns,
                     AutoSize = false,
                     Width = titleHeight,
                     Height = titleHeight,
@@ -328,7 +329,7 @@ namespace SrvSurvey.forms
                 {
                     Anchor = AnchorStyles.Top | AnchorStyles.Right,
                     Text = "_",
-                    Font = GameColors.fontMiddle,
+                    Font = GameColors.Fonts.gothic_12_ns,
                     AutoSize = false,
                     Width = titleHeight,
                     Height = titleHeight,
@@ -366,7 +367,7 @@ namespace SrvSurvey.forms
 
                 // fake title
                 var pt = new Point(scaleBy(28), scaleBy(2));
-                TextRenderer.DrawText(g, this.Text ?? this.Text, GameColors.fontMiddleBold, pt, SystemColors.ControlLight);
+                TextRenderer.DrawText(g, this.Text ?? this.Text, GameColors.Fonts.gothic_12B_ns, pt, SystemColors.ControlLight);
 
                 //g.DrawRectangle(SystemPens.WindowText, 0, 0, this.Width - 1, this.Height - 1);
             }

@@ -453,7 +453,7 @@ namespace SrvSurvey
             }
 
             // position ourselves within the bound of which ever screen is chosen
-            var r = Screen.GetBounds(pt);
+            var r = Screen.GetWorkingArea(pt);
             if (pt.X < r.Left) pt.X = r.Left;
             if (pt.X + form.Width > r.Right) pt.X = r.Right - form.Width;
 

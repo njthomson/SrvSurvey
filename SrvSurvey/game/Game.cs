@@ -1646,7 +1646,7 @@ namespace SrvSurvey.game
             }
 
             // track revised cargo online
-            if (Game.settings.buildProjectsTrackShipCargo_TEST && cmdrColony.notHiddenProjects.Any())
+            if (Game.settings.buildProjects_TEST && Game.settings.buildProjectsTrackShipCargo && cmdrColony.notHiddenProjects.Any())
                 ColonyData.publishCurrentShip(this).justDoIt();
 
             PlotBase2.invalidate(nameof(PlotBuildCommodities));

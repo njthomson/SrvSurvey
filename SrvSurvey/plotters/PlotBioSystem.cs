@@ -523,8 +523,6 @@ namespace SrvSurvey.plotters
             {
                 if (body.bioSignalCount == 0) continue;
                 anyFF |= body.firstFootFall;
-                var potentialFirstDiscovery = body.predictions.Values.Any(p => (!game.cmdrCodex.isDiscoveredInRegion(p.entryId, game.cmdr.galacticRegion) && Game.settings.highlightRegionalFirsts) || !game.cmdrCodex.isDiscovered(p.entryId));
-
 
                 var highlight = body.shortName == destinationBody || (body.countAnalyzedBioSignals != body.bioSignalCount && body.countAnalyzedBioSignals > 0);
                 //var highlight = (body == game.systemBody && game.status.hasLatLong) || (game.systemBody == null && body.shortName == destinationBody);
@@ -538,7 +536,6 @@ namespace SrvSurvey.plotters
                 var scansComplete = body.bioSignalCount == body.countAnalyzedBioSignals;
                 if (scansComplete) col = C.orangeDark;
 
-                //if (!highlight && potentialFirstDiscovery) b = (SolidBrush)GameColors.Bio.brushGold;
                 var sz2 = tt.draw(N.eight, body.shortName, col, GameColors.fontMiddle);
 
                 // strike-through if already analyzed
@@ -553,7 +550,6 @@ namespace SrvSurvey.plotters
 
                 // credits
                 col = highlight ? C.cyan : C.orange;
-                //if (!highlight && potentialFirstDiscovery) b = (SolidBrush)GameColors.Bio.brushGold;
 
                 var txt = body.getMinMaxBioRewards(false);
 

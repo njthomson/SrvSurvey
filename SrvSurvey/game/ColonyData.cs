@@ -706,7 +706,11 @@ namespace SrvSurvey.game
 
         public static async Task<bool> publishCurrentShip(Game game)
         {
-            if (game?.cmdr?.rccApiKey == null) return false;
+            if (game?.cmdr?.rccApiKey == null)
+            {
+                Game.log($"ColonyData.publishCurrentShip: cannot publish - missing API Key");
+                return false;
+            }
 
             var ship = new CmdrCurrentShip()
             {
@@ -716,16 +720,6 @@ namespace SrvSurvey.game
                 maxCargo = game.currentShip.cargoCapacity,
                 cargo = game.cargoFile.Inventory.ToDictionary(_ => _.Name, _ => _.Count),
             };
-
-            if (Game.settings.buildProjectsTrackShipLocation_TEST && game.systemData != null)
-            {
-                ship.jumpRange = game.currentShip.maxJump;
-                ship.systemName = game.systemData.name;
-                ship.id64 = game.systemData.address;
-                ship.starpos = game.systemData.starPos;
-            }
-
-            Game.log($"Publishing current ship: {ship.name} ({ship.type})");
 
             await Game.rcc.publishCurrentShip(ship);
 

@@ -86,38 +86,31 @@ namespace SrvSurvey
             checkRamTah.CheckState = CheckState.Indeterminate;
 
             List<GuardianGridEntry> allSites = new List<GuardianGridEntry>();
-            return Task.Run(() =>
+            return Task.Run(() => Program.crashGuard(() =>
             {
-                try
-                {
-                    // reload all Ruins, optionally including Ram Tah logs
-                    allSites.AddRange(Game.canonn.loadAllStructures(incRamTahLogs));
-                    allSites.AddRange(Game.canonn.loadAllRuins(incRamTahRuins));
+                // reload all Ruins, optionally including Ram Tah logs
+                allSites.AddRange(Game.canonn.loadAllStructures(incRamTahLogs));
+                allSites.AddRange(Game.canonn.loadAllRuins(incRamTahRuins));
 
-                    Program.control.Invoke(() =>
+                Program.control.Invoke(() =>
+                {
+                    if (this.IsDisposed) return;
+
+                    this.endPrepareAllRows(allSites);
+
+                    checkRamTah.ThreeState = false;
+                    this.grid.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                    if (!incRamTah) this.grid.Columns[10].Width = 0;
+
+                    Program.defer(() =>
                     {
-                        this.endPrepareAllRows(allSites);
-
-                        checkRamTah.ThreeState = false;
-                        this.grid.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-                        if (!incRamTah) this.grid.Columns[10].Width = 0;
-
-                        this.BeginInvoke(() =>
-                        {
-                            checkRamTah.CheckState = incRamTah ? CheckState.Checked : CheckState.Unchecked;
-                            checkRamTah.Enabled = true;
-                            checkOnlyNeeded.Enabled = true;
-                            checkOnlyNeeded.Visible = checkRamTah.Checked;
-                        });
-
+                        checkRamTah.CheckState = incRamTah ? CheckState.Checked : CheckState.Unchecked;
+                        checkRamTah.Enabled = true;
+                        checkOnlyNeeded.Enabled = true;
+                        checkOnlyNeeded.Visible = checkRamTah.Checked;
                     });
-                }
-                catch (Exception ex)
-                {
-                    Game.log($"beginPrepareAllRows: error: {ex}");
-                    FormErrorSubmit.Show(ex);
-                }
-            });
+                });
+            }));
         }
 
         private void endPrepareAllRows(List<GuardianGridEntry> allSites)

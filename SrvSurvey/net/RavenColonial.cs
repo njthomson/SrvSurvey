@@ -41,7 +41,7 @@ namespace SrvSurvey.game.RavenColonial
         public async Task<Project?> create(ProjectCreate row)
         {
             var json1 = JsonConvert.SerializeObject(row);
-            Game.log($"Colony.create:\r\n{json1}");
+            Game.log($"RCC.create:\r\n{json1}");
 
             var body = new StringContent(json1, Encoding.Default, "application/json");
             var response = await RavenColonial.client.PutAsync($"{svcUri}/api/project/", body);
@@ -55,14 +55,14 @@ namespace SrvSurvey.game.RavenColonial
             }
             else
             {
-                Game.log($"Colony.create: failed:\n\t{json2}");
+                Game.log($"RCC.create: failed:\n\t{json2}");
                 return null;
             }
         }
 
         public async Task<Project> updateProject(ProjectUpdate row)
         {
-            Game.log($"Colony.update: {row}");
+            Game.log($"RCC.update: {row}");
 
             var json1 = JsonConvert.SerializeObject(row);
             var body = new StringContent(json1, Encoding.Default, "application/json");
@@ -71,14 +71,14 @@ namespace SrvSurvey.game.RavenColonial
 
             var json2 = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
-                Game.log($"updateProject'{row.buildId}' failed: {json2}");
+                Game.log($"RCC.updateProject'{row.buildId}' failed: HTTP:{(int)response.StatusCode}({response.StatusCode}): {json2}");
             var obj = JsonConvert.DeserializeObject<Project>(json2)!;
             return obj;
         }
 
         public async Task markComplete(string buildId)
         {
-            Game.log($"Colony.markComplete: {buildId}");
+            Game.log($"RCC.markComplete: {buildId}");
 
             var response = await RavenColonial.client.PostAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/complete", null);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
@@ -88,7 +88,7 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task linkCmdr(string buildId, string cmdr)
         {
-            Game.log($"Colony.link: {cmdr} => {buildId}");
+            Game.log($"RCC.link: {cmdr} => {buildId}");
 
             var response = await RavenColonial.client.PutAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/link/{Uri.EscapeDataString(cmdr)}", null);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
@@ -98,7 +98,7 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task unlinkCmdr(string buildId, string cmdr)
         {
-            Game.log($"Colony.link: {cmdr} => {buildId}");
+            Game.log($"RCC.link: {cmdr} => {buildId}");
 
             var response = await RavenColonial.client.DeleteAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/link/{Uri.EscapeDataString(cmdr)}");
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
@@ -108,7 +108,7 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task assign(string buildId, string cmdr, string commodity)
         {
-            Game.log($"Colony.link: {cmdr} => {commodity}=> {buildId}");
+            Game.log($"RCC.link: {cmdr} => {commodity}=> {buildId}");
 
             var response = await RavenColonial.client.PutAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/assign/{Uri.EscapeDataString(cmdr)}/{Uri.EscapeDataString(commodity)}", null);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
@@ -119,7 +119,7 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task unAssign(string buildId, string cmdr, string commodity)
         {
-            Game.log($"Colony.link: {cmdr} => {commodity}=> {buildId}");
+            Game.log($"RCC.link: {cmdr} => {commodity}=> {buildId}");
 
             var response = await RavenColonial.client.DeleteAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}/assign/{Uri.EscapeDataString(cmdr)}/{Uri.EscapeDataString(commodity)}");
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
@@ -130,11 +130,11 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task<Project?> load(long id64, long marketId)
         {
-            Game.log($"Colony.load: {id64}/{marketId}");
+            Game.log($"RCC.load: {id64}/{marketId}");
             try
             {
                 var url = $"{svcUri}/api/system/{Uri.EscapeDataString(id64.ToString())}/{Uri.EscapeDataString(marketId.ToString())}";
-                Game.log($"Colony.load: {url}");
+                Game.log($"RCC.load: {url}");
 
                 var response = await RavenColonial.client.GetAsync(url);
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
@@ -154,13 +154,13 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task contribute(string buildId, string cmdr, Dictionary<string, int> diff)
         {
-            Game.log(diff.formatWithHeader($"Colony.contribute: {buildId}"));
+            Game.log(diff.formatWithHeader($"RCC.contribute: {buildId}"));
 
             var json1 = JsonConvert.SerializeObject(diff);
             var body = new StringContent(json1, Encoding.Default, "application/json");
             var url = $"{svcUri}/api/project/{buildId}/contribute/{Uri.EscapeDataString(cmdr)}";
             var response = await RavenColonial.client.PostAsync(url, body);
-            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
+            Game.log($"RCC.contribute: HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
         }
 
         public async Task<Dictionary<string, int>> supplyFC(long marketId, string cargo, int delta)
@@ -170,13 +170,13 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task<Dictionary<string, int>> supplyFC(long marketId, Dictionary<string, int> diff)
         {
-            Game.log(diff.formatWithHeader($"Colony.supplyFC: {marketId}"));
+            Game.log(diff.formatWithHeader($"RCC.supplyFC: {marketId}"));
 
             var json1 = JsonConvert.SerializeObject(diff);
             var body = new StringContent(json1, Encoding.Default, "application/json");
             var url = $"{svcUri}/api/fc/{Uri.EscapeDataString(marketId.ToString())}/cargo";
             var response = await RavenColonial.client.PatchAsync(url, body);
-            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
+            Game.log($"RCC.supplyFC: HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             var json2 = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<Dictionary<string, int>>(json2)!;
@@ -185,7 +185,7 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task<Dictionary<string, int>?> updateCargoFC(long marketId, Dictionary<string, int> cargo)
         {
-            Game.log(cargo.formatWithHeader($"Colony.updateCargoFC: {marketId}"));
+            Game.log(cargo.formatWithHeader($"RCC.updateCargoFC: {marketId}"));
 
             var json1 = JsonConvert.SerializeObject(cargo);
             var body = new StringContent(json1, Encoding.Default, "application/json");
@@ -196,7 +196,7 @@ namespace SrvSurvey.game.RavenColonial
             var json2 = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
-                Game.log($"updateCargoFC '{marketId}' failed: {json2}");
+                Game.log($"RCC.updateCargoFC: '{marketId}' failed: HTTP:{(int)response.StatusCode}({response.StatusCode}): {json2}");
                 return null;
             }
             var obj = JsonConvert.DeserializeObject<Dictionary<string, int>>(json2)!;
@@ -205,13 +205,13 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task<FleetCarrier?> getFC(long marketId)
         {
-            Game.log($"Colony.getFC: {marketId}");
+            Game.log($"RCC.getFC: {marketId}");
 
             var response = await RavenColonial.client.GetAsync($"{svcUri}/api/fc/{Uri.EscapeDataString(marketId.ToString())}");
             var json = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
-                Game.log($"Colony.getFC: HTTP:{(int)response.StatusCode}({response.StatusCode}): failed: {json}");
+                Game.log($"RCC.getFC: HTTP:{(int)response.StatusCode}({response.StatusCode}): failed: {json}");
                 return null;
             }
 
@@ -224,21 +224,19 @@ namespace SrvSurvey.game.RavenColonial
         /// </summary>
         public async Task<FleetCarrier?> publishFC(FleetCarrier fc)
         {
-            Game.log($"Colony.updateFleetCarrier: {fc}");
+            Game.log($"RCC.updateFleetCarrier: {fc}");
 
             var json1 = JsonConvert.SerializeObject(fc);
-            Game.log($"Colony.updateFleetCarrier: request json:\r\n\t{json1}\r\n");
             var body = new StringContent(json1, Encoding.Default, "application/json");
             body.Headers.addIf("rcc-cmdr", Game.activeGame?.Commander);
             body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
 
             var response = await RavenColonial.client.PutAsync($"{svcUri}/api/fc/{fc.marketId}", body);
             var json2 = await response.Content.ReadAsStringAsync();
-            Game.log($"Colony.updateFleetCarrier: response json:\r\n\t{json2}\r\n");
 
             if (!response.IsSuccessStatusCode)
             {
-                Game.log($"Colony.updateFleetCarrier: HTTP:{(int)response.StatusCode}({response.StatusCode}): failed: {json2}");
+                Game.log($"RCC.updateFleetCarrier: HTTP:{(int)response.StatusCode}({response.StatusCode}): failed: {json2}");
                 return null;
             }
             var obj = JsonConvert.DeserializeObject<FleetCarrier>(json2)!;
@@ -247,7 +245,7 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task<FleetCarrier[]> getAllCmdrFCs(string cmdr)
         {
-            Game.log($"Colony.getCmdrFCAll: {cmdr}");
+            Game.log($"RCC.getCmdrFCAll: {cmdr}");
 
             var response = await RavenColonial.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/fc/all");
             var json = await response.Content.ReadAsStringAsync();
@@ -257,7 +255,7 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task<Project?> getProject(string buildId)
         {
-            Game.log($"Colony.getProject: {buildId}");
+            Game.log($"RCC.getProject: {buildId}");
 
             var response = await RavenColonial.client.GetAsync($"{svcUri}/api/project/{Uri.EscapeDataString(buildId)}");
             var json = await response.Content.ReadAsStringAsync();
@@ -265,14 +263,14 @@ namespace SrvSurvey.game.RavenColonial
                 return JsonConvert.DeserializeObject<Project>(json)!;
             else
             {
-                Game.log($"Colony.getProject: failed:\n\t{json}");
+                Game.log($"RCC.getProject: failed:\n\t{json}");
                 return null;
             }
         }
 
         public async Task<Project?> getProject(long id64, long marketId)
         {
-            Game.log($"Colony.getProject: {id64}/{marketId}");
+            Game.log($"RCC.getProject: {id64}/{marketId}");
 
             var response = await RavenColonial.client.GetAsync($"{svcUri}/api/system/{Uri.EscapeDataString(id64.ToString())}/{Uri.EscapeDataString(marketId.ToString())}");
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
@@ -282,14 +280,14 @@ namespace SrvSurvey.game.RavenColonial
                 return JsonConvert.DeserializeObject<Project>(json)!;
             else
             {
-                Game.log($"Colony.getProject: failed:\n\t{json}");
+                Game.log($"RCC.getProject: failed:\n\t{json}");
                 return null;
             }
         }
 
         public async Task<List<Project>> getCmdrProjects(string cmdr)
         {
-            Game.log($"Colony.getCmdrProjects: {cmdr}");
+            Game.log($"RCC.getCmdrProjects: {cmdr}");
 
             var response = await RavenColonial.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}");
             var json = await response.Content.ReadAsStringAsync();
@@ -299,7 +297,7 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task<CmdrSummary> getCmdrSummary(string cmdr)
         {
-            Game.log($"Colony.getCmdrProjects: {cmdr}");
+            Game.log($"RCC.getCmdrProjects: {cmdr}");
 
             var response = await RavenColonial.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/summary");
             var json = await response.Content.ReadAsStringAsync();
@@ -309,7 +307,7 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task<List<Project>> getCmdrActive(string cmdr)
         {
-            Game.log($"Colony.getCmdrActive: {cmdr}");
+            Game.log($"RCC.getCmdrActive: {cmdr}");
 
             var response = await RavenColonial.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/active");
             var json = await response.Content.ReadAsStringAsync();
@@ -319,7 +317,7 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task<string> getPrimary(string cmdr)
         {
-            Game.log($"Colony.getPrimary: {cmdr}");
+            Game.log($"RCC.getPrimary: {cmdr}");
 
             var response = await RavenColonial.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/primary");
             var json = await response.Content.ReadAsStringAsync();
@@ -330,17 +328,17 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task setPrimary(string cmdr, string? buildId)
         {
-            Game.log($"Colony.setPrimary: {cmdr} => {buildId}");
+            Game.log($"RCC.setPrimary: {cmdr} => {buildId}");
 
             var response = buildId == null
                 ? await RavenColonial.client.DeleteAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/primary/")
                 : await RavenColonial.client.PutAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/primary/{Uri.EscapeDataString(buildId ?? "")}", null);
-            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
+            Game.log($"RCC.setPrimary: HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
         }
 
         public async Task<List<string>> getHiddenIDs(string cmdr)
         {
-            Game.log($"Colony.getHiddenIDs: {cmdr}");
+            Game.log($"RCC.getHiddenIDs: {cmdr}");
 
             var response = await RavenColonial.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/hiddenIDs");
             var json = await response.Content.ReadAsStringAsync();
@@ -351,12 +349,12 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task<List<string>> setHiddenIDs(string cmdr, IEnumerable<string> buildIDs)
         {
-            Game.log($"Colony.setHiddenIDs: {cmdr} => {string.Join(",", buildIDs)}");
+            Game.log($"RCC.setHiddenIDs: {cmdr} => {string.Join(",", buildIDs)}");
 
             var json1 = JsonConvert.SerializeObject(buildIDs);
             var body = new StringContent(json1, Encoding.Default, "application/json");
             var response = await RavenColonial.client.PostAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/hiddenIDs", body);
-            Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
+            Game.log($"RCC.setHiddenIDs: HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
 
             var json2 = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<List<string>>(json2)!;
@@ -366,7 +364,7 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task<List<SystemSite>> getSystemSites(string nameOrNum)
         {
-            Game.log($"Colony.getSystemSites: {nameOrNum}");
+            Game.log($"RCC.getSystemSites: {nameOrNum}");
 
             var response = await RavenColonial.client.GetAsync($"{svcUri}/api/v2/system/{Uri.EscapeDataString(nameOrNum)}/sites");
             var json = await response.Content.ReadAsStringAsync();
@@ -376,7 +374,7 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task<DataRCC?> updateSystem(string nameOrNum, SitesPut data)
         {
-            Game.log($"Colony.updateSystem: {nameOrNum}");
+            Game.log($"RCC.updateSystem: {nameOrNum}");
             if (Game.activeGame?.cmdr?.rccApiKey == null)
             {
                 // TODO: add some UI somewhere making this obvious
@@ -392,7 +390,7 @@ namespace SrvSurvey.game.RavenColonial
             var json = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
-                Game.log($"updateSystem '{nameOrNum}' failed: {json}");
+                Game.log($"updateSystem '{nameOrNum}' failed: HTTP:{(int)response.StatusCode}({response.StatusCode}): {json}");
                 return null;
             }
             var obj = JsonConvert.DeserializeObject<DataRCC>(json);
@@ -401,7 +399,7 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task<DataRCC> getSystem(string nameOrNum)
         {
-            Game.log($"Colony.getSystemBodies: {nameOrNum}");
+            Game.log($"RCC.getSystemBodies: {nameOrNum}");
 
             var response = await RavenColonial.client.GetAsync($"{svcUri}/api/v2/system/{Uri.EscapeDataString(nameOrNum)}");
             var json = await response.Content.ReadAsStringAsync();
@@ -411,7 +409,7 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task<string> getSystemArchitect(string nameOrNum)
         {
-            Game.log($"Colony.getSystemArchitect: {nameOrNum}");
+            Game.log($"RCC.getSystemArchitect: {nameOrNum}");
 
             var response = await RavenColonial.client.GetAsync($"{svcUri}/api/v2/system/{Uri.EscapeDataString(nameOrNum)}/architect");
             var json = await response.Content.ReadAsStringAsync();
@@ -424,7 +422,7 @@ namespace SrvSurvey.game.RavenColonial
         /// </summary>
         public async Task<bool> updateSysBodies(long address, List<Bod> bods)
         {
-            Game.log($"Colony.updateSysBodies: {address} - bodies: {bods.Count}");
+            Game.log($"RCC.updateSysBodies: {address} - bodies: {bods.Count}");
 
             var json1 = JsonConvert.SerializeObject(bods);
             var body = new StringContent(json1, Encoding.Default, "application/json");
@@ -433,14 +431,14 @@ namespace SrvSurvey.game.RavenColonial
             var json = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
-                Game.log($"updateSysBodies '{address}' failed: {json}");
+                Game.log($"updateSysBodies '{address}' failed: HTTP:{(int)response.StatusCode}({response.StatusCode}): {json}");
 
             return response.IsSuccessStatusCode;
         }
 
         public async Task<string?> getCmdrByApiKey(string apiKey)
         {
-            Game.log($"Colony.getCmdrByApiKey");
+            Game.log($"RCC.getCmdrByApiKey");
 
             var req = new HttpRequestMessage(HttpMethod.Get, $"{svcUri}/api/cmdr/");
             req.Headers.addIf("rcc-key", apiKey);
@@ -449,7 +447,7 @@ namespace SrvSurvey.game.RavenColonial
             var json = await response.Content.ReadAsStringAsync();
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                Game.log($"Colony.getCmdrByApiKey: failed:\n\t{json}");
+                Game.log($"RCC.getCmdrByApiKey: failed:\n\t{json}");
                 return null;
             }
 
@@ -459,7 +457,7 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task publishCurrentShip(CmdrCurrentShip ship)
         {
-            Game.log($"Colony.publishCurrentShip: {ship.name} ({ship.type})");
+            Game.log($"RCC.publishCurrentShip: {ship.name} ({ship.type})");
 
             var json1 = JsonConvert.SerializeObject(ship);
             var body = new StringContent(json1, Encoding.Default, "application/json");
@@ -467,10 +465,11 @@ namespace SrvSurvey.game.RavenColonial
 
             var response = await RavenColonial.client.PostAsync($"{svcUri}/api/cmdr/currentShip", body);
             var json2 = await response.Content.ReadAsStringAsync();
-            Game.log($"Colony.publishCurrentShip: response json:\r\n\t{json2}\r\n");
 
-            if (!response.IsSuccessStatusCode)
-                Game.log($"Colony.publishCurrentShip: HTTP:{(int)response.StatusCode}({response.StatusCode}): failed: {json2}");
+            if (response.IsSuccessStatusCode)
+                Game.log($"RCC.publishCurrentShip: response json:\r\n\t{json2}\r\n");
+            else
+                Game.log($"RCC.publishCurrentShip: HTTP:{(int)response.StatusCode}({response.StatusCode}): failed: {json2}");
         }
 
     }
@@ -780,10 +779,5 @@ namespace SrvSurvey.game.RavenColonial
         public required string type;
         public required int maxCargo;
         public required Dictionary<string, int> cargo;
-
-        public double? jumpRange;
-        public string? systemName;
-        public long? id64;
-        public double[]? starpos;
     }
 }
