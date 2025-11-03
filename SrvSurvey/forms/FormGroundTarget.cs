@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace SrvSurvey
 {
+    [Draggable]
     internal partial class FormGroundTarget : FixedForm
     {
         public FormGroundTarget()

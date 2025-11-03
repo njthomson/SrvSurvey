@@ -1138,8 +1138,8 @@ namespace SrvSurvey
             // 
             // Main
             // 
-            AutoScaleDimensions = new SizeF(7F, 12F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = SystemColors.AppWorkspace;
             ClientSize = new Size(437, 548);
             Controls.Add(btnColonize);
