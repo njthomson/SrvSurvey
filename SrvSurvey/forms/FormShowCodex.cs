@@ -5,7 +5,7 @@ using SrvSurvey.widgets;
 
 namespace SrvSurvey
 {
-    [Draggable, TrackPosition]
+    [TrackPosition]
     internal partial class FormShowCodex : SizableForm
     {
         public static bool allow { get => Game.activeGame?.systemData?.bioSignalsTotal > 0; }

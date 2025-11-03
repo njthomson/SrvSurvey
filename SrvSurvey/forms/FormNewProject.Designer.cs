@@ -266,7 +266,7 @@
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Name = "FormNewProject";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "comboBuildType";
+            Text = "New build project";
             ResumeLayout(false);
             PerformLayout();
         }

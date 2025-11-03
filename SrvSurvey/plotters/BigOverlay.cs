@@ -1,6 +1,5 @@
 ﻿using SrvSurvey.forms;
 using SrvSurvey.game;
-using SrvSurvey.Properties;
 using SrvSurvey.widgets;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
@@ -83,7 +82,7 @@ namespace SrvSurvey.plotters
                 this.AllowTransparency = true;
             }
 
-            this.Text = "SrvSurveyOne";
+            this.Text = this.Name;
         }
 
         protected override void OnMouseLeave(EventArgs e)

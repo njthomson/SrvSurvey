@@ -16,7 +16,7 @@ namespace SrvSurvey.plotters
             allowed = allowed,
             ctor = (game, def) => new PlotBioSystem(game, def),
             defaultSize = new Size(200, 200),
-            invalidationJournalEvents = new() { nameof(SAAScanComplete), nameof(SAASignalsFound) },
+            invalidationJournalEvents = new() { nameof(CodexEntry), nameof(SAAScanComplete), nameof(SAASignalsFound) },
         };
 
         public static bool allowed(Game game)
@@ -257,12 +257,12 @@ namespace SrvSurvey.plotters
                         volCol = VolColor.Gold;
                     else if (!organism.analyzed)
                     {
-                        if (Game.activeGame?.cmdrCodex.isDiscovered(organism.entryId) == false)
+                        if (!game.cmdrCodex.isDiscovered(organism.entryId))
                         {
                             discoveryPrefix = "⚑";
                             volCol = VolColor.Gold;
                         }
-                        else if (Game.activeGame?.cmdrCodex.isDiscoveredInRegion(organism.entryId, game.cmdr.galacticRegion) == false)
+                        else if (!game.cmdrCodex.isDiscoveredInRegion(organism.entryId, game.cmdr.galacticRegion))
                         {
                             discoveryPrefix = "⚐";
                             if (Game.settings.highlightRegionalFirsts) volCol = VolColor.Gold;
