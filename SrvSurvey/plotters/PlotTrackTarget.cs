@@ -97,7 +97,7 @@ namespace SrvSurvey.plotters
             gt.renderAngleOfAttack(g, N.ten, N.fourFour, game.status.PlanetRadius, this.targetLocation, Status.here, true);
 
             // fixed size
-            return def.defaultSize;
+            return N.s(def.defaultSize);
         }
     }
 }

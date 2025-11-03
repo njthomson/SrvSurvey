@@ -456,6 +456,23 @@ namespace SrvSurvey.game.RavenColonial
             var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(json)!;
             return data.GetValueOrDefault("displayName");
         }
+
+        public async Task publishCurrentShip(CmdrCurrentShip ship)
+        {
+            Game.log($"Colony.publishCurrentShip: {ship.name} ({ship.type})");
+
+            var json1 = JsonConvert.SerializeObject(ship);
+            var body = new StringContent(json1, Encoding.Default, "application/json");
+            body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
+
+            var response = await RavenColonial.client.PostAsync($"{svcUri}/api/cmdr/currentShip", body);
+            var json2 = await response.Content.ReadAsStringAsync();
+            Game.log($"Colony.publishCurrentShip: response json:\r\n\t{json2}\r\n");
+
+            if (!response.IsSuccessStatusCode)
+                Game.log($"Colony.publishCurrentShip: HTTP:{(int)response.StatusCode}({response.StatusCode}): failed: {json2}");
+        }
+
     }
 
     class AllColonizationCosts : Dictionary<string, Dictionary<string, int>> { }
@@ -754,5 +771,19 @@ namespace SrvSurvey.game.RavenColonial
         common,
         major,
         pristine,
+    }
+
+    public class CmdrCurrentShip
+    {
+        public required string cmdr;
+        public required string name; // or ident
+        public required string type;
+        public required int maxCargo;
+        public required Dictionary<string, int> cargo;
+
+        public double? jumpRange;
+        public string? systemName;
+        public long? id64;
+        public double[]? starpos;
     }
 }

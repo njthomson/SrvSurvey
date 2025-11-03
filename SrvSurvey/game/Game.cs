@@ -1645,6 +1645,10 @@ namespace SrvSurvey.game
                 }
             }
 
+            // track revised cargo online
+            if (Game.settings.buildProjectsTrackShipCargo_TEST && cmdrColony.notHiddenProjects.Any())
+                ColonyData.publishCurrentShip(this).justDoIt();
+
             PlotBase2.invalidate(nameof(PlotBuildCommodities));
         }
 

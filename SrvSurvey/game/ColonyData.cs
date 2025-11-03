@@ -160,6 +160,8 @@ namespace SrvSurvey.game
 
         #endregion
 
+        public List<Project> notHiddenProjects => this.projects.Where(p => !this.hiddenIDs.Contains(p.buildId)).ToList();
+
         [JsonIgnore]
         public Needs allNeeds;
 
@@ -505,9 +507,8 @@ namespace SrvSurvey.game
             return bestMatch.Key;
         }
 
-        public static async Task<FleetCarrier?> publishFC()
+        public static async Task<FleetCarrier?> publishFC(Game game)
         {
-            var game = Game.activeGame;
             if (game?.lastDocked?.StationType != StationType.FleetCarrier || game.journals == null) return null;
 
             // pull what we can from Docked, then find the display name
@@ -702,5 +703,34 @@ namespace SrvSurvey.game
             Debugger.Break();
             return $"{b.starType} (?) Star"; // TODO: map the star type
         }
+
+        public static async Task<bool> publishCurrentShip(Game game)
+        {
+            if (game?.cmdr?.rccApiKey == null) return false;
+
+            var ship = new CmdrCurrentShip()
+            {
+                cmdr = game.cmdr.commander,
+                name = game.currentShip.name ?? game.currentShip.ident,
+                type = game.currentShip.type,
+                maxCargo = game.currentShip.cargoCapacity,
+                cargo = game.cargoFile.Inventory.ToDictionary(_ => _.Name, _ => _.Count),
+            };
+
+            if (Game.settings.buildProjectsTrackShipLocation_TEST && game.systemData != null)
+            {
+                ship.jumpRange = game.currentShip.maxJump;
+                ship.systemName = game.systemData.name;
+                ship.id64 = game.systemData.address;
+                ship.starpos = game.systemData.starPos;
+            }
+
+            Game.log($"Publishing current ship: {ship.name} ({ship.type})");
+
+            await Game.rcc.publishCurrentShip(ship);
+
+            return true;
+        }
+
     }
 }

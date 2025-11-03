@@ -657,7 +657,7 @@
     <source>Ethgreze Tea Buds</source>
   </data>
   <data name="EvacuationShelter">
-    <value>Abri d'évacuation</value>
+    <value>Abri d'urgence</value>
     <comment>Commodity EvacuationShelter</comment>
     <source>Evacuation Shelter</source>
   </data>
@@ -1086,7 +1086,7 @@
     <source>Liquid oxygen</source>
   </data>
   <data name="Liquor">
-    <value>Alcool</value>
+    <value>Spiritueux</value>
     <comment>Commodity Liquor</comment>
     <source>Liquor</source>
   </data>

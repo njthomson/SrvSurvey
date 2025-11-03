@@ -1771,7 +1771,7 @@ namespace SrvSurvey
             if (game?.lastDocked?.StationType != StationType.FleetCarrier || game.journals == null) return;
 
             btnColonize.Enabled = false;
-            ColonyData.publishFC().continueOnMain(this, fc =>
+            ColonyData.publishFC(game).continueOnMain(this, fc =>
             {
                 btnColonize.Enabled = true;
                 Game.log($"FC Published: {fc}");

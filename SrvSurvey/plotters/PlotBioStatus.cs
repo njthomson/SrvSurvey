@@ -190,7 +190,7 @@ namespace SrvSurvey.plotters
                     tt.drawFooter(Res.FooterUseCompScanner);
             }
 
-            return PlotBioStatus.def.defaultSize;
+            return N.s(PlotBioStatus.def.defaultSize);
         }
 
         private void showCurrentGenus(Graphics g, TextCursor tt, SystemOrganism organism)

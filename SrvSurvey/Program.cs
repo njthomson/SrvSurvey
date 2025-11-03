@@ -177,7 +177,7 @@ namespace SrvSurvey
 
                 if (formType.Name == nameof(PlotContainer))
                 {
-                    if (def?.form == null) throw new Exception($"Why no form for: {def?.name}");
+                    if (def?.form == null) throw new Exception($"Why no form for: {def?.name} ({formTypeName})");
                     form = (T)(PlotterForm)def.form;
                 }
                 else
@@ -579,7 +579,7 @@ namespace SrvSurvey
                 var count4 = Directory.Exists(dataFolder2) ? Directory.GetFiles(dataFolder2, "*.*", SearchOption.AllDirectories).Length : -1;
 
                 MessageBox.Show($"An unexpected error occurred. Please report the following on https://github.com/njthomson/SrvSurvey/issues:\n\nDiagnostic counts: [{count1}, {count2}, {count3}, {count4}]\nLast operation: {lastOperation}\n\n{ex.Message}\n\n{ex.StackTrace}", $"SrvSurvey - {releaseVersion}", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Process.GetCurrentProcess().Kill();
+                Application.Exit();
                 return true;
             }
 
@@ -598,7 +598,7 @@ namespace SrvSurvey
             Application.DoEvents();
             Process.Start(Application.ExecutablePath, args);
             Application.DoEvents();
-            Process.GetCurrentProcess().Kill();
+            Application.Exit();
         }
 
         /// <summary> Defer the given action behind BeginInvoke </summary>

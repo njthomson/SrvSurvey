@@ -199,7 +199,7 @@ namespace SrvSurvey.game
             Game.log($"Gained: +{reward.ToString("N0")} for {reason}");
             this.explRewards += reward;
 
-            Game.activeGame?.fireUpdate(true);
+            PlotBase2.renderAll(Game.activeGame);
             this.Save();
         }
 

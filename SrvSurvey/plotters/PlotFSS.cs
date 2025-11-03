@@ -197,7 +197,7 @@ namespace SrvSurvey.plotters
             }
 
             // size is fixed
-            return def.defaultSize;
+            return N.s(def.defaultSize);
         }
 
         #region pixel watching

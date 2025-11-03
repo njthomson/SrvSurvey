@@ -5,6 +5,7 @@ using SrvSurvey.widgets;
 
 namespace SrvSurvey.forms
 {
+    [Draggable, TrackPosition]
     partial class FormNewProject : SizableForm
     {
         private Game game => Game.activeGame!;
@@ -112,6 +113,11 @@ namespace SrvSurvey.forms
                 radioOrbital.Enabled = true;
                 radioSurface.Enabled = true;
                 comboBuildType.SelectedIndex = 0;
+
+                if (game.systemBody == null)
+                    radioOrbital.Checked = true;
+                else
+                    radioSurface.Checked = true;
             }
             else
             {
