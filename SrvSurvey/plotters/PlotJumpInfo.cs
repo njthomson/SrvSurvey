@@ -386,8 +386,8 @@ namespace SrvSurvey.plotters
                 {
                     if (pixelsPerLY < limitPixelsPerLY)
                     {
-                        g.DrawLine(GameColors.Route.penNext2, x - N.two, y, x - N.oneTwo, y - N.ten);
-                        g.DrawLine(GameColors.Route.penNext2, x - N.two, y, x - N.oneTwo, y + N.ten);
+                        g.DrawLine(GameColors.Route.penNext2, x - N.two, y, x - N.six, y - N.four);
+                        g.DrawLine(GameColors.Route.penNext2, x - N.two, y, x - N.six, y + N.four);
                     }
                     else
                     {

@@ -197,6 +197,7 @@ namespace SrvSurvey
         public int inferTolerance = 25;
         public float inferThreshold = 0.002f;
 
+        /// <summary> True once we have migrated from old the 1.0.0.0 data folder </summary>
         public bool dataFolder1100 = false;
 
         public int pubBioCriteria = 0;

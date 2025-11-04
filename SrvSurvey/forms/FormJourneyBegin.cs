@@ -13,7 +13,7 @@ namespace SrvSurvey.forms
         public FormJourneyBegin()
         {
             InitializeComponent();
-            this.cmdr = CommanderSettings.LoadCurrentOrLast();
+            this.cmdr = CommanderSettings.LoadCurrentOrLast(true)!;
             txtCurrentSystem.Text = cmdr.currentSystem;
             comboStartFrom.Enabled = false;
             lblWarning.Text = null;

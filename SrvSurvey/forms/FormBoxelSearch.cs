@@ -29,7 +29,7 @@ namespace SrvSurvey.forms
             this.fontHighlightCurrentRow = new Font(list.Font, FontStyle.Bold);
 
             // load current or last cmdr, and their boxel search details
-            this.cmdr = CommanderSettings.LoadCurrentOrLast();
+            this.cmdr = CommanderSettings.LoadCurrentOrLast(true)!;
 
             // default distance measuring from cmdr's current system
             this.from = cmdr.getCurrentStarRef();

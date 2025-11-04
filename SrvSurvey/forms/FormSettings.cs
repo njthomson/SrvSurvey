@@ -32,6 +32,7 @@ namespace SrvSurvey
             this.Icon = Icons.spanner;
             comboLang.SelectedIndex = 0;
             comboLang.Items.AddRange(Localize.supportedLanguages.Keys.ToArray());
+            btnAdjustOverlays.Enabled = Elite.isGameRunning;
 
             // build a map of fields on the setting objects by name
             foreach (var fieldInfo in typeof(Settings).GetRuntimeFields())
@@ -77,13 +78,12 @@ namespace SrvSurvey
             this.numGravityWarningLevel.Enabled = label12.Enabled = checkBox13.Checked;
 
             groupColonization.setChildrenEnabled(Game.settings.buildProjects_TEST, checkColonization);
-
-            checkShowInRightPanel.Enabled = checkBox49.Checked;
-            checkBox43.Enabled = checkBox49.Checked;
-            checkBox44.Enabled = checkBox49.Checked;
-            checkBox46.Enabled = checkBox49.Checked;
-            checkBox47.Enabled = checkBox49.Checked;
-            checkBox48.Enabled = checkBox49.Checked;
+            checkShowInRightPanel.Enabled = checkColonization.Checked && checkBox49.Checked;
+            checkBox43.Enabled = checkColonization.Checked && checkBox49.Checked;
+            checkBox44.Enabled = checkColonization.Checked && checkBox49.Checked && checkBox43.Checked;
+            checkBox46.Enabled = checkColonization.Checked && checkBox49.Checked && checkBox43.Checked;
+            checkBox47.Enabled = checkColonization.Checked && checkBox49.Checked && checkBox43.Checked;
+            checkBox48.Enabled = checkColonization.Checked && checkBox49.Checked && checkBox43.Checked;
 
             btnAdjustVR.Enabled = checkEnableVR.Checked;
 
@@ -951,12 +951,12 @@ namespace SrvSurvey
 
         private void checkBox49_CheckedChanged(object sender, EventArgs e)
         {
-            checkShowInRightPanel.Enabled = checkBox49.Checked;
-            checkBox43.Enabled = checkBox49.Checked;
-            checkBox44.Enabled = checkBox49.Checked;
-            checkBox46.Enabled = checkBox49.Checked;
-            checkBox47.Enabled = checkBox49.Checked;
-            checkBox48.Enabled = checkBox49.Checked;
+            checkShowInRightPanel.Enabled = checkColonization.Checked && checkBox49.Checked;
+            checkBox43.Enabled = checkColonization.Checked && checkBox49.Checked;
+            checkBox44.Enabled = checkColonization.Checked && checkBox49.Checked && checkBox43.Checked;
+            checkBox46.Enabled = checkColonization.Checked && checkBox49.Checked && checkBox43.Checked;
+            checkBox47.Enabled = checkColonization.Checked && checkBox49.Checked && checkBox43.Checked;
+            checkBox48.Enabled = checkColonization.Checked && checkBox49.Checked && checkBox43.Checked;
         }
 
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -1023,7 +1023,7 @@ namespace SrvSurvey
         {
             if (e.TabPage == tabExternalData && e.Action == TabControlAction.Selected && !txtRavenApiKey.Enabled)
             {
-                txtRavenApiKey.Enabled = true;
+                txtRavenApiKey.Enabled = this.cmdrSettings != null;
                 checkApiKey();
             }
         }

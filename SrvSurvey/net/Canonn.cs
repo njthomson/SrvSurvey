@@ -381,7 +381,8 @@ namespace SrvSurvey.canonn
             }
 
             // exit early if cmdr has no Guardian files
-            var folder = Path.Combine(Program.dataFolder, "guardian", Game.settings.lastFid!);
+            if (Game.settings.lastFid == null) return allRuinEntries;
+            var folder = Path.Combine(Program.dataFolder, "guardian", Game.settings.lastFid);
             if (!Directory.Exists(folder)) return allRuinEntries;
 
 
@@ -470,7 +471,8 @@ namespace SrvSurvey.canonn
             }
 
             // exit early if cmdr has no Guardian files
-            var folder = Path.Combine(Program.dataFolder, "guardian", Game.settings.lastFid!);
+            if (Game.settings.lastFid == null) return allStructures;
+            var folder = Path.Combine(Program.dataFolder, "guardian", Game.settings.lastFid);
             if (!Directory.Exists(folder)) return allStructures;
 
 
@@ -513,7 +515,8 @@ namespace SrvSurvey.canonn
             var allStructures = summaries.Select(_ => new GuardianGridEntry(_)).ToList();
 
             // exit early if cmdr has no Guardian files
-            var folder = Path.Combine(Program.dataFolder, "guardian", Game.settings.lastFid!);
+            if (Game.settings.lastFid == null) return allStructures;
+            var folder = Path.Combine(Program.dataFolder, "guardian", Game.settings.lastFid);
             if (!Directory.Exists(folder)) return allStructures;
 
             var files = Directory.GetFiles(folder, "*-beacon.json");

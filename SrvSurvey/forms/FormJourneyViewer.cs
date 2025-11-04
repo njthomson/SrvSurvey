@@ -55,7 +55,7 @@ namespace SrvSurvey.forms
 
             // load current journey 
             if (this.journey == null)
-                this.journey = Game.activeGame?.journey ?? CommanderSettings.LoadCurrentOrLast().loadActiveJourney()!;
+                this.journey = Game.activeGame?.journey ?? CommanderSettings.LoadCurrentOrLast(true)!.loadActiveJourney()!;
             if (this.journey == null)
                 throw new Exception("Why no active journey?");
 
@@ -249,7 +249,7 @@ namespace SrvSurvey.forms
                 journey.endTime = DateTimeOffset.Now;
                 journey.Save();
 
-                var cmdr = CommanderSettings.LoadCurrentOrLast();
+                var cmdr = CommanderSettings.LoadCurrentOrLast(true)!;
                 cmdr.activeJourney = null;
                 cmdr.Save();
 

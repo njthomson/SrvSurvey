@@ -10,7 +10,7 @@ namespace SrvSurvey.forms
         public FormJourneyEdit()
         {
             InitializeComponent();
-            this.journey = Game.activeGame?.journey ?? CommanderSettings.LoadCurrentOrLast().loadActiveJourney()!;
+            this.journey = Game.activeGame?.journey ?? CommanderSettings.LoadCurrentOrLast(true)!.loadActiveJourney()!;
             if (this.journey == null) throw new Exception("Why no active journey?");
 
             updateFormFromJourney();

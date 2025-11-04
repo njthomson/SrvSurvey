@@ -16,7 +16,7 @@ namespace SrvSurvey
             InitializeComponent();
             this.Icon = Icons.sphere;
 
-            this.cmdr = CommanderSettings.LoadCurrentOrLast();
+            this.cmdr = CommanderSettings.LoadCurrentOrLast(true)!;
             txtCurrentSystem.Text = cmdr.currentSystem;
 
             // populate controls from settings

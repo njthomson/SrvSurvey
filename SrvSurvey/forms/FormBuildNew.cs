@@ -28,7 +28,7 @@ namespace SrvSurvey.forms
             this.lblFont = new Font("Segoe UI Emoji", this.Font.Size);
             this.table.Controls.Clear();
 
-            this.cmdr = CommanderSettings.LoadCurrentOrLast(); // Remove?
+            this.cmdr = CommanderSettings.LoadCurrentOrLast(true)!; // Remove?
             this.colonyData = game.cmdrColony;
 
             this.allCosts = Game.rcc.loadDefaultCosts();

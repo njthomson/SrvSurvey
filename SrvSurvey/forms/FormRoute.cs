@@ -19,7 +19,7 @@ namespace SrvSurvey.forms
         public FormRoute()
         {
             InitializeComponent();
-            this.cmdr = CommanderSettings.LoadCurrentOrLast();
+            this.cmdr = CommanderSettings.LoadCurrentOrLast(true)!;
             this.updatingListChecks = true;
             list.FullRowSelect = true;
 

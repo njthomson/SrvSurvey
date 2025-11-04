@@ -136,6 +136,90 @@ namespace SrvSurvey
             Program.defer(() => afterMainLoad());
         }
 
+        private void doMigrationFromData1000()
+        {
+            txtCommander.Text = "Data migration needed";
+            txtLocation.Text = "";
+            txtMode.Text = "";
+            Application.DoEvents();
+
+            var rslt = MessageBox.Show(this, "This new version of SrvSurvey needs to perform a migration of data files. This might take a few minutes if you have visited many systems with SrvSurvey.\r\n\r\nReady to proceed?", "SrvSurvey", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+            if (rslt == DialogResult.Cancel)
+            {
+                var rslt2 = MessageBox.Show(this, "The migration is necessary before SrvSurvey can run.\r\n\r\nIf migration keeps failing, please report the issue on:\r\nhttps://github.com/njthomson/SrvSurvey/issues.\r\n\r\nAlternatively you may click 'Retry' to ignore your old data and proceed without it.", "SrvSurvey", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning);
+                if (rslt2 == DialogResult.Retry)
+                {
+                    Game.settings.dataFolder1100 = true;
+                    Game.settings.Save();
+                    Program.forceRestart();
+                }
+                else
+                {
+                    Application.Exit();
+                    return;
+                }
+            }
+            txtCommander.Text = "Preparing reference data...";
+            txtLocation.Text = "(watch the logs to see progress)";
+            txtMode.Text = "Please stand by...";
+
+            // Prep CodexRef first
+            Game.codexRef.init(true).ContinueWith((rslt) =>
+            {
+                this.Invoke(new Action(() =>
+                {
+                    if (!rslt.IsCompletedSuccessfully)
+                    {
+                        Util.handleError(rslt.Exception);
+                        return;
+                    }
+
+                    // migrate the data files
+                    txtCommander.Text = "Migrating data...";
+                    Application.DoEvents();
+                }));
+
+                // keep this on background thread
+                Program.migrateToNewDataFolder();
+
+                this.Invoke(new Action(() =>
+                {
+                    // migrate the data files
+                    txtCommander.Text = "Reticulating data...";
+                    Application.DoEvents();
+                }));
+
+                // keep this on background thread
+                Program.migrate_BodyData_Into_SystemData().ContinueWith((result) =>
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        if (result.IsFaulted && result.Exception != null)
+                        {
+                            FormErrorSubmit.Show(result.Exception.InnerException ?? result.Exception);
+                            Application.Exit();
+                            return;
+                        }
+
+                        // show thank you message
+                        txtCommander.Text = "Ready!";
+                        txtLocation.Text = "";
+                        Application.DoEvents();
+                        MessageBox.Show(this, "Thank you, your data has been migrated.\r\n\r\nSrvSurvey will now restart...", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        // save that migration completed
+                        Application.DoEvents();
+                        var newSettings = Settings.Load();
+                        newSettings.dataFolder1100 = true;
+                        newSettings.Save();
+
+                        // force a restart
+                        Program.forceRestart();
+                    }));
+                });
+            });
+        }
+
         private void afterMainLoad()
         {
             this.updateAllControls();
@@ -144,99 +228,17 @@ namespace SrvSurvey
             this.lastWindowRect = Elite.getWindowRect();
 
             // check for 1.0.0.0 to 1.1.0.0 migrations
-            var isMigrationValid = Program.getMigratableFolders().Any();
-            Game.log($"isMigrationValid: {isMigrationValid}, dataFolder1100: {Game.settings.dataFolder1100}");
-            if (isMigrationValid)
+            var isMigrationNeeded = Program.getMigratableFolders().Count > 0;
+            Game.log($"isMigrationNeeded: {isMigrationNeeded}, dataFolder1100: {Game.settings.dataFolder1100}");
+            if (isMigrationNeeded)
             {
                 if (!Game.settings.dataFolder1100)
                 {
                     // we need to migrate all data to the new folder
-                    foreach (Control ctrl in this.Controls) ctrl.Enabled = false;
-                    btnLogs.Enabled = true;
+                    this.setChildrenEnabled(false, btnLogs);
                     this.Activate();
 
-                    this.BeginInvoke(new Action(() =>
-                    {
-                        txtCommander.Text = "Data migration needed";
-                        txtLocation.Text = "";
-                        txtMode.Text = "";
-                        Application.DoEvents();
-                        var rslt = MessageBox.Show(this, "This new version of SrvSurvey needs to perform a migration of data files. This might take a few minutes if you have visited many systems with SrvSurvey.\r\n\r\nReady to proceed?", "SrvSurvey", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
-                        if (rslt == DialogResult.Cancel)
-                        {
-                            var rslt2 = MessageBox.Show(this, "The migration is necessary before SrvSurvey can run.\r\n\r\nIf migration keeps failing, please report the issue on:\r\nhttps://github.com/njthomson/SrvSurvey/issues.\r\n\r\nAlternatively you may click 'Retry' to ignore your old data and proceed without it.", "SrvSurvey", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning);
-                            if (rslt2 == DialogResult.Retry)
-                            {
-                                Game.settings.dataFolder1100 = true;
-                                Game.settings.Save();
-                                Program.forceRestart();
-                            }
-                            else
-                            {
-                                Application.Exit();
-                                return;
-                            }
-                        }
-                        txtCommander.Text = "Preparing reference data...";
-                        txtLocation.Text = "(watch the logs to see progress)";
-                        txtMode.Text = "Please stand by...";
-
-                        // Prep CodexRef first
-                        Game.codexRef.init(true).ContinueWith((rslt) =>
-                        {
-                            this.Invoke(new Action(() =>
-                            {
-                                if (!rslt.IsCompletedSuccessfully)
-                                {
-                                    Util.handleError(rslt.Exception);
-                                    return;
-                                }
-
-                                // migrate the data files
-                                txtCommander.Text = "Migrating data...";
-                                Application.DoEvents();
-                            }));
-
-                            // keep this on background thread
-                            Program.migrateToNewDataFolder();
-
-                            this.Invoke(new Action(() =>
-                            {
-                                // migrate the data files
-                                txtCommander.Text = "Reticulating data...";
-                                Application.DoEvents();
-                            }));
-
-                            // keep this on background thread
-                            Program.migrate_BodyData_Into_SystemData().ContinueWith((result) =>
-                            {
-                                this.Invoke(new Action(() =>
-                                {
-                                    if (result.IsFaulted && result.Exception != null)
-                                    {
-                                        FormErrorSubmit.Show(result.Exception.InnerException ?? result.Exception);
-                                        Application.Exit();
-                                        return;
-                                    }
-
-                                    // show thank you message
-                                    txtCommander.Text = "Ready!";
-                                    txtLocation.Text = "";
-                                    Application.DoEvents();
-                                    MessageBox.Show(this, "Thank you, your data has been migrated.\r\n\r\nSrvSurvey will now restart...", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                                    // save that migration completed
-                                    Application.DoEvents();
-                                    var newSettings = Settings.Load();
-                                    newSettings.dataFolder1100 = true;
-                                    newSettings.Save();
-
-                                    // force a restart
-                                    Program.forceRestart();
-                                }));
-                            });
-                        });
-                    }));
+                    Program.defer(() => this.doMigrationFromData1000());
                     return;
                 }
             }
@@ -251,7 +253,7 @@ namespace SrvSurvey
             txtLocation.Text = "This is a (mostly) one time thing";
             this.txtMode.Text = "";
 
-            Task.Factory.StartNew(new Action(async () =>
+            Task.Factory.StartNew(async () =>
             {
                 try
                 {
@@ -284,8 +286,9 @@ namespace SrvSurvey
                         if (Elite.isGameRunning || Program.useLastIfShutdown)
                             this.newGame();
 
-                        foreach (Control ctrl in this.Controls) ctrl.Enabled = true;
+                        this.setChildrenEnabled(true);
                         btnCodexShow.Enabled = FormShowCodex.allow;
+                        this.updateCommanderTexts();
 
                         this.timer1.Start();
 
@@ -297,7 +300,7 @@ namespace SrvSurvey
                 {
                     Util.handleError(ex);
                 }
-            }));
+            });
         }
 
         public void startHooks()
@@ -615,7 +618,8 @@ namespace SrvSurvey
                 this.menuNotifyCmdr.Text = $"Cmdr: {Program.forceFid} ?";
                 this.txtVehicle.Text = "";
                 this.txtNearBody.Text = "";
-                this.txtLocation.Text = Game.settings.lastFid != null ? CommanderSettings.LoadCurrentOrLast()?.currentSystem ?? "" : "";
+                var cmdr = CommanderSettings.LoadCurrentOrLast();
+                this.txtLocation.Text = Game.settings.lastFid != null ? cmdr?.currentSystem ?? "" : "";
                 btnCopyLocation.Enabled = !string.IsNullOrEmpty(this.txtLocation.Text);
                 menuNotifyCopy.Visible = false;
 
@@ -626,6 +630,11 @@ namespace SrvSurvey
                 else
                     this.txtMode.Text = "Game is not active";
 
+                btnRamTah.Enabled = cmdr != null;
+                btnSearch.Enabled = cmdr != null;
+                btnTravel.Enabled = cmdr != null;
+                btnColonize.Enabled = cmdr != null;
+                btnResetExploration.Enabled = false;
                 return;
             }
 
@@ -687,6 +696,12 @@ namespace SrvSurvey
                 txtDistance.Text = game.cmdr.distanceTravelled.ToString("N1") + " ly";
                 txtBodies.Text = $"Scanned: {game.cmdr.countScans}, DSS: {game.cmdr.countDSS}, Landed: {game.cmdr.countLanded}";
             }
+
+            btnRamTah.Enabled = true;
+            btnSearch.Enabled = true;
+            btnTravel.Enabled = true;
+            btnColonize.Enabled = true;
+            btnResetExploration.Enabled = true;
         }
 
         private void updateBioTexts()
@@ -1675,6 +1690,8 @@ namespace SrvSurvey
         {
             // decide which entries should be visible/enabled
             var cmdr = CommanderSettings.LoadCurrentOrLast();
+            if (cmdr == null) return;
+
             var hasActiveJourney = cmdr?.activeJourney != null;
 
             // show BEGIN only when there's no active journey

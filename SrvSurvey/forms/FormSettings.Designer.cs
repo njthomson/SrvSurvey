@@ -2494,6 +2494,7 @@ namespace SrvSurvey
             checkBox43.Tag = "buildProjectsShowSumFC_TEST";
             checkBox43.Text = "Show Fleet Carrier aggregate counts";
             checkBox43.UseVisualStyleBackColor = true;
+            checkBox43.CheckedChanged += checkBox49_CheckedChanged;
             // 
             // checkColonization
             // 

@@ -246,6 +246,7 @@ namespace SrvSurvey
                 lblSurveyCompletion.Text = null;
                 lblStatus.Text = null;
                 progressSurvey.Value = 0;
+                progressSurvey.Visible = false;
                 return;
             }
 
@@ -261,6 +262,7 @@ namespace SrvSurvey
             lblSurveyCompletion.Text = $"Survey: {status.percent}";
             progressSurvey.Maximum = status.maxScore;
             progressSurvey.Value = status.score;
+            progressSurvey.Visible = true;
         }
 
         private void getAllSurveyedRuins()
@@ -357,8 +359,8 @@ namespace SrvSurvey
             }
             else
             {
-                comboSiteType.SelectedIndex = 0;
                 comboSite.SelectedIndex = 0;
+                if (comboSiteType.SelectedIndex == -1) comboSiteType.SelectedIndex = 0;
             }
 
             loadMap(comboSite.Text);

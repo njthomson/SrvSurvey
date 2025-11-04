@@ -50,7 +50,7 @@ namespace SrvSurvey.game
             get => Game.activeGame?.cmdr?.commander ?? Game.settings.lastCommander;
         }
 
-        public static CommanderSettings LoadCurrentOrLast()
+        public static CommanderSettings? LoadCurrentOrLast(bool throwIfMissing = false)
         {
             // use cmdr from active game if possible
             var cmdr = Game.activeGame?.cmdr;
@@ -59,7 +59,7 @@ namespace SrvSurvey.game
             if (cmdr == null && Game.settings.lastCommander != null && Game.settings.lastFid != null)
                 cmdr = CommanderSettings.Load(Game.settings.lastFid, true, Game.settings.lastCommander);
 
-            if (cmdr == null)
+            if (throwIfMissing && cmdr == null)
                 throw new Exception("You must use SrvSurvey at least once before this will work");
 
             return cmdr;

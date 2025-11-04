@@ -239,6 +239,8 @@ namespace SrvSurvey.game
             currentSystem = new SystemStats(entry);
             visitedSystems.Add(currentSystem);
 
+            // TODO: detect changing galactic regions?
+
             // if journey viewer is open - make it refresh
             BaseForm.get<FormJourneyViewer>()?.refresh();
         }

@@ -16,7 +16,7 @@ namespace SrvSurvey.plotters
             allowed = allowed,
             ctor = (game, def) => new PlotBioSystem(game, def),
             defaultSize = new Size(200, 200),
-            invalidationJournalEvents = new() { nameof(CodexEntry), nameof(SAAScanComplete), nameof(SAASignalsFound) },
+            invalidationJournalEvents = new() { nameof(CodexEntry), nameof(FSSBodySignals), nameof(Scan), nameof(SAAScanComplete), nameof(SAASignalsFound) },
         };
 
         public static bool allowed(Game game)

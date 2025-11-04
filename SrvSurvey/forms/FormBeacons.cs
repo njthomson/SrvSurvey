@@ -50,7 +50,7 @@ namespace SrvSurvey
         private void FormBeacons_Load(object sender, EventArgs e)
         {
             this.grid.Columns[10].Width = 0;
-            this.from = CommanderSettings.LoadCurrentOrLast().getCurrentStarPos();
+            this.from = CommanderSettings.LoadCurrentOrLast()?.getCurrentStarPos() ?? StarPos.Sol;
             comboCurrentSystem.Text = from.systemName;
 
             this.BeginInvoke(() => this.beginPrepareAllRows().ContinueWith((rslt) => { /* no-op */ }));
@@ -382,7 +382,7 @@ namespace SrvSurvey
 
         private void grid_MouseClick(object sender, MouseEventArgs e)
         {
-            if (panelSiteTypes.Visible) return;
+            if (panelSiteTypes.Visible || CommanderSettings.currentOrLastCmdrName == null) return;
 
             if (e.Button == MouseButtons.Right && grid.SelectedItems.Count > 0)
             {
@@ -587,7 +587,7 @@ namespace SrvSurvey
 
         private void menuOpenSiteSurvey_Click(object sender, EventArgs e)
         {
-            if (this.grid.SelectedItems.Count == 0 || panelSiteTypes.Visible) return;
+            if (this.grid.SelectedItems.Count == 0 || panelSiteTypes.Visible || CommanderSettings.currentOrLastCmdrName == null) return;
             var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag!;
             if (entry.siteType == "Beacon") return;
 

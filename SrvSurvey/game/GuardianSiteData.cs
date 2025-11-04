@@ -673,20 +673,25 @@ namespace SrvSurvey.game
         /// </summary>
         public static List<GuardianSiteData> loadAllSites(bool onlyRuins)
         {
-            var folder = Path.Combine(rootFolder, Game.settings.lastFid!);
-            if (!Directory.Exists(folder))
-                return new List<GuardianSiteData>();
+            var sites = new List<GuardianSiteData>();
+            if (Game.settings.lastFid != null)
+            {
+                var folder = Path.Combine(rootFolder, Game.settings.lastFid);
+                if (Directory.Exists(folder))
+                {
+                    var files = onlyRuins
+                        ? Directory.GetFiles(folder, "*-ruins-*.json")
+                        : Directory.GetFiles(folder)
+                            .Where(_ => !_.Contains("beacon"))
+                            .ToArray();
 
-            var files = onlyRuins
-                ? Directory.GetFiles(folder, "*-ruins-*.json")
-                : Directory.GetFiles(folder)
-                    .Where(_ => !_.Contains("beacon"))
-                    .ToArray();
-
-            Game.log($"Reading {files.Length} guardian sites files from disk");
-            return files
-                .Select(filename => Data.Load<GuardianSiteData>(filename))
-                .ToList()!;
+                    Game.log($"Reading {files.Length} guardian sites files from disk");
+                    sites = files
+                        .Select(filename => Data.Load<GuardianSiteData>(filename))
+                        .ToList()!;
+                }
+            }
+            return sites;
         }
 
         public static List<GuardianSiteData> loadAllSitesFromAllUsers(bool onlySubmittedData)

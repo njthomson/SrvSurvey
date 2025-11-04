@@ -13,12 +13,6 @@ namespace SrvSurvey
     [Draggable, TrackPosition]
     internal partial class FormCodexBingo : SizableForm
     {
-        #region static form loading
-
-        private Brush treeBackBrush;
-
-        #endregion
-
         private Dictionary<string, string> edAstroLinks = new()
         {
             { "root", "https://edastro.com/mapcharts/codex.html" },
@@ -31,6 +25,7 @@ namespace SrvSurvey
             { "Thargoid", "https://edastro.b-cdn.net/mapcharts/codex/codex-aliens-regions.jpg" },
         };
 
+        private Brush treeBackBrush;
         private readonly static Brush brushPartial = Brushes.Orange;
         private readonly static Brush brushComplete = Brushes.Lime;
 
@@ -42,6 +37,7 @@ namespace SrvSurvey
         {
             InitializeComponent();
             this.Icon = Icons.prize;
+
             treeBackBrush = new SolidBrush(tree.BackColor);
             tree.Nodes.Clear();
             tree.MouseWheel += Tree_MouseWheel;
@@ -58,18 +54,23 @@ namespace SrvSurvey
             toolRegionName.Text = "Select a codex discovery...";
             toolDiscoveryDate.Text = "";
 
+            comboRegion.Enabled = currentCmdr != null;
+
             // Not themed - this is always dark.
         }
 
-        private CommanderSettings currentCmdr
+        private CommanderSettings? currentCmdr
         {
-            get => Game.activeGame?.cmdr ?? CommanderSettings.Load(this.cmdrCodex.fid, true, this.cmdrCodex.commander);
+            get => this.cmdrCodex == null ? null : Game.activeGame?.cmdr ?? CommanderSettings.Load(this.cmdrCodex.fid, true, this.cmdrCodex.commander);
         }
 
         private void comboCmdr_SelectedIndexChanged(object sender, EventArgs e)
         {
             var commander = comboCmdr.cmdrName;
             var fid = comboCmdr.cmdrFid;
+            toolUndiscovered.Enabled = fid != null;
+            toolImportFromCanonn.Enabled = fid != null;
+            toolImportFromJournal.Enabled = fid != null;
             if (fid == null) return;
 
             Game.log($"Loading completions for: {commander} ({fid})");
@@ -298,9 +299,9 @@ namespace SrvSurvey
                     menuEDAstro.Visible = hasGenus;
                     menuCanonnSeparator.Visible = hasEntryId || hasSpecies || hasGenus;
 
-                    menuPreScannedSeperator.Visible = hasEntryId;
-                    menuPreScanned.Visible = hasEntryId;
-
+                    menuPreScannedSeperator.Visible = hasEntryId && cmdrCodex != null;
+                    menuPreScanned.Visible = hasEntryId && cmdrCodex != null;
+                    
                     // some special cases for ED Astro links
                     if (edAstroLinks.Keys.Any(k => node.Name.matches(k)))
                         menuEDAstro.Visible = true;
@@ -433,8 +434,8 @@ namespace SrvSurvey
             var searchTerm = codexTag?.variant ?? codexTag?.text;
             if (searchTerm == null) return;
 
-            var refPos = this.currentCmdr.getCurrentStarPos();
-            FormNearestSystems.show(refPos, searchTerm, this.currentCmdr.commander);
+            var refPos = this.currentCmdr?.getCurrentStarPos() ?? StarPos.Sol;
+            FormNearestSystems.show(refPos, searchTerm, this.currentCmdr?.commander ?? "");
         }
 
         private void menuSpanshNearest_Click(object sender, EventArgs e)
@@ -446,7 +447,7 @@ namespace SrvSurvey
                     .Select(t => Game.codexRef.matchFromEntryId(t.entry!.entryid).variant)
                     .ToList();
 
-                var refPos = this.currentCmdr.getCurrentStarPos();
+                var refPos = this.currentCmdr?.getCurrentStarPos() ?? StarPos.Sol;
                 FormNearestSystems.show(refPos, variantNames);
             }
         }
@@ -515,7 +516,7 @@ namespace SrvSurvey
             if (codexTag?.entry == null) return;
 
             // get cmdr's personal discovery date and location
-            var entry = cmdrCodex.getEntry(codexTag.entry.entryid, this.regionIdx);
+            var entry = cmdrCodex?.getEntry(codexTag.entry.entryid, this.regionIdx);
             if (entry == null) return;
 
 
@@ -588,6 +589,8 @@ namespace SrvSurvey
 
         private void toolImportFromJournal_Click(object sender, EventArgs e)
         {
+            if (cmdrCodex == null) return;
+
             // start watching for file changes first
             var watcher = this.reactToOldJournalChanges();
 
@@ -642,6 +645,8 @@ namespace SrvSurvey
 
         private void toolImportFromCanonn_Click(object sender, EventArgs e)
         {
+            if (cmdrCodex == null) return;
+
             this.Enabled = false;
             Game.canonn.importCanonnChallenge(this.cmdrCodex).ContinueWith(t =>
             {
@@ -658,8 +663,11 @@ namespace SrvSurvey
 
         private void toolUndiscovered_Click(object sender, EventArgs e)
         {
-            var url = $"https://canonn-science.github.io/undiscovered-codex/?cmdr={Uri.EscapeDataString(this.currentCmdr.commander)}&System={this.currentCmdr.currentSystem}";
-            Util.openLink(url);
+            if (this.currentCmdr != null)
+            {
+                var url = $"https://canonn-science.github.io/undiscovered-codex/?cmdr={Uri.EscapeDataString(this.currentCmdr.commander)}&System={this.currentCmdr.currentSystem}";
+                Util.openLink(url);
+            }
         }
 
         private void toolCanonnChallenge_Click(object sender, EventArgs e)
