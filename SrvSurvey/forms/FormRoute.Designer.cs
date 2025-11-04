@@ -178,7 +178,7 @@
             // FormRoute
             // 
             resources.ApplyResources(this, "$this");
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.Dpi;
             Controls.Add(table);
             Name = "FormRoute";
             status.ResumeLayout(false);

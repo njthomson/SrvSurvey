@@ -35,11 +35,11 @@
             btnYes = new FlatButton();
             label2 = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
-            comboCmdrs = new ComboCmdr();
-            comboSystem = new ComboStarSystem();
             label3 = new Label();
             lblCloseWarning = new Label();
             btnRestore = new FlatButton();
+            comboCmdrs = new ComboCmdr();
+            comboSystem = new ComboStarSystem();
             timer = new System.Windows.Forms.Timer(components);
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -132,26 +132,6 @@
             tableLayoutPanel1.Size = new Size(545, 186);
             tableLayoutPanel1.TabIndex = 0;
             // 
-            // comboCmdrs
-            // 
-            comboCmdrs.cmdrFid = null;
-            tableLayoutPanel1.SetColumnSpan(comboCmdrs, 3);
-            comboCmdrs.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboCmdrs.FormattingEnabled = true;
-            comboCmdrs.Location = new Point(89, 54);
-            comboCmdrs.Name = "comboCmdrs";
-            comboCmdrs.Size = new Size(450, 23);
-            comboCmdrs.TabIndex = 11;
-            // 
-            // comboSystem
-            // 
-            tableLayoutPanel1.SetColumnSpan(comboSystem, 3);
-            comboSystem.FormattingEnabled = true;
-            comboSystem.Location = new Point(89, 83);
-            comboSystem.Name = "comboSystem";
-            comboSystem.Size = new Size(450, 23);
-            comboSystem.TabIndex = 10;
-            // 
             // label3
             // 
             label3.Anchor = AnchorStyles.Right;
@@ -166,7 +146,7 @@
             // 
             lblCloseWarning.Anchor = AnchorStyles.None;
             lblCloseWarning.AutoSize = true;
-            lblCloseWarning.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            lblCloseWarning.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblCloseWarning.Location = new Point(155, 150);
             lblCloseWarning.Margin = new Padding(3);
             lblCloseWarning.Name = "lblCloseWarning";
@@ -185,14 +165,36 @@
             btnRestore.UseVisualStyleBackColor = true;
             btnRestore.Click += btnRestore_Click;
             // 
+            // comboCmdrs
+            // 
+            comboCmdrs.cmdrFid = null;
+            tableLayoutPanel1.SetColumnSpan(comboCmdrs, 3);
+            comboCmdrs.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboCmdrs.FormattingEnabled = true;
+            comboCmdrs.Location = new Point(89, 54);
+            comboCmdrs.Name = "comboCmdrs";
+            comboCmdrs.Size = new Size(450, 23);
+            comboCmdrs.TabIndex = 11;
+            // 
+            // comboSystem
+            // 
+            tableLayoutPanel1.SetColumnSpan(comboSystem, 3);
+            comboSystem.FormattingEnabled = true;
+            comboSystem.Location = new Point(89, 83);
+            comboSystem.Name = "comboSystem";
+            comboSystem.SelectedSystem = null;
+            comboSystem.Size = new Size(450, 23);
+            comboSystem.TabIndex = 10;
+            comboSystem.updateOnJump = false;
+            // 
             // timer
             // 
             timer.Tick += timer_Tick;
             // 
             // FormSwapStarCache
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             ClientSize = new Size(547, 187);

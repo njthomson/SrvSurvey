@@ -89,7 +89,7 @@
             // FormSetKeyChord
             // 
             resources.ApplyResources(this, "$this");
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.Dpi;
             Controls.Add(flowButtons);
             Controls.Add(lblInvalid);
             Controls.Add(label1);

@@ -169,7 +169,7 @@
             // 
             AcceptButton = btnAccept;
             resources.ApplyResources(this, "$this");
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.Dpi;
             CancelButton = btnCancel;
             Controls.Add(flowLayoutPanel1);
             Controls.Add(tableLayoutPanel1);

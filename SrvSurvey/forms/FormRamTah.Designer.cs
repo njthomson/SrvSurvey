@@ -161,7 +161,7 @@ namespace SrvSurvey
             // linkLabel1
             // 
             linkLabel1.AutoSize = true;
-            linkLabel1.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
+            linkLabel1.Font = new Font("Segoe UI", 8F);
             linkLabel1.LinkArea = new LinkArea(1, 12);
             linkLabel1.Location = new Point(347, 37);
             linkLabel1.Name = "linkLabel1";
@@ -184,7 +184,7 @@ namespace SrvSurvey
             // linkLabel2
             // 
             linkLabel2.AutoSize = true;
-            linkLabel2.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
+            linkLabel2.Font = new Font("Segoe UI", 8F);
             linkLabel2.LinkArea = new LinkArea(1, 12);
             linkLabel2.Location = new Point(348, 65);
             linkLabel2.Name = "linkLabel2";
@@ -712,7 +712,6 @@ namespace SrvSurvey
             // btnQuit
             // 
             btnQuit.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnQuit.FlatStyle = FlatStyle.Flat;
             btnQuit.Location = new Point(405, 565);
             btnQuit.Name = "btnQuit";
             btnQuit.Size = new Size(75, 25);
@@ -723,7 +722,6 @@ namespace SrvSurvey
             // 
             // btnResetRuins
             // 
-            btnResetRuins.FlatStyle = FlatStyle.Flat;
             btnResetRuins.Location = new Point(432, 32);
             btnResetRuins.Name = "btnResetRuins";
             btnResetRuins.Size = new Size(45, 23);
@@ -734,7 +732,6 @@ namespace SrvSurvey
             // 
             // btnResetLogs
             // 
-            btnResetLogs.FlatStyle = FlatStyle.Flat;
             btnResetLogs.Location = new Point(432, 60);
             btnResetLogs.Name = "btnResetLogs";
             btnResetLogs.Size = new Size(45, 23);
@@ -756,7 +753,6 @@ namespace SrvSurvey
             // btnToggleObelisk
             // 
             btnToggleObelisk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnToggleObelisk.FlatStyle = FlatStyle.Flat;
             btnToggleObelisk.Location = new Point(302, 565);
             btnToggleObelisk.Margin = new Padding(0);
             btnToggleObelisk.Name = "btnToggleObelisk";
@@ -779,8 +775,8 @@ namespace SrvSurvey
             // 
             // FormRamTah
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             CancelButton = btnQuit;
             ClientSize = new Size(496, 595);
             Controls.Add(txtObelisk);

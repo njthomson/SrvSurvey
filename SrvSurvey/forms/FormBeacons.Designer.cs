@@ -418,7 +418,7 @@
             // 
             contextMenu.Items.AddRange(new ToolStripItem[] { menuOpenSiteSurvey, toolStripSeparator3, copyToolStripMenuItem, copySystemNameToolStripMenuItem, systemAddressToolStripMenuItem, copyBodyNameToolStripMenuItem, copyStarPosToolStripMenuItem, copyLatlongToolStripMenuItem, notesToolStripMenuItem, toolStripSeparator1, openSystemInEDSMToolStripMenuItem, toolStripSeparator2, menuOpenImagesFolder, menuOpenDataFile, menuOpenPubData });
             contextMenu.Name = "contextMenu";
-            contextMenu.Size = new Size(198, 308);
+            contextMenu.Size = new Size(198, 286);
             // 
             // menuOpenSiteSurvey
             // 
@@ -534,8 +534,8 @@
             // FormBeacons
             // 
             AcceptButton = btnFilter;
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = SystemColors.AppWorkspace;
             ClientSize = new Size(1176, 453);
             Controls.Add(checkOnlyNeeded);

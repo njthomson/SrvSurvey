@@ -280,7 +280,7 @@ namespace SrvSurvey
             groupBox3.Controls.Add(lblBodyBio);
             groupBox3.Controls.Add(txtBioRewards);
             groupBox3.Controls.Add(label4);
-            groupBox3.Location = new Point(12, 197);
+            groupBox3.Location = new Point(12, 198);
             groupBox3.Name = "groupBox3";
             groupBox3.Size = new Size(413, 130);
             groupBox3.TabIndex = 4;
@@ -468,7 +468,7 @@ namespace SrvSurvey
             // 
             linkLabel1.Font = new Font("Lucida Sans Typewriter", 9F);
             linkLabel1.LinkArea = new LinkArea(13, 12);
-            linkLabel1.Location = new Point(12, 461);
+            linkLabel1.Location = new Point(12, 459);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(415, 18);
             linkLabel1.TabIndex = 9;
@@ -518,7 +518,7 @@ namespace SrvSurvey
             // 
             linkLabel2.Font = new Font("Lucida Sans Typewriter", 9F);
             linkLabel2.LinkArea = new LinkArea(17, 22);
-            linkLabel2.Location = new Point(10, 481);
+            linkLabel2.Location = new Point(12, 481);
             linkLabel2.Name = "linkLabel2";
             linkLabel2.Size = new Size(417, 29);
             linkLabel2.TabIndex = 10;
@@ -667,9 +667,9 @@ namespace SrvSurvey
             // groupCodex
             // 
             groupCodex.Controls.Add(btnCodexBingo);
-            groupCodex.Location = new Point(10, 334);
+            groupCodex.Location = new Point(12, 334);
             groupCodex.Name = "groupCodex";
-            groupCodex.Size = new Size(87, 92);
+            groupCodex.Size = new Size(86, 92);
             groupCodex.TabIndex = 6;
             groupCodex.TabStop = false;
             groupCodex.Text = "Codex";

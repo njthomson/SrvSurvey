@@ -34,6 +34,11 @@ namespace SrvSurvey
 
             Game.log($"FormErrorSubmit.show: {ex}");
             var form = new FormErrorSubmit(ex);
+
+            // showing as a dialog blocks focus and we don't want people to crash because of us
+            if (Elite.focusElite)
+                Util.deferAfter(1000, () => Elite.setFocusED());
+
             form.ShowDialog(Main.ActiveForm);
         }
 

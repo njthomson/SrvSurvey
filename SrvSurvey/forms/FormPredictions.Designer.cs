@@ -51,6 +51,7 @@ namespace SrvSurvey
             viewSystemOnToolStripMenuItem = new ToolStripMenuItem();
             viewOnCanonnSignalsToolStripMenuItem = new ToolStripMenuItem();
             viewOnSpanshToolStripMenuItem = new ToolStripMenuItem();
+            viewOnEDSMToolStripMenuItem = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
             menuLargeFont = new ToolStripMenuItem();
             menuFontLarge = new ToolStripMenuItem();
@@ -61,7 +62,6 @@ namespace SrvSurvey
             btnExpandAll = new FlatButton();
             btnCollapseAll = new FlatButton();
             btnCurrentBody = new FlatButton();
-            viewOnEDSMToolStripMenuItem = new ToolStripMenuItem();
             tableTop.SuspendLayout();
             statusStrip1.SuspendLayout();
             panelTop.SuspendLayout();
@@ -73,7 +73,7 @@ namespace SrvSurvey
             lblSysEst.Anchor = AnchorStyles.Right;
             lblSysEst.AutoSize = true;
             lblSysEst.FlatStyle = FlatStyle.System;
-            lblSysEst.Location = new Point(8, 31);
+            lblSysEst.Location = new Point(7, 31);
             lblSysEst.Name = "lblSysEst";
             lblSysEst.Size = new Size(117, 12);
             lblSysEst.TabIndex = 1;
@@ -110,7 +110,7 @@ namespace SrvSurvey
             lblSysEstFF.Anchor = AnchorStyles.Right;
             lblSysEstFF.AutoSize = true;
             lblSysEstFF.FlatStyle = FlatStyle.System;
-            lblSysEstFF.Location = new Point(22, 52);
+            lblSysEstFF.Location = new Point(21, 52);
             lblSysEstFF.Name = "lblSysEstFF";
             lblSysEstFF.Size = new Size(103, 12);
             lblSysEstFF.TabIndex = 3;
@@ -122,11 +122,11 @@ namespace SrvSurvey
             txtScanCount.BackColor = Color.Black;
             txtScanCount.BorderStyle = BorderStyle.FixedSingle;
             txtScanCount.ForeColor = Color.Red;
-            txtScanCount.Location = new Point(376, 49);
+            txtScanCount.Location = new Point(375, 49);
             txtScanCount.Margin = new Padding(0, 1, 0, 1);
             txtScanCount.Name = "txtScanCount";
             txtScanCount.ReadOnly = true;
-            txtScanCount.Size = new Size(106, 19);
+            txtScanCount.Size = new Size(107, 19);
             txtScanCount.TabIndex = 8;
             txtScanCount.Text = "99 of 99";
             txtScanCount.TextAlign = HorizontalAlignment.Center;
@@ -137,7 +137,7 @@ namespace SrvSurvey
             lblScanCount.Anchor = AnchorStyles.Right;
             lblScanCount.AutoSize = true;
             lblScanCount.FlatStyle = FlatStyle.System;
-            lblScanCount.Location = new Point(266, 52);
+            lblScanCount.Location = new Point(265, 52);
             lblScanCount.Margin = new Padding(6, 0, 0, 0);
             lblScanCount.Name = "lblScanCount";
             lblScanCount.Size = new Size(110, 12);
@@ -150,7 +150,7 @@ namespace SrvSurvey
             txtSysEst.BackColor = Color.Black;
             txtSysEst.BorderStyle = BorderStyle.FixedSingle;
             txtSysEst.ForeColor = Color.Red;
-            txtSysEst.Location = new Point(128, 28);
+            txtSysEst.Location = new Point(127, 28);
             txtSysEst.Margin = new Padding(0, 1, 0, 1);
             txtSysEst.Name = "txtSysEst";
             txtSysEst.ReadOnly = true;
@@ -166,7 +166,7 @@ namespace SrvSurvey
             txtSysEstFF.BackColor = Color.Black;
             txtSysEstFF.BorderStyle = BorderStyle.FixedSingle;
             txtSysEstFF.ForeColor = Color.Red;
-            txtSysEstFF.Location = new Point(128, 49);
+            txtSysEstFF.Location = new Point(127, 49);
             txtSysEstFF.Margin = new Padding(0, 1, 0, 1);
             txtSysEstFF.Name = "txtSysEstFF";
             txtSysEstFF.ReadOnly = true;
@@ -229,7 +229,7 @@ namespace SrvSurvey
             lblSysActual.Anchor = AnchorStyles.Right;
             lblSysActual.AutoSize = true;
             lblSysActual.FlatStyle = FlatStyle.System;
-            lblSysActual.Location = new Point(270, 31);
+            lblSysActual.Location = new Point(269, 31);
             lblSysActual.Name = "lblSysActual";
             lblSysActual.Size = new Size(103, 12);
             lblSysActual.TabIndex = 5;
@@ -241,11 +241,11 @@ namespace SrvSurvey
             txtSysActual.BackColor = Color.Black;
             txtSysActual.BorderStyle = BorderStyle.FixedSingle;
             txtSysActual.ForeColor = Color.Red;
-            txtSysActual.Location = new Point(376, 28);
+            txtSysActual.Location = new Point(375, 28);
             txtSysActual.Margin = new Padding(0, 1, 0, 1);
             txtSysActual.Name = "txtSysActual";
             txtSysActual.ReadOnly = true;
-            txtSysActual.Size = new Size(106, 19);
+            txtSysActual.Size = new Size(107, 19);
             txtSysActual.TabIndex = 6;
             txtSysActual.Text = "999.9M cr";
             txtSysActual.TextAlign = HorizontalAlignment.Center;
@@ -294,14 +294,14 @@ namespace SrvSurvey
             // 
             viewSystemOnToolStripMenuItem.Enabled = false;
             viewSystemOnToolStripMenuItem.Name = "viewSystemOnToolStripMenuItem";
-            viewSystemOnToolStripMenuItem.Size = new Size(180, 22);
+            viewSystemOnToolStripMenuItem.Size = new Size(175, 22);
             viewSystemOnToolStripMenuItem.Text = "Open system ...";
             // 
             // viewOnCanonnSignalsToolStripMenuItem
             // 
             viewOnCanonnSignalsToolStripMenuItem.Image = Properties.ImageResources.canonn_16x16;
             viewOnCanonnSignalsToolStripMenuItem.Name = "viewOnCanonnSignalsToolStripMenuItem";
-            viewOnCanonnSignalsToolStripMenuItem.Size = new Size(180, 22);
+            viewOnCanonnSignalsToolStripMenuItem.Size = new Size(175, 22);
             viewOnCanonnSignalsToolStripMenuItem.Text = "On Canonn Signals";
             viewOnCanonnSignalsToolStripMenuItem.Click += viewOnCanonnSignalsToolStripMenuItem_Click;
             // 
@@ -309,26 +309,33 @@ namespace SrvSurvey
             // 
             viewOnSpanshToolStripMenuItem.Image = Properties.ImageResources.spansh_16x16;
             viewOnSpanshToolStripMenuItem.Name = "viewOnSpanshToolStripMenuItem";
-            viewOnSpanshToolStripMenuItem.Size = new Size(180, 22);
+            viewOnSpanshToolStripMenuItem.Size = new Size(175, 22);
             viewOnSpanshToolStripMenuItem.Text = "On Spansh";
             viewOnSpanshToolStripMenuItem.Click += viewOnSpanshToolStripMenuItem_Click;
+            // 
+            // viewOnEDSMToolStripMenuItem
+            // 
+            viewOnEDSMToolStripMenuItem.Name = "viewOnEDSMToolStripMenuItem";
+            viewOnEDSMToolStripMenuItem.Size = new Size(175, 22);
+            viewOnEDSMToolStripMenuItem.Text = "On EDSM";
+            viewOnEDSMToolStripMenuItem.Click += viewOnEDSMToolStripMenuItem_Click;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(177, 6);
+            toolStripSeparator1.Size = new Size(172, 6);
             // 
             // menuLargeFont
             // 
             menuLargeFont.DropDownItems.AddRange(new ToolStripItem[] { menuFontLarge, menuFontMedium, menuFontSmall });
             menuLargeFont.Name = "menuLargeFont";
-            menuLargeFont.Size = new Size(180, 22);
+            menuLargeFont.Size = new Size(175, 22);
             menuLargeFont.Text = "Font size ...";
             // 
             // menuFontLarge
             // 
             menuFontLarge.Name = "menuFontLarge";
-            menuFontLarge.Size = new Size(180, 22);
+            menuFontLarge.Size = new Size(119, 22);
             menuFontLarge.Tag = "3";
             menuFontLarge.Text = "Large";
             menuFontLarge.Click += menuSetFontSize_Click;
@@ -336,7 +343,7 @@ namespace SrvSurvey
             // menuFontMedium
             // 
             menuFontMedium.Name = "menuFontMedium";
-            menuFontMedium.Size = new Size(180, 22);
+            menuFontMedium.Size = new Size(119, 22);
             menuFontMedium.Tag = "2";
             menuFontMedium.Text = "Medium";
             menuFontMedium.Click += menuSetFontSize_Click;
@@ -344,7 +351,7 @@ namespace SrvSurvey
             // menuFontSmall
             // 
             menuFontSmall.Name = "menuFontSmall";
-            menuFontSmall.Size = new Size(180, 22);
+            menuFontSmall.Size = new Size(119, 22);
             menuFontSmall.Tag = "1";
             menuFontSmall.Text = "Small";
             menuFontSmall.Click += menuSetFontSize_Click;
@@ -412,17 +419,10 @@ namespace SrvSurvey
             btnCurrentBody.UseVisualStyleBackColor = true;
             btnCurrentBody.Click += btnCurrentBody_Click;
             // 
-            // viewOnEDSMToolStripMenuItem
-            // 
-            viewOnEDSMToolStripMenuItem.Name = "viewOnEDSMToolStripMenuItem";
-            viewOnEDSMToolStripMenuItem.Size = new Size(180, 22);
-            viewOnEDSMToolStripMenuItem.Text = "On EDSM";
-            viewOnEDSMToolStripMenuItem.Click += viewOnEDSMToolStripMenuItem_Click;
-            // 
             // FormPredictions
             // 
-            AutoScaleDimensions = new SizeF(7F, 12F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = Color.Black;
             ClientSize = new Size(484, 407);
             Controls.Add(tree);

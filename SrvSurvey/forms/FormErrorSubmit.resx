@@ -121,14 +121,14 @@
   <data name="btnCopyJournalPath.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wAAADsABataJCQAAADtJREFUOE9joBlwcnL6TwhDlWIHhBRQ3QAQhxBGAdgMwAdGDRgUBoA0oGOoHBiQ
+        vgAADr4B6kKxwAAAADtJREFUOE9joBlwcnL6TwhDlWIHhBRQ3QAQhxBGAdgMwAdGDRgUBoA0oGOoHBiQ
         7AJ0QBUDCGFaAAYGAGFlUBpqCxx5AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="btnCopyStack.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wQAADsEBuJFr7QAAADtJREFUOE9joBlwcnL6TwhDlWIHhBRQ3QAQhxBGAdgMwAdGDRgUBoA0oGOoHBiQ
+        vwAADr8BOAVTJAAAADtJREFUOE9joBlwcnL6TwhDlWIHhBRQ3QAQhxBGAdgMwAdGDRgUBoA0oGOoHBiQ
         7AJ0QBUDCGFaAAYGAGFlUBpqCxx5AAAAAElFTkSuQmCC
 </value>
   </data>

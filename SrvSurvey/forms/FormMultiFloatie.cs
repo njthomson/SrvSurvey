@@ -52,7 +52,11 @@ namespace SrvSurvey.forms
             get
             {
                 var cp = base.CreateParams;
-                cp.ExStyle |= 0x00000020 + 0x00080000 + 0x08000000; // WS_EX_TRANSPARENT + WS_EX_LAYERED + WS_EX_NOACTIVATE
+                cp.ExStyle |= 0x00000020 // WS_EX_TRANSPARENT
+                    + 0x00080000 // WS_EX_LAYERED
+                    + 0x08000000 // WS_EX_NOACTIVATE
+                    + 0x00000004 // WS_EX_NOPARENTNOTIFY
+                    ;
                 return cp;
             }
         }

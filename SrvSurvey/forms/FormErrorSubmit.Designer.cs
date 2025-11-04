@@ -199,8 +199,8 @@
             // FormErrorSubmit
             // 
             AcceptButton = btnSubmit;
-            AutoScaleDimensions = new SizeF(7F, 17F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             ClientSize = new Size(560, 637);
             Controls.Add(btnCopyStack);
             Controls.Add(btnCopyJournalPath);

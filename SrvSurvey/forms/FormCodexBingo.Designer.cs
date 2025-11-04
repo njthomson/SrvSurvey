@@ -279,7 +279,7 @@
             // 
             contextMenu.Items.AddRange(new ToolStripItem[] { menuCopyName, menuCopyEntryId, menuCanonnSeparator, menuCanonnResearch, menuCanonnBioforge, menuEDAstro, menuNearestSeparator, menuFindNearest, menuSpanshNearest, menuPreScannedSeperator, menuPreScanned });
             contextMenu.Name = "contextMenuStrip";
-            contextMenu.Size = new Size(269, 220);
+            contextMenu.Size = new Size(269, 198);
             // 
             // menuCopyName
             // 
@@ -361,8 +361,8 @@
             // 
             // FormCodexBingo
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = SystemColors.ControlDark;
             ClientSize = new Size(800, 450);
             Controls.Add(tree);

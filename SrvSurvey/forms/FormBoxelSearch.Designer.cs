@@ -466,7 +466,7 @@
             // FormBoxelSearch
             // 
             resources.ApplyResources(this, "$this");
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = SystemColors.ControlDark;
             Controls.Add(status);
             Controls.Add(tableTop);

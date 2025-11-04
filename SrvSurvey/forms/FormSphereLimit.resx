@@ -233,7 +233,7 @@
     <value>1</value>
   </data>
   <data name="&gt;&gt;comboSystemName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>SrvSurvey.ComboStarSystem, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;comboSystemName.ZOrder" xml:space="preserve">
     <value>6</value>
@@ -506,7 +506,7 @@
     <value>1</value>
   </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>7, 15</value>
+    <value>96, 96</value>
   </data>
   <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>

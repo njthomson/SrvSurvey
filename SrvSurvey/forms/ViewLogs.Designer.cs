@@ -91,7 +91,7 @@ namespace SrvSurvey
             // 
             AcceptButton = btnClose;
             resources.ApplyResources(this, "$this");
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.Dpi;
             CancelButton = btnClose;
             Controls.Add(txtLogs);
             Controls.Add(tableBottom);

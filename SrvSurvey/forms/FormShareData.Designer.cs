@@ -82,7 +82,7 @@
             // linkDiscordChannel
             // 
             linkDiscordChannel.AutoSize = true;
-            linkDiscordChannel.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            linkDiscordChannel.Font = new Font("Segoe UI", 9F);
             linkDiscordChannel.LinkArea = new LinkArea(41, 14);
             linkDiscordChannel.Location = new Point(12, 228);
             linkDiscordChannel.Name = "linkDiscordChannel";
@@ -126,7 +126,7 @@
             // btnOpenDiscord
             // 
             btnOpenDiscord.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnOpenDiscord.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            btnOpenDiscord.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnOpenDiscord.Location = new Point(283, 261);
             btnOpenDiscord.Name = "btnOpenDiscord";
             btnOpenDiscord.Size = new Size(158, 23);
@@ -138,7 +138,7 @@
             // button1
             // 
             button1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             button1.Location = new Point(345, 186);
             button1.Name = "button1";
             button1.Size = new Size(177, 23);
@@ -150,8 +150,8 @@
             // FormShareData
             // 
             AcceptButton = btnOpenDiscord;
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             CancelButton = btnClose;
             ClientSize = new Size(534, 296);
             Controls.Add(button1);

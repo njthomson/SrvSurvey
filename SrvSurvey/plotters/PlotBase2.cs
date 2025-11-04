@@ -286,7 +286,7 @@ namespace SrvSurvey.plotters
             }
         }
 
-        private static Dictionary<string, PlotDef> defs = new Dictionary<string, PlotDef>();
+        private static readonly Dictionary<string, PlotDef> defs = new Dictionary<string, PlotDef>();
 
         public static PlotBase2 add(Game game, PlotDef def)
         {
@@ -339,7 +339,7 @@ namespace SrvSurvey.plotters
                 {
                     Game.log($"Overlays.remove: {def.name}");
 
-                    def.instance.close();
+                    def.instance?.close();
                     def.instance = null;
 
                     BigOverlay.invalidate();

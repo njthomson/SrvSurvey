@@ -73,7 +73,7 @@ namespace SrvSurvey
             lblTitle.Anchor = AnchorStyles.Left;
             lblTitle.AutoSize = true;
             lblTitle.FlatStyle = FlatStyle.System;
-            lblTitle.Font = new Font("Century Gothic", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            lblTitle.Font = new Font("Century Gothic", 18F, FontStyle.Bold);
             lblTitle.Location = new Point(84, 2);
             lblTitle.Margin = new Padding(0);
             lblTitle.Name = "lblTitle";
@@ -100,7 +100,7 @@ namespace SrvSurvey
             lblNoImage.Anchor = AnchorStyles.Top;
             lblNoImage.AutoSize = true;
             lblNoImage.FlatStyle = FlatStyle.System;
-            lblNoImage.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            lblNoImage.Font = new Font("Century Gothic", 14.25F);
             lblNoImage.Location = new Point(12, 10);
             lblNoImage.Name = "lblNoImage";
             lblNoImage.Size = new Size(398, 44);
@@ -112,7 +112,7 @@ namespace SrvSurvey
             // 
             linkSubmitImage.Anchor = AnchorStyles.Top;
             linkSubmitImage.AutoSize = true;
-            linkSubmitImage.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            linkSubmitImage.Font = new Font("Century Gothic", 12F);
             linkSubmitImage.LinkColor = Color.FromArgb(255, 128, 0);
             linkSubmitImage.Location = new Point(109, 84);
             linkSubmitImage.Name = "linkSubmitImage";
@@ -157,7 +157,7 @@ namespace SrvSurvey
             // 
             toolFiller.Name = "toolFiller";
             toolFiller.Overflow = ToolStripItemOverflow.Never;
-            toolFiller.Size = new Size(517, 17);
+            toolFiller.Size = new Size(548, 17);
             toolFiller.Spring = true;
             toolFiller.Text = " ";
             // 
@@ -238,7 +238,7 @@ namespace SrvSurvey
             // 
             btnPrevBody.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnPrevBody.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
-            btnPrevBody.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            btnPrevBody.Font = new Font("Segoe UI", 9.75F);
             btnPrevBody.Location = new Point(203, 0);
             btnPrevBody.Margin = new Padding(0, 0, 2, 0);
             btnPrevBody.Name = "btnPrevBody";
@@ -252,7 +252,7 @@ namespace SrvSurvey
             // 
             lblBodyName.Anchor = AnchorStyles.Left;
             lblBodyName.AutoSize = true;
-            lblBodyName.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            lblBodyName.Font = new Font("Century Gothic", 12F);
             lblBodyName.Location = new Point(0, 4);
             lblBodyName.Margin = new Padding(0);
             lblBodyName.Name = "lblBodyName";
@@ -264,7 +264,7 @@ namespace SrvSurvey
             // 
             btnNextBody.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnNextBody.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
-            btnNextBody.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            btnNextBody.Font = new Font("Segoe UI", 9.75F);
             btnNextBody.Location = new Point(229, 0);
             btnNextBody.Margin = new Padding(0, 0, 2, 0);
             btnNextBody.Name = "btnNextBody";
@@ -279,7 +279,7 @@ namespace SrvSurvey
             btnNextBio.Anchor = AnchorStyles.Left;
             btnNextBio.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnNextBio.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
-            btnNextBio.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            btnNextBio.Font = new Font("Segoe UI", 9.75F);
             btnNextBio.Location = new Point(58, 2);
             btnNextBio.Margin = new Padding(2);
             btnNextBio.Name = "btnNextBio";
@@ -294,7 +294,7 @@ namespace SrvSurvey
             btnPrevBio.Anchor = AnchorStyles.Left;
             btnPrevBio.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnPrevBio.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
-            btnPrevBio.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            btnPrevBio.Font = new Font("Segoe UI", 9.75F);
             btnPrevBio.Location = new Point(2, 2);
             btnPrevBio.Margin = new Padding(2);
             btnPrevBio.Name = "btnPrevBio";
@@ -359,7 +359,7 @@ namespace SrvSurvey
             btnMenu.Anchor = AnchorStyles.Left;
             btnMenu.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnMenu.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
-            btnMenu.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            btnMenu.Font = new Font("Segoe UI", 12F);
             btnMenu.Location = new Point(30, 2);
             btnMenu.Margin = new Padding(2);
             btnMenu.Name = "btnMenu";
@@ -391,8 +391,8 @@ namespace SrvSurvey
             // 
             // FormShowCodex
             // 
-            AutoScaleDimensions = new SizeF(7F, 17F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = Color.Black;
             ClientSize = new Size(784, 561);
             Controls.Add(flowBodyParts);
@@ -402,8 +402,7 @@ namespace SrvSurvey
             Controls.Add(lblCmdr);
             Controls.Add(panelSubmit);
             Controls.Add(statusStrip);
-            DoubleBuffered = true;
-            Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            Font = new Font("Century Gothic", 9F);
             ForeColor = Color.DarkOrange;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MinimumSize = new Size(640, 400);

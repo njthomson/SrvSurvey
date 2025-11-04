@@ -116,7 +116,7 @@
             flowImages.Location = new Point(0, 32);
             flowImages.Margin = new Padding(0);
             flowImages.Name = "flowImages";
-            flowImages.Size = new Size(723, 316);
+            flowImages.Size = new Size(723, 315);
             flowImages.TabIndex = 2;
             // 
             // pictureBox1
@@ -224,8 +224,8 @@
             // 
             // ViewJourneySystem
             // 
-            AutoScaleDimensions = new SizeF(7F, 17F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             Controls.Add(table);
             DoubleBuffered = true;
             Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
