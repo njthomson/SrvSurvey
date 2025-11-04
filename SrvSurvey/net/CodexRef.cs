@@ -517,7 +517,7 @@ namespace SrvSurvey.canonn
                     Game.log("prepNebulae: complete");
                     return this.allNebula;
                 }
-                catch (HttpRequestException ex)
+                catch (Exception ex)
                 {
                     Game.log($"prepNebulae: (fileExists: {fileExists}) {ex}");
                     if (!fileExists)
