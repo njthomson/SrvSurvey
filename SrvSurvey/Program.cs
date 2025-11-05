@@ -173,11 +173,14 @@ namespace SrvSurvey
             T form;
             if (!activePlotters.ContainsKey(formTypeName))
             {
-                created = " (created)";
+                created = " (creating)";
 
                 if (formType.Name == nameof(PlotContainer))
                 {
-                    if (def?.form == null) throw new Exception($"Why no form for: {def?.name} ({formTypeName})");
+                    if (def == null)
+                        throw new Exception($"Why no def for: {formTypeName}");
+                    if (def.form == null)
+                        def.form = new PlotContainer(def);
                     form = (T)(PlotterForm)def.form;
                 }
                 else
@@ -202,8 +205,10 @@ namespace SrvSurvey
                 // don't try showing a disposed form
                 if (form.IsDisposed)
                 {
+                    if (def != null)
+                        def.form = null;
                     activePlotters.Remove(formTypeName);
-                    return showPlotter<T>(gameRect);
+                    return showPlotter<T>(gameRect, def);
                 }
 
                 form.Invalidate();
