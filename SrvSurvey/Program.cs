@@ -224,7 +224,13 @@ namespace SrvSurvey
                 form.showing = true;
                 try
                 {
-                    form.Show(new Win32Window() { Handle = Elite.getWindowHandle() });
+                    if (Game.settings.disableWindowParentIsGame)
+                    {
+                        form.TopMost = true;
+                        form.Show();
+                    }
+                    else
+                        form.Show(new Win32Window() { Handle = Elite.getWindowHandle() });
                 }
                 catch (Exception ex)
                 {
@@ -628,8 +634,10 @@ namespace SrvSurvey
         bool Visible { get; set; }
         string Name { get; set; }
         bool IsDisposed { get; }
+        bool TopMost { get; set; }
         void Close();
-        void Show(IWin32Window parent);
+        void Show();
+        void Show(IWin32Window? parent);
         event EventHandler? Load;
         bool didFirstPaint { get; set; }
         /// <summary> A flag true immediately about the time we begin showing a window </summary>

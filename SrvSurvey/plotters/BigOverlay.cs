@@ -25,11 +25,16 @@ namespace SrvSurvey.plotters
             }
 
             var hwnd = Elite.getWindowHandle();
-            if (hwnd == IntPtr.Zero) return;
 
-            Game.log("BigOverlay.create");
+            Game.log($"BigOverlay.create, disableWindowParentIsGame: {Game.settings.disableWindowParentIsGame}, hwnd: {hwnd}");
             var bigOverlay = new BigOverlay();
-            bigOverlay.Show(new Win32Window() { Handle = hwnd });
+            if (Game.settings.disableWindowParentIsGame)
+            {
+                bigOverlay.TopMost = true;
+                bigOverlay.Show();
+            }
+            else
+                bigOverlay.Show(new Win32Window() { Handle = hwnd });
 
             PlotBase2.renderAll(game, true);
         }
@@ -61,6 +66,8 @@ namespace SrvSurvey.plotters
         {
             BigOverlay.current = this;
 
+            this.Name = this.GetType().Name;
+            this.Text = this.Name;
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = FormStartPosition.Manual;
@@ -69,7 +76,6 @@ namespace SrvSurvey.plotters
             this.ControlBox = false;
             this.FormBorderStyle = FormBorderStyle.None;
             this.DoubleBuffered = true;
-            this.Name = this.GetType().Name;
             this.ResizeRedraw = true;
             this.Size = new Size(640, 640);
 
@@ -81,8 +87,6 @@ namespace SrvSurvey.plotters
                 this.TransparencyKey = maskColor;
                 this.AllowTransparency = true;
             }
-
-            this.Text = this.Name;
         }
 
         protected override void OnMouseLeave(EventArgs e)

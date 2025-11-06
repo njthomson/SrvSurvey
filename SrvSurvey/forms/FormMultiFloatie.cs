@@ -15,7 +15,13 @@ namespace SrvSurvey.forms
             Game.log("FormMultiFloatie.create");
             var form = new FormMultiFloatie();
 
-            form.Show(new Win32Window() { Handle = Elite.getWindowHandle() });
+            if (Game.settings.disableWindowParentIsGame)
+            {
+                form.TopMost = true;
+                form.Show();
+            }
+            else
+                form.Show(new Win32Window() { Handle = Elite.getWindowHandle() });
             return form;
         }
 
