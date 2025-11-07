@@ -54,7 +54,7 @@ namespace SrvSurvey
             toolRegionName.Text = "Select a codex discovery...";
             toolDiscoveryDate.Text = "";
 
-            comboRegion.Enabled = currentCmdr != null;
+            comboRegion.Enabled = false;
 
             // Not themed - this is always dark.
         }
@@ -112,6 +112,8 @@ namespace SrvSurvey
         {
             base.OnLoad(e);
             this.prepNodesAsync().ContinueWith(t => Game.log("Nodes ready"));
+
+            comboRegion.Enabled = currentCmdr != null;
         }
 
         protected override void OnResizeEnd(EventArgs e)
