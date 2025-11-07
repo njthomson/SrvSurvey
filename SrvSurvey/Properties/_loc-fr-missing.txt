@@ -87,6 +87,7 @@
 	BodyBio_Header
 	FFBonus
 	GeoSignals
+	HasCanonnSignals
 	NotPredicted
 	RewardFooter
 

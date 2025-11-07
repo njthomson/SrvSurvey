@@ -1,3 +1,6 @@
+/plotters/PlotBioSystem.zh-Hans.resx
+	HasCanonnSignals
+
 /plotters/PlotGuardians.zh-Hans.resx
 	HeaderGeneral
 

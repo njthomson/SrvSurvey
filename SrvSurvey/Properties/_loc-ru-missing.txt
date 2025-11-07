@@ -1,3 +1,6 @@
+/plotters/PlotBioSystem.ru.resx
+	HasCanonnSignals
+
 /Properties/Commodities.ru.resx
 	AzCancriFormula42
 	RepublicanFieldSupplies

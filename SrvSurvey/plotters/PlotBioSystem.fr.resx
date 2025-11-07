@@ -92,6 +92,12 @@
 {0} int, total count of geo signals on the body</comment>
     <source>Geo signals: {0}</source>
   </data>
+  <data name="HasCanonnSignals">
+    <!--Machine translated-->
+    <value>Dispose de signaux Canon</value>
+    <comment>Shown when a body has known signals tracked by Canonn</comment>
+    <source>Has Canonn signals</source>
+  </data>
   <data name="NotPredicted">
     <!--Machine translated-->
     <value>Pas prévu !</value>

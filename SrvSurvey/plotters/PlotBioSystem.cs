@@ -41,6 +41,7 @@ namespace SrvSurvey.plotters
 
         #endregion
 
+        private GameMode lastMode;
         private string? lastDestination;
         private SystemBody? durationBody;
         private System.Windows.Forms.Timer durationTimer;
@@ -128,6 +129,9 @@ namespace SrvSurvey.plotters
                 }
                 this.invalidate();
             }
+
+            if (game.mode != this.lastMode)
+                this.invalidate();
         }
 
         private void stopTimer()
@@ -310,6 +314,19 @@ namespace SrvSurvey.plotters
                         g.DrawLine(GameColors.penCyan4, width - N.four, yy - N.one, width - N.four, tt.dty - N.eight);
                     }
 
+                }
+            }
+
+            // if body is not local, show icon + hint if we know we have signals from Canonn
+            if (body != game.systemBody && Game.settings.useExternalData && Game.settings.autoLoadPriorScans)
+            {
+                var bodyHasKnownSignals = game.canonnPoi?.codex?.Any(c => c.body != null && body.name.EndsWith(c.body)) ?? false;
+                if (bodyHasKnownSignals)
+                {
+                    tt.draw(N.eight, Res.HasCanonnSignals);
+                    g.DrawImage(Properties.ImageResources.canonn_16x16, tt.dtx + N.eight, tt.dty - N.two, 16, 16);
+                    tt.dtx += 16;
+                    tt.newLine(+N.eight, true);
                 }
             }
 

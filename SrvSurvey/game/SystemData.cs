@@ -2214,13 +2214,13 @@ namespace SrvSurvey.game
         public double euclidianDistance(SystemBody? target)
         {
             if (target == this) return 0;
-            // start with our own distance, then sum our parents until we reach (and include, ~~or exclude?~~) the target
+            // start with our own distance, then sum our parents until we reach (or exclude) the target
             var dist = Math.Pow(this.semiMajorAxis, 2);
             foreach (var parent in this.parentBodies)
             {
-                //if (parent.id == target?.id) return dist;
+                if (parent.id == target?.id) return dist; // <-- I think this is correct
                 dist += Math.Pow(parent.semiMajorAxis, 2);
-                if (parent.id == target?.id) return dist;
+                //if (parent.id == target?.id) return dist;
             }
 
             return dist;

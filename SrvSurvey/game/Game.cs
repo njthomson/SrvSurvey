@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BioCriterias;
+using Newtonsoft.Json;
 using SrvSurvey.canonn;
 using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
@@ -1294,7 +1295,7 @@ namespace SrvSurvey.game
             dockTimer?.onJournalEntry(entry);
         }
 
-        public void deferPredictSpecies(SystemBody? body)
+        public void deferPredictSpecies(SystemBody? body, bool checkForMissedPredictions = false)
         {
             if (body == null) return;
 
@@ -1306,6 +1307,16 @@ namespace SrvSurvey.game
                 FormPredictions.refresh();
                 Program.invalidateActivePlotters();
                 PlotBase2.invalidate(nameof(PlotBioSystem), nameof(PlotBioStatus));
+
+                if (checkForMissedPredictions)
+                {
+                    var missedGenus = body.organisms?
+                        .Where(o => o.species == null && !body.genusPredictions.Any(gp => gp.genus.name == o.genus))
+                        .Select(o => o.genus)
+                        .ToList();
+                    if (missedGenus?.Count() > 0)
+                        BioPredictor.logMissedPredictions(body, missedGenus);
+                }
             });
         }
 
@@ -1351,7 +1362,7 @@ namespace SrvSurvey.game
             this.setCurrentBody(entry.BodyID);
             this.fireUpdate();
 
-            this.deferPredictSpecies(this.systemBody);
+            this.deferPredictSpecies(this.systemBody, true);
         }
 
         private void onJournalEntry(SAASignalsFound entry)

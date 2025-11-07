@@ -2,6 +2,7 @@
 using SrvSurvey;
 using SrvSurvey.game;
 using System.Diagnostics;
+using System.Text;
 
 namespace BioCriterias
 {
@@ -10,6 +11,7 @@ namespace BioCriterias
         public static float matsMinimalThreshold = 0.25f;
         public static bool useTestCache = false;
         public static string netCache = Path.Combine(Program.dataFolder, "netCache");
+        public static string folderMissedReports = Path.Combine(Program.dataFolder, "missedPrediction");
 
         public static List<Clause> predictTarget(SystemBody body, string? targetVariant)
         {
@@ -47,7 +49,7 @@ namespace BioCriterias
                 .Where(s => s.Value > 0)
                 .OrderByDescending(s => s.Value)
                 .ToDictionary(_ => _.Key, _ => _.Value);
-            Game.log($"Radiant stars for '{body.name}': \r\n" + string.Join("\r\n", parentsByBrightness.Select(_ => $"> {_.Key.shortName} ({_.Key.starType}) : {_.Value}")));
+            Game.log($"Radiant stars for '{body.name}': \r\n" + string.Join("\r\n", parentsByBrightness.Select(_ => $"  > {_.Key.shortName} ({_.Key.starType}) : {_.Value}")) + "\r\n");
 
             if (parentsByBrightness.Count == 0)
             {
@@ -69,10 +71,11 @@ namespace BioCriterias
                 if (parentStarTypes[0] != nextBrightestType)
                 {
                     var delta = nextBrightest.Value / brightest.Value;
-                    Game.log($"{brightest.Key.name} ({brightest.Key.starType}): {brightest.Value:N10} vs {nextBrightest.Key.name} ({nextBrightest.Key.starType}): {nextBrightest.Value:N10} => {delta}");
-
                     if (false && delta < 0.01d) // DO NOT allow a 2nd if they're really close
+                    {
+                        Game.log($"{brightest.Key.name} ({brightest.Key.starType}): {brightest.Value:N10} vs {nextBrightest.Key.name} ({nextBrightest.Key.starType}): {nextBrightest.Value:N10} => {delta}");
                         parentStarTypes.Add(Util.flattenStarType(nextBrightest.Key.starType));
+                    }
                 }
             }
 
@@ -264,7 +267,7 @@ namespace BioCriterias
                 if (logOrganism == "*" || (!string.IsNullOrWhiteSpace(logOrganism) && currentName.EndsWith(logOrganism, StringComparison.OrdinalIgnoreCase)))
                 {
                     var queryTxt = "\t" + string.Join("\r\n\t", query!);
-                    Game.log($"Prediction failures for organism: {logOrganism} / {currentName}\r\n{queryTxt}\r\n ? " + string.Join("\r\n ? ", failures) + "\r\n");
+                    Game.log($"Prediction failures on '{bodyName}' for organism: {logOrganism} / {currentName}{queryTxt}\r\n ? " + string.Join("\r\n ? ", failures) + "\r\n");
                 }
             }
 
@@ -432,6 +435,32 @@ namespace BioCriterias
             }
         }
 
+        public static void logMissedPredictions(SystemBody body, List<string> missedGenus)
+        {
+            var header = missedGenus
+                .Select(g => BioScan.genusNames.GetValueOrDefault(g) ?? g)
+                .formatWithHeader($"Missed {missedGenus.Count} prediction(s) on body: {body.shortName}, {body.system.name} (id64: {body.system.address})", "\r\n- ");
+            Game.log(header);
+
+            // prep a report for this system
+            var txt = new StringBuilder();
+            txt.AppendLine(header);
+            txt.AppendLine();
+            txt.AppendLine("System json:");
+            txt.AppendLine(JsonConvert.SerializeObject(body.system, Formatting.Indented));
+            txt.AppendLine();
+
+            // write to a file
+            var n = 0;
+            var filepath = "";
+            do
+            {
+                filepath = Path.Combine(folderMissedReports, $"{body.system.name}_{++n}.txt");
+            } while (File.Exists(filepath));
+            if (!Directory.Exists(folderMissedReports)) Directory.CreateDirectory(folderMissedReports);
+            File.WriteAllText(filepath, txt.ToString());
+        }
+
         #region automated tests
 
         private static async Task testSystem(long address)
@@ -508,7 +537,7 @@ namespace BioCriterias
                 //1659543293579, //    Graea Hypue AA-Z d48     - Norma Expanse
                 //1350305648267, //    Graea Hypue AA-Z d39     - Norma Expanse
 
-                /* more from me */
+                ///* more from me */
                 //1144147218059, //    Graea Hypue AA-Z d33     - Norma Expanse
                 //1659576977859, //    Swoiwns OE-O d7-48       - Inner Orion Spur // BC1 is trouble? needs help
                 //319933188363, //     Wregoe JA-Z d9           - Inner Orion Spur
@@ -534,7 +563,7 @@ namespace BioCriterias
                 ///* New places to try */
                 //147547244739, //     Outorst OC-M d7-4         - Elysian Shore
                 //79347697283, //      Cyoidai VI-B d2           - Sanguineous Rim
-                //8084881608371, //    Graea Hypue IS-R d5-235   - Norma Expanse // legacy in atmosphere :/ fails to predict brain tree's - this is on purpose
+                /*8084881608371,*/ //    Graea Hypue IS-R d5-235   - Norma Expanse // legacy in atmosphere :/ fails to predict brain tree's - this is on purpose
                 //37790682707, //      Bleae Phlai AK-I d9-1     - Errant Marches
                 //10887906389, //      Eor Audst LM-W f1-20      - Odin's Hold
                 //234056927058952, //  Phroi Pri GM-W a1-13      - Galactic Centre
@@ -576,7 +605,7 @@ namespace BioCriterias
                 //2789153444971, //    Phimbo GC-D d12-81       - Perseus Arm
                 //33682769023907, //   Phroi Pra PP-V d3-980    - Galactic Centre
 
-                ///* top 20 systems */
+                /////* top 20 systems */
                 ////3107241202402, //    Col 285 Sector BS-I c10-11 - Inner Orion Spur <-- bodies with no parent stars
                 //2962579378659, //    Kyloagh PE-G d11-86        - Orion-Cygnus Arm
                 //16604217544995, //   Eol Prou QS-T d3-483       - Inner Scutum-Centaurus Arm
@@ -654,15 +683,18 @@ namespace BioCriterias
                 //6406178542290, // Guathiti 8 a // No Fumerola Nitris Lime
 
 
-                // 675416645714, // Eolls Ploe YK-L c9-2 - has root barycentre but alas no concrete bio data for comparisons
+                //675416645714, // Eolls Ploe YK-L c9-2 - has root barycentre but alas no concrete bio data for comparisons
                 //84431081539, // Eolls Ploe OX-L d7-2
 
                 //353504315603, // Oochody YF-L d9-10 // consistently wrong star choice?
                 //49786130467, // Eock Flyao XY-S d3-1 // single star system
 
-                // 113053059083, // Slegi AV-Y d3 // Not Predicted: Stratum Tectonicas Green / Due to a Neutron being deemed the hottest but it should have been the local M stars
+                //113053059083, // Slegi AV-Y d3 // Not Predicted: Stratum Tectonicas Green / Due to a Neutron being deemed the hottest but it should have been the local M stars
                 //2282674557658, // Vodyakamana // <-- BC4 Fails because Argon is < 100% BUT there's no Nitrogen in the atmosphere (or anything else?!)
                 //1050522316081, // Ihad BK-L b35-0 // <-- we are missing data about the star AND Canonn has incomplete bio data for Ihad BK-L b35-0 1 a
+
+                //2519946200947, // Qiefoea KZ-D d13-73 // D4 Osseus not found or D3 Stratum not found
+                10393127859, // Chaloa PI-R d5-0 // missing Stratum Tectonicas Green, Cactoida Cortexum Amethyst & Frutexa Metallicum Grey ? 
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");
@@ -680,7 +712,7 @@ namespace BioCriterias
             {
                 useTestCache = false;
             }
-            Game.log($"All done: everything - count: {testSystems.Count}, duration: {DateTime.Now - startTime}");
+            Game.log($"\r\n**\r\n** All done: everything - count: {testSystems.Count}, duration: {DateTime.Now - startTime}\r\n**");
         }
 
         #endregion

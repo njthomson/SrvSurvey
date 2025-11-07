@@ -106,6 +106,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Has Canonn signals.
+        /// </summary>
+        internal static string HasCanonnSignals {
+            get {
+                return ResourceManager.GetString("HasCanonnSignals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not predicted!.
         /// </summary>
         internal static string NotPredicted {

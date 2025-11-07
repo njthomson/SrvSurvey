@@ -106,6 +106,7 @@
 	FFBonus
 	FssRequired
 	GeoSignals
+	HasCanonnSignals
 	NotPredicted
 	RewardFooter
 	SysBio_Header

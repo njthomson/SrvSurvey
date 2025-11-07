@@ -141,6 +141,10 @@
     <comment>Header shown when body has geo signals
 {0} int, total count of geo signals on the body</comment>
   </data>
+  <data name="HasCanonnSignals" xml:space="preserve">
+    <value>Has Canonn signals</value>
+    <comment>Shown when a body has known signals tracked by Canonn</comment>
+  </data>
   <data name="NotPredicted" xml:space="preserve">
     <value>Not predicted!</value>
     <comment>Message shown when some bio signal is present and it was not predicted.</comment>

@@ -6,6 +6,7 @@
 	$this.Text
 
 /plotters/PlotBioSystem.es.resx
+	HasCanonnSignals
 	NotPredicted
 
 /plotters/PlotGuardians.es.resx
