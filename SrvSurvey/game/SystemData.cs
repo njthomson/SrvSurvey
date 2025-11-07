@@ -2197,9 +2197,9 @@ namespace SrvSurvey.game
 
             var commonParent = getCommonParent(star);
 
-            var dist = this.euclidianDistance(commonParent);
-            dist += star.euclidianDistance(commonParent);
-            dist = Math.Pow(dist, 0.5);
+            var dist1 = this.euclidianDistance(commonParent);
+            var dist2 = star.euclidianDistance(commonParent);
+            var dist = Math.Pow(dist1 + dist2, 0.5);
             Game.log($"Euclidian distance from {this.name} to {star.name}: {dist}");
             var temp2 = Math.Pow(star.surfaceTemperature, 2);
             var sqrtWat = (double)star.radius * temp2 / dist;
@@ -2214,10 +2214,11 @@ namespace SrvSurvey.game
         public double euclidianDistance(SystemBody? target)
         {
             if (target == this) return 0;
-            // start with our own distance, then sum our parents until we reach (and include) the target
+            // start with our own distance, then sum our parents until we reach (and include, ~~or exclude?~~) the target
             var dist = Math.Pow(this.semiMajorAxis, 2);
             foreach (var parent in this.parentBodies)
             {
+                //if (parent.id == target?.id) return dist;
                 dist += Math.Pow(parent.semiMajorAxis, 2);
                 if (parent.id == target?.id) return dist;
             }

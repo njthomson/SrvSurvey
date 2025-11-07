@@ -2553,11 +2553,11 @@ namespace SrvSurvey.game
             */
         }
 
-        public LatLong2 touchdownLocation
+        public LatLong2? touchdownLocation
         {
             get
             {
-                if (_touchdownLocation == null)
+                if (_touchdownLocation == null || status.hasLatLong)
                     _touchdownLocation = findLastTouchdownLocation();
 
                 return _touchdownLocation!;
@@ -2588,6 +2588,12 @@ namespace SrvSurvey.game
         {
             this._touchdownLocation = LatLong2.Empty;
             this.systemData?.prepSettlements();
+        }
+
+        private void onJournalEntry(LeaveBody entry)
+        {
+            this._touchdownLocation = null;
+            this.srvLocation = null;
         }
 
         private void onJournalEntry(ApproachBody entry)
