@@ -2339,7 +2339,7 @@ namespace SrvSurvey.game
 
         public void predictSpecies()
         {
-            if (this.bioSignalCount == 0 || Game.activeGame == null || !Game.ready) return;
+            if (this.bioSignalCount == 0 || Game.activeGame == null || !Game.ready || Game.codexRef.genus == null) return;
             Game.log($"predictSpecies: '{this.name}'...");
 
             this.predictions.Clear();

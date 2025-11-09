@@ -167,8 +167,8 @@
     "latitude": -40.403393,
     "longitude": 128.508774,
     "siteHeading": 266,
-    "surveyProgress": 100,
-    "surveyComplete": true
+    "surveyProgress": 97,
+    "surveyComplete": false
   },
   {
     "siteID": 112,
@@ -653,8 +653,8 @@
     "latitude": 19.823612,
     "longitude": -82.460922,
     "siteHeading": 26,
-    "surveyProgress": 100,
-    "surveyComplete": true
+    "surveyProgress": 97,
+    "surveyComplete": false
   },
   {
     "siteID": 86,
@@ -822,7 +822,7 @@
     "latitude": -25.660549,
     "longitude": 169.939041,
     "siteHeading": 288,
-    "surveyProgress": 97,
+    "surveyProgress": 94,
     "surveyComplete": false
   },
   {
@@ -967,7 +967,7 @@
     "latitude": 28.127224,
     "longitude": 50.590214,
     "siteHeading": 135,
-    "surveyProgress": 97,
+    "surveyProgress": 94,
     "surveyComplete": false
   },
   {
@@ -1262,7 +1262,8 @@
     "siteType": "Bear",
     "latitude": -30.655045,
     "longitude": 167.240494,
-    "siteHeading": -1,
+    "siteHeading": 258,
+    "surveyProgress": 98,
     "surveyComplete": false
   },
   {
@@ -1749,7 +1750,8 @@
     "siteType": "Bear",
     "latitude": -34.296829,
     "longitude": 150.305801,
-    "siteHeading": -1,
+    "siteHeading": 305,
+    "surveyProgress": 98,
     "surveyComplete": false
   },
   {
@@ -1768,8 +1770,8 @@
     "latitude": 15.545576,
     "longitude": -166.476242,
     "siteHeading": 300,
-    "surveyProgress": 100,
-    "surveyComplete": true
+    "surveyProgress": 97,
+    "surveyComplete": false
   },
   {
     "siteID": 108,
@@ -2081,7 +2083,7 @@
     "latitude": -14.838905,
     "longitude": 67.709763,
     "siteHeading": 56,
-    "surveyProgress": 92,
+    "surveyProgress": 90,
     "surveyComplete": false
   },
   {
@@ -2175,7 +2177,7 @@
     "latitude": -34.10603,
     "longitude": 66.936562,
     "siteHeading": 13,
-    "surveyProgress": 95,
+    "surveyProgress": 93,
     "surveyComplete": false
   },
   {
@@ -2382,7 +2384,7 @@
     "latitude": -60.041149,
     "longitude": 71.153229,
     "siteHeading": 346,
-    "surveyProgress": 98,
+    "surveyProgress": 95,
     "surveyComplete": false
   },
   {
@@ -2678,7 +2680,7 @@
     "latitude": 19.253191,
     "longitude": -46.770954,
     "siteHeading": 130,
-    "surveyProgress": 95,
+    "surveyProgress": 93,
     "surveyComplete": false
   },
   {

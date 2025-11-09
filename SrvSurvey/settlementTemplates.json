@@ -1535,6 +1535,8 @@
       { "name": "py12", "type": "pylon", "angle": 216.0, "dist": 96.9, "rot": 286.0 },
       { "name": "py13", "type": "pylon", "angle": 357.0, "dist": 151.7 },
       { "name": "py14", "type": "pylon", "angle": 155.0, "dist": 170.2314, "rot": 50.0 },
+      { "name": "py15", "type": "pylon", "angle": 357.303188529322, "dist": 79.656832989793, "rot": 358 },
+      { "name": "py16", "type": "pylon", "angle": 226.719071572267, "dist": 309.228604285283, "rot": 246 },
       { "name": "t1", "type": "relic", "angle": 357.0, "dist": 147.0 },
       { "name": "t2", "type": "relic", "angle": 226.5, "dist": 249.0 },
       { "name": "t3", "type": "relic", "angle": 128.8, "dist": 345.8 },

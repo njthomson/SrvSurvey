@@ -429,7 +429,7 @@ namespace SrvSurvey.plotters
 
                 // force draw the background as there may be a visible delay when the form size changes
                 if (this.BackgroundImage != null)
-                    g.DrawImage(this.BackgroundImage, 0, 0);
+                    e.Graphics.DrawImage(this.BackgroundImage, 0, 0);
                 onPaintPlotter(e);
 
                 //Game.log($"FirstPaint? {this.Name} {firstPaint} {this.Opacity} {this.Size} (doRepaint: {doRepaint}) // {this.BackgroundImage?.Size}");
@@ -442,12 +442,12 @@ namespace SrvSurvey.plotters
                     if (this.formSize.Width < this.Size.Width || this.formSize.Height < this.Size.Height)
                         this.hideMyClone();
 
-                    g.FillRectangle(C.Brushes.black, 0, 0, this.Width, this.Height);
+                    e.Graphics.FillRectangle(C.Brushes.black, 0, 0, this.Width, this.Height);
                     this.formSize = new SizeF(2, 0);
                     this.dtx = eight;
                     this.dty = ten;
                     if (this.BackgroundImage != null)
-                        g.DrawImage(this.BackgroundImage, 0, 0);
+                        e.Graphics.DrawImage(this.BackgroundImage, 0, 0);
                     onPaintPlotter(e);
                 }
 
