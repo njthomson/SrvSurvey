@@ -18,12 +18,13 @@ namespace SrvSurvey.plotters
         public static bool allowed(Game game)
         {
             return Game.settings.autoShowFootCombat_TEST
-                && game.systemStation != null
-                && game.lastApproachSettlement?.StationFaction.FactionState == "War"
-                && game.systemStation.name == game.lastApproachSettlement.Name
                 && !Game.settings.buildProjectsSuppressOtherOverlays
+                && game.systemStation != null
+                && game.lastApproachSettlement != null
+                && game.systemStation.name == game.lastApproachSettlement.Name
                 && game.status.Altitude < 100
-                //&& Game.activeGame.isMode(GameMode.OnFoot)
+                && (game.lastApproachSettlement?.StationFaction.FactionState == "War" || game.lastApproachSettlement?.StationFaction.FactionState == "CivilWar")
+                && game.isMode(GameMode.OnFoot)
                 ;
         }
 

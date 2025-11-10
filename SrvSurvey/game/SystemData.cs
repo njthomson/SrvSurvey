@@ -668,7 +668,15 @@ namespace SrvSurvey.game
             body.parents = entry.Parents;
             body.wasDiscovered = entry.WasDiscovered;
             if (!body.wasMapped && entry.WasMapped) body.wasMapped = true;
-            body.wasFootfalled = entry.WasFootfalled;
+            if (entry.WasFootfalled.HasValue && entry.WasFootfalled.Value)
+            {
+                body.wasFootfalled = true;
+                body.firstFootFall = false;
+            }
+            else if (entry.WasFootfalled.HasValue && !body.wasFootfalled.HasValue)
+            {
+                body.wasFootfalled = entry.WasFootfalled.Value;
+            }
             body.surfaceGravity = entry.SurfaceGravity;
             body.surfaceTemperature = entry.SurfaceTemperature;
             body.surfacePressure = entry.SurfacePressure;
@@ -2075,7 +2083,7 @@ namespace SrvSurvey.game
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool wasMapped;
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool? wasFootfalled;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]

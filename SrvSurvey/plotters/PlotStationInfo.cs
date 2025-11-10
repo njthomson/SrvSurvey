@@ -97,7 +97,7 @@ namespace SrvSurvey.plotters
                 var key = $"{match.stationEconomy}{match.subType}";
                 if (CanonnStation.mapSettlementTypes.TryGetValue(key, out var buildType))
                 {
-                    tt.draw(x, $"( {Util.pascal(buildType)} )",  GameColors.Fonts.gothic_9);
+                    tt.draw(x, $"( {Util.pascal(buildType)} )", GameColors.Fonts.gothic_9);
                     tt.newLine(true);
                 }
             }
@@ -164,7 +164,9 @@ namespace SrvSurvey.plotters
                 {
                     tt.newLine(true);
                     tt.draw(indent, "State: ", C.orangeDark, GameColors.Fonts.gothic_9);
-                    tt.draw(state, C.orange, GameColors.Fonts.gothic_9);
+                    var c = C.orange;
+                    if (state == "War" || state == "CivilWar") c = C.yellow;
+                    tt.draw(state, c, GameColors.Fonts.gothic_9);
                 }
                 tt.newLine(true);
                 tt.draw(indent, "Inf: ", C.orangeDark, GameColors.Fonts.gothic_9);
