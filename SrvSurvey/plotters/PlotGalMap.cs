@@ -175,12 +175,12 @@ namespace SrvSurvey.plotters
             if (netData.discoveredBy != null && netData.discoveredDate != null)
             {
                 tt.newLine(true);
-                tt.draw(leftWidth, Res.DiscoveredBy.format(netData.discoveredBy, netData.discoveredDate?.ToString("d") ?? "?"));
+                tt.draw(leftWidth, Res.DiscoveredBy.format(netData.discoveredBy, netData.discoveredDate?.ToCmdrShortDateTime24Hours(true) ?? "?"));
             }
             if (netData.lastUpdated != null && (netData.lastUpdated > netData.discoveredDate || netData.discoveredDate == null))
             {
                 tt.newLine(true);
-                tt.draw(leftWidth, Res.LastUpdated.format(netData.lastUpdated?.ToString("d") ?? "?"));
+                tt.draw(leftWidth, Res.LastUpdated.format(netData.lastUpdated?.ToCmdrShortDateTime24Hours(true) ?? "?"));
             }
 
             // line 4: bio signals?

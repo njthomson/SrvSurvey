@@ -243,13 +243,13 @@ namespace SrvSurvey.plotters
             if (netData.totalBodyCount == 0)
                 tt.draw("▶️ " + netData.discoveryStatus, GameColors.Cyan);
             else if (netData.discoveredDate.HasValue)
-                tt.draw("▶️ " + Res.DiscoveredBy.format(netData.discoveredBy, netData.discoveredDate.Value.ToString("d")));
+                tt.draw("▶️ " + Res.DiscoveredBy.format(netData.discoveredBy, netData.discoveredDate.Value.ToCmdrShortDateTime24Hours(true)));
 
             var lastUpdated = netData.lastUpdated;// ?? netData.spanshSystem?.updated_at.GetValueOrDefault()?.ToLocalTime();
             if (lastUpdated != null && (lastUpdated > netData.discoveredDate || netData.discoveredDate == null))
             {
                 if (tt.dtx > N.eight) tt.dtx += N.eight;
-                tt.draw("▶️ " + Res.LastUpdated.format(lastUpdated.Value.ToString("d")));
+                tt.draw("▶️ " + Res.LastUpdated.format(lastUpdated.Value.ToCmdrShortDateTime24Hours(true)));
                 //tt.draw(eight, lineTwo, netData.discovered == false ? GameColors.Cyan : null);
                 //tt.draw(Game.settings.useLastUpdatedFromSpanshNotEDSM ? "(Spansh)" : "(EDSM)", GameColors.OrangeDim);
             }

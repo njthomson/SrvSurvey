@@ -232,7 +232,7 @@ namespace SrvSurvey
             lblObeliskGroups.Text = "Obelisk groups: " + (siteData?.obeliskGroups == null ? "" : string.Join("", siteData!.obeliskGroups));
             if (newSite != null)
             {
-                lblLastVisited.Text = newSite.lastVisited.ToString("d");
+                lblLastVisited.Text = newSite.lastVisited.ToCmdrShortDateTime24Hours(true);
             }
             checkNotes.Enabled = newSite?.filepath != null;
 
