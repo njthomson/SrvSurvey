@@ -122,6 +122,7 @@ namespace SrvSurvey.plotters
             // draw each remaining body, highlighting color if they are in the same group as the destination, or all of them if no destination
             foreach (var bodyName in names)
             {
+                if (bodyName == null) continue;
                 var isLocal = string.IsNullOrEmpty(destination) || bodyName[0] == destination[0];
 
                 var useFont = this.font;
