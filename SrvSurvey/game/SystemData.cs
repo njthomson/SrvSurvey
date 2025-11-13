@@ -328,7 +328,9 @@ namespace SrvSurvey.game
                             var matchSpecies = bodyData.organisms.Values.FirstOrDefault(_ => _.species == bioScan.species && _.variant != null);
                             if (matchSpecies?.variant != null)
                             {
-                                bioScan.entryId = Game.codexRef.matchFromVariant(matchSpecies.variant).entryId;
+                                var matchVariant = Game.codexRef.matchFromVariant(matchSpecies.variant);
+                                if (matchVariant != null)
+                                    bioScan.entryId = matchVariant.entryId;
                             }
                         }
 
@@ -438,8 +440,9 @@ namespace SrvSurvey.game
                             }
                         }
 
-                        if (bodyOrg.variant == null) throw new Exception($"Variant STILL missing, adding genus only for: '{{bodyOrg.species ?? bodyOrg.genus}}' on '{{bodyData.bodyName}}' ({{bodyData.bodyId}})\"");
+                        if (bodyOrg.variant == null) throw new Exception($"Variant STILL missing, adding genus only for: '{bodyOrg.species ?? bodyOrg.genus}' on '{bodyData.bodyName}' ({bodyData.bodyId})");
                         var bioMatch = Game.codexRef.matchFromVariant(bodyOrg.variant);
+                        if (bioMatch == null) return;
                         systemOrg = systemBody.findOrganism(bioMatch);
                         if (systemOrg == null)
                         {
@@ -1050,6 +1053,7 @@ namespace SrvSurvey.game
                 ? Game.codexRef.matchFromVariant(entry.Variant)
                 : Game.codexRef.matchFromSpecies2(entry.Species);
 
+            if (match == null) return false;
             var organism = body.findOrganism(match);
 
             if (organism == null)
@@ -2610,7 +2614,8 @@ namespace SrvSurvey.game
                 if (this.entryId == 0 && this.variant != null)
                 {
                     var match = Game.codexRef.matchFromVariant(this.variant);
-                    this.entryId = long.Parse(match.variant.entryId, CultureInfo.InvariantCulture);
+                    if (match != null)
+                        this.entryId = long.Parse(match.variant.entryId, CultureInfo.InvariantCulture);
                 }
 
                 if (this._cmdrFirst == null && this.entryId > 0)

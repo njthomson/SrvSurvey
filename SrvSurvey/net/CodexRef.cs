@@ -150,11 +150,24 @@ namespace SrvSurvey.canonn
             string json;
             if (!File.Exists(codexRefPath) || reset)
             {
-                Game.log("loadCodexRef: preparing from network ...");
-                json = await client.GetStringAsync("https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/ref");
-                File.WriteAllText(codexRefPath, json);
-                Game.log("loadCodexRef: complete");
-                Game.settings.lastCodexRefDownload = DateTime.Now;
+                try
+                {
+                    Game.log("loadCodexRef: preparing from network ...");
+                    json = await client.GetStringAsync("https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/ref");
+                    File.WriteAllText(codexRefPath, json);
+                    Game.log("loadCodexRef: complete");
+                    Game.settings.lastCodexRefDownload = DateTime.Now;
+                }
+                catch (Exception ex)
+                {
+                    Game.log($"Failed to download CodexRef: {ex.Message}");
+
+                    Game.log("loadCodexRef: preparing shadow from network ...");
+                    json = await client.GetStringAsync("https://raw.githubusercontent.com/njthomson/SrvSurvey/refs/heads/main/docs/codexRef.json");
+                    File.WriteAllText(codexRefPath, json);
+                    Game.log("loadCodexRef: shadow complete");
+                    Game.settings.lastCodexRefDownload = DateTime.Now;
+                }
             }
             else
             {
@@ -375,7 +388,7 @@ namespace SrvSurvey.canonn
             return null;
         }
 
-        public BioMatch matchFromVariant(string variantName)
+        public BioMatch? matchFromVariant(string variantName)
         {
             if (this.genus == null || this.genus.Count == 0) throw new Exception($"BioRef is not loaded.");
 
@@ -388,7 +401,8 @@ namespace SrvSurvey.canonn
                             if (variantRef.name == variantName)
                                 return new BioMatch(genusRef, speciesRef, variantRef);
 
-            throw new Exception($"Unexpected variantName: '{variantName}' (speciesName: '{speciesName}')");
+            Game.log($"Unexpected variantName: '{variantName}' (speciesName: '{speciesName}')");
+            return null;
         }
 
         public BioMatch? matchFromVariantDisplayName(string variantDisplayName)

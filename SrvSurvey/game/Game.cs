@@ -3064,6 +3064,8 @@ namespace SrvSurvey.game
             // add to bio scan locations. Skip for ScanType == ScanType.Analyse as a Sample event happens right before at the same location
             // add a new bio-scan - assuming we don't have one at this position already
             var match = Game.codexRef.matchFromVariant(entry.Variant);
+            if (match == null) return;
+
             var bioScan = new BioScan
             {
                 location = Status.here.clone(),

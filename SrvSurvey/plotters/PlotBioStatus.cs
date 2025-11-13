@@ -122,6 +122,7 @@ namespace SrvSurvey.plotters
         {
             this.lastCodexScan = null;
             var match = Game.codexRef.matchFromVariant(entry.Variant);
+            if (match == null) return;
             lastEntryId = match.entryId.ToString();
             this.hasImage = match.variant.imageUrl != null;
 
