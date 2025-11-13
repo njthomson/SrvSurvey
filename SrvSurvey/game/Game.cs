@@ -2568,7 +2568,7 @@ namespace SrvSurvey.game
         {
             get
             {
-                if (_touchdownLocation == null || status.hasLatLong)
+                if (_touchdownLocation == null && status.hasLatLong)
                     _touchdownLocation = findLastTouchdownLocation();
 
                 return _touchdownLocation!;
@@ -2992,7 +2992,7 @@ namespace SrvSurvey.game
             }
             else if (entry.SubCategory == "$Codex_SubCategory_Organic_Structures;" && entry.NearestDestination != "$Fixed_Event_Life_Cloud;" && entry.NearestDestination != "$Fixed_Event_Life_Ring;" && this.status?.hasLatLong == true)
             {
-                var match = Game.codexRef.matchFromEntryId(entry.EntryID);
+                var match = Game.codexRef.matchFromEntryId2(entry.EntryID);
 
                 if (Game.settings.autoTrackCompBioScans)
                 {
@@ -3374,7 +3374,7 @@ namespace SrvSurvey.game
                     systemBody.firstFootFall = true;
                     systemData.Save();
                 }
-                else
+                else if (!systemBody.hasValue)
                 {
                     Program.defer(() => this.inferFirstFootFall());
                 }

@@ -401,9 +401,12 @@ namespace SrvSurvey.game
                                 {
                                     // we can repair this one!
                                     Game.log($"Repairing missing variant: '{bodyOrg.species ?? bodyOrg.genus}' ({foo.entryId}) on '{bodyData.bodyName}' ({bodyData.bodyId})");
-                                    var bioMatch2 = Game.codexRef.matchFromEntryId(foo.entryId);
-                                    bodyOrg.variant = bioMatch2.variant.name;
-                                    bodyOrg.variantLocalized = bioMatch2.variant.englishName;
+                                    var bioMatch2 = Game.codexRef.matchFromEntryId2(foo.entryId);
+                                    if (bioMatch2 != null)
+                                    {
+                                        bodyOrg.variant = bioMatch2.variant.name;
+                                        bodyOrg.variantLocalized = bioMatch2.variant.englishName;
+                                    }
                                 }
                                 else
                                 {
@@ -993,7 +996,12 @@ namespace SrvSurvey.game
             if (body!.organisms == null) body.organisms = new List<SystemOrganism>();
 
             // find by first variant or entryId, then genusName
-            var match = Game.codexRef.matchFromEntryId(entry.EntryID);
+            var match = Game.codexRef.matchFromEntryId2(entry.EntryID);
+            if (match == null)
+            {
+                Game.log($"No match for entryId: {entry.EntryID} ({entry.Name_Localised} / {entry.Name})");
+                return false;
+            }
             var organism = body.findOrganism(match);
 
             if (organism == null)
@@ -1172,7 +1180,8 @@ namespace SrvSurvey.game
                     var poiBody = this.bodies.FirstOrDefault(_ => _.name == poiBodyName);
                     if (poiBody != null && poi.entryid != null && poi.entryid.Value.ToString().Length > 5)
                     {
-                        var match = Game.codexRef.matchFromEntryId(poi.entryid.Value);
+                        var match = Game.codexRef.matchFromEntryId2(poi.entryid.Value);
+                        if (match == null) continue;
                         var organism = poiBody.findOrganism(match);
                         if (organism == null)
                         {
@@ -2668,7 +2677,7 @@ namespace SrvSurvey.game
             if (this.species == null)
             {
                 // Sometimes the entryId is only 5 digits, but we will use what ever we can get
-                match = Game.codexRef.matchFromEntryId(this.entryId, true, true);
+                match = Game.codexRef.matchFromEntryId2(this.entryId, true);
                 if (match?.species != null)
                 {
                     this.species = match.species.name;
@@ -2683,7 +2692,7 @@ namespace SrvSurvey.game
             if (this.variantLocalized == null)
             {
                 if (match == null)
-                    match = Game.codexRef.matchFromEntryId(this.entryId, true);
+                    match = Game.codexRef.matchFromEntryId2(this.entryId);
 
                 if (match?.variant != null)
                     this.variantLocalized = match.variant.englishName;
@@ -2696,7 +2705,7 @@ namespace SrvSurvey.game
             get
             {
                 if (_bioMatch == null && this.entryId > 0)
-                    _bioMatch = Game.codexRef.matchFromEntryId(this.entryId, true);
+                    _bioMatch = Game.codexRef.matchFromEntryId2(this.entryId);
                 else if (_bioMatch == null && this.variant != null)
                     _bioMatch = Game.codexRef.matchFromVariant(this.variant);
 

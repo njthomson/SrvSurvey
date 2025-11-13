@@ -52,7 +52,7 @@ namespace SrvSurvey.game
                 if (parts.Count == 3)
                 {
                     // append the reward
-                    var bioMatch = Game.codexRef.matchFromEntryId(parts[2]);
+                    var bioMatch = Game.codexRef.matchFromEntryId1(parts[2]);
                     parts.Add(bioMatch.species.reward.ToString());
                 }
 

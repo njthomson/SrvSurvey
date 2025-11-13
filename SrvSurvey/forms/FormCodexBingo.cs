@@ -154,8 +154,8 @@ namespace SrvSurvey
                 subClass.Tag = new CodexTag(entry.sub_class);
                 var subClassTag = (CodexTag)subClass.Tag;
 
-                var match = Game.codexRef.matchFromEntryId(entry.entryid, true);
-                if (entry.platform == "legacy" || entry.hud_category != "Biology")
+                var match = Game.codexRef.matchFromEntryId2(entry.entryid);
+                if (entry.platform == "legacy" || entry.hud_category != "Biology" || entry.name.Contains("Ingensradices"))
                 {
                     var leafParent = subClass;
                     if (entry.english_name.Contains("Mollusc"))
@@ -177,6 +177,10 @@ namespace SrvSurvey
 
                     if (match?.genus != null && subClassTag.genus == null)
                         subClassTag.genus = match.genus.englishName;
+                }
+                else if (match == null)
+                {
+                    Game.log("Why?");
                 }
                 else
                 {
@@ -446,7 +450,7 @@ namespace SrvSurvey
             if (codexTag?.species != null)
             {
                 var variantNames = this.getIncompleteChildTags(tree.SelectedNode)
-                    .Select(t => Game.codexRef.matchFromEntryId(t.entry!.entryid).variant)
+                    .Select(t => Game.codexRef.matchFromEntryId1(t.entry!.entryid).variant)
                     .ToList();
 
                 var refPos = this.currentCmdr?.getCurrentStarPos() ?? StarPos.Sol;

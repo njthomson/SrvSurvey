@@ -102,7 +102,7 @@ namespace SrvSurvey
                     {
                         if (org.entryId > 0)
                         {
-                            var match = Game.codexRef.matchFromEntryId(org.entryId, true, true)?.variant;
+                            var match = Game.codexRef.matchFromEntryId2(org.entryId, true)?.variant;
                             if (match != null)
                                 stuff[body].Add(match);
                         }
@@ -137,11 +137,20 @@ namespace SrvSurvey
         /// <summary> Call when changing the thing we're looking at </summary>
         private void updateStuff(bool forceCanonn = false)
         {
-            if (currentVariants == null || currentVariants.Count == 0) return;
-            currentVariant = currentVariants[idxVariant];
+            lblBodyName.Text = currentBody.name + $" [{idxBody + 1} of {stuff.Count}]";
+            if (currentVariants == null || currentVariants.Count == 0)
+            {
+                lblTitle.Text = "?";
+                lblDetails.Text = "?";
+                return;
+            }
+            if (idxVariant < 0 || idxVariant > currentVariants.Count)
+                currentVariant = null;
+            else
+                currentVariant = currentVariants[idxVariant];
 
             // lookup temp range, if needed
-            if (lastTempRangeVariant != currentVariant.name)
+            if (currentVariant != null && lastTempRangeVariant != currentVariant.name)
             {
                 var clauses = BioPredictor.predictTarget(currentBody, currentVariant.englishName);
                 var tempClause = clauses.FirstOrDefault(c => c?.property == "temp");
@@ -165,84 +174,98 @@ namespace SrvSurvey
                     Game.log($"{currentVariant.englishName} ({currentVariant.species.name}) => has no predictive temperature range :(");
                 }
             }
-            lastTempRangeVariant = currentVariant.name;
+            lastTempRangeVariant = currentVariant?.name;
 
-            lblBodyName.Text = currentBody.name + $" [{idxBody + 1} of {stuff.Count}]";
-            lblTitle.Text = $"[{idxVariant + 1} of {currentVariants.Count}] " + currentVariant.englishName;
-
-            var org = currentBody.organisms?.FirstOrDefault(o => o.entryId.ToString() == currentVariant.entryId);
-            var prefix = "Predicted";
-            if (org?.analyzed == true)
-                prefix = "Analyzed";
-            else if (org?.scanned == true)
-                prefix = "Confirmed";
-            else if (org != null)
-                prefix = "Reported";
-
-            lblDetails.Text = prefix
-                + $" | Min dist: {Util.metersToString((decimal)currentVariant.species.genus.dist)}"
-                + $" | Reward: {Util.credits(currentVariant.reward)}"
-                + lastTempRange;
-
-            repositionBodyParts();
-            var targetEntryId = currentVariant.entryId;
-
-            // skip loading the image if nothing changed
-            if (currentVariant.name == this.img?.Tag as string && !forceCanonn) return;
-
-            // now load the image
-            Task.Run(() =>
+            if (currentVariant == null)
             {
-                var folder = Game.settings.downloadCodexImageFolder;
-                var filepath = Path.Combine(folder, $"{currentVariant.entryId}.jpg");
+                lblTitle.Text = "?";
+                lblDetails.Text = "?";
+            }
+            else
+            {
+                lblTitle.Text = $"[{idxVariant + 1} of {currentVariants.Count}] " + currentVariant.englishName;
 
-                Image? nextImg = null;
-                var nextCredits = "";
+                var org = currentBody.organisms?.FirstOrDefault(o => o.entryId.ToString() == currentVariant.entryId);
+                var prefix = "Predicted";
+                if (org?.analyzed == true)
+                    prefix = "Analyzed";
+                else if (org?.scanned == true)
+                    prefix = "Confirmed";
+                else if (org != null)
+                    prefix = "Reported";
 
-                // do we have a local image?
-                var localFilepath = Game.settings.localFloraFolder == null ? null : Path.Combine(Game.settings.localFloraFolder, $"{currentVariant.localImgName}.png");
-                if (localFilepath != null && File.Exists(localFilepath) && !forceCanonn)
+                lblDetails.Text = prefix
+                    + $" | Min dist: {Util.metersToString((decimal)currentVariant.species.genus.dist)}"
+                    + $" | Reward: {Util.credits(currentVariant.reward)}"
+                    + lastTempRange;
+
+                repositionBodyParts();
+                var targetEntryId = currentVariant.entryId;
+
+                // skip loading the image if nothing changed
+                if (currentVariant.name == this.img?.Tag as string && !forceCanonn) return;
+
+                if (currentVariant.imageUrl == null)
                 {
-                    // load the cached image - quickly, so as not to lock the file
-                    using (var imgTmp = Bitmap.FromFile(localFilepath))
-                        nextImg = new Bitmap(imgTmp);
-
-                    nextCredits = "(local image)";
+                    this.img = null;
+                    this.Invalidate(true);
+                    return;
                 }
-                // load image from disk
-                else if (File.Exists(filepath))
-                {
-                    // load the cached image - quickly, so as not to lock the file
-                    using (var imgTmp = Bitmap.FromFile(filepath))
-                        nextImg = new Bitmap(imgTmp);
 
-                    nextCredits = $"cmdr: {currentVariant.imageCmdr}";
-                }
-
-                if (nextImg != null)
+                // now load the image
+                Task.Run(() =>
                 {
-                    Program.defer(() =>
+                    var folder = Game.settings.downloadCodexImageFolder;
+                    var filepath = Path.Combine(folder, $"{currentVariant.entryId}.jpg");
+
+                    Image? nextImg = null;
+                    var nextCredits = "";
+
+                    // do we have a local image?
+                    var localFilepath = Game.settings.localFloraFolder == null ? null : Path.Combine(Game.settings.localFloraFolder, $"{currentVariant.localImgName}.png");
+                    if (localFilepath != null && File.Exists(localFilepath) && !forceCanonn)
                     {
-                        // exit if this is no longer what we're supposed to be showing
-                        if (targetEntryId != currentVariant.entryId) return;
+                        // load the cached image - quickly, so as not to lock the file
+                        using (var imgTmp = Bitmap.FromFile(localFilepath))
+                            nextImg = new Bitmap(imgTmp);
 
-                        this.lblCmdr.Text = nextCredits;
+                        nextCredits = "(local image)";
+                    }
+                    // load image from disk
+                    else if (File.Exists(filepath))
+                    {
+                        // load the cached image - quickly, so as not to lock the file
+                        using (var imgTmp = Bitmap.FromFile(filepath))
+                            nextImg = new Bitmap(imgTmp);
 
-                        // calculate scale to make the width fit
-                        this.img = nextImg;
-                        this.img.Tag = currentVariant.name;
+                        nextCredits = $"cmdr: {currentVariant.imageCmdr}";
+                    }
 
-                        lblLoading.Visible = nextImg == null;
-                        if (nextImg != null)
+                    if (nextImg != null)
+                    {
+                        Program.defer(() =>
                         {
-                            this.scale = (float)this.ClientRectangle.Width / (float)img.Width;
-                            this.calcSizes(true, true);
-                        }
+                            // exit if this is no longer what we're supposed to be showing
+                            if (targetEntryId != currentVariant.entryId) return;
 
-                        this.Invalidate(true);
-                    });
-                }
-            });
+                            this.lblCmdr.Text = nextCredits;
+
+                            // calculate scale to make the width fit
+                            this.img = nextImg;
+                            this.img.Tag = currentVariant.name;
+
+                            lblLoading.Visible = nextImg == null;
+                            if (nextImg != null)
+                            {
+                                this.scale = (float)this.ClientRectangle.Width / (float)img.Width;
+                                this.calcSizes(true, true);
+                            }
+
+                            this.Invalidate(true);
+                        });
+                    }
+                });
+            }
         }
 
         private void repositionBodyParts()
@@ -434,7 +457,7 @@ namespace SrvSurvey
                         if (org.entryId == 0) continue;
 
                         // skip if no url
-                        var match = Game.codexRef.matchFromEntryId(org.entryId, true);
+                        var match = Game.codexRef.matchFromEntryId2(org.entryId);
                         if (match?.variant.imageUrl == null) continue;
 
                         // otherwise download it
@@ -497,7 +520,8 @@ namespace SrvSurvey
                 foreach (var org in body.organisms ?? new())
                 {
                     if (org.entryId == 0) continue;
-                    var match = Game.codexRef.matchFromEntryId(org.entryId);
+                    var match = Game.codexRef.matchFromEntryId2(org.entryId);
+                    if (match == null) continue;
                     var item = new ToolStripMenuItem()
                     {
                         Name = entryId,
@@ -552,6 +576,7 @@ namespace SrvSurvey
             currentBody = pair.Key;
             currentVariants = pair.Value;
             if (idxVariant >= currentVariants.Count) idxVariant = currentVariants.Count - 1;
+            if (idxVariant < 0 && currentVariants.Count > 0) idxVariant = 0;
 
             prepMenuItems();
             updateStuff();
@@ -566,6 +591,7 @@ namespace SrvSurvey
             currentBody = pair.Key;
             currentVariants = pair.Value;
             if (idxVariant >= currentVariants.Count) idxVariant = currentVariants.Count - 1;
+            if (idxVariant < 0 && currentVariants.Count > 0) idxVariant = 0;
 
             prepMenuItems();
             updateStuff();

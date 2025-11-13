@@ -56,8 +56,8 @@ namespace SrvSurvey.plotters
             {
                 lastEntryId = game.cmdr.scanOne.entryId.ToString();
 
-                var match = Game.codexRef.matchFromEntryId(lastEntryId);
-                this.hasImage = match.variant.imageUrl != null;
+                var match = Game.codexRef.matchFromEntryId2(lastEntryId);
+                this.hasImage = match?.variant.imageUrl != null;
             }
 
             tempRangeDiffs = new TempRangeDiffs(width - N.ten, N.twoFour);
@@ -97,15 +97,22 @@ namespace SrvSurvey.plotters
             if (entry.SubCategory == "$Codex_SubCategory_Organic_Structures;" && game.systemBody != null && game.status.hasLatLong)
             {
                 lastEntryId = entry.EntryID.ToString();
-                var match = Game.codexRef.matchFromEntryId(lastEntryId);
-                if (game.cmdr.scanOne == null)
-                    this.hasImage = match.variant.imageUrl != null;
+                var match = Game.codexRef.matchFromEntryId2(lastEntryId);
+                if (match != null)
+                {
+                    if (game.cmdr.scanOne == null)
+                        this.hasImage = match.variant.imageUrl != null;
 
-                this.lastCodexScan = entry.Name_Localised;
-                if (game.systemBody.firstFootFall)
-                    this.lastCodexScan += $" {Util.credits(match.species.reward * 5)} (FF bonus)";
+                    this.lastCodexScan = entry.Name_Localised;
+                    if (game.systemBody.firstFootFall)
+                        this.lastCodexScan += $" {Util.credits(match.species.reward * 5)} (FF bonus)";
+                    else
+                        this.lastCodexScan += $" {Util.credits(match.species.reward)}";
+                }
                 else
-                    this.lastCodexScan += $" {Util.credits(match.species.reward)}";
+                {
+                    Game.log($"No match for entryId: {entry.EntryID} ({entry.Name_Localised} / {entry.Name})");
+                }
             }
 
             this.invalidate();
@@ -440,7 +447,8 @@ namespace SrvSurvey.plotters
 
         private void prepTemp(long entryId)
         {
-            var match = Game.codexRef.matchFromEntryId(entryId);
+            var match = Game.codexRef.matchFromEntryId2(entryId);
+            if (match == null) return;
 
             var clauses = BioPredictor.predictTarget(game!.systemBody!, match.variant.englishName);
             this.temperatureClause = clauses.FirstOrDefault(c => c?.property == "temp");

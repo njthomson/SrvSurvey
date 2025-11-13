@@ -174,7 +174,7 @@ namespace SrvSurvey.canonn
                 Game.log("prepBioRef: (re)building from whole CodexRef ...");
                 this.genus = new List<BioGenus>();
                 var organicStuff = codexRef!.Values
-                    .Where(_ => _.reward > 0);
+                    .Where(_ => _.reward > 0 || _.hud_category == "Biology");
 
                 foreach (var thing in organicStuff)
                 {
@@ -274,7 +274,7 @@ namespace SrvSurvey.canonn
                         {
                             name = speciesName,
                             englishName = speciesEnglishName,
-                            reward = thing.reward!.Value,
+                            reward = thing.reward ?? 0,
                             entryIdPrefix = thing.entryid.Substring(0, 5),
                             variants = new List<BioVariant>(),
                         };
@@ -326,12 +326,26 @@ namespace SrvSurvey.canonn
             }
         }
 
-        public BioMatch matchFromEntryId(long entryId, bool allowNull = false, bool allowPartial = false)
+        public BioMatch matchFromEntryId1(long entryId)
         {
-            return matchFromEntryId(entryId.ToString(), allowNull);
+            return matchFromEntryId1(entryId.ToString());
         }
 
-        public BioMatch matchFromEntryId(string entryId, bool allowNull = false, bool allowPartial = false)
+        public BioMatch? matchFromEntryId2(long entryId, bool allowPartial = false)
+        {
+            return matchFromEntryId2(entryId.ToString(), allowPartial);
+        }
+
+        public BioMatch matchFromEntryId1(string entryId)
+        {
+            var match = matchFromEntryId2(entryId);
+            if (match == null)
+                throw new Exception($"Unexpected entryId: '{entryId}'");
+            else
+                return match;
+        }
+
+        public BioMatch? matchFromEntryId2(string entryId, bool allowPartial = false)
         {
             if (entryId == null) return null!;
             if (this.genus == null || this.genus.Count == 0) throw new Exception($"BioRef is not loaded.");
@@ -358,8 +372,7 @@ namespace SrvSurvey.canonn
                 }
             }
 
-            if (allowNull) return null!;
-            throw new Exception($"Unexpected entryId: '{entryId}'");
+            return null;
         }
 
         public BioMatch matchFromVariant(string variantName)

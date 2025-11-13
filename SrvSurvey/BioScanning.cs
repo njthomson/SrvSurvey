@@ -54,6 +54,8 @@ namespace SrvSurvey
             { "$Codex_Ent_Brancae_Name;",                  "Brain Tree" },
             { "$Codex_Ent_Ground_Struct_Ice_Name;",        "Crystalline Shards"},
             { "$Codex_Ent_Tube_Name;",                     "Sinuous Tubers"},
+            // New stuff
+            { "$Codex_Ent_Ingensradices_Unicus_Name;",     "Radicoida"},
         };
 
         public enum Status

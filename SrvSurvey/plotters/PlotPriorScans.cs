@@ -92,7 +92,8 @@ namespace SrvSurvey.plotters
                 if (poi.latitude != null && poi.longitude != null && poi.entryid != null)
                 {
                     // skip anything with value is too low
-                    var match = Game.codexRef.matchFromEntryId(poi.entryid.Value);
+                    var match = Game.codexRef.matchFromEntryId2(poi.entryid.Value);
+                    if (match == null) continue;
                     var reward = match.species.reward;
                     if (Game.settings.skipPriorScansLowValue && reward < Game.settings.skipPriorScansLowValueAmount)
                         continue;

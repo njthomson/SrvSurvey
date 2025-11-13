@@ -191,7 +191,7 @@ namespace SrvSurvey.plotters
         private string getDisplayName(string name)
         {
             var genus = Game.codexRef.genus.Find(g => g.name == name);
-            return genus?.locName ?? name;
+            return genus?.locName ?? genus?.englishName ?? name;
         }
     }
 }

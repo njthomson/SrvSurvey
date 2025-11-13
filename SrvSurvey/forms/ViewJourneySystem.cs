@@ -48,7 +48,7 @@ namespace SrvSurvey.forms
             {
                 txtRoughStats.Text += $"► Bio rewards: {Util.credits(sys.count.rewardBio)} from {sys.count.organic} scans:\r\n";
                 var lines = sys.codexScanned?
-                    .Select(id => Game.codexRef.matchFromEntryId(id.ToString(), true)?.variant.englishName)
+                    .Select(id => Game.codexRef.matchFromEntryId2(id.ToString())?.variant.englishName)
                     .Where(t => t != null)
                     .Select(t => $"   - {t}");
                 if (lines != null)
