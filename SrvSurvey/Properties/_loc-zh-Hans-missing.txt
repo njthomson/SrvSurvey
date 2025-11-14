@@ -6,3 +6,5 @@
 
 /Properties/KeyChords.zh-Hans.resx
 	nextWindow
+	adjustVR
+	toggleFF

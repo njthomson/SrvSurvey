@@ -96,6 +96,7 @@ namespace SrvSurvey
             { KeyAction.nextWindow, "ALT CTRL W" },
             { KeyAction.streamOne, "ALT CTRL O" },
             { KeyAction.adjustVR, "ALT V" },
+            { KeyAction.toggleFF, "" },            
         };
 
         public static bool doKeyAction(KeyAction keyAction)
@@ -134,6 +135,7 @@ namespace SrvSurvey
                     case KeyAction.nextWindow: return focusNextGameWindow();
                     case KeyAction.streamOne: return toggleStreamOne();
                     case KeyAction.adjustVR: return adjustVR();
+                    case KeyAction.toggleFF: return toggleFF();
 
                     default:
                         Game.log($"Unsupported key action: {keyAction}");
@@ -473,6 +475,13 @@ namespace SrvSurvey
                 PlotAdjustVR.start();
             return true;
         }
+
+        private static bool toggleFF()
+        {
+            // toggle first footfall
+            Game.activeGame?.toggleFirstFootfall(null);
+            return true;
+        }
     }
 
     /// <summary>
@@ -517,6 +526,8 @@ namespace SrvSurvey
         streamOne,
         /// <summary> Toggle VR overlay adjustment </summary>
         adjustVR,
+        /// <summary> Toggle First Footfall </summary>
+        toggleFF,
         /// <summary> Track the current location as #1 </summary>
         track1,
         /// <summary> Track the current location as #2 </summary>

@@ -327,6 +327,10 @@ namespace SrvSurvey.game
                 case "$Codex_Ent_Thargoid_Tower_Name;": // Spire Towers
                     return 85;
 
+                // New stuff
+                case "$Codex_Ent_Ingensradices_Genus_Name;": // Radicoida
+                    return 15;
+
                 default:
                     return 50;
             }

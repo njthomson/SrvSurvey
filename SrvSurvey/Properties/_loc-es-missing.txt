@@ -168,6 +168,8 @@
 	refreshColonyData
 	showColonyShopping
 	showStationInfo
+	adjustVR
+	toggleFF
 
 /Properties/Materials.es.resx
 	tg_biomechanicalconduits

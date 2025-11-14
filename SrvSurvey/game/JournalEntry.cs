@@ -285,6 +285,7 @@ namespace SrvSurvey
         SpaceConstructionDepot,
         GameplayPOI,
         DockablePlanetStation,
+        Dodec,
     }
 
     class Undocked : JournalEntry

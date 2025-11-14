@@ -127,6 +127,8 @@ namespace SrvSurvey.plotters
                         // for pre-Odyssey bio's
                         if (!match.genus.odyssey)
                             signal.displayName = $"{match.genus.locName} - {match.variant.locColorName}";
+                        else if (match.entryId == 2460101) // Radicoida Unica
+                            signal.displayName = $"{match.genus.englishName} - {match.species.locName}";
 
                         this.signals.Add(signal);
                     }

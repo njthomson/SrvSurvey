@@ -503,6 +503,8 @@
 	refreshColonyData
 	showColonyShopping
 	showStationInfo
+	adjustVR
+	toggleFF
 
 /Properties/Misc.pt-BR.resx
 	NetSysData_Bodies

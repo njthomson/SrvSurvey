@@ -404,7 +404,8 @@ namespace SrvSurvey.game
                 currentSystem.count.organic++;
 
                 var species = Game.codexRef.matchFromSpecies(entry.Species);
-                currentSystem.count.rewardBio += species.reward;
+                if (species != null)
+                    currentSystem.count.rewardBio += species.reward;
             }
 
             // TODO: Maybe count the others?

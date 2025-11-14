@@ -61,6 +61,15 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to For VR players. Opens an overlay to adjust the position of others..
+        /// </summary>
+        internal static string adjustVR {
+            get {
+                return ResourceManager.GetString("adjustVR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Toggle collapsing cargo groups when enough on FCs..
         /// </summary>
         internal static string collapseColonyData {
@@ -201,6 +210,15 @@ namespace SrvSurvey.Properties {
         internal static string toggleAllVisibility {
             get {
                 return ResourceManager.GetString("toggleAllVisibility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggles the First Footfall status for the current body..
+        /// </summary>
+        internal static string toggleFF {
+            get {
+                return ResourceManager.GetString("toggleFF", resourceCulture);
             }
         }
         

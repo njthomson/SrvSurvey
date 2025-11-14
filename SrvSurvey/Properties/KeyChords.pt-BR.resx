@@ -60,6 +60,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <!--Localizable elements are below-->
+  <data name="adjustVR">
+    <!--Machine translated-->
+    <value>Para jogadores de VR. Abre uma sobreposição para ajustar a posição de outras pessoas.</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>For VR players. Opens an overlay to adjust the position of others.</source>
+  </data>
   <data name="collapseColonyData">
     <!--Machine translated-->
     <value>Alterne os grupos de carga em colapso quando o suficiente em FCs.</value>
@@ -155,6 +161,12 @@
     <value>Alterna a visibilidade de todas as janelas de sobreposição.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Toggles visibility of all overlay windows.</source>
+  </data>
+  <data name="toggleFF">
+    <!--Machine translated-->
+    <value>Alterna o status do Primeiro Passo para o corpo atual.</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Toggles the First Footfall status for the current body.</source>
   </data>
   <data name="track1">
     <!--Machine translated-->

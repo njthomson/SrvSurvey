@@ -3165,7 +3165,12 @@ namespace SrvSurvey.game
                 {
                     // find the species + confirm the reward matches
                     var speciesRef = Game.codexRef.matchFromSpecies(data.Species);
-                    if (speciesRef.reward != data.Value) throw new Exception("Why do rewards not match?");
+                    if (speciesRef == null) continue;
+                    if (speciesRef.reward != data.Value && data.Species != "$Codex_Ent_Ingensradices_Unicus_Name;") // TEMP until we get the price figured out
+                    {
+                        Game.log($"Why do rewards not match? {speciesRef.reward} vs { data.Value} for: {data.Species_Localised} ({data.Species})");
+                        Debugger.Break();
+                    }
 
                     // find the entry with the entryId and reward value. Sadly, it's not possible to concretely tie it to the system or body.
                     var txtReward = data.Value.ToString();

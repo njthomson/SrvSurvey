@@ -126,7 +126,8 @@ namespace BioCriterias
                     {
                         var match = Game.codexRef.matchFromSpecies2(org.species);
                         // TODO: handle Brain Tree's
-                        predictor.knownSpecies[match.genus.englishName] = match.species.englishName;
+                        if (match != null)
+                            predictor.knownSpecies[match.genus.englishName] = match.species.englishName;
                     }
                 }
 

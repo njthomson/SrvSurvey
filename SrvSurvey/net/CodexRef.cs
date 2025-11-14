@@ -439,7 +439,7 @@ namespace SrvSurvey.canonn
             return null;
         }
 
-        public BioSpecies matchFromSpecies(string speciesName)
+        public BioSpecies? matchFromSpecies(string speciesName)
         {
             if (this.genus == null || this.genus.Count == 0) throw new Exception($"BioRef is not loaded.");
             if (string.IsNullOrEmpty(speciesName)) throw new Exception($"Missing species name!");
@@ -450,10 +450,11 @@ namespace SrvSurvey.canonn
                     if (speciesRef.name == speciesName || speciesRef.englishName.Equals(speciesName, StringComparison.Ordinal))
                         return speciesRef;
 
-            throw new Exception($"Unexpected speciesName: '{speciesName}'");
+            Game.log($"matchFromSpecies: Unexpected speciesName: '{speciesName}'");
+            return null;
         }
 
-        public BioMatch matchFromSpecies2(string speciesName)
+        public BioMatch? matchFromSpecies2(string speciesName)
         {
             if (this.genus == null || this.genus.Count == 0) throw new Exception($"BioRef is not loaded.");
             if (string.IsNullOrEmpty(speciesName)) throw new Exception($"Missing species name!");
@@ -464,7 +465,8 @@ namespace SrvSurvey.canonn
                     if (speciesRef.name == speciesName || speciesRef.englishName.Equals(speciesName, StringComparison.Ordinal))
                         return new BioMatch(genusRef, speciesRef, null!);
 
-            throw new Exception($"Unexpected speciesName: '{speciesName}'");
+            Game.log($"matchFromSpecies2: Unexpected speciesName: '{speciesName}'");
+            return null;
         }
 
         public BioGenus? matchFromGenus(string genusName)

@@ -337,7 +337,8 @@ namespace SrvSurvey.game
                         // attempt to match entryId from cmdr's scannedBioEntryIds list
                         if (bioScan.entryId == 0 || bioScan.entryId.ToString().EndsWith("00") || bioScan.entryId.ToString().Length < 7)
                         {
-                            var speciesRef = Game.codexRef.matchFromSpecies(bioScan.species!);
+                            var speciesRef = Game.codexRef.matchFromSpecies(bioScan.species);
+                            if (speciesRef == null) continue;
                             var prefix = $"{bodyData.systemAddress}_{bodyData.bodyId}_{speciesRef.entryIdPrefix}";
                             var matchForEntryId = cmdr.scannedBioEntryIds.FirstOrDefault(_ => _.StartsWith(prefix));
                             if (matchForEntryId != null)
@@ -393,8 +394,11 @@ namespace SrvSurvey.game
                                 // legacy organics never had a variant, but we double up the species info
                                 Game.log($"Repair legacy missing variant: '{bodyOrg.species ?? bodyOrg.genus}' on '{bodyData.bodyName}' ({bodyData.bodyId})");
                                 var matchedSpecies = Game.codexRef.matchFromSpecies(bodyOrg.species!);
-                                bodyOrg.variant = matchedSpecies.variants[0].name;
-                                bodyOrg.variantLocalized = matchedSpecies.variants[0].englishName;
+                                if (matchedSpecies != null)
+                                {
+                                    bodyOrg.variant = matchedSpecies.variants[0].name;
+                                    bodyOrg.variantLocalized = matchedSpecies.variants[0].englishName;
+                                }
                             }
                             else if (bodyOrg.genus != null)
                             {

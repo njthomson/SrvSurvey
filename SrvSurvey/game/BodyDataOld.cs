@@ -78,9 +78,9 @@ namespace SrvSurvey.game
 
                 var isLegacyGenus = Game.codexRef.isLegacyGenus(oldScanEntry.genus!, oldScanEntry.species!);
                 if (isLegacyGenus)
-                    suffix = Game.codexRef.matchFromSpecies(oldScanEntry.species!).variants[0].entryIdSuffix;
+                    suffix = Game.codexRef.matchFromSpecies(oldScanEntry.species!)!.variants[0].entryIdSuffix;
 
-                var speciesRef = Game.codexRef.matchFromSpecies(oldScanEntry.species!);
+                var speciesRef = Game.codexRef.matchFromSpecies(oldScanEntry.species!)!;
                 var entryId = speciesRef.entryIdPrefix + suffix;
 
                 var prefix = $"{oldScanEntry.systemAddress}_{oldScanEntry.bodyId}_{entryId}";

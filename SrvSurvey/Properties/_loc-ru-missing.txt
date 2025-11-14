@@ -45,6 +45,8 @@
 	refreshColonyData
 	showColonyShopping
 	showStationInfo
+	adjustVR
+	toggleFF
 
 /Properties/Materials.ru.resx
 	searchrescuevoucher

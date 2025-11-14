@@ -213,4 +213,12 @@
     <value>Force show the Station Info overlay.</value>
     <comment>A description of a key-chord setting</comment>
   </data>
+  <data name="adjustVR" xml:space="preserve">
+    <value>For VR players. Opens an overlay to adjust the position of others.</value>
+    <comment>A description of a key-chord setting</comment>
+  </data>
+  <data name="toggleFF" xml:space="preserve">
+    <value>Toggles the First Footfall status for the current body.</value>
+    <comment>A description of a key-chord setting</comment>
+  </data>
 </root>

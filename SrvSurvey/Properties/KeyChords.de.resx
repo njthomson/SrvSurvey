@@ -60,6 +60,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <!--Localizable elements are below-->
+  <data name="adjustVR">
+    <!--Machine translated-->
+    <value>Für VR-Spieler. Öffnet eine Überlagerung, um die Position anderer Benutzer anzupassen.</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>For VR players. Opens an overlay to adjust the position of others.</source>
+  </data>
   <data name="collapseColonyData">
     <!--Machine translated-->
     <value>Schalten Sie zusammenklappbare Frachtgruppen um, wenn genügend FCs vorhanden sind.</value>
@@ -155,6 +161,12 @@
     <value>Schaltet die Sichtbarkeit aller Overlay-Fenster um.</value>
     <comment>A description of a key-chord setting</comment>
     <source>Toggles visibility of all overlay windows.</source>
+  </data>
+  <data name="toggleFF">
+    <!--Machine translated-->
+    <value>Schaltet den Status "Erster Schritt" für den aktuellen Text um.</value>
+    <comment>A description of a key-chord setting</comment>
+    <source>Toggles the First Footfall status for the current body.</source>
   </data>
   <data name="track1">
     <!--Machine translated-->
