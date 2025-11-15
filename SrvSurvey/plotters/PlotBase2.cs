@@ -552,7 +552,7 @@ namespace SrvSurvey.plotters
         /// <summary>
         /// A manually set scaling factor given by users with the `z` command.
         /// </summary>
-        public float customScale = -1.0f;
+        public double customScale = -1.0d;
 
         protected decimal radius { get => game.systemBody?.radius ?? 0; }
 

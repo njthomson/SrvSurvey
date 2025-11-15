@@ -8,6 +8,7 @@
 /plotters/PlotBioSystem.es.resx
 	HasCanonnSignals
 	NotPredicted
+	CountRadicoidaUnica
 
 /plotters/PlotGuardians.es.resx
 	HeaderGeneral

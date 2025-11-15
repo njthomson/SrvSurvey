@@ -72,6 +72,28 @@ namespace SrvSurvey.plotters
                 Program.defer(() => plotTrackers.setPosition(null));
         }
 
+        public void adjustZoom(bool zoomIn)
+        {
+            var newZoom = this.customScale;
+            if (newZoom == -1) newZoom = 1d;
+
+            const double delta = 1.25d;
+            newZoom = zoomIn ? newZoom * delta : newZoom / delta;
+
+            if (newZoom < 0.25d || newZoom > 10d) return;
+
+            this.customScale = (float)newZoom;
+            Game.log($"PlotGrounded adjustZoom: zoomIn: {zoomIn}, newZoom: {newZoom}");
+            this.invalidate();
+        }
+
+        public void resetZoom()
+        {
+            Game.log($"PlotGrounded resetZoom");
+            this.customScale = -1;
+            this.invalidate();
+        }
+
         protected override SizeF doRender(Graphics g, TextCursor tt)
         {
             if (game.systemBody == null || game.status == null) return this.size;
@@ -91,10 +113,12 @@ namespace SrvSurvey.plotters
 
             this.resetMiddleRotated(g);
             // draw touchdown marker (may reset transforms)
+            if (customScale > 0) g.ScaleTransform((float)customScale, (float)customScale);
             this.drawShipAndSrvLocation(g, tt);
 
             // draw current location pointer (always at center of plot + unscaled)
             this.resetMiddle(g);
+            if (customScale > 0) g.ScaleTransform((float)customScale, (float)customScale);
             base.drawCommander(g);
 
             g.ResetTransform();
@@ -137,14 +161,15 @@ namespace SrvSurvey.plotters
 
         private void drawBioScans(Graphics g)
         {
-            if (game.systemBody == null) return;
+            if (game?.systemBody == null) return;
 
             this.resetMiddleRotated(g);
+            if (customScale > 0) g.ScaleTransform((float)customScale, (float)customScale);
 
             // use the same Tracking delta for all bioScans against the same currentLocation
             var currentLocation = new LatLong2(this.game.status);
             var d = new TrackingDelta(game.systemBody.radius, currentLocation.clone());
-            if (game.systemBody?.bioScans?.Count > 0)
+            if (game.systemBody.bioScans?.Count > 0)
                 foreach (var scan in game.systemBody.bioScans)
                     drawBioScan(g, d, scan);
 
@@ -153,15 +178,29 @@ namespace SrvSurvey.plotters
                 drawPriorScans(g);
 
             // draw trackers circles first
-            if (game.systemBody?.bookmarks?.Count > 0)
+            if (game.systemBody.bookmarks?.Count > 0)
                 drawTrackers(g);
 
             // draw active scans top most
+            var activeScans = new List<BioScan>();
             if (game.cmdr.scanOne != null)
-                drawBioScan(g, d, game.cmdr.scanOne);
+            {
+                activeScans.Add(game.cmdr.scanOne);
 
-            if (game.cmdr.scanTwo != null)
-                drawBioScan(g, d, game.cmdr.scanTwo);
+                if (game.cmdr.scanTwo != null)
+                {
+                    // put scanTwo ahead of scanOne if is closer
+                    var d1 = Util.getDistance(game.cmdr.scanOne!.location, Status.here, game.systemBody.radius);
+                    var d2 = Util.getDistance(game.cmdr.scanTwo.location, Status.here, game.systemBody.radius);
+                    if (d2 < d1)
+                        activeScans.Add(game.cmdr.scanTwo);
+                    else
+                        activeScans.Insert(0, game.cmdr.scanTwo);
+                }
+
+                foreach (var scan in activeScans)
+                    drawBioScan(g, d, scan);
+            }
         }
 
         private void drawPriorScans(Graphics g)

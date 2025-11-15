@@ -3124,6 +3124,9 @@ namespace SrvSurvey.game
                     this.systemBody.bioScans.Add(this.cmdr.scanTwo);
                 }
 
+                if (entry.Species == "$Codex_Ent_Ingensradices_Unicus_Name;")
+                    this.cmdr.countRadicoidaUnica++;
+
                 // and clear state
                 this.cmdr.lastOrganicScan = null;
                 this.cmdr.scanOne = null;
@@ -3163,6 +3166,10 @@ namespace SrvSurvey.game
             {
                 try
                 {
+                    // temp for the CG?
+                    if (data.Species == "$Codex_Ent_Ingensradices_Unicus_Name;")
+                        cmdr.countRadicoidaUnica = 0;
+
                     // find the species + confirm the reward matches
                     var speciesRef = Game.codexRef.matchFromSpecies(data.Species);
                     if (speciesRef == null) continue;

@@ -90,6 +90,7 @@
 	HasCanonnSignals
 	NotPredicted
 	RewardFooter
+	CountRadicoidaUnica
 
 /plotters/PlotBodyInfo.fr.resx
 	Atmosphere

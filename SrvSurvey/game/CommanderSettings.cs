@@ -194,6 +194,9 @@ namespace SrvSurvey.game
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public BoxelSearch? boxelSearch;
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int countRadicoidaUnica;
+
         #endregion
 
         public void applyExplReward(long reward, string reason)

@@ -330,6 +330,9 @@ namespace SrvSurvey.plotters
                 }
             }
 
+            if (game.cmdr.countRadicoidaUnica > 0)
+                this.drawRadicoidaUnicaCount(g, tt);
+
             // summary footer
             tt.dty += N.two;
             var footerTxt = Res.RewardFooter.format(body.getMinMaxBioRewards(false));
@@ -594,7 +597,7 @@ namespace SrvSurvey.plotters
                 tt.newLine(+N.four, true);
 
                 // if we are missing predictions - we need to FSS the system to feed the predictor
-                if ((body.organisms?.Count(o => o.entryId > 0) ?? 0) < body.bioSignalCount && body.genusPredictions.Count == 0)
+                if (!body.dssComplete && (body.organisms?.Count(o => o.entryId > 0) ?? 0) < body.bioSignalCount && body.genusPredictions.Count == 0)
                     fssNeeded = true;
             }
 
@@ -604,6 +607,12 @@ namespace SrvSurvey.plotters
                 tt.dty += N.eight;
                 tt.draw(N.six, "► " + (game.systemData.honked ? Res.DssRequired : Res.FssRequired), C.cyan, GameColors.fontSmall);
                 tt.newLine(true);
+            }
+
+            if (game.cmdr.countRadicoidaUnica > 0)
+            {
+                tt.dty += N.ten;
+                this.drawRadicoidaUnicaCount(g, tt);
             }
 
             tt.dty += N.four;
@@ -767,6 +776,15 @@ namespace SrvSurvey.plotters
             }
 
             g.SmoothingMode = SmoothingMode.HighQuality;
+        }
+
+        private void drawRadicoidaUnicaCount(Graphics g, TextCursor tt)
+        {
+            // temp for the CG?
+            if (game.cmdr.countRadicoidaUnica <= 0) return;
+
+            tt.draw(N.six, $"► {Res.CountRadicoidaUnica}: {game.cmdr.countRadicoidaUnica}", C.cyan);
+            tt.newLine(N.six, true);
         }
     }
 }

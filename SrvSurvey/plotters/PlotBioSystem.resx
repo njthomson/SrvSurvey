@@ -159,4 +159,8 @@
     <comment>Header shown when showing bio signals forthe whole system
 {0} int, count of bio signals in this system</comment>
   </data>
+  <data name="CountRadicoidaUnica" xml:space="preserve">
+    <value>Radicoida scans</value>
+    <comment>Prefix shown when scanning Radicoida</comment>
+  </data>
 </root>

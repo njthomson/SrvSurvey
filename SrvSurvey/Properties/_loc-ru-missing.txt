@@ -1,5 +1,6 @@
 /plotters/PlotBioSystem.ru.resx
 	HasCanonnSignals
+	CountRadicoidaUnica
 
 /Properties/Commodities.ru.resx
 	AzCancriFormula42

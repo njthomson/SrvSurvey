@@ -96,7 +96,7 @@ namespace SrvSurvey
             { KeyAction.nextWindow, "ALT CTRL W" },
             { KeyAction.streamOne, "ALT CTRL O" },
             { KeyAction.adjustVR, "ALT V" },
-            { KeyAction.toggleFF, "" },            
+            { KeyAction.toggleFF, "" },
         };
 
         public static bool doKeyAction(KeyAction keyAction)
@@ -158,6 +158,7 @@ namespace SrvSurvey
 
             PlotBase2.getPlotter<PlotHumanSite>()?.adjustZoom(zoomIn);
             PlotBase2.getPlotter<PlotGuardians>()?.adjustZoom(zoomIn);
+            PlotBase2.getPlotter<PlotGrounded>()?.adjustZoom(zoomIn);
             return true;
         }
 
@@ -175,6 +176,7 @@ namespace SrvSurvey
                 PlotGuardians.autoZoom = true;
                 PlotBase2.getPlotter<PlotGuardians>()?.setMapScale();
             }
+            PlotBase2.getPlotter<PlotGrounded>()?.resetZoom();
             return true;
         }
 

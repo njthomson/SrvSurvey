@@ -70,6 +70,15 @@ namespace Loc {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Radicoida scans.
+        /// </summary>
+        internal static string CountRadicoidaUnica {
+            get {
+                return ResourceManager.GetString("CountRadicoidaUnica", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DSS required.
         /// </summary>
         internal static string DssRequired {

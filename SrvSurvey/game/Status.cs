@@ -195,7 +195,13 @@ namespace SrvSurvey
 
                 // fire the event for external code on the UI thread
                 if (this.StatusChanged != null)
-                    Program.control.Invoke(() => this.StatusChanged(blink));
+                {
+                    Program.control.Invoke(() =>
+                    {
+                        if (this.StatusChanged != null)
+                            this.StatusChanged(blink);
+                    });
+                }
 
                 //Game.log($"parseStatusFile:\n\t{Flags}\n\t{Flags2}");
                 //haveRead = true;

@@ -82,7 +82,7 @@ namespace SrvSurvey.forms
                 btnSave.Enabled = true;
                 list.Enabled = true;
 
-                if (PlotBuildCommodities.allowed(game))
+                if (game != null && PlotBuildCommodities.allowed(game))
                     PlotBuildCommodities.endPending();
             }
         }

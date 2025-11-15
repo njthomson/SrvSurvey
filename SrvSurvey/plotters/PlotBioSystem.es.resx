@@ -67,6 +67,12 @@
 {1} int, total count of bio signals on this body</comment>
     <source>Body {0} bio signals: {1}</source>
   </data>
+  <data name="CountRadicoidaUnica">
+    <!--Machine translated-->
+    <value>Exploraciones de Radicoida</value>
+    <comment>Prefix shown when scanning Radicoida</comment>
+    <source>Radicoida scans</source>
+  </data>
   <data name="DssRequired">
     <value>Se requiere DSS</value>
     <comment>Message shown if the body needs to be DSS scanned</comment>

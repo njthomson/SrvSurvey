@@ -681,7 +681,7 @@ namespace SrvSurvey.plotters
         private float getAutoZoomLevel()
         {
             if (this.customScale != -1f)
-                return this.customScale;
+                return (float)this.customScale;
             else if (Game.settings.autoZoomGuardianInTurret && game.status.UsingSrvTurret)
                 return 3f;
             else if (Game.settings.autoZoomGuardianNearObelisks && this.nearestObeliskDist < 30 && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))

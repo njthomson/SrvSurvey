@@ -1,5 +1,6 @@
 /plotters/PlotBioSystem.zh-Hans.resx
 	HasCanonnSignals
+	CountRadicoidaUnica
 
 /plotters/PlotGuardians.zh-Hans.resx
 	HeaderGeneral

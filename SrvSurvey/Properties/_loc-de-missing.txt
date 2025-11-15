@@ -110,6 +110,7 @@
 	NotPredicted
 	RewardFooter
 	SysBio_Header
+	CountRadicoidaUnica
 
 /plotters/PlotBodyInfo.de.resx
 	Atmosphere

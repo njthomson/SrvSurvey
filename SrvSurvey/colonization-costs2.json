@@ -58,6 +58,37 @@
     }
   },
   {
+    "buildType": "dodec",
+    "category": "Dodec",
+    "tier": 3,
+    "location": "orbital",
+    "displayName": "Dodec Starport",
+    "displayName2": "Dodec Starport",
+    "layouts": [ "dodec", "quint_truss", "dec_truss" ],
+    "cargo": {
+      "aluminium": 45248,
+      "autofabricators": 314,
+      "ceramiccomposites": 5432,
+      "cmmcomposite": 50675,
+      "computercomponents": 363,
+      "copper": 2898,
+      "foodcartridges": 605,
+      "fruitandvegetables": 363,
+      "insulatingmembrane": 1610,
+      "liquidoxygen": 17015,
+      "medicaldiagnosticequipment": 63,
+      "nonlethalweapons": 63,
+      "polymers": 2615,
+      "powergenerators": 163,
+      "semiconductors": 403,
+      "steel": 63342,
+      "superconductors": 705,
+      "titanium": 36923,
+      "water": 7241,
+      "waterpurifiers": 263
+    }
+  },
+  {
     "buildType": "ocellus",
     "category": "Ocellus",
     "tier": 3,
