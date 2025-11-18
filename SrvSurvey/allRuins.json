@@ -17,7 +17,7 @@
     "latitude": -46.576923,
     "longitude": 133.985107,
     "siteHeading": 332,
-    "relicTowerHeading": 130,
+    "relicTowerHeading": 93,
     "surveyProgress": 100,
     "legacyLatitude": -31.788902,
     "legacyLongitude": -128.941498,
@@ -1056,14 +1056,14 @@
     ],
     "latitude": -45.092583,
     "longitude": -169.119461,
-    "siteHeading": -1,
-    "relicTowerHeading": -1,
-    "surveyProgress": 0,
+    "siteHeading": 234,
+    "relicTowerHeading": 1,
+    "surveyProgress": 100,
     "legacyLatitude": 8.519423,
     "legacyLongitude": 72.493233,
     "legacySiteHeading": -1,
     "legacyRelicTowerHeading": -1,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 93,

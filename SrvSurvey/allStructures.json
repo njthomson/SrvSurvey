@@ -504,8 +504,8 @@
     "latitude": 27.952511,
     "longitude": -5.201449,
     "siteHeading": 224,
-    "surveyProgress": 56,
-    "surveyComplete": false
+    "surveyProgress": 100,
+    "surveyComplete": true
   },
   {
     "siteID": 100,
@@ -2587,8 +2587,8 @@
     "latitude": -11.482594,
     "longitude": 107.162323,
     "siteHeading": 317,
-    "surveyProgress": 53,
-    "surveyComplete": false
+    "surveyProgress": 100,
+    "surveyComplete": true
   },
   {
     "siteID": 16,
