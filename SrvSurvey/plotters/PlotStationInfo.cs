@@ -184,7 +184,7 @@ namespace SrvSurvey.plotters
             {
                 tt.newLine(+N.ten, true);
                 tt.draw(N.eight, "Relevant services:", C.orangeDark, GameColors.Fonts.gothic_9);
-                var interesting = new List<string>() { "Shipyard", "Outfitting", "Refuel", "Restock", "Repair", "Market", "Universal Cartographics", "Search and Rescue", "Interstellar Factors" };
+                var interesting = new List<string>() { "Shipyard", "Outfitting", "Refuel", "Restock", "Repair", "Market", "Universal Cartographics", "Search and Rescue", "Interstellar Factors", "Material Trader" };
                 // TODO: Tech broker, mat trader, engineer, black market
                 foreach (var service in station.services)
                 {

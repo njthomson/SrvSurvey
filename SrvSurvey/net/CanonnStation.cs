@@ -218,8 +218,8 @@ namespace SrvSurvey.canonn
                     var cmdrOffset = Util.getOffset(bodyRadius, station.location, padLocation, cmdrHeading - pad.rot);
                     var delta = pad.offset - cmdrOffset;
 
-                    // are we within ~15m of the expected pad? Is ~5m enough?
-                    if (delta.dist < 15) // TODO: adjust by pad size?
+                    // are we within ~14m of the expected pad? Is ~5m enough?
+                    if (delta.dist < 14) // TODO: adjust by pad size?
                     {
                         station.subType = template.subType;
 

@@ -1180,6 +1180,8 @@ namespace SrvSurvey.game
                 // Are we at a Guardian site without realizing?
                 Program.control.BeginInvoke(new Action(this.setCurrentSite));
             }
+
+            PlotBase2.renderAll(this);
         }
 
         private void onJournalEntry(Shutdown entry)

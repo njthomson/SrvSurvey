@@ -166,8 +166,8 @@
     "subType": 3,
     "name": "Ceres",
     "landingPads": [
-      { "size": "Large", "offset": { "X": 31.830925, "Y": -211.53532 } },
-      { "size": "Small", "offset": { "X": -270.2276, "Y": 155.97383 }, "rot": 347 }
+      { "size": "Large", "offset": { "X": 27.905012, "Y": -213.09364 } },
+      { "size": "Small", "offset": { "X": -268.4325, "Y": 159.74414 }, "rot": 348 }
     ],
     "secureDoors": [
       { "offset": { "X": 250.216, "Y": -121.55685 }, "floor": 1, "level": 1, "rot": 180 },
