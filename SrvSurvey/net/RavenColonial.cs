@@ -747,6 +747,7 @@ namespace SrvSurvey.game.RavenColonial
         terraformable,
         tidal,
         landable,
+        atmosphere,
     }
 
     public class SitesPut
