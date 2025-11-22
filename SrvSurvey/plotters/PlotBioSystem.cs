@@ -412,7 +412,7 @@ namespace SrvSurvey.plotters
             if (body.predictions == null || body.predictions.Count == 0) return;
 
             var first = true;
-            foreach (var prediction in body.genusPredictions)
+            foreach (var prediction in body.genusPredictions.ToList())
             {
                 if (first)
                     first = false;
@@ -690,7 +690,7 @@ namespace SrvSurvey.plotters
             var defaultVolCol = /*countMatches ? VolColor.Orange :*/ VolColor.Blue;
 
             // otherwise, draw boxes for all the predicted genus
-            foreach (var genusPrediction in body.genusPredictions)
+            foreach (var genusPrediction in body.genusPredictions.ToList())
             {
                 // skip if we draw this one already
                 if (body.organisms?.Any(o => o.genus == genusPrediction.genus.name) == true) continue;

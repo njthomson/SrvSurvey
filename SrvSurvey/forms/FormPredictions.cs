@@ -268,7 +268,7 @@ namespace SrvSurvey
 
             // add any predictions
             if (body.genusPredictions?.Count > 0)
-                foreach (var genus in body.genusPredictions)
+                foreach (var genus in body.genusPredictions.ToList())
                     createPredictionNodes(genus, node); //node.Nodes.Add(createPredictionNodes(genus, node));
 
             node.Nodes.Add(new TreeNode("Z") { Name = "Z", Checked = true });

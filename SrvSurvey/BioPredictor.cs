@@ -695,7 +695,8 @@ namespace BioCriterias
                 //1050522316081, // Ihad BK-L b35-0 // <-- we are missing data about the star AND Canonn has incomplete bio data for Ihad BK-L b35-0 1 a
 
                 //2519946200947, // Qiefoea KZ-D d13-73 // D4 Osseus not found or D3 Stratum not found
-                10393127859, // Chaloa PI-R d5-0 // missing Stratum Tectonicas Green, Cactoida Cortexum Amethyst & Frutexa Metallicum Grey ? 
+                //10393127859, // Chaloa PI-R d5-0 // missing Stratum Tectonicas Green, Cactoida Cortexum Amethyst & Frutexa Metallicum Grey ? 
+                //7269366113697, // ICZ ZJ-Z b3
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");

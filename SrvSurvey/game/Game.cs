@@ -1545,8 +1545,8 @@ namespace SrvSurvey.game
                 {
                     inventoryItem.Count -= delta;
 
-                    // update linked FC?
-                    if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID))
+                    // update linked FC? (but not squadron FC)
+                    if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID) && lastDocked.StationServices?.Contains("squadronBank") == false)
                     {
                         Game.log($"Transferring {delta}x {transferItem.Type} to tracked marketId: {lastDocked.MarketID}");
                         fcTrackedCargo.init(transferItem.Type);
@@ -1677,8 +1677,8 @@ namespace SrvSurvey.game
             }
             item.Count += entry.Count;
 
-            // track purchases from linked FleetCarriers
-            if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
+            // track purchases from linked FleetCarriers, but not Squadron FleetCarriers
+            if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId) && lastDocked.StationServices?.Contains("squadronBank") == false)
             {
                 Game.log($"Buying {entry.Count}x {entry.Type} from linked FC marketId: {entry.MarketId}");
                 PlotBuildCommodities.startPending();
@@ -1702,8 +1702,8 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(MarketSell entry)
         {
-            // tracked sales to linked FleetCarriers
-            if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
+            // tracked sales to linked FleetCarriers, but not Squadron FleetCarriers
+            if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId) && lastDocked.StationServices?.Contains("squadronBank") == false)
             {
                 Game.log($"Selling {entry.Count}x {entry.Type} to linked FC marketId: {entry.MarketId}");
                 PlotBuildCommodities.startPending();

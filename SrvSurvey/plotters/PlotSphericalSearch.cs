@@ -52,9 +52,9 @@ namespace SrvSurvey.plotters
                 if (this.isClosed) return;
 
                 // give priority to route following over boxel searches
-                if (game.cmdr.route?.useNextHop == true)
+                if (game.cmdr.route?.useNextHop == true && game.cmdr.route.nextHop?.name != null)
                 {
-                    Clipboard.SetText(game.cmdr.route.nextHop?.name!);
+                    Clipboard.SetDataObject(new DataObject(DataFormats.UnicodeText, game.cmdr.route.nextHop.name), true, 2, 50);
                     this.nextRouteSystemCopied = true;
                     this.invalidate();
                 }
@@ -68,7 +68,7 @@ namespace SrvSurvey.plotters
                         if (text != null)
                         {
                             Game.log($"Setting next boxel search system to clipboard: {text}");
-                            Clipboard.SetText(text);
+                            Clipboard.SetDataObject(new DataObject(DataFormats.UnicodeText, text), true, 2, 50);
                             this.nextBoxelSystemCopied = true;
                             this.invalidate();
                         }

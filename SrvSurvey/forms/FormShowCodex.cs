@@ -537,7 +537,7 @@ namespace SrvSurvey
                 }
 
                 // predictions
-                foreach (var genus in body.genusPredictions)
+                foreach (var genus in body.genusPredictions.ToList())
                 {
                     foreach (var variants in genus.species.Values)
                     {
