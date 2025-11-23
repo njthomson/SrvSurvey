@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Systems list",
+  "type": "array",
+  "items": {
+    "title": "System",
+    "type": "object",
+    "properties": {
+      "name": {
+        "description": "System name",
+        "type": "string"
+      },
+      "coords": {
+        "description": "System coordinates",
+        "type": "object",
+        "properties": {
+          "x": {
+            "description": "X coord",
+            "type": "integer"
+          },
+          "y": {
+            "description": "Y coord",
+            "type": "integer"
+          },
+          "z": {
+            "description": "Z coord",
+            "type": "integer"
+          }
+        },
+        "required": ["x", "y", "z"]
+      },
+      "type": {
+        "description": "The stellar type: A, B, O...",
+        "type": "integer"
+      },
+      "infos": {
+        "description": "A custom description for the system",
+        "type": "string"
+      },
+      "cat": {
+        "description": "A list of categories for the system",
+        "type": "array",
+        "items": {
+          "id": {
+            "description": "A category ID",
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "required": ["name", "coords"]
+  }
+}

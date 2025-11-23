@@ -1,0 +1,82 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "ED3D systems and filters list",
+    "type": "object",
+    "categories": {
+      "title": "Categories list to classify systems",
+      "type": "object",
+      "items": {
+        "category": {
+          "title": "Category",
+          "type": "object",
+          "properties": {
+            "id": {
+                "description": "The category ID",
+                "type": "integer"
+            },
+            "name": {
+              "description": "The category title",
+              "type": "string"
+            },
+            "color": {
+              "type": "string"
+            },
+            "required": ["id", "name"]
+          }
+        }
+      }
+    },
+    "systems": {
+      "title": "Systems list",
+      "type": "array",
+      "items": {
+        "title": "System",
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "System name",
+            "type": "string"
+          },
+          "coords": {
+            "description": "System coordinates",
+            "type": "object",
+            "properties": {
+              "x": {
+                "description": "X coord",
+                "type": "integer"
+              },
+              "y": {
+                "description": "Y coord",
+                "type": "integer"
+              },
+              "z": {
+                "description": "Z coord",
+                "type": "integer"
+              }
+            },
+            "required": ["x", "y", "z"]
+          },
+          "type": {
+            "description": "The stellar type: A, B, O...",
+            "type": "integer"
+          },
+          "infos": {
+            "description": "A custom description for the system",
+            "type": "string"
+          },
+          "cat": {
+            "description": "A list of categories for the system",
+            "type": "array",
+            "items": {
+              "id": {
+                "description": "A category ID",
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "required": ["name", "coords"]
+      }
+    },
+    "required": ["systems"]
+}

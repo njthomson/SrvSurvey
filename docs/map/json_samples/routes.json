@@ -1,0 +1,88 @@
+{
+  "systems": [
+    {
+      "name": "Checkpoint 1",
+      "coords": {
+          "x": "-6644",
+          "y": "-21",
+          "z": "11738"
+      }
+    },
+    {
+      "name": "Checkpoint 2",
+      "coords": {
+          "x": "-10534",
+          "y": "-21",
+          "z": "16384"
+      }
+    },
+    {
+      "name": "Checkpoint 3",
+      "coords": {
+          "x": "-4969",
+          "y": "-21",
+          "z": "22262"
+      }
+    },
+    {
+      "name": "Checkpoint 4",
+      "coords": {
+          "x": "3553",
+          "y": "-21",
+          "z": "8732"
+      }
+    },
+    {
+      "name": "Checkpoint 5",
+      "coords": {
+          "x": "6297",
+          "y": "-21",
+          "z": "14626"
+      }
+    },
+    {
+      "name": "Checkpoint 6",
+      "coords": {
+          "x": "18975",
+          "y": "-21",
+          "z": "25676"
+      }
+    },
+    {
+      "name": "Sagittarius A*",
+      "coords": {
+          "x": "25",
+          "y": "-21",
+          "z": "25900"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "title":"1st test route",
+      "points": [
+        {
+          "s":"Test",
+          "label":"My home",
+          "coords": {
+              "x": "25",
+              "y": "-2100",
+              "z": "-3900"
+          }
+        },
+        {"s":"Checkpoint 1"},
+        {"s":"Checkpoint 2","label":"Great discovery here"},
+        {"s":"Checkpoint 3"},
+        {"s":"Sagittarius A*","label":"Center of the galaxy"}
+      ]
+    },
+    {
+      "title":"2nd test route",
+      "points": [
+        {"s":"Checkpoint 4"},
+        {"s":"Checkpoint 5"},
+        {"s":"Checkpoint 6"}
+      ]
+    }
+  ]
+}

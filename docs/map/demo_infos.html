@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <title>Milky Way</title>
+  <link href="http://fonts.googleapis.com/css?family=Orbitron:400" rel="stylesheet" type="text/css" />
+  <!-- Custom CSS -->
+  <style type="text/css">
+  #systemDetails,
+  #hud {
+    width:450px;
+  }
+
+  h1 {
+    position: fixed;
+    top: 2%;
+    left: 0;
+    width: 100%;
+    font-size: 1.3rem;
+    text-align: center;
+    color: #ccc;
+    font-family: "Orbitron";
+  }
+
+  h1 a {
+    color: inherit;
+  }
+
+  #edmap {
+    position: fixed;
+    top: 10%;
+    right: 0;
+    width: 100%;
+    height: 80%;
+  }
+  #debug {
+    position: fixed;
+    bottom: 5%;
+    right: 0;
+    width: 100%;
+    text-align: center;
+    color: #aaa;
+    font-family: "Helvetica";
+    font-size: 0.8rem;
+  }
+  </style>
+
+</head>
+
+  <body>
+
+    <h1>Milky Way</h1>
+
+    <div id="edmap"></div>
+
+    <div id="debug"></div>
+
+
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r75/three.min.js"></script>
+
+  <!-- Launch ED3Dmap -->
+  <link href="css/styles.css" rel="stylesheet" type="text/css" />
+  <script src="js/ed3dmap.min.js?v=6"></script>
+  <script type="text/javascript">
+
+    var d = new Date()
+    d.setDate(d.getDate() - 1);
+    var queryDate = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()+' '+d.getHours()+':00:00';
+
+    Ed3d.init({
+        container   : 'edmap',
+       // jsonPath    : "http://www.edsm.net/api-v1/systems?coords=1&known=1&startdatetime="+queryDate,
+        jsonPath    : "json_samples/galnet.json",
+        withHudPanel : false,
+        hudMultipleSelect : false,
+        effectScaleSystem : [50,10000],
+        startAnim: false,
+        showGalaxyInfos: true,
+        cameraPos: [25,14100,-12900],
+        systemColor: '#FF9D00'
+    });
+
+  </script>
+
+</body>
+</html>

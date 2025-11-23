@@ -1,0 +1,272 @@
+{
+
+  "quadrants" : {
+    "The Orion Spur" : {
+      "x":0, "z":0, "rotate":0
+    },
+    "Galactic Core Region" : {
+      "x":974, "z":27333, "rotate":0
+    },
+    "1st quadrant" : {
+      "x":-15000, "z":5000, "rotate":0
+    },
+    "4th quadrant" : {
+      "x":15000, "z":5000, "rotate":0
+    },
+    "2nd quadrant" : {
+      "x":-10000, "z":-2000, "rotate":0
+    },
+    "3rd quadrant" : {
+      "x":10000, "z":-2000, "rotate":0
+    }
+  },
+
+  "arms" : {
+    "The Orion Spur" : [
+      {"x":-16284, "z":16823, "rotate":90},
+      {"x":-7265, "z":4226, "rotate":-35},
+      {"x":6858, "z":-576, "rotate":0}
+    ],
+    "The outer Arm vacuus" : [
+      {"x":10, "z":-14500, "rotate":0}
+    ],
+    "The Sagittarius Arm" : [
+      {"x":5379, "z":4768, "rotate":0}
+    ],
+    "The Carina-Sagittarius Arm" : [
+      {"x":22458, "z":10237, "rotate":45},
+      {"x":29632, "z":25285, "rotate":82},
+      {"x":28962, "z":40634, "rotate":105},
+      {"x":17446, "z":58185, "rotate":-40}
+    ],
+    "The new outer Arm" : [
+      {"x":-31158, "z":16529, "rotate":90},
+      {"x":-28281, "z":3070, "rotate":112},
+      {"x":-18972, "z":-8546, "rotate":-35}
+
+    ],
+    "The Perseus Arm" : [
+      {"x":-19961, "z":30870, "rotate":60 },
+      {"x":-22778, "z":10633, "rotate":110 },
+      {"x":-7525, "z":-3597, "rotate":-25 },
+      {"x":8039, "z":-7019, "rotate":0 },
+      {"x":32905, "z":4565, "rotate":45 }
+    ],
+    "The Norma Arm" : [
+      {"x":7944, "z":17960, "rotate":40 },
+      {"x":13524, "z":29918, "rotate":90 },
+      {"x":7498, "z":40348, "rotate":-35 }
+    ],
+    "The Cygnus Arm" : [
+      {"x":-7724, "z":43523, "rotate":0 },
+      {"x":-22353, "z":37643, "rotate":38 }
+    ],
+    "The Scutum-Centaurus Arm" : [
+      {"x":-33364, "z":46016, "rotate":45 },
+      {"x":-15742, "z":54759, "rotate":0 },
+      {"x":-334, "z":53331, "rotate":-14 },
+      {"x":14300, "z":46140, "rotate":-38 },
+      {"x":19815, "z":31418, "rotate":90 },
+      {"x":16637, "z":17458, "rotate":48 }
+    ],
+    "The near 3 KPC Arm" : [
+      {"x":5765, "z":22639, "rotate":45 }
+    ],
+    "The far 3 KPC Arm" : [
+      {"x":-4906 ,"z":28535, "rotate":45 }
+    ]
+  },
+
+  "gaps" : {
+
+  },
+
+  "others" : {
+    "Sagittarius A*" : [
+      {"x":25 , "z":25900, "rotate":0}
+    ],
+
+
+
+"The Abyss" : [
+      {"x":-8420, "z":63240, "rotate":0}
+    ],
+"The Abyssal Plain" : [
+      {"x":-21660 , "z":55680, "rotate":0}
+    ],
+"Angustia" : [
+      {"x":-26110 , "z":6960, "rotate":0}
+    ],
+"The Anthor Patch" : [
+      {"x":-14900 , "z":23310, "rotate":0}
+    ],
+"The Ascendance" : [
+      {"x":18960 , "z":32800, "rotate":0}
+    ],
+"The Bleak Lands" : [
+      {"x":9360 , "z":47260, "rotate":0}
+    ],
+"Boreas" : [
+      {"x":-5780 , "z":43240, "rotate":0}
+    ],
+"Centaurus Reach" : [
+      {"x":21420 , "z":11740, "rotate":0}
+    ],
+"Circinus Transit" : [
+      {"x":13760 , "z":16540, "rotate":0}
+    ],
+"Colonia" : [
+      {"x":-9560 , "z":19950, "rotate":0}
+    ],
+"The Dryman Ridge" : [
+      {"x":22720 , "z":20010, "rotate":0}
+    ],
+"Eastern Neutron Fields" : [
+      {"x":2680 , "z":24780, "rotate":0}
+    ],
+"Eurus" : [
+      {"x":10880 , "z":36760, "rotate":0}
+    ],
+"The Fallows" : [
+      {"x":-19040 , "z":13200, "rotate":0}
+    ],
+"The Festival Grounds" : [
+      {"x":-10870 , "z":17650, "rotate":0}
+    ],
+"The Formidine Rift" : [
+      {"x":-14220 , "z":-5280, "rotate":0}
+    ],
+"Galactic Aphelion" : [
+      {"x":-2320 , "z":56180, "rotate":0}
+    ],
+"The Gallipolis" : [
+      {"x":6560 , "z":20070, "rotate":0}
+    ],
+"Hawking's Gap" : [
+      {"x":16360 , "z":12820, "rotate":0}
+    ],
+"Hipparcos Basin" : [
+      {"x":22960 , "z":34280, "rotate":0}
+    ],
+"Hyponia" : [
+      {"x":-22220 , "z":24780, "rotate":0}
+    ],
+"Ishtar" : [
+      {"x":-21335 , "z":39365, "rotate":0}
+    ],
+"Lin-Shu Hollow" : [
+      {"x":6870 , "z":7335, "rotate":0}
+    ],
+"Mare Desperationis" : [
+      {"x":-22240 , "z":42680, "rotate":0}
+    ],
+"Masefield's Ocean" : [
+      {"x":-2080 , "z":55045, "rotate":0}
+    ],
+"The Norma Expanse" : [
+      {"x":5320 , "z":14900, "rotate":0}
+    ],
+"Nyauthai Ripple" : [
+      {"x":-7465 , "z":55245, "rotate":0}
+    ],
+"Orio-Perseus Conflux" : [
+      {"x":-15400 , "z":32680, "rotate":0}
+    ],
+"The Orion Complex" : [
+      {"x":730 , "z":-1145, "rotate":0}
+    ],
+
+
+
+"Orio-Perseus Gap" : [
+      {"x":-4160 , "z":-960, "rotate":0}
+    ],
+"The Orion Spur" : [
+      {"x":2180 , "z":800, "rotate":0}
+    ],
+"The Orion Spur Shallows" : [
+      {"x":17740 , "z":2570, "rotate":0}
+    ],
+"The Outer Arm Rift" : [
+      {"x":-29650 , "z":28640, "rotate":0}
+    ],
+"The Outer Arm Vacuus" : [
+      {"x":2020 , "z":-12820, "rotate":0}
+    ],
+"The Perseus Crags" : [
+      {"x":-22130 , "z":12220, "rotate":0}
+    ],
+"The Perseus Fade" : [
+      {"x":22140 , "z":-5520, "rotate":0}
+    ],
+"The Perseus Transit" : [
+      {"x":11400 , "z":-3620, "rotate":0}
+    ],
+"Perseus Stem" : [
+      {"x":730 , "z":36190, "rotate":0}
+    ],
+"Sagittarius Gap" : [
+      {"x":1470 , "z":3010, "rotate":0}
+    ],
+"The Scar" : [
+      {"x":-22830 , "z":26005, "rotate":0}
+    ],
+"Scutum-Sagittarii Conflux" : [
+      {"x":-3280 , "z":9620, "rotate":0}
+    ],
+"Silentium" : [
+      {"x":18480 , "z":57400, "rotate":0}
+    ],
+
+
+
+
+"The Sidereal Wall" : [
+      {"x":-250 , "z":15140, "rotate":0}
+    ],
+"The Solitude Void" : [
+      {"x":3660 , "z":63600, "rotate":0}
+    ],
+"Styx" : [
+      {"x":1430 , "z":45370, "rotate":0}
+    ],
+"Tenebris" : [
+      {"x":33620 , "z":21700, "rotate":0}
+    ],
+"The Torment" : [
+      {"x":14610 , "z":32310, "rotate":0}
+    ],
+"The Tyros Ridge" : [
+      {"x":17350 , "z":48600, "rotate":0}
+    ],
+"The Vela Molecular Ridge" : [
+      {"x":4750 , "z":-1310, "rotate":0}
+    ],
+"Vela Ultima Complex" : [
+      {"x":20270 , "z":-1210, "rotate":0}
+    ],
+"Via Maris" : [
+      {"x":-13430 , "z":640, "rotate":0}
+    ],
+"Viatori Patuit" : [
+      {"x":28460 , "z":44280, "rotate":0}
+    ],
+"Wagar's Reach" : [
+      {"x":-29190 , "z":32690, "rotate":0}
+    ],
+"Watkuweis" : [
+      {"x":11635 , "z":34290, "rotate":0}
+    ],
+"The Wayfarers Graveyard" : [
+      {"x":-3255 , "z":-3460, "rotate":0}
+    ],
+"Western Neutron Fields" : [
+      {"x":-5330 , "z":25320, "rotate":0}
+    ],
+"Zephyrus" : [
+      {"x":-20790 , "z":41240, "rotate":0}
+    ]
+
+
+  }
+}

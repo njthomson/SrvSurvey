@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <title>ED-Board - 3D Galaxy map test</title>
+  <link href="http://fonts.googleapis.com/css?family=Orbitron:400" rel="stylesheet" type="text/css" />
+  <!-- Custom CSS -->
+  <style type="text/css">
+  #systemDetails,
+  #hud {
+    width: 40%;
+    max-width: 450px;
+  }
+
+  #edmap {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }
+  </style>
+
+</head>
+
+  <body>
+
+
+
+    <div id="edmap"></div>
+
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r75/three.min.js"></script>
+
+  <!-- Launch ED3Dmap -->
+  <link href="css/styles.css" rel="stylesheet" type="text/css" />
+  <script src="js/ed3dmap.min.js?v=5"></script>
+  <script type="text/javascript">
+
+    Ed3d.init({
+        container   : 'edmap',
+        jsonPath    : "json_samples/galnet.json",
+        withHudPanel : true,
+        hudMultipleSelect : false,
+        effectScaleSystem : [28,1000],
+        startAnim: true,
+        starSprite: "textures/lensflare/star_round.png",
+        showNameNear: true //-- EXPERIMENTAL (Show name from systems near camera)
+    });
+
+  </script>
+
+</body>
+</html>
