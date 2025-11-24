@@ -300,7 +300,7 @@ namespace SrvSurvey.plotters
                 if (def.instance != null)
                 {
                     Game.log($"Overlays.add: {def.name} - why already present?");
-                    Debugger.Break();
+                    //Debugger.Break();
                     remove(def);
                 }
 
@@ -863,7 +863,7 @@ namespace SrvSurvey.plotters
                 def.instance.render();
 
             if (def.instance.frame != null)
-                g.DrawImage(def.instance.frame, 0, 0);
+                g?.DrawImage(def.instance.frame, 0, 0);
 
             //g.DrawRectangle(Pens.Blue, 0, 0, this.Width-1, this.Height-1); // diagnostic
         }

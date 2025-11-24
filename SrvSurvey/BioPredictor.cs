@@ -114,7 +114,7 @@ namespace BioCriterias
             // add known genus and species names
             if (body.organisms?.Count > 0)
             {
-                foreach (var org in body.organisms)
+                foreach (var org in body.organisms.ToList())
                 {
                     if (org.genus != null)
                     {

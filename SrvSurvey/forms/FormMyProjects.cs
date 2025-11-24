@@ -112,9 +112,11 @@ namespace SrvSurvey.forms
             btnSave.Enabled = false;
             PlotBuildCommodities.startPending();
 
-            Game.rcc.setHiddenIDs(this.cmdr, this.hiddenIDs).continueOnMain(this, buildIDs => setData(buildIDs, this.projects));
-
-            this.Close();
+            Game.rcc.setHiddenIDs(this.cmdr, this.hiddenIDs).continueOnMain(this, buildIDs =>
+            {
+                setData(buildIDs, this.projects);
+                this.Close();
+            });
         }
 
         private void btnClose_Click(object sender, EventArgs e)

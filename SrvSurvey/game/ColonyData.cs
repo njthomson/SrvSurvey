@@ -593,7 +593,7 @@ namespace SrvSurvey.game
 
                     bod.subType = getSubType(b);
                 }
-                else if (b.planetClass?.StartsWith("Gas giant", StringComparison.OrdinalIgnoreCase) == true)
+                else if (b.planetClass?.Contains("gas giant", StringComparison.OrdinalIgnoreCase) == true)
                 {
                     bod.type = Bod.BodyType.gg;
                 }
