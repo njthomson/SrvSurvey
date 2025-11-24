@@ -122,7 +122,7 @@ namespace SrvSurvey.plotters
             // draw each remaining body, highlighting color if they are in the same group as the destination, or all of them if no destination
             foreach (var bodyName in names)
             {
-                if (bodyName == null) continue;
+                if (string.IsNullOrWhiteSpace(bodyName)) continue;
                 var isLocal = string.IsNullOrEmpty(destination) || bodyName[0] == destination[0];
 
                 var useFont = this.font;
@@ -130,7 +130,7 @@ namespace SrvSurvey.plotters
                 var useColor = isLocal ? GameColors.Cyan : GameColors.Orange;
 
                 tt.draw(bodyName, useColor, useFont);
-                tt.dtx += 4;
+                tt.dtx += N.four;
             }
 
             // revert adjustments

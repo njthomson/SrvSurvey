@@ -1104,6 +1104,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Resurrect entry)
         {
+            Game.log($"You resurrected. Option: {entry.Option}");
             this.fsdJumping = false;
             SystemData.Close(this.systemData);
             this.canonnPoi = null;
@@ -1112,6 +1113,10 @@ namespace SrvSurvey.game
             this.systemStation = null;
             this.fetchedSystemData = null;
             this.Status_StatusChanged(false);
+
+            // maybe?
+            //if (entry.Option == "rebuy")
+            //    onJournalEntry((Died)null!);
         }
 
         private void onJournalEntry(Loadout entry)
@@ -1130,6 +1135,13 @@ namespace SrvSurvey.game
             this.cmdr.lastOrganicScan = null;
             this.cmdr.currentMarketId = 0;
             this.cmdr.Save();
+
+            this.fsdJumping = false;
+            this.canonnPoi = null;
+            this.systemBody = null;
+            this.systemData = null;
+            this.systemStation = null;
+            this.fetchedSystemData = null;
 
             // forget these things
             this.lastDocked = null;
@@ -3177,7 +3189,7 @@ namespace SrvSurvey.game
                     if (speciesRef == null) continue;
                     if (speciesRef.reward != data.Value && data.Species != "$Codex_Ent_Ingensradices_Unicus_Name;") // TEMP until we get the price figured out
                     {
-                        Game.log($"Why do rewards not match? {speciesRef.reward} vs { data.Value} for: {data.Species_Localised} ({data.Species})");
+                        Game.log($"Why do rewards not match? {speciesRef.reward} vs {data.Value} for: {data.Species_Localised} ({data.Species})");
                         Debugger.Break();
                     }
 
