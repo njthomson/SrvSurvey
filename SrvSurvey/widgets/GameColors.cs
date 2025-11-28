@@ -325,6 +325,8 @@ namespace SrvSurvey.widgets
                 { VolColor.Gold, newPen(Color.FromArgb(96, gold), 1.9f, DashStyle.Dot) },
                 { VolColor.White, newPen(Color.FromArgb(96, Color.White), 1.9f, DashStyle.Dot) },
                 { VolColor.Orange, newPen(Color.FromArgb(96, Orange), 1.9f, DashStyle.Dot) },
+                { VolColor.Gray, newPen(Color.FromArgb(96, Color.DarkGray), 1.9f, DashStyle.Dot) },
+                { VolColor.DarkGold, newPen(Color.FromArgb(96, Color.DarkGoldenrod), 1.9f, DashStyle.Dot) },
             };
 
             public static Dictionary<VolColor, PenBrush> volMin = new Dictionary<VolColor, PenBrush>()
@@ -333,6 +335,8 @@ namespace SrvSurvey.widgets
                 { VolColor.Gold, new PenBrush(newPen(gold, 1), Brushes.DarkGoldenrod) },
                 { VolColor.White, new PenBrush(newPen(Color.Gray, 1), new SolidBrush(Color.FromArgb(255, 244, 244, 244))) },
                 { VolColor.Orange, new PenBrush(newPen(OrangeDim, 1), GameColors.brushGameOrange) },
+                { VolColor.Gray, new PenBrush(newPen(Color.DarkSlateGray, 1), new SolidBrush(Color.DarkGray)) },
+                { VolColor.DarkGold, new PenBrush(newPen(Color.DarkGoldenrod, 1), new SolidBrush(Color.DimGray)) },
             };
 
             public static Dictionary<VolColor, PenBrush> volMax = new Dictionary<VolColor, PenBrush>()
@@ -341,6 +345,8 @@ namespace SrvSurvey.widgets
                 { VolColor.Gold, new PenBrush(newPen(Color.FromArgb(144, 214, 164, 11), 1), new SolidBrush(Color.FromArgb(144, 184, 134, 11))) },
                 { VolColor.White, new PenBrush(newPen(Color.FromArgb(144, Color.White), 1), new SolidBrush(Color.FromArgb(140, 184, 184, 184))) },
                 { VolColor.Orange, new PenBrush(newPen(Color.FromArgb(124, GameColors.Orange)), new SolidBrush(Color.FromArgb(140, OrangeDim))) },
+                { VolColor.Gray, new PenBrush(newPen(Color.FromArgb(124, Color.DimGray)), new SolidBrush(Color.FromArgb(140, Color.DarkGray))) },
+                { VolColor.DarkGold, new PenBrush(newPen(Color.FromArgb(124, Color.DimGray)), new SolidBrush(Color.FromArgb(140, Color.DarkGoldenrod))) },
             };
 
             //// gray
