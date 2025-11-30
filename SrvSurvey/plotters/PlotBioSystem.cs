@@ -650,7 +650,7 @@ namespace SrvSurvey.plotters
             // first render known genus - this implies DSS has happened
             if (body.organisms?.Count > 0)
             {
-                foreach (var org in body.organisms)
+                foreach (var org in body.organisms.ToList())
                 {
                     var volCol = /* highlight ? VolColor.Blue : */ VolColor.Orange;
                     // genus was scanned
