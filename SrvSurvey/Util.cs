@@ -108,7 +108,7 @@ namespace SrvSurvey
 
             m = m / 1000;
             // over one 1 million
-            return prefix + m.ToString("#.##") + "mm";
+            return prefix + m.ToString("#.##") + "Mm";
         }
 
         public static string timeSpanToString(TimeSpan ago)

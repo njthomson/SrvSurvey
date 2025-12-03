@@ -341,6 +341,8 @@ namespace SrvSurvey.net
 
         private string? getTechBrokerType(ApiSystemDump.System.Station station)
         {
+            if (station.type == "Dodec Starport") return Misc.NetSysData_HumanBroker;
+
             var primary_economy = station?.primaryEconomy?.ToLowerInvariant();
             var secondary_economy = station?.economies?.OrderBy(e => e.Value).Skip(1).FirstOrDefault().Key?.ToLowerInvariant();
 
