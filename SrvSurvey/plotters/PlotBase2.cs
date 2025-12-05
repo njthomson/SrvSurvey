@@ -806,6 +806,7 @@ namespace SrvSurvey.plotters
         {
             this.def = def;
             this.Name = def.name;
+            this.Text = def.name;
 
             this.Left = def.instance!.left;
             this.Top = def.instance.top;
