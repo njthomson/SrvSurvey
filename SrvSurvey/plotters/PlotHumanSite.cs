@@ -1,4 +1,5 @@
 ﻿using DecimalMath;
+using Newtonsoft.Json;
 using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.net;
@@ -58,6 +59,7 @@ namespace SrvSurvey.plotters
         private int grantedPad;
         private bool hasLanded;
         private string? deniedReason;
+        private bool showCZPoints;
 
         private FormBuilder? builder { get => FormBuilder.activeForm; }
 
@@ -72,6 +74,7 @@ namespace SrvSurvey.plotters
             this.station = game.systemStation;
             this.siteLocation = this.station.location;
             this.siteHeading = this.station.heading;
+            this.showCZPoints = this.station.factionState == "War";
 
             if (siteLocation.Lat == 0 || siteLocation.Long == 0) Debugger.Break(); // Does this ever happen?
 
@@ -464,6 +467,29 @@ namespace SrvSurvey.plotters
                 Game.log($".flags: alt: {game.status.Altitude}, heading: {game.status.Heading}, docked: {game.status.Docked}\r\n{game.status.Flags}\r\n{game.status.Flags2}");
             }
 
+            if (msg.StartsWith("@") && msg.Length == 2 && this.station?.template != null)
+            {
+                var name = msg[1].ToString().ToUpperInvariant()[0];
+                if (name >= 'A' && name <= 'F')
+                {
+                    // measure dist/angle from site origin for a foot CZ market
+                    var radius = game.status.PlanetRadius;
+                    var pf = Util.getOffset(radius, game.systemStation.location, game.systemStation.heading);
+
+                    station.template.czPoints ??= new();
+                    station.template.czPoints.RemoveAll(p => !string.IsNullOrEmpty(p.name) && p.name[0] == name);
+                    station.template.czPoints.Add(new HumanSitePoi2()
+                    {
+                        name = name.ToString(),
+                        offset = (PointF)pf,
+                    });
+                    this.showCZPoints = true;
+                }
+                var txt = JsonConvert.SerializeObject(station.template.czPoints, Formatting.Indented);
+                Game.log($"Ground CZ Points:\r\n\r\n\t{txt}\r\n");
+                Clipboard.SetText(txt);
+            }
+
             this.invalidate();
         }
 
@@ -628,6 +654,9 @@ namespace SrvSurvey.plotters
                 this.drawBuildingBox(g, cmdrOffset);
 
             this.drawSiteCompassLines(g);
+
+            if (this.showCZPoints)
+                this.drawCombatZonePoints(g, adjustedHeading);
 
             // draw limit circle outside which ships/taxi's can be requested
             g.DrawEllipse(GameColors.HumanSite.penOuterLimit, -limitDist, -limitDist, limitDist * 2, limitDist * 2);
@@ -876,6 +905,27 @@ namespace SrvSurvey.plotters
                         g.DrawLine(p, x, y + 1, x + 1.5f, y + 2.5f);
                         g.DrawLine(p, x, y + 1, x - 1.5f, y + 2.5f);
                     }
+                });
+            }
+        }
+
+        private void drawCombatZonePoints(Graphics g, float adjustedHeading)
+        {
+            if (station.template?.czPoints == null) return;
+
+            var offset = Util.getOffset(radius, siteLocation, siteHeading);
+
+            foreach (var point in station.template.czPoints)
+            {
+                adjust(g, point.offset, adjustedHeading, () =>
+                {
+                    var dist = (offset - new PointM(point.offset)).dist;
+                    var p = dist < 5 ? C.Pens.green2 : C.Pens.yellow2;
+                    var b = dist < 5 ? C.Brushes.green : C.Brushes.yellow;
+
+                    g.DrawEllipse(p, -2, -2, 4, 4);
+                    g.DrawEllipse(p, -5, -5, 10, 10);
+                    g.DrawString(point.name, GameColors.Fonts.gothic_9B, b, -6, -20);
                 });
             }
         }

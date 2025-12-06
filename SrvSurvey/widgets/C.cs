@@ -68,8 +68,13 @@ namespace SrvSurvey.widgets
             public static Pen black1 = Color.Black.toPen(1);
 
             public static Pen red1 = red.toPen(1);
+            public static Pen red2 = red.toPen(2);
 
             public static Pen redDark1 = redDark.toPen(1);
+
+            public static Pen yellow2 = yellow.toPen(2);
+
+            public static Pen green2 = green.toPen(2);
         }
 
         public static class Brushes
@@ -80,6 +85,9 @@ namespace SrvSurvey.widgets
             public static Brush cyanDark = C.cyanDark.toBrush();
 
             public static Brush black = Color.Black.toBrush();
+            public static Brush red = C.red.toBrush();
+            public static Brush yellow = C.yellow.toBrush();
+            public static Brush green = C.green.toBrush();
         }
 
         internal class Bio

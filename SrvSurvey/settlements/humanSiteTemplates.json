@@ -1414,6 +1414,14 @@
       { "offset": { "X": -118.487976, "Y": -107.94727 }, "floor": 1, "level": 2 },
       { "offset": { "X": -91.16819, "Y": 94.91442 }, "floor": 2, "level": 1 }
     ],
+    "czPoints":[
+      { "name": "A", "offset": { "X": -55.56447, "Y": -69.12683 }, "floor": 0, "level": 0 },
+      { "name": "B", "offset": { "X": -74.32217, "Y": 32.112534 }, "floor": 0, "level": 0 },
+      { "name": "C", "offset": { "X": -183.36403, "Y": 15.192353 }, "floor": 0, "level": 0 },
+      { "name": "D", "offset": { "X": -147.95348, "Y": 14.479585 }, "floor": 0, "level": 0 },
+      { "name": "E", "offset": { "X": -100.585045, "Y": -67.55295 }, "floor": 0, "level": 0 },
+      { "name": "F", "offset": { "X": -106.943665, "Y": 84.86828 }, "floor": 0, "level": 0 }
+    ],
     "buildings": [
       {
         "name": "HAB",

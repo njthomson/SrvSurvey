@@ -335,7 +335,7 @@ namespace SrvSurvey.plotters
                     if (hopScoops[n])
                         g.DrawLine(n < nextHopIdx ? GameColors.penGameOrangeDim1 : GameColors.penGameOrange1, x - 1, y - N.six, x - 1, y + N.six);
                     else
-                        g.DrawLine(n < nextHopIdx ? GameColors.penGameOrangeDim1 : GameColors.penGameOrange1, x - 1, y - N.four, x - 1, y + N.four);
+                        g.DrawLine(n < nextHopIdx ? GameColors.penGameOrangeDim1 : GameColors.penGameOrange1, x - 1, y - N.three, x - 1, y + N.three);
                 }
 
                 var d = hopDistances[n];
