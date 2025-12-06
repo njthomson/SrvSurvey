@@ -2476,7 +2476,8 @@
     "siteType": "Turtle",
     "latitude": 38.602749,
     "longitude": -159.793243,
-    "siteHeading": -1,
+    "siteHeading": 161,
+    "surveyProgress": 4,
     "surveyComplete": false
   },
   {

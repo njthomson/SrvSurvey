@@ -65,6 +65,7 @@ namespace SrvSurvey
         public bool autoShowPlotBodyInfoInOrbit = true;
         public bool autoHidePlotBodyInfoInBubble = true;
         public int bodyInfoBubbleSize = 200;
+        public bool bodyInfoHideMats = false;
         public bool autoShowPlotBodyInfoAtSurface = false;
 
         public bool autoShowPlotMassacre_TEST = false;

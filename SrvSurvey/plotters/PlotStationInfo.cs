@@ -184,13 +184,20 @@ namespace SrvSurvey.plotters
             {
                 tt.newLine(+N.ten, true);
                 tt.draw(N.eight, "Relevant services:", C.orangeDark, GameColors.Fonts.gothic_9);
-                var interesting = new List<string>() { "Shipyard", "Outfitting", "Refuel", "Restock", "Repair", "Market", "Universal Cartographics", "Search and Rescue", "Interstellar Factors", "Material Trader" };
-                // TODO: Tech broker, mat trader, engineer, black market
+                var interesting = new List<string>() { "Shipyard", "Outfitting", "Refuel", "Restock", "Repair", "Market", "Universal Cartographics", "Search and Rescue", "Interstellar Factors", "Material Trader", "Black Market", "Technology Broker" };
                 foreach (var service in station.services)
                 {
                     if (!interesting.Contains(service)) continue;
                     tt.newLine(true);
-                    tt.draw(N.ten, "- " + service, GameColors.Fonts.gothic_9);
+                    var c = C.orange;
+                    if (service == "Technology Broker" || service == "Material Trader" || service == "Interstellar Factors")
+                        c = C.cyan;
+                    tt.draw(N.ten, "- " + service, c, GameColors.Fonts.gothic_9);
+                }
+                if (station.government == "Engineer")
+                {
+                    tt.newLine(true);
+                    tt.draw(N.ten, "- Engineer", C.cyan, GameColors.Fonts.gothic_9);
                 }
             }
 

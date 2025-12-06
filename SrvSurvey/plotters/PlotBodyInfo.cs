@@ -204,7 +204,7 @@ namespace SrvSurvey.plotters
                 tt.dty += N.six;
 
                 // materials
-                if (body.materials != null)
+                if (body.materials != null && !Game.settings.bodyInfoHideMats)
                 {
                     tt.draw(N.eight, Res.Materials);
                     foreach (var mat in body.materials.OrderByDescending(_ => _.Value))

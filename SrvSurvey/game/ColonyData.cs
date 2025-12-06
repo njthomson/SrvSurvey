@@ -464,7 +464,7 @@ namespace SrvSurvey.game
             { "Machinery", new string[] { "buildingfabricators","cropharvesters","emergencypowercells","geologicalequipment", "microbialfurnaces", "heliostaticfurnaces", "mineralextractors","powergenerators","thermalcoolingunits","waterpurifiers" } },
             { "Medicines", new string[] { "agriculturalmedicines","basicmedicines","combatstabilisers", "combatstabilizers" } },
             { "Metals", new string[] { "aluminium","copper","steel","titanium" } },
-            { "Technology", new string[] { "advancedcatalysers","bioreducinglichen","computercomponents","hazardousenvironmentsuits","landenrichmentsystems", "terrainenrichmentsystems", "medicaldiagnosticequipment","microcontrollers", "muonimager", "mutomimager", "resonatingseparators","robotics","structuralregulators" } },
+            { "Technology", new string[] { "advancedcatalysers", "autofabricators", "bioreducinglichen","computercomponents","hazardousenvironmentsuits","landenrichmentsystems", "terrainenrichmentsystems", "medicaldiagnosticequipment","microcontrollers", "muonimager", "mutomimager", "resonatingseparators","robotics","structuralregulators" } },
             { "Textiles", new string[] { "militarygradefabrics" } },
             { "Waste", new string[] { "biowaste" } },
             { "Weapons", new string[] { "battleweapons","nonlethalweapons","reactivearmour" } },

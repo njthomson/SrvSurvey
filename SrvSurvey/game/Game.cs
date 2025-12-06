@@ -1908,9 +1908,19 @@ namespace SrvSurvey.game
             var matchReceived = this.materials.getMaterialEntry(entry.Received.Category, entry.Received.Material);
             if (matchReceived == null)
             {
-                Game.log($"MaterialTrade: Why no received material '{entry.Received.Category}'/'{entry.Received.Material}' match??");
-                Debugger.Break();
-                return;
+                matchReceived = new MaterialEntry()
+                {
+                    Name = entry.Received.Material,
+                    Name_Localised = entry.Received.Material_Localised,
+                    Count = 0,
+                };
+
+                if (entry.Received.Category == "Encoded")
+                    this.materials.Encoded.Add(matchReceived);
+                else if (entry.Received.Category == "Raw")
+                    this.materials.Raw.Add(matchReceived);
+                else if (entry.Received.Category == "Manufactured")
+                    this.materials.Manufactured.Add(matchReceived);
             }
 
             matchPaid.Count -= entry.Paid.Quantity;

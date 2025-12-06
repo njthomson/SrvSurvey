@@ -433,6 +433,7 @@ namespace SrvSurvey.canonn
             { "corsair", new PointM(-0.3444149294353525786023712730, -28.231793406095248466923617346) }, // Corsair
             { "panthermkii", new PointM(-1.3078012419992394306260001382, -54.711916783483002071708869208) }, // Panther Clipper mk2
             { "lakonminer", new PointM(3.2158969190817975945213579427, -30.937907691306423623692096957) }, // Type 11 Prospector
+            { "explorer_nx", new PointM(-0.7820737162192071462787373979, -62.305031957744565101955170933) }, // Caspian Explorer
 
             { "foot", new PointM(0d, 0d) }, // No offset applied when on foot
             { "taxi", new PointM(-0.9996653405051110150258470637, -11.913859432190865089645580760) }, // Taxi is an Adder but matching seat #2
