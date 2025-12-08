@@ -259,6 +259,8 @@ namespace SrvSurvey
                 var relicTowerHeading = this.siteData.relicTowerHeading > 0 ? $"{this.siteData.relicTowerHeading}°" : "?";
                 lblStatus.Text += $", relic tower heading: {relicTowerHeading}";
             }
+            lblStatus.Text += $", active obelisks: {this.siteData.pubData?.ao.Count}";
+
             lblSurveyCompletion.Text = $"Survey: {status.percent}";
             progressSurvey.Maximum = status.maxScore;
             progressSurvey.Value = status.score;

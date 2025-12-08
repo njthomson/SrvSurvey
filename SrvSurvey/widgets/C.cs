@@ -121,6 +121,18 @@ namespace SrvSurvey.widgets
             /// <summary> Default: C.orangeDark </summary>
             public static Color itemDark = c("colonise.itemDark");
         }
+        internal class FCZ
+        {
+            public static Color checkpoint= c("fcz.checkpoint");
+            public static Color checkpointLocal = c("fcz.checkpointLocal");
+            public static Color powerPost = c("fcz.powerPost");
+
+            public static Brush brushCheckpoint = checkpoint.toBrush();
+            public static Brush brushCheckpointLocal = checkpointLocal.toBrush();
+            public static Pen penCheckpoint = checkpoint.toPen(2);
+            public static Pen penCheckpointLocal = checkpointLocal.toPen(2);
+            public static Pen penPowerpost = powerPost.toPen(1);
+        }
     }
 
     static class DrawingExtensions

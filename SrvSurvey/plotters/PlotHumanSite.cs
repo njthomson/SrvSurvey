@@ -470,14 +470,16 @@ namespace SrvSurvey.plotters
             if (msg.StartsWith("@") && msg.Length == 2 && this.station?.template != null)
             {
                 var name = msg[1].ToString().ToUpperInvariant()[0];
-                if (name >= 'A' && name <= 'F')
+                if ((name >= 'A' && name <= 'F') || name == 'P')
                 {
                     // measure dist/angle from site origin for a foot CZ market
                     var radius = game.status.PlanetRadius;
                     var pf = Util.getOffset(radius, game.systemStation.location, game.systemStation.heading);
 
                     station.template.czPoints ??= new();
-                    station.template.czPoints.RemoveAll(p => !string.IsNullOrEmpty(p.name) && p.name[0] == name);
+                    if (name != 'P')
+                        station.template.czPoints.RemoveAll(p => !string.IsNullOrEmpty(p.name) && p.name[0] == name);
+
                     station.template.czPoints.Add(new HumanSitePoi2()
                     {
                         name = name.ToString(),
@@ -485,6 +487,7 @@ namespace SrvSurvey.plotters
                     });
                     this.showCZPoints = true;
                 }
+
                 var txt = JsonConvert.SerializeObject(station.template.czPoints, Formatting.Indented);
                 Game.log($"Ground CZ Points:\r\n\r\n\t{txt}\r\n");
                 Clipboard.SetText(txt);
@@ -909,6 +912,14 @@ namespace SrvSurvey.plotters
             }
         }
 
+        private Point[] lightningBolt = new Point[]
+        {
+            new (2,-3),
+            new (-2,0),
+            new (2,0),
+            new (-2,3),
+        };
+
         private void drawCombatZonePoints(Graphics g, float adjustedHeading)
         {
             if (station.template?.czPoints == null) return;
@@ -919,13 +930,23 @@ namespace SrvSurvey.plotters
             {
                 adjust(g, point.offset, adjustedHeading, () =>
                 {
-                    var dist = (offset - new PointM(point.offset)).dist;
-                    var p = dist < 5 ? C.Pens.green2 : C.Pens.yellow2;
-                    var b = dist < 5 ? C.Brushes.green : C.Brushes.yellow;
+                    if (point.name == "P")
+                    {
+                        // CZ power post
+                        g.DrawLines(C.FCZ.penPowerpost, lightningBolt);
+                        g.DrawEllipse(C.FCZ.penPowerpost, -5, -5, 10, 10);
+                    }
+                    else
+                    {
+                        var dist = (offset - new PointM(point.offset)).dist;
 
-                    g.DrawEllipse(p, -2, -2, 4, 4);
-                    g.DrawEllipse(p, -5, -5, 10, 10);
-                    g.DrawString(point.name, GameColors.Fonts.gothic_9B, b, -6, -20);
+                        var p = dist < 5 ? C.FCZ.penCheckpointLocal : C.FCZ.penCheckpoint;
+                        g.DrawEllipse(p, -2, -2, 4, 4);
+                        g.DrawEllipse(p, -5, -5, 10, 10);
+
+                        var b = dist < 5 ? C.FCZ.brushCheckpointLocal : C.FCZ.brushCheckpoint;
+                        g.DrawString(point.name, GameColors.Fonts.gothic_9B, b, -6, -20);
+                    }
                 });
             }
         }
