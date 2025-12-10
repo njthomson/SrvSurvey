@@ -823,6 +823,7 @@ namespace SrvSurvey.plotters
 
         public void checkLocationAndSize()
         {
+            //Game.log($"checkLocationAndSize: {def.name}");
             if (def.instance == null) return;
 
             var targetLocation = Game.settings.disableLargeOverlay
@@ -840,7 +841,7 @@ namespace SrvSurvey.plotters
                 this.Visible = !def.instance.hidden;
             }
 
-            if (this.didFirstPaint && !this.fading && !def.instance.hidden && this.Opacity == 0)
+            if (this.didFirstPaint && !this.fading && !def.instance.hidden && this.Opacity == 0 && Elite.focusElite)
                 this.resetOpacity();
         }
 

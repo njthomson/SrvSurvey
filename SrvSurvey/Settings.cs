@@ -261,7 +261,6 @@ namespace SrvSurvey
 
         public bool disableLargeOverlay = true;
         public bool disableBetterAlphaBlending = true;
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool disableWindowParentIsGame = false;
         public bool displayVR = false;
 

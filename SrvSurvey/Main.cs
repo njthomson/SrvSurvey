@@ -365,10 +365,27 @@ namespace SrvSurvey
                 }
                 else
                     BigOverlay.current?.reposition(rect);
+
                 Program.repositionPlotters(rect);
                 multiFloatie?.positionOverGame(rect);
             }
 
+            if (Game.settings.disableWindowParentIsGame)
+            {
+                if (this.gameHadFocus && !Elite.focusElite)
+                {
+                    //Game.log("hiding all");
+                    Program.hideActivePlotters();
+                    BigOverlay.current?.Hide();
+                }
+                else if (Game.settings.disableWindowParentIsGame && !this.gameHadFocus && Elite.focusElite)
+                {
+                    //Game.log("showing all");
+                    Program.showActivePlotters();
+                    BigOverlay.current?.Show();
+                    PlotBase2.renderAll(game, true);
+                }
+            }
 
             // show/hide multi-floatie if we have focus
             if (multiFloatie != null && !multiFloatie.IsDisposed) multiFloatie.Visible = Elite.focusElite || Elite.focusSrvSurvey;

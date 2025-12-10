@@ -24,7 +24,7 @@ namespace SrvSurvey.plotters
                 && game.systemStation.name == game.lastApproachSettlement.Name
                 && game.status.Altitude < 100
                 && (game.lastApproachSettlement?.StationFaction.FactionState == "War" || game.lastApproachSettlement?.StationFaction.FactionState == "CivilWar")
-                && game.isMode(GameMode.OnFoot)
+                && game.isMode(GameMode.OnFoot, GameMode.InSrv)
                 ;
         }
 
@@ -51,10 +51,9 @@ namespace SrvSurvey.plotters
         {
             if (game?.systemStation == null) return frame.Size;
 
-            tt.draw(N.eight, $"Combat Zone:", C.orangeDark);
-            tt.newLine(true);
+            tt.draw(N.eight, $"Ground Combat Zone:", C.orangeDark);
+            tt.newLine(N.four, true);
             tt.draw(N.eight, game.systemStation.name);
-            //drawTextAt2(game.systemStation.name, GameColors.Fonts.console_8B);
             tt.newLine(N.eight, true);
 
             tt.draw(N.eight, $"Kills: {this.countKills}");

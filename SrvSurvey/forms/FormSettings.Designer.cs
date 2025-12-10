@@ -151,6 +151,7 @@ namespace SrvSurvey
             lblScreenshotTarget = new Label();
             checkLocalTime = new CheckBox();
             tabPage6 = new TabPage();
+            checkBox51 = new CheckBox();
             checkJumpInfoIfDestination = new CheckBox();
             checkBox36 = new CheckBox();
             btnSwapCache = new FlatButton();
@@ -268,7 +269,7 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
-            checkBox51 = new CheckBox();
+            checkBox53 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -1869,6 +1870,17 @@ namespace SrvSurvey
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
             // 
+            // checkBox51
+            // 
+            checkBox51.FlatStyle = FlatStyle.System;
+            checkBox51.Location = new Point(534, 152);
+            checkBox51.Name = "checkBox51";
+            checkBox51.Size = new Size(153, 30);
+            checkBox51.TabIndex = 35;
+            checkBox51.Tag = "bodyInfoHideMats";
+            checkBox51.Text = "Hide body materials";
+            checkBox51.UseVisualStyleBackColor = true;
+            // 
             // checkJumpInfoIfDestination
             // 
             checkJumpInfoIfDestination.AutoSize = true;
@@ -2968,10 +2980,10 @@ namespace SrvSurvey
             checkHumanSitePlotter.FlatStyle = FlatStyle.System;
             checkHumanSitePlotter.Location = new Point(8, 6);
             checkHumanSitePlotter.Name = "checkHumanSitePlotter";
-            checkHumanSitePlotter.Size = new Size(243, 20);
+            checkHumanSitePlotter.Size = new Size(163, 20);
             checkHumanSitePlotter.TabIndex = 0;
             checkHumanSitePlotter.Tag = "autoShowHumanSitesTest";
-            checkHumanSitePlotter.Text = "Human settlement maps (experimental)";
+            checkHumanSitePlotter.Text = "Human settlement maps";
             checkHumanSitePlotter.UseVisualStyleBackColor = true;
             checkHumanSitePlotter.CheckedChanged += checkHumanSitePlotter_CheckedChanged;
             // 
@@ -3075,6 +3087,7 @@ namespace SrvSurvey
             // 
             tabPage8.BackColor = SystemColors.Control;
             tabPage8.BorderStyle = BorderStyle.Fixed3D;
+            tabPage8.Controls.Add(checkBox53);
             tabPage8.Controls.Add(checkFancyAlphaBlending);
             tabPage8.Controls.Add(checkBox52);
             tabPage8.Controls.Add(checkBox39);
@@ -3113,7 +3126,7 @@ namespace SrvSurvey
             // 
             checkBox52.AutoSize = true;
             checkBox52.FlatStyle = FlatStyle.System;
-            checkBox52.Location = new Point(12, 274);
+            checkBox52.Location = new Point(427, 16);
             checkBox52.Name = "checkBox52";
             checkBox52.Size = new Size(166, 20);
             checkBox52.TabIndex = 48;
@@ -3203,10 +3216,10 @@ namespace SrvSurvey
             checkBox38.FlatStyle = FlatStyle.System;
             checkBox38.Location = new Point(12, 94);
             checkBox38.Name = "checkBox38";
-            checkBox38.Size = new Size(180, 20);
+            checkBox38.Size = new Size(100, 20);
             checkBox38.TabIndex = 41;
             checkBox38.Tag = "autoShowPlotMiniTrack_TEST";
-            checkBox38.Text = "Mini trackers (Experimental)";
+            checkBox38.Text = "Mini trackers";
             checkBox38.UseVisualStyleBackColor = true;
             // 
             // checkBox33
@@ -3355,16 +3368,18 @@ namespace SrvSurvey
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
             // 
-            // checkBox51
+            // checkBox53
             // 
-            checkBox51.FlatStyle = FlatStyle.System;
-            checkBox51.Location = new Point(534, 152);
-            checkBox51.Name = "checkBox51";
-            checkBox51.Size = new Size(153, 30);
-            checkBox51.TabIndex = 35;
-            checkBox51.Tag = "bodyInfoHideMats";
-            checkBox51.Text = "Hide body materials";
-            checkBox51.UseVisualStyleBackColor = true;
+            checkBox53.AutoSize = true;
+            checkBox53.FlatStyle = FlatStyle.System;
+            checkBox53.Location = new Point(12, 274);
+            checkBox53.Name = "checkBox53";
+            checkBox53.Size = new Size(199, 20);
+            checkBox53.TabIndex = 50;
+            checkBox53.Tag = "disableWindowParentIsGame";
+            checkBox53.Text = "Disable game as parent window";
+            checkBox53.TextAlign = ContentAlignment.TopLeft;
+            checkBox53.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -3691,5 +3706,6 @@ namespace SrvSurvey
         private FlatButton btnAdjustVR;
         private CheckBox checkTrackAndPublishShipCargo;
         private CheckBox checkBox51;
+        private CheckBox checkBox53;
     }
 }

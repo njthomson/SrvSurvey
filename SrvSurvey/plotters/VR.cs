@@ -161,6 +161,7 @@ namespace SrvSurvey.plotters
             catch (Exception ex)
             {
                 Game.log($"VR.project: error on '{def.name}': {ex.Message}\r\n\t{ex.StackTrace}");
+                Game.log($"VR.project: error on '{def.name}': handle: {overlay?.Handle}");
                 PlotBase2.remove(def);
             }
             finally

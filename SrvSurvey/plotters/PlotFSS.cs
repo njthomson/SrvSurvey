@@ -205,7 +205,7 @@ namespace SrvSurvey.plotters
 
         private void startWatching()
         {
-            if (Game.settings.watchFssSettings_TEST == null) return;
+            if (Game.settings.watchFssSettings_TEST == null || VR.app != null) return;
 
             Game.log("Start watching FSS pixels");
             this.watching = true;
