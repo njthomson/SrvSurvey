@@ -51,15 +51,16 @@ namespace SrvSurvey.plotters
         {
             if (game?.systemStation == null) return frame.Size;
 
-            tt.draw(N.eight, $"Combat Zone: {game.systemStation.name}");
+            tt.draw(N.eight, $"Combat Zone:", C.orangeDark);
+            tt.newLine(true);
+            tt.draw(N.eight, game.systemStation.name);
             //drawTextAt2(game.systemStation.name, GameColors.Fonts.console_8B);
             tt.newLine(N.eight, true);
 
             tt.draw(N.eight, $"Kills: {this.countKills}");
 
-            tt.draw(N.eighty, $"Bonds: {this.sumCredits.ToString("N0")}");
+            //tt.draw(N.eighty, $"Bonds: {this.sumCredits.ToString("N0")}");
             tt.newLine(N.eight, true);
-
 
             return tt.pad(N.oneSix, N.four);
         }

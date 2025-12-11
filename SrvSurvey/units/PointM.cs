@@ -6,8 +6,6 @@ namespace SrvSurvey.units
     // An equivalent of Point or PointF but using Decimals
     internal struct PointM
     {
-        public Point p1 = new Point(); // tmp
-        public PointF p2 = new PointF(); // tmp
         public static void junk()
         {
             var pd = new PointM((float)1, (float)2);

@@ -109,7 +109,7 @@ namespace SrvSurvey.plotters
             set => overlay.Alpha = value;
         }
 
-        public Boolean isVisible => OpenVR.Overlay.IsOverlayVisible(overlay.Handle);
+        public Boolean isVisible => OpenVR.Overlay?.IsOverlayVisible(overlay.Handle) == true;
 
         public void hide()
         {

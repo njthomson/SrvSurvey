@@ -41,5 +41,11 @@
     "highlight": "yellow",
     "item": "orange",
     "itemDark": "orangeDark"
+  },
+
+  "fcz": {
+    "checkpoint": "yellow",
+    "checkpointLocal": "green",
+    "powerPost":  [ 255, 218, 165, 32 ]
   }
 }

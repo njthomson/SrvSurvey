@@ -47,7 +47,11 @@
       { "name": "Battery", "offset": { "X": -96.172676, "Y": -111.99463 }, "floor": 1, "level": 1 },
       { "name": "Medkit", "offset": { "X": -81.4892, "Y": -123.64763 }, "floor": 1, "level": 1 },
       { "name": "Atmos", "offset": { "X": 4379440.5, "Y": 3110466.5 }, "floor": 1, "level": 2 },
-      { "name": "Battery", "offset": { "X": 4379440.5, "Y": 3110445.8 }, "floor": 1, "level": 1 }
+      { "name": "Battery", "offset": { "X": 4379440.5, "Y": 3110445.8 }, "floor": 1, "level": 1 },
+      { "name": "Medkit", "offset": { "X": 68.92163, "Y": 18.35288 }, "floor": 1, "level": 0 },
+      { "name": "Medkit", "offset": { "X": 37.0854, "Y": -38.7857 }, "floor": 1, "level": 0 },
+      { "name": "Medkit", "offset": { "X": 9.714952, "Y": 47.21229 }, "floor": 1, "level": 2 },
+      { "name": "Medkit", "offset": { "X": 3.3575072, "Y": 38.59274 }, "floor": 1, "level": 0 }
     ],
     "dataTerminals": [
       { "offset": { "X": 44.941036, "Y": 84.63014 }, "floor": 2, "level": 2 },
@@ -57,6 +61,17 @@
       { "offset": { "X": -13.453387, "Y": -156.49503 }, "floor": 1, "level": 1 },
       { "offset": { "X": -87.94682, "Y": -125.83749 }, "floor": 1, "level": 1 },
       { "offset": { "X": 4379452.0, "Y": 3110458.5 }, "floor": 1, "level": 1 }
+    ],
+    "czPoints": [
+      { "name": "A", "offset": { "X": 17.526665, "Y": 70.566956 }, "floor": 0, "level": 0 },
+      { "name": "B", "offset": { "X": 65.18705, "Y": 6.52681 }, "floor": 0, "level": 0 },
+      { "name": "C", "offset": { "X": 29.891788, "Y": -58.970856 }, "floor": 0, "level": 0 },
+      { "name": "E", "offset": { "X": -24.877176, "Y": 45.222725 }, "floor": 0, "level": 0 },
+      { "name": "F", "offset": { "X": -9.26069, "Y": -146.50308 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -17.198277, "Y": -99.08128 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 27.180365, "Y": 30.114695 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 62.961082, "Y": -62.267406 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -20.79912, "Y": -43.136215 }, "floor": 0, "level": 0 }
     ],
     "buildings": [
       {
@@ -460,13 +475,25 @@
       { "name": "Medkit", "offset": { "X": 15.151597, "Y": -41.13488 }, "floor": 1, "level": 1 },
       { "name": "Atmos", "offset": { "X": 15.5719795, "Y": -36.515114 }, "floor": 1, "level": 2 },
       { "name": "Atmos", "offset": { "X": 23.62458, "Y": 16.991838 }, "floor": 1, "level": 2 },
-      { "name": "Power", "offset": { "X": 17.043362, "Y": 21.39013 }, "floor": 1, "level": 3 }
+      { "name": "Power", "offset": { "X": 17.043362, "Y": 21.39013 }, "floor": 1, "level": 3 },
+      { "name": "Battery", "offset": { "X": 19.178337, "Y": -51.96996 }, "floor": 1, "level": 1 },
+      { "name": "Medkit", "offset": { "X": -42.7762, "Y": 3.3039982 }, "floor": 3, "level": 0 }
     ],
     "dataTerminals": [
       { "offset": { "X": 83.84733, "Y": -1.3515581 }, "floor": 1, "level": 0 },
       { "offset": { "X": -60.411575, "Y": -2.0251367 }, "floor": 1, "level": 3 },
       { "offset": { "X": -46.278873, "Y": 11.881819 }, "floor": 2, "level": 3 },
       { "offset": { "X": 11.092956, "Y": -46.972916 }, "floor": 1, "level": 1 }
+    ],
+    "czPoints": [
+      { "name": "A", "offset": { "X": 82.1741, "Y": -0.6182457 }, "floor": 0, "level": 0 },
+      { "name": "B", "offset": { "X": 39.112324, "Y": -19.72216 }, "floor": 0, "level": 0 },
+      { "name": "C", "offset": { "X": -0.09001165, "Y": -44.196564 }, "floor": 0, "level": 0 },
+      { "name": "D", "offset": { "X": 16.462446, "Y": 16.934185 }, "floor": 0, "level": 0 },
+      { "name": "E", "offset": { "X": -36.988586, "Y": -2.672965 }, "floor": 0, "level": 0 },
+      { "name": "F", "offset": { "X": -6.5758986, "Y": 62.6302 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 18.349636, "Y": -17.15642 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -4.6843753, "Y": 25.45175 }, "floor": 0, "level": 0 }
     ],
     "buildings": [
       {
@@ -545,6 +572,18 @@
       { "offset": { "X": 105.29205, "Y": 117.998886 }, "floor": 2, "level": 3 },
       { "offset": { "X": 88.03611, "Y": 76.5736 }, "floor": 1, "level": 2 },
       { "offset": { "X": 153.55215, "Y": 114.532455 }, "floor": 2, "level": 3 }
+    ],
+    "czPoints": [
+      { "name": "D", "offset": { "X": 53.465122, "Y": 58.76865 }, "floor": 0, "level": 0 },
+      { "name": "F", "offset": { "X": 76.41813, "Y": 130.56262 }, "floor": 0, "level": 0 },
+      { "name": "B", "offset": { "X": 4.7148256, "Y": 118.46685 }, "floor": 0, "level": 0 },
+      { "name": "A", "offset": { "X": -6.432957, "Y": 56.71706 }, "floor": 0, "level": 0 },
+      { "name": "E", "offset": { "X": -46.99507, "Y": 132.291 }, "floor": 0, "level": 0 },
+      { "name": "C", "offset": { "X": -48.87682, "Y": 42.44663 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 40.717648, "Y": 17.477427 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 73.14285, "Y": 103.57352 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -28.140564, "Y": 96.269455 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -69.56169, "Y": 42.139797 }, "floor": 0, "level": 0 }
     ],
     "buildings": [
       {
@@ -1011,6 +1050,17 @@
       { "offset": { "X": -27.71967, "Y": 125.39965 }, "floor": 3, "level": 1 },
       { "offset": { "X": 85.550224, "Y": -97.80291 }, "floor": 1, "level": 1 }
     ],
+    "czPoints": [
+      { "name": "A", "offset": { "X": 62.61177, "Y": 19.206964 }, "floor": 0, "level": 0 },
+      { "name": "B", "offset": { "X": -8.123315, "Y": 15.819611 }, "floor": 0, "level": 0 },
+      { "name": "C", "offset": { "X": -5.5591416, "Y": -114.45751 }, "floor": 0, "level": 0 },
+      { "name": "D", "offset": { "X": 33.27655, "Y": 99.226425 }, "floor": 0, "level": 0 },
+      { "name": "E", "offset": { "X": 126.7421, "Y": -7.6518764 }, "floor": 0, "level": 0 },
+      { "name": "F", "offset": { "X": 81.70228, "Y": -62.448757 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 6.8284597, "Y": -19.679531 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 81.10224, "Y": 24.376425 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 36.406925, "Y": -59.55174 }, "floor": 0, "level": 0 }
+    ],
     "buildings": [
       {
         "name": "HAB #1",
@@ -1192,13 +1242,26 @@
       { "name": "Medkit", "offset": { "X": 52.298557, "Y": 23.573505 }, "floor": 1, "level": 2 },
       { "name": "Battery", "offset": { "X": 68.25855, "Y": 12.124651 }, "floor": 1, "level": 2 },
       { "name": "Battery", "offset": { "X": -245.7586, "Y": 166.30858 }, "floor": 2, "level": 2 },
-      { "name": "Battery", "offset": { "X": -225.80807, "Y": 162.2054 }, "floor": 2, "level": 2 }
+      { "name": "Battery", "offset": { "X": -225.80807, "Y": 162.2054 }, "floor": 2, "level": 2 },
+      { "name": "Medkit", "offset": { "X": -97.83575, "Y": 66.02188 }, "floor": 1, "level": 0 }
     ],
     "dataTerminals": [
       { "offset": { "X": -218.26964, "Y": 157.83586 }, "floor": 2, "level": 2 },
       { "offset": { "X": 7.6960335, "Y": -57.941048 }, "floor": 2, "level": 1 },
       { "offset": { "X": 131.43881, "Y": -31.129004 }, "floor": 1, "level": 0 },
       { "offset": { "X": 57.917625, "Y": 38.25601 }, "floor": 1, "level": 3 }
+    ],
+    "czPoints": [
+      { "name": "A", "offset": { "X": -113.60112, "Y": 53.718723 }, "floor": 0, "level": 0 },
+      { "name": "B", "offset": { "X": -200.2825, "Y": 74.6713 }, "floor": 0, "level": 0 },
+      { "name": "C", "offset": { "X": -188.1945, "Y": 136.21506 }, "floor": 0, "level": 0 },
+      { "name": "D", "offset": { "X": -31.07247, "Y": 35.192287 }, "floor": 0, "level": 0 },
+      { "name": "E", "offset": { "X": -3.5943067, "Y": -34.50104 }, "floor": 0, "level": 0 },
+      { "name": "F", "offset": { "X": 42.205822, "Y": -3.6131458 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -217.60529, "Y": 56.331024 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -105.83758, "Y": 63.838024 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -10.764829, "Y": 18.845549 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -236.09727, "Y": 131.10127 }, "floor": 0, "level": 0 }
     ],
     "buildings": [
       {
@@ -1413,6 +1476,14 @@
       { "offset": { "X": -59.51239, "Y": -70.971176 }, "floor": 1, "level": 0 },
       { "offset": { "X": -118.487976, "Y": -107.94727 }, "floor": 1, "level": 2 },
       { "offset": { "X": -91.16819, "Y": 94.91442 }, "floor": 2, "level": 1 }
+    ],
+    "czPoints": [
+      { "name": "A", "offset": { "X": -55.56447, "Y": -69.12683 }, "floor": 0, "level": 0 },
+      { "name": "B", "offset": { "X": -74.32217, "Y": 32.112534 }, "floor": 0, "level": 0 },
+      { "name": "C", "offset": { "X": -183.36403, "Y": 15.192353 }, "floor": 0, "level": 0 },
+      { "name": "D", "offset": { "X": -147.95348, "Y": 14.479585 }, "floor": 0, "level": 0 },
+      { "name": "E", "offset": { "X": -100.585045, "Y": -67.55295 }, "floor": 0, "level": 0 },
+      { "name": "F", "offset": { "X": -106.943665, "Y": 84.86828 }, "floor": 0, "level": 0 }
     ],
     "buildings": [
       {
@@ -1749,7 +1820,11 @@
       { "name": "Battery", "offset": { "X": -113.666245, "Y": 48.917583 }, "floor": 1, "level": 3 },
       { "name": "Battery", "offset": { "X": 11.307118, "Y": 98.22737 }, "floor": 1, "level": 0 },
       { "name": "Medkit", "offset": { "X": 54.240025, "Y": 52.614456 }, "floor": 1, "level": 0 },
-      { "name": "Battery", "offset": { "X": -90.70277, "Y": -27.19142 }, "floor": 1, "level": 0 }
+      { "name": "Battery", "offset": { "X": -90.70277, "Y": -27.19142 }, "floor": 1, "level": 0 },
+      { "name": "Medkit", "offset": { "X": -73.06854, "Y": 57.825134 }, "floor": 1, "level": 2 },
+      { "name": "Medkit", "offset": { "X": -74.11384, "Y": 61.20632 }, "floor": 1, "level": 2 },
+      { "name": "Medkit", "offset": { "X": 7.948876, "Y": 39.970043 }, "floor": 1, "level": 1 },
+      { "name": "Medkit", "offset": { "X": 53.563595, "Y": -9.8037 }, "floor": 2, "level": 2 }
     ],
     "dataTerminals": [
       { "offset": { "X": -49.701294, "Y": 76.48073 }, "floor": 2, "level": 2 },

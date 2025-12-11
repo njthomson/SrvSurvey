@@ -128,7 +128,10 @@ namespace SrvSurvey
         public List<HumanSitePoi2> dataTerminals;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public List<Building2> buildings = new List<Building2>();
+        public List<HumanSitePoi2> czPoints;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public List<Building2> buildings = new();
 
         [JsonIgnore]
         public string landingPadSummary
