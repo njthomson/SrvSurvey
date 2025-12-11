@@ -55,6 +55,7 @@ namespace SrvSurvey
         public bool autoShowPlotBioSystem = true;
         public bool drawBodyBiosOnlyWhenNear = true;
         public bool highlightRegionalFirsts = false;
+        public bool dimIfAnalyzed = false;
         public bool autoShowPlotGalMap = true;
         public bool autoShowPlotJumpInfo = true;
         public bool showPlotJumpInfoIfNextHop = false;
