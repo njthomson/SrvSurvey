@@ -143,6 +143,8 @@ namespace SrvSurvey.game
         public Docked? lastDocked;
         public Docked? lastEverDocked;
         public Undocked? lastUndocked;
+        public LaunchSRV? lastLaunchSrv;
+        public LaunchFighter? lastLaunchFighter;
         public ApproachSettlement? lastApproachSettlement;
         public ColonisationConstructionDepot? lastColonisationConstructionDepot;
         public SettlementMatCollectionData? matStatsTracker;
@@ -150,6 +152,9 @@ namespace SrvSurvey.game
         public bool destinationNextRouteHop = false;
         /// <summary> Current counts of materials for the cmdr </summary>
         private Materials materials;
+
+        // TODO: fighters?
+        public string currentVehicleType => lastLaunchFighter != null ? "fighter" : lastLaunchSrv?.SRVType ?? currentShip.type;
 
         /// <summary>
         /// An arbitrary point on a planet surface. Doesn't really matter where, so long as it isn't too far away.
@@ -795,6 +800,8 @@ namespace SrvSurvey.game
             Docked? lastDocked = null;
             Touchdown? lastTouchdown = null;
             var liftedOff = false;
+            DockSRV? lastDockSRV = null;
+            DockFighter? lastDockFighter = null;
 
             this.journals.walkDeep(true, (entry) =>
             {
@@ -818,6 +825,16 @@ namespace SrvSurvey.game
                 if (dockingGranted != null && lastDockingGranted == null)
                     if (lastDocked == null || lastDocked.MarketID == dockingGranted.MarketID)
                         lastDockingGranted = dockingGranted;
+
+                if (entry is DockSRV && lastDockSRV == null)
+                    lastDockSRV = (DockSRV)entry;
+                if (entry is LaunchSRV && lastDockSRV == null && this.lastLaunchSrv == null)
+                    this.lastLaunchSrv = (LaunchSRV)entry;
+
+                if (entry is DockFighter && lastDockFighter == null)
+                    lastDockFighter = (DockFighter)entry;
+                if (entry is LaunchFighter && lastDockFighter == null && this.lastLaunchFighter == null)
+                    this.lastLaunchFighter = (LaunchFighter)entry;
 
                 // (so we can ignore any prior TouchDown's)
                 if (entry is Liftoff) liftedOff = true;
@@ -1500,9 +1517,26 @@ namespace SrvSurvey.game
 
         #region Cargo handling
 
+        private void onJournalEntry(LaunchSRV entry)
+        {
+            this.lastLaunchSrv = entry;
+        }
+
         private void onJournalEntry(DockSRV entry)
         {
+            this.lastLaunchSrv = null;
             this.systemData?.prepSettlements();
+        }
+
+        private void onJournalEntry(LaunchFighter entry)
+        {
+            // TODO: figure out which type of fighter we are in
+            this.lastLaunchFighter = entry;
+        }
+
+        private void onJournalEntry(DockFighter entry)
+        {
+            this.lastLaunchFighter = null;
         }
 
         private void onJournalEntry(CollectCargo entry)

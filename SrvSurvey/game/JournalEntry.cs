@@ -374,6 +374,22 @@ namespace SrvSurvey
         public int ID { get; set; }
     }
 
+    class LaunchFighter : JournalEntry
+    {
+        // { "timestamp":"2025-12-10T22:39:49Z", "event":"LaunchFighter", "Loadout":"one", "ID":66, "PlayerControlled":true }
+
+        public string Loadout;
+        public int ID;
+        public bool PlayerControlled;
+    }
+
+    class DockFighter : JournalEntry
+    {
+        // { "timestamp":"2025-12-10T22:47:02Z", "event":"DockFighter", "ID":66 }
+
+        public int ID;
+    }
+
     class CodexEntry : LocationEntry, ISystemAddress
     {
         // { "timestamp":"2023-01-06T00:46:41Z", "event":"CodexEntry", "EntryID":3200200, "Name":"$Codex_Ent_Guardian_Data_Logs_Name;", "Name_Localised":"Guardian Codex", "SubCategory":"$Codex_SubCategory_Guardian;", "SubCategory_Localised":"Guardian objects", "Category":"$Codex_Category_Civilisations;", "Category_Localised":"Xenological", "Region":"$Codex_RegionName_18;", "Region_Localised":"Inner Orion Spur", "System":"Synuefe NL-N c23-4", "SystemAddress":1184840454858, "BodyID":18, "NearestDestination":"$Ancient:#index=3;", "NearestDestination_Localised":"Ancient Ruins (3)", "Latitude":5.613951, "Longitude":-148.100403, "IsNewEntry":true, "VoucherAmount":50000 }

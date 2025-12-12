@@ -184,7 +184,7 @@ namespace SrvSurvey.plotters
             }
 
             // show reminder to icons, if we're watching pixels
-            if (Game.settings.watchFssSettings_TEST != null)
+            if (Game.settings.watchFssSettings_TEST != null && VR.app == null)
             {
                 tt.dty = this.height - N.fourFour;
                 var duration = DateTime.Now - this.lastScanTime;

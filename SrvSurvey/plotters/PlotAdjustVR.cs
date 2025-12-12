@@ -42,10 +42,12 @@ namespace SrvSurvey.plotters
         private string? confirmation;
         private bool confirming => confirmation != null;
         private bool selfClosing;
+        public static string? overrideName;
 
         private PlotAdjustVR(Game game, PlotDef def) : base(game, def)
         {
             font = GameColors.Fonts.gothic_12;
+            overrideName = "";
 
             allNames = PlotPos.getAllPlotterNames().Order().ToList();
             targetName = allNames.First();
@@ -64,6 +66,7 @@ namespace SrvSurvey.plotters
         protected override void onClose()
         {
             base.onClose();
+            overrideName = null;
             KeyboardHook.redirect = false;
             KeyboardHook.analogs = false;
             PlotBase2.remove(PlotAdjustFake.def);
@@ -80,6 +83,11 @@ namespace SrvSurvey.plotters
             {
                 pPos.vr = new() { s = 10, p = new Vector3(-8, 10, 45), r = new Vector3() };
             }
+
+            // do we have an override?
+            if (overrideName != null && VR.overrides.GetValueOrDefault(overrideName)?.TryGetValue(targetName, out var alternatePP) == true)
+                return alternatePP;
+
             return pPos.vr;
         }
 
@@ -124,6 +132,7 @@ namespace SrvSurvey.plotters
                 {
                     // save changes and exit
                     PlotPos.saveCustomPositions();
+                    VR.saveOverlayOverrides();
                     force = false;
                     PlotBase2.renderAll(game, true);
                 }
@@ -175,6 +184,25 @@ namespace SrvSurvey.plotters
                     if (idx < 0) idx = allNames.Count - 1;
                     setNextOverlay(allNames[idx]);
                 }
+                else if (chord == "PovU")
+                {
+                    // toggle overrideName
+                    if (string.IsNullOrWhiteSpace(overrideName))
+                    {
+                        overrideName = VR.vrMode;
+                        // do we have an override?
+                        var overrides = VR.overrides.init(overrideName);
+
+                        // default to cloned current data if no current
+                        if (!overrides.ContainsKey(targetName))
+                            overrides[targetName] = PlotPos.VR.parse(pp.ToString())!;
+                    }
+                    else
+                    {
+                        overrideName = "";
+                    }
+                    pp = getPP();
+                }
                 else if (chord == "B4")
                 {
                     // toggle rotate or relocate
@@ -219,7 +247,7 @@ namespace SrvSurvey.plotters
                     if (analog < 10) return; // deadzone
                     var d = (float)analog / 1000;
                     pp.s -= d;
-                    if (pp.s < 2) pp.s = 2;
+                    if (pp.s < 0.1f) pp.s = 0.1f;
                 }
             }
             else
@@ -271,6 +299,7 @@ namespace SrvSurvey.plotters
                 tt.dty -= N.ten;
                 if (confirmation == "exit")
                 {
+                    g.FillRectangle(Brushes.Navy, 2, tt.dty - N.four, this.width - 4, N.sixty);
                     tt.drawCentered("Save and exit?", C.cyan, GameColors.Fonts.gothic_16B);
                     tt.newLine(N.four, true);
                     tt.drawCentered("Press A to confirm?", C.cyanDark, GameColors.Fonts.gothic_10);
@@ -278,6 +307,7 @@ namespace SrvSurvey.plotters
                 }
                 else if (confirmation == "cancel")
                 {
+                    g.FillRectangle(Brushes.Navy, 2, tt.dty - N.four, this.width - 4, N.sixty);
                     tt.drawCentered("Exit without save?", C.cyan, GameColors.Fonts.gothic_16B);
                     tt.newLine(N.four, true);
                     tt.drawCentered("Press A to confirm?", C.cyanDark, GameColors.Fonts.gothic_10);
@@ -285,6 +315,7 @@ namespace SrvSurvey.plotters
                 }
                 else if (confirmation == "reset")
                 {
+                    g.FillRectangle(Brushes.Navy, 2, tt.dty - N.four, this.width - 4, N.sixty);
                     tt.drawCentered("Reset overlay?", C.cyan, GameColors.Fonts.gothic_16B);
                     tt.newLine(N.four, true);
                     tt.drawCentered("Press A to confirm?", C.cyanDark, GameColors.Fonts.gothic_10);
@@ -297,7 +328,10 @@ namespace SrvSurvey.plotters
             tt.draw(N.ten, "Overlay: ", confirming ? C.orangeDark : null);
             tt.draw(targetName, confirming ? C.cyanDark : C.cyan, GameColors.Fonts.gothic_12B);
             tt.newLine(true);
-            tt.draw(N.sixty, "(Change with PoV < >)", C.orangeDark, GameColors.Fonts.gothic_9);
+            tt.draw(N.ten, "Override: ", confirming ? C.orangeDark : null, GameColors.Fonts.gothic_10);
+            tt.draw(string.IsNullOrWhiteSpace(overrideName) ? "<none>" : overrideName, confirming ? C.cyanDark : C.cyan, GameColors.Fonts.gothic_10B);
+            tt.newLine(true);
+            tt.draw(N.sixty, "(Change with PoV < ^ >)", C.orangeDark, GameColors.Fonts.gothic_9);
             tt.newLine(N.twenty, true);
 
             // scale

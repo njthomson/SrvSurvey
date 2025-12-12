@@ -102,7 +102,7 @@ namespace SrvSurvey.plotters
             {
                 Game.log($"Why no next name of address?");
                 this.hide();
-                Debugger.Break();
+                  Debugger.Break();
                 return;
             }
 
