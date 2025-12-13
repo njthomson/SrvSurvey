@@ -556,10 +556,10 @@ namespace SrvSurvey.game
             return fc;
         }
 
-        public static async Task<bool> updateSysBodies(SystemData sys)
+        public static async Task<List<Bod>?> updateSysBodies(SystemData sys)
         {
             Game.log($"Colony.updateSysBodies: {sys.ToString()} ({sys.fssAllBodies})");
-            if (sys?.fssAllBodies != true || Game.activeGame?.journals == null) return false;
+            if (sys?.fssAllBodies != true || Game.activeGame?.journals == null) return null;
 
             var bods = new List<Bod>();
             var tidalsNeeded = 0;
@@ -597,6 +597,10 @@ namespace SrvSurvey.game
                 {
                     bod.type = Bod.BodyType.gg;
                 }
+                else if (b.type == SystemBodyType.Asteroid)
+                {
+                    bod.type = Bod.BodyType.ac;
+                }
                 else
                 {
                     tidalsNeeded++;
@@ -606,7 +610,7 @@ namespace SrvSurvey.game
                 {
                     Game.log($"Why body type not known? {bod.name} => {b.planetClass}");
                     Debugger.Break();
-                    return false;
+                    return null;
                 }
 
                 // map features

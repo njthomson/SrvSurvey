@@ -875,7 +875,7 @@ namespace SrvSurvey
             menuColonize.Items.AddRange(new ToolStripItem[] { menuRefreshProjects, menuColonizeLine1, menuMyProjects, menuCurrentProject, menuPrimaryProject, menuColonizeLine2, menuNewProject, menuColonizeLine3, menuRavenColonial, menuColonizeWiki, menuColonizeLine4, menuUpdateHeader, menuPublishFC, menuUpdateSystem, menuUpdateStations });
             menuColonize.Name = "menuColonize";
             menuColonize.RenderMode = ToolStripRenderMode.System;
-            menuColonize.Size = new Size(245, 436);
+            menuColonize.Size = new Size(245, 458);
             menuColonize.targetButton = btnColonize;
             // 
             // menuRefreshProjects
@@ -1001,7 +1001,7 @@ namespace SrvSurvey
             menuUpdateStations.Font = new Font("Segoe UI", 11.25F);
             menuUpdateStations.Name = "menuUpdateStations";
             menuUpdateStations.Size = new Size(244, 38);
-            menuUpdateStations.Text = "Update stations ...";
+            menuUpdateStations.Text = "Update system...";
             menuUpdateStations.Click += menuUpdateStations_Click;
             // 
             // menuGuardians

@@ -15,6 +15,7 @@ namespace SrvSurvey
     {
         private static Game? game { get => Game.activeGame; }
 
+        public string? firstTab;
         private readonly Dictionary<string, FieldInfo> map = new();
         private Color colorScreenshotBanner = Game.settings.screenshotBannerColor;
         private Dictionary<KeyAction, string>? nextKeyActions;
@@ -106,6 +107,10 @@ namespace SrvSurvey
                 this.codexImageSize = (size / 1_073_741_824D).ToString("N3").TrimEnd('0');
                 lblCodexImagesSize.Text += $" {codexImageSize} GB";
             });
+
+            // pre-select a tab?
+            if (firstTab != null && tabControl.TabPages.ContainsKey(firstTab))
+                tabControl.SelectedTab = tabControl.TabPages[firstTab];
         }
 
         /// <summary>

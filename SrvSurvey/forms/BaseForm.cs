@@ -61,7 +61,7 @@ namespace SrvSurvey.forms
 
             var form = activeForms.GetValueOrDefault(name) as T;
 
-            if (form == null)
+            if (form == null || form.IsDisposed)
             {
                 form = new T() { Name = name, };
                 activeForms[name] = form;
@@ -129,7 +129,7 @@ namespace SrvSurvey.forms
         {
             // can we fit in our last location?
             var savedRect = Game.settings.formLocations.GetValueOrDefault(this.GetType().Name);
-            if (savedRect.Size != Size.Empty)
+            if (savedRect.Size != Size.Empty && !this.IsDisposed)
             {
                 var sizable = this.FormBorderStyle.ToString().StartsWith("Sizable");
                 Util.useLastLocation(this, savedRect, !sizable);
