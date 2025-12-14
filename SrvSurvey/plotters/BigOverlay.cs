@@ -54,7 +54,7 @@ namespace SrvSurvey.plotters
             {
                 if (BigOverlay.current?.IsHandleCreated == true && !BigOverlay.current.IsDisposed && !BigOverlay.current.Disposing)
                 {
-                    var newVisible = !Elite.eliteMinimized && !Program.tempHideAllPlotters;
+                    var newVisible = !Elite.eliteMinimized && !Program.tempHideAllPlotters && (Game.settings.disableWindowParentIsGame && Elite.focusElite);
                     if (BigOverlay.current.Visible != newVisible)
                         BigOverlay.current.Visible = newVisible;
                     BigOverlay.current.Invalidate();

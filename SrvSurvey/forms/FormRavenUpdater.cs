@@ -723,6 +723,7 @@ namespace SrvSurvey.forms
 
         private void createUnknownSignals(FSSSignalDiscovered[] fssSignals)
         {
+            var nowMS = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             foreach (var signal in fssSignals)
             {
                 // skip FCs, RES sites, CZs, etc
@@ -742,7 +743,7 @@ namespace SrvSurvey.forms
                     bodyNum = -1,
                     name = signal.SignalName,
                     buildType = buildType,
-                    id = $"y{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}",
+                    id = $"y{nowMS++}",
                     status = SystemSite.Status.complete,
                 });
             }
