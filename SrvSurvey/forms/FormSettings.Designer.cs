@@ -270,6 +270,7 @@ namespace SrvSurvey
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
             checkBox53 = new CheckBox();
+            checkBoxBioDim = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -905,6 +906,7 @@ namespace SrvSurvey
             tabPage4.BorderStyle = BorderStyle.Fixed3D;
             tabPage4.Controls.Add(checkBox53);
             tabPage4.Controls.Add(checkBox37);
+            tabPage4.Controls.Add(checkBoxBioDim);
             tabPage4.Controls.Add(comboBox1);
             tabPage4.Controls.Add(label29);
             tabPage4.Controls.Add(checkBox34);
@@ -3556,6 +3558,19 @@ namespace SrvSurvey
             checkBox53.TextAlign = ContentAlignment.TopLeft;
             checkBox53.UseVisualStyleBackColor = true;
             // 
+            // checkBoxBioDim
+            // 
+            checkBoxBioDim.AutoSize = true;
+            checkBoxBioDim.FlatStyle = FlatStyle.System;
+            checkBoxBioDim.Location = new Point(318, 627);
+            checkBoxBioDim.Margin = new Padding(6, 4, 6, 4);
+            checkBoxBioDim.Name = "checkBoxBioDim";
+            checkBoxBioDim.Size = new Size(172, 30);
+            checkBoxBioDim.TabIndex = 34;
+            checkBoxBioDim.Tag = "dimIfAnalyzed";
+            checkBoxBioDim.Text = "Dim if analyzed";
+            checkBoxBioDim.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             AutoScaleDimensions = new SizeF(144F, 144F);
@@ -3882,5 +3897,6 @@ namespace SrvSurvey
         private CheckBox checkTrackAndPublishShipCargo;
         private CheckBox checkBox51;
         private CheckBox checkBox53;
+        private CheckBox checkBoxBioDim;
     }
 }
