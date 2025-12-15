@@ -102,7 +102,7 @@ namespace SrvSurvey.plotters
             {
                 Game.log($"Why no next name of address?");
                 this.hide();
-                Debugger.Break();
+                  Debugger.Break();
                 return;
             }
 
@@ -296,10 +296,11 @@ namespace SrvSurvey.plotters
         private void drawJumpLine(Graphics g, TextCursor tt)
         {
             if (hopDistances.Count == 0) return;
-            tt.dty += N.six;
+            tt.dty += N.four;
             // draw text for `#1 of 2` on left, and total distance travelled on the right
             var szLeft = tt.draw(N.eight, Res.JumpCounts.format(nextHopIdx + 1, hopDistances.Count));
             var szRight = tt.draw(this.width - N.eight, Res.JumpDistance.format(totalDistance.ToString("N1")), null, null, true);
+            tt.dty += N.two;
 
             // calc left edge of line + whole line width to fix between rendered text
             var left = szLeft.Width + N.oneEight;

@@ -365,10 +365,27 @@ namespace SrvSurvey
                 }
                 else
                     BigOverlay.current?.reposition(rect);
+
                 Program.repositionPlotters(rect);
                 multiFloatie?.positionOverGame(rect);
             }
 
+            if (Game.settings.disableWindowParentIsGame)
+            {
+                if (this.gameHadFocus && !Elite.focusElite)
+                {
+                    //Game.log("hiding all");
+                    Program.hideActivePlotters();
+                    BigOverlay.current?.Hide();
+                }
+                else if (Game.settings.disableWindowParentIsGame && !this.gameHadFocus && Elite.focusElite)
+                {
+                    //Game.log("showing all");
+                    Program.showActivePlotters();
+                    BigOverlay.current?.Show();
+                    PlotBase2.renderAll(game, true);
+                }
+            }
 
             // show/hide multi-floatie if we have focus
             if (multiFloatie != null && !multiFloatie.IsDisposed) multiFloatie.Visible = Elite.focusElite || Elite.focusSrvSurvey;
@@ -1118,12 +1135,18 @@ namespace SrvSurvey
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
+            this.showSettings();
+        }
+
+        public void showSettings(string? firstTab = null)
+        {
             try
             {
                 btnSettings.Enabled = false;
                 if (VR.enabled) VR.shutdown();
 
                 var form = new FormSettings();
+                form.firstTab = firstTab;
                 var rslt = form.ShowDialog(this);
 
                 if (rslt == DialogResult.OK)
@@ -1672,7 +1695,7 @@ namespace SrvSurvey
             menuUpdateSystem.Visible = showUpdateSystemBods;
 
             // show if game is active
-            var showUpdateStations = game?.systemData?.address > 0 && Debugger.IsAttached; // TODO: Not ready for everyone yet
+            var showUpdateStations = game?.systemData?.address > 0;
             menuUpdateStations.Visible = showUpdateStations;
 
             // show if any update item is shown
@@ -1772,8 +1795,9 @@ namespace SrvSurvey
 
             if (game?.systemData == null) return;
             btnColonize.Enabled = false;
-            Task.Run(() => ColonyData.updateSysBodies(game.systemData).continueOnMain(this, success =>
+            Task.Run(() => ColonyData.updateSysBodies(game.systemData).continueOnMain(this, bods =>
             {
+                var success = bods != null;
                 btnColonize.Enabled = true;
                 Game.log($"System updated: {success}");
                 if (success)
@@ -1804,8 +1828,20 @@ namespace SrvSurvey
 
         private void menuUpdateStations_Click(object sender, EventArgs e)
         {
+
             if (game?.systemData?.address > 0)
+            {
+                if (string.IsNullOrEmpty(game.cmdr.rccApiKey))
+                {
+                    var rslt = MessageBox.Show("You must set your Raven Colonial api-key to use this tool. Would you like to do this now?", "SrvSurvey", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (rslt == DialogResult.Yes)
+                        Main.form.showSettings("tabExternalData");
+
+                    return;
+                }
+
                 BaseForm.show<FormRavenUpdater>();
+            }
         }
 
         private void menuCurrentProject_Click(object sender, EventArgs e)

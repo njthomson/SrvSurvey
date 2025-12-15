@@ -1952,10 +1952,9 @@ namespace SrvSurvey
             // checkBox51
             // 
             checkBox51.FlatStyle = FlatStyle.System;
-            checkBox51.Location = new Point(801, 228);
-            checkBox51.Margin = new Padding(4, 4, 4, 4);
+            checkBox51.Location = new Point(534, 152);
             checkBox51.Name = "checkBox51";
-            checkBox51.Size = new Size(230, 45);
+            checkBox51.Size = new Size(153, 30);
             checkBox51.TabIndex = 35;
             checkBox51.Tag = "bodyInfoHideMats";
             checkBox51.Text = "Hide body materials";
@@ -3133,10 +3132,10 @@ namespace SrvSurvey
             checkHumanSitePlotter.Location = new Point(12, 9);
             checkHumanSitePlotter.Margin = new Padding(4, 4, 4, 4);
             checkHumanSitePlotter.Name = "checkHumanSitePlotter";
-            checkHumanSitePlotter.Size = new Size(361, 30);
+            checkHumanSitePlotter.Size = new Size(163, 20);
             checkHumanSitePlotter.TabIndex = 0;
             checkHumanSitePlotter.Tag = "autoShowHumanSitesTest";
-            checkHumanSitePlotter.Text = "Human settlement maps (experimental)";
+            checkHumanSitePlotter.Text = "Human settlement maps";
             checkHumanSitePlotter.UseVisualStyleBackColor = true;
             checkHumanSitePlotter.CheckedChanged += checkHumanSitePlotter_CheckedChanged;
             // 
@@ -3246,6 +3245,7 @@ namespace SrvSurvey
             // 
             tabPage8.BackColor = SystemColors.Control;
             tabPage8.BorderStyle = BorderStyle.Fixed3D;
+            tabPage8.Controls.Add(checkBox53);
             tabPage8.Controls.Add(checkFancyAlphaBlending);
             tabPage8.Controls.Add(checkBox52);
             tabPage8.Controls.Add(checkBox39);
@@ -3286,8 +3286,7 @@ namespace SrvSurvey
             // 
             checkBox52.AutoSize = true;
             checkBox52.FlatStyle = FlatStyle.System;
-            checkBox52.Location = new Point(18, 411);
-            checkBox52.Margin = new Padding(4, 4, 4, 4);
+            checkBox52.Location = new Point(427, 16);
             checkBox52.Name = "checkBox52";
             checkBox52.Size = new Size(257, 30);
             checkBox52.TabIndex = 48;
@@ -3383,10 +3382,10 @@ namespace SrvSurvey
             checkBox38.Location = new Point(18, 141);
             checkBox38.Margin = new Padding(4, 4, 4, 4);
             checkBox38.Name = "checkBox38";
-            checkBox38.Size = new Size(266, 30);
+            checkBox38.Size = new Size(100, 20);
             checkBox38.TabIndex = 41;
             checkBox38.Tag = "autoShowPlotMiniTrack_TEST";
-            checkBox38.Text = "Mini trackers (Experimental)";
+            checkBox38.Text = "Mini trackers";
             checkBox38.UseVisualStyleBackColor = true;
             // 
             // checkBox33
@@ -3548,13 +3547,13 @@ namespace SrvSurvey
             // 
             checkBox53.AutoSize = true;
             checkBox53.FlatStyle = FlatStyle.System;
-            checkBox53.Location = new Point(342, 627);
-            checkBox53.Margin = new Padding(6, 4, 6, 4);
+            checkBox53.Location = new Point(12, 274);
             checkBox53.Name = "checkBox53";
-            checkBox53.Size = new Size(172, 30);
-            checkBox53.TabIndex = 34;
-            checkBox53.Tag = "dimIfAnalyzed";
-            checkBox53.Text = "Dim if analyzed";
+            checkBox53.Size = new Size(199, 20);
+            checkBox53.TabIndex = 50;
+            checkBox53.Tag = "disableWindowParentIsGame";
+            checkBox53.Text = "Disable game as parent window";
+            checkBox53.TextAlign = ContentAlignment.TopLeft;
             checkBox53.UseVisualStyleBackColor = true;
             // 
             // FormSettings

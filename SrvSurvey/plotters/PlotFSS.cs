@@ -184,7 +184,7 @@ namespace SrvSurvey.plotters
             }
 
             // show reminder to icons, if we're watching pixels
-            if (Game.settings.watchFssSettings_TEST != null)
+            if (Game.settings.watchFssSettings_TEST != null && VR.app == null)
             {
                 tt.dty = this.height - N.fourFour;
                 var duration = DateTime.Now - this.lastScanTime;
@@ -205,7 +205,7 @@ namespace SrvSurvey.plotters
 
         private void startWatching()
         {
-            if (Game.settings.watchFssSettings_TEST == null) return;
+            if (Game.settings.watchFssSettings_TEST == null || VR.app != null) return;
 
             Game.log("Start watching FSS pixels");
             this.watching = true;

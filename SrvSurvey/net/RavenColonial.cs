@@ -407,6 +407,16 @@ namespace SrvSurvey.game.RavenColonial
             return obj;
         }
 
+        public async Task<DataRCC> importSystemBodies(string nameOrNum)
+        {
+            Game.log($"RCC.importSystemBodies: {nameOrNum}");
+
+            var response = await RavenColonial.client.PostAsync($"{svcUri}/api/v2/system/{Uri.EscapeDataString(nameOrNum)}/import/bodies", null);
+            var json = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<DataRCC>(json)!;
+            return obj;
+        }
+
         public async Task<string> getSystemArchitect(string nameOrNum)
         {
             Game.log($"RCC.getSystemArchitect: {nameOrNum}");
@@ -420,7 +430,7 @@ namespace SrvSurvey.game.RavenColonial
         /// <summary>
         /// Replace server body data with what we have
         /// </summary>
-        public async Task<bool> updateSysBodies(long address, List<Bod> bods)
+        public async Task<List<Bod>> updateSysBodies(long address, List<Bod> bods)
         {
             Game.log($"RCC.updateSysBodies: {address} - bodies: {bods.Count}");
 
@@ -428,12 +438,13 @@ namespace SrvSurvey.game.RavenColonial
             var body = new StringContent(json1, Encoding.Default, "application/json");
             body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
             var response = await RavenColonial.client.PutAsync($"{svcUri}/api/v2/system/{address}/bodies", body);
-            var json = await response.Content.ReadAsStringAsync();
+            var json2 = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
-                Game.log($"updateSysBodies '{address}' failed: HTTP:{(int)response.StatusCode}({response.StatusCode}): {json}");
+                Game.log($"updateSysBodies '{address}' failed: HTTP:{(int)response.StatusCode}({response.StatusCode}): {json2}");
 
-            return response.IsSuccessStatusCode;
+            var newBods = JsonConvert.DeserializeObject<List<Bod>>(json2)!;
+            return newBods;
         }
 
         public async Task<string?> getCmdrByApiKey(string apiKey)
@@ -653,8 +664,9 @@ namespace SrvSurvey.game.RavenColonial
         public string id;
         public string name;
         public int bodyNum;
-        public string buildType;
-        public string buildId;
+        public string? buildType;
+        public string? buildId;
+        public long? marketId;
         public Status status;
 
         [JsonConverter(typeof(StringEnumConverter))]

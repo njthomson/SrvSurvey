@@ -1,4 +1,5 @@
-﻿using OVRSharp;
+﻿using Newtonsoft.Json;
+using OVRSharp;
 using OVRSharp.Math;
 using SharpDX;
 using SharpDX.Direct3D;
@@ -17,6 +18,8 @@ namespace SrvSurvey.plotters
         public static bool enabled => PlotAdjustVR.force || Game.settings.displayVR;
 
         public static VR? app;
+        public static string vrMode = "";
+        public static Dictionary<string, Dictionary<string, PlotPos.VR>> overrides = new();
 
         public static void init()
         {
@@ -26,6 +29,9 @@ namespace SrvSurvey.plotters
                 if (app != null || !VR.enabled) return;
 
                 app = new VR();
+
+                // load any vehicle overlay position overrides
+                loadOverlayOverrides();
             }
             catch (Exception ex)
             {
@@ -43,6 +49,48 @@ namespace SrvSurvey.plotters
             }
         }
 
+        private static void loadOverlayOverrides()
+        {
+            var newOverrides = new Dictionary<string, Dictionary<string, PlotPos.VR>>();
+
+            var folder = Path.Combine(Program.dataFolder, "vr");
+            if (!Directory.Exists(folder)) return;
+
+            var files = Directory.GetFiles(folder, "*.json");
+            Game.log($"Reading {files.Length} VR overlay overrides files");
+            foreach (var filename in files)
+            {
+                var name = Path.GetFileNameWithoutExtension(filename);
+                var json = File.ReadAllText(filename);
+
+                var overrides = newOverrides.init(name);
+                var raw = JsonConvert.DeserializeObject<Dictionary<string, string>>(json)!;
+                foreach (var _ in raw)
+                {
+                    var parsed = PlotPos.VR.parse(_.Value);
+                    if (parsed != null)
+                        overrides[_.Key] = parsed;
+                }
+            }
+
+            overrides = newOverrides;
+        }
+
+        public static void saveOverlayOverrides()
+        {
+            var folder = Path.Combine(Program.dataFolder, "vr");
+            if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
+
+            foreach (var key in overrides.Keys)
+            {
+                var raw = overrides[key].ToDictionary(x => x.Key, x => x.Value.ToString());
+                var json = JsonConvert.SerializeObject(raw, Formatting.Indented);
+                var filepath = Path.Combine(folder, $"{key}.json");
+                Game.log($"Writing: {filepath}");
+                File.WriteAllText(filepath, json);
+            }
+        }
+
         public Device device { get; private set; }
         public DeviceContext context { get; private set; }
 
@@ -50,11 +98,47 @@ namespace SrvSurvey.plotters
         {
             device = new Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport);
             context = device.ImmediateContext;
+            Game.update += Game_update;
+        }
+
+        private void Game_update(GameMode newMode, bool force)
+        {
+            var game = Game.activeGame;
+            if (game == null) return;
+            switch (newMode)
+            {
+                // These modes are ship agnostic
+                case GameMode.GalaxyMap:
+                case GameMode.SystemMap:
+                case GameMode.Orrery:
+                case GameMode.FSS:
+                case GameMode.SAA:
+                case GameMode.OnFoot:
+                    VR.vrMode = newMode.ToString();
+                    break;
+
+                case GameMode.OnFootInStation:
+                    VR.vrMode = GameMode.OnFoot.ToString();
+                    break;
+
+                // TODO: support SRV turrets as their own vrMode?
+                //case GameMode.InSrv:
+                //    VR.vrMode = game.status.UsingSrvTurret ? "SrvTurret" : game.currentVehicleType;
+                //    break;
+
+                default:
+                    // otherwise be the type of vehicle we are in
+                    VR.vrMode = game.currentVehicleType;
+                    break;
+            }
+            //Game.log($"!>> >> >> >> >> VR.vrMode: {newMode} => {VR.vrMode}");
         }
 
         public void Dispose()
         {
             this.Shutdown();
+
+            Game.update -= Game_update;
 
             if (context != null)
             {
@@ -152,6 +236,11 @@ namespace SrvSurvey.plotters
 
                 // reposition if necessary
                 var pp = PlotPos.get(overlay.Name)?.vr;
+                // do we have an override?
+                var vrMode = PlotAdjustVR.overrideName ?? VR.vrMode;
+                if (VR.overrides.GetValueOrDefault(vrMode)?.TryGetValue(overlay.Name, out var alternatePP) == true)
+                    pp = alternatePP;
+
                 if (pp != null && pp.ToString() != lastPP?.ToString())
                     repositionOverlay(pp);
 
@@ -161,6 +250,7 @@ namespace SrvSurvey.plotters
             catch (Exception ex)
             {
                 Game.log($"VR.project: error on '{def.name}': {ex.Message}\r\n\t{ex.StackTrace}");
+                Game.log($"VR.project: error on '{def.name}': handle: {overlay?.Handle}");
                 PlotBase2.remove(def);
             }
             finally
