@@ -71,5 +71,7 @@ namespace SrvSurvey.widgets
         Blue,
         Gold,
         White,
+        DarkOrange,
+        DarkGold
     }
 }

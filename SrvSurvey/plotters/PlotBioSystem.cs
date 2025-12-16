@@ -272,6 +272,8 @@ namespace SrvSurvey.plotters
                             if (Game.settings.highlightRegionalFirsts) volCol = VolColor.Gold;
                         }
                     }
+                    if (Game.settings.dimIfAnalyzed && organism.analyzed && volCol == VolColor.Gold) volCol = VolColor.DarkGold;
+                    else if (Game.settings.dimIfAnalyzed && organism.analyzed) volCol = VolColor.DarkOrange;
                     VolumeBar.render(g, N.oneTwo, yy + N.oneSix, volCol, minReward, maxReward, false);
 
                     // line 1
@@ -656,7 +658,9 @@ namespace SrvSurvey.plotters
                     // genus was scanned
                     if (org.entryId > 0)
                     {
-                        if (org.isFirst) volCol = VolColor.Gold;
+                        if (Game.settings.dimIfAnalyzed && org.analyzed && org.isFirst) volCol = VolColor.DarkGold;
+                        else if (Game.settings.dimIfAnalyzed && org.analyzed) volCol = VolColor.DarkOrange;
+                        else if (org.isFirst) volCol = VolColor.Gold;
                         else if (!org.analyzed && Game.activeGame?.cmdrCodex.isDiscovered(org.entryId) == false) volCol = VolColor.Gold;
                         var min = body.getBioRewardForGenus(org, true);
                         var max = body.getBioRewardForGenus(org, false);
