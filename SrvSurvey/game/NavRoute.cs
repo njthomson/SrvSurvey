@@ -98,17 +98,24 @@ namespace SrvSurvey
                 var json = sr.ReadToEnd();
                 if (json == null || json == "") return;
 
-                // ... parse into tmp object ...
-                var obj = JsonConvert.DeserializeObject<NavRouteFile>(json);
-
-                // ... assign all property values from tmp object 
-                var allProps = typeof(NavRouteFile).GetProperties(Program.InstanceProps);
-                foreach (var prop in allProps)
+                try
                 {
-                    if (prop.CanWrite)
+                    // ... parse into tmp object ...
+                    var obj = JsonConvert.DeserializeObject<NavRouteFile>(json);
+
+                    // ... assign all property values from tmp object 
+                    var allProps = typeof(NavRouteFile).GetProperties(Program.InstanceProps);
+                    foreach (var prop in allProps)
                     {
-                        prop.SetValue(this, prop.GetValue(obj));
+                        if (prop.CanWrite)
+                        {
+                            prop.SetValue(this, prop.GetValue(obj));
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    Game.log($"Failed to parse NavRoute.json: {ex.Message}\r\n{ex.StackTrace}");
                 }
             }
         }

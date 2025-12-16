@@ -31,10 +31,10 @@ namespace SrvSurvey
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            ListViewItem listViewItem5 = new ListViewItem("Materials count after pickup");
-            ListViewItem listViewItem6 = new ListViewItem("Mission remaining cargo count");
-            ListViewItem listViewItem7 = new ListViewItem("Boxel search status");
-            ListViewItem listViewItem8 = new ListViewItem("Next boxel to search");
+            ListViewItem listViewItem9 = new ListViewItem("Materials count after pickup");
+            ListViewItem listViewItem10 = new ListViewItem("Mission remaining cargo count");
+            ListViewItem listViewItem11 = new ListViewItem("Boxel search status");
+            ListViewItem listViewItem12 = new ListViewItem("Next boxel to search");
             panel1 = new Panel();
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
@@ -246,6 +246,7 @@ namespace SrvSurvey
             label28 = new Label();
             checkKeyChords = new CheckBox();
             tabPage8 = new TabPage();
+            checkBox53 = new CheckBox();
             checkFancyAlphaBlending = new CheckBox();
             checkBox52 = new CheckBox();
             checkBox39 = new CheckBox();
@@ -269,7 +270,7 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
-            checkBox53 = new CheckBox();
+            checkBox54 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -878,6 +879,7 @@ namespace SrvSurvey
             // tabPage4
             // 
             tabPage4.BorderStyle = BorderStyle.Fixed3D;
+            tabPage4.Controls.Add(checkBox54);
             tabPage4.Controls.Add(checkBox37);
             tabPage4.Controls.Add(comboBox1);
             tabPage4.Controls.Add(label29);
@@ -1096,9 +1098,9 @@ namespace SrvSurvey
             // 
             // btnClearTrackers
             // 
-            btnClearTrackers.Location = new Point(488, 416);
+            btnClearTrackers.Location = new Point(505, 419);
             btnClearTrackers.Name = "btnClearTrackers";
-            btnClearTrackers.Size = new Size(156, 23);
+            btnClearTrackers.Size = new Size(182, 23);
             btnClearTrackers.TabIndex = 18;
             btnClearTrackers.Text = "Clear tracked locations";
             btnClearTrackers.UseVisualStyleBackColor = true;
@@ -1151,9 +1153,9 @@ namespace SrvSurvey
             // 
             // btnClearUnclaimed
             // 
-            btnClearUnclaimed.Location = new Point(488, 387);
+            btnClearUnclaimed.Location = new Point(505, 390);
             btnClearUnclaimed.Name = "btnClearUnclaimed";
-            btnClearUnclaimed.Size = new Size(156, 23);
+            btnClearUnclaimed.Size = new Size(182, 23);
             btnClearUnclaimed.TabIndex = 17;
             btnClearUnclaimed.Text = "Clear unclaimed rewards";
             btnClearUnclaimed.UseVisualStyleBackColor = true;
@@ -3109,6 +3111,19 @@ namespace SrvSurvey
             tabPage8.TabIndex = 9;
             tabPage8.Text = "More";
             // 
+            // checkBox53
+            // 
+            checkBox53.AutoSize = true;
+            checkBox53.FlatStyle = FlatStyle.System;
+            checkBox53.Location = new Point(12, 274);
+            checkBox53.Name = "checkBox53";
+            checkBox53.Size = new Size(199, 20);
+            checkBox53.TabIndex = 50;
+            checkBox53.Tag = "disableWindowParentIsGame";
+            checkBox53.Text = "Disable game as parent window";
+            checkBox53.TextAlign = ContentAlignment.TopLeft;
+            checkBox53.UseVisualStyleBackColor = true;
+            // 
             // checkFancyAlphaBlending
             // 
             checkFancyAlphaBlending.AutoSize = true;
@@ -3250,15 +3265,15 @@ namespace SrvSurvey
             // listView1
             // 
             listView1.CheckBoxes = true;
-            listViewItem5.StateImageIndex = 0;
-            listViewItem5.Tag = "materialCountAfterPickup";
-            listViewItem6.StateImageIndex = 0;
-            listViewItem6.Tag = "cargoMissionRemaining";
-            listViewItem7.StateImageIndex = 0;
-            listViewItem7.Tag = "currentBoxelSearchStatus";
-            listViewItem8.StateImageIndex = 0;
-            listViewItem8.Tag = "showNextBoxelToSearch";
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem5, listViewItem6, listViewItem7, listViewItem8 });
+            listViewItem9.StateImageIndex = 0;
+            listViewItem9.Tag = "materialCountAfterPickup";
+            listViewItem10.StateImageIndex = 0;
+            listViewItem10.Tag = "cargoMissionRemaining";
+            listViewItem11.StateImageIndex = 0;
+            listViewItem11.Tag = "currentBoxelSearchStatus";
+            listViewItem12.StateImageIndex = 0;
+            listViewItem12.Tag = "showNextBoxelToSearch";
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem9, listViewItem10, listViewItem11, listViewItem12 });
             listView1.Location = new Point(12, 331);
             listView1.Name = "listView1";
             listView1.Size = new Size(400, 107);
@@ -3368,18 +3383,20 @@ namespace SrvSurvey
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
             // 
-            // checkBox53
+            // checkBox54
             // 
-            checkBox53.AutoSize = true;
-            checkBox53.FlatStyle = FlatStyle.System;
-            checkBox53.Location = new Point(12, 274);
-            checkBox53.Name = "checkBox53";
-            checkBox53.Size = new Size(199, 20);
-            checkBox53.TabIndex = 50;
-            checkBox53.Tag = "disableWindowParentIsGame";
-            checkBox53.Text = "Disable game as parent window";
-            checkBox53.TextAlign = ContentAlignment.TopLeft;
-            checkBox53.UseVisualStyleBackColor = true;
+            checkBox54.AutoSize = true;
+            checkBox54.Checked = true;
+            checkBox54.CheckState = CheckState.Checked;
+            checkBox54.FlatStyle = FlatStyle.System;
+            checkBox54.Location = new Point(223, 419);
+            checkBox54.Margin = new Padding(4, 3, 4, 3);
+            checkBox54.Name = "checkBox54";
+            checkBox54.Size = new Size(113, 20);
+            checkBox54.TabIndex = 34;
+            checkBox54.Tag = "dimIfAnalyzed";
+            checkBox54.Text = "Dim if analyzed";
+            checkBox54.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -3707,5 +3724,6 @@ namespace SrvSurvey
         private CheckBox checkTrackAndPublishShipCargo;
         private CheckBox checkBox51;
         private CheckBox checkBox53;
+        private CheckBox checkBox54;
     }
 }

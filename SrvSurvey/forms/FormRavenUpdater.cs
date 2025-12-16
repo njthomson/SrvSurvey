@@ -1042,14 +1042,14 @@ namespace SrvSurvey.forms
             var matches = entry.StationEconomies?.Where(x => x.Proportion >= 1).OrderBy(x => x.Proportion).ToList();
             if (matches?.Count == 1)
             {
-                switch (entry.StationEconomy)
-                {
-                    // TODO: ...
-                    //case "$economy_HighTech;": site.buildType = "prometheus"; break;
-                    //case "$economy_Industrial;": site.buildType = "vulcan"; break;
-                    //case "$economy_Military;": site.buildType = "nemesis"; break;
-                    //case "$economy_Service;": site.buildType = "dysnomia"; break;
-                }
+                // TODO: ...
+                //switch (entry.StationEconomy)
+                //{
+                //    case "$economy_HighTech;": site.buildType = "prometheus"; break;
+                //    case "$economy_Industrial;": site.buildType = "vulcan"; break;
+                //    case "$economy_Military;": site.buildType = "nemesis"; break;
+                //    case "$economy_Service;": site.buildType = "dysnomia"; break;
+                //}
             }
         }
 
