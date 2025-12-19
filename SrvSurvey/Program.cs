@@ -1,5 +1,6 @@
 using SrvSurvey.game;
 using SrvSurvey.plotters;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO.Compression;
 using System.Reflection;
@@ -230,7 +231,25 @@ namespace SrvSurvey
                         form.Show();
                     }
                     else
-                        form.Show(new Win32Window() { Handle = Elite.getWindowHandle() });
+                    {
+                        try
+                        {
+                            form.Show(new Win32Window() { Handle = Elite.getWindowHandle() });
+                        }
+                        catch (Win32Exception ex)
+                        {
+                            if (ex.NativeErrorCode == 5 && !Game.settings.disableWindowParentIsGame)
+                            {
+                                // Might be the run-as-admin problem? Tweak a setting and try again
+                                Game.log("Run-as-admin problem? Setting disableWindowParentIsGame=true");
+                                Game.settings.disableWindowParentIsGame = true;
+                                Game.settings.Save();
+                                showPlotter<T>(gameRect, def);
+                            }
+                            else
+                                throw;
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {

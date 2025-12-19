@@ -19,10 +19,9 @@ namespace SrvSurvey
 
         public static void refresh()
         {
+            Game.log("FormPredictions.refresh()");
             var form = BaseForm.get<FormPredictions>();
             if (form != null) Util.deferAfter(50, form.prepNodes);
-            //if (form != null) form.prepNodes();
-            //if (form != null) form.doTreeViewMode();
         }
 
         protected Game game = Game.activeGame!;

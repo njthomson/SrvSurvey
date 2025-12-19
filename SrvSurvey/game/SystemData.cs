@@ -1878,9 +1878,9 @@ namespace SrvSurvey.game
             return stars;
         }
 
-        public long getMinBioRewards(bool applyFF) { return this.bodies.Sum(b => applyFF && b.firstFootFall ? b.minBioRewards * 5 : b.minBioRewards); }
+        public long getMinBioRewards(bool applyFF) { return this.bodies.ToList().Sum(b => applyFF && b.firstFootFall ? b.minBioRewards * 5 : b.minBioRewards); }
 
-        public long getMaxBioRewards(bool applyFF) { return this.bodies.Sum(b => applyFF && b.firstFootFall ? b.maxBioRewards * 5 : b.maxBioRewards); }
+        public long getMaxBioRewards(bool applyFF) { return this.bodies.ToList().Sum(b => applyFF && b.firstFootFall ? b.maxBioRewards * 5 : b.maxBioRewards); }
 
         [JsonIgnore]
         public double nebulaDist { get; private set; }

@@ -67,7 +67,7 @@ namespace SrvSurvey.game
         public void activate()
         {
             // do not allow the route to become active if it is completed
-            if (this.completed)
+            if (this.completed || last + 1 == hops.Count)
             {
                 Game.log($"FollowRoute.activate: cannot activate a completed route");
                 this.active = false;
@@ -83,7 +83,7 @@ namespace SrvSurvey.game
                 if (Game.activeGame?.systemData?.address == nextHop?.id64 && hops.Count > 1)
                     this.nextHop = hops[1];
             }
-            else
+            else 
                 this.nextHop = hops[last + 1];
 
             Game.log($"FollowRoute.activate: count hops: {hops.Count}, last: {last}, nextHop: {nextHop}");

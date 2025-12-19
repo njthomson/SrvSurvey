@@ -34,7 +34,25 @@ namespace SrvSurvey.plotters
                 bigOverlay.Show();
             }
             else
-                bigOverlay.Show(new Win32Window() { Handle = hwnd });
+            {
+                try
+                {
+                    bigOverlay.Show(new Win32Window() { Handle = hwnd });
+                }
+                catch (Win32Exception ex)
+                {
+                    if (ex.NativeErrorCode == 5 && !Game.settings.disableWindowParentIsGame)
+                    {
+                        // Might be the run-as-admin problem? Tweak a setting and try again
+                        Game.log("Run-as-admin problem? Setting disableWindowParentIsGame=true");
+                        Game.settings.disableWindowParentIsGame = true;
+                        Game.settings.Save();
+                        init(game);
+                    }
+                    else
+                        throw;
+                }
+            }
 
             PlotBase2.renderAll(game, true);
         }

@@ -371,7 +371,7 @@ namespace SrvSurvey.forms
         private void btnActive_CheckedChanged(object sender, EventArgs e)
         {
             btnActive.Text = (btnActive.Checked ? "✔️ " : "  ") + Properties.FormRouteExtras.RouteActiveButton;
-            btnActive.Enabled = hops.Count > 0 && lastIdx < hops.Count;
+            btnActive.Enabled = hops.Count > 0 && lastIdx + 1 < hops.Count;
             btnSave.Visible = this.isDirty;
         }
 
