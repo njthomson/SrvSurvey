@@ -66,6 +66,7 @@
       { "name": "A", "offset": { "X": 17.526665, "Y": 70.566956 }, "floor": 0, "level": 0 },
       { "name": "B", "offset": { "X": 65.18705, "Y": 6.52681 }, "floor": 0, "level": 0 },
       { "name": "C", "offset": { "X": 29.891788, "Y": -58.970856 }, "floor": 0, "level": 0 },
+      { "name": "D", "offset": { "X": -19.344196, "Y": -71.11514 }, "floor": 0, "level": 0 },
       { "name": "E", "offset": { "X": -24.877176, "Y": 45.222725 }, "floor": 0, "level": 0 },
       { "name": "F", "offset": { "X": -9.26069, "Y": -146.50308 }, "floor": 0, "level": 0 },
       { "name": "P", "offset": { "X": -17.198277, "Y": -99.08128 }, "floor": 0, "level": 0 },
@@ -673,6 +674,16 @@
       { "offset": { "X": -3.1680295, "Y": 85.555176 }, "floor": 1, "level": 0 },
       { "offset": { "X": -68.62009, "Y": 58.205494 }, "floor": 1, "level": 0 },
       { "offset": { "X": 44.211174, "Y": -76.07594 }, "floor": 2, "level": 2 }
+    ],
+    "czPoints": [
+      { "name": "A", "offset": { "X": 16.06729, "Y": -53.72218 }, "floor": 0, "level": 0 },
+      { "name": "B", "offset": { "X": -79.82322, "Y": -9.280069 }, "floor": 0, "level": 0 },
+      { "name": "C", "offset": { "X": -67.38984, "Y": 58.18772 }, "floor": 0, "level": 0 },
+      { "name": "D", "offset": { "X": -2.8388684, "Y": 67.4564 }, "floor": 0, "level": 0 },
+      { "name": "E", "offset": { "X": 80.873665, "Y": 28.54142 }, "floor": 0, "level": 0 },
+      { "name": "F", "offset": { "X": 27.804567, "Y": 4.15847 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -12.923766, "Y": -21.916798 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 33.54959, "Y": 43.87748 }, "floor": 0, "level": 0 }
     ],
     "buildings": [
       {
