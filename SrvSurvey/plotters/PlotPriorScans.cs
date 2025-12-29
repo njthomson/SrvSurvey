@@ -236,7 +236,7 @@ namespace SrvSurvey.plotters
                 tt.dtx = indent;
                 var isClose = false;
 
-                if (game.status.Altitude > 500)
+                if (game.status.Altitude > 500 && signal.trackers.Any())
                 {
                     var first = signal.trackers.First();
                     var gt = new GroundTarget(this.font);

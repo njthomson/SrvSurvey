@@ -556,7 +556,7 @@ namespace SrvSurvey
                     }
                 }
 
-                if (bodyMenu.DropDownItems.Count != stuff[body].Count)
+                if (bodyMenu.DropDownItems.Count != stuff[body].Count && (Game.activeGame?.targetBody == null || body == Game.activeGame?.targetBody))
                     rePrepStuff = true;
             }
 

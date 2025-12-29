@@ -438,7 +438,7 @@ namespace SrvSurvey
     {
         // { "timestamp":"2025-09-04T15:11:46Z", "event":"ReceiveText", "From":"", "Message":"$COMMS_entered:#name=North America Sector IR-W d1-81;", "Message_Localised":"Entered Channel: North America Sector IR-W d1-81", "Channel":"npc" }
 
-        public string From{ get; set; }
+        public string From { get; set; }
 
         public string Message { get; set; }
         public string Message_Localised { get; set; }

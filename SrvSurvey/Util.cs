@@ -258,10 +258,11 @@ namespace SrvSurvey
             var lat1 = DecimalEx.ToRad(p1.Lat);
             var lat2 = DecimalEx.ToRad(p2.Lat);
 
-            var angleDelta = DecimalEx.ACos(
-                DecimalEx.Sin(lat1) * DecimalEx.Sin(lat2) +
-                DecimalEx.Cos(lat1) * DecimalEx.Cos(lat2) * DecimalEx.Cos(Util.degToRad(p2.Long - p1.Long))
-            );
+            var z = DecimalEx.Sin(lat1) * DecimalEx.Sin(lat2) +
+                DecimalEx.Cos(lat1) * DecimalEx.Cos(lat2) * DecimalEx.Cos(Util.degToRad(p2.Long - p1.Long));
+            if (z < -1m) z = -1m;
+            else if (z > 1m) z = 1m;
+            var angleDelta = DecimalEx.ACos(z);
             var dist = angleDelta * r;
 
             //// ---
@@ -936,6 +937,7 @@ namespace SrvSurvey
                 case nameof(ObeliskItem.medusa):
                     return Properties.Guardian.ItemMedusa;
 
+                case $"{nameof(POIType)}.{nameof(ObeliskItem.unknown)}":
                 case nameof(SitePoiStatus) + ".unknown": return Properties.Guardian.SitePoiStatus_unknown;
                 case nameof(SitePoiStatus) + ".present": return Properties.Guardian.SitePoiStatus_present;
                 case nameof(SitePoiStatus) + ".absent": return Properties.Guardian.SitePoiStatus_absent;

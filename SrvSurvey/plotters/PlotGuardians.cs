@@ -464,6 +464,8 @@ namespace SrvSurvey.plotters
                 Game.log($"Bad new poi: '{msg}'");
                 return;
             }
+            else if (poiType == POIType.emptyPuddle)
+                return;
 
             var dist = Util.getDistance(Status.here, siteData.location, game.systemBody!.radius);
             var angle = ((decimal)new Angle((Util.getBearing(Status.here, siteData.location) - (decimal)siteData.siteHeading)));
@@ -825,8 +827,10 @@ namespace SrvSurvey.plotters
                 poiStatus = (SitePoiStatus)(game.status.FireGroup % 3) + 1;
             }
 
-            // (don't let Relic's get a status of Empty)
-            if (nearestPoi.type == POIType.relic && poiStatus == SitePoiStatus.empty) return;
+            // (only basic POIs can get a status of Empty)
+            if (poiStatus == SitePoiStatus.empty)
+                if (!(this.nearestPoi.type == POIType.orb || this.nearestPoi.type == POIType.casket || this.nearestPoi.type == POIType.tablet || this.nearestPoi.type == POIType.totem || this.nearestPoi.type == POIType.urn))
+                    return;
 
             Game.log($"Confirming POI {poiStatus}: '{this.nearestPoi.name}' ({this.nearestPoi.type})");
             siteData.poiStatus[this.nearestPoi.name] = poiStatus;

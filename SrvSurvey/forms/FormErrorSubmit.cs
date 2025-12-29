@@ -39,7 +39,7 @@ namespace SrvSurvey
             if (Elite.focusElite)
                 Util.deferAfter(1000, () => Elite.setFocusED());
 
-            form.ShowDialog(Main.ActiveForm);
+            form.Show(Main.ActiveForm);
         }
 
         public Exception ex;

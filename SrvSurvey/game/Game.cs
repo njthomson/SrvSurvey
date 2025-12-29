@@ -1,6 +1,7 @@
 ﻿using BioCriterias;
 using Newtonsoft.Json;
 using SrvSurvey.canonn;
+using SrvSurvey.forms;
 using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.plotters;
@@ -3086,7 +3087,11 @@ namespace SrvSurvey.game
                     this.deferPredictSpecies(this.systemBody);
             }
 
-            Program.defer(() => Program.invalidateActivePlotters());
+            Program.defer(() =>
+            {
+                Program.invalidateActivePlotters();
+                BaseForm.get<FormCodexBingo>()?.calcCompletions();
+            });
 
             // overlays may want to appear or render at this time
             PlotBase2.renderAll(this);

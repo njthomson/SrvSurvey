@@ -100,10 +100,7 @@ namespace SrvSurvey.plotters
         {
             base.OnActivated(e);
 
-            if (!this.showing || Elite.focusElite)
-            {
-                Elite.setFocusED();
-            }
+            Elite.setFocusED();
         }
 
         protected override void Dispose(bool disposing)
@@ -262,7 +259,7 @@ namespace SrvSurvey.plotters
         private void drawAngleString(Graphics g)
         {
             var y = 1;
-            g.FillRectangle(Brushes.Black, mw - 45, 5 + y, 85, 30);
+            g.FillRectangle(Brushes.Black, mw - N.fiveFive, N.five + y, N.oneOhSix, N.thirty);
 
             var txt = $"{new Angle(game.status.Heading)}";
             var sz = g.MeasureString(txt, GameColors.fontBig);

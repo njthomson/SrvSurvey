@@ -142,7 +142,7 @@ namespace SrvSurvey
             lblScanCount.Name = "lblScanCount";
             lblScanCount.Size = new Size(110, 12);
             lblScanCount.TabIndex = 7;
-            lblScanCount.Text = "Scannd signals:";
+            lblScanCount.Text = "Scanned signals:";
             // 
             // txtSysEst
             // 

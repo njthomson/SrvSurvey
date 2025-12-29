@@ -296,7 +296,7 @@ namespace SrvSurvey.plotters
 
                     // 2nd line - left
                     col = highlight ? C.cyan : C.orange;
-                    if (!highlight && shouldBeGold(discoveryPrefix)) col = C.Bio.gold;
+                    if (!highlight && shouldBeGold(discoveryPrefix)) col = organism.analyzed ? C.Bio.goldDark : C.Bio.gold;
 
                     tt.dtx = N.twoEight;
                     if (discoveryPrefix != null)

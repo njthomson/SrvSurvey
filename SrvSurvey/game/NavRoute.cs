@@ -84,7 +84,7 @@ namespace SrvSurvey
             }
         }
 
-        private void parseFile()
+        private void parseFile(bool retry = false)
         {
             if (!File.Exists(Status.Filepath))
             {
@@ -92,14 +92,14 @@ namespace SrvSurvey
                 return;
             }
 
-            // read the file contents ...
-            using (var sr = new StreamReader(new FileStream(NavRouteFile.Filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+            try
             {
-                var json = sr.ReadToEnd();
-                if (json == null || json == "") return;
-
-                try
+                // read the file contents ...
+                using (var sr = new StreamReader(new FileStream(NavRouteFile.Filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
                 {
+                    var json = sr.ReadToEnd();
+                    if (json == null || json == "") return;
+
                     // ... parse into tmp object ...
                     var obj = JsonConvert.DeserializeObject<NavRouteFile>(json);
 
@@ -113,10 +113,12 @@ namespace SrvSurvey
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    Game.log($"Failed to parse NavRoute.json: {ex.Message}\r\n{ex.StackTrace}");
-                }
+            }
+            catch (Exception ex)
+            {
+                Game.log($"Failed to parse NavRoute.json: {ex.Message}\r\n{ex.StackTrace}");
+                if (!retry)
+                    Util.deferAfter(50, () => parseFile(true));
             }
         }
 

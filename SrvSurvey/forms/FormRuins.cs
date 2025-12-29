@@ -848,6 +848,8 @@ namespace SrvSurvey
 
         private void drawPuddle(Graphics g, PointF pt, POIType poiType, SitePoiStatus? poiStatus = SitePoiStatus.present, bool forLegend = false)
         {
+            if (!GameColors.Map.brushes.ContainsKey(poiType)) return;
+
             var brush = GameColors.Map.brushes[poiType][poiStatus ?? SitePoiStatus.present];
             var pen = GameColors.Map.pens[poiType][poiStatus ?? SitePoiStatus.present];
 

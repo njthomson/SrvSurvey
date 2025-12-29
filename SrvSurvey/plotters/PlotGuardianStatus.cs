@@ -152,7 +152,7 @@ namespace SrvSurvey.plotters
                 drawSelectedItem(g, tt, nearestPoi);
             }
 
-            return new SizeF(tt.frameSize.Width, this.height);
+            return N.s(new SizeF(tt.frameSize.Width, this.plotDef.defaultSize.Height));
         }
 
         private void drawNearObelisk(Graphics g, TextCursor tt, SitePOI poi)

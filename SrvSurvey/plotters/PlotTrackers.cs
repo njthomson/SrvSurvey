@@ -173,7 +173,7 @@ namespace SrvSurvey.plotters
                     var deg = dd.angle - game.status!.Heading;
                     BaseWidget.renderBearingTo(g, x, tt.dty, N.five, (double)deg, Util.metersToString(dd.distance), brush, pen);
                     x += bearingWidth;
-                    if (x > this.width - bearingWidth) break;
+                    if (x > this.width - bearingWidth + 10) break;
                 }
 
                 var displayName = getDisplayName(name);
