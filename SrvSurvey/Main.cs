@@ -1059,6 +1059,30 @@ namespace SrvSurvey
                 }
 
             }
+            /* NOT READY
+            else if (msg == "!!")
+            {
+                ApproachSettlement? lastApproachSettlement = null;
+                game.journals?.walkDeep(true, entry =>
+                {
+                    // match from station chatter?
+                    if (entry is ApproachSettlement)
+                    {
+                        lastApproachSettlement = (ApproachSettlement)entry;
+                        return true;
+                    }
+                    return false;
+                });
+                if (lastApproachSettlement != null)
+                {
+                    // get delta from tracking target
+                    var radius = game.status.PlanetRadius;
+                    var pf = Util.getOffset(radius, lastApproachSettlement, 268);
+
+                    var txt = $"\"offset\": {{ \"X\": {(float)pf.X}, \"Y\": {(float)pf.Y} }}";
+                    Game.log(txt);
+                }
+            } //*/
 
             if (msg == MsgCmd.settlement && Game.settings.autoShowHumanSitesTest)
             {

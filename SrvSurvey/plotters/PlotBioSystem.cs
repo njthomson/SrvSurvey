@@ -537,7 +537,7 @@ namespace SrvSurvey.plotters
             var boxRight = boxLeft + (maxBioCount * N.oneTwo);
 
             // draw a row for each body
-            var sortedBodies = game.systemData.bodies.OrderBy(b => b.shortName).ToList();
+            var sortedBodies = game.systemData.bodies.OrderBy(b => b.id).ToList();
             var anyFF = false;
             var fssNeeded = false;
             var incBoxRight = false;

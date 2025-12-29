@@ -154,6 +154,7 @@ namespace SrvSurvey.widgets
         public static float fourSix = s(46f);
         public static float fifty = s(50f);
         public static float fiveTwo = s(52f);
+        public static float fiveFive = s(55f);
         public static float sixty = s(60f);
         public static float sixTwo = s(62f);
         public static float sixFour = s(64f);
@@ -166,6 +167,7 @@ namespace SrvSurvey.widgets
         public static float nineSix = s(96f);
         public static float hundred = s(100f);
         public static float oneOhFour = s(104f);
+        public static float oneOhSix = s(106f);
         public static float oneTwenty = s(120f);
         public static float oneForty = s(140f);
         public static float oneSeventy = s(170f);

@@ -90,7 +90,7 @@ namespace SrvSurvey
             if (game?.systemData == null) return;
             stuff.Clear();
 
-            foreach (var body in game.systemData.bodies.OrderBy(b => b.shortName))
+            foreach (var body in game.systemData.bodies.OrderBy(b => b.id))
             {
                 if (body.bioSignalCount == 0) continue;
                 if (!stuff.ContainsKey(body)) stuff[body] = new();
@@ -117,7 +117,7 @@ namespace SrvSurvey
                                 stuff[body].Add(variant.variant);
             }
 
-            setCurrants(0);
+            if (currentBody == null) setCurrants(0);
             updateStuff();
         }
 
