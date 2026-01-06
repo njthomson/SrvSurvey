@@ -91,12 +91,18 @@ namespace SrvSurvey
             return entry;
         }
 
+        protected virtual JObject? readRaw()
+        {
+            var json = reader.ReadLine()!;
+            var entry = JsonConvert.DeserializeObject<JObject>(json)!;
+            return entry;
+        }
+
         private JournalEntry? parseNextEntry()
         {
             try
             {
-                var json = reader.ReadLine()!;
-                JToken entry = JsonConvert.DeserializeObject<JToken>(json)!;
+                var entry = readRaw()!;
                 if (entry == null) return null;
 
                 var eventName = entry["event"]!.Value<string>()!;

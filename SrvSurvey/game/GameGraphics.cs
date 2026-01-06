@@ -14,7 +14,7 @@ namespace SrvSurvey.game
     {
         public static Image getBackgroundImage(Control form)
         {
-            return getBackgroundImage(form.Size);
+            return getBackgroundImage(form.ClientSize);
         }
 
         public static Bitmap getBackgroundImage(Size sz, bool noStripes = false)

@@ -151,5 +151,10 @@ namespace SrvSurvey
                 Clipboard.SetText(Game.activeGame.journals.filepath);
             }
         }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

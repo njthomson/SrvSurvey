@@ -1,9 +1,11 @@
-﻿using SrvSurvey.game;
+﻿using Newtonsoft.Json.Linq;
+using SrvSurvey.game;
 using SrvSurvey.plotters;
 
 namespace SrvSurvey
 {
     delegate void OnJournalEntry(JournalEntry entry, int index);
+    delegate void OnRawJournalEntry(JObject entry, int index);
 
     class JournalWatcher : JournalFile, IDisposable
     {
@@ -11,6 +13,7 @@ namespace SrvSurvey
         private bool disposed = false;
 
         public event OnJournalEntry? onJournalEntry;
+        public event OnRawJournalEntry? onRawJournalEntry;
 
         public JournalWatcher(string filepath) : base(filepath)
         {
@@ -57,6 +60,24 @@ namespace SrvSurvey
                 PlotPulse.resetPulse();
                 this.readEntries();
             });
+        }
+
+        protected override JObject? readRaw()
+        {
+            var raw = base.readRaw();
+
+            if (raw != null && this.onRawJournalEntry != null && !this.disposed)
+            {
+                Program.control!.Invoke((MethodInvoker)delegate
+                {
+                    if (raw != null && this.onRawJournalEntry != null && !this.disposed)
+                    {
+                        this.onRawJournalEntry(raw, this.Entries.Count - 1);
+                    }
+                });
+            }
+
+            return raw;
         }
 
         protected override JournalEntry? readEntry()
