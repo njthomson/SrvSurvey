@@ -89,6 +89,9 @@ namespace SrvSurvey.game
         public DateTimeOffset timestamp { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string @event { get; set; }
+
+        /// <summary> A very brief summary of the event for logging and diagnostic purposes </summary>
+        public string? tldr { get; }
     }
 
     interface ISystemAddress : IJournalEntry

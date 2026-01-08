@@ -1065,7 +1065,7 @@ namespace SrvSurvey.game
         {
             try
             {
-                Game.log($"Game.event => {entry.@event}");
+                Game.log($"Game.event => {entry.@event} {entry.tldr}");
                 // it's important that journey gets to process these first
                 if (this.journey != null)
                     this.journey.processJournalEntry(entry, true);

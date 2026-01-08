@@ -13,6 +13,8 @@ namespace SrvSurvey
         public DateTimeOffset timestamp { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string @event { get; set; }
+
+        public virtual string tldr { get; }
     }
 
     class LocationEntry : JournalEntry, ILocation
@@ -182,6 +184,8 @@ namespace SrvSurvey
         public string? StationEconomy;
         public string? StationEconomy_Localised;
         public List<StationEconomy>? StationEconomies;
+
+        public override string tldr => $"{Name} ({MarketID}) {StationEconomy} on: {BodyName}, faction: {StationFaction?.Name} ({StationFaction?.FactionState})";
     }
 
     class StationEconomy
@@ -264,6 +268,8 @@ namespace SrvSurvey
         {
             return $"{StationName} ({StationType}/{MarketID}/{StarSystem})";
         }
+
+        public override string tldr => this.ToString();
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
@@ -468,6 +474,8 @@ namespace SrvSurvey
     {
         // { "timestamp":"2023-01-12T05:11:56Z", "event":"Music", "MusicTrack":"MainMenu" }
         public string MusicTrack { get; set; }
+
+        public override string tldr => $":{MusicTrack}";
     }
 
     class StartJump : JournalEntry, ISystemAddress

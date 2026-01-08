@@ -174,6 +174,7 @@ namespace SrvSurvey.game.RavenColonial
 
             var json1 = JsonConvert.SerializeObject(diff);
             var body = new StringContent(json1, Encoding.Default, "application/json");
+            body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
             var url = $"{svcUri}/api/fc/{Uri.EscapeDataString(marketId.ToString())}/cargo";
             var response = await RavenColonial.client.PatchAsync(url, body);
             Game.log($"RCC.supplyFC: HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
@@ -189,6 +190,7 @@ namespace SrvSurvey.game.RavenColonial
 
             var json1 = JsonConvert.SerializeObject(cargo);
             var body = new StringContent(json1, Encoding.Default, "application/json");
+            body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
             var url = $"{svcUri}/api/fc/{Uri.EscapeDataString(marketId.ToString())}/cargo";
             var response = await RavenColonial.client.PostAsync(url, body);
             Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
