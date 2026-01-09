@@ -5,6 +5,7 @@ using SrvSurvey.forms;
 using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.plotters;
+using SrvSurvey.quests;
 using SrvSurvey.units;
 using System.Diagnostics;
 
@@ -168,6 +169,7 @@ namespace SrvSurvey.game
         public CommanderSettings cmdr;
         public CommanderCodex cmdrCodex;
         public ColonyData cmdrColony;
+        public PlayState? cmdrPlay;
         public CommanderJourney? journey;
 
         public SystemPoi? canonnPoi = null;
@@ -617,6 +619,9 @@ namespace SrvSurvey.game
 
                 if (Game.settings.buildProjects_TEST)
                     this.cmdrColony.fetchLatest().justDoIt();
+
+                if (Game.settings.enableQuests)
+                    PlayState.load(this.cmdr.fid).ContinueWith(rslt => this.cmdrPlay = rslt.Result);
             }
 
             // if we have MainMenu music - we know we're not actively playing
@@ -1065,7 +1070,7 @@ namespace SrvSurvey.game
         {
             try
             {
-                Game.log($"Game.event => {entry.@event} {entry.tldr}");
+                Game.log($"Game.event => {entry.@event} : {entry.tldr}");
                 // it's important that journey gets to process these first
                 if (this.journey != null)
                     this.journey.processJournalEntry(entry, true);
@@ -1076,8 +1081,11 @@ namespace SrvSurvey.game
                 // do this after systemData, removing the need for async/deferring things in this file
                 this.onJournalEntry((dynamic)entry);
 
-                // finally, let any active plotters process the entry
+                // let any active plotters process the entry
                 PlotBase2.processJournalEntry(entry);
+
+                // finally, let active quests know about this
+                cmdrPlay?.processJournalEntry(entry);
             }
             catch (Exception ex)
             {

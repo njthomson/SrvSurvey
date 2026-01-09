@@ -265,6 +265,8 @@ namespace SrvSurvey
         public bool disableWindowParentIsGame = false;
         public bool displayVR = false;
 
+        public bool enableQuests = false;
+
         #region loading / saving
 
         static readonly string settingsPath = Path.Combine(Program.dataFolder, "settings.json");

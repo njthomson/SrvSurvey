@@ -874,6 +874,7 @@ namespace SrvSurvey
 
         private void onJournalEntry(StartJump entry)
         {
+            // TODO: still needed?
             if (entry.JumpType == "Hyperspace")
             {
                 // close everything when entering hyperspace (except PlotJumpInfo)
@@ -1932,6 +1933,8 @@ namespace SrvSurvey
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormCodexBingo>();
+
+            //game!.cmdrPlay.importFolder(@"D:\quests\alpha1").justDoIt();
 
             //var folly = game!.cmdrColony.getProject("a4da9c2f-5bcc-4b55-a15e-c13f6c68a9d4")!;
             //var match = ColonyData.matchByCargo(folly.commodities);

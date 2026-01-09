@@ -188,14 +188,14 @@ namespace SrvSurvey
         public override string tldr => $"{Name} ({MarketID}) {StationEconomy} on: {BodyName}, faction: {StationFaction?.Name} ({StationFaction?.FactionState})";
     }
 
-    class StationEconomy
+    public class StationEconomy
     {
         public string Name;
         public string Name_Localised;
         public double Proportion;
     }
 
-    class NamedFaction
+    public class NamedFaction
     {
         public string Name;
         public string? FactionState;
@@ -239,7 +239,7 @@ namespace SrvSurvey
         public StationType StationType;
     }
 
-    class Docked : JournalEntry
+    public class Docked : JournalEntry
     {
         // { "timestamp":"2024-04-09T06:45:51Z", "event":"Docked", "StationName":"Oyekan Prospecting Hub", "StationType":"OnFootSettlement", "Taxi":false, "Multicrew":false, "StarSystem":"Yaurnai", "SystemAddress":669612713401, "MarketID":3888520448, "StationFaction":{ "Name":"Yaurnai Jet Hand Gang" }, "StationGovernment":"$government_Anarchy;", "StationGovernment_Localised":"Anarchy", "StationServices":[ "dock", "autodock", "blackmarket", "commodities", "contacts", "missions", "refuel", "repair", "engineer", "missionsgenerated", "facilitator", "flightcontroller", "stationoperations", "stationMenu" ], "StationEconomy":"$economy_Extraction;", "StationEconomy_Localised":"Extraction", "StationEconomies":[ { "Name":"$economy_Extraction;", "Name_Localised":"Extraction", "Proportion":1.000000 } ], "DistFromStarLS":18.841609, "LandingPads":{ "Small":1, "Medium":0, "Large":0 } }
         // { "timestamp":"2024-06-28T02:10:59Z", "event":"Docked", "StationName":"Crellin Genetics Installation", "StationType":"OnFootSettlement", "Taxi":false, "Multicrew":false, "StarSystem":"Lacaille 9352", "SystemAddress":11666070709673, "MarketID":3854458880, "StationFaction":{ "Name":"Quam Singulari" }, "StationGovernment":"$government_Democracy;", "StationGovernment_Localised":"Democracy", "StationAllegiance":"Federation", "StationServices":[ "dock", "autodock", "blackmarket", "commodities", "contacts", "exploration", "missions", "refuel", "repair", "engineer", "missionsgenerated", "facilitator", "flightcontroller", "stationoperations", "searchrescue", "stationMenu" ], "StationEconomy":"$economy_HighTech;", "StationEconomy_Localised":"High Tech", "StationEconomies":[ { "Name":"$economy_HighTech;", "Name_Localised":"High Tech", "Proportion":1.000000 } ], "DistFromStarLS":1062.028204, "Wanted":true, "ActiveFine":true, "LandingPads":{ "Small":1, "Medium":0, "Large":0 } }
@@ -273,7 +273,7 @@ namespace SrvSurvey
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
-    internal enum StationType
+    public enum StationType
     {
         Bernal,
         Coriolis,
@@ -305,7 +305,7 @@ namespace SrvSurvey
         public bool Multicrew;
     }
 
-    internal class LandingPads
+    public class LandingPads
     {
         public int Large;
         public int Medium;
@@ -475,7 +475,7 @@ namespace SrvSurvey
         // { "timestamp":"2023-01-12T05:11:56Z", "event":"Music", "MusicTrack":"MainMenu" }
         public string MusicTrack { get; set; }
 
-        public override string tldr => $":{MusicTrack}";
+        public override string tldr => MusicTrack;
     }
 
     class StartJump : JournalEntry, ISystemAddress
@@ -917,7 +917,7 @@ namespace SrvSurvey
         public int BodyID { get; set; }
         public List<ScanSignal> Signals { get; set; }
     }
-    
+
     class NavBeaconScan : JournalEntry
     {
         // { "timestamp":"2025-09-23T01:28:35Z", "event":"NavBeaconScan", "SystemAddress":6132105941706, "NumBodies":52 }
@@ -1002,7 +1002,7 @@ namespace SrvSurvey
         public string Altitude;
     }
 
-    class FSDTarget : JournalEntry
+    public class FSDTarget : JournalEntry
     {
         // { "timestamp":"2023-05-29T06:09:58Z", "event":"FSDTarget", "Name":"Col 173 Sector MC-T b20-3", "SystemAddress":7282519516481, "StarClass":"M", "RemainingJumpsInRoute":1 }
 
@@ -1120,7 +1120,7 @@ namespace SrvSurvey
         public string LocalisedName;
     }
 
-    class Bounty : JournalEntry
+    public class Bounty : JournalEntry
     {
         // { "timestamp":"2022-07-23T04:43:32Z", "event":"Bounty", "Rewards":[ { "Faction":"Grabru Blue Power Partners", "Reward":145590 } ], "Target":"viper", "Target_Localised":"Viper Mk III", "TotalReward":145590, "VictimFaction":"Grabru Crimson Family" }
         // { "timestamp":"2024-11-07T04:59:06Z", "event":"Bounty", "Rewards":[ { "Faction":"Marauders Shadowcouncil", "Reward":170158 } ], "PilotName":"$npc_name_decorate:#name=William Kershaw;", "PilotName_Localised":"William Kershaw", "Target":"cobramkiii", "Target_Localised":"Cobra Mk III", "TotalReward":170158, "VictimFaction":"Posse of HIP 97337" }
@@ -1401,7 +1401,7 @@ namespace SrvSurvey
         public string Type;
     }
 
-    class MarketBuy : JournalEntry
+    public class MarketBuy : JournalEntry
     {
         // { "timestamp":"2025-03-04T16:10:26Z", "event":"MarketBuy", "MarketID":3708733696, "Type":"insulatingmembrane", "Type_Localised":"Insulating Membrane", "Count":32, "BuyPrice":10605, "TotalCost":339360 }
         public long MarketId;
@@ -1412,7 +1412,7 @@ namespace SrvSurvey
         public long TotalCost;
     }
 
-    class MarketSell : JournalEntry
+    public class MarketSell : JournalEntry
     {
         // { "timestamp":"2025-03-06T20:58:16Z", "event":"MarketSell", "MarketID":3708733696, "Type":"aluminium", "Count":2, "SellPrice":2540, "TotalSale":5080, "AvgPricePaid":2604 }
 
