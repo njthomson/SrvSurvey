@@ -73,32 +73,36 @@ namespace SrvSurvey.quests
             return ps;
         }
 
+        static Regex onJournals = new Regex(@"void onJournal\s*\(\s*(\w+)\s+.+\)");
+
         private static string prepCode(string[] lines)
         {
             var code = new StringBuilder();
 
-            var subs = new Dictionary<string, string>();
-            var r1 = new Regex(@"void on\s*\(\s*(\w+)\s+.+\)");
+            var setFuncs = new List<string>();
 
             foreach (var line in lines)
             {
                 if (line.StartsWith("using") || line.Contains("System.")) continue;
                 code.AppendLine(line);
 
-                if (line == "void init()")
-                    subs["init"] = $"setFunc(\"init\", new Action<object>((o) => init()));";
+                if (line.Trim() == "void onStart()")
+                    setFuncs.Add($"setFunc(\"onStart\", new Action<object>((o) => onStart()));");
 
-                var parts = r1.Matches(line).FirstOrDefault()?.Groups;
+                var parts = onJournals.Matches(line).FirstOrDefault()?.Groups;
                 if (parts?.Count == 2)
                 {
                     var eventName = parts[1].Value;
-                    // eg: on("Docked", new Action<JournalEntry>((o) => on2((Docked)o)));
-                    subs[eventName] = $"setFunc(\"{eventName}\", new Action<object>((o) => on(({eventName})o)));";
+                    // eg: onJournal("Docked", new Action<JournalEntry>((o) => on2((Docked)o)));
+                    setFuncs.Add($"setFunc(\"{eventName}\", new Action<object>((o) => onJournal(({eventName})o)));");
                 }
+
+                if (line.Trim().StartsWith("void onMsgAction("))
+                    setFuncs.Add($"setFunc(\"onMsgAction\", new Action<object>((o) => onMsgAction((string)o)));");
             }
 
-            code.AppendLine("// Post generation ...");
-            foreach (var line in subs.Values)
+            code.AppendLine();
+            foreach (var line in setFuncs)
                 code.AppendLine(line);
 
             return code.ToString();
@@ -118,7 +122,7 @@ namespace SrvSurvey.quests
         private static async Task<ScriptState> prepScript(Conduit c, string name)
         {
             string script = c.pq.quest.chapters[name];
-            var code = prepCode(script.Split('\n', StringSplitOptions.TrimEntries));
+            var code = prepCode(script.Split(Environment.NewLine));
 
             var sg = new scripting.ScriptGlobals(c, name);
 
@@ -151,7 +155,7 @@ namespace SrvSurvey.quests
 
         public async Task<PlayQuest> importFolder(string folder)
         {
-            var success = true;
+            var issues = new StringBuilder();
 
             // import quest.json
             var newQuest = JsonConvert.DeserializeObject<Quest>(File.ReadAllText(Path.Combine(folder, "quest.json")))!;
@@ -185,19 +189,6 @@ namespace SrvSurvey.quests
             {
                 var name = Path.GetFileNameWithoutExtension(filepath);
                 var script = File.ReadAllText(filepath);
-
-                // can we roughly compile it?
-                try
-                {
-                    var compiled = CSharpScript.Create(script, scriptOptions, typeof(scripting.ScriptGlobals));
-                }
-                catch (CompilationErrorException ex)
-                {
-                    success = false;
-                    Game.log("Compilation error in chapter: " + string.Join(Environment.NewLine, ex.Diagnostics));
-                    continue;
-                }
-
                 newQuest.chapters[name] = script;
             }
 
@@ -225,26 +216,41 @@ namespace SrvSurvey.quests
 
                     // store initial variables
                     foreach (var var in state.Variables)
-                    {
                         pc.vars[$"{var.Name}|{var.Type}"] = var.Value;
-                    }
+
+                    // check for mismatched IDs
+                    validateScript(newPlayQuest, id, state.Script.Code, issues);
                 }
                 catch (CompilationErrorException ex)
                 {
-                    success = false;
+                    issues.AppendLine($"{Environment.NewLine}File: {id}.json{Environment.NewLine}----------------------------------------");
+                    foreach (var x in ex.Diagnostics)
+                        issues.AppendLine(x.ToString());
+
                     Game.log($"Compilation error in chapter: {id}\n\t" + string.Join(Environment.NewLine, ex.Diagnostics));
                     continue;
                 }
             }
 
-            // TODO: validate objective and msg IDs are not bogus
-
             // initialize first chapter
             newPlayQuest.startChapter(newQuest.firstChapter);
 
             Game.log($"Parsed quest '{newPlayQuest.quest.title}' ({newPlayQuest.id}) from: {folder}");
-            if (success)
+            if (issues.Length > 0)
             {
+                // There were issues with the script
+                issues.Insert(0, $"Problems importing folder:{Environment.NewLine}{folder}{Environment.NewLine}");
+                issues.Replace("ScriptGlobals.S_", "");
+                var onRetry = new Action(() => importFolder(folder).justDoIt());
+                BaseForm.show<FormImportProblems>(f =>
+                {
+                    f.txt.Text = issues.ToString();
+                    f.btn.Click += (s, e) => onRetry();
+                });
+            }
+            else
+            {
+                // No issues - add/replace it on the Cmdr
                 var idx = activeQuests.FindIndex(x => x.id == newPlayQuest.id);
                 if (idx < 0)
                     this.activeQuests.Add(newPlayQuest);
@@ -264,6 +270,78 @@ namespace SrvSurvey.quests
             // AND: allow the folder to be known to PlayQuest
 
             return newPlayQuest;
+        }
+
+        static Regex badObjectiveIDs = new Regex(@"\bobjective.\w+\(\s*""(.+)""");
+        static Regex badMsgIDs = new Regex(@"\.sendMsg\(\s*""(.+)""");
+
+        private void validateScript(PlayQuest pq, string filename, string code, StringBuilder issues)
+        {
+            var fileHeaderAdded = false;
+
+            var lines = code.Split("\n");
+            for (int n = 1; n < lines.Length; n++)
+            {
+                var line = lines[n - 1];
+
+                // look for objective name mismatches
+                var matches = badObjectiveIDs.Matches(line);
+                foreach (Match m in matches)
+                {
+                    var name = m.Groups[1].Value;
+                    if (!pq.quest.objectives.ContainsKey(name))
+                    {
+                        if (!fileHeaderAdded) { fileHeaderAdded = true; issues.AppendLine($"{Environment.NewLine}File: {filename}.json{Environment.NewLine}----------------------------------------"); }
+                        issues.AppendLine($"({n}, {m.Groups[1].Index}): Bad objective name: '{name}'");
+                    }
+                }
+
+                foreach (var grp in badMsgIDs.Matches(line).Select(m => m.Groups[1]))
+                {
+                    if (!pq.quest.msgs.Any(m => m.id == grp.Value))
+                    {
+                        if (!fileHeaderAdded) { fileHeaderAdded = true; issues.AppendLine($"{Environment.NewLine}File: {filename}.json{Environment.NewLine}----------------------------------------"); }
+                        issues.AppendLine($"({n}, {grp.Index}): Bad msg ID: '{grp.Value}'");
+                    }
+                }
+            }
+        }
+    }
+
+    [Draggable, TrackPosition]
+    class FormImportProblems : SizableForm
+    {
+        public TextBox txt;
+        public Button btn;
+
+        public FormImportProblems()
+        {
+            Text = "Import failed";
+            Width = 1000;
+            Height = 400;
+            StartPosition = FormStartPosition.CenterScreen;
+
+            txt = new TextBox()
+            {
+                Dock = DockStyle.Fill,
+                Multiline = true,
+                ReadOnly = true,
+                ScrollBars = ScrollBars.Both,
+            };
+            txt.SelectionStart = 0;
+
+            btn = new Button()
+            {
+                Text = "Retry",
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                Top = 8,
+                Width = 80,
+                Left = 880,
+            };
+            btn.Click += (s, e) => this.Close();
+
+            this.Controls.Add(btn);
+            this.Controls.Add(txt);
         }
     }
 
@@ -414,5 +492,4 @@ namespace SrvSurvey.quests
             return newMsg;
         }
     }
-
 }

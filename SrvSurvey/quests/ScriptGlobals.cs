@@ -4,10 +4,10 @@ namespace SrvSurvey.quests.scripting
 {
     public class ScriptGlobals
     {
-        public Q quest;
-        public C chapter;
-        public O objective;
-        public G game;
+        public S_quest quest;
+        public S_chapter chapter;
+        public S_objective objective;
+        public S_game game;
 
         /// <summary> The ID of the chapter </summary>
         string id;
@@ -43,12 +43,12 @@ namespace SrvSurvey.quests.scripting
         //    // TODO: ...
         //}
 
-        public class Q
+        public class S_quest
         {
             Conduit c;
             ScriptGlobals sg;
 
-            public Q(Conduit c, ScriptGlobals sg)
+            public S_quest(Conduit c, ScriptGlobals sg)
             {
                 this.c = c;
                 this.sg = sg;
@@ -83,12 +83,12 @@ namespace SrvSurvey.quests.scripting
             }
         }
 
-        public class C
+        public class S_chapter
         {
             Conduit c;
             ScriptGlobals sg;
 
-            public C(Conduit c, ScriptGlobals sg)
+            public S_chapter(Conduit c, ScriptGlobals sg)
             {
                 this.c = c;
                 this.sg = sg;
@@ -120,12 +120,12 @@ namespace SrvSurvey.quests.scripting
             }
         }
 
-        public class O
+        public class S_objective
         {
             Conduit c;
             ScriptGlobals sg;
 
-            public O(Conduit c, ScriptGlobals sg)
+            public S_objective(Conduit c, ScriptGlobals sg)
             {
                 this.c = c;
                 this.sg = sg;
@@ -169,12 +169,12 @@ namespace SrvSurvey.quests.scripting
             }
         }
 
-        public class G
+        public class S_game
         {
             Conduit c;
             ScriptGlobals sg;
 
-            public G(Conduit c, ScriptGlobals sg)
+            public S_game(Conduit c, ScriptGlobals sg)
             {
                 this.c = c;
                 this.sg = sg;

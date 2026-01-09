@@ -113,17 +113,7 @@ namespace SrvSurvey.forms
 
         private void menuImportFolder_Click(object sender, EventArgs e)
         {
-            var picker = new FolderBrowserDialog()
-            {
-                Description = "Select folder containing quest definition files",
-                ShowNewFolderButton = false,
-            };
 
-            var rslt = picker.ShowDialog(this);
-            if (rslt == DialogResult.OK)
-            {
-                game!.cmdrPlay!.importFolder(picker.SelectedPath).justDoIt();
-            }
         }
     }
 }

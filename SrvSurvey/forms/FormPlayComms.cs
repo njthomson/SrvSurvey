@@ -15,13 +15,27 @@ namespace SrvSurvey.forms
     [TrackPosition, Draggable]
     internal partial class FormPlayComms : SizableForm
     {
-        private Game game => Game.activeGame!;
+        private PlayState cmdrPlay;
         private string mode = "quests";
 
         public FormPlayComms()
         {
             InitializeComponent();
-            showQuests();
+            if (Game.activeGame?.cmdrPlay == null)
+            {
+                this.setChildrenEnabled(false);
+                PlayState.load(CommanderSettings.currentOrLastFid).continueOnMain(this, rslt =>
+                {
+                    this.cmdrPlay = rslt;
+                    showQuests();
+                    this.setChildrenEnabled(true, btnWatch);
+                });
+            }
+            else
+            {
+                this.cmdrPlay = Game.activeGame.cmdrPlay;
+                showQuests();
+            }
         }
 
         public void onNewMessage(PlayMsg newMsg)
@@ -46,10 +60,10 @@ namespace SrvSurvey.forms
 
         private void showQuests()
         {
-            if (game!.cmdrPlay!.activeQuests.Count == 0) return;
+            if (!(cmdrPlay.activeQuests.Count > 0)) return;
 
             list.Items.Clear();
-            foreach (var pq in game!.cmdrPlay!.activeQuests)
+            foreach (var pq in cmdrPlay!.activeQuests)
                 list.Items.Add($"{pq.quest.title}", pq.id, pq);
 
             if (list.Items.Count > 0)
@@ -64,8 +78,9 @@ namespace SrvSurvey.forms
 
         private void showMsgs()
         {
-            if (game!.cmdrPlay!.activeQuests.Count == 0) return;
-            var pq = game!.cmdrPlay!.activeQuests.First();
+            if (!(cmdrPlay.activeQuests.Count > 0)) return;
+
+            var pq = cmdrPlay!.activeQuests.First();
 
             list.Items.Clear();
             foreach (var msg in pq.msgs.OrderByDescending(m => m.received))
@@ -133,7 +148,29 @@ namespace SrvSurvey.forms
 
         private void button3_Click(object sender, EventArgs e)
         {
-            BaseForm.show<FormPlayJournal>();
+            if (Game.activeGame != null)
+                BaseForm.show<FormPlayJournal>();
+        }
+
+        private void btnImport_Click(object sender, EventArgs e)
+        {
+            var picker = new FolderBrowserDialog()
+            {
+                Description = "Select folder containing quest definition files",
+                UseDescriptionForTitle = true,
+                ShowNewFolderButton = false,
+            };
+
+            var rslt = picker.ShowDialog(this);
+            if (rslt == DialogResult.OK)
+            {
+                cmdrPlay.importFolder(picker.SelectedPath).justDoIt();
+            }
+        }
+
+        private void btnDebug_Click(object sender, EventArgs e)
+        {
+            BaseForm.show<FormPlayDev>();
         }
     }
 }

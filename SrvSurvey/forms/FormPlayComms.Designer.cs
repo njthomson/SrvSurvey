@@ -30,10 +30,12 @@
         {
             btnQuests = new Button();
             btnMsgs = new Button();
-            button3 = new Button();
+            btnWatch = new Button();
             list = new ListView();
             ID = new ColumnHeader();
             txtStuff = new TextBox();
+            btnImport = new Button();
+            btnDebug = new Button();
             SuspendLayout();
             // 
             // btnQuests
@@ -56,16 +58,16 @@
             btnMsgs.UseVisualStyleBackColor = true;
             btnMsgs.Click += btnMsgs_Click;
             // 
-            // button3
+            // btnWatch
             // 
-            button3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button3.Location = new Point(8, 276);
-            button3.Name = "button3";
-            button3.Size = new Size(75, 23);
-            button3.TabIndex = 2;
-            button3.Text = "Watch ...";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            btnWatch.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnWatch.Location = new Point(8, 303);
+            btnWatch.Name = "btnWatch";
+            btnWatch.Size = new Size(75, 23);
+            btnWatch.TabIndex = 2;
+            btnWatch.Text = "Watch ...";
+            btnWatch.UseVisualStyleBackColor = true;
+            btnWatch.Click += button3_Click;
             // 
             // list
             // 
@@ -73,7 +75,7 @@
             list.Columns.AddRange(new ColumnHeader[] { ID });
             list.Location = new Point(89, 12);
             list.Name = "list";
-            list.Size = new Size(187, 287);
+            list.Size = new Size(187, 314);
             list.TabIndex = 3;
             list.UseCompatibleStateImageBehavior = false;
             list.View = View.Details;
@@ -92,17 +94,41 @@
             txtStuff.Name = "txtStuff";
             txtStuff.ReadOnly = true;
             txtStuff.ScrollBars = ScrollBars.Both;
-            txtStuff.Size = new Size(444, 286);
+            txtStuff.Size = new Size(511, 313);
             txtStuff.TabIndex = 4;
+            // 
+            // btnImport
+            // 
+            btnImport.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnImport.Location = new Point(8, 274);
+            btnImport.Name = "btnImport";
+            btnImport.Size = new Size(75, 23);
+            btnImport.TabIndex = 5;
+            btnImport.Text = "Import ...";
+            btnImport.UseVisualStyleBackColor = true;
+            btnImport.Click += btnImport_Click;
+            // 
+            // btnDebug
+            // 
+            btnDebug.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnDebug.Location = new Point(8, 245);
+            btnDebug.Name = "btnDebug";
+            btnDebug.Size = new Size(75, 23);
+            btnDebug.TabIndex = 6;
+            btnDebug.Text = "Debug ...";
+            btnDebug.UseVisualStyleBackColor = true;
+            btnDebug.Click += btnDebug_Click;
             // 
             // FormPlayComms
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(738, 311);
+            ClientSize = new Size(805, 338);
+            Controls.Add(btnDebug);
+            Controls.Add(btnImport);
             Controls.Add(txtStuff);
             Controls.Add(list);
-            Controls.Add(button3);
+            Controls.Add(btnWatch);
             Controls.Add(btnMsgs);
             Controls.Add(btnQuests);
             Name = "FormPlayComms";
@@ -115,9 +141,11 @@
 
         private Button btnQuests;
         private Button btnMsgs;
-        private Button button3;
+        private Button btnWatch;
         private ListView list;
         private TextBox txtStuff;
         private ColumnHeader ID;
+        private Button btnImport;
+        private Button btnDebug;
     }
 }
