@@ -1,0 +1,139 @@
+﻿using SrvSurvey.game;
+using SrvSurvey.quests;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace SrvSurvey.forms
+{
+    [TrackPosition, Draggable]
+    internal partial class FormPlayComms : SizableForm
+    {
+        private Game game => Game.activeGame!;
+        private string mode = "quests";
+
+        public FormPlayComms()
+        {
+            InitializeComponent();
+            showQuests();
+        }
+
+        public void onNewMessage(PlayMsg newMsg)
+        {
+            if (mode == "msgs")
+                showMsgs();
+        }
+
+        public void onQuestChanged(PlayQuest pq)
+        {
+            if (mode == "quests")
+                showQuest(pq);
+            else
+                showMsgs();
+        }
+
+        private void btnQuests_Click(object sender, EventArgs e)
+        {
+            this.mode = "quests";
+            showQuests();
+        }
+
+        private void showQuests()
+        {
+            if (game!.cmdrPlay!.activeQuests.Count == 0) return;
+
+            list.Items.Clear();
+            foreach (var pq in game!.cmdrPlay!.activeQuests)
+                list.Items.Add($"{pq.quest.title}", pq.id, pq);
+
+            if (list.Items.Count > 0)
+                list.Items[0].Selected = true;
+        }
+
+        private void btnMsgs_Click(object sender, EventArgs e)
+        {
+            this.mode = "msgs";
+            showMsgs();
+        }
+
+        private void showMsgs()
+        {
+            if (game!.cmdrPlay!.activeQuests.Count == 0) return;
+            var pq = game!.cmdrPlay!.activeQuests.First();
+
+            list.Items.Clear();
+            foreach (var msg in pq.msgs.OrderByDescending(m => m.received))
+            {
+                var item = list.Items.Add($"{msg.id}", msg.id, msg);
+                item.SubItems[0].Tag = pq;
+            }
+
+            if (list.Items.Count > 0)
+                list.Items[0].Selected = true;
+        }
+
+        private void list_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (list.SelectedItems.Count == 0) return;
+
+            if (mode == "quests")
+                showQuest(list.SelectedItems[0].Tag as PlayQuest);
+            else
+                showMsg(list.SelectedItems[0].SubItems[0].Tag as PlayQuest, list.SelectedItems[0].Tag as PlayMsg);
+        }
+
+        private void showQuest(PlayQuest? pq)
+        {
+            if (pq == null) return;
+
+            var txt = new StringBuilder();
+            txt.AppendLine($"'{pq.quest.title}' ({pq.id})");
+            txt.AppendLine();
+            txt.AppendLine($"Objectives:");
+            foreach (var key in pq.quest.objectives.Keys)
+            {
+                var po = pq.objectives.GetValueOrDefault(key);
+                var state = po == null ? "?" : $"{po.state} {po.current} of {po.total}".ToUpper();
+                txt.AppendLine($"> {key} : [{state}] {pq.quest.objectives[key]}");
+            }
+
+            txt.AppendLine();
+            txt.AppendLine($"Description:");
+            txt.AppendLine(pq.quest.desc);
+
+            txtStuff.Text = txt.ToString();
+
+        }
+
+        private void showMsg(PlayQuest? pq, PlayMsg? pm)
+        {
+            if (pq == null || pm == null) return;
+
+            var msg = pq.quest.msgs.Find(m => m.id == pm.id);
+
+            var txt = new StringBuilder();
+            txt.AppendLine($"From:       {pm.from ?? msg?.from}");
+            var subject = pm.subject ?? msg?.subject;
+            if (subject != null) txt.AppendLine($"Subject:   {subject}");
+            txt.AppendLine("--------------------------------------------------------");
+            txt.AppendLine(pm.body ?? msg?.body);
+            txt.AppendLine("--------------------------------------------------------");
+
+            if (pm.actions != null)
+                txt.AppendLine($"actions: {pm.actions}");
+
+            txtStuff.Text = txt.ToString();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            BaseForm.show<FormPlayJournal>();
+        }
+    }
+}

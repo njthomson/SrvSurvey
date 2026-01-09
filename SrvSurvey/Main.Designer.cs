@@ -81,6 +81,7 @@ namespace SrvSurvey
             menuSearchTools = new ButtonContextMenuStrip(components);
             menuSpherical = new ToolStripMenuItem();
             menuBoxel = new ToolStripMenuItem();
+            questToolStripMenuItem = new ToolStripMenuItem();
             btnSearch = new FlatButton();
             lblBig = new Label();
             comboDev = new ComboBox();
@@ -694,11 +695,12 @@ namespace SrvSurvey
             // 
             menuSearchTools.BackColor = SystemColors.ControlLight;
             menuSearchTools.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            menuSearchTools.Items.AddRange(new ToolStripItem[] { menuSpherical, menuBoxel });
+            menuSearchTools.Items.AddRange(new ToolStripItem[] { menuSpherical, menuBoxel, questToolStripMenuItem });
             menuSearchTools.Name = "menuSearchTools";
             menuSearchTools.RenderMode = ToolStripRenderMode.System;
-            menuSearchTools.Size = new Size(203, 112);
+            menuSearchTools.Size = new Size(213, 188);
             menuSearchTools.targetButton = btnSearch;
+            menuSearchTools.Opening += menuSearchTools_Opening;
             // 
             // menuSpherical
             // 
@@ -706,7 +708,7 @@ namespace SrvSurvey
             menuSpherical.ImageScaling = ToolStripItemImageScaling.None;
             menuSpherical.ImageTransparentColor = Color.White;
             menuSpherical.Name = "menuSpherical";
-            menuSpherical.Size = new Size(202, 54);
+            menuSpherical.Size = new Size(212, 54);
             menuSpherical.Text = "Spherical";
             menuSpherical.ToolTipText = "Search within a spherical area of space, around a central location.";
             menuSpherical.Click += menuSpherical_Click;
@@ -717,10 +719,17 @@ namespace SrvSurvey
             menuBoxel.ImageScaling = ToolStripItemImageScaling.None;
             menuBoxel.ImageTransparentColor = Color.White;
             menuBoxel.Name = "menuBoxel";
-            menuBoxel.Size = new Size(202, 54);
+            menuBoxel.Size = new Size(212, 54);
             menuBoxel.Text = "Boxel";
             menuBoxel.ToolTipText = "Search every system within a named boxel.";
             menuBoxel.Click += menuBoxel_Click;
+            // 
+            // questToolStripMenuItem
+            // 
+            questToolStripMenuItem.Name = "questToolStripMenuItem";
+            questToolStripMenuItem.Size = new Size(212, 54);
+            questToolStripMenuItem.Text = "Quest";
+            questToolStripMenuItem.Click += questToolStripMenuItem_Click;
             // 
             // btnSearch
             // 
@@ -875,7 +884,7 @@ namespace SrvSurvey
             menuColonize.Items.AddRange(new ToolStripItem[] { menuRefreshProjects, menuColonizeLine1, menuMyProjects, menuCurrentProject, menuPrimaryProject, menuColonizeLine2, menuNewProject, menuColonizeLine3, menuRavenColonial, menuColonizeWiki, menuColonizeLine4, menuUpdateHeader, menuPublishFC, menuUpdateSystem, menuUpdateStations });
             menuColonize.Name = "menuColonize";
             menuColonize.RenderMode = ToolStripRenderMode.System;
-            menuColonize.Size = new Size(245, 458);
+            menuColonize.Size = new Size(245, 436);
             menuColonize.targetButton = btnColonize;
             // 
             // menuRefreshProjects
@@ -1285,5 +1294,6 @@ namespace SrvSurvey
         private ToolStripMenuItem menuPastJourneys;
         private ToolStripMenuItem menuUpdateStations;
         private ToolStripMenuItem menuMyProjects;
+        private ToolStripMenuItem questToolStripMenuItem;
     }
 }

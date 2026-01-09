@@ -1410,6 +1410,8 @@ namespace SrvSurvey
         public int Count;
         public int BuyPrice;
         public long TotalCost;
+
+        public override string tldr => $"{Count}x {Type} => {TotalCost}";
     }
 
     public class MarketSell : JournalEntry
@@ -1423,6 +1425,8 @@ namespace SrvSurvey
         public int SellPrice;
         public int AvgPricePaid;
         public long TotalSale;
+
+        public override string tldr => $"{Count}x {Type} => {TotalSale}";
     }
 
     class Market : JournalEntry

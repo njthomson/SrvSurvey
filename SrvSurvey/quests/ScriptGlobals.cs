@@ -7,6 +7,7 @@ namespace SrvSurvey.quests.scripting
         public Q quest;
         public C chapter;
         public O objective;
+        public G game;
 
         /// <summary> The ID of the chapter </summary>
         string id;
@@ -19,6 +20,7 @@ namespace SrvSurvey.quests.scripting
             this.quest = new(c, this);
             this.chapter = new(c, this);
             this.objective = new(c, this);
+            this.game = new(c, this);
         }
 
         // functions availble to scripting ...
@@ -27,6 +29,12 @@ namespace SrvSurvey.quests.scripting
         {
             Game.log($"setFunc [{id}]: {name}");
             c.funcs[$"{id}.{name}"] = func;
+        }
+
+        public void trace(string txt)
+        {
+            Game.log(txt);
+            // TODO: have a separate trace file per quest? Probably!
         }
 
         //public void keepLast(string eventName)
@@ -50,12 +58,14 @@ namespace SrvSurvey.quests.scripting
             {
                 Game.log($"Q.complete [{sg.id}]");
                 c.pq.complete();
+                c.dirty = true;
             }
 
             public void fail()
             {
                 Game.log($"Q.fail [{sg.id}]");
                 c.pq.fail();
+                c.dirty = true;
             }
 
             public void sendMsg(string? id = null, string? from = null, string? subject = null, string? body = null)
@@ -67,7 +77,7 @@ namespace SrvSurvey.quests.scripting
 
                 // create a delivered message from it, overriding strings as necessary
                 var newMsg = PlayMsg.send(msg, from, subject, body);
-                c.pq.msgs.Add(newMsg);
+                c.pq.sendMsg(newMsg);
 
                 Game.log($"Q.sendMsg [{sg.id}]: {id}: {newMsg.subject ?? newMsg.body}");
             }
@@ -104,7 +114,7 @@ namespace SrvSurvey.quests.scripting
 
                 // create a delivered message from it, overriding strings as necessary
                 var newMsg = PlayMsg.send(msg, from, subject, body);
-                c.pq.msgs.Add(newMsg);
+                c.pq.sendMsg(newMsg);
 
                 Game.log($"C.sendMsg [{sg.id}]: {id}: {newMsg.subject ?? newMsg.body}");
             }
@@ -124,37 +134,61 @@ namespace SrvSurvey.quests.scripting
             public void show(string name)
             {
                 Game.log($"O.show [{sg.id}]: {name}");
-                c.pq.objectives[name].state = PlayObjective.State.visible;
+                c.pq.objectives.init(name).state = PlayObjective.State.visible;
+                c.dirty = true;
             }
 
             public void hide(string name)
             {
                 Game.log($"O.hide [{sg.id}]: {name}");
-                c.pq.objectives[name].state = PlayObjective.State.hidden;
+                c.pq.objectives.init(name).state = PlayObjective.State.hidden;
+                c.dirty = true;
             }
 
             public void complete(string name)
             {
                 Game.log($"O.complete [{sg.id}]: {name}");
-                c.pq.objectives[name].state = PlayObjective.State.complete;
+                c.pq.objectives.init(name).state = PlayObjective.State.complete;
+                c.dirty = true;
             }
 
             public void fail(string name)
             {
                 Game.log($"O.fail [{sg.id}]: {name}");
-                c.pq.objectives[name].state = PlayObjective.State.failed;
+                c.pq.objectives.init(name).state = PlayObjective.State.failed;
+                c.dirty = true;
             }
 
-            public void progress(string name, float progress)
+            public void progress(string name, int current, int total)
             {
-                Game.log($"O.progress [{sg.id}]: {name} => {progress}");
-                c.pq.objectives[name].progress = progress;
+                Game.log($"O.progress [{sg.id}]: {name} => {current} of {total}");
+                c.pq.objectives.init(name);
+                c.pq.objectives[name].current = current;
+                c.pq.objectives[name].total = total;
+                c.dirty = true;
             }
+        }
+
+        public class G
+        {
+            Conduit c;
+            ScriptGlobals sg;
+
+            public G(Conduit c, ScriptGlobals sg)
+            {
+                this.c = c;
+                this.sg = sg;
+            }
+
+            public Docked? lastDocked => Game.activeGame!.lastEverDocked;
+
+            // TODO: solve for arbitrary journal events?
         }
     }
 
     public class Conduit
     {
+        public bool dirty = false;
         public readonly PlayQuest pq;
         public readonly Dictionary<string, Action<object>> funcs = new();
 

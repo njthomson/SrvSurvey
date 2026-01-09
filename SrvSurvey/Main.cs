@@ -1787,6 +1787,11 @@ namespace SrvSurvey
             BaseForm.show<FormShowCodex>();
         }
 
+        private void menuSearchTools_Opening(object sender, CancelEventArgs e)
+        {
+            questToolStripMenuItem.Visible = Game.settings.enableQuests;
+        }
+
         private void menuSpherical_Click(object sender, EventArgs e)
         {
             PlotBase2.remove(PlotSphericalSearch.def);
@@ -1797,6 +1802,11 @@ namespace SrvSurvey
         private void menuBoxel_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormBoxelSearch>();
+        }
+
+        private void questToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BaseForm.show<FormPlayComms>();
         }
 
         private void menuBuildProjects_Click(object sender, EventArgs e)
@@ -1934,17 +1944,6 @@ namespace SrvSurvey
         {
             BaseForm.show<FormCodexBingo>();
 
-            //game!.cmdrPlay.importFolder(@"D:\quests\alpha1").justDoIt();
-
-            //var folly = game!.cmdrColony.getProject("a4da9c2f-5bcc-4b55-a15e-c13f6c68a9d4")!;
-            //var match = ColonyData.matchByCargo(folly.commodities);
-            //Game.log($"folly match: {match}");
-
-            //var json = "";
-            //var entry = JsonConvert.DeserializeObject<ColonisationConstructionDepot>(json)!;
-            //var match = ColonyData.matchByCargo(entry.ResourcesRequired.ToDictionary(r => r.Name.Substring(1).Replace("_name;", ""), r => r.RequiredAmount));
-            //Game.log($"Entry match: {match}");
-
             //var filterMarket = new Spansh.SearchQuery.Markets();
             //filterMarket.Add(new Spansh.SearchQuery.Market() { name = "Copper", supply = new Spansh.Query.Market.Clause(100, 10_000_000) });
             //var filterType = new Spansh.SearchQuery.Values("Asteroid base", "Coriolis Starport", "Dockable Planet Station", "GameplayPOI", "Mega ship", "Ocellus Starport", "Orbis Starport", "Outpost", "Planetary Outpost", "Planetary Port", "Settlement", "Surface Settlement");
@@ -1959,11 +1958,6 @@ namespace SrvSurvey
             //        { "type", filterType },
             //    },
             //};
-
-            //Game.spansh.queryStations(q).continueOnMain(this, rslt =>
-            //{
-            //    Game.log(rslt);
-            //});
         }
 
         private void btnLogs_Click(object sender, EventArgs e)
