@@ -51,19 +51,10 @@ namespace SrvSurvey.quests
                     pq.quest = JsonConvert.DeserializeObject<Quest>(json)!;
                     var conduit = new Conduit(pq);
 
-                    foreach (var pc in pq.chapters.Values)
+                    foreach (var pc in pq.chapters)
                     {
                         pc.scriptState = await prepScript(conduit, pc.id);
-                        foreach (var key in pc.vars.Keys)
-                        {
-                            var parts = key.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                            var name = parts[0];
-                            var type = Type.GetType(parts[1])!;
-                            var raw = pc.vars[key];
-                            // re-cast the value as the desired type
-                            var val = JToken.FromObject(raw).ToObject(type);
-                            pc.scriptState.GetVariable(name).Value = val;
-                        }
+                        pc.pushScriptVars();
                     }
                 }
 
@@ -153,8 +144,9 @@ namespace SrvSurvey.quests
                 this.Save();
         }
 
-        public async Task<PlayQuest> importFolder(string folder)
+        public async Task importFolder(string folder, Action<PlayQuest?> onComplete)
         {
+            Game.log($"Begin: Importing quest from: {folder}");
             var issues = new StringBuilder();
 
             // import quest.json
@@ -192,12 +184,20 @@ namespace SrvSurvey.quests
                 newQuest.chapters[name] = script;
             }
 
+            // validate data from json
+            if (!newQuest.chapters.ContainsKey(newQuest.firstChapter))
+            {
+                issues.AppendLine($"{Environment.NewLine}File: quest.json{Environment.NewLine}----------------------------------------");
+                issues.AppendLine($"Script not found: '{newQuest.firstChapter}.csx'");
+            }
+
             // prepare states
             var newPlayQuest = new PlayQuest()
             {
                 parent = this,
                 quest = newQuest,
                 id = newQuest.id,
+                watchFolder = folder,
             };
             var newConduit = new Conduit(newPlayQuest);
 
@@ -212,14 +212,14 @@ namespace SrvSurvey.quests
                         parent = newPlayQuest,
                         scriptState = state!,
                     };
-                    newPlayQuest.chapters[id] = pc;
+                    newPlayQuest.chapters.Add(pc);
 
                     // store initial variables
                     foreach (var var in state.Variables)
                         pc.vars[$"{var.Name}|{var.Type}"] = var.Value;
 
                     // check for mismatched IDs
-                    validateScript(newPlayQuest, id, state.Script.Code, issues);
+                    validateScript(newQuest, id, state.Script.Code, issues);
                 }
                 catch (CompilationErrorException ex)
                 {
@@ -241,11 +241,19 @@ namespace SrvSurvey.quests
                 // There were issues with the script
                 issues.Insert(0, $"Problems importing folder:{Environment.NewLine}{folder}{Environment.NewLine}");
                 issues.Replace("ScriptGlobals.S_", "");
-                var onRetry = new Action(() => importFolder(folder).justDoIt());
+
                 BaseForm.show<FormImportProblems>(f =>
                 {
                     f.txt.Text = issues.ToString();
-                    f.btn.Click += (s, e) => onRetry();
+                    f.onRetry = new Action(() => importFolder(folder, onComplete).justDoIt());
+                    f.FormClosed += (s, e) =>
+                    {
+                        if (!f.retrying)
+                        {
+                            onComplete(null);
+                            Game.log($"Failed: Importing quest from: {folder}");
+                        }
+                    };
                 });
             }
             else
@@ -258,50 +266,65 @@ namespace SrvSurvey.quests
                     this.activeQuests[idx] = newPlayQuest;
 
                 this.Save();
+                Game.log($"Success: Importing quest from: {folder}");
 
                 // TODO: use a server for this ...
                 var pubFilepath = Path.Combine(PlayState.folder, $"{newQuest.id}.json");
                 File.WriteAllText(pubFilepath, JsonConvert.SerializeObject(newQuest, Formatting.Indented));
 
                 BaseForm.get<FormPlayComms>()?.onQuestChanged(newPlayQuest);
+                onComplete(newPlayQuest);
             }
-
-            // TODO: watch folder for further edits?
-            // AND: allow the folder to be known to PlayQuest
-
-            return newPlayQuest;
         }
 
         static Regex badObjectiveIDs = new Regex(@"\bobjective.\w+\(\s*""(.+)""");
         static Regex badMsgIDs = new Regex(@"\.sendMsg\(\s*""(.+)""");
+        static Regex badChapters = new Regex(@"\bchapter.start\(\s*""(.+)""|\bchapter.stop\(\s*""(.+)""");
 
-        private void validateScript(PlayQuest pq, string filename, string code, StringBuilder issues)
+        private void validateScript(Quest q, string filename, string code, StringBuilder issues)
         {
             var fileHeaderAdded = false;
+            var addHeaderLineIfNeeded = () =>
+            {
+                if (!fileHeaderAdded)
+                {
+                    fileHeaderAdded = true;
+                    issues.AppendLine($"{Environment.NewLine}File: {filename}.csx{Environment.NewLine}----------------------------------------");
+                }
+            };
 
             var lines = code.Split("\n");
             for (int n = 1; n < lines.Length; n++)
             {
                 var line = lines[n - 1];
 
-                // look for objective name mismatches
-                var matches = badObjectiveIDs.Matches(line);
-                foreach (Match m in matches)
+                // bad objective names
+                foreach (var grp in badObjectiveIDs.Matches(line).Select(m => m.Groups[1]))
                 {
-                    var name = m.Groups[1].Value;
-                    if (!pq.quest.objectives.ContainsKey(name))
+                    if (!q.objectives.ContainsKey(grp.Value))
                     {
-                        if (!fileHeaderAdded) { fileHeaderAdded = true; issues.AppendLine($"{Environment.NewLine}File: {filename}.json{Environment.NewLine}----------------------------------------"); }
-                        issues.AppendLine($"({n}, {m.Groups[1].Index}): Bad objective name: '{name}'");
+                        addHeaderLineIfNeeded();
+                        issues.AppendLine($"({n}, {grp.Index}): Bad objective name: '{grp.Value}'");
                     }
                 }
 
+                // bad msg IDs
                 foreach (var grp in badMsgIDs.Matches(line).Select(m => m.Groups[1]))
                 {
-                    if (!pq.quest.msgs.Any(m => m.id == grp.Value))
+                    if (!q.msgs.Any(m => m.id == grp.Value))
                     {
-                        if (!fileHeaderAdded) { fileHeaderAdded = true; issues.AppendLine($"{Environment.NewLine}File: {filename}.json{Environment.NewLine}----------------------------------------"); }
+                        addHeaderLineIfNeeded();
                         issues.AppendLine($"({n}, {grp.Index}): Bad msg ID: '{grp.Value}'");
+                    }
+                }
+
+                // bad chapter IDs
+                foreach (var grp in badChapters.Matches(line).Select(m => m.Groups[1].Length > 0 ? m.Groups[1] : m.Groups[2]))
+                {
+                    if (!q.chapters.ContainsKey(grp.Value))
+                    {
+                        addHeaderLineIfNeeded();
+                        issues.AppendLine($"({n}, {grp.Index}): Bad chapter ID: '{grp.Value}'");
                     }
                 }
             }
@@ -313,6 +336,8 @@ namespace SrvSurvey.quests
     {
         public TextBox txt;
         public Button btn;
+        public Action onRetry;
+        public bool retrying;
 
         public FormImportProblems()
         {
@@ -338,10 +363,17 @@ namespace SrvSurvey.quests
                 Width = 80,
                 Left = 880,
             };
-            btn.Click += (s, e) => this.Close();
+            btn.Click += Btn_Click;
 
             this.Controls.Add(btn);
             this.Controls.Add(txt);
+        }
+
+        private void Btn_Click(object? sender, EventArgs e)
+        {
+            retrying = true;
+            Program.defer(() => this.onRetry());
+            this.Close();
         }
     }
 
@@ -350,6 +382,8 @@ namespace SrvSurvey.quests
         [JsonIgnore] internal PlayState parent;
         [JsonIgnore] public Quest quest;
         [JsonIgnore] public Conduit conduit;
+        [JsonIgnore] public string? watchFolder;
+
         //[JsonIgnore] public Dictionary<string, IJournalEntry entry> priorEvents = new(); // <-- TODO
 
         public string id;
@@ -358,7 +392,7 @@ namespace SrvSurvey.quests
         public Dictionary<string, PlayObjective> objectives = new();
         public DateTime watermark; // <-- TODO
         /// <summary> Delivered messages </summary>
-        public Dictionary<string, PlayChapter> chapters = new();
+        public List<PlayChapter> chapters = new();
         public List<PlayMsg> msgs = new();
 
         public bool processJournalEntry(IJournalEntry entry)
@@ -374,7 +408,7 @@ namespace SrvSurvey.quests
 
             if (conduit.dirty)
             {
-                foreach (var pc in chapters.Values)
+                foreach (var pc in chapters)
                 {
                     // store initial variables
                     foreach (var var in pc.scriptState.Variables)
@@ -401,12 +435,12 @@ namespace SrvSurvey.quests
         {
             // skip if already active
             if (activeChapters.Contains(id)) return;
+            var func = conduit.funcs.GetValueOrDefault($"{id}.onStart");
 
-            Game.log($"Starting chapter: {id}");
+            Game.log($"Starting chapter: {id}, run onStart: {func != null}");
             activeChapters.Add(id);
 
             // run the init func if it exists
-            var func = conduit.funcs.GetValueOrDefault($"{id}.init");
             if (func != null)
                 func(null!);
 
@@ -430,12 +464,17 @@ namespace SrvSurvey.quests
         }
     }
 
+    [JsonConverter(typeof(PlayObjective.JsonConverter))]
     public class PlayObjective
     {
         public State state;
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int current;
         public int total;
+
+        public override string ToString()
+        {
+            return $"{state},{current},{total}";
+        }
 
         [JsonConverter(typeof(StringEnumConverter))]
         public enum State
@@ -444,6 +483,34 @@ namespace SrvSurvey.quests
             hidden,
             complete,
             failed,
+        }
+
+        class JsonConverter : Newtonsoft.Json.JsonConverter
+        {
+            public override bool CanConvert(Type objectType) { return false; }
+
+            public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+            {
+                var txt = serializer.Deserialize<string>(reader);
+                if (string.IsNullOrEmpty(txt)) throw new Exception($"Unexpected value: {txt}");
+
+                // eg: "visible|1|10"
+                var parts = txt.Split(',');
+                return new PlayObjective()
+                {
+                    state = Enum.Parse<PlayObjective.State>(parts[0]),
+                    current = int.Parse(parts[1]),
+                    total = int.Parse(parts[2]),
+                };
+            }
+
+            public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+            {
+                if (value is PlayObjective)
+                    writer.WriteValue(value.ToString());
+                else
+                    throw new Exception($"Unexpected value: {value?.GetType().Name}");
+            }
         }
     }
 
@@ -454,6 +521,25 @@ namespace SrvSurvey.quests
 
         public string id;
         public Dictionary<string, object> vars = new();
+
+        public void pushScriptVars()
+        {
+            foreach (var key in vars.Keys)
+            {
+                var parts = key.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                var name = parts[0];
+                var type = Type.GetType(parts[1])!;
+                var raw = vars[key];
+                // re-cast the value as the desired type
+                var val = JToken.FromObject(raw).ToObject(type);
+
+                var match = scriptState.GetVariable(name);
+                if (match != null)
+                    match.Value = val;
+                else
+                    Game.log($"Cannot add unknown variable: {name}");
+            }
+        }
     }
 
     public class PlayMsg
@@ -473,6 +559,11 @@ namespace SrvSurvey.quests
         public bool read;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string? replied;
+
+        public override string ToString()
+        {
+            return $"{id}:{subject ?? body}";
+        }
 
         public static PlayMsg send(Msg? msg = null, string? from = null, string? subject = null, string? body = null)
         {

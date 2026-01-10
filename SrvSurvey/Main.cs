@@ -1806,7 +1806,10 @@ namespace SrvSurvey
 
         private void questToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BaseForm.show<FormPlayComms>();
+            if (ModifierKeys.HasFlag(Keys.Control))
+                BaseForm.show<FormPlayDev>();
+            else
+                BaseForm.show<FormPlayComms>();
         }
 
         private void menuBuildProjects_Click(object sender, EventArgs e)

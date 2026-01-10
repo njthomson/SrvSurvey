@@ -1,34 +1,38 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.quests;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SrvSurvey.forms
 {
     [TrackPosition, Draggable]
     internal partial class FormPlayComms : SizableForm
     {
-        private PlayState cmdrPlay;
+        public PlayState cmdrPlay;
         private string mode = "quests";
 
         public FormPlayComms()
         {
             InitializeComponent();
-            if (Game.activeGame?.cmdrPlay == null)
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            if (cmdrPlay != null)
+            {
+                // no op
+                showQuests();
+            }
+            else if (Game.activeGame?.cmdrPlay == null)
             {
                 this.setChildrenEnabled(false);
                 PlayState.load(CommanderSettings.currentOrLastFid).continueOnMain(this, rslt =>
                 {
                     this.cmdrPlay = rslt;
                     showQuests();
-                    this.setChildrenEnabled(true, btnWatch);
+                    this.setChildrenEnabled(true);
                 });
             }
             else
@@ -79,18 +83,19 @@ namespace SrvSurvey.forms
         private void showMsgs()
         {
             if (!(cmdrPlay.activeQuests.Count > 0)) return;
-
-            var pq = cmdrPlay!.activeQuests.First();
-
             list.Items.Clear();
-            foreach (var msg in pq.msgs.OrderByDescending(m => m.received))
-            {
-                var item = list.Items.Add($"{msg.id}", msg.id, msg);
-                item.SubItems[0].Tag = pq;
-            }
 
-            if (list.Items.Count > 0)
-                list.Items[0].Selected = true;
+            foreach (var pq in cmdrPlay.activeQuests)
+            {
+                foreach (var msg in pq.msgs.OrderByDescending(m => m.received))
+                {
+                    var item = list.Items.Add($"[{pq.id}:{msg.id}]{msg.subject ?? msg.body}", msg.id, msg);
+                    item.SubItems[0].Tag = pq;
+                }
+
+                if (list.Items.Count > 0)
+                    list.Items[0].Selected = true;
+            }
         }
 
         private void list_SelectedIndexChanged(object sender, EventArgs e)
@@ -123,7 +128,6 @@ namespace SrvSurvey.forms
             txt.AppendLine(pq.quest.desc);
 
             txtStuff.Text = txt.ToString();
-
         }
 
         private void showMsg(PlayQuest? pq, PlayMsg? pm)
@@ -144,33 +148,6 @@ namespace SrvSurvey.forms
                 txt.AppendLine($"actions: {pm.actions}");
 
             txtStuff.Text = txt.ToString();
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            if (Game.activeGame != null)
-                BaseForm.show<FormPlayJournal>();
-        }
-
-        private void btnImport_Click(object sender, EventArgs e)
-        {
-            var picker = new FolderBrowserDialog()
-            {
-                Description = "Select folder containing quest definition files",
-                UseDescriptionForTitle = true,
-                ShowNewFolderButton = false,
-            };
-
-            var rslt = picker.ShowDialog(this);
-            if (rslt == DialogResult.OK)
-            {
-                cmdrPlay.importFolder(picker.SelectedPath).justDoIt();
-            }
-        }
-
-        private void btnDebug_Click(object sender, EventArgs e)
-        {
-            BaseForm.show<FormPlayDev>();
         }
     }
 }

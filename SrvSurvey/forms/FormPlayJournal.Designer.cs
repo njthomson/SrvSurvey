@@ -32,7 +32,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPlayJournal));
             tableDebug = new TableLayoutPanel();
             txtNewCode = new TextBox();
             label1 = new Label();
@@ -40,9 +39,6 @@
             txtStatusFile = new TextBox();
             treeJournals = new TreeView();
             statusStrip1 = new StatusStrip();
-            toolStripDropDownButton1 = new ToolStripDropDownButton();
-            menuImportFolder = new ToolStripMenuItem();
-            toolStripSeparator1 = new ToolStripSeparator();
             menuSpring = new ToolStripStatusLabel();
             tableDebug.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -121,41 +117,19 @@
             // 
             // statusStrip1
             // 
-            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripDropDownButton1, menuSpring });
+            statusStrip1.Items.AddRange(new ToolStripItem[] { menuSpring });
             statusStrip1.Location = new Point(0, 467);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(791, 22);
             statusStrip1.TabIndex = 1;
             statusStrip1.Text = "statusStrip1";
             // 
-            // toolStripDropDownButton1
-            // 
-            toolStripDropDownButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            toolStripDropDownButton1.DropDownItems.AddRange(new ToolStripItem[] { menuImportFolder, toolStripSeparator1 });
-            toolStripDropDownButton1.Image = (Image)resources.GetObject("toolStripDropDownButton1.Image");
-            toolStripDropDownButton1.ImageTransparentColor = Color.Magenta;
-            toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            toolStripDropDownButton1.Size = new Size(58, 20);
-            toolStripDropDownButton1.Text = "Inspect";
-            // 
-            // menuImportFolder
-            // 
-            menuImportFolder.Name = "menuImportFolder";
-            menuImportFolder.Size = new Size(180, 22);
-            menuImportFolder.Text = "Import folder ...";
-            menuImportFolder.Click += menuImportFolder_Click;
-            // 
-            // toolStripSeparator1
-            // 
-            toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(177, 6);
-            // 
             // menuSpring
             // 
             menuSpring.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
             menuSpring.BorderStyle = Border3DStyle.SunkenOuter;
             menuSpring.Name = "menuSpring";
-            menuSpring.Size = new Size(687, 17);
+            menuSpring.Size = new Size(745, 17);
             menuSpring.Spring = true;
             // 
             // FormPlayJournal
@@ -184,9 +158,6 @@
         private TreeView treeJournals;
         private TextBox txtNewCode;
         private StatusStrip statusStrip1;
-        private ToolStripDropDownButton toolStripDropDownButton1;
-        private ToolStripMenuItem menuImportFolder;
-        private ToolStripSeparator toolStripSeparator1;
         private ToolStripStatusLabel menuSpring;
     }
 }

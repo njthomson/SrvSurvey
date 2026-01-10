@@ -17,13 +17,6 @@ namespace SrvSurvey.forms
             game.status.StatusChanged += Status_StatusChanged;
             game.journals!.onRawJournalEntry += Journals_onRawJournalEntry;
 
-            // add active quests to menu
-            foreach (var pq in game.cmdrPlay!.activeQuests)
-            {
-                var item = toolStripDropDownButton1.DropDownItems.Add($"{pq.id}: {pq.quest.title}", pq);
-                item.Click += (s, e) => BaseForm.show<FormPlayDev>(f => f.pq = pq);
-            }
-
             Util.applyTheme(this);
 
             this.Status_StatusChanged(false);
@@ -109,11 +102,6 @@ namespace SrvSurvey.forms
 
             node.Expand();
             treeJournals.Nodes.Insert(0, node);
-        }
-
-        private void menuImportFolder_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
