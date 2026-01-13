@@ -45,8 +45,6 @@ namespace SrvSurvey.forms
             if (!string.IsNullOrWhiteSpace(game.status.SelectedWeapon))
                 str.AppendLine($"SelectedWeapon: {game.status.SelectedWeapon} / {game.status.SelectedWeapon_Localised}");
 
-            if (!string.IsNullOrWhiteSpace(game.status.SelectedWeapon))
-                str.AppendLine($"SelectedWeapon: {game.status.SelectedWeapon} / {game.status.SelectedWeapon_Localised}");
 
             txtStatusFile.Text = str.ToString();
         }

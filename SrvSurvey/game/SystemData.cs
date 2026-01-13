@@ -2289,7 +2289,7 @@ namespace SrvSurvey.game
                 if (this.organisms == null) return 0;
 
                 long estimate = 0;
-                foreach (var organism in this.organisms)
+                foreach (var organism in this.organisms.ToList())
                 {
                     // use the reward if we know it, otherwise pick the lowest from the species
                     var reward = organism.reward;
@@ -2344,7 +2344,7 @@ namespace SrvSurvey.game
         {
             if (this.organisms == null) return null;
 
-            foreach (var org in this.organisms)
+            foreach (var org in this.organisms.ToList())
                 if (org.variant == variant || org.entryId == entryId)
                     return org;
 
@@ -2373,7 +2373,7 @@ namespace SrvSurvey.game
             // predict valid species within the genus ...
             if (this.organisms?.Count > 0)
             {
-                foreach (var org in this.organisms)
+                foreach (var org in this.organisms.ToList())
                 {
                     org.lookupMissingNamesIfNeeded();
 

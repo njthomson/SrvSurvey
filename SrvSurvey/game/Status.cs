@@ -409,6 +409,9 @@ namespace SrvSurvey
         TelepresenceMulticrew = 0x_0002_0000,
         PhysicalMulticrew = 0x_0004_0000,
         FsdChargingJump = 0x_0008_0000,
+        SCOverdrive= 0x_0010_0000,
+        SCAssist = 0x_0020_0000,
+        Unknown = 0x_0040_0000,
     }
 
     enum GuiFocus

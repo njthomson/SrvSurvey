@@ -330,7 +330,7 @@ namespace SrvSurvey.plotters
             if (body?.organisms == null || body.organisms.Count == 0) return;
 
             var allScanned = true;
-            foreach (var organism in body.organisms)
+            foreach (var organism in body.organisms.ToList())
             {
                 // TODO: use a widget
                 allScanned &= organism.analyzed;

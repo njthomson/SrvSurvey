@@ -98,7 +98,7 @@ namespace SrvSurvey
                 // prep known organisms
                 if (body.organisms?.Count > 0)
                 {
-                    foreach (var org in body.organisms)
+                    foreach (var org in body.organisms.ToList())
                     {
                         if (org.entryId > 0)
                         {
@@ -517,7 +517,7 @@ namespace SrvSurvey
                 menuTree.Add(bodyMenu);
 
                 // known organisms
-                foreach (var org in body.organisms ?? new())
+                foreach (var org in body.organisms?.ToList() ?? new())
                 {
                     if (org.entryId == 0) continue;
                     var match = Game.codexRef.matchFromEntryId2(org.entryId);

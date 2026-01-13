@@ -33,6 +33,7 @@ namespace SrvSurvey.forms
             {
                 this.cmdrPlay = Game.activeGame.cmdrPlay;
                 initComboQuests();
+                this.setChildrenEnabled(true);
             }
 
             Util.applyTheme(this, true);
@@ -41,6 +42,9 @@ namespace SrvSurvey.forms
         private void initComboQuests()
         {
             var mapQuests = cmdrPlay.activeQuests.ToDictionary(pq => pq, pq => $"{pq.id} : {pq.quest.title}");
+            if (mapQuests.Count == 0)
+                return;
+
             var match = mapQuests.Keys.FirstOrDefault(x => x.id == selectedQuest);
             comboQuest.DataSource = new BindingSource(mapQuests, null);
 
@@ -87,6 +91,7 @@ namespace SrvSurvey.forms
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             showJson();
+            menuStatus.Text = $"Refreshed: {selectedView} (at: {DateTime.Now:T})";
         }
 
         private void showJson()
@@ -112,6 +117,8 @@ namespace SrvSurvey.forms
 
         private void btnParse_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txtJson.Text)) return;
+
             try
             {
                 var view = comboChapter.SelectedItem as string;
