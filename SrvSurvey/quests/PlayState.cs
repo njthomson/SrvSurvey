@@ -153,11 +153,6 @@ namespace SrvSurvey.quests
             // import quest.json
             var newQuest = JsonConvert.DeserializeObject<Quest>(File.ReadAllText(Path.Combine(folder, "quest.json")))!;
 
-            // import optional desc.md
-            var descFilePath = Path.Combine(folder, "desc.md");
-            if (File.Exists(descFilePath))
-                newQuest.longDesc = File.ReadAllText(descFilePath);
-
             // import messages from .json files
             var msgFiles = Directory.GetFiles(folder, "msg*.json");
             foreach (var filepath in msgFiles)
@@ -175,6 +170,9 @@ namespace SrvSurvey.quests
 
                 newQuest.msgs.AddRange(msgs);
             }
+
+            // import strings from .json files
+            newQuest.strings = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Path.Combine(folder, "strings.json")))!;
 
             // import chapter scripts
             var scriptFiles = Directory.GetFiles(folder, "*.csx");

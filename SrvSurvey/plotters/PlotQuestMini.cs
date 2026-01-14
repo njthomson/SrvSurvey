@@ -63,7 +63,7 @@ namespace SrvSurvey.plotters
             return tt.pad(N.twoFour, N.two);
         }
 
-        #region slogo
+        #region logos
 
         private static void drawLogo32(Graphics g, float x, float y, bool highlight = false)
         {

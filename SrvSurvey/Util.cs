@@ -1577,6 +1577,23 @@ namespace SrvSurvey
         }
 
         /// <summary>
+        /// Continues execution on the main thread only if the Task is successful and yields a non-null result, and the form has not been disposed
+        /// </summary>
+        public static Task @catch(this Task preTask, Action<Exception> func)
+        {
+            return preTask.ContinueWith(postTask =>
+            {
+                // check for firewall problems?
+                if (postTask.Exception != null || !postTask.IsCompletedSuccessfully)
+                    Util.isFirewallProblem(postTask.Exception);
+
+                // exit early if the call did not succeed or returns a null
+                if (postTask.Exception != null) 
+                    func(postTask.Exception.InnerExceptions.Count == 1 ? postTask.Exception.InnerExceptions[0] : postTask.Exception);
+            });
+        }
+
+        /// <summary>
         /// Handle some task, logging errors but otherwise being silent
         /// </summary>
         public static bool justDoIt(this Task preTask, Action? postTask = null)

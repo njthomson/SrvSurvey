@@ -9,9 +9,9 @@ namespace SrvSurvey.quests
         public string publisher;
         public string title;
         public string desc;
-        public string? longDesc;
         public string firstChapter;
         public Dictionary<string, string> objectives = new();
+        public Dictionary<string, string> strings = new();
         /// <summary> Potential messages </summary>
         public List<Msg> msgs = new();
         public Dictionary<string, string> chapters = new();

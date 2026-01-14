@@ -210,8 +210,8 @@ namespace SrvSurvey.widgets
 
         #region draw wrapped text (unscaled)
 
-        private int containerWidth => ctrl?.Width ?? plotter!.width;
-        private int containerHeight => ctrl?.Height ?? plotter!.height;
+        public int containerWidth => ctrl?.Width ?? plotter!.width;
+        public int containerHeight => ctrl?.Height ?? plotter!.height;
 
         public SizeF drawWrapped(float tx, string? txt, Font font)
         {

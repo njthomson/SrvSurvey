@@ -175,5 +175,6 @@ namespace SrvSurvey.widgets
         public static float oneNinety = s(190f);
         public static float twoThirty = s(230f);
         public static float fourHundred = s(400f);
+        public static float fourForty = s(440f);
     }
 }

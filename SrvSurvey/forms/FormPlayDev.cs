@@ -277,6 +277,10 @@ namespace SrvSurvey.forms
 
                 Program.defer(() => initComboQuests());
                 importing = false;
+            }).@catch(ex =>
+            {
+                Game.log($"Import failed: {ex.Message}\r\n\t{ex.StackTrace}");
+                menuStatus.Text = $"Import failed: {ex.Message}";
             }).justDoIt();
         }
 
