@@ -395,6 +395,8 @@ namespace SrvSurvey.quests
         public List<PlayChapter> chapters = new();
         public List<PlayMsg> msgs = new();
 
+        [JsonIgnore] public int unreadMessageCount => msgs.Count(m => !m.read);
+
         public bool processJournalEntry(IJournalEntry entry)
         {
             conduit.dirty = false;
