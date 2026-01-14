@@ -25,39 +25,57 @@ namespace SrvSurvey.plotters
 
         #endregion
 
+        bool showStripe = false;
+
         private PlotQuestMini(Game game, PlotDef def) : base(game, def)
         {
             this.font = GameColors.Fonts.console_8;
         }
 
+        protected override Bitmap getBackgroundImage(Size sz)
+        {
+            return GameGraphics.getBackgroundImage(sz, !showStripe);
+        }
+
         protected override SizeF doRender(Graphics g, TextCursor tt)
         {
             var countUnread = game.cmdrPlay?.activeQuests.Sum(pq => pq.unreadMessageCount) ?? -1;
-            if (countUnread > 0)
+            var hasUnreadMsgs = countUnread > 0;
+            var newShowStripe = hasUnreadMsgs;
+            if (newShowStripe != showStripe)
             {
-                tt.draw(N.eight, $"Unread: {countUnread}");
+                showStripe = newShowStripe;
+                background = getBackgroundImage(this.size);
+                g.DrawImage(background, 0, 0);
+            }
+
+            if (hasUnreadMsgs)
+            {
+                tt.dty = N.ten;
+                drawMsgsN(g, N.ten, tt.dty, false, N.oneSix);
+                tt.draw(N.fourFour, countUnread.ToString(), GameColors.Fonts.console_16);
                 tt.newLine(N.four, true);
             }
 
-            drawLogo16(g, this.width - 20, 10, true);
+            drawLogo16(g, this.width - N.twenty, N.ten, showStripe);
 
-            tt.setMinHeight(30);
-            return tt.pad(N.twoFour, N.six);
+            tt.setMinHeight(32);
+            return tt.pad(N.twoFour, N.two);
         }
 
-        #region quest logo
+        #region slogo
 
-        private static void drawLogo32(Graphics g, int x, int y, bool highlight = false)
+        private static void drawLogo32(Graphics g, float x, float y, bool highlight = false)
         {
             drawLogoN(g, x, y, highlight, 16);
         }
 
-        private static void drawLogo16(Graphics g, int x, int y, bool highlight = false)
+        private static void drawLogo16(Graphics g, float x, float y, bool highlight = false)
         {
             drawLogoN(g, x, y, highlight, 8);
         }
 
-        private static void drawLogoN(Graphics g, int x, int y, bool highlight, int sz)
+        private static void drawLogoN(Graphics g, float x, float y, bool highlight, float sz)
         {
             var sz2 = sz * 2;
 
@@ -72,6 +90,22 @@ namespace SrvSurvey.plotters
             // diagonals
             g.DrawLine(p1, x, y + sz, x + sz, y + sz2);
             g.DrawLine(p1, x + sz, y, x + sz2, y + sz);
+        }
+
+        private static void drawMsgsN(Graphics g, float x, float y, bool highlight, float sz)
+        {
+            var szh = sz / 2f;
+            var szw = sz * 1.75f;
+            var szwh = szw / 2f;
+
+            //var p = highlight ? penOrangeDark : penOrange;
+            var p2 = highlight ? C.Pens.cyan2 : C.Pens.orange2;
+            var p1 = highlight ? C.Pens.cyan1 : C.Pens.orange1;
+
+            // mail envelope
+            g.DrawRectangle(p2, x, y, szw, sz);
+            g.DrawLine(p2, x, y, x + szwh, y + szh);
+            g.DrawLine(p2, x + szw, y, x + szwh, y + szh);
         }
 
         #endregion

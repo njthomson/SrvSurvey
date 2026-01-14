@@ -5,6 +5,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using SrvSurvey.forms;
 using SrvSurvey.game;
+using SrvSurvey.plotters;
 using SrvSurvey.quests.scripting;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -273,6 +274,7 @@ namespace SrvSurvey.quests
                 File.WriteAllText(pubFilepath, JsonConvert.SerializeObject(newQuest, Formatting.Indented));
 
                 BaseForm.get<FormPlayComms>()?.onQuestChanged(newPlayQuest);
+                PlotBase2.invalidate(nameof(PlotQuestMini));
                 onComplete(newPlayQuest);
             }
         }
@@ -418,6 +420,7 @@ namespace SrvSurvey.quests
                 }
 
                 BaseForm.get<FormPlayComms>()?.onQuestChanged(this);
+                PlotBase2.invalidate(nameof(PlotQuestMini));
             }
 
             return conduit.dirty;

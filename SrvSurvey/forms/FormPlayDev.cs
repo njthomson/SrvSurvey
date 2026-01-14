@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
+using SrvSurvey.plotters;
 using SrvSurvey.quests;
 using System.Data;
 
@@ -56,7 +57,7 @@ namespace SrvSurvey.forms
 
         private void comboQuest_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!comboQuest.Enabled || comboQuest.SelectedItem == null) return;
+            //if (!comboQuest.Enabled || comboQuest.SelectedItem == null) return;
             pq = (PlayQuest)comboQuest.SelectedValue!;
             selectedQuest = pq.id;
             selectedView = null;
@@ -96,7 +97,7 @@ namespace SrvSurvey.forms
 
         private void showJson()
         {
-            if (!comboChapter.Enabled) return;
+            //if (!comboChapter.Enabled) return;
             txtJson.ReadOnly = false;
 
             selectedView = comboChapter.SelectedItem as string;
@@ -139,20 +140,26 @@ namespace SrvSurvey.forms
                     }
                     chapter.vars = obj;
                     chapter.pushScriptVars();
+                    txtJson.Text = JsonConvert.SerializeObject(obj, Formatting.Indented);
                 }
                 else if (view == "Objectives")
                 {
                     var obj = JsonConvert.DeserializeObject<Dictionary<string, PlayObjective>>(txtJson.Text);
                     pq.objectives = obj!;
+                    txtJson.Text = JsonConvert.SerializeObject(obj, Formatting.Indented);
                 }
                 else if (view == "Messages")
                 {
                     var obj = JsonConvert.DeserializeObject<List<PlayMsg>>(txtJson.Text);
                     pq.msgs = obj!;
+                    txtJson.Text = JsonConvert.SerializeObject(obj, Formatting.Indented);
                 }
 
                 menuStatus.Text = $"Parsed and updated: {view}";
                 pq.parent.Save();
+
+                BaseForm.get<FormPlayComms>()?.onQuestChanged(pq);
+                PlotBase2.invalidate(nameof(PlotQuestMini));
             }
             catch (Exception ex)
             {

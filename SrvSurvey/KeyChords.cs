@@ -97,6 +97,7 @@ namespace SrvSurvey
             { KeyAction.streamOne, "ALT CTRL O" },
             { KeyAction.adjustVR, "ALT V" },
             { KeyAction.toggleFF, "" },
+            { KeyAction.questShow, "ALT Q"}
         };
 
         public static bool doKeyAction(KeyAction keyAction)
@@ -136,6 +137,7 @@ namespace SrvSurvey
                     case KeyAction.streamOne: return toggleStreamOne();
                     case KeyAction.adjustVR: return adjustVR();
                     case KeyAction.toggleFF: return toggleFF();
+                    case KeyAction.questShow: return questShow();
 
                     default:
                         Game.log($"Unsupported key action: {keyAction}");
@@ -484,6 +486,12 @@ namespace SrvSurvey
             Game.activeGame?.toggleFirstFootfall(null);
             return true;
         }
+
+        private static bool questShow()
+        {
+            BaseForm.show<FormPlayComms>();
+            return true;
+        }
     }
 
     /// <summary>
@@ -546,5 +554,7 @@ namespace SrvSurvey
         track7,
         /// <summary> Track the current location as #8 </summary>
         track8,
+        /// <summary> Show quests window</summary>
+        questShow,
     }
 }

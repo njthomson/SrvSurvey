@@ -211,6 +211,11 @@ namespace SrvSurvey.plotters
 
         protected abstract SizeF doRender(Graphics g, TextCursor tt);
 
+        protected virtual Bitmap getBackgroundImage(Size sz)
+        {
+            return GameGraphics.getBackgroundImage(sz);
+        }
+
         /// <summary> Generate a new frame image </summary>
         public Bitmap render()
         {
@@ -223,7 +228,7 @@ namespace SrvSurvey.plotters
             {
                 // re-create background when missing or size has changed
                 if (this.background == null || this.background.Size != this.size)
-                    this.background = GameGraphics.getBackgroundImage(this.size);
+                    this.background = getBackgroundImage(this.size);
 
                 nextFrame = new Bitmap(this.background);
                 using (var g = Graphics.FromImage(nextFrame))

@@ -42,12 +42,6 @@ namespace SrvSurvey.forms
             }
         }
 
-        public void onNewMessage(PlayMsg newMsg)
-        {
-            if (mode == "msgs")
-                showMsgs();
-        }
-
         public void onQuestChanged(PlayQuest pq)
         {
             if (mode == "quests")
