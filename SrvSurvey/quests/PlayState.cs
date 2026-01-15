@@ -401,8 +401,10 @@ namespace SrvSurvey.quests
         public string id;
         public Dictionary<string, object> vars = new();
         public Dictionary<string, PlayObjective> objectives = new();
-        public DateTimeOffset startTime;
-        public DateTimeOffset endTime;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public DateTimeOffset? startTime;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public DateTimeOffset? endTime;
         public DateTimeOffset watermark; // <-- TODO
         /// <summary> Delivered messages </summary>
         public List<PlayChapter> chapters = new();
@@ -432,9 +434,9 @@ namespace SrvSurvey.quests
             return updateIfDirty();
         }
 
-        public bool updateIfDirty()
+        public bool updateIfDirty(bool force = false)
         {
-            if (!conduit.dirty) return false;
+            if (!conduit.dirty && !force) return false;
 
             foreach (var pc in chapters)
             {
@@ -442,6 +444,8 @@ namespace SrvSurvey.quests
                 foreach (var var in pc.scriptState.Variables)
                     pc.vars[$"{var.Name}|{var.Type}"] = var.Value;
             }
+
+            this.parent.Save();
 
             BaseForm.get<FormPlayComms>()?.onQuestChanged(this);
             PlotBase2.invalidate(nameof(PlotQuestMini));

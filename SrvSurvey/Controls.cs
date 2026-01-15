@@ -2,6 +2,7 @@
 using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SrvSurvey
@@ -782,6 +783,120 @@ namespace SrvSurvey
 
             this.AutoClose = true;
             this.Close(ToolStripDropDownCloseReason.ItemClicked);
+        }
+    }
+
+    public class DrawButton : Button
+    {
+        [Browsable(true)]
+        public Color colorHover;
+        [Browsable(true)]
+        public Color colorPressed;
+        protected bool mouseDown;
+        protected bool highlight;
+        [Browsable(false)]
+        public Action<Graphics, bool, bool>? onRender;
+
+        public DrawButton()
+        {
+            ForeColor = Color.Black;
+            if (DesignMode)
+            {
+                BackColor = Color.Orange;
+                colorHover = Color.Gold;
+                colorPressed = Color.Yellow;
+            }
+            else
+            {
+                SetStyle(ControlStyles.UserPaint, true);
+                SetStyle(ControlStyles.UserMouse, true);
+                SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+                SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+                SetStyle(ControlStyles.ResizeRedraw, true);
+
+                setFoo();
+            }
+        }
+
+        private void setFoo()
+        {
+#if DEBUG
+            // This stops logging code from starting up when custom controls are created in Visual Studio designer
+            if (Process.GetCurrentProcess().ProcessName != "SrvSurvey") return;
+#endif
+
+            BackColor = C.orangeDark;
+            colorHover = C.orange;
+            colorPressed = C.yellow;
+        }
+
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            base.OnMouseEnter(e);
+            highlight = true;
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            base.OnMouseLeave(e);
+            highlight = false;
+            if (DesignMode) return;
+            this.Invalidate();
+        }
+
+        protected override void OnMouseDown(MouseEventArgs mevent)
+        {
+            base.OnMouseDown(mevent);
+            mouseDown = true;
+        }
+
+        protected override void OnMouseUp(MouseEventArgs mevent)
+        {
+            base.OnMouseUp(mevent);
+            mouseDown = false;
+            if (DesignMode) return;
+            this.Invalidate();
+        }
+
+        protected override void OnGotFocus(EventArgs e)
+        {
+            base.OnGotFocus(e);
+            highlight = true;
+        }
+
+        protected override void OnLostFocus(EventArgs e)
+        {
+            base.OnLostFocus(e);
+            highlight = false;
+            mouseDown = false;
+            if (DesignMode) return;
+            this.Invalidate();
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            if (DesignMode)
+            {
+                base.OnPaint(e);
+                return;
+            }
+
+            var bc = this.BackColor;
+            if (mouseDown)
+                bc = colorPressed;
+            else if (highlight)
+                bc = colorHover;
+
+            e.Graphics.Clear(bc);
+
+            if (onRender != null)
+            {
+                onRender(e.Graphics, mouseDown, highlight);
+            }
+            else if (Text != null)
+            {
+                TextRenderer.DrawText(e.Graphics, Text, Font, ClientRectangle, ForeColor);
+            }
         }
     }
 }

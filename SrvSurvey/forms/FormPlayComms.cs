@@ -3,8 +3,8 @@ using SrvSurvey.plotters;
 using SrvSurvey.quests;
 using SrvSurvey.widgets;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing.Drawing2D;
-using System.Text;
 
 namespace SrvSurvey.forms
 {
@@ -12,15 +12,21 @@ namespace SrvSurvey.forms
     internal partial class FormPlayComms : SizableForm
     {
         public PlayState cmdrPlay;
-        public PlayQuest? selectedQuest;
-        public PlayMsg? selectedMsg;
-        public bool expandSelected;
-        private string mode = "msgs";
+        private Control? selectedThing;
+        private string mode = "quests";
+        private Control lastLeftBtn;
+        public Control? lastTListItem;
 
         public FormPlayComms()
         {
             InitializeComponent();
             this.DoubleBuffered = true;
+            this.BackColor = Color.Navy;
+            this.KeyPreview = true;
+            this.lastLeftBtn = btnQuests;
+
+            btnQuests.GotFocus += (s, e) => lastLeftBtn = btnQuests;
+            btnMsgs.GotFocus += (s, e) => lastLeftBtn = btnMsgs;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -38,89 +44,113 @@ namespace SrvSurvey.forms
                 PlayState.load(CommanderSettings.currentOrLastFid).continueOnMain(this, rslt =>
                 {
                     this.cmdrPlay = rslt;
-                    showMsgs();
-                    //showQuests();
+                    onQuestChanged();
                     this.setChildrenEnabled(true);
                 });
             }
             else
             {
                 this.cmdrPlay = Game.activeGame.cmdrPlay;
-                showMsgs();
-                //showQuests();
+                onQuestChanged();
             }
-        }
-
-        public void onQuestChanged(PlayQuest pq)
-        {
-            if (mode == "quests")
-                showQuest(pq);
-            else
-                showMsgs();
         }
 
         private void btnQuests_Click(object sender, EventArgs e)
         {
             this.mode = "quests";
-            showQuests();
+            onQuestChanged();
+        }
+
+        private void btnMsgs_Click(object sender, EventArgs e)
+        {
+            this.mode = "msgs";
+            onQuestChanged();
+        }
+
+        public void onQuestChanged(PlayQuest? pq = null)
+        {
+            if (mode == "quests")
+                showQuests();
+            else
+                showMsgs();
+
+            // TODO: match by name ... the actual instance will have been replaced
+            if (lastTListItem?.Visible == true)
+                lastTListItem.Focus();
+            else if (tlist.Controls.Count > 0)
+                tlist.Controls[0].Focus();
         }
 
         private void showQuests()
         {
             if (!(cmdrPlay.activeQuests.Count > 0)) return;
 
-            expandSelected = false;
-            list0.Items.Clear();
+            clearSelection();
             tlist.Controls.Clear();
             tlist.RowStyles.Clear();
 
-            foreach (var pq in cmdrPlay!.activeQuests)
+            var sorted = cmdrPlay!.activeQuests.OrderBy(q => q.startTime);
+            foreach (var pq in sorted)
             {
-                list0.Items.Add($"{pq.quest.title}", pq.id, pq);
-                tlist.Controls.Add(new PanelQuest(this, pq), 0, tlist.Controls.Count - 1);
-                tlist.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                var btn = new DrawButton()
+                {
+                    Name = pq.id,
+                    Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
+                    Padding = Padding.Empty,
+                    Margin = Padding.Empty,
+                };
+                btn.onRender = (g, m, h) =>
+                {
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
+                    var tt = new TextCursor(g, this);
+                    btn.Height = PanelQuest.drawCollapsed(g, tt, h, pq);
+                };
+                btn.Click += (s, e) =>
+                {
+                    lastTListItem = s as Control;
+                    setSelectedThing(new PanelQuest(this, pq));
+                };
+
+                addRow(btn);
+            }
+        }
+
+        private void addRow(Control ctrl)
+        {
+            tlist.Controls.Add(ctrl, 0, tlist.Controls.Count);
+            tlist.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+        }
+
+        private void setSelectedThing(Control ctrl)
+        {
+            selectedThing = ctrl;
+            bigPanel.Controls.Add(ctrl);
+            ctrl.Width = bigPanel.Width;
+            tlist.Hide();
+            ctrl.Focus();
+        }
+
+        public void clearSelection()
+        {
+            if (selectedThing != null)
+            {
+                bigPanel.Controls.Remove(selectedThing);
+                selectedThing = null;
             }
 
-            if (list0.Items.Count > 0)
-                list0.Items[0].Selected = true;
-        }
-
-        public void selectQuest(PlayQuest? pq, bool expand = false)
-        {
-            selectedQuest = pq;
-            selectedMsg = null;
-            expandSelected = expand;
-            tlist.Invalidate(true);
-        }
-
-        public void selectMessage(PlayMsg? msg, bool expand = false)
-        {
-            selectedMsg = msg;
-            selectedQuest = null;
-            expandSelected = expand;
-
-            // remember this message has now been read
-            if (msg?.read == false)
-            {
-                msg.read = true;
-                cmdrPlay.Save();
-            }
-
-            tlist.Invalidate(true);
-
-        }
-
-        private void btnMsgs_Click(object sender, EventArgs e)
-        {
-            this.mode = "msgs";
-            expandSelected = false;
-            showMsgs();
+            tlist.Show();
+            if (lastTListItem != null)
+                lastTListItem.Focus();
+            else if (tlist.Controls.Count > 0)
+                tlist.Controls[0].Focus();
+            else
+                lastLeftBtn.Focus();
         }
 
         private void showMsgs()
         {
             if (!(cmdrPlay.activeQuests.Count > 0)) return;
-            list0.Items.Clear();
+            clearSelection();
             tlist.Controls.Clear();
             tlist.RowStyles.Clear();
 
@@ -130,71 +160,110 @@ namespace SrvSurvey.forms
                 .ToList();
             Game.log($"showing {allMsgs.Count} msgs");
 
-            foreach (var msg in allMsgs)
+            foreach (var pm in allMsgs)
             {
-                tlist.Controls.Add(new PanelMsg(this, msg.parent, msg), 0, tlist.Controls.Count);
-                tlist.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            }
+                var qm = pm.parent.quest.msgs.Find(m => m.id == pm.id)!;
 
+                var btn = new DrawButton()
+                {
+                    Name = pm.id,
+                    Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
+                    Padding = Padding.Empty,
+                    Margin = Padding.Empty,
+                };
+                btn.onRender = (g, m, h) =>
+                {
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
+                    var tt = new TextCursor(g, btn);
+                    btn.Height = PanelMsg.drawCollapsed(g, tt, h, pm, qm);
+                };
+                btn.Click += (s, e) =>
+                {
+                    lastTListItem = s as Control;
+
+                    // remember this message has now been read
+                    if (!pm.read)
+                    {
+                        pm.read = true;
+                        pm.parent.updateIfDirty(true);
+                    }
+
+                    setSelectedThing(new PanelMsg(this, pm, qm));
+                };
+
+                addRow(btn);
+            }
         }
 
-        private void list0_SelectedIndexChanged(object sender, EventArgs e)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (list0.SelectedItems.Count == 0) return;
+            //Debug.WriteLine($"!1 {keyData} / {this.ActiveControl?.Name} / {selectedThing?.Name}");
 
-            if (mode == "quests")
+            if (keyData == Keys.Enter) return base.ProcessCmdKey(ref msg, keyData);
+
+            if (ActiveControl is PanelQuest)
             {
-                selectedQuest = list0.SelectedItems[0].Tag as PlayQuest;
-                showQuest(selectedQuest);
+                if (keyData == Keys.Left)
+                    lastLeftBtn.Focus();
+                else
+                    this.GetNextControl(selectedThing, true)?.Focus();
+                return true;
             }
-            else
+            else if (ActiveControl is PanelMsg)
             {
-                selectedQuest = list0.SelectedItems[0].SubItems[0].Tag as PlayQuest;
-                showMsg(selectedQuest, list0.SelectedItems[0].Tag as PlayMsg);
+                if (keyData == Keys.Left && ActiveControl.Left < 40)
+                {
+                    lastLeftBtn.Focus();
+                    return true;
+                }
+                else
+                {
+                    this.GetNextControl(selectedThing, true)?.Focus();
+                    return true;
+                }
             }
-            tlist.Invalidate(true);
-        }
-
-        private void showQuest(PlayQuest? pq)
-        {
-            if (pq == null) return;
-
-            var txt = new StringBuilder();
-            txt.AppendLine($"'{pq.quest.title}' ({pq.id})");
-            txt.AppendLine();
-            txt.AppendLine($"Objectives:");
-            foreach (var key in pq.quest.objectives.Keys)
+            else if (this.ActiveControl?.Parent is PanelMsg)
             {
-                var po = pq.objectives.GetValueOrDefault(key);
-                var state = po == null ? "?" : $"{po.state} {po.current} of {po.total}".ToUpper();
-                txt.AppendLine($"> {key} : [{state}] {pq.quest.objectives[key]}");
+                if (keyData == Keys.Left && ActiveControl.Left < 40)
+                {
+                    lastLeftBtn.Focus();
+                    return true;
+                }
+            }
+            else if (this.ActiveControl == btnQuests || this.ActiveControl == btnMsgs)
+            {
+                if (keyData == Keys.Right)
+                {
+                    if (selectedThing != null)
+                    {
+                        this.GetNextControl(selectedThing, true)?.Focus();
+                    }
+                    else
+                    {
+                        var next = lastTListItem ?? this.GetNextControl(tlist, true);
+
+                        if (next == null)
+                        {
+                            Debug.WriteLine($"??{this.ActiveControl?.Name}");
+                        }
+
+                        next?.Focus();
+                    }
+                    return true;
+                }
+                else if (keyData == Keys.Left)
+                    return true;
+            }
+            if (this.ActiveControl?.Parent == tlist)
+            {
+                if (keyData == Keys.Left)
+                {
+                    lastLeftBtn.Focus();
+                    return true;
+                }
             }
 
-            txt.AppendLine();
-            txt.AppendLine($"Description:");
-            txt.AppendLine(pq.quest.desc);
-
-            txtStuff.Text = txt.ToString();
-        }
-
-        private void showMsg(PlayQuest? pq, PlayMsg? pm)
-        {
-            if (pq == null || pm == null) return;
-
-            var msg = pq.quest.msgs.Find(m => m.id == pm.id);
-
-            var txt = new StringBuilder();
-            txt.AppendLine($"From:       {pm.from ?? msg?.from}");
-            var subject = pm.subject ?? msg?.subject;
-            if (subject != null) txt.AppendLine($"Subject:   {subject}");
-            txt.AppendLine("--------------------------------------------------------");
-            txt.AppendLine(pm.body ?? msg?.body);
-            txt.AppendLine("--------------------------------------------------------");
-
-            if (pm.actions != null)
-                txt.AppendLine($"actions: {pm.actions}");
-
-            txtStuff.Text = txt.ToString();
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 
@@ -205,6 +274,7 @@ namespace SrvSurvey.forms
 
         public PanelQuest(FormPlayComms form, PlayQuest pq)
         {
+            this.Name = "PanelQuest";
             this.form = form;
             this.pq = pq;
             this.Padding = Padding.Empty;
@@ -214,25 +284,28 @@ namespace SrvSurvey.forms
             this.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             this.ResizeRedraw = true;
             this.DoubleBuffered = true;
+            this.TabStop = true;
 
             addButtons();
         }
 
         private void addButtons()
         {
-            var btnB = new FlatButton()
+            var btnB = new DrawButton()
             {
+                Name = "questBack",
                 Anchor = AnchorStyles.Left | AnchorStyles.Bottom,
                 Text = "Back",
                 Left = 6,
-                Visible = false,
             };
+
             btnB.Top = this.Height - btnB.Height - 6;
             btnB.Click += BtnB_Click;
             this.Controls.Add(btnB);
 
             var btnP = new FlatButton()
             {
+                Name = "questPause",
                 Anchor = AnchorStyles.Right | AnchorStyles.Bottom,
                 Text = "Pause",
                 Visible = false,
@@ -244,13 +317,7 @@ namespace SrvSurvey.forms
 
         private void BtnB_Click(object? sender, EventArgs e)
         {
-            form.selectQuest(null, false);
-        }
-
-        protected override void OnClick(EventArgs e)
-        {
-            base.OnClick(e);
-            form.selectQuest(pq, !form.expandSelected);
+            form.clearSelection();
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -261,18 +328,10 @@ namespace SrvSurvey.forms
             g.SmoothingMode = SmoothingMode.AntiAlias;
             var tt = new TextCursor(e.Graphics, this);
 
-            var selected = form.selectedQuest == pq;
-            foreach (Control child in Controls) child.Visible = selected && form.expandSelected;
-
-            if (!form.expandSelected)
-                this.Height = drawCollapsed(g, tt, selected);
-            else if (selected)
-                this.Height = drawExpanded(g, tt);
-            else
-                this.Height = 1;
+            this.Height = drawExpanded(g, tt);
         }
 
-        int drawCollapsed(Graphics g, TextCursor tt, bool selected)
+        public static int drawCollapsed(Graphics g, TextCursor tt, bool selected, PlayQuest pq)
         {
             var c = selected ? Color.Black : C.orange;
             g.Clear(selected ? C.orange : Color.Black);
@@ -287,7 +346,7 @@ namespace SrvSurvey.forms
             {
                 foreach (var (key, obj) in pq.objectives)
                     if (obj.state == PlayObjective.State.visible)
-                        drawObjective(g, tt, c, key, obj);
+                        drawObjective(g, tt, c, key, obj, pq);
             }
             else
             {
@@ -299,7 +358,7 @@ namespace SrvSurvey.forms
             return (int)(tt.dty + N.six);
         }
 
-        void drawObjective(Graphics g, TextCursor tt, Color c, string key, PlayObjective obj)
+        static void drawObjective(Graphics g, TextCursor tt, Color c, string key, PlayObjective obj, PlayQuest pq)
         {
             var cc = c;
 
@@ -352,7 +411,7 @@ namespace SrvSurvey.forms
             if (pq.objectives.Any())
             {
                 foreach (var (key, obj) in pq.objectives)
-                    drawObjective(g, tt, c, key, obj);
+                    drawObjective(g, tt, c, key, obj, pq);
             }
             else
             {
@@ -384,11 +443,13 @@ namespace SrvSurvey.forms
         public readonly PlayMsg pm;
         public readonly Msg? qm;
 
-        public PanelMsg(FormPlayComms form, PlayQuest pq, PlayMsg msg)
+        public PanelMsg(FormPlayComms form, PlayMsg msg, Msg qm)
         {
+            this.Name = "PanelMsg";
             this.form = form;
-            this.pq = pq;
+            this.pq = msg.parent;
             this.pm = msg;
+            this.qm = qm;
             this.Padding = Padding.Empty;
             this.Margin = Padding.Empty;
             this.ForeColor = C.orange;
@@ -396,67 +457,70 @@ namespace SrvSurvey.forms
             this.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             this.ResizeRedraw = true;
             this.DoubleBuffered = true;
+            this.TabStop = true;
 
-            this.qm = pq.quest.msgs.Find(m => m.id == pm.id)!;
             addButtons();
         }
 
         private void addButtons()
         {
-            var btnB = new FlatButton()
+            if (qm?.actions != null)
             {
+                foreach (var (key, txt) in qm.actions)
+                {
+                    var btn = new DrawButton()
+                    {
+                        Name = $"msg-{key}",
+                        Tag = key,
+                        Font = new Font("Segoe UI Emoji", 10F, FontStyle.Regular, GraphicsUnit.Point, 0),
+                        Anchor = AnchorStyles.Left | AnchorStyles.Bottom,
+                        Text = $"◊ {txt}",
+                        Left = 24,
+                        AutoSize = true,
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        UseCompatibleTextRendering = true,
+                        TabIndex = this.Controls.Count,
+                    };
+                    btn.Click += Btn_Click;
+                    this.Controls.Add(btn);
+                }
+            }
+
+            var btnB = new DrawButton()
+            {
+                Name = "msgBack",
                 Anchor = AnchorStyles.Left | AnchorStyles.Bottom,
                 Text = "Back",
                 Left = 6,
-                Visible = false,
+                TabIndex = this.Controls.Count,
             };
             btnB.Top = this.Height - btnB.Height - 6;
             btnB.Click += BtnB_Click;
             this.Controls.Add(btnB);
 
-            var btnD = new FlatButton()
+            var btnD = new DrawButton()
             {
+                Name = "questDelete",
                 Anchor = AnchorStyles.Right | AnchorStyles.Bottom,
                 Text = "Delete",
-                Visible = false,
+                TabIndex = this.Controls.Count,
             };
             btnD.Left = this.Width - btnD.Width - 6;
             btnD.Top = this.Height - btnD.Height - 6;
             btnD.Click += BtnD_Click;
             this.Controls.Add(btnD);
-
-
-            if (qm?.actions == null) return;
-
-            foreach (var (key, txt) in qm.actions)
-            {
-                var btn = new FlatButton()
-                {
-                    Tag = key,
-                    Font = new Font("Segoe UI Emoji", 10F, FontStyle.Regular, GraphicsUnit.Point, 0),
-                    Anchor = AnchorStyles.Left | AnchorStyles.Bottom,
-                    Text = $"◊ {txt}",
-                    Left = 24,
-                    AutoSize = true,
-                    Visible = false,
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    UseCompatibleTextRendering = true,
-                };
-                btn.Click += Btn_Click;
-                this.Controls.Add(btn);
-            }
         }
 
         private void BtnB_Click(object? sender, EventArgs e)
         {
-            form.selectMessage(null, false);
+            form.clearSelection();
         }
 
         private void BtnD_Click(object? sender, EventArgs e)
         {
             pq.deleteMsg(pm.id);
             pq.updateIfDirty();
-            form.selectMessage(null, false);
+            form.clearSelection();
         }
 
         private void Btn_Click(object? sender, EventArgs e)
@@ -467,13 +531,7 @@ namespace SrvSurvey.forms
 
             pq.invokeMessageAction(pm.chapter!, actionId);
             pq.updateIfDirty();
-            form.selectMessage(pm, false);
-        }
-
-        protected override void OnClick(EventArgs e)
-        {
-            base.OnClick(e);
-            form.selectMessage(pm, !form.expandSelected);
+            form.clearSelection();
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -485,33 +543,40 @@ namespace SrvSurvey.forms
             var tt = new TextCursor(e.Graphics, this);
             tt.dty = N.four;
 
-            var selected = form.selectedMsg == pm;
-            foreach (Control child in Controls) child.Visible = selected && form.expandSelected;
-
-            if (!form.expandSelected)
-                this.Height = drawCollapsed(g, tt, selected);
-            else if (selected)
-                this.Height = drawExpanded(g, tt);
-            else
-                this.Height = 1;
+            this.Height = drawExpanded(g, tt);
         }
 
-        int drawCollapsed(Graphics g, TextCursor tt, bool selected)
+        public static int drawCollapsed(Graphics g, TextCursor tt, bool selected, PlayMsg pm, Msg qm)
         {
-            tt.color = pm.read ? C.orange : C.cyan;
+            g.Clear(selected ? C.orange : Color.Black);
+            tt.dty = N.four;
 
-            PlotQuestMini.drawMsgsN(g, 6, 10, 16, !pm.read);
+            tt.color = pm.read ? C.orange : C.cyan;
+            var p = !pm.read ? C.Pens.cyan2r : C.Pens.orange2r;
+
+            if (selected)
+            {
+                tt.color = Color.Black;
+                p = C.Pens.black2;
+            }
+
+            PlotQuestMini.drawMsgsN(g, N.six, N.ten, N.oneSix, p);
 
             var time = pm.received.Subtract(DateTime.Now).TotalDays < 1
                 ? pm.received.ToString("HH:mm")
                 : pm.received.AddYears(1286).UtcDateTime.ToString("dd MMM yyyy - HH:mm");
-            tt.drawRight(Width - 20, time, null, GameColors.Fonts.gothic_7);
-            tt.draw(40, pm.from ?? qm?.from, GameColors.Fonts.gothic_8);
-            tt.newLine(-4);
+
+            tt.drawRight(tt.containerWidth - N.six, time, null, GameColors.Fonts.gothic_7);
+            tt.draw(N.forty, pm.from ?? qm?.from, GameColors.Fonts.gothic_8);
+            tt.newLine(-N.four);
 
             var subject = pm.subject ?? qm?.subject ?? pm.body ?? qm?.body;
-            tt.draw(40, subject, GameColors.Fonts.gothic_10);
-            tt.newLine(4);
+            // ellipse the subject if it is too wide
+            var flags = tt.flags;
+            tt.flags |= TextFormatFlags.SingleLine | TextFormatFlags.EndEllipsis;
+            tt.drawWrapped(N.forty, tt.containerWidth - (int)N.ten, subject, GameColors.Fonts.gothic_10);
+            tt.flags = flags;
+            tt.newLine(N.four);
 
             return (int)tt.dty;
         }
@@ -521,55 +586,57 @@ namespace SrvSurvey.forms
             tt.font = GameColors.Fonts.gothic_12B;
             tt.color = C.orange;
 
-            PlotQuestMini.drawMsgsN(g, 6, 10, 24, false);
+            PlotQuestMini.drawMsgsN(g, N.ten, N.ten, N.twoFour, C.Pens.orange2r);
 
-            tt.draw(64, "Sent:", GameColors.Fonts.gothic_8);
-            tt.draw(120, pm.received.AddYears(1286).UtcDateTime.ToString("dd MMM yyyy - HH:mm"));
+            tt.draw(N.sixFour, "Sent:", GameColors.Fonts.gothic_8);
+            tt.draw(N.oneTwenty, pm.received.AddYears(1286).UtcDateTime.ToString("dd MMM yyyy - HH:mm"));
             tt.newLine();
 
-            tt.draw(64, "From:", GameColors.Fonts.gothic_8);
-            tt.draw(120, pm.from ?? qm?.from);
+            tt.draw(N.sixFour, "From:", GameColors.Fonts.gothic_8);
+            tt.draw(N.oneTwenty, pm.from ?? qm?.from);
             tt.newLine();
 
             var subject = pm.subject ?? qm?.subject;
             if (subject != null)
             {
-                tt.draw(64, "Subject:", GameColors.Fonts.gothic_8);
-                tt.draw(120, subject);
+                tt.draw(N.sixFour, "Subject:", GameColors.Fonts.gothic_8);
+                tt.draw(N.oneTwenty, subject);
                 tt.newLine();
             }
-            tt.dty += 4;
+            tt.dty += N.four;
 
             // body with lines
-            g.DrawLine(C.Pens.orangeDark2, 6, tt.dty, Width - 4, tt.dty);
-            tt.dty += 6;
-            tt.drawWrapped(12, Width - 12, pm.body ?? qm?.body, GameColors.Fonts.gothic_12);
-            tt.newLine(6);
-            g.DrawLine(C.Pens.orangeDark2, 6, tt.dty, Width - 4, tt.dty);
-            tt.dty += 4;
+            g.DrawLine(C.Pens.orangeDark2, N.six, tt.dty, Width - N.four, tt.dty);
+            tt.dty += N.six;
+            tt.drawWrapped(N.oneTwo, Width - (int)N.oneTwo, pm.body ?? qm?.body, GameColors.Fonts.gothic_12);
+            tt.newLine(N.six);
+            g.DrawLine(C.Pens.orangeDark2, N.six, tt.dty, Width - N.four, tt.dty);
+            tt.dty += N.four;
+
+            // TODO: show list of strings to copy to clipboard?
 
             // any response actions?
             var actions = pm.actions ?? qm?.actions?.Keys.ToArray();
             if (actions != null)
             {
-                tt.draw(12, "Respond:", C.orangeDark, GameColors.Fonts.gothic_10);
-                tt.newLine(-4);
+                tt.draw(N.oneTwo, "Respond:", C.orangeDark, GameColors.Fonts.gothic_10);
+                tt.newLine(-N.four);
                 foreach (Button btn in Controls)
                 {
                     if (btn.Tag == null) continue;
 
-                    btn.Top = (int)tt.dty + 8;
-                    tt.dty += btn.Height + 8;
+                    btn.Top = (int)(tt.dty + N.eight);
+                    tt.dty += btn.Height + N.eight;
                 }
 
                 // final line
-                tt.dty += 10;
-                g.DrawLine(C.Pens.orangeDark2, 6, tt.dty, Width - 4, tt.dty);
-                tt.dty += 4;
+                tt.dty += N.ten;
+                g.DrawLine(C.Pens.orangeDark2, N.six, tt.dty, Width - N.four, tt.dty);
+                tt.dty += N.four;
             }
 
             // allow space for buttons along the bottom
-            tt.dty += 12 + Controls[0].Height;
+            tt.dty += N.oneTwo + Controls[0].Height;
             return (int)tt.dty;
         }
     }
