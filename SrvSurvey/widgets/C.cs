@@ -44,19 +44,29 @@ namespace SrvSurvey.widgets
         public static Color green = c("green");
         public static Color greenDark = c("greenDark");
 
+        public static Color black = c("black");
+        public static Color menuGold = c("menuGold");
+        public static Color grey = c("grey");
+
         #endregion
 
         public static class Pens
         {
             public static Pen orange1 = orange.toPen(1);
             public static Pen orange2 = orange.toPen(2);
-            public static Pen orange2r = orange.toPen(2, LineCap.Round);
             public static Pen orange4 = orange.toPen(4);
+
+            public static Pen orange2r = orange.toPen(2, LineCap.Round);
+            public static Pen orange3r = orange.toPen(3, LineCap.Round);
+            public static Pen orange4r = orange.toPen(4, LineCap.Round);
 
             public static Pen orangeDark1 = orangeDark.toPen(1);
             public static Pen orangeDark2 = orangeDark.toPen(2);
             public static Pen orangeDark3 = orangeDark.toPen(3);
             public static Pen orangeDark4 = orangeDark.toPen(4);
+
+            public static Pen orangeDark2r = orangeDark.toPen(2, LineCap.Round);
+            public static Pen orangeDark3r = orangeDark.toPen(3, LineCap.Round);
 
             public static Pen cyan1 = cyan.toPen(1);
             public static Pen cyan2 = cyan.toPen(2);

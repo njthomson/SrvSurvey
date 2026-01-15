@@ -38,8 +38,8 @@
             statusStrip1 = new StatusStrip();
             menuMore = new ToolStripDropDownButton();
             menuImportFolder = new ToolStripMenuItem();
-            menuWatchJournal = new ToolStripMenuItem();
             menuOpenComms = new ToolStripMenuItem();
+            menuWatchJournal = new ToolStripMenuItem();
             menuStatus = new ToolStripStatusLabel();
             checkWatchFolder = new CheckBox();
             btnRefresh = new Button();
@@ -55,7 +55,7 @@
             txtJson.ReadOnly = true;
             txtJson.ScrollBars = ScrollBars.Both;
             txtJson.Size = new Size(677, 317);
-            txtJson.TabIndex = 1;
+            txtJson.TabIndex = 7;
             // 
             // label1
             // 
@@ -63,7 +63,7 @@
             label1.Location = new Point(46, 9);
             label1.Name = "label1";
             label1.Size = new Size(41, 15);
-            label1.TabIndex = 3;
+            label1.TabIndex = 0;
             label1.Text = "Quest:";
             // 
             // comboQuest
@@ -75,7 +75,7 @@
             comboQuest.Location = new Point(93, 6);
             comboQuest.Name = "comboQuest";
             comboQuest.Size = new Size(577, 23);
-            comboQuest.TabIndex = 4;
+            comboQuest.TabIndex = 1;
             comboQuest.ValueMember = "Key";
             comboQuest.SelectedIndexChanged += comboQuest_SelectedIndexChanged;
             // 
@@ -87,7 +87,7 @@
             comboChapter.Location = new Point(93, 35);
             comboChapter.Name = "comboChapter";
             comboChapter.Size = new Size(677, 23);
-            comboChapter.TabIndex = 6;
+            comboChapter.TabIndex = 4;
             comboChapter.SelectedIndexChanged += comboChapter_SelectedIndexChanged;
             // 
             // label2
@@ -96,7 +96,7 @@
             label2.Location = new Point(52, 38);
             label2.Name = "label2";
             label2.Size = new Size(35, 15);
-            label2.TabIndex = 5;
+            label2.TabIndex = 3;
             label2.Text = "View:";
             // 
             // btnParse
@@ -104,7 +104,7 @@
             btnParse.Location = new Point(12, 64);
             btnParse.Name = "btnParse";
             btnParse.Size = new Size(75, 23);
-            btnParse.TabIndex = 7;
+            btnParse.TabIndex = 5;
             btnParse.Text = "&Parse";
             btnParse.UseVisualStyleBackColor = true;
             btnParse.Click += btnParse_Click;
@@ -136,13 +136,6 @@
             menuImportFolder.Text = "Import quest folder...";
             menuImportFolder.Click += menuImportFolder_Click;
             // 
-            // menuWatchJournal
-            // 
-            menuWatchJournal.Name = "menuWatchJournal";
-            menuWatchJournal.Size = new Size(197, 22);
-            menuWatchJournal.Text = "Watch journal events ...";
-            menuWatchJournal.Click += menuWatchJournal_Click;
-            // 
             // menuOpenComms
             // 
             menuOpenComms.Name = "menuOpenComms";
@@ -150,12 +143,19 @@
             menuOpenComms.Text = "Open comms ...";
             menuOpenComms.Click += menuOpenComms_Click;
             // 
+            // menuWatchJournal
+            // 
+            menuWatchJournal.Name = "menuWatchJournal";
+            menuWatchJournal.Size = new Size(197, 22);
+            menuWatchJournal.Text = "Watch journal events ...";
+            menuWatchJournal.Click += menuWatchJournal_Click;
+            // 
             // menuStatus
             // 
             menuStatus.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
             menuStatus.BorderStyle = Border3DStyle.SunkenOuter;
             menuStatus.Name = "menuStatus";
-            menuStatus.Size = new Size(707, 17);
+            menuStatus.Size = new Size(738, 17);
             menuStatus.Spring = true;
             menuStatus.TextAlign = ContentAlignment.MiddleLeft;
             // 
@@ -166,7 +166,7 @@
             checkWatchFolder.Location = new Point(676, 8);
             checkWatchFolder.Name = "checkWatchFolder";
             checkWatchFolder.Size = new Size(94, 19);
-            checkWatchFolder.TabIndex = 9;
+            checkWatchFolder.TabIndex = 2;
             checkWatchFolder.Text = "&Watch folder";
             checkWatchFolder.UseVisualStyleBackColor = true;
             checkWatchFolder.CheckedChanged += checkWatchFolder_CheckedChanged;
@@ -176,7 +176,7 @@
             btnRefresh.Location = new Point(12, 93);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(75, 23);
-            btnRefresh.TabIndex = 10;
+            btnRefresh.TabIndex = 6;
             btnRefresh.Text = "&Refresh";
             btnRefresh.UseVisualStyleBackColor = true;
             btnRefresh.Click += btnRefresh_Click;

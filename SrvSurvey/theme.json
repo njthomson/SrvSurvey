@@ -21,6 +21,9 @@
   "yellow": [ 255, 255, 255, 0 ],
   "green": [ 255, 0, 255, 0 ],
   "greenDark": [ 255, 0, 139, 0 ],
+  "black": [ 255, 0, 0, 0 ],
+  "menuGold": [ 255, 255, 185, 0 ],
+  "grey": [ 255, 100, 100, 100 ],
 
   "bio": {
     "gold": [ 255, 255, 215, 0 ],
@@ -46,6 +49,6 @@
   "fcz": {
     "checkpoint": "yellow",
     "checkpointLocal": "green",
-    "powerPost":  [ 255, 218, 165, 32 ]
+    "powerPost": [ 255, 218, 165, 32 ]
   }
 }

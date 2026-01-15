@@ -9,7 +9,7 @@ namespace SrvSurvey.forms
     [TrackPosition, Draggable]
     internal partial class FormPlayDev : SizableForm
     {
-        private PlayState cmdrPlay;
+        public PlayState cmdrPlay;
         private PlayQuest pq;
         private FileSystemWatcher? folderWatcher;
         private string? selectedQuest;

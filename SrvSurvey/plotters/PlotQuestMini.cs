@@ -39,7 +39,7 @@ namespace SrvSurvey.plotters
 
         protected override SizeF doRender(Graphics g, TextCursor tt)
         {
-            var countUnread = game.cmdrPlay?.activeQuests.Sum(pq => pq.unreadMessageCount) ?? -1;
+            var countUnread = game.cmdrPlay?.messagesUnread ?? -1;
             var hasUnreadMsgs = countUnread > 0;
             var newShowStripe = hasUnreadMsgs;
             if (newShowStripe != showStripe)
@@ -52,12 +52,12 @@ namespace SrvSurvey.plotters
             if (hasUnreadMsgs)
             {
                 tt.dty = N.ten;
-                drawMsgsN(g, N.ten, tt.dty, N.oneSix, C.Pens.orange2r);
+                drawEnvelope(g, N.ten, tt.dty, N.threeTwo, C.Pens.orange2r);
                 tt.draw(N.fourFour, countUnread.ToString(), GameColors.Fonts.console_16);
                 tt.newLine(N.four, true);
             }
 
-            drawLogo16(g, this.width - N.twenty, N.ten, showStripe);
+            drawLogo16(g, this.width - N.twenty, N.twenty, showStripe);
 
             tt.setMinHeight(32);
             return tt.pad(N.twoFour, N.two);
@@ -67,42 +67,76 @@ namespace SrvSurvey.plotters
 
         private static void drawLogo32(Graphics g, float x, float y, bool highlight = false)
         {
-            drawLogoN(g, x, y, highlight, 16);
+            drawLogo(g, x, y, highlight, 16);
         }
 
         private static void drawLogo16(Graphics g, float x, float y, bool highlight = false)
         {
-            drawLogoN(g, x, y, highlight, 8);
+            drawLogo(g, x, y, highlight, 8);
         }
 
-        private static void drawLogoN(Graphics g, float x, float y, bool highlight, float sz)
+        public static void drawLogo(Graphics g, float x, float y, bool highlight, float sz)
         {
-            var sz2 = sz * 2;
+            var half = sz / 2;
 
+            var fat = sz >= 36;
+            var p2 = highlight ? (fat ? C.Pens.cyan4 : C.Pens.cyan2) : (fat ? C.Pens.orange4 : C.Pens.orange2);
+            var p1 = highlight ? (fat ? C.Pens.cyan2 : C.Pens.cyan1) : (fat ? C.Pens.orange2 : C.Pens.orange1);
             var b = highlight ? C.Brushes.cyanDark : C.Brushes.orangeDark;
-            var p2 = highlight ? C.Pens.cyan2 : C.Pens.orange2;
-            var p1 = highlight ? C.Pens.cyan1 : C.Pens.orange1;
 
-            g.FillRectangle(b, x, y, sz, sz);
-            g.FillRectangle(b, x + sz, y + sz, sz, sz);
-            g.DrawLine(p2, x + sz, y, x + sz, y + sz2);
-            g.DrawLine(p2, x, y + sz, x + sz2, y + sz);
+            g.FillRectangle(b, x, y, half, half);
+            g.FillRectangle(b, x + half, y + half, half, half);
+            g.DrawLine(p2, x + half, y, x + half, y + sz);
+            g.DrawLine(p2, x, y + half, x + sz, y + half);
             // diagonals
-            g.DrawLine(p1, x, y + sz, x + sz, y + sz2);
-            g.DrawLine(p1, x + sz, y, x + sz2, y + sz);
+            g.DrawLine(p1, x, y + half, x + half, y + sz);
+            g.DrawLine(p1, x + half, y, x + sz, y + half);
         }
 
-        public static void drawMsgsN(Graphics g, float x, float y, float sz, Pen p)
+        public static void drawEnvelope(Graphics g, float x, float y, float sz, Pen p)
         {
-            var szh = sz / 2f;
+            var downHeight = sz * 0.4f;
+            var widthHalf = sz / 2f;
+
+            // mail envelope
+            g.DrawRectangle(p, x, y, sz, sz * 0.7f);
+            g.DrawLine(p, x, y, x + widthHalf, y + downHeight);
+            g.DrawLine(p, x + sz, y, x + widthHalf, y + downHeight);
+        }
+
+        public static void drawPage(Graphics g, float x, float y, float sz, Pen p)
+        {
+            var szh = sz * 0.6f;
             var szw = sz * 1.75f;
             var szwh = szw / 2f;
 
+            // page
+            var ws = sz * 0.3f;
+            var wl = sz * 0.55f;
 
+            var h = sz * 0.16f;
+            g.DrawRectangle(p, x, y, sz * 0.8f, sz);
+            g.DrawLineR(p, x + 6, (int)Math.Floor(y + h), ws, 0);
+            g.DrawLineR(p, x + 6, (int)Math.Floor(y + h * 2), wl, 0);
+            g.DrawLineR(p, x + 6, (int)Math.Floor(y + h * 3), wl, 0);
+            g.DrawLineR(p, x + 6, (int)Math.Floor(y + h * 4), wl, 0);
+            g.DrawLineR(p, x + 6 + wl, (int)Math.Floor(y + h * 5), -ws, 0);
+        }
+
+        public static void drawBackArrow(Graphics g, float x, float y, float sz, Pen p)
+        {
+            var bit = sz * 0.2f;
+            var stick = sz * 0.4f;
+            var stick2= sz * 0.8f;
+            //var widthHalf = sz / 2f;
+
+            y += bit;
             // mail envelope
-            g.DrawRectangle(p, x, y, szw, sz);
-            g.DrawLine(p, x, y, x + szwh, y + szh);
-            g.DrawLine(p, x + szw, y, x + szwh, y + szh);
+            g.DrawLineR(p, x, y, stick2, 0);
+            g.DrawLineR(p, x + stick2, y, 0, stick);
+
+            g.DrawLineR(p, x, y, bit, bit);
+            g.DrawLineR(p, x, y, bit, -bit);
         }
 
         #endregion

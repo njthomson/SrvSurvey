@@ -139,6 +139,9 @@ namespace SrvSurvey.quests
 
         #endregion
 
+        [JsonIgnore] public int messagesTotal => activeQuests.Sum(q => q.msgs.Count);
+        [JsonIgnore] public int messagesUnread => activeQuests.Sum(pq => pq.unreadMessageCount);
+
         public void processJournalEntry(IJournalEntry entry)
         {
             var dirty = false;

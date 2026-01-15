@@ -152,6 +152,7 @@ namespace SrvSurvey.widgets
         public static float fourFour = s(44f);
         public static float fourTwo = s(42f);
         public static float fourSix = s(46f);
+        public static float fourEight = s(48f);
         public static float fifty = s(50f);
         public static float fiveTwo = s(52f);
         public static float fiveFive = s(55f);

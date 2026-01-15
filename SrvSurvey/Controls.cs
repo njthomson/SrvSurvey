@@ -788,14 +788,14 @@ namespace SrvSurvey
 
     public class DrawButton : Button
     {
-        [Browsable(true)]
-        public Color colorHover;
-        [Browsable(true)]
-        public Color colorPressed;
-        protected bool mouseDown;
-        protected bool highlight;
-        [Browsable(false)]
-        public Action<Graphics, bool, bool>? onRender;
+        public Color BackColorHover;
+        public Color BackColorPressed;
+        public Color BackColorDisabled;
+        public Color ForeColorHover;
+        public Color ForeColorPressed;
+        public Color ForeColorDisabled;
+        public bool mouseDown { get; private set; }
+        public bool highlight { get; private set; }
 
         public DrawButton()
         {
@@ -803,8 +803,9 @@ namespace SrvSurvey
             if (DesignMode)
             {
                 BackColor = Color.Orange;
-                colorHover = Color.Gold;
-                colorPressed = Color.Yellow;
+                BackColorHover = Color.Gold;
+                BackColorPressed = Color.Yellow;
+                BackColorPressed = Color.Gray;
             }
             else
             {
@@ -814,11 +815,11 @@ namespace SrvSurvey
                 SetStyle(ControlStyles.AllPaintingInWmPaint, true);
                 SetStyle(ControlStyles.ResizeRedraw, true);
 
-                setFoo();
+                setGameColors();
             }
         }
 
-        private void setFoo()
+        private void setGameColors()
         {
 #if DEBUG
             // This stops logging code from starting up when custom controls are created in Visual Studio designer
@@ -826,8 +827,14 @@ namespace SrvSurvey
 #endif
 
             BackColor = C.orangeDark;
-            colorHover = C.orange;
-            colorPressed = C.yellow;
+            BackColorHover = C.orange;
+            BackColorPressed = C.menuGold;
+            BackColorDisabled = C.grey;
+
+            ForeColor = C.orange;
+            ForeColorHover = C.black;
+            ForeColorPressed = C.black;
+            ForeColorDisabled = C.black;
         }
 
         protected override void OnMouseEnter(EventArgs e)
@@ -882,21 +889,29 @@ namespace SrvSurvey
             }
 
             var bc = this.BackColor;
-            if (mouseDown)
-                bc = colorPressed;
+            if (!Enabled)
+                bc = BackColorDisabled;
+            else if (mouseDown)
+                bc = BackColorPressed;
             else if (highlight)
-                bc = colorHover;
+                bc = BackColorHover;
 
             e.Graphics.Clear(bc);
 
-            if (onRender != null)
+            if (Text != null)
             {
-                onRender(e.Graphics, mouseDown, highlight);
+                var fc = ForeColor;
+                if (!Enabled)
+                    fc = ForeColorDisabled;
+                else if (mouseDown)
+                    fc = ForeColorPressed;
+                else if (highlight)
+                    fc = ForeColorHover;
+
+                TextRenderer.DrawText(e.Graphics, Text, Font, ClientRectangle, fc);
             }
-            else if (Text != null)
-            {
-                TextRenderer.DrawText(e.Graphics, Text, Font, ClientRectangle, ForeColor);
-            }
+
+            base.RaisePaintEvent(this, e);
         }
     }
 }
