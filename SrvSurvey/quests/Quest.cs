@@ -30,6 +30,6 @@ namespace SrvSurvey.quests
         public string? subject;
         public string body;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public string[]? actions;
+        public Dictionary<string, string>? actions;
     }
 }

@@ -120,8 +120,7 @@
     <source>Pressure: {0}</source>
   </data>
   <data name="PressureValue">
-    <!--Machine translated-->
-    <value>{0}(Geldautomat)</value>
+    <value>{0}(atm)</value>
     <comment>The atmospheric pressure value
 {0} decimal, 4 places</comment>
     <source>{0}(atm)</source>

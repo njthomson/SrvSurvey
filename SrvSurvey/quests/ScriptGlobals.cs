@@ -28,7 +28,7 @@ namespace SrvSurvey.quests.scripting
         public void setFunc(string name, Action<object> func)
         {
             Game.log($"setFunc [{id}]: {name}");
-            c.funcs[$"{id}.{name}"] = func;
+            c.funcs[$"{id}/{name}"] = func;
         }
 
         public void trace(string txt)
@@ -112,8 +112,8 @@ namespace SrvSurvey.quests.scripting
                 // do we have a pre-published message?
                 var msg = id == null ? null : c.pq.quest.msgs.Find(m => m.id == id);
 
-                // create a delivered message from it, overriding strings as necessary
-                var newMsg = PlayMsg.send(msg, from, subject, body);
+                // create a delivered message from it, with chapterId, overriding strings as necessary
+                var newMsg = PlayMsg.send(msg, from, subject, body, this.sg.id);
                 c.pq.sendMsg(newMsg);
 
                 Game.log($"C.sendMsg [{sg.id}]: {id}: {newMsg.subject ?? newMsg.body}");

@@ -150,8 +150,9 @@ namespace SrvSurvey.forms
                 }
                 else if (view == "Messages")
                 {
-                    var obj = JsonConvert.DeserializeObject<List<PlayMsg>>(txtJson.Text);
-                    pq.msgs = obj!;
+                    var obj = JsonConvert.DeserializeObject<List<PlayMsg>>(txtJson.Text)!;
+                    foreach (var msg in obj) msg.parent = pq;
+                    pq.msgs = obj;
                     txtJson.Text = JsonConvert.SerializeObject(obj, Formatting.Indented);
                 }
 

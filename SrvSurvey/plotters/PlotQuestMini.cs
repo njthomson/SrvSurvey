@@ -52,7 +52,7 @@ namespace SrvSurvey.plotters
             if (hasUnreadMsgs)
             {
                 tt.dty = N.ten;
-                drawMsgsN(g, N.ten, tt.dty, false, N.oneSix);
+                drawMsgsN(g, N.ten, tt.dty, N.oneSix, false);
                 tt.draw(N.fourFour, countUnread.ToString(), GameColors.Fonts.console_16);
                 tt.newLine(N.four, true);
             }
@@ -92,15 +92,15 @@ namespace SrvSurvey.plotters
             g.DrawLine(p1, x + sz, y, x + sz2, y + sz);
         }
 
-        private static void drawMsgsN(Graphics g, float x, float y, bool highlight, float sz)
+        public static void drawMsgsN(Graphics g, float x, float y, float sz, bool highlight)
         {
             var szh = sz / 2f;
             var szw = sz * 1.75f;
             var szwh = szw / 2f;
 
             //var p = highlight ? penOrangeDark : penOrange;
-            var p2 = highlight ? C.Pens.cyan2 : C.Pens.orange2;
-            var p1 = highlight ? C.Pens.cyan1 : C.Pens.orange1;
+            var p2 = highlight ? C.Pens.cyan2r : C.Pens.orange2r;
+            //var p1 = highlight ? C.Pens.cyan1 : C.Pens.orange1;
 
             // mail envelope
             g.DrawRectangle(p2, x, y, szw, sz);

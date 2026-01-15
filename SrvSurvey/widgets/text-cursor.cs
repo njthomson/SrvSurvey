@@ -213,7 +213,7 @@ namespace SrvSurvey.widgets
         public int containerWidth => ctrl?.Width ?? plotter!.width;
         public int containerHeight => ctrl?.Height ?? plotter!.height;
 
-        public SizeF drawWrapped(float tx, string? txt, Font font)
+        public SizeF drawWrapped(float tx, string? txt, Font? font = null)
         {
             return drawWrapped(tx, this.containerWidth, txt, null, font, false);
         }

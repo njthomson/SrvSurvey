@@ -54,9 +54,13 @@ namespace SrvSurvey.quests
 
                     foreach (var pc in pq.chapters)
                     {
+                        pc.parent = pq;
                         pc.scriptState = await prepScript(conduit, pc.id);
                         pc.pushScriptVars();
                     }
+
+                    foreach (var pm in pq.msgs)
+                        pm.parent = pq;
                 }
 
                 Game.log(ps.activeQuests.Select(pq => $"{pq.id}: {pq.quest.title}").formatWithHeader($"Initialized {ps.activeQuests.Count} active quests"));
@@ -232,7 +236,15 @@ namespace SrvSurvey.quests
             }
 
             // initialize first chapter
-            newPlayQuest.startChapter(newQuest.firstChapter);
+            try
+            {
+                newPlayQuest.startChapter(newQuest.firstChapter);
+                newPlayQuest.startTime = DateTimeOffset.UtcNow;
+            }
+            catch (Exception ex)
+            {
+                issues.AppendLine($"start first chapter failed: {ex.Message}");
+            }
 
             Game.log($"Parsed quest '{newPlayQuest.quest.title}' ({newPlayQuest.id}) from: {folder}");
             if (issues.Length > 0)
@@ -387,41 +399,55 @@ namespace SrvSurvey.quests
         //[JsonIgnore] public Dictionary<string, IJournalEntry entry> priorEvents = new(); // <-- TODO
 
         public string id;
-        public HashSet<string> activeChapters = new();
         public Dictionary<string, object> vars = new();
         public Dictionary<string, PlayObjective> objectives = new();
-        public DateTime watermark; // <-- TODO
+        public DateTimeOffset startTime;
+        public DateTimeOffset endTime;
+        public DateTimeOffset watermark; // <-- TODO
         /// <summary> Delivered messages </summary>
         public List<PlayChapter> chapters = new();
         public List<PlayMsg> msgs = new();
 
         [JsonIgnore] public int unreadMessageCount => msgs.Count(m => !m.read);
 
+        public override string ToString()
+        {
+            return $"playQuest:{id}";
+        }
+
         public bool processJournalEntry(IJournalEntry entry)
         {
             conduit.dirty = false;
+
             // trigger function if chapters care about it
-            foreach (var id in activeChapters.ToList())
+            foreach (var pc in chapters)
             {
-                var func = conduit.funcs.GetValueOrDefault($"{id}.{entry.@event}")!;
+                if (!pc.active) continue;
+
+                var func = conduit.funcs.GetValueOrDefault($"{pc.id}/{entry.@event}")!;
                 if (func != null)
                     func(entry);
             }
 
-            if (conduit.dirty)
-            {
-                foreach (var pc in chapters)
-                {
-                    // store initial variables
-                    foreach (var var in pc.scriptState.Variables)
-                        pc.vars[$"{var.Name}|{var.Type}"] = var.Value;
-                }
+            return updateIfDirty();
+        }
 
-                BaseForm.get<FormPlayComms>()?.onQuestChanged(this);
-                PlotBase2.invalidate(nameof(PlotQuestMini));
+        public bool updateIfDirty()
+        {
+            if (!conduit.dirty) return false;
+
+            foreach (var pc in chapters)
+            {
+                // store initial variables
+                foreach (var var in pc.scriptState.Variables)
+                    pc.vars[$"{var.Name}|{var.Type}"] = var.Value;
             }
 
-            return conduit.dirty;
+            BaseForm.get<FormPlayComms>()?.onQuestChanged(this);
+            PlotBase2.invalidate(nameof(PlotQuestMini));
+
+            conduit.dirty = false;
+            return true;
         }
 
         public void complete()
@@ -436,12 +462,15 @@ namespace SrvSurvey.quests
 
         public void startChapter(string id)
         {
-            // skip if already active
-            if (activeChapters.Contains(id)) return;
-            var func = conduit.funcs.GetValueOrDefault($"{id}.onStart");
+            var chapter = chapters.Find(c => c.id == id);
+            if (chapter == null) throw new Exception($"Bad chapter id: {id}");
 
+            // skip if already active
+            if (chapter.active) return;
+
+            var func = conduit.funcs.GetValueOrDefault($"{id}/onStart");
             Game.log($"Starting chapter: {id}, run onStart: {func != null}");
-            activeChapters.Add(id);
+            chapter.startTime = DateTimeOffset.UtcNow;
 
             // run the init func if it exists
             if (func != null)
@@ -452,18 +481,47 @@ namespace SrvSurvey.quests
 
         public void stopChapter(string id)
         {
+            var chapter = chapters.Find(c => c.id == id);
+            if (chapter == null) throw new Exception($"Bad chapter id: {id}");
+
             Game.log($"Stopping chapter: {id}");
-            activeChapters.Remove(id);
+            chapter.endTime = DateTimeOffset.UtcNow;
+
             conduit.dirty = true;
         }
 
         public void sendMsg(PlayMsg newMsg)
         {
+            newMsg.parent = this;
             if (newMsg.from == null && quest.msgs.Find(m => m.id == newMsg.id) == null)
                 throw new Exception($"Bad message: {newMsg.id}");
 
             msgs.Add(newMsg);
             conduit.dirty = true;
+        }
+
+        public void invokeMessageAction(string chapterId, string actionId)
+        {
+            // invoke the action
+            var func = conduit.funcs.GetValueOrDefault($"{chapterId}/onMsgAction");
+            if (func == null) throw new Exception($"Missing function 'void onMsgAction(string id)' in chapter: {chapterId}");
+
+            func((string)actionId);
+            conduit.dirty = true;
+
+            // update any UX
+            BaseForm.get<FormPlayComms>()?.onQuestChanged(this);
+            PlotBase2.invalidate(nameof(PlotQuestMini));
+        }
+
+        public void deleteMsg(string id)
+        {
+            msgs.RemoveAll(m => m.id == id);
+            conduit.dirty = true;
+
+            // update any UX
+            BaseForm.get<FormPlayComms>()?.onQuestChanged(this);
+            PlotBase2.invalidate(nameof(PlotQuestMini));
         }
     }
 
@@ -523,7 +581,13 @@ namespace SrvSurvey.quests
         [JsonIgnore] public ScriptState scriptState;
 
         public string id;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public DateTimeOffset? startTime;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public DateTimeOffset? endTime;
         public Dictionary<string, object> vars = new();
+
+        [JsonIgnore] public bool active => !endTime.HasValue && startTime.HasValue;
 
         public void pushScriptVars()
         {
@@ -547,6 +611,8 @@ namespace SrvSurvey.quests
 
     public class PlayMsg
     {
+        [JsonIgnore] public PlayQuest parent;
+
         public string id;
         public DateTimeOffset received;
 
@@ -557,6 +623,8 @@ namespace SrvSurvey.quests
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string? body;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string? chapter;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string[]? actions;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool read;
@@ -565,16 +633,19 @@ namespace SrvSurvey.quests
 
         public override string ToString()
         {
-            return $"{id}:{subject ?? body}";
+            return $"{id}:{subject ?? body} ({received:z})";
         }
 
-        public static PlayMsg send(Msg? msg = null, string? from = null, string? subject = null, string? body = null)
+        public static PlayMsg send(Msg? msg = null, string? from = null, string? subject = null, string? body = null, string? chapter = null)
         {
+            if (msg?.actions != null && chapter == null) throw new Exception($"Chapter must be set when using messages with actions. Id: {msg.id}");
+
             var newMsg = new PlayMsg()
             {
                 id = msg?.id ?? DateTimeOffset.UtcNow.ToString("yyyyMMddhhmmss"),
                 received = DateTimeOffset.UtcNow,
-                actions = msg?.actions,
+                chapter = chapter,
+                actions = msg?.actions?.Keys.ToArray(),
             };
 
             // store nothing if the following values match the template Msg
