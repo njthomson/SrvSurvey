@@ -38,7 +38,7 @@
             statusStrip1 = new StatusStrip();
             menuMore = new ToolStripDropDownButton();
             menuImportFolder = new ToolStripMenuItem();
-            menuOpenComms = new ToolStripMenuItem();
+            menuReadFromFile = new ToolStripMenuItem();
             menuWatchJournal = new ToolStripMenuItem();
             menuStatus = new ToolStripStatusLabel();
             checkWatchFolder = new CheckBox();
@@ -121,7 +121,7 @@
             // menuMore
             // 
             menuMore.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            menuMore.DropDownItems.AddRange(new ToolStripItem[] { menuImportFolder, menuOpenComms, menuWatchJournal });
+            menuMore.DropDownItems.AddRange(new ToolStripItem[] { menuImportFolder, menuReadFromFile, menuWatchJournal });
             menuMore.Image = (Image)resources.GetObject("menuMore.Image");
             menuMore.ImageTransparentColor = Color.Magenta;
             menuMore.Name = "menuMore";
@@ -136,12 +136,12 @@
             menuImportFolder.Text = "Import quest folder...";
             menuImportFolder.Click += menuImportFolder_Click;
             // 
-            // menuOpenComms
+            // menuReadFromFile
             // 
-            menuOpenComms.Name = "menuOpenComms";
-            menuOpenComms.Size = new Size(197, 22);
-            menuOpenComms.Text = "Open comms ...";
-            menuOpenComms.Click += menuOpenComms_Click;
+            menuReadFromFile.Name = "menuReadFromFile";
+            menuReadFromFile.Size = new Size(197, 22);
+            menuReadFromFile.Text = "Reset to file";
+            menuReadFromFile.Click += menuReadFromFile_Click;
             // 
             // menuWatchJournal
             // 
@@ -155,7 +155,7 @@
             menuStatus.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
             menuStatus.BorderStyle = Border3DStyle.SunkenOuter;
             menuStatus.Name = "menuStatus";
-            menuStatus.Size = new Size(738, 17);
+            menuStatus.Size = new Size(707, 17);
             menuStatus.Spring = true;
             menuStatus.TextAlign = ContentAlignment.MiddleLeft;
             // 
@@ -218,6 +218,6 @@
         private ToolStripDropDownButton menuMore;
         private ToolStripMenuItem menuImportFolder;
         private ToolStripMenuItem menuWatchJournal;
-        private ToolStripMenuItem menuOpenComms;
+        private ToolStripMenuItem menuReadFromFile;
     }
 }

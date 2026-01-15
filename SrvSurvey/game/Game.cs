@@ -620,8 +620,7 @@ namespace SrvSurvey.game
                 if (Game.settings.buildProjects_TEST)
                     this.cmdrColony.fetchLatest().justDoIt();
 
-                if (Game.settings.enableQuests)
-                    PlayState.load(this.cmdr.fid).ContinueWith(rslt => this.cmdrPlay = rslt.Result);
+                if (Game.settings.enableQuests) resetCmdrPlay().justDoIt();
             }
 
             // if we have MainMenu music - we know we're not actively playing
@@ -767,6 +766,17 @@ namespace SrvSurvey.game
                     this.fetchSystemData(this.systemData.name, this.systemData.address);
                 }));
             }
+        }
+
+        public async Task<PlayState?> resetCmdrPlay()
+        {
+            if (!Game.settings.enableQuests) return null;
+
+            cmdrPlay?.Save();
+            cmdrPlay = null;
+
+            this.cmdrPlay = await PlayState.loadAsync(this.cmdr.fid);
+            return this.cmdrPlay;
         }
 
         public void initHumanSite()

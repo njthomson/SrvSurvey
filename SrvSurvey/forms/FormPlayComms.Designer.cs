@@ -51,7 +51,7 @@
             btnQuests.UseVisualStyleBackColor = false;
             btnQuests.Click += btnQuests_Click;
             btnQuests.Paint += btnQuests_Paint;
-            btnQuests.Enter += btnQuests_Enter;
+            btnQuests.Enter += leftButtons_Enter;
             // 
             // btnMsgs
             // 
@@ -65,7 +65,7 @@
             btnMsgs.UseVisualStyleBackColor = false;
             btnMsgs.Click += btnMsgs_Click;
             btnMsgs.Paint += btnMsgs_Paint;
-            btnMsgs.Enter += btnQuests_Enter;
+            btnMsgs.Enter += leftButtons_Enter;
             // 
             // tlist
             // 
@@ -114,6 +114,7 @@
             btnDev.Text = "dev";
             btnDev.UseVisualStyleBackColor = true;
             btnDev.Click += btnDev_Click;
+            btnDev.Enter += leftButtons_Enter;
             // 
             // btnWatch
             // 
@@ -127,6 +128,7 @@
             btnWatch.Text = "watch";
             btnWatch.UseVisualStyleBackColor = true;
             btnWatch.Click += btnWatch_Click;
+            btnWatch.Enter += leftButtons_Enter;
             // 
             // btnClose
             // 
@@ -139,6 +141,7 @@
             btnClose.UseVisualStyleBackColor = true;
             btnClose.Click += btnClose_Click;
             btnClose.Paint += btnClose_Paint;
+            btnClose.Enter += leftButtons_Enter;
             // 
             // FormPlayComms
             // 

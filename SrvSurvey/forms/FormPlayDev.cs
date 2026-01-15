@@ -19,25 +19,41 @@ namespace SrvSurvey.forms
         public FormPlayDev()
         {
             InitializeComponent();
+            loadPlayState().justDoIt();
+            Util.applyTheme(this, true);
+        }
 
+        private async Task loadPlayState(bool reset = false)
+        {
             this.setChildrenEnabled(false);
             if (Game.activeGame?.cmdrPlay == null)
             {
-                PlayState.load(CommanderSettings.currentOrLastFid).continueOnMain(this, rslt =>
+                var newState = await PlayState.loadAsync(CommanderSettings.currentOrLastFid);
+                if (newState != null)
                 {
-                    this.cmdrPlay = rslt;
+                    this.cmdrPlay = newState;
                     this.setChildrenEnabled(true);
                     initComboQuests();
-                });
+                }
             }
             else
             {
+                if (reset)
+                    await Game.activeGame.resetCmdrPlay();
+
                 this.cmdrPlay = Game.activeGame.cmdrPlay;
                 initComboQuests();
                 this.setChildrenEnabled(true);
             }
 
-            Util.applyTheme(this, true);
+            // and reload Comms window, if needed
+            var comms = BaseForm.get<FormPlayComms>();
+            if (comms != null)
+            {
+                comms.Close();
+                BaseForm.show<FormPlayComms>(f => f.cmdrPlay = this.cmdrPlay);
+                this.Activate();
+            }
         }
 
         private void initComboQuests()
@@ -204,9 +220,9 @@ namespace SrvSurvey.forms
                 BaseForm.show<FormPlayJournal>();
         }
 
-        private void menuOpenComms_Click(object sender, EventArgs e)
+        private void menuReadFromFile_Click(object sender, EventArgs e)
         {
-            BaseForm.show<FormPlayComms>(f => f.cmdrPlay = this.cmdrPlay);
+            this.loadPlayState(true).justDoIt();
         }
 
         private void menuMore_DropDownOpening(object sender, EventArgs e)

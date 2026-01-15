@@ -15,7 +15,7 @@ namespace SrvSurvey.forms
         private Control? selectedThing;
         private string mode = "quests";
         private Control lastLeftBtn;
-        public Control? lastTListItem;
+        public string? lastListName;
 
         public FormPlayComms()
         {
@@ -23,6 +23,9 @@ namespace SrvSurvey.forms
             SetStyle(ControlStyles.UserPaint, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             SetStyle(ControlStyles.ResizeRedraw, true);
+
+            tlist.Controls.Clear();
+            tlist.RowStyles.Clear();
 
             btnQuests.BackColor = C.orangeDark;
             btnMsgs.BackColor = C.orangeDark;
@@ -47,17 +50,22 @@ namespace SrvSurvey.forms
             else if (Game.activeGame?.cmdrPlay == null)
             {
                 this.setChildrenEnabled(false);
-                PlayState.load(CommanderSettings.currentOrLastFid).continueOnMain(this, rslt =>
+                PlayState.loadAsync(CommanderSettings.currentOrLastFid).continueOnMain(this, rslt =>
                 {
-                    this.cmdrPlay = rslt;
-                    onQuestChanged();
-                    this.setChildrenEnabled(true, btnWatch);
+                    if (rslt != null)
+                    {
+                        this.cmdrPlay = rslt;
+                        onQuestChanged();
+                        this.setChildrenEnabled(true, btnWatch);
+                        btnQuests.Focus();
+                    }
                 });
             }
             else
             {
                 this.cmdrPlay = Game.activeGame.cmdrPlay;
                 onQuestChanged();
+                btnQuests.Focus();
             }
         }
 
@@ -70,6 +78,12 @@ namespace SrvSurvey.forms
             g.DrawRectangle(C.Pens.orangeDark2, ClientRectangle);
 
             g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            if (cmdrPlay == null)
+            {
+                TextRenderer.DrawText(e.Graphics, "Loading ...", GameColors.Fonts.gothic_16B, new Point(136, 10), C.orangeDark);
+                return;
+            }
 
             var hasUnread = cmdrPlay.messagesUnread > 0;
             // PlotQuestMini.drawLogo(e.Graphics, ClientSize.Width - 44, 6, hasUnread, 32);
@@ -107,7 +121,7 @@ namespace SrvSurvey.forms
             PlotQuestMini.drawEnvelope(e.Graphics, 9, 18, 53, p);
         }
 
-        private void btnQuests_Enter(object sender, EventArgs e)
+        private void leftButtons_Enter(object sender, EventArgs e)
         {
             // remember which button last had focus
             lastLeftBtn = (Control)sender;
@@ -132,11 +146,7 @@ namespace SrvSurvey.forms
             else
                 showMsgs();
 
-            // TODO: match by name ... the actual instance will have been replaced
-            if (lastTListItem?.Visible == true)
-                lastTListItem.Focus();
-            else if (tlist.Controls.Count > 0)
-                tlist.Controls[0].Focus();
+            focusTListItemByName(lastListName);
 
             this.Invalidate(true);
         }
@@ -160,6 +170,7 @@ namespace SrvSurvey.forms
                     Margin = Padding.Empty,
                     BackColor = Color.Black,
                 };
+                btn.GotFocus += (s, e) => lastListName = btn.Name;
                 btn.Paint += (s, e) =>
                 {
                     e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
@@ -168,11 +179,11 @@ namespace SrvSurvey.forms
                 };
                 btn.Click += (s, e) =>
                 {
-                    lastTListItem = s as Control;
                     setSelectedThing(new PanelQuest(this, pq));
                 };
 
                 addRow(btn);
+                if (tlist.Controls.Count == 1) btn.Focus();
             }
         }
 
@@ -200,12 +211,7 @@ namespace SrvSurvey.forms
             }
 
             tlist.Show();
-            if (lastTListItem != null)
-                lastTListItem.Focus();
-            else if (tlist.Controls.Count > 0)
-                tlist.Controls[0].Focus();
-            else
-                lastLeftBtn.Focus();
+            focusTListItemByName(lastListName);
         }
 
         private void showMsgs()
@@ -227,12 +233,13 @@ namespace SrvSurvey.forms
 
                 var btn = new DrawButton()
                 {
-                    Name = pm.id,
+                    Name = $"{pm.parent.id}/{pm.id}",
                     Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
                     Padding = Padding.Empty,
                     Margin = Padding.Empty,
                     BackColor = Color.Black,
                 };
+                btn.GotFocus += (s, e) => lastListName = btn.Name;
                 btn.Paint += (s, e) =>
                 {
                     e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
@@ -241,8 +248,6 @@ namespace SrvSurvey.forms
                 };
                 btn.Click += (s, e) =>
                 {
-                    lastTListItem = s as Control;
-
                     // remember this message has now been read
                     if (!pm.read)
                     {
@@ -254,6 +259,8 @@ namespace SrvSurvey.forms
                 };
 
                 addRow(btn);
+
+                if (tlist.Controls.Count == 1) btn.Focus();
             }
         }
 
@@ -262,6 +269,43 @@ namespace SrvSurvey.forms
             //Debug.WriteLine($"!1 {keyData} / {this.ActiveControl?.Name} / {selectedThing?.Name}");
 
             if (keyData == Keys.Enter) return base.ProcessCmdKey(ref msg, keyData);
+
+            // any of the left buttons
+            if (ActiveControl is DrawButton && ActiveControl?.Parent == this)
+            {
+                if (keyData == Keys.Right)
+                {
+                    if (selectedThing != null)
+                        this.GetNextControl(selectedThing, true)?.Focus();
+                    else
+                        focusTListItemByName(lastListName, true);
+                    return true;
+                }
+                else
+                    return base.ProcessCmdKey(ref msg, keyData);
+            }
+            // either of the right containers
+            if (ActiveControl == tlist || ActiveControl == bigPanel)
+            {
+                if (keyData == Keys.Left)
+                {
+                    lastLeftBtn?.Focus();
+                    return true;
+                }
+                else
+                    return base.ProcessCmdKey(ref msg, keyData);
+            }
+
+            if (ActiveControl is PanelQuest || ActiveControl is PanelMsg)
+            {
+                if (keyData == Keys.Left && ActiveControl.Left < 40)
+                    lastLeftBtn.Focus();
+                else
+                    this.GetNextControl(selectedThing, true)?.Focus();
+                return true;
+            }
+
+            // ---
 
             if (ActiveControl is PanelQuest)
             {
@@ -284,7 +328,7 @@ namespace SrvSurvey.forms
                     return true;
                 }
             }
-            else if (this.ActiveControl?.Parent is PanelMsg)
+            else if (this.ActiveControl?.Parent is PanelMsg || this.ActiveControl?.Parent is PanelQuest)
             {
                 if (keyData == Keys.Left && ActiveControl.Left < 40)
                 {
@@ -292,30 +336,7 @@ namespace SrvSurvey.forms
                     return true;
                 }
             }
-            else if (this.ActiveControl == btnQuests || this.ActiveControl == btnMsgs)
-            {
-                if (keyData == Keys.Right)
-                {
-                    if (selectedThing != null)
-                    {
-                        this.GetNextControl(selectedThing, true)?.Focus();
-                    }
-                    else
-                    {
-                        var next = lastTListItem ?? this.GetNextControl(tlist, true);
 
-                        if (next == null)
-                        {
-                            Debug.WriteLine($"??{this.ActiveControl?.Name}");
-                        }
-
-                        next?.Focus();
-                    }
-                    return true;
-                }
-                else if (keyData == Keys.Left)
-                    return true;
-            }
             if (this.ActiveControl?.Parent == tlist)
             {
                 if (keyData == Keys.Left)
@@ -326,6 +347,18 @@ namespace SrvSurvey.forms
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void focusTListItemByName(string? name, bool orFirst = false)
+        {
+            var ctrl = tlist.Controls[name];
+
+            if (ctrl != null)
+                ctrl.Focus();
+            else if (orFirst && tlist.Controls.Count > 0)
+                tlist.Controls[0].Focus();
+            else
+                lastLeftBtn.Focus();
         }
 
         private void btnDev_Click(object sender, EventArgs e)
@@ -366,7 +399,7 @@ namespace SrvSurvey.forms
             {
                 foreach (var (key, obj) in pq.objectives)
                     if (obj.state == PlayObjective.State.visible)
-                        drawObjective(g, tt, c, key, obj, pq);
+                        drawObjective(g, tt, c, key, obj, pq, false);
             }
             else
             {
@@ -378,13 +411,23 @@ namespace SrvSurvey.forms
             return (int)(tt.dty + N.ten);
         }
 
-        static void drawObjective(Graphics g, TextCursor tt, Color c, string key, PlayObjective obj, PlayQuest pq)
+        static void drawObjective(Graphics g, TextCursor tt, Color c, string key, PlayObjective obj, PlayQuest pq, bool colorObjectives)
         {
-            var cc = c;
+            var cc = colorObjectives ? C.cyan : c;
 
+            var active = obj.state == PlayObjective.State.visible && colorObjectives;
             var prefix = " ▶";
-            if (obj.state == PlayObjective.State.complete) { prefix = "✔️"; }
-            else if (obj.state == PlayObjective.State.failed) { prefix = "❌"; cc = C.orangeDark; }
+
+            if (obj.state == PlayObjective.State.complete)
+            {
+                prefix = "✔️";
+                cc = C.orange;
+            }
+            else if (obj.state == PlayObjective.State.failed)
+            {
+                prefix = "❌";
+                cc = C.red;
+            }
             tt.draw(N.eight, prefix, cc, GameColors.Fonts.gothic_9);
             tt.draw(N.twoSix, pq.quest.strings.GetValueOrDefault(key, key), cc);
             tt.newLine(N.two);
@@ -392,15 +435,15 @@ namespace SrvSurvey.forms
             if (obj.total > 0)
             {
                 tt.dty -= N.three;
-                var sz = tt.draw(N.fourForty, $"{obj.current} / {obj.total}", c);
+                var sz = tt.draw(N.fourForty, $"{obj.current} / {obj.total}", active ? cc : c);
                 tt.dty += N.three;
                 var w = N.fourHundred;
 
                 g.SmoothingMode = SmoothingMode.None;
-                g.DrawRectangle(C.Pens.orangeDark1, N.twoSix, tt.dty, w + 5, N.ten);
+                g.DrawRectangle(active ? C.Pens.cyanDark1 : C.Pens.orangeDark1, N.twoSix, tt.dty, w + 5, N.ten);
 
                 w = w / obj.total * obj.current;
-                g.FillRectangle(C.Brushes.orangeDark, N.twoSix + 3, tt.dty + 3, w, N.ten - 5);
+                g.FillRectangle(active ? C.Brushes.cyanDark : C.Brushes.orangeDark, N.twoSix + 3, tt.dty + 3, w, N.ten - 5);
                 g.SmoothingMode = SmoothingMode.HighQuality;
                 tt.dty += N.oneFour;
             }
@@ -433,12 +476,16 @@ namespace SrvSurvey.forms
             {
                 Name = "questBack",
                 Anchor = AnchorStyles.Left | AnchorStyles.Bottom,
-                Text = "Back",
                 Left = 6,
                 ForeColor = C.orange,
             };
-
             btnB.Top = this.Height - btnB.Height - 6;
+            btnB.Paint += (s, e) =>
+            {
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                var p = btnB.highlight ? C.Pens.orangeDark2r : C.Pens.orange2r;
+                PlotQuestMini.drawBackArrow(e.Graphics, 28, 6, 18, p);
+            };
             btnB.Click += BtnB_Click;
             this.Controls.Add(btnB);
 
@@ -494,7 +541,7 @@ namespace SrvSurvey.forms
             if (pq.objectives.Any())
             {
                 foreach (var (key, obj) in pq.objectives)
-                    drawObjective(g, tt, c, key, obj, pq);
+                    drawObjective(g, tt, c, key, obj, pq, true);
             }
             else
             {
@@ -613,12 +660,17 @@ namespace SrvSurvey.forms
             {
                 Name = "msgBack",
                 Anchor = AnchorStyles.Left | AnchorStyles.Bottom,
-                Text = "Back",
                 Left = 6,
                 TabIndex = this.Controls.Count,
             };
             btnB.Top = this.Height - btnB.Height - 6;
             btnB.Click += BtnB_Click;
+            btnB.Paint += (s, e) =>
+            {
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                var p = btnB.highlight ? C.Pens.orangeDark2r : C.Pens.orange2r;
+                PlotQuestMini.drawBackArrow(e.Graphics, 28, 6, 18, p);
+            };
             this.Controls.Add(btnB);
 
             var btnD = new DrawButton()

@@ -18,8 +18,31 @@ namespace SrvSurvey.quests
 
         private static string folder = Path.Combine(Program.dataFolder, "playStates");
 
-        public static async Task<PlayState> load(string fid)
+        public static Task<PlayState?> loadAsync(string fid)
         {
+            return Task.Run(async () =>
+            {
+                PlayState? newState = null;
+                try
+                {
+                    newState = await PlayState.load(fid);
+                }
+                catch (Exception ex)
+                {
+                    Game.log($"PlayState.loadAsync: {ex}");
+                    Program.defer(() =>
+                    {
+                        FormErrorSubmit.Show(ex);
+                    });
+                }
+                return newState;
+            });
+        }
+
+        private static async Task<PlayState> load(string fid)
+        {
+            Game.log($"PlayState.load: fid: {fid}");
+
             if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
 
             var filepath = Path.Combine(folder, fid + ".json");
