@@ -826,13 +826,13 @@ namespace SrvSurvey
             if (Process.GetCurrentProcess().ProcessName != "SrvSurvey") return;
 #endif
 
-            BackColor = C.orangeDark;
-            BackColorHover = C.orange;
-            BackColorPressed = C.menuGold;
+            BackColor = C.orangeDarker;
+            BackColorHover = C.orangeDark;
+            BackColorPressed = C.orange;
             BackColorDisabled = C.grey;
 
             ForeColor = C.orange;
-            ForeColorHover = C.black;
+            ForeColorHover = C.menuGold;
             ForeColorPressed = C.black;
             ForeColorDisabled = C.black;
         }
@@ -869,6 +869,7 @@ namespace SrvSurvey
         {
             base.OnGotFocus(e);
             highlight = true;
+            this.Invalidate();
         }
 
         protected override void OnLostFocus(EventArgs e)
@@ -880,6 +881,56 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
+        public Pen pen(Pen normal, Pen hover, Pen pressed)
+        {
+            if (mouseDown)
+                return pressed;
+            else if (highlight)
+                return hover;
+            else
+                return normal;
+        }
+
+        public Brush brush(Brush normal, Brush hover, Brush pressed)
+        {
+            if (mouseDown)
+                return pressed;
+            else if (highlight)
+                return hover;
+            else
+                return normal;
+        }
+
+        public Color BackColor2
+        {
+            get
+            {
+                if (!Enabled)
+                    return BackColorDisabled;
+                else if (mouseDown)
+                    return BackColorPressed;
+                else if (highlight)
+                    return BackColorHover;
+                else
+                    return BackColor;
+            }
+        }
+
+        public Color ForeColor2
+        {
+            get
+            {
+                if (!Enabled)
+                    return ForeColorDisabled;
+                else if (mouseDown)
+                    return ForeColorPressed;
+                else if (highlight)
+                    return ForeColorHover;
+                else
+                    return ForeColor;
+            }
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             if (DesignMode)
@@ -888,26 +939,15 @@ namespace SrvSurvey
                 return;
             }
 
-            var bc = this.BackColor;
-            if (!Enabled)
-                bc = BackColorDisabled;
-            else if (mouseDown)
-                bc = BackColorPressed;
-            else if (highlight)
-                bc = BackColorHover;
-
-            e.Graphics.Clear(bc);
+            var bc = BackColor2;
+            if (bc == Color.Transparent)
+                ButtonRenderer.DrawParentBackground(e.Graphics, ClientRectangle, this);
+            else
+                e.Graphics.Clear(bc);
 
             if (Text != null)
             {
-                var fc = ForeColor;
-                if (!Enabled)
-                    fc = ForeColorDisabled;
-                else if (mouseDown)
-                    fc = ForeColorPressed;
-                else if (highlight)
-                    fc = ForeColorHover;
-
+                var fc = ForeColor2;
                 TextRenderer.DrawText(e.Graphics, Text, Font, ClientRectangle, fc);
             }
 

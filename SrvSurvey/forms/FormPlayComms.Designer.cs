@@ -42,8 +42,6 @@
             // 
             // btnQuests
             // 
-            btnQuests.BackColor = Color.FromArgb(255, 128, 0);
-            btnQuests.ForeColor = Color.Black;
             btnQuests.Location = new Point(12, 48);
             btnQuests.Name = "btnQuests";
             btnQuests.Size = new Size(72, 72);
@@ -55,9 +53,7 @@
             // 
             // btnMsgs
             // 
-            btnMsgs.BackColor = Color.FromArgb(255, 128, 0);
-            btnMsgs.ForeColor = Color.Black;
-            btnMsgs.Location = new Point(12, 148);
+            btnMsgs.Location = new Point(12, 128);
             btnMsgs.Name = "btnMsgs";
             btnMsgs.Size = new Size(72, 72);
             btnMsgs.TabIndex = 1;
@@ -70,6 +66,7 @@
             // tlist
             // 
             tlist.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            tlist.BackColor = Color.Transparent;
             tlist.ColumnCount = 1;
             tlist.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tlist.Controls.Add(panel2, 0, 1);
@@ -97,6 +94,7 @@
             // bigPanel
             // 
             bigPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            bigPanel.BackColor = Color.Transparent;
             bigPanel.Controls.Add(tlist);
             bigPanel.Location = new Point(100, 48);
             bigPanel.Name = "bigPanel";
@@ -106,7 +104,6 @@
             // btnDev
             // 
             btnDev.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnDev.ForeColor = Color.Black;
             btnDev.Location = new Point(12, 306);
             btnDev.Name = "btnDev";
             btnDev.Size = new Size(72, 23);
@@ -120,7 +117,6 @@
             // 
             btnWatch.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnWatch.Enabled = false;
-            btnWatch.ForeColor = Color.Black;
             btnWatch.Location = new Point(12, 277);
             btnWatch.Name = "btnWatch";
             btnWatch.Size = new Size(72, 23);
@@ -133,7 +129,6 @@
             // btnClose
             // 
             btnClose.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnClose.ForeColor = Color.Black;
             btnClose.Location = new Point(12, 365);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(72, 23);

@@ -25,6 +25,10 @@ namespace SrvSurvey.forms
 
         private async Task loadPlayState(bool reset = false)
         {
+            var folderWatches = cmdrPlay?.activeQuests
+                .Where(pq => pq.watchFolder != null)
+                .ToDictionary(pq => pq.id, pq => pq.watchFolder);
+
             this.setChildrenEnabled(false);
             if (Game.activeGame?.cmdrPlay == null)
             {
@@ -44,6 +48,16 @@ namespace SrvSurvey.forms
                 this.cmdrPlay = Game.activeGame.cmdrPlay;
                 initComboQuests();
                 this.setChildrenEnabled(true);
+            }
+
+            if (folderWatches?.Count > 0 && cmdrPlay != null)
+            {
+                foreach (var x in folderWatches)
+                {
+                    var match = cmdrPlay.get(x.Key);
+                    if (match != null)
+                        match.watchFolder = x.Value;
+                }
             }
 
             // and reload Comms window, if needed
@@ -280,9 +294,10 @@ namespace SrvSurvey.forms
 
         private void folderImport(string folder)
         {
-
             importing = true;
             menuStatus.Text = $"Importing folder: {folder} ...";
+            var oldPQ = cmdrPlay.activeQuests.Find(pq => pq.watchFolder == folder);
+
             cmdrPlay.importFolder(folder, (newPQ) =>
             {
                 menuStatus.Text = newPQ == null
@@ -290,8 +305,34 @@ namespace SrvSurvey.forms
                     : $"Imported: {folder}";
 
                 if (newPQ != null)
+                {
                     selectedQuest = newPQ.id;
+                    if (oldPQ != null)
+                    {
+                        // preserve state from previous PlayQuest
+                        foreach (var (k, v) in oldPQ.objectives) newPQ.objectives[k] = v;
+                        foreach (var (k, v) in oldPQ.vars) newPQ.vars[k] = v;
 
+                        foreach (var oc in oldPQ.chapters)
+                        {
+                            var match = newPQ.chapters.Find(c => c.id == oc.id);
+                            if (match == null) continue;
+                            foreach (var (k, v) in oc.vars) match.vars[k] = v;
+                        }
+
+                        foreach (var om in oldPQ.msgs)
+                        {
+                            var idx = newPQ.msgs.FindIndex(m => m.id == om.id);
+                            if (idx == -1)
+                                newPQ.msgs.Add(om);
+                            else
+                                newPQ.msgs[idx] = om;
+                        }
+                        cmdrPlay.Save();
+                    }
+                }
+
+                BaseForm.get<FormPlayComms>()?.onQuestChanged();
                 Program.defer(() => initComboQuests());
                 importing = false;
             }).@catch(ex =>

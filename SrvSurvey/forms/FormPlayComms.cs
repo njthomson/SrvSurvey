@@ -27,25 +27,23 @@ namespace SrvSurvey.forms
             tlist.Controls.Clear();
             tlist.RowStyles.Clear();
 
-            btnQuests.BackColor = C.orangeDark;
-            btnMsgs.BackColor = C.orangeDark;
-            btnClose.BackColor = C.orangeDark;
+            lastLeftBtn = btnQuests;
 
-            this.lastLeftBtn = btnQuests;
-
-            btnDev.ForeColor = C.orange;
-            btnWatch.ForeColor = C.orange;
             btnWatch.Enabled = Game.activeGame != null;
+
+            this.Opacity = 0.9f;
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            this.BackgroundImage = GameGraphics.getBackgroundImage(this.ClientSize, true);
+            this.Invalidate();
 
             if (cmdrPlay != null)
             {
                 // no op
-                showQuests();
+                onQuestChanged();
             }
             else if (Game.activeGame?.cmdrPlay == null)
             {
@@ -99,26 +97,40 @@ namespace SrvSurvey.forms
 
         private void btnClose_Paint(object sender, PaintEventArgs e)
         {
-            var btn = (DrawButton)sender;
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            var p = btn.highlight ? C.Pens.orangeDark2r : C.Pens.orange2r;
+            var btn = (DrawButton)sender;
+            var p = btn.pen(C.Pens.orangeDark3r, C.Pens.menuGold3r, C.Pens.black3r);
             PlotQuestMini.drawBackArrow(e.Graphics, 28, 6, 18, p);
         }
 
         private void btnQuests_Paint(object sender, PaintEventArgs e)
         {
-            var btn = (DrawButton)sender;
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            var p = btn.highlight ? C.Pens.orangeDark3r : C.Pens.orange3r;
+            var btn = (DrawButton)sender;
+            var p = btn.pen(C.Pens.orangeDark3r, C.Pens.menuGold3r, C.Pens.black3r);
             PlotQuestMini.drawPage(e.Graphics, 15, 12, 51, p);
+
+            if (mode == "quests")
+            {
+                e.Graphics.SmoothingMode = SmoothingMode.Default;
+                p = btn.pen(C.Pens.orange4, C.Pens.menuGold4, C.Pens.orangeDark4);
+                e.Graphics.DrawLineR(p, btn.ClientSize.Width - 2, 0, 0, btn.ClientSize.Height);
+            }
         }
 
         private void btnMsgs_Paint(object sender, PaintEventArgs e)
         {
-            var btn = (DrawButton)sender;
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            var p = btn.highlight ? C.Pens.orangeDark3r : C.Pens.orange3r;
+            var btn = (DrawButton)sender;
+            var p = btn.pen(C.Pens.orangeDark3r, C.Pens.menuGold3r, C.Pens.black3r);
             PlotQuestMini.drawEnvelope(e.Graphics, 9, 18, 53, p);
+
+            if (mode == "msgs")
+            {
+                e.Graphics.SmoothingMode = SmoothingMode.Default;
+                p = btn.pen(C.Pens.orange4, C.Pens.menuGold4, C.Pens.orangeDark4);
+                e.Graphics.DrawLineR(p, btn.ClientSize.Width - 2, 0, 0, btn.ClientSize.Height);
+            }
         }
 
         private void leftButtons_Enter(object sender, EventArgs e)
@@ -129,26 +141,51 @@ namespace SrvSurvey.forms
 
         private void btnQuests_Click(object sender, EventArgs e)
         {
-            this.mode = "quests";
-            onQuestChanged();
+            if (this.mode == "quests" && selectedThing is PanelQuest)
+            {
+                clearSelection();
+            }
+            else if (this.mode != "quests")
+            {
+                tlist.Controls.Clear();
+                tlist.RowStyles.Clear();
+                this.mode = "quests";
+                showQuests();
+            }
         }
 
         private void btnMsgs_Click(object sender, EventArgs e)
         {
-            this.mode = "msgs";
-            onQuestChanged();
+            if (this.mode == "msgs" && selectedThing is PanelMsg)
+            {
+                clearSelection();
+            }
+            else if (this.mode != "msgs" || selectedThing != null)
+            {
+                tlist.Controls.Clear();
+                tlist.RowStyles.Clear();
+                this.mode = "msgs";
+                showMsgs();
+            }
         }
 
         public void onQuestChanged(PlayQuest? pq = null)
         {
-            if (mode == "quests")
-                showQuests();
-            else
-                showMsgs();
+            var restoreGameFocus = Elite.focusElite;
+
+            if (selectedThing == null)
+            {
+                if (mode == "quests")
+                    showQuests();
+                else
+                    showMsgs();
+            }
 
             focusTListItemByName(lastListName);
 
             this.Invalidate(true);
+
+            if (restoreGameFocus) Elite.setFocusED();
         }
 
         private void showQuests()
@@ -156,26 +193,24 @@ namespace SrvSurvey.forms
             if (!(cmdrPlay.activeQuests.Count > 0)) return;
 
             clearSelection();
-            tlist.Controls.Clear();
-            tlist.RowStyles.Clear();
 
-            var sorted = cmdrPlay!.activeQuests.OrderBy(q => q.startTime);
+            var sorted = cmdrPlay.activeQuests.OrderBy(q => q.startTime);
             foreach (var pq in sorted)
             {
+                if (tlist.Controls[pq.id] != null) continue;
+
                 var btn = new DrawButton()
                 {
                     Name = pq.id,
                     Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
-                    Padding = Padding.Empty,
-                    Margin = Padding.Empty,
-                    BackColor = Color.Black,
+                    BackColor = C.orangeDarker,
                 };
                 btn.GotFocus += (s, e) => lastListName = btn.Name;
                 btn.Paint += (s, e) =>
                 {
                     e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                     var tt = new TextCursor(e.Graphics, this);
-                    btn.Height = PanelQuest.drawCollapsed(e.Graphics, tt, btn.highlight, pq);
+                    btn.Height = PanelQuest.drawCollapsed(e.Graphics, tt, btn, pq);
                 };
                 btn.Click += (s, e) =>
                 {
@@ -183,8 +218,15 @@ namespace SrvSurvey.forms
                 };
 
                 addRow(btn);
-                if (tlist.Controls.Count == 1) btn.Focus();
+                //if (tlist.Controls.Count == 1) btn.Focus();
             }
+
+            // Remove anything stale
+            var activeIDs = cmdrPlay.activeQuests.Select(q => q.id).ToHashSet();
+            var stale = tlist.Controls.Cast<Control>().Where(c => !activeIDs.Contains(c.Name));
+            foreach (var ctrl in stale) tlist.Controls.Remove(ctrl);
+
+            this.Invalidate(true);
         }
 
         private void addRow(Control ctrl)
@@ -218,8 +260,6 @@ namespace SrvSurvey.forms
         {
             if (!(cmdrPlay.activeQuests.Count > 0)) return;
             clearSelection();
-            tlist.Controls.Clear();
-            tlist.RowStyles.Clear();
 
             var allMsgs = cmdrPlay.activeQuests
                 .SelectMany(q => q.msgs)
@@ -227,24 +267,27 @@ namespace SrvSurvey.forms
                 .ToList();
             Game.log($"showing {allMsgs.Count} msgs");
 
+            var activeNames = new HashSet<string>();
             foreach (var pm in allMsgs)
             {
+                var name = $"{pm.parent.id}/{pm.id}";
+                activeNames.Add(name);
+                if (tlist.Controls[name] != null) continue;
+
                 var qm = pm.parent.quest.msgs.Find(m => m.id == pm.id)!;
 
                 var btn = new DrawButton()
                 {
-                    Name = $"{pm.parent.id}/{pm.id}",
+                    Name = name,
                     Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
-                    Padding = Padding.Empty,
-                    Margin = Padding.Empty,
-                    BackColor = Color.Black,
+                    BackColor = C.orangeDarker,
                 };
                 btn.GotFocus += (s, e) => lastListName = btn.Name;
                 btn.Paint += (s, e) =>
                 {
                     e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                     var tt = new TextCursor(e.Graphics, btn);
-                    btn.Height = PanelMsg.drawCollapsed(e.Graphics, tt, btn.highlight, pm, qm);
+                    btn.Height = PanelMsg.drawCollapsed(e.Graphics, tt, btn, pm, qm);
                 };
                 btn.Click += (s, e) =>
                 {
@@ -260,8 +303,14 @@ namespace SrvSurvey.forms
 
                 addRow(btn);
 
-                if (tlist.Controls.Count == 1) btn.Focus();
+                //if (tlist.Controls.Count == 1) btn.Focus();
             }
+
+            // Remove anything stale
+            var stale = tlist.Controls.Cast<Control>().Where(c => !activeNames.Contains(c.Name));
+            foreach (var ctrl in stale) tlist.Controls.Remove(ctrl);
+
+            this.Invalidate(true);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -385,10 +434,11 @@ namespace SrvSurvey.forms
 
     class PanelQuest : Panel
     {
-        public static int drawCollapsed(Graphics g, TextCursor tt, bool selected, PlayQuest pq)
+        public static int drawCollapsed(Graphics g, TextCursor tt, DrawButton btn, PlayQuest pq)
         {
             tt.dty = N.six;
-            var c = selected ? Color.Black : C.orange;
+            tt.font = GameColors.Fonts.gothic_10;
+            var c = btn.ForeColor2;
 
             // title
             tt.draw(N.eight, pq.quest.title, c, GameColors.Fonts.gothic_12B);
@@ -399,19 +449,19 @@ namespace SrvSurvey.forms
             {
                 foreach (var (key, obj) in pq.objectives)
                     if (obj.state == PlayObjective.State.visible)
-                        drawObjective(g, tt, c, key, obj, pq, false);
+                        drawObjective(g, tt, c, key, obj, pq, false, btn);
             }
             else
             {
                 // no active objectives?
-                tt.draw(N.eight, "► No objectives", c, GameColors.Fonts.gothic_9);
+                tt.draw(N.eight, "► No objectives", c);
                 tt.newLine(N.four);
             }
 
             return (int)(tt.dty + N.ten);
         }
 
-        static void drawObjective(Graphics g, TextCursor tt, Color c, string key, PlayObjective obj, PlayQuest pq, bool colorObjectives)
+        static void drawObjective(Graphics g, TextCursor tt, Color c, string key, PlayObjective obj, PlayQuest pq, bool colorObjectives, DrawButton? btn)
         {
             var cc = colorObjectives ? C.cyan : c;
 
@@ -428,22 +478,28 @@ namespace SrvSurvey.forms
                 prefix = "❌";
                 cc = C.red;
             }
-            tt.draw(N.eight, prefix, cc, GameColors.Fonts.gothic_9);
-            tt.draw(N.twoSix, pq.quest.strings.GetValueOrDefault(key, key), cc);
+
+            tt.draw(N.eight, prefix, cc, GameColors.Fonts.gothic_10);
+            var x = N.thirty;
+            tt.draw(x, pq.quest.strings.GetValueOrDefault(key, key), cc, GameColors.Fonts.gothic_10);
             tt.newLine(N.two);
 
             if (obj.total > 0)
             {
                 tt.dty -= N.three;
-                var sz = tt.draw(N.fourForty, $"{obj.current} / {obj.total}", active ? cc : c);
-                tt.dty += N.three;
+                var sz = tt.draw(N.fourForty + N.ten, $"{obj.current} / {obj.total}", active ? cc : c);
+                tt.dty += N.six;
                 var w = N.fourHundred;
 
                 g.SmoothingMode = SmoothingMode.None;
-                g.DrawRectangle(active ? C.Pens.cyanDark1 : C.Pens.orangeDark1, N.twoSix, tt.dty, w + 5, N.ten);
+                var p = btn?.pen(C.Pens.orangeDark1, C.Pens.menuGold1, C.Pens.black1) ?? C.Pens.orangeDark1;
+                if (colorObjectives && active) p = C.Pens.cyanDark1;
+                g.DrawRectangle(p, x, tt.dty, w + 5, N.ten);
 
                 w = w / obj.total * obj.current;
-                g.FillRectangle(active ? C.Brushes.cyanDark : C.Brushes.orangeDark, N.twoSix + 3, tt.dty + 3, w, N.ten - 5);
+                var b = btn?.brush(C.Brushes.orangeDark, C.Brushes.menuGold, C.Brushes.black) ?? C.Brushes.orangeDark;
+                if (colorObjectives && active) b = C.Brushes.cyanDark;
+                g.FillRectangle(b, x + 3, tt.dty + 3, w, N.ten - 5);
                 g.SmoothingMode = SmoothingMode.HighQuality;
                 tt.dty += N.oneFour;
             }
@@ -461,7 +517,7 @@ namespace SrvSurvey.forms
             this.Padding = Padding.Empty;
             this.Margin = Padding.Empty;
             this.ForeColor = C.orange;
-            this.BackColor = Color.Black;
+            this.BackColor = Color.Transparent;
             this.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             this.ResizeRedraw = true;
             this.DoubleBuffered = true;
@@ -483,7 +539,7 @@ namespace SrvSurvey.forms
             btnB.Paint += (s, e) =>
             {
                 e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                var p = btnB.highlight ? C.Pens.orangeDark2r : C.Pens.orange2r;
+                var p = btnB.pen(C.Pens.orangeDark3r, C.Pens.menuGold3r, C.Pens.black3r);
                 PlotQuestMini.drawBackArrow(e.Graphics, 28, 6, 18, p);
             };
             btnB.Click += BtnB_Click;
@@ -520,7 +576,6 @@ namespace SrvSurvey.forms
         int drawExpanded(Graphics g, TextCursor tt)
         {
             var c = C.orange;
-            g.Clear(Color.Black);
             tt.dty = N.four;
             tt.font = GameColors.Fonts.gothic_10;
 
@@ -541,7 +596,7 @@ namespace SrvSurvey.forms
             if (pq.objectives.Any())
             {
                 foreach (var (key, obj) in pq.objectives)
-                    drawObjective(g, tt, c, key, obj, pq, true);
+                    drawObjective(g, tt, c, key, obj, pq, true, null);
             }
             else
             {
@@ -568,21 +623,25 @@ namespace SrvSurvey.forms
 
     class PanelMsg : Panel
     {
-        public static int drawCollapsed(Graphics g, TextCursor tt, bool selected, PlayMsg pm, Msg qm)
+        public static int drawCollapsed(Graphics g, TextCursor tt, DrawButton btn, PlayMsg pm, Msg qm)
         {
             tt.dty = N.four;
+            tt.color = btn.ForeColor2;
+            var p = btn.pen(C.Pens.orange2r, C.Pens.menuGold2r, C.Pens.black2);
 
-            tt.color = pm.read ? C.orange : C.cyan;
-            var p = !pm.read ? C.Pens.cyan2r : C.Pens.orange2r;
-
-            if (selected)
+            if (!pm.read)
             {
-                tt.color = Color.Black;
-                p = C.Pens.black2;
-            }
+                if (!btn.mouseDown)
+                {
+                    tt.color = C.cyan;
+                    p = C.Pens.cyan2r;
+                }
 
-            if (selected && !pm.read)
-                g.Clear(C.cyan);
+                if (btn.mouseDown)
+                    g.Clear(C.cyan);
+                else if (btn.highlight)
+                    g.Clear(C.cyanDark);
+            }
 
             // draw envelop logo
             PlotQuestMini.drawEnvelope(g, N.six, N.ten, N.twoEight, p);
@@ -593,15 +652,15 @@ namespace SrvSurvey.forms
                 : pm.received.AddYears(1286).UtcDateTime.ToString("dd MMM yyyy - HH:mm");
 
             // message from
-            tt.drawRight(tt.containerWidth - N.six, time, null, GameColors.Fonts.gothic_7);
-            tt.draw(N.forty, pm.from ?? qm?.from, GameColors.Fonts.gothic_8);
+            tt.drawRight(tt.containerWidth - N.six, time, null, GameColors.Fonts.gothic_9);
+            tt.draw(N.forty, pm.from ?? qm?.from, GameColors.Fonts.gothic_9);
             tt.newLine(-N.four);
 
             // subject (ellipse if too wide)
             var subject = pm.subject ?? qm?.subject ?? pm.body ?? qm?.body;
             var flags = tt.flags;
             tt.flags |= TextFormatFlags.SingleLine | TextFormatFlags.EndEllipsis;
-            tt.drawWrapped(N.forty, tt.containerWidth - (int)N.ten, subject, GameColors.Fonts.gothic_10);
+            tt.drawWrapped(N.forty, tt.containerWidth - (int)N.ten, subject, GameColors.Fonts.gothic_12);
             tt.flags = flags;
             tt.newLine(N.four);
 
@@ -623,7 +682,7 @@ namespace SrvSurvey.forms
             this.Padding = Padding.Empty;
             this.Margin = Padding.Empty;
             this.ForeColor = C.orange;
-            this.BackColor = Color.Black;
+            this.BackColor = Color.Transparent;
             this.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             this.ResizeRedraw = true;
             this.DoubleBuffered = true;
@@ -668,7 +727,7 @@ namespace SrvSurvey.forms
             btnB.Paint += (s, e) =>
             {
                 e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                var p = btnB.highlight ? C.Pens.orangeDark2r : C.Pens.orange2r;
+                var p = btnB.pen(C.Pens.orangeDark3r, C.Pens.menuGold3r, C.Pens.black3r);
                 PlotQuestMini.drawBackArrow(e.Graphics, 28, 6, 18, p);
             };
             this.Controls.Add(btnB);

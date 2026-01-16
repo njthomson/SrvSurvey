@@ -33,6 +33,7 @@ namespace SrvSurvey.widgets
 
         public static Color orange = c("orange");
         public static Color orangeDark = c("orangeDark");
+        public static Color orangeDarker = Color.FromArgb(100, c("orangeDark"));
 
         public static Color cyan = c("cyan");
         public static Color cyanDark = c("cyanDark");
@@ -79,6 +80,8 @@ namespace SrvSurvey.widgets
 
             public static Pen black1 = Color.Black.toPen(1);
             public static Pen black2 = Color.Black.toPen(2);
+            public static Pen black3r = Color.Black.toPen(3, LineCap.Round);
+            public static Pen black4 = Color.Black.toPen(4);
 
             public static Pen red1 = red.toPen(1);
             public static Pen red2 = red.toPen(2);
@@ -86,6 +89,11 @@ namespace SrvSurvey.widgets
             public static Pen redDark1 = redDark.toPen(1);
 
             public static Pen yellow2 = yellow.toPen(2);
+
+            public static Pen menuGold1 = menuGold.toPen(1);
+            public static Pen menuGold2r = menuGold.toPen(2, LineCap.Round);
+            public static Pen menuGold3r = menuGold.toPen(3, LineCap.Round);
+            public static Pen menuGold4 = menuGold.toPen(4);
 
             public static Pen green2 = green.toPen(2);
         }
@@ -101,6 +109,8 @@ namespace SrvSurvey.widgets
             public static Brush red = C.red.toBrush();
             public static Brush yellow = C.yellow.toBrush();
             public static Brush green = C.green.toBrush();
+
+            public static Brush menuGold = C.menuGold.toBrush();
         }
 
         internal class Bio
@@ -136,7 +146,7 @@ namespace SrvSurvey.widgets
         }
         internal class FCZ
         {
-            public static Color checkpoint= c("fcz.checkpoint");
+            public static Color checkpoint = c("fcz.checkpoint");
             public static Color checkpointLocal = c("fcz.checkpointLocal");
             public static Color powerPost = c("fcz.powerPost");
 

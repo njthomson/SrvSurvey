@@ -40,6 +40,7 @@
             treeJournals = new TreeView();
             statusStrip1 = new StatusStrip();
             menuSpring = new ToolStripStatusLabel();
+            btnReplay = new Button();
             tableDebug.SuspendLayout();
             statusStrip1.SuspendLayout();
             SuspendLayout();
@@ -49,6 +50,7 @@
             tableDebug.ColumnCount = 2;
             tableDebug.ColumnStyles.Add(new ColumnStyle());
             tableDebug.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableDebug.Controls.Add(btnReplay, 0, 2);
             tableDebug.Controls.Add(txtNewCode, 1, 2);
             tableDebug.Controls.Add(label1, 0, 0);
             tableDebug.Controls.Add(label2, 0, 1);
@@ -129,8 +131,18 @@
             menuSpring.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
             menuSpring.BorderStyle = Border3DStyle.SunkenOuter;
             menuSpring.Name = "menuSpring";
-            menuSpring.Size = new Size(745, 17);
+            menuSpring.Size = new Size(776, 17);
             menuSpring.Spring = true;
+            // 
+            // btnReplay
+            // 
+            btnReplay.Location = new Point(3, 418);
+            btnReplay.Name = "btnReplay";
+            btnReplay.Size = new Size(75, 23);
+            btnReplay.TabIndex = 2;
+            btnReplay.Text = "Replay";
+            btnReplay.UseVisualStyleBackColor = true;
+            btnReplay.Click += btnReplay_Click;
             // 
             // FormPlayJournal
             // 
@@ -159,5 +171,6 @@
         private TextBox txtNewCode;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel menuSpring;
+        private Button btnReplay;
     }
 }

@@ -20,6 +20,19 @@ namespace SrvSurvey.forms
             Util.applyTheme(this);
 
             this.Status_StatusChanged(false);
+            this.pullPriorEntries();
+        }
+
+        private void pullPriorEntries()
+        {
+            if (game.journals == null) return;
+
+            var entries = game.journals.Entries.Slice(game.journals.Entries.Count - 40, 40).ToList();
+            foreach (var entry in entries)
+            {
+                var obj = JObject.FromObject(entry);
+                Journals_onRawJournalEntry(obj, 0);
+            }
         }
 
         private void Status_StatusChanged(bool blink)
@@ -58,7 +71,10 @@ namespace SrvSurvey.forms
                 treeJournals.Nodes[0].Collapse();
 
             var timestamp = obj["timestamp"]?.ToObject<DateTime>();
-            var node = new TreeNode($"{timestamp:yyyy-MM-dd HH:mm:ss} {obj["event"]}");
+            var node = new TreeNode($"{timestamp:yyyy-MM-dd HH:mm:ss} {obj["event"]}")
+            {
+                Tag = obj,
+            };
             foreach (var prop in obj.Properties())
             {
                 if (prop.Value.Type == JTokenType.Null) continue;
@@ -100,6 +116,17 @@ namespace SrvSurvey.forms
 
             node.Expand();
             treeJournals.Nodes.Insert(0, node);
+        }
+
+        private void btnReplay_Click(object sender, EventArgs e)
+        {
+            var node = treeJournals.SelectedNode;
+            var obj = node?.Tag as JObject;
+            if (obj == null) return;
+
+            var entry = JournalFile.hydrate(obj)!;
+            if (entry != null)
+                game.cmdrPlay!.processJournalEntry(entry);
         }
     }
 }

@@ -489,7 +489,16 @@ namespace SrvSurvey
 
         private static bool questShow()
         {
-            BaseForm.show<FormPlayComms>();
+            var form = BaseForm.get<FormPlayComms>();
+            if (form != null)
+            {
+                if (Elite.focusSrvSurvey)
+                    form.Close();
+                else
+                    form.Activate();
+            }
+            else
+                BaseForm.show<FormPlayComms>();
             return true;
         }
     }

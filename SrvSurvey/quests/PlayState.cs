@@ -165,6 +165,11 @@ namespace SrvSurvey.quests
         [JsonIgnore] public int messagesTotal => activeQuests.Sum(q => q.msgs.Count);
         [JsonIgnore] public int messagesUnread => activeQuests.Sum(pq => pq.unreadMessageCount);
 
+        public PlayQuest? get(string id)
+        {
+            return activeQuests.Find(x => x.id == id);
+        }
+
         public void processJournalEntry(IJournalEntry entry)
         {
             var dirty = false;
@@ -438,6 +443,11 @@ namespace SrvSurvey.quests
 
         [JsonIgnore] public int unreadMessageCount => msgs.Count(m => !m.read);
 
+        public PlayMsg? getMsg(string id)
+        {
+            return msgs.Find(x => x.id == id);
+        }
+
         public override string ToString()
         {
             return $"playQuest:{id}";
@@ -452,9 +462,13 @@ namespace SrvSurvey.quests
             {
                 if (!pc.active) continue;
 
-                var func = conduit.funcs.GetValueOrDefault($"{pc.id}/{entry.@event}")!;
+                var key = $"{pc.id}/{entry.@event}";
+                var func = conduit.funcs.GetValueOrDefault(key)!;
                 if (func != null)
+                {
+                    Game.log($"Invoking: {pc.parent.id}/{key}");
                     func(entry);
+                }
             }
 
             return updateIfDirty();

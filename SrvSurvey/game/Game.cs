@@ -772,9 +772,6 @@ namespace SrvSurvey.game
         {
             if (!Game.settings.enableQuests) return null;
 
-            cmdrPlay?.Save();
-            cmdrPlay = null;
-
             this.cmdrPlay = await PlayState.loadAsync(this.cmdr.fid);
             return this.cmdrPlay;
         }

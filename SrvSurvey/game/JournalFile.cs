@@ -105,11 +105,7 @@ namespace SrvSurvey
                 var entry = readRaw()!;
                 if (entry == null) return null;
 
-                var eventName = entry["event"]!.Value<string>()!;
-                if (typeMap.ContainsKey(eventName))
-                {
-                    return entry.ToObject(typeMap[eventName]) as JournalEntry;
-                }
+                return hydrate(entry);
             }
             catch (Exception ex)
             {
@@ -118,6 +114,15 @@ namespace SrvSurvey
 
             // ignore anything else
             return null;
+        }
+
+        public static JournalEntry? hydrate(JObject entry)
+        {
+            var eventName = entry["event"]!.Value<string>()!;
+            if (typeMap.ContainsKey(eventName))
+                return entry.ToObject(typeMap[eventName]) as JournalEntry;
+            else
+                return null;
         }
 
         public T? FindEntryByType<T>(int index, bool searchUp) where T : IJournalEntry
