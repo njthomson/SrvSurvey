@@ -20,7 +20,7 @@ namespace SrvSurvey.forms
         {
             InitializeComponent();
             loadPlayState().justDoIt();
-            Util.applyTheme(this, true);
+            Util.applyTheme(this, true, false);
         }
 
         private async Task loadPlayState(bool reset = false)

@@ -8,6 +8,7 @@ using SrvSurvey.net;
 using SrvSurvey.plotters;
 using SrvSurvey.Properties;
 using SrvSurvey.units;
+using SrvSurvey.widgets;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 using static SrvSurvey.game.GuardianSiteData;
@@ -1182,41 +1183,50 @@ namespace SrvSurvey
 
         public static void applyTheme(Control ctrl)
         {
-            applyTheme(ctrl, Game.settings.darkTheme);
+            applyTheme(ctrl, Game.settings.darkTheme, false);
         }
 
-        public static void applyTheme(Control ctrl, bool dark)
+        public static void applyTheme(Control ctrl, bool dark, bool black)
         {
             if (ctrl is Button)
             {
-                ctrl.BackColor = dark ? SystemColors.ControlDark : SystemColors.ControlLight;
+                ctrl.BackColor = black ? Color.Black : dark ? SystemColors.ControlDark : SystemColors.ControlLight;
+                ctrl.ForeColor = black ? C.orange : SystemColors.ControlText;
             }
             else if (ctrl is TextBox)
             {
                 if (!ctrl.Enabled || ((TextBox)ctrl).ReadOnly)
-                    ctrl.BackColor = dark ? SystemColors.AppWorkspace : SystemColors.Control;
+                {
+                    ctrl.BackColor = black ? Color.Black : dark ? SystemColors.AppWorkspace : SystemColors.Control;
+                    ctrl.ForeColor = black ? C.orange : SystemColors.ControlText;
+                }
                 else
-                    ctrl.BackColor = dark ? SystemColors.ScrollBar : SystemColors.Window;
+                {
+                    ctrl.BackColor = black ? Color.Black : dark ? SystemColors.ScrollBar : SystemColors.Window;
+                    ctrl.ForeColor = black ? C.orange : SystemColors.ControlText;
+                }
             }
             else if (ctrl is ListView)
             {
-                ctrl.BackColor = dark ? SystemColors.WindowFrame : SystemColors.Window;
-                ctrl.ForeColor = dark ? SystemColors.Info : SystemColors.ControlText;
+                ctrl.BackColor = black ? Color.Black : dark ? SystemColors.WindowFrame : SystemColors.Window;
+                ctrl.ForeColor = black ? C.orange : dark ? SystemColors.Info : SystemColors.ControlText;
             }
             else if (ctrl is ListBox)
             {
-                ctrl.BackColor = dark ? SystemColors.ScrollBar : SystemColors.Window;
+                ctrl.BackColor = black ? Color.Black : dark ? SystemColors.ScrollBar : SystemColors.Window;
+                ctrl.ForeColor = black ? C.orange : SystemColors.ControlText;
             }
             else
             {
-                ctrl.BackColor = dark ? SystemColors.AppWorkspace : SystemColors.Control;
+                ctrl.BackColor = black ? Color.Black : (dark ? SystemColors.AppWorkspace : SystemColors.Control);
+                ctrl.ForeColor = black ? C.orange : SystemColors.ControlText;
             }
 
             foreach (Control child in ctrl.Controls)
             {
                 if (child.Tag is string && child.Tag.ToString() == "NoTheme") continue;
 
-                applyTheme(child, dark);
+                applyTheme(child, dark, black);
             }
         }
 
@@ -1588,7 +1598,7 @@ namespace SrvSurvey
                     Util.isFirewallProblem(postTask.Exception);
 
                 // exit early if the call did not succeed or returns a null
-                if (postTask.Exception != null) 
+                if (postTask.Exception != null)
                     func(postTask.Exception.InnerExceptions.Count == 1 ? postTask.Exception.InnerExceptions[0] : postTask.Exception);
             });
         }

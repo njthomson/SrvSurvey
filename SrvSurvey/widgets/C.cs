@@ -96,6 +96,8 @@ namespace SrvSurvey.widgets
             public static Pen menuGold4 = menuGold.toPen(4);
 
             public static Pen green2 = green.toPen(2);
+
+            public static Pen grey1 = grey.toPen(1);
         }
 
         public static class Brushes

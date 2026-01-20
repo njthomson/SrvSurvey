@@ -788,14 +788,23 @@ namespace SrvSurvey
 
     public class DrawButton : Button
     {
-        public Color BackColorHover;
-        public Color BackColorPressed;
-        public Color BackColorDisabled;
-        public Color ForeColorHover;
-        public Color ForeColorPressed;
-        public Color ForeColorDisabled;
+        [Browsable(true)]
+        public Color BackColorHover { get; set; }
+        [Browsable(true)]
+        public Color BackColorPressed { get; set; }
+        [Browsable(true)]
+        public Color BackColorDisabled { get; set; }
+        [Browsable(true)]
+        public Color ForeColorHover { get; set; }
+        [Browsable(true)]
+        public Color ForeColorPressed { get; set; }
+        [Browsable(true)]
+        public Color ForeColorDisabled { get; set; }
+        [Browsable(true)]
+        public bool DrawBorder { get; set; }
         public bool mouseDown { get; private set; }
         public bool highlight { get; private set; }
+        private Pen? borderPen;
 
         public DrawButton()
         {
@@ -945,13 +954,95 @@ namespace SrvSurvey
             else
                 e.Graphics.Clear(bc);
 
-            if (Text != null)
+            var fc = ForeColor2;
+
+            if (DrawBorder)
             {
-                var fc = ForeColor2;
-                TextRenderer.DrawText(e.Graphics, Text, Font, ClientRectangle, fc);
+                if (borderPen?.Color != fc) borderPen = fc.toPen(1);
+                e.Graphics.DrawRectangle(borderPen, 0, 0, ClientRectangle.Width - 1, ClientRectangle.Height - 1);
+
+                if (Focused)
+                {
+                    var r = new Rectangle(2, 2, ClientSize.Width - 4, ClientSize.Height - 4);
+                    ControlPaint.DrawFocusRectangle(e.Graphics, r, ForeColor, BackColor);
+                }
             }
 
+            if (Text != null)
+                TextRenderer.DrawText(e.Graphics, Text, Font, ClientRectangle, fc);
+
             base.RaisePaintEvent(this, e);
+        }
+    }
+
+    public class GroupBox2 : GroupBox
+    {
+        public Color LineColor { get; set; } = SystemColors.ActiveBorder;
+        private Pen? linePen;
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            if (DesignMode)
+            {
+                base.OnPaint(e);
+                return;
+            }
+
+            var g = e.Graphics;
+
+            var h = TextRenderer.MeasureText(g, Text, Font).Height / 2;
+
+            if (linePen?.Color != LineColor) linePen = LineColor.toPen(1);
+            g.DrawRectangle(linePen, 0, h, ClientRectangle.Width - 1, ClientRectangle.Height - h - 2);
+
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            TextRenderer.DrawText(g, Text, Font, new Point(6, 0), ForeColor, BackColor);
+        }
+    }
+
+    public class CheckBox2 : CheckBox
+    {
+        public Color LineColor { get; set; } = SystemColors.ActiveBorder;
+        private Pen? linePen;
+        public Color CheckColor { get; set; } = SystemColors.ControlText;
+        private Pen? checkPen;
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            if (DesignMode)
+            {
+                base.OnPaint(e);
+                return;
+            }
+
+            var g = e.Graphics;
+            g.Clear(BackColor);
+
+            var isBlack = BackColor == Color.Black;
+
+            var sz = CheckBoxRenderer.GetGlyphSize(g, System.Windows.Forms.VisualStyles.CheckBoxState.CheckedNormal);
+            TextRenderer.DrawText(g, Text, Font, new Point(sz.Width + 2, 1), Enabled ? ForeColor : SystemColors.GrayText, BackColor);
+
+            var lc = Enabled ? LineColor : isBlack ? ControlPaint.Dark(LineColor) : ControlPaint.LightLight(LineColor);
+            if (linePen?.Color != lc) linePen = lc.toPen(1);
+
+            var r = new Rectangle(1, 1, sz.Width, sz.Height);
+            g.DrawRectangle(linePen, r);
+
+            if (Checked)
+            {
+                var cc = Enabled ? CheckColor : isBlack ? ControlPaint.Dark(CheckColor) : ControlPaint.LightLight(CheckColor);
+                if (checkPen?.Color != cc) checkPen = cc.toPen(1.5f, System.Drawing.Drawing2D.LineCap.Square);
+
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                var h = 1 + (sz.Height / 2);
+                g.DrawLineR(checkPen, 4, h, 3, 3);
+                g.DrawLineR(checkPen, 7, h + 3, 4, -5.5f);
+            }
+
+            if (Focused)
+                ControlPaint.DrawFocusRectangle(g, ClientRectangle, ForeColor, BackColor);
         }
     }
 }

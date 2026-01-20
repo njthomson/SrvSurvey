@@ -5,6 +5,7 @@ using SrvSurvey.game;
 using SrvSurvey.game.RavenColonial;
 using SrvSurvey.net;
 using SrvSurvey.plotters;
+using SrvSurvey.Properties;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.ComponentModel;
@@ -95,7 +96,7 @@ namespace SrvSurvey
             // disable colonization menu items if feature is disabled
             if (!Game.settings.buildProjects_TEST) menuColonize.targetButton = null;
 
-            Util.applyTheme(this);
+            adjustMainTheming();
             btnNextWindow.BackColor = C.cyanDark;
         }
 
@@ -342,6 +343,19 @@ namespace SrvSurvey
 
         }
 
+        private void btnCodexShow_Paint(object sender, PaintEventArgs e)
+        {
+            var r = new Rectangle(Point.Empty, ImageResources.picture.Size);
+            r.Offset(7, 2);
+            e.Graphics.DrawIcon(ImageResources.picture, r);
+        }
+
+        private void btnCopyLocation_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.DrawRectangle(C.Pens.grey1, 8, 3, 8, 10);
+            e.Graphics.DrawRectangle(Game.settings.themeMainBlack ? C.Pens.menuGold1 : C.Pens.black1, 4, 6, 8, 10);
+        }
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             // a periodic timer to check the location of the game window, repositioning plotters if needed
@@ -557,7 +571,7 @@ namespace SrvSurvey
                 : "?";
             var r = new Rectangle(scaleBy(4), scaleBy(12), groupCodex.Width, scaleBy(40));
 
-            TextRenderer.DrawText(e.Graphics, txt, lblBig.Font, r, Color.Black);
+            TextRenderer.DrawText(e.Graphics, txt, lblBig.Font, r, this.ForeColor);
         }
 
         private void settingsFolderWatcher_Changed(object sender, FileSystemEventArgs e)
@@ -652,6 +666,7 @@ namespace SrvSurvey
                 btnTravel.Enabled = cmdr != null;
                 btnColonize.Enabled = cmdr != null;
                 btnResetExploration.Enabled = false;
+                btnResetBio.Enabled = false;
                 return;
             }
 
@@ -719,6 +734,7 @@ namespace SrvSurvey
             btnTravel.Enabled = true;
             btnColonize.Enabled = true;
             btnResetExploration.Enabled = true;
+            btnResetBio.Enabled = true && game?.cmdr?.organicRewards > 0;
         }
 
         private void updateBioTexts()
@@ -1181,7 +1197,7 @@ namespace SrvSurvey
 
                     // force opacity changes to take immediate effect
                     Program.showActivePlotters();
-                    Util.applyTheme(this);
+                    adjustMainTheming();
 
                     Application.DoEvents();
                     if (game != null)
@@ -1202,6 +1218,48 @@ namespace SrvSurvey
             {
                 btnSettings.Enabled = true;
             }
+        }
+
+        private void adjustMainTheming()
+        {
+            var black = Game.settings.themeMainBlack;
+            var dark = Game.settings.darkTheme;
+            Util.applyTheme(this, dark, black);
+
+            foreach (var btn in new DrawButton[] { btnQuit2, btnSettings, btnLogs, btnPredictions, btnCodexBingo, btnResetExploration, btnCopyLocation, btnCodexShow, btnResetBio })
+            {
+                btn.BackColor = black ? C.orangeDarker : dark ? SystemColors.ControlDark : SystemColors.ControlLight;
+
+                btn.BackColorHover = black ? C.orangeDark : SystemColors.InactiveCaption;
+                btn.BackColorPressed = black ? C.orange : SystemColors.ActiveCaption;
+                btn.BackColorDisabled = black ? C.grey : SystemColors.ButtonShadow;
+
+                btn.ForeColor = black ? C.orange : SystemColors.ControlText;
+                btn.ForeColorHover = black ? C.menuGold : SystemColors.ControlText;
+                btn.ForeColorPressed = black ? C.black : SystemColors.ControlText;
+                btn.ForeColorDisabled = black ? C.black : SystemColors.GrayText;
+            }
+
+            foreach (var btn in new FlatButton[] { btnSearch, btnGuardian, btnTravel, btnColonize })
+            {
+                btn.BackColor = black ? C.orangeDarker : dark ? SystemColors.ControlDark : SystemColors.ControlLight;
+                btn.ForeColor = black ? C.orange : SystemColors.ControlText;
+
+                btn.FlatAppearance.MouseOverBackColor = black ? C.orangeDark : SystemColors.InactiveCaption;
+                btn.FlatAppearance.MouseDownBackColor = black ? C.menuGold : SystemColors.ActiveCaption;
+            }
+
+            foreach (var gb in new GroupBox2[] { groupCmdr, groupBox3, groupBox5, groupCodex })
+                gb.LineColor = black ? C.orangeDark : dark ? SystemColors.ControlLight : SystemColors.ControlDark;
+
+
+            foreach (var cb in new CheckBox2[] { checkTempHide, checkFirstFootFall })
+            {
+                cb.LineColor = black ? C.orangeDark : SystemColors.ControlText;
+                cb.CheckColor = black ? C.orange : SystemColors.ControlText;
+            }
+
+            this.Invalidate(true);
         }
 
         private void btnNextWindow_Click(object sender, EventArgs e)
@@ -1629,6 +1687,21 @@ namespace SrvSurvey
             BaseForm.show<FormPredictions>();
         }
 
+        private void btnResetBio_Click(object sender, EventArgs e)
+        {
+            if (game?.cmdr == null) return;
+
+            var rslt = MessageBox.Show($"Are you sure you want to reset unclaimed exobiology rewards?", "Clear unclaimed rewards", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (rslt == DialogResult.Yes)
+            {
+                Game.log($"Clearing in {game.cmdr.organicRewards} unclaimed rewards.");
+                game.cmdr.organicRewards = 0;
+                game.cmdr.scannedOrganics?.Clear(); // retire?
+                game.cmdr.scannedBioEntryIds.Clear();
+                game.cmdr.Save();
+            }
+        }
+
         private readonly string[] comboDevItems = new[]
         {
             "...",
@@ -1731,7 +1804,7 @@ namespace SrvSurvey
             if (localBuildId != null || showNewProject)
                 btnColonize.BackColor = C.cyan;
             else
-                Util.applyTheme(btnColonize, Game.settings.darkTheme);
+                btnColonize.BackColor = Game.settings.themeMainBlack ? C.orangeDarker : Game.settings.darkTheme ? SystemColors.ControlDark : SystemColors.ControlLight;
         }
 
         private void menuJourney_Opening(object sender, System.ComponentModel.CancelEventArgs e)
@@ -1922,7 +1995,7 @@ namespace SrvSurvey
         {
             if (game?.cmdrColony == null) return;
 
-            Util.applyTheme(btnColonize, Game.settings.darkTheme);
+            Util.applyTheme(btnColonize, Game.settings.darkTheme, Game.settings.themeMainBlack);
             btnColonize.Enabled = false;
             Application.DoEvents();
 

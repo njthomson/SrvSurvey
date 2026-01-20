@@ -1638,11 +1638,12 @@ namespace SrvSurvey.game
             var sites = GuardianSitePub.Find(this.name);
             Game.log($"prepSettlements: for: '{this.name}' ({this.address}), sites.Count: {sites.Count}");
             this._settlements = new List<SystemSettlementSummary>();
+            var bodies = this.bodies.ToList();
             foreach (var site in sites)
             {
                 if (site.isRuins)
                 {
-                    var body = this.bodies.FirstOrDefault(_ => _.name == site.bodyName)!;
+                    var body = bodies.FirstOrDefault(_ => _.name == site.bodyName)!;
                     if (body != null)
                     {
                         // TODO: replace this with GuardianSitePub ?
@@ -1653,7 +1654,7 @@ namespace SrvSurvey.game
                 }
                 else
                 {
-                    var body = this.bodies.FirstOrDefault(_ => _.name == site.bodyName)!;
+                    var body = bodies.FirstOrDefault(_ => _.name == site.bodyName)!;
                     if (body != null)
                     {
                         // TODO: replace this with GuardianSitePub ?

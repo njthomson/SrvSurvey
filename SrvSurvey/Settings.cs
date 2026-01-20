@@ -224,6 +224,7 @@ namespace SrvSurvey
         public bool preDownloadCodexImages = false;
 
         public bool darkTheme = false;
+        public bool themeMainBlack = false;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public PlotFSS.WatchFssPixelSettings? watchFssSettings_TEST = new();

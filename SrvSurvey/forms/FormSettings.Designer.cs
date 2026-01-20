@@ -78,6 +78,7 @@ namespace SrvSurvey
             linkResetTheme = new LinkLabel();
             tabControl = new TabControl();
             tabPage4 = new TabPage();
+            checkBox54 = new CheckBox();
             checkBox37 = new CheckBox();
             comboBox1 = new ComboBox();
             label29 = new Label();
@@ -270,7 +271,7 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
-            checkBox54 = new CheckBox();
+            checkBox55 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -367,6 +368,7 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(checkBox55);
             tabPage1.Controls.Add(checkEnableVR);
             tabPage1.Controls.Add(btnAdjustVR);
             tabPage1.Controls.Add(checkBox45);
@@ -624,7 +626,7 @@ namespace SrvSurvey
             checkDarkTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             checkDarkTheme.AutoSize = true;
             checkDarkTheme.FlatStyle = FlatStyle.System;
-            checkDarkTheme.Location = new Point(585, 71);
+            checkDarkTheme.Location = new Point(553, 45);
             checkDarkTheme.Name = "checkDarkTheme";
             checkDarkTheme.Size = new Size(93, 20);
             checkDarkTheme.TabIndex = 23;
@@ -704,7 +706,7 @@ namespace SrvSurvey
             comboCmdr.FormattingEnabled = true;
             comboCmdr.Location = new Point(10, 30);
             comboCmdr.Name = "comboCmdr";
-            comboCmdr.Size = new Size(677, 23);
+            comboCmdr.Size = new Size(526, 23);
             comboCmdr.TabIndex = 1;
             // 
             // checkHideJournalTimer
@@ -813,7 +815,7 @@ namespace SrvSurvey
             trackOpacity.Margin = new Padding(4, 3, 4, 3);
             trackOpacity.Maximum = 100;
             trackOpacity.Name = "trackOpacity";
-            trackOpacity.Size = new Size(400, 45);
+            trackOpacity.Size = new Size(358, 45);
             trackOpacity.SmallChange = 5;
             trackOpacity.TabIndex = 4;
             trackOpacity.TickFrequency = 5;
@@ -909,6 +911,21 @@ namespace SrvSurvey
             tabPage4.Size = new Size(699, 448);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
+            // 
+            // checkBox54
+            // 
+            checkBox54.AutoSize = true;
+            checkBox54.Checked = true;
+            checkBox54.CheckState = CheckState.Checked;
+            checkBox54.FlatStyle = FlatStyle.System;
+            checkBox54.Location = new Point(223, 419);
+            checkBox54.Margin = new Padding(4, 3, 4, 3);
+            checkBox54.Name = "checkBox54";
+            checkBox54.Size = new Size(113, 20);
+            checkBox54.TabIndex = 34;
+            checkBox54.Tag = "dimIfAnalyzed";
+            checkBox54.Text = "Dim if analyzed";
+            checkBox54.UseVisualStyleBackColor = true;
             // 
             // checkBox37
             // 
@@ -3383,20 +3400,18 @@ namespace SrvSurvey
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
             // 
-            // checkBox54
+            // checkBox55
             // 
-            checkBox54.AutoSize = true;
-            checkBox54.Checked = true;
-            checkBox54.CheckState = CheckState.Checked;
-            checkBox54.FlatStyle = FlatStyle.System;
-            checkBox54.Location = new Point(223, 419);
-            checkBox54.Margin = new Padding(4, 3, 4, 3);
-            checkBox54.Name = "checkBox54";
-            checkBox54.Size = new Size(113, 20);
-            checkBox54.TabIndex = 34;
-            checkBox54.Tag = "dimIfAnalyzed";
-            checkBox54.Text = "Dim if analyzed";
-            checkBox54.UseVisualStyleBackColor = true;
+            checkBox55.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            checkBox55.AutoSize = true;
+            checkBox55.FlatStyle = FlatStyle.System;
+            checkBox55.Location = new Point(553, 71);
+            checkBox55.Name = "checkBox55";
+            checkBox55.Size = new Size(135, 20);
+            checkBox55.TabIndex = 36;
+            checkBox55.Tag = "themeMainBlack";
+            checkBox55.Text = "Black main window";
+            checkBox55.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -3725,5 +3740,6 @@ namespace SrvSurvey
         private CheckBox checkBox51;
         private CheckBox checkBox53;
         private CheckBox checkBox54;
+        private CheckBox checkBox55;
     }
 }

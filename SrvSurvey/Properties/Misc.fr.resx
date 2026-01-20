@@ -233,8 +233,7 @@
     <source>Settlements</source>
   </data>
   <data name="NetSysData_StarPorts">
-    <!--Machine translated-->
-    <value>Ports en étoile</value>
+    <value>Spatioports</value>
     <source>Star ports</source>
   </data>
   <data name="NetSysData_TechBroker">

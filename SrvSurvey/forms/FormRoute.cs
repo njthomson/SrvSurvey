@@ -42,7 +42,7 @@ namespace SrvSurvey.forms
 
             prepList();
 
-            Util.applyTheme(this, true);
+            Util.applyTheme(this, true, false);
         }
 
         #region import data

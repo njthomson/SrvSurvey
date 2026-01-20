@@ -36,18 +36,19 @@ namespace SrvSurvey
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            btnQuit2 = new Button();
-            groupCmdr = new GroupBox();
+            btnQuit2 = new DrawButton();
+            groupCmdr = new GroupBox2();
             btnNextWindow = new Button();
-            btnCopyLocation = new Button();
+            btnCopyLocation = new DrawButton();
             txtCommander = new TextBox();
             txtNearBody = new TextBox();
             txtMode = new TextBox();
             txtLocation = new TextBox();
             txtVehicle = new TextBox();
-            groupBox3 = new GroupBox();
-            btnPredictions = new Button();
-            checkFirstFootFall = new CheckBox();
+            groupBox3 = new GroupBox2();
+            btnResetBio = new DrawButton();
+            btnPredictions = new DrawButton();
+            checkFirstFootFall = new CheckBox2();
             txtBodyBioValues = new TextBox();
             txtBodyBioSignals = new TextBox();
             lblSysBio = new Label();
@@ -57,27 +58,27 @@ namespace SrvSurvey
             lblBodyBio = new Label();
             txtBioRewards = new TextBox();
             label4 = new Label();
-            btnCodexShow = new Button();
+            btnCodexShow = new DrawButton();
             timer1 = new System.Windows.Forms.Timer(components);
-            btnLogs = new Button();
-            btnSettings = new Button();
+            btnLogs = new DrawButton();
+            btnSettings = new DrawButton();
             linkLabel1 = new LinkLabel();
             lblFullScreen = new Label();
             lblNotInstalled = new LinkLabel();
             linkLabel2 = new LinkLabel();
-            checkTempHide = new CheckBox();
-            groupBox5 = new GroupBox();
+            checkTempHide = new CheckBox2();
+            groupBox5 = new GroupBox2();
             txtExplorationValue = new TextBox();
             txtDistance = new TextBox();
             txtJumps = new TextBox();
             label6 = new Label();
             label3 = new Label();
-            btnResetExploration = new Button();
+            btnResetExploration = new DrawButton();
             label1 = new Label();
             txtBodies = new TextBox();
             linkNewBuildAvailable = new LinkLabel();
-            groupCodex = new GroupBox();
-            btnCodexBingo = new Button();
+            groupCodex = new GroupBox2();
+            btnCodexBingo = new DrawButton();
             menuSearchTools = new ButtonContextMenuStrip(components);
             menuSpherical = new ToolStripMenuItem();
             menuBoxel = new ToolStripMenuItem();
@@ -146,14 +147,22 @@ namespace SrvSurvey
             // btnQuit2
             // 
             btnQuit2.BackColor = SystemColors.ControlDark;
+            btnQuit2.BackColorDisabled = Color.Empty;
+            btnQuit2.BackColorHover = Color.Empty;
+            btnQuit2.BackColorPressed = Color.Empty;
             btnQuit2.DialogResult = DialogResult.Cancel;
+            btnQuit2.DrawBorder = true;
             btnQuit2.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnQuit2.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnQuit2.FlatStyle = FlatStyle.Flat;
+            btnQuit2.ForeColor = Color.Black;
+            btnQuit2.ForeColorDisabled = Color.Empty;
+            btnQuit2.ForeColorHover = Color.Empty;
+            btnQuit2.ForeColorPressed = Color.Empty;
             btnQuit2.Location = new Point(350, 513);
             btnQuit2.Name = "btnQuit2";
             btnQuit2.Size = new Size(75, 23);
-            btnQuit2.TabIndex = 16;
+            btnQuit2.TabIndex = 18;
             btnQuit2.Text = "&Quit";
             btnQuit2.UseVisualStyleBackColor = false;
             btnQuit2.Click += btnQuit_Click;
@@ -167,6 +176,7 @@ namespace SrvSurvey
             groupCmdr.Controls.Add(txtMode);
             groupCmdr.Controls.Add(txtLocation);
             groupCmdr.Controls.Add(txtVehicle);
+            groupCmdr.LineColor = SystemColors.ActiveBorder;
             groupCmdr.Location = new Point(12, 12);
             groupCmdr.Name = "groupCmdr";
             groupCmdr.Size = new Size(413, 98);
@@ -186,7 +196,7 @@ namespace SrvSurvey
             btnNextWindow.Location = new Point(386, 19);
             btnNextWindow.Name = "btnNextWindow";
             btnNextWindow.Size = new Size(20, 20);
-            btnNextWindow.TabIndex = 6;
+            btnNextWindow.TabIndex = 1;
             toolTip1.SetToolTip(btnNextWindow, "Switch overlays to the next game window");
             btnNextWindow.UseVisualStyleBackColor = false;
             btnNextWindow.Visible = false;
@@ -196,18 +206,27 @@ namespace SrvSurvey
             // 
             btnCopyLocation.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnCopyLocation.BackColor = SystemColors.ControlDark;
+            btnCopyLocation.BackColorDisabled = Color.Empty;
+            btnCopyLocation.BackColorHover = Color.Empty;
+            btnCopyLocation.BackColorPressed = Color.Empty;
+            btnCopyLocation.DrawBorder = true;
             btnCopyLocation.Enabled = false;
             btnCopyLocation.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnCopyLocation.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnCopyLocation.FlatStyle = FlatStyle.Flat;
+            btnCopyLocation.ForeColor = Color.Black;
+            btnCopyLocation.ForeColorDisabled = Color.Empty;
+            btnCopyLocation.ForeColorHover = Color.Empty;
+            btnCopyLocation.ForeColorPressed = Color.Empty;
             btnCopyLocation.Image = (Image)resources.GetObject("btnCopyLocation.Image");
             btnCopyLocation.Location = new Point(288, 43);
             btnCopyLocation.Name = "btnCopyLocation";
             btnCopyLocation.Size = new Size(20, 20);
-            btnCopyLocation.TabIndex = 2;
+            btnCopyLocation.TabIndex = 3;
             toolTip1.SetToolTip(btnCopyLocation, "Copy current system/body name to clipboard");
             btnCopyLocation.UseVisualStyleBackColor = false;
             btnCopyLocation.Click += btnCopyLocation_Click;
+            btnCopyLocation.Paint += btnCopyLocation_Paint;
             // 
             // txtCommander
             // 
@@ -230,7 +249,7 @@ namespace SrvSurvey
             txtNearBody.Name = "txtNearBody";
             txtNearBody.ReadOnly = true;
             txtNearBody.Size = new Size(93, 20);
-            txtNearBody.TabIndex = 3;
+            txtNearBody.TabIndex = 4;
             txtNearBody.Text = "LandableBody";
             // 
             // txtMode
@@ -242,7 +261,7 @@ namespace SrvSurvey
             txtMode.Name = "txtMode";
             txtMode.ReadOnly = true;
             txtMode.Size = new Size(298, 20);
-            txtMode.TabIndex = 5;
+            txtMode.TabIndex = 6;
             txtMode.Text = "<mode>";
             // 
             // txtLocation
@@ -254,7 +273,7 @@ namespace SrvSurvey
             txtLocation.Name = "txtLocation";
             txtLocation.ReadOnly = true;
             txtLocation.Size = new Size(280, 20);
-            txtLocation.TabIndex = 1;
+            txtLocation.TabIndex = 2;
             txtLocation.Text = "<location>";
             // 
             // txtVehicle
@@ -265,11 +284,12 @@ namespace SrvSurvey
             txtVehicle.Name = "txtVehicle";
             txtVehicle.ReadOnly = true;
             txtVehicle.Size = new Size(96, 20);
-            txtVehicle.TabIndex = 4;
+            txtVehicle.TabIndex = 5;
             txtVehicle.Text = "<vehicle>";
             // 
             // groupBox3
             // 
+            groupBox3.Controls.Add(btnResetBio);
             groupBox3.Controls.Add(btnPredictions);
             groupBox3.Controls.Add(checkFirstFootFall);
             groupBox3.Controls.Add(txtBodyBioValues);
@@ -281,6 +301,7 @@ namespace SrvSurvey
             groupBox3.Controls.Add(lblBodyBio);
             groupBox3.Controls.Add(txtBioRewards);
             groupBox3.Controls.Add(label4);
+            groupBox3.LineColor = SystemColors.ActiveBorder;
             groupBox3.Location = new Point(12, 198);
             groupBox3.Name = "groupBox3";
             groupBox3.Size = new Size(413, 130);
@@ -288,17 +309,48 @@ namespace SrvSurvey
             groupBox3.TabStop = false;
             groupBox3.Text = "Bio scanning:";
             // 
+            // btnResetBio
+            // 
+            btnResetBio.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnResetBio.BackColor = SystemColors.ControlDark;
+            btnResetBio.BackColorDisabled = Color.Empty;
+            btnResetBio.BackColorHover = Color.Empty;
+            btnResetBio.BackColorPressed = Color.Empty;
+            btnResetBio.DrawBorder = true;
+            btnResetBio.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnResetBio.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnResetBio.FlatStyle = FlatStyle.Flat;
+            btnResetBio.ForeColor = Color.Black;
+            btnResetBio.ForeColorDisabled = Color.Empty;
+            btnResetBio.ForeColorHover = Color.Empty;
+            btnResetBio.ForeColorPressed = Color.Empty;
+            btnResetBio.Location = new Point(8, 103);
+            btnResetBio.Name = "btnResetBio";
+            btnResetBio.Size = new Size(53, 21);
+            btnResetBio.TabIndex = 9;
+            btnResetBio.Text = "Reset";
+            btnResetBio.UseVisualStyleBackColor = false;
+            btnResetBio.Click += btnResetBio_Click;
+            // 
             // btnPredictions
             // 
             btnPredictions.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnPredictions.BackColor = SystemColors.ControlDark;
+            btnPredictions.BackColorDisabled = Color.Empty;
+            btnPredictions.BackColorHover = Color.Empty;
+            btnPredictions.BackColorPressed = Color.Empty;
+            btnPredictions.DrawBorder = true;
             btnPredictions.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnPredictions.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnPredictions.FlatStyle = FlatStyle.Flat;
+            btnPredictions.ForeColor = Color.Black;
+            btnPredictions.ForeColorDisabled = Color.Empty;
+            btnPredictions.ForeColorHover = Color.Empty;
+            btnPredictions.ForeColorPressed = Color.Empty;
             btnPredictions.Location = new Point(313, 103);
             btnPredictions.Name = "btnPredictions";
             btnPredictions.Size = new Size(93, 21);
-            btnPredictions.TabIndex = 0;
+            btnPredictions.TabIndex = 11;
             btnPredictions.Text = "Predictions";
             toolTip1.SetToolTip(btnPredictions, "View which species are expected in the current system");
             btnPredictions.UseVisualStyleBackColor = false;
@@ -307,11 +359,12 @@ namespace SrvSurvey
             // checkFirstFootFall
             // 
             checkFirstFootFall.AutoSize = true;
+            checkFirstFootFall.CheckColor = SystemColors.ControlText;
             checkFirstFootFall.Enabled = false;
-            checkFirstFootFall.FlatStyle = FlatStyle.System;
+            checkFirstFootFall.LineColor = SystemColors.ActiveBorder;
             checkFirstFootFall.Location = new Point(143, 107);
             checkFirstFootFall.Name = "checkFirstFootFall";
-            checkFirstFootFall.Size = new Size(128, 17);
+            checkFirstFootFall.Size = new Size(122, 16);
             checkFirstFootFall.TabIndex = 10;
             checkFirstFootFall.Text = "First Footfall";
             checkFirstFootFall.UseVisualStyleBackColor = true;
@@ -327,7 +380,7 @@ namespace SrvSurvey
             txtBodyBioValues.Name = "txtBodyBioValues";
             txtBodyBioValues.ReadOnly = true;
             txtBodyBioValues.Size = new Size(263, 20);
-            txtBodyBioValues.TabIndex = 9;
+            txtBodyBioValues.TabIndex = 8;
             // 
             // txtBodyBioSignals
             // 
@@ -338,7 +391,7 @@ namespace SrvSurvey
             txtBodyBioSignals.Name = "txtBodyBioSignals";
             txtBodyBioSignals.ReadOnly = true;
             txtBodyBioSignals.Size = new Size(77, 20);
-            txtBodyBioSignals.TabIndex = 8;
+            txtBodyBioSignals.TabIndex = 7;
             txtBodyBioSignals.TextAlign = HorizontalAlignment.Center;
             // 
             // lblSysBio
@@ -418,10 +471,18 @@ namespace SrvSurvey
             // btnCodexShow
             // 
             btnCodexShow.BackColor = SystemColors.ControlDark;
+            btnCodexShow.BackColorDisabled = Color.Empty;
+            btnCodexShow.BackColorHover = Color.Empty;
+            btnCodexShow.BackColorPressed = Color.Empty;
+            btnCodexShow.DrawBorder = true;
             btnCodexShow.Enabled = false;
             btnCodexShow.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnCodexShow.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnCodexShow.FlatStyle = FlatStyle.Flat;
+            btnCodexShow.ForeColor = Color.Black;
+            btnCodexShow.ForeColorDisabled = Color.Empty;
+            btnCodexShow.ForeColorHover = Color.Empty;
+            btnCodexShow.ForeColorPressed = Color.Empty;
             btnCodexShow.Image = (Image)resources.GetObject("btnCodexShow.Image");
             btnCodexShow.Location = new Point(379, 437);
             btnCodexShow.Name = "btnCodexShow";
@@ -430,6 +491,7 @@ namespace SrvSurvey
             toolTip1.SetToolTip(btnCodexShow, "See stock images of species expected on this planet.");
             btnCodexShow.UseVisualStyleBackColor = false;
             btnCodexShow.Click += btnCodexShow_Click;
+            btnCodexShow.Paint += btnCodexShow_Paint;
             // 
             // timer1
             // 
@@ -438,14 +500,22 @@ namespace SrvSurvey
             // btnLogs
             // 
             btnLogs.BackColor = SystemColors.ControlDark;
+            btnLogs.BackColorDisabled = Color.Empty;
+            btnLogs.BackColorHover = Color.Empty;
+            btnLogs.BackColorPressed = Color.Empty;
             btnLogs.DialogResult = DialogResult.Cancel;
+            btnLogs.DrawBorder = true;
             btnLogs.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnLogs.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnLogs.FlatStyle = FlatStyle.Flat;
+            btnLogs.ForeColor = Color.Black;
+            btnLogs.ForeColorDisabled = Color.Empty;
+            btnLogs.ForeColorHover = Color.Empty;
+            btnLogs.ForeColorPressed = Color.Empty;
             btnLogs.Location = new Point(93, 513);
             btnLogs.Name = "btnLogs";
             btnLogs.Size = new Size(75, 23);
-            btnLogs.TabIndex = 14;
+            btnLogs.TabIndex = 16;
             btnLogs.Text = "&Logs";
             btnLogs.UseVisualStyleBackColor = false;
             btnLogs.Click += btnLogs_Click;
@@ -453,14 +523,22 @@ namespace SrvSurvey
             // btnSettings
             // 
             btnSettings.BackColor = SystemColors.ControlDark;
+            btnSettings.BackColorDisabled = Color.Empty;
+            btnSettings.BackColorHover = Color.Empty;
+            btnSettings.BackColorPressed = Color.Empty;
             btnSettings.DialogResult = DialogResult.Cancel;
+            btnSettings.DrawBorder = true;
             btnSettings.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnSettings.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnSettings.FlatStyle = FlatStyle.Flat;
+            btnSettings.ForeColor = Color.Black;
+            btnSettings.ForeColorDisabled = Color.Empty;
+            btnSettings.ForeColorHover = Color.Empty;
+            btnSettings.ForeColorPressed = Color.Empty;
             btnSettings.Location = new Point(12, 513);
             btnSettings.Name = "btnSettings";
             btnSettings.Size = new Size(75, 23);
-            btnSettings.TabIndex = 13;
+            btnSettings.TabIndex = 15;
             btnSettings.Text = "&Settings";
             btnSettings.UseVisualStyleBackColor = false;
             btnSettings.Click += btnSettings_Click;
@@ -472,7 +550,7 @@ namespace SrvSurvey
             linkLabel1.Location = new Point(12, 459);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(415, 18);
-            linkLabel1.TabIndex = 9;
+            linkLabel1.TabIndex = 13;
             linkLabel1.TabStop = true;
             linkLabel1.Text = "For guidance see the wiki on GitHub";
             linkLabel1.TextAlign = ContentAlignment.MiddleLeft;
@@ -522,7 +600,7 @@ namespace SrvSurvey
             linkLabel2.Location = new Point(12, 481);
             linkLabel2.Name = "linkLabel2";
             linkLabel2.Size = new Size(417, 29);
-            linkLabel2.TabIndex = 10;
+            linkLabel2.TabIndex = 14;
             linkLabel2.TabStop = true;
             linkLabel2.Text = "Ask questions at Guardian Science Corps on Discord";
             linkLabel2.UseCompatibleTextRendering = true;
@@ -530,10 +608,12 @@ namespace SrvSurvey
             // 
             // checkTempHide
             // 
+            checkTempHide.CheckColor = SystemColors.ControlText;
+            checkTempHide.LineColor = SystemColors.ActiveBorder;
             checkTempHide.Location = new Point(12, 437);
             checkTempHide.Name = "checkTempHide";
             checkTempHide.Size = new Size(227, 16);
-            checkTempHide.TabIndex = 8;
+            checkTempHide.TabIndex = 10;
             checkTempHide.Text = "Temporarily hide all overlays";
             checkTempHide.UseVisualStyleBackColor = true;
             checkTempHide.CheckedChanged += checkTempHide_CheckedChanged;
@@ -548,6 +628,7 @@ namespace SrvSurvey
             groupBox5.Controls.Add(btnResetExploration);
             groupBox5.Controls.Add(label1);
             groupBox5.Controls.Add(txtBodies);
+            groupBox5.LineColor = SystemColors.ActiveBorder;
             groupBox5.Location = new Point(12, 116);
             groupBox5.Name = "groupBox5";
             groupBox5.Size = new Size(413, 72);
@@ -616,9 +697,17 @@ namespace SrvSurvey
             // 
             btnResetExploration.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnResetExploration.BackColor = SystemColors.ControlDark;
+            btnResetExploration.BackColorDisabled = Color.Empty;
+            btnResetExploration.BackColorHover = Color.Empty;
+            btnResetExploration.BackColorPressed = Color.Empty;
+            btnResetExploration.DrawBorder = true;
             btnResetExploration.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnResetExploration.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnResetExploration.FlatStyle = FlatStyle.Flat;
+            btnResetExploration.ForeColor = Color.Black;
+            btnResetExploration.ForeColorDisabled = Color.Empty;
+            btnResetExploration.ForeColorHover = Color.Empty;
+            btnResetExploration.ForeColorPressed = Color.Empty;
             btnResetExploration.Location = new Point(8, 40);
             btnResetExploration.Name = "btnResetExploration";
             btnResetExploration.Size = new Size(53, 21);
@@ -657,7 +746,7 @@ namespace SrvSurvey
             linkNewBuildAvailable.Location = new Point(265, 0);
             linkNewBuildAvailable.Name = "linkNewBuildAvailable";
             linkNewBuildAvailable.Size = new Size(170, 18);
-            linkNewBuildAvailable.TabIndex = 17;
+            linkNewBuildAvailable.TabIndex = 19;
             linkNewBuildAvailable.TabStop = true;
             linkNewBuildAvailable.Text = "(update available)";
             linkNewBuildAvailable.TextAlign = ContentAlignment.MiddleRight;
@@ -668,10 +757,11 @@ namespace SrvSurvey
             // groupCodex
             // 
             groupCodex.Controls.Add(btnCodexBingo);
+            groupCodex.LineColor = SystemColors.ActiveBorder;
             groupCodex.Location = new Point(12, 334);
             groupCodex.Name = "groupCodex";
             groupCodex.Size = new Size(86, 92);
-            groupCodex.TabIndex = 6;
+            groupCodex.TabIndex = 5;
             groupCodex.TabStop = false;
             groupCodex.Text = "Codex";
             groupCodex.Paint += groupCodex_Paint;
@@ -679,9 +769,17 @@ namespace SrvSurvey
             // btnCodexBingo
             // 
             btnCodexBingo.BackColor = SystemColors.ControlDark;
+            btnCodexBingo.BackColorDisabled = Color.Empty;
+            btnCodexBingo.BackColorHover = Color.Empty;
+            btnCodexBingo.BackColorPressed = Color.Empty;
+            btnCodexBingo.DrawBorder = true;
             btnCodexBingo.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnCodexBingo.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnCodexBingo.FlatStyle = FlatStyle.Flat;
+            btnCodexBingo.ForeColor = Color.Black;
+            btnCodexBingo.ForeColorDisabled = Color.Empty;
+            btnCodexBingo.ForeColorHover = Color.Empty;
+            btnCodexBingo.ForeColorPressed = Color.Empty;
             btnCodexBingo.Location = new Point(6, 65);
             btnCodexBingo.Name = "btnCodexBingo";
             btnCodexBingo.Size = new Size(75, 21);
@@ -698,7 +796,7 @@ namespace SrvSurvey
             menuSearchTools.Items.AddRange(new ToolStripItem[] { menuSpherical, menuBoxel, questToolStripMenuItem });
             menuSearchTools.Name = "menuSearchTools";
             menuSearchTools.RenderMode = ToolStripRenderMode.System;
-            menuSearchTools.Size = new Size(213, 188);
+            menuSearchTools.Size = new Size(203, 166);
             menuSearchTools.targetButton = btnSearch;
             menuSearchTools.Opening += menuSearchTools_Opening;
             // 
@@ -708,7 +806,7 @@ namespace SrvSurvey
             menuSpherical.ImageScaling = ToolStripItemImageScaling.None;
             menuSpherical.ImageTransparentColor = Color.White;
             menuSpherical.Name = "menuSpherical";
-            menuSpherical.Size = new Size(212, 54);
+            menuSpherical.Size = new Size(202, 54);
             menuSpherical.Text = "Spherical";
             menuSpherical.ToolTipText = "Search within a spherical area of space, around a central location.";
             menuSpherical.Click += menuSpherical_Click;
@@ -719,7 +817,7 @@ namespace SrvSurvey
             menuBoxel.ImageScaling = ToolStripItemImageScaling.None;
             menuBoxel.ImageTransparentColor = Color.White;
             menuBoxel.Name = "menuBoxel";
-            menuBoxel.Size = new Size(212, 54);
+            menuBoxel.Size = new Size(202, 54);
             menuBoxel.Text = "Boxel";
             menuBoxel.ToolTipText = "Search every system within a named boxel.";
             menuBoxel.Click += menuBoxel_Click;
@@ -727,7 +825,7 @@ namespace SrvSurvey
             // questToolStripMenuItem
             // 
             questToolStripMenuItem.Name = "questToolStripMenuItem";
-            questToolStripMenuItem.Size = new Size(212, 54);
+            questToolStripMenuItem.Size = new Size(202, 54);
             questToolStripMenuItem.Text = "Quest";
             questToolStripMenuItem.Click += questToolStripMenuItem_Click;
             // 
@@ -740,7 +838,7 @@ namespace SrvSurvey
             btnSearch.Margin = new Padding(2, 4, 2, 4);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(150, 40);
-            btnSearch.TabIndex = 22;
+            btnSearch.TabIndex = 6;
             btnSearch.Text = "🔎 Search";
             toolTip1.SetToolTip(btnSearch, "Tools to search for systems in spheres or cubes of space");
             btnSearch.UseVisualStyleBackColor = false;
@@ -764,7 +862,7 @@ namespace SrvSurvey
             comboDev.Location = new Point(174, 515);
             comboDev.Name = "comboDev";
             comboDev.Size = new Size(170, 20);
-            comboDev.TabIndex = 15;
+            comboDev.TabIndex = 17;
             comboDev.Visible = false;
             comboDev.SelectedIndexChanged += comboDev_SelectedIndexChanged;
             // 
@@ -842,7 +940,7 @@ namespace SrvSurvey
             btnTravel.Margin = new Padding(2, 4, 2, 4);
             btnTravel.Name = "btnTravel";
             btnTravel.Size = new Size(150, 40);
-            btnTravel.TabIndex = 24;
+            btnTravel.TabIndex = 8;
             btnTravel.Text = "🚀 Travel";
             toolTip1.SetToolTip(btnTravel, "Tools to navigate to specific locations, or keep records of a long journey or expedition");
             btnTravel.UseVisualStyleBackColor = false;
@@ -856,7 +954,7 @@ namespace SrvSurvey
             btnColonize.Margin = new Padding(2, 4, 2, 4);
             btnColonize.Name = "btnColonize";
             btnColonize.Size = new Size(169, 40);
-            btnColonize.TabIndex = 25;
+            btnColonize.TabIndex = 9;
             btnColonize.Text = "🚧 Colonise";
             toolTip1.SetToolTip(btnColonize, "Tools and features to help with system colonisation");
             btnColonize.UseVisualStyleBackColor = false;
@@ -871,7 +969,7 @@ namespace SrvSurvey
             btnGuardian.Margin = new Padding(2, 4, 2, 4);
             btnGuardian.Name = "btnGuardian";
             btnGuardian.Size = new Size(169, 40);
-            btnGuardian.TabIndex = 23;
+            btnGuardian.TabIndex = 7;
             btnGuardian.Text = "🗿 Guardian";
             btnGuardian.TextImageRelation = TextImageRelation.ImageBeforeText;
             toolTip1.SetToolTip(btnGuardian, "Tools to help find, navigate and survey Guardian sites");
@@ -1199,16 +1297,16 @@ namespace SrvSurvey
         }
 
         #endregion
-        private Button btnQuit2;
-        private GroupBox groupCmdr;
+        private DrawButton btnQuit2;
+        private GroupBox2 groupCmdr;
         private TextBox txtCommander;
-        private GroupBox groupBox3;
+        private GroupBox2 groupBox3;
         private TextBox txtVehicle;
         private TextBox txtLocation;
         private System.Windows.Forms.Timer timer1;
         private TextBox txtMode;
-        private Button btnLogs;
-        private Button btnSettings;
+        private DrawButton btnLogs;
+        private DrawButton btnSettings;
         private LinkLabel linkLabel1;
         private TextBox txtNearBody;
         private Label lblFullScreen;
@@ -1223,23 +1321,23 @@ namespace SrvSurvey
         private Label labelSignalsAndRewards;
         private Label lblBodyBio;
         private LinkLabel linkLabel2;
-        private CheckBox checkFirstFootFall;
-        public CheckBox checkTempHide;
-        private Button btnPredictions;
-        private Button btnCopyLocation;
-        private GroupBox groupBox5;
+        private CheckBox2 checkFirstFootFall;
+        public CheckBox2 checkTempHide;
+        private DrawButton btnPredictions;
+        private DrawButton btnCopyLocation;
+        private GroupBox2 groupBox5;
         private Label label1;
         private TextBox txtExplorationValue;
         private TextBox txtBodies;
         private TextBox txtJumps;
         private Label label6;
         private Label label3;
-        private Button btnResetExploration;
+        private DrawButton btnResetExploration;
         private TextBox txtDistance;
         private LinkLabel linkNewBuildAvailable;
-        public Button btnCodexShow;
-        private GroupBox groupCodex;
-        private Button btnCodexBingo;
+        public DrawButton btnCodexShow;
+        private GroupBox2 groupCodex;
+        private DrawButton btnCodexBingo;
         private Label lblBig;
         private ComboBox comboDev;
         private ButtonContextMenuStrip menuSearchTools;
@@ -1295,5 +1393,6 @@ namespace SrvSurvey
         private ToolStripMenuItem menuUpdateStations;
         private ToolStripMenuItem menuMyProjects;
         private ToolStripMenuItem questToolStripMenuItem;
+        private DrawButton btnResetBio;
     }
 }
