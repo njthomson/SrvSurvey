@@ -142,7 +142,7 @@
   <data name="HasInterstellar">
     <value>Interstellar Factor disponible</value>
     <comment>Shown when approaching a settlement</comment>
-    <source>Interstellar factions available</source>
+    <source>Interstellar Factor available</source>
   </data>
   <data name="HelpFoot0">
     <!--Machine translated-->

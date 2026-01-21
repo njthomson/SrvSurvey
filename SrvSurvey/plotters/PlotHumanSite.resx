@@ -152,7 +152,7 @@
     <comment>Shown when approaching a settlement</comment>
   </data>
   <data name="HasInterstellar">
-    <value>Interstellar factions available</value>
+    <value>Interstellar Factor available</value>
     <comment>Shown when approaching a settlement</comment>
   </data>
   

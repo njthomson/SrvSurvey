@@ -138,7 +138,7 @@
   <data name="HasInterstellar">
     <value>可用星际派系</value>
     <comment>Shown when approaching a settlement</comment>
-    <source>Interstellar factions available</source>
+    <source>Interstellar Factor available</source>
   </data>
   <data name="HelpFoot0">
     <value>手动识别:</value>
