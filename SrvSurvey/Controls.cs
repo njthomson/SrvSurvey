@@ -997,6 +997,8 @@ namespace SrvSurvey
 
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             TextRenderer.DrawText(g, Text, Font, new Point(6, 0), ForeColor, BackColor);
+
+            base.RaisePaintEvent(this, e);
         }
     }
 
@@ -1043,6 +1045,8 @@ namespace SrvSurvey
 
             if (Focused)
                 ControlPaint.DrawFocusRectangle(g, ClientRectangle, ForeColor, BackColor);
+
+            base.RaisePaintEvent(this, e);
         }
     }
 }
