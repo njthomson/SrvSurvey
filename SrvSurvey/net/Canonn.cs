@@ -2098,7 +2098,7 @@ namespace SrvSurvey.canonn
 
     internal class CanonnBodyBioStats
     {
-        public List<CanonnBodyBioStatsBody> bodies;
+        public List<CanonnBodyBioStatsBody> bodies = [];
         public int bodyCount;
         public long id64;
         public string name;
@@ -2133,7 +2133,7 @@ namespace SrvSurvey.canonn
         public double semiMajorAxis; // 0.0093306383208345
         public CanonnBodyBioStatsSignals signals; // {…}
         public Dictionary<string, float> solidComposition; // {…}
-        public List<Station> stations;
+        public List<Station> stations = [];
         public string subType; // "Rocky body"
         public double surfacePressure; // 0.00113836642487047
         public double surfaceTemperature; // 158.876053

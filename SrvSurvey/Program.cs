@@ -1,4 +1,6 @@
+using Newtonsoft.Json;
 using SrvSurvey.game;
+using SrvSurvey.net;
 using SrvSurvey.plotters;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -51,6 +53,13 @@ namespace SrvSurvey
 
             try
             {
+                // Configure JSON.NET to ignore null values for list properties,
+                // so lists keep their initialized empty value instead of being set to null
+                JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+                {
+                    ContractResolver = new NullListContractResolver()
+                };
+
                 if (!string.IsNullOrEmpty(Game.settings.lang))
                 {
                     var culture = System.Globalization.CultureInfo.CreateSpecificCulture(Game.settings.lang);
