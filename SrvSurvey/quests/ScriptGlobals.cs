@@ -131,11 +131,14 @@ namespace SrvSurvey.quests.scripting
                 this.sg = sg;
             }
 
-            public void show(string name)
+            public void show(string name, int progress = -1, int total = -1)
             {
                 Game.log($"O.show [{sg.id}]: {name}");
                 c.pq.objectives.init(name).state = PlayObjective.State.visible;
                 c.dirty = true;
+
+                if (progress != -1 && total != -1)
+                    this.progress(name, progress, total);
             }
 
             public void hide(string name)
@@ -179,6 +182,8 @@ namespace SrvSurvey.quests.scripting
                 this.c = c;
                 this.sg = sg;
             }
+
+            public Status status => Game.activeGame!.status;
 
             public Docked? lastDocked => Game.activeGame!.lastEverDocked;
 

@@ -31,14 +31,15 @@ namespace SrvSurvey
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            ListViewItem listViewItem9 = new ListViewItem("Materials count after pickup");
-            ListViewItem listViewItem10 = new ListViewItem("Mission remaining cargo count");
-            ListViewItem listViewItem11 = new ListViewItem("Boxel search status");
-            ListViewItem listViewItem12 = new ListViewItem("Next boxel to search");
+            ListViewItem listViewItem5 = new ListViewItem("Materials count after pickup");
+            ListViewItem listViewItem6 = new ListViewItem("Mission remaining cargo count");
+            ListViewItem listViewItem7 = new ListViewItem("Boxel search status");
+            ListViewItem listViewItem8 = new ListViewItem("Next boxel to search");
             panel1 = new Panel();
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
             tabPage1 = new TabPage();
+            checkBox55 = new CheckBox();
             checkEnableVR = new CheckBox();
             btnAdjustVR = new FlatButton();
             checkBox45 = new CheckBox();
@@ -271,7 +272,7 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
-            checkBox55 = new CheckBox();
+            checkBox56 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -413,6 +414,19 @@ namespace SrvSurvey
             tabPage1.Size = new Size(699, 448);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
+            // 
+            // checkBox55
+            // 
+            checkBox55.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            checkBox55.AutoSize = true;
+            checkBox55.FlatStyle = FlatStyle.System;
+            checkBox55.Location = new Point(553, 71);
+            checkBox55.Name = "checkBox55";
+            checkBox55.Size = new Size(135, 20);
+            checkBox55.TabIndex = 36;
+            checkBox55.Tag = "themeMainBlack";
+            checkBox55.Text = "Black main window";
+            checkBox55.UseVisualStyleBackColor = true;
             // 
             // checkEnableVR
             // 
@@ -1852,6 +1866,7 @@ namespace SrvSurvey
             // 
             tabPage6.BackColor = SystemColors.Control;
             tabPage6.BorderStyle = BorderStyle.Fixed3D;
+            tabPage6.Controls.Add(checkBox56);
             tabPage6.Controls.Add(checkBox51);
             tabPage6.Controls.Add(checkJumpInfoIfDestination);
             tabPage6.Controls.Add(checkBox36);
@@ -3282,15 +3297,15 @@ namespace SrvSurvey
             // listView1
             // 
             listView1.CheckBoxes = true;
-            listViewItem9.StateImageIndex = 0;
-            listViewItem9.Tag = "materialCountAfterPickup";
-            listViewItem10.StateImageIndex = 0;
-            listViewItem10.Tag = "cargoMissionRemaining";
-            listViewItem11.StateImageIndex = 0;
-            listViewItem11.Tag = "currentBoxelSearchStatus";
-            listViewItem12.StateImageIndex = 0;
-            listViewItem12.Tag = "showNextBoxelToSearch";
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem9, listViewItem10, listViewItem11, listViewItem12 });
+            listViewItem5.StateImageIndex = 0;
+            listViewItem5.Tag = "materialCountAfterPickup";
+            listViewItem6.StateImageIndex = 0;
+            listViewItem6.Tag = "cargoMissionRemaining";
+            listViewItem7.StateImageIndex = 0;
+            listViewItem7.Tag = "currentBoxelSearchStatus";
+            listViewItem8.StateImageIndex = 0;
+            listViewItem8.Tag = "showNextBoxelToSearch";
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem5, listViewItem6, listViewItem7, listViewItem8 });
             listView1.Location = new Point(12, 331);
             listView1.Name = "listView1";
             listView1.Size = new Size(400, 107);
@@ -3400,18 +3415,17 @@ namespace SrvSurvey
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
             // 
-            // checkBox55
+            // checkBox56
             // 
-            checkBox55.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            checkBox55.AutoSize = true;
-            checkBox55.FlatStyle = FlatStyle.System;
-            checkBox55.Location = new Point(553, 71);
-            checkBox55.Name = "checkBox55";
-            checkBox55.Size = new Size(135, 20);
-            checkBox55.TabIndex = 36;
-            checkBox55.Tag = "themeMainBlack";
-            checkBox55.Text = "Black main window";
-            checkBox55.UseVisualStyleBackColor = true;
+            checkBox56.AutoSize = true;
+            checkBox56.FlatStyle = FlatStyle.System;
+            checkBox56.Location = new Point(302, 423);
+            checkBox56.Name = "checkBox56";
+            checkBox56.Size = new Size(116, 20);
+            checkBox56.TabIndex = 36;
+            checkBox56.Tag = "plotJumpInfoMinimal";
+            checkBox56.Text = "Show hops only";
+            checkBox56.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -3741,5 +3755,6 @@ namespace SrvSurvey
         private CheckBox checkBox53;
         private CheckBox checkBox54;
         private CheckBox checkBox55;
+        private CheckBox checkBox56;
     }
 }

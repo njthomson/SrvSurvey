@@ -461,7 +461,7 @@ namespace SrvSurvey.forms
             return (int)(tt.dty + N.ten);
         }
 
-        static void drawObjective(Graphics g, TextCursor tt, Color c, string key, PlayObjective obj, PlayQuest pq, bool colorObjectives, DrawButton? btn)
+        public static void drawObjective(Graphics g, TextCursor tt, Color c, string key, PlayObjective obj, PlayQuest pq, bool colorObjectives, DrawButton? btn, float indent = 0)
         {
             var cc = colorObjectives ? C.cyan : c;
 
@@ -479,16 +479,16 @@ namespace SrvSurvey.forms
                 cc = C.red;
             }
 
-            tt.draw(N.eight, prefix, cc, GameColors.Fonts.gothic_10);
-            var x = N.thirty;
+            tt.draw(N.eight + indent, prefix, cc, GameColors.Fonts.gothic_10);
+            var x = N.thirty + indent;
             tt.draw(x, pq.quest.strings.GetValueOrDefault(key, key), cc, GameColors.Fonts.gothic_10);
-            tt.newLine(N.two);
+            tt.newLine(N.two, true);
 
             if (obj.total > 0)
             {
                 tt.dty -= N.three;
-                var sz = tt.draw(N.fourForty + N.ten, $"{obj.current} / {obj.total}", active ? cc : c);
-                tt.dty += N.six;
+                var sz = tt.draw(N.fourForty + N.ten + indent, $"{obj.current} / {obj.total}", active ? cc : c, GameColors.Fonts.gothic_9);
+                tt.dty += N.three;
                 var w = N.fourHundred;
 
                 g.SmoothingMode = SmoothingMode.None;
@@ -502,6 +502,7 @@ namespace SrvSurvey.forms
                 g.FillRectangle(b, x + 3, tt.dty + 3, w, N.ten - 5);
                 g.SmoothingMode = SmoothingMode.HighQuality;
                 tt.dty += N.oneFour;
+                tt.newLine(N.two, true);
             }
             tt.dty += N.four;
         }
@@ -806,9 +807,9 @@ namespace SrvSurvey.forms
 
             // body with lines
             g.DrawLine(C.Pens.orangeDark2, 0, tt.dty, Width - N.four, tt.dty);
-            tt.dty += N.six;
+            tt.dty += N.twenty;
             tt.drawWrapped(N.oneTwo, Width - (int)N.oneTwo, pm.body ?? qm?.body, GameColors.Fonts.gothic_12);
-            tt.newLine(N.six);
+            tt.newLine(N.twenty);
             g.DrawLine(C.Pens.orangeDark2, 0, tt.dty, tt.containerWidth, tt.dty);
             tt.dty += N.four;
 

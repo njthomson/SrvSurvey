@@ -17,13 +17,13 @@ namespace SrvSurvey
         public virtual string tldr { get; }
     }
 
-    class LocationEntry : JournalEntry, ILocation
+   public class LocationEntry : JournalEntry, ILocation
     {
         public double Latitude { get; set; }
         public double Longitude { get; set; }
     }
 
-    class Fileheader : JournalEntry
+   public class Fileheader : JournalEntry
     {
         // { "timestamp":"2023-01-05T23:38:49Z", "event":"Fileheader", "part":1, "language":"English/UK", "Odyssey":true, "gameversion":"4.0.0.1476", "build":"r289925/r0 " }
 
@@ -34,7 +34,7 @@ namespace SrvSurvey
         public string build { get; set; }
     }
 
-    class Commander : JournalEntry
+   public class Commander : JournalEntry
     {
         // { "timestamp":"2023-01-05T23:40:11Z", "event":"Commander", "FID":"F10171085", "Name":"GRINNING2002" }
 
@@ -42,7 +42,7 @@ namespace SrvSurvey
         public string Name { get; set; }
     }
 
-    class LoadGame : JournalEntry
+   public class LoadGame : JournalEntry
     {
         // { "timestamp":"2023-03-07T06:38:34Z", "event":"LoadGame", "FID":"F10171085", "Commander":"GRINNING2002", "Horizons":true, "Odyssey":true, "Ship":"Dolphin", "ShipID":24, "ShipName":"", "ShipIdent":"", "FuelLevel":15.500000, "FuelCapacity":16.000000, "StartLanded":true, "GameMode":"Solo", "Credits":1597404741, "Loan":0, "language":"English/UK", "gameversion":"4.0.0.1477", "build":"r291050/r0 " }
         // { "timestamp":"2025-03-09T03:34:04Z", "event":"LoadGame", "FID":"F6985613", "Commander":"grinning2001", "Horizons":true, "Odyssey":true, "Ship":"TacticalSuit_Class5", "Ship_Localised":"$TacticalSuit_Class1_Name;", "ShipID":4293000002, "ShipName":"", "ShipIdent":"", "FuelLevel":1.000000, "FuelCapacity":1.000000, "GameMode":"Open", "Credits":7626827113, "Loan":0, "language":"English/UK", "gameversion":"4.1.0.100", "build":"r311607/r0 " }
@@ -67,7 +67,7 @@ namespace SrvSurvey
         public string build { get; set; }
     }
 
-    class Location : LocationEntry, IFactions, ISystemAddress, ISystemDataStarter, IStarRef
+   public class Location : LocationEntry, IFactions, ISystemAddress, ISystemDataStarter, IStarRef
     {
         // { "timestamp":"2023-01-11T03:44:33Z", "event":"Location", "Latitude":-15.325527, "Longitude":6.507746, "DistFromStarLS":513.174241, "Docked":false, "InSRV":true, "StarSystem":"Col 173 Sector JX-K b24-0", "SystemAddress":684107179361, "StarPos":[993.06250,-188.18750,-173.53125], "SystemAllegiance":"Guardian", "SystemEconomy":"$economy_None;", "SystemEconomy_Localised":"None", "SystemSecondEconomy":"$economy_None;", "SystemSecondEconomy_Localised":"None", "SystemGovernment":"$government_None;", "SystemGovernment_Localised":"None", "SystemSecurity":"$GAlAXY_MAP_INFO_state_anarchy;", "SystemSecurity_Localised":"Anarchy", "Population":0, "Body":"Col 173 Sector JX-K b24-0 B 4", "BodyID":26, "BodyType":"Planet" }
         // { "timestamp":"2024-04-10T03:18:13Z", "event":"Location", "DistFromStarLS":18.841613, "Docked":true, "StationName":"Oyekan Prospecting Hub", "StationType":"OnFootSettlement", "MarketID":3888520448, "StationFaction":{ "Name":"Yaurnai Jet Hand Gang" }, "StationGovernment":"$government_Anarchy;", "StationGovernment_Localised":"Anarchy", "StationServices":[ "dock", "autodock", "blackmarket", "commodities", "contacts", "missions", "refuel", "repair", "engineer", "missionsgenerated", "facilitator", "flightcontroller", "stationoperations", "stationMenu" ], "StationEconomy":"$economy_Extraction;", "StationEconomy_Localised":"Extraction", "StationEconomies":[ { "Name":"$economy_Extraction;", "Name_Localised":"Extraction", "Proportion":1.000000 } ], "Taxi":false, "Multicrew":false, "StarSystem":"Yaurnai", "SystemAddress":669612713401, "StarPos":[-99.65625,116.56250,43.40625], "SystemAllegiance":"Independent", "SystemEconomy":"$economy_Extraction;", "SystemEconomy_Localised":"Extraction", "SystemSecondEconomy":"$economy_Industrial;", "SystemSecondEconomy_Localised":"Industrial", "SystemGovernment":"$government_Corporate;", "SystemGovernment_Localised":"Corporate", "SystemSecurity":"$SYSTEM_SECURITY_medium;", "SystemSecurity_Localised":"Medium Security", "Population":3143129, "Body":"Yaurnai 1", "BodyID":8, "BodyType":"Planet", "Factions":[ { "Name":"Yaurnai Independent Bridge", "FactionState":"None", "Government":"Patronage", "Influence":0.158052, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":2.970000 }, { "Name":"Stardreamer Systems", "FactionState":"None", "Government":"Corporate", "Influence":0.031809, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":100.000000 }, { "Name":"Yaurnai Partners", "FactionState":"None", "Government":"Corporate", "Influence":0.169980, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":1.980000 }, { "Name":"Raven Colonial Corporation", "FactionState":"Expansion", "Government":"Corporate", "Influence":0.471173, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "SquadronFaction":true, "MyReputation":100.000000, "ActiveStates":[ { "State":"Expansion" } ] }, { "Name":"Movement for Yaurnai Liberals", "FactionState":"None", "Government":"Democracy", "Influence":0.119284, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":4.620000 }, { "Name":"Yaurnai Jet Hand Gang", "FactionState":"None", "Government":"Anarchy", "Influence":0.049702, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":5.940000, "RecoveringStates":[ { "State":"PirateAttack", "Trend":0 } ] } ], "SystemFaction":{ "Name":"Raven Colonial Corporation", "FactionState":"Expansion" } }
@@ -138,7 +138,7 @@ namespace SrvSurvey
         }
     }
 
-    class Loadout : JournalEntry
+   public class Loadout : JournalEntry
     {
         // { "timestamp":"2024-04-15T21:09:12Z", "event":"Loadout", "Ship":"dolphin", "ShipID":35, "ShipName":"delphini", "ShipIdent":"GR-02D", "HullValue":1337323, "ModulesValue":17298866, "HullHealth":1.000000, "UnladenMass":182.292557, "CargoCapacity":16, "MaxJumpRange":56.538074, "FuelCapacity":{ "Main":16.000000, "Reserve":0.500000 }, "Rebuy":931810, "Modules":[ { "Slot":"TinyHardpoint2", "Item":"hpt_plasmapointdefence_turret_tiny", "On":true, "Priority":0, "AmmoInClip":12, "AmmoInHopper":10000, "Health":1.000000, "Value":18546, "Engineering":{ "Engineer":"Ram Tah", "EngineerID":300110, "BlueprintID":128731485, "BlueprintName":"Misc_LightWeight", "Level":5, "Quality":0.733000, "Modifiers":[ { "Label":"Mass", "Value":0.088350, "OriginalValue":0.500000, "LessIsGood":1 }, { "Label":"Integrity", "Value":15.000000, "OriginalValue":30.000000, "LessIsGood":0 } ] } }, { "Slot":"PaintJob", "Item":"paintjob_dolphin_ember_white", "On":true, "Priority":1, "Health":1.000000 }, { "Slot":"Armour", "Item":"dolphin_armour_grade1", "On":true, "Priority":1, "Health":1.000000 }, { "Slot":"PowerPlant", "Item":"int_guardianpowerplant_size4", "On":true, "Priority":1, "Health":1.000000, "Value":1517619 }, { "Slot":"MainEngines", "Item":"int_engine_size4_class2", "On":true, "Priority":0, "Health":1.000000, "Value":52329 }, { "Slot":"FrameShiftDrive", "Item":"int_hyperdrive_size4_class5", "On":true, "Priority":0, "Health":1.000000, "Value":1610080, "Engineering":{ "Engineer":"Felicity Farseer", "EngineerID":300100, "BlueprintID":128673694, "BlueprintName":"FSD_LongRange", "Level":5, "Quality":0.631000, "Modifiers":[ { "Label":"Mass", "Value":13.000000, "OriginalValue":10.000000, "LessIsGood":1 }, { "Label":"Integrity", "Value":85.000000, "OriginalValue":100.000000, "LessIsGood":0 }, { "Label":"PowerDraw", "Value":0.517500, "OriginalValue":0.450000, "LessIsGood":1 }, { "Label":"FSDOptimalMass", "Value":794.377502, "OriginalValue":525.000000, "LessIsGood":0 } ] } }, { "Slot":"LifeSupport", "Item":"int_lifesupport_size4_class2", "On":true, "Priority":0, "Health":1.000000, "Value":28373 }, { "Slot":"PowerDistributor", "Item":"int_guardianpowerdistributor_size3", "On":true, "Priority":0, "Health":1.000000, "Value":311364 }, { "Slot":"Radar", "Item":"int_sensors_size3_class2", "On":true, "Priority":0, "Health":1.000000, "Value":10133, "Engineering":{ "Engineer":"Lori Jameson", "EngineerID":300230, "BlueprintID":128740672, "BlueprintName":"Sensor_LightWeight", "Level":4, "Quality":0.819300, "Modifiers":[ { "Label":"Mass", "Value":0.754200, "OriginalValue":2.000000, "LessIsGood":1 }, { "Label":"Integrity", "Value":30.600000, "OriginalValue":51.000000, "LessIsGood":0 }, { "Label":"SensorTargetScanAngle", "Value":24.000000, "OriginalValue":30.000000, "LessIsGood":0 } ] } }, { "Slot":"FuelTank", "Item":"int_fueltank_size4_class3", "On":true, "Priority":1, "Health":1.000000 }, { "Slot":"Slot01_Size5", "Item":"int_fuelscoop_size5_class5", "On":true, "Priority":0, "Health":1.000000, "Value":9164432 }, { "Slot":"Slot02_Size4", "Item":"int_guardianfsdbooster_size4", "On":true, "Priority":1, "Health":1.000000, "Value":3163887 }, { "Slot":"Slot03_Size4", "Item":"int_corrosionproofcargorack_size4_class1", "On":true, "Priority":1, "Health":1.000000, "Value":91970 }, { "Slot":"Slot04_Size3", "Item":"int_shieldgenerator_size3_class2", "On":true, "Priority":0, "Health":1.000000, "Value":16508 }, { "Slot":"Slot05_Size2", "Item":"int_repairer_size2_class5", "On":true, "Priority":0, "Health":1.000000, "Value":1279395 }, { "Slot":"Slot06_Size2", "Item":"int_buggybay_size2_class2", "On":true, "Priority":0, "Health":1.000000, "Value":21060 }, { "Slot":"Slot07_Size2", "Item":"int_detailedsurfacescanner_tiny", "On":true, "Priority":0, "Health":1.000000, "Engineering":{ "Engineer":"Lei Cheung", "EngineerID":300120, "BlueprintID":128740151, "BlueprintName":"Sensor_Expanded", "Level":5, "Quality":1.000000, "Modifiers":[ { "Label":"PowerDraw", "Value":0.000000, "OriginalValue":0.000000, "LessIsGood":1 }, { "Label":"DSS_PatchRadius", "Value":40.000000, "OriginalValue":20.000000, "LessIsGood":0 } ] } }, { "Slot":"Slot08_Size1", "Item":"int_supercruiseassist", "On":true, "Priority":2, "Health":1.000000 }, { "Slot":"Slot09_Size1", "Item":"int_dockingcomputer_advanced", "On":true, "Priority":2, "Health":1.000000, "Value":13170 }, { "Slot":"PlanetaryApproachSuite", "Item":"int_planetapproachsuite_advanced", "On":true, "Priority":1, "Health":1.000000 }, { "Slot":"VesselVoice", "Item":"voicepack_verity", "On":true, "Priority":1, "Health":1.000000 }, { "Slot":"ShipCockpit", "Item":"dolphin_cockpit", "On":true, "Priority":1, "Health":1.000000 }, { "Slot":"CargoHatch", "Item":"modularcargobaydoor", "On":true, "Priority":4, "Health":1.000000 } ] }
 
@@ -150,12 +150,12 @@ namespace SrvSurvey
         public int CargoCapacity;
     }
 
-    class Died : JournalEntry
+   public class Died : JournalEntry
     {
         // { "timestamp":"2023-11-13T11:24:26Z", "event":"Died" }
     }
 
-    class Resurrect : JournalEntry
+   public class Resurrect : JournalEntry
     {
         // { "timestamp":"2024-09-22T04:56:50Z", "event":"Resurrect", "Option":"handin", "Cost":5400, "Bankrupt":false }
         public string Option;
@@ -163,7 +163,7 @@ namespace SrvSurvey
         public bool Bankrupt;
     }
 
-    class ApproachSettlement : LocationEntry, ISystemAddress
+   public class ApproachSettlement : LocationEntry, ISystemAddress
     {
         // { "timestamp":"2023-01-06T00:14:38Z", "event":"ApproachSettlement", "Name":"$Ancient_Tiny_001:#index=1;", "Name_Localised":"Guardian Structure", "SystemAddress":2881788519801, "BodyID":7, "BodyName":"Col 173 Sector IJ-G b27-1 A 1", "Latitude":-33.219879, "Longitude":87.628571 }
         // { "timestamp":"2024-04-09T06:44:33Z", "event":"ApproachSettlement", "Name":"Oyekan Prospecting Hub", "MarketID":3888520448, "StationFaction":{ "Name":"Yaurnai Jet Hand Gang" }, "StationGovernment":"$government_Anarchy;", "StationGovernment_Localised":"Anarchy", "StationServices":[ "dock", "autodock", "blackmarket", "commodities", "contacts", "missions", "refuel", "repair", "engineer", "missionsgenerated", "facilitator", "flightcontroller", "stationoperations", "stationMenu" ], "StationEconomy":"$economy_Extraction;", "StationEconomy_Localised":"Extraction", "StationEconomies":[ { "Name":"$economy_Extraction;", "Name_Localised":"Extraction", "Proportion":1.000000 } ], "SystemAddress":669612713401, "BodyID":8, "BodyName":"Yaurnai 1", "Latitude":47.955894, "Longitude":-107.683449 }
@@ -201,7 +201,7 @@ namespace SrvSurvey
         public string? FactionState;
     }
 
-    class DockingRequested : JournalEntry
+   public class DockingRequested : JournalEntry
     {
         // { "timestamp":"2024-02-10T07:10:27Z", "event":"DockingRequested", "MarketID":3888520704, "StationName":"Kvitka Synthetics Workshop", "StationType":"OnFootSettlement", "LandingPads":{ "Small":0, "Medium":0, "Large":1 } }
 
@@ -211,7 +211,7 @@ namespace SrvSurvey
         public LandingPads LandingPads;
     }
 
-    class DockingDenied : JournalEntry
+   public class DockingDenied : JournalEntry
     {
         // { "timestamp":"2024-05-31T05:32:39Z", "event":"DockingDenied", "Reason":"NoSpace", "MarketID":3928216064, "StationName":"Ndaitwah Manufacturing Hub", "StationType":"OnFootSettlement" }
 
@@ -220,7 +220,7 @@ namespace SrvSurvey
         public string StationName;
     }
 
-    class DockingGranted : JournalEntry
+   public class DockingGranted : JournalEntry
     {
         // { "timestamp":"2024-04-09T06:45:09Z", "event":"DockingGranted", "LandingPad":1, "MarketID":3888520448, "StationName":"Oyekan Prospecting Hub", "StationType":"OnFootSettlement" }
 
@@ -230,7 +230,7 @@ namespace SrvSurvey
         public StationType StationType;
     }
 
-    class DockingCancelled : JournalEntry
+   public class DockingCancelled : JournalEntry
     {
         // { "timestamp":"2024-09-08T05:09:39Z", "event":"DockingCancelled", "MarketID":3928215040, "StationName":"Omenuko Extraction Base", "StationType":"OnFootSettlement" }
 
@@ -294,7 +294,7 @@ namespace SrvSurvey
         Dodec,
     }
 
-    class Undocked : JournalEntry
+   public class Undocked : JournalEntry
     {
         // { "timestamp":"2024-04-09T06:38:15Z", "event":"Undocked", "StationName":"Bellamy Extraction Base", "StationType":"OnFootSettlement", "MarketID":3888519680, "Taxi":false, "Multicrew":false }
 
@@ -317,7 +317,7 @@ namespace SrvSurvey
         }
     }
 
-    class Touchdown : LocationEntry, ISystemAddress
+   public class Touchdown : LocationEntry, ISystemAddress
     {
 
         // { "timestamp":"2023-01-06T00:34:41Z", "event":"Touchdown", "PlayerControlled":true, "Taxi":false, "Multicrew":false, "StarSystem":"Synuefe NL-N c23-4", "SystemAddress":1184840454858, "Body":"Synuefe NL-N c23-4 B 3", "BodyID":18, "OnStation":false, "OnPlanet":true, "Latitude":5.602152, "Longitude":-148.097961, "NearestDestination":"$Ancient:#index=3;", "NearestDestination_Localised":"Ancient Ruins (3)" }
@@ -339,7 +339,7 @@ namespace SrvSurvey
         public string NearestDestination_Localised { get; set; }
     }
 
-    class Liftoff : LocationEntry, ISystemAddress
+   public class Liftoff : LocationEntry, ISystemAddress
     {
         // { "timestamp":"2023-01-06T06:05:03Z", "event":"Liftoff", "PlayerControlled":true, "Taxi":false, "Multicrew":false, "StarSystem":"Synuefe NL-N c23-4", "SystemAddress":1184840454858, "Body":"Synuefe NL-N c23-4 B 3", "BodyID":18, "OnStation":false, "OnPlanet":true, "Latitude":-30.542755, "Longitude":-24.187830, "NearestDestination":"$Ancient:#index=2;", "NearestDestination_Localised":"Ancient Ruins (2)" }
 
@@ -360,7 +360,7 @@ namespace SrvSurvey
         public string NearestDestination_Localised { get; set; }
     }
 
-    class LaunchSRV : JournalEntry
+   public class LaunchSRV : JournalEntry
     {
         // { "timestamp":"2023-01-06T00:34:49Z", "event":"LaunchSRV", "SRVType":"testbuggy", "SRVType_Localised":"SRV Scarab", "Loadout":"starter", "ID":25, "PlayerControlled":true }
 
@@ -371,7 +371,7 @@ namespace SrvSurvey
         public bool PlayerControlled { get; set; }
     }
 
-    class DockSRV : JournalEntry
+   public class DockSRV : JournalEntry
     {
         // { "timestamp":"2023-01-06T02:06:11Z", "event":"DockSRV", "SRVType":"testbuggy", "SRVType_Localised":"SRV Scarab", "ID":25 }
 
@@ -380,7 +380,7 @@ namespace SrvSurvey
         public int ID { get; set; }
     }
 
-    class LaunchFighter : JournalEntry
+   public class LaunchFighter : JournalEntry
     {
         // { "timestamp":"2025-12-10T22:39:49Z", "event":"LaunchFighter", "Loadout":"one", "ID":66, "PlayerControlled":true }
 
@@ -389,14 +389,14 @@ namespace SrvSurvey
         public bool PlayerControlled;
     }
 
-    class DockFighter : JournalEntry
+   public class DockFighter : JournalEntry
     {
         // { "timestamp":"2025-12-10T22:47:02Z", "event":"DockFighter", "ID":66 }
 
         public int ID;
     }
 
-    class CodexEntry : LocationEntry, ISystemAddress
+   public class CodexEntry : LocationEntry, ISystemAddress
     {
         // { "timestamp":"2023-01-06T00:46:41Z", "event":"CodexEntry", "EntryID":3200200, "Name":"$Codex_Ent_Guardian_Data_Logs_Name;", "Name_Localised":"Guardian Codex", "SubCategory":"$Codex_SubCategory_Guardian;", "SubCategory_Localised":"Guardian objects", "Category":"$Codex_Category_Civilisations;", "Category_Localised":"Xenological", "Region":"$Codex_RegionName_18;", "Region_Localised":"Inner Orion Spur", "System":"Synuefe NL-N c23-4", "SystemAddress":1184840454858, "BodyID":18, "NearestDestination":"$Ancient:#index=3;", "NearestDestination_Localised":"Ancient Ruins (3)", "Latitude":5.613951, "Longitude":-148.100403, "IsNewEntry":true, "VoucherAmount":50000 }
 
@@ -422,14 +422,14 @@ namespace SrvSurvey
         public int VoucherAmount { get; set; }
     }
 
-    class DataScanned : JournalEntry
+   public class DataScanned : JournalEntry
     {
         // { "timestamp":"2023-10-07T04:26:43Z", "event":"DataScanned", "Type":"$Datascan_ANCIENTCODEX;", "Type_Localised":"Ancient Codex" }
         public string Type;
         public string Type_Localised;
     }
 
-    class SendText : JournalEntry
+   public class SendText : JournalEntry
     {
         // { "timestamp":"2023-01-07T05:44:32Z", "event":"SendText", "To":"local", "Message":"totem", "Sent":true }
 
@@ -440,7 +440,7 @@ namespace SrvSurvey
         public bool Sent { get; set; }
     }
 
-    class ReceiveText : JournalEntry
+   public class ReceiveText : JournalEntry
     {
         // { "timestamp":"2025-09-04T15:11:46Z", "event":"ReceiveText", "From":"", "Message":"$COMMS_entered:#name=North America Sector IR-W d1-81;", "Message_Localised":"Entered Channel: North America Sector IR-W d1-81", "Channel":"npc" }
 
@@ -452,7 +452,7 @@ namespace SrvSurvey
         public string Channel { get; set; }
     }
 
-    class SupercruiseExit : JournalEntry, ISystemAddress
+   public class SupercruiseExit : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-03-12T06:16:56Z", "event":"SupercruiseExit", "Taxi":false, "Multicrew":false, "StarSystem":"Synuefe EN-H d11-96", "SystemAddress":3309179996515, "Body":"Synuefe EN-H d11-96 2", "BodyID":9, "BodyType":"Planet" }
 
@@ -465,12 +465,12 @@ namespace SrvSurvey
         public FSDJumpBodyType BodyType { get; set; }
     }
 
-    class SupercruiseEntry : JournalEntry
+   public class SupercruiseEntry : JournalEntry
     {
         public string Starsystem { get; set; }
     }
 
-    class Music : JournalEntry
+   public class Music : JournalEntry
     {
         // { "timestamp":"2023-01-12T05:11:56Z", "event":"Music", "MusicTrack":"MainMenu" }
         public string MusicTrack { get; set; }
@@ -478,7 +478,7 @@ namespace SrvSurvey
         public override string tldr => MusicTrack;
     }
 
-    class StartJump : JournalEntry, ISystemAddress
+   public class StartJump : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-01-24T05:06:43Z", "event":"StartJump", "JumpType":"Hyperspace", "StarSystem":"Maridwyn", "SystemAddress":13866167838129, "StarClass":"M" }
 
@@ -488,7 +488,7 @@ namespace SrvSurvey
         public string StarClass { get; set; }
     }
 
-    class FSDJump : JournalEntry, IFactions, ISystemAddress, ISystemDataStarter, IStarRef
+   public class FSDJump : JournalEntry, IFactions, ISystemAddress, ISystemDataStarter, IStarRef
     {
         // { "timestamp":"2023-01-24T05:07:01Z", "event":"FSDJump", "Taxi":false, "Multicrew":false, "StarSystem":"Maridwyn", "SystemAddress":13866167838129, "StarPos":[90.46875,16.40625,21.62500], "SystemAllegiance":"Federation", "SystemEconomy":"$economy_Agri;", "SystemEconomy_Localised":"Agriculture", "SystemSecondEconomy":"$economy_Refinery;", "SystemSecondEconomy_Localised":"Refinery", "SystemGovernment":"$government_Corporate;", "SystemGovernment_Localised":"Corporate", "SystemSecurity":"$SYSTEM_SECURITY_high;", "SystemSecurity_Localised":"High Security", "Population":4058074576, "Body":"Maridwyn A", "BodyID":1, "BodyType":"Star", "Powers":[ "Felicia Winters" ], "PowerplayState":"Exploited", "JumpDist":8.278, "FuelUsed":0.091548, "FuelLevel":13.458453, "Factions":[ { "Name":"Social Maridwyn Green Party", "FactionState":"None", "Government":"Democracy", "Influence":0.027559, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"p Velorum Crimson Creative Int", "FactionState":"None", "Government":"Corporate", "Influence":0.059055, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":4.187500 }, { "Name":"Maridwyn Co", "FactionState":"None", "Government":"Corporate", "Influence":0.487205, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000, "RecoveringStates":[ { "State":"Boom", "Trend":0 } ] }, { "Name":"Maridwyn Constitution Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.041339, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"Maridwyn Gold Electronics Ltd", "FactionState":"None", "Government":"Corporate", "Influence":0.021654, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"United Maridwyn Law Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.040354, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"Federal Reclamation Co", "FactionState":"Expansion", "Government":"Corporate", "Influence":0.322835, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":97.425003, "ActiveStates":[ { "State":"Expansion" } ] } ], "SystemFaction":{ "Name":"Maridwyn Co" } }
         // { "timestamp":"2024-06-17T04:33:26Z", "event":"FSDJump", "Taxi":false, "Multicrew":false, "StarSystem":"HIP 82206", "SystemAddress":83651269338, "StarPos":[-111.25000,93.18750,18.21875], "SystemAllegiance":"Federation", "SystemEconomy":"$economy_Industrial;", "SystemEconomy_Localised":"Industrial", "SystemSecondEconomy":"$economy_Extraction;", "SystemSecondEconomy_Localised":"Extraction", "SystemGovernment":"$government_Corporate;", "SystemGovernment_Localised":"Corporate", "SystemSecurity":"$SYSTEM_SECURITY_medium;", "SystemSecurity_Localised":"Medium Security", "Population":4807913, "Body":"HIP 82206", "BodyID":0, "BodyType":"Star", "JumpDist":17.333, "FuelUsed":0.780109, "FuelLevel":11.299892, "Factions":[ { "Name":"HIP 82206 Transport Corporation", "FactionState":"None", "Government":"Corporate", "Influence":0.465932, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":47.840000 }, { "Name":"Ugrasin Purple Advanced Industry", "FactionState":"None", "Government":"Corporate", "Influence":0.103206, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":2.970000 }, { "Name":"Aobriguites Blue Bridge Corp", "FactionState":"Election", "Government":"Corporate", "Influence":0.065130, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":-48.794998 }, { "Name":"HIP 82206 Blue Crew", "FactionState":"None", "Government":"Anarchy", "Influence":0.063126, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"Allied HIP 82206 Defence Force", "FactionState":"None", "Government":"Dictatorship", "Influence":0.063126, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"HIP 82206 for Equality", "FactionState":"None", "Government":"Democracy", "Influence":0.092184, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"Elite Secret Service", "FactionState":"None", "Government":"Corporate", "Influence":0.147295, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":-97.620003 } ], "SystemFaction":{ "Name":"HIP 82206 Transport Corporation" } }
@@ -530,7 +530,7 @@ namespace SrvSurvey
         public NamedFaction SystemFaction;
     }
 
-    class SystemFaction
+   public class SystemFaction
     {
         // { "Name":"Social Maridwyn Green Party", "FactionState":"None", "Government":"Democracy", "Influence":0.027559, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }
         // { "Name":"Federal Reclamation Co", "FactionState":"Expansion", "Government":"Corporate", "Influence":0.322835, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":97.425003, "ActiveStates":[ { "State":"Expansion" } ] }
@@ -547,7 +547,7 @@ namespace SrvSurvey
         public List<SystemFactionState>? ActiveStates;
     }
 
-    class SystemFactionState
+   public class SystemFactionState
     {
         // { "State":"Expansion" }
         // { "State":"Boom", "Trend":0 }
@@ -556,7 +556,7 @@ namespace SrvSurvey
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
-    enum FSDJumpBodyType
+    public enum FSDJumpBodyType
     {
         BaryCentre,
         Star,
@@ -573,7 +573,7 @@ namespace SrvSurvey
     }
 
 
-    class CarrierJump : JournalEntry, ISystemAddress, ISystemDataStarter, IStarRef
+   public class CarrierJump : JournalEntry, ISystemAddress, ISystemDataStarter, IStarRef
     {
         // { "timestamp":"2023-12-01T04:50:10Z", "event":"CarrierJump", "Docked":true, "StationName":"H6B-5HQ", "StationType":"FleetCarrier", "MarketID":3708733696, "StationFaction":{ "Name":"FleetCarrier" }, "StationGovernment":"$government_Carrier;", "StationGovernment_Localised":"Private Ownership", "StationServices":[ "dock", "autodock", "commodities", "contacts", "exploration", "outfitting", "crewlounge", "rearm", "refuel", "repair", "shipyard", "engineer", "flightcontroller", "stationoperations", "stationMenu", "carriermanagement", "carrierfuel", "livery", "socialspace", "bartender", "vistagenomics" ], "StationEconomy":"$economy_Carrier;", "StationEconomy_Localised":"Private Enterprise", "StationEconomies":[ { "Name":"$economy_Carrier;", "Name_Localised":"Private Enterprise", "Proportion":1.000000 } ], "Taxi":false, "Multicrew":false, "StarSystem":"Wregoe VG-U b17-0", "SystemAddress":681155568793, "StarPos":[764.15625,174.68750,-675.90625], "SystemAllegiance":"", "SystemEconomy":"$economy_None;", "SystemEconomy_Localised":"None", "SystemSecondEconomy":"$economy_None;", "SystemSecondEconomy_Localised":"None", "SystemGovernment":"$government_None;", "SystemGovernment_Localised":"None", "SystemSecurity":"$GAlAXY_MAP_INFO_state_anarchy;", "SystemSecurity_Localised":"Anarchy", "Population":0, "Body":"Wregoe VG-U b17-0 A", "BodyID":1, "BodyType":"Star" }
 
@@ -608,7 +608,7 @@ namespace SrvSurvey
         public FSDJumpBodyType BodyType { get; set; }
     }
 
-    class CarrierJumpRequest : JournalEntry
+   public class CarrierJumpRequest : JournalEntry
     {
         // { "timestamp":"2023-12-01T05:49:05Z", "event":"CarrierJumpRequest", "CarrierID":3708733696, "SystemName":"Synuefe OR-D c15-8", "Body":"Synuefe OR-D c15-8", "SystemAddress":2283613950594, "BodyID":0, "DepartureTime":"2023-12-01T06:05:10Z" }
 
@@ -620,19 +620,19 @@ namespace SrvSurvey
         public DateTimeOffset DepartureTime;
     }
 
-    class Shutdown : JournalEntry
+   public class Shutdown : JournalEntry
     {
         // { "timestamp":"2023-01-24T06:58:26Z", "event":"Shutdown" }
     }
 
-    enum ScanType
+    public enum ScanType
     {
         Log,
         Sample,
         Analyse
     }
 
-    class ScanOrganic : JournalEntry, ISystemAddress
+   public class ScanOrganic : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-05-10T20:03:22Z", "event":"ScanOrganic", "ScanType":"Log", "Genus":"$Codex_Ent_Fonticulus_Genus_Name;", "Genus_Localised":"Fonticulua", "Species":"$Codex_Ent_Fonticulus_02_Name;", "Species_Localised":"Fonticulua Campestris", "Variant":"$Codex_Ent_Fonticulus_02_M_Name;", "Variant_Localised":"Fonticulua Campestris - Amethyst", "SystemAddress":1419209836875, "Body":2 }
 
@@ -654,20 +654,20 @@ namespace SrvSurvey
         public static string Human = "$SAA_SignalType_Human;";
     }
 
-    class ScanSignal
+   public class ScanSignal
     {
         public string Type { get; set; }
         public string Type_Localised { get; set; }
         public int Count { get; set; }
     }
 
-    class ScanGenus
+   public class ScanGenus
     {
         public string Genus { get; set; }
         public string Genus_Localised { get; set; }
     }
 
-    class SAASignalsFound : JournalEntry, ISystemAddress
+   public class SAASignalsFound : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-02-07T06:12:43Z", "event":"SAASignalsFound", "BodyName":"Synuefe TP-F b44-0 AB 7", "SystemAddress":682228131193, "BodyID":14, "Signals":[ { "Type":"$SAA_SignalType_Biological;", "Type_Localised":"Biological", "Count":6 } ], "Genuses":[ { "Genus":"$Codex_Ent_Bacterial_Genus_Name;", "Genus_Localised":"Bacterium" }, { "Genus":"$Codex_Ent_Cactoid_Genus_Name;", "Genus_Localised":"Cactoida" }, { "Genus":"$Codex_Ent_Fungoids_Genus_Name;", "Genus_Localised":"Fungoida" }, { "Genus":"$Codex_Ent_Stratum_Genus_Name;", "Genus_Localised":"Stratum" }, { "Genus":"$Codex_Ent_Shrubs_Genus_Name;", "Genus_Localised":"Frutexa" }, { "Genus":"$Codex_Ent_Tussocks_Genus_Name;", "Genus_Localised":"Tussock" } ] }
 
@@ -678,7 +678,7 @@ namespace SrvSurvey
         public List<ScanGenus> Genuses { get; set; }
     }
 
-    class SAAScanComplete : JournalEntry, ISystemAddress
+   public class SAAScanComplete : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-03-26T22:34:35Z", "event":"SAAScanComplete", "BodyName":"Col 173 Sector PF-E b28-3 B 7", "SystemAddress":7279566464385, "BodyID":17, "ProbesUsed":4, "EfficiencyTarget":4 }
         public string BodyName { get; set; }
@@ -688,7 +688,7 @@ namespace SrvSurvey
         public int EfficiencyTarget { get; set; }
     }
 
-    class ApproachBody : JournalEntry, ISystemAddress
+   public class ApproachBody : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-02-07T06:27:26Z", "event":"ApproachBody", "StarSystem":"Synuefe TP-F b44-0", "SystemAddress":682228131193, "Body":"Synuefe TP-F b44-0 AB 7", "BodyID":14 }
 
@@ -698,7 +698,7 @@ namespace SrvSurvey
         public int BodyID { get; set; }
     }
 
-    class LeaveBody : JournalEntry, ISystemAddress
+   public class LeaveBody : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-02-07T06:29:32Z", "event":"LeaveBody", "StarSystem":"Synuefe TP-F b44-0", "SystemAddress":682228131193, "Body":"Synuefe TP-F b44-0 AB 7", "BodyID":14 }
         public string StarSystem { get; set; }
@@ -707,7 +707,7 @@ namespace SrvSurvey
         public int BodyID { get; set; }
     }
 
-    class FSSDiscoveryScan : JournalEntry
+   public class FSSDiscoveryScan : JournalEntry
     {
         // { "timestamp":"2023-09-04T00:06:12Z", "event":"FSSDiscoveryScan", "Progress":0.520163, "BodyCount":19, "NonBodyCount":10, "SystemName":"Abriama", "SystemAddress":7267219350913 }
         public double Progress;
@@ -717,7 +717,7 @@ namespace SrvSurvey
         public long SystemAddress;
     }
 
-    class FSSSignalDiscovered : JournalEntry
+   public class FSSSignalDiscovered : JournalEntry
     {
         // { "timestamp":"2024-10-08T01:23:34Z", "event":"FSSSignalDiscovered", "SystemAddress":6681123623626, "SignalName":"HYPERION CLASS CARRIER XLH-N1H", "SignalType":"FleetCarrier", "IsStation":true }
         // { "timestamp":"2024-10-08T01:54:14Z", "event":"FSSSignalDiscovered", "SystemAddress":4752154823011, "SignalName":"Morrison Prospect", "SignalType":"Outpost" }
@@ -744,7 +744,7 @@ namespace SrvSurvey
         public bool? IsStation;
     }
 
-    class FSSAllBodiesFound : JournalEntry
+   public class FSSAllBodiesFound : JournalEntry
     {
         // { "timestamp":"2023-09-04T02:29:13Z", "event":"FSSAllBodiesFound", "SystemName":"HIP 51721", "SystemAddress":358596317890, "Count":10 }
         public string SystemName;
@@ -752,7 +752,7 @@ namespace SrvSurvey
         public int Count;
     }
 
-    class ScanBaryCentre : JournalEntry
+   public class ScanBaryCentre : JournalEntry
     {
         // { "timestamp":"2023-11-08T06:03:27Z", "event":"ScanBaryCentre", "StarSystem":"Graea Hypue AA-Z d58", "SystemAddress":2003140677259, "BodyID":2, "SemiMajorAxis":57069017887115.476563, "Eccentricity":0.042389, "OrbitalInclination":-11.191447, "Periapsis":322.189732, "OrbitalPeriod":330483412742.614746, "AscendingNode":105.734586, "MeanAnomaly":159.496060 }
         public string StarSystem;
@@ -767,7 +767,7 @@ namespace SrvSurvey
         public double MeanAnomaly;
     }
 
-    class Scan : JournalEntry, ISystemAddress
+   public class Scan : JournalEntry, ISystemAddress
     {
         // See: https://elite-journal.readthedocs.io/en/latest/Exploration/#scan
         // { "timestamp":"2023-02-07T06:12:44Z", "event":"Scan", "ScanType":"Detailed", "BodyName":"Synuefe TP-F b44-0 AB 7", "BodyID":14, "Parents":[ {"Null":1}, {"Null":0} ], "StarSystem":"Synuefe TP-F b44-0", "SystemAddress":682228131193, "DistanceFromArrivalLS":163.640473, "TidalLock":false, "TerraformState":"", "PlanetClass":"High metal content body", "Atmosphere":"thin ammonia atmosphere", "AtmosphereType":"Ammonia", "AtmosphereComposition":[ { "Name":"Ammonia", "Percent":100.000000 } ], "Volcanism":"", "MassEM":0.012165, "Radius":1506425.250000, "SurfaceGravity":2.136633, "SurfaceTemperature":171.117615, "SurfacePressure":218.443268, "Landable":true, "Materials":[ { "Name":"iron", "Percent":22.081503 }, { "Name":"nickel", "Percent":16.701525 }, { "Name":"sulphur", "Percent":15.735665 }, { "Name":"carbon", "Percent":13.232062 }, { "Name":"manganese", "Percent":9.119436 }, { "Name":"phosphorus", "Percent":8.471395 }, { "Name":"zinc", "Percent":6.000926 }, { "Name":"germanium", "Percent":4.639404 }, { "Name":"molybdenum", "Percent":1.441909 }, { "Name":"ruthenium", "Percent":1.363674 }, { "Name":"tungsten", "Percent":1.212496 } ], "Composition":{ "Ice":0.000000, "Rock":0.672827, "Metal":0.327173 }, "SemiMajorAxis":51394448280.334473, "Eccentricity":0.173554, "OrbitalInclination":-164.752899, "Periapsis":243.912489, "OrbitalPeriod":9480342.149734, "AscendingNode":-98.783954, "MeanAnomaly":62.655478, "RotationPeriod":127770.138485, "AxialTilt":-0.440350, "WasDiscovered":true, "WasMapped":true }
@@ -902,14 +902,14 @@ namespace SrvSurvey
         public double AscendingNode { get; set; }
     }
 
-    class Composition
+   public class Composition
     {
         // "AtmosphereComposition":[ { "Name":"Ammonia", "Percent":100.000000 } ]
         public string Name;
         public float Percent;
     }
 
-    class FSSBodySignals : JournalEntry, ISystemAddress
+   public class FSSBodySignals : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-08-18T23:10:13Z", "event":"FSSBodySignals", "BodyName":"Wregoe LH-T b5-0 1", "BodyID":5, "SystemAddress":684377515057, "Signals":[ { "Type":"$SAA_SignalType_Biological;", "Type_Localised":"Biological", "Count":1 } ] }
         public long SystemAddress { get; set; }
@@ -918,14 +918,14 @@ namespace SrvSurvey
         public List<ScanSignal> Signals { get; set; }
     }
 
-    class NavBeaconScan : JournalEntry
+   public class NavBeaconScan : JournalEntry
     {
         // { "timestamp":"2025-09-23T01:28:35Z", "event":"NavBeaconScan", "SystemAddress":6132105941706, "NumBodies":52 }
         public long SystemAddress;
         public int NumBodies;
     }
 
-    class Disembark : JournalEntry, ISystemAddress
+   public class Disembark : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-03-03T06:20:22Z", "event":"Disembark", "SRV":true, "Taxi":false, "Multicrew":false, "ID":26, "StarSystem":"Synuefe TP-F b44-0", "SystemAddress":682228131193, "Body":"Synuefe TP-F b44-0 AB 7", "BodyID":14, "OnStation":false, "OnPlanet":true }
         public bool SRV { get; set; }
@@ -941,12 +941,12 @@ namespace SrvSurvey
         public bool OnPlanet { get; set; }
     }
 
-    class Embark : Disembark
+   public class Embark : Disembark
     {
         // { "timestamp":"2023-03-03T06:21:00Z", "event":"Embark", "SRV":true, "Taxi":false, "Multicrew":false, "ID":26, "StarSystem":"Synuefe TP-F b44-0", "SystemAddress":682228131193, "Body":"Synuefe TP-F b44-0 AB 7", "BodyID":14, "OnStation":false, "OnPlanet":true }
     }
 
-    class BioData
+   public class BioData
     {
         public string Genus { get; set; } // "$Codex_Ent_Electricae_Genus_Name;"
         public string Genus_Localised { get; set; }  // "Electricae"
@@ -956,7 +956,7 @@ namespace SrvSurvey
         public long Bonus { get; set; } // 0
     }
 
-    class SellOrganicData : JournalEntry
+   public class SellOrganicData : JournalEntry
     {
         // { "timestamp":"2023-04-17T17:42:30Z", "event":"SellOrganicData", "MarketID":3708733696, "BioData":[ { "Genus":"$Codex_Ent_Cone_Name;", "Genus_Localised":"Bark Mounds", "Species":"$Codex_Ent_Cone_Name;", "Species_Localised":"Bark Mounds", "Value":1471900, "Bonus":5887600 }, { "Genus":"$Codex_Ent_Electricae_Genus_Name;", "Genus_Localised":"Electricae", "Species":"$Codex_Ent_Electricae_02_Name;", "Species_Localised":"Electricae Radialem", "Value":6284600, "Bonus":0 }, { "Genus":"$Codex_Ent_Fumerolas_Genus_Name;", "Genus_Localised":"Fumerola", "Species":"$Codex_Ent_Fumerolas_04_Name;", "Species_Localised":"Fumerola Aquatis", "Value":6284600, "Bonus":0 }, { "Genus":"$Codex_Ent_Fonticulus_Genus_Name;", "Genus_Localised":"Fonticulua", "Species":"$Codex_Ent_Fonticulus_02_Name;", "Species_Localised":"Fonticulua Campestris", "Value":1000000, "Bonus":0 } ] }
 
@@ -964,7 +964,7 @@ namespace SrvSurvey
         public List<BioData> BioData { get; set; }
     }
 
-    class SuitLoadout : JournalEntry
+   public class SuitLoadout : JournalEntry
     {
         // { "timestamp":"2023-05-10T18:16:37Z", "event":"SuitLoadout", "SuitID":1722825297017949, "SuitName":"explorationsuit_class5", "SuitName_Localised":"$ExplorationSuit_Class1_Name;", "SuitMods":[ "suit_increasedsprintduration", "suit_improvedjumpassist", "suit_nightvision", "suit_increasedbatterycapacity" ], "LoadoutID":4293000005, "LoadoutName":"Green!", "Modules":[ { "SlotName":"PrimaryWeapon1", "SuitModuleID":1723805638978815, "ModuleName":"wpn_m_assaultrifle_plasma_fauto", "ModuleName_Localised":"Manticore Oppressor", "Class":3, "WeaponMods":[ "weapon_accuracy" ] }, { "SlotName":"SecondaryWeapon", "SuitModuleID":1723541854154251, "ModuleName":"wpn_s_pistol_plasma_charged", "ModuleName_Localised":"Manticore Tormentor", "Class":5, "WeaponMods":[ "weapon_suppression_pressurised", "weapon_handling", "weapon_stability", "weapon_backpackreloading" ] } ] }
 
@@ -978,13 +978,13 @@ namespace SrvSurvey
         // TODO: Modules
     }
 
-    class SwitchSuitLoadout : SuitLoadout
+   public class SwitchSuitLoadout : SuitLoadout
     {
         // { "timestamp":"2023-05-10T18:28:28Z", "event":"SwitchSuitLoadout", "SuitID":1723541811099765, "SuitName":"tacticalsuit_class5", "SuitName_Localised":"$TacticalSuit_Class1_Name;", "SuitMods":[ "suit_increasedsprintduration", "suit_improvedarmourrating", "suit_increasedammoreserves", "suit_increasedshieldregen" ], "LoadoutID":4293000000, "LoadoutName":"solder / general", "Modules":[ { "SlotName":"PrimaryWeapon1", "SuitModuleID":1704060320072893, "ModuleName":"wpn_m_assaultrifle_laser_fauto", "ModuleName_Localised":"TK Aphelion", "Class":5, "WeaponMods":[ "weapon_clipsize", "weapon_backpackreloading", "weapon_handling" ] }, { "SlotName":"PrimaryWeapon2", "SuitModuleID":1722824106905372, "ModuleName":"wpn_m_assaultrifle_kinetic_fauto", "ModuleName_Localised":"Karma AR-50", "Class":5, "WeaponMods":[ "weapon_stability", "weapon_handling", "weapon_clipsize", "weapon_headshotdamage" ] }, { "SlotName":"SecondaryWeapon", "SuitModuleID":1723541854154251, "ModuleName":"wpn_s_pistol_plasma_charged", "ModuleName_Localised":"Manticore Tormentor", "Class":5, "WeaponMods":[ "weapon_suppression_pressurised", "weapon_handling", "weapon_stability", "weapon_backpackreloading" ] } ] }
 
     }
 
-    class Screenshot : JournalEntry
+   public class Screenshot : JournalEntry
     {
         // { "timestamp":"2023-05-11T05:25:31Z", "event":"Screenshot", "Filename":"\\ED_Pictures\\Screenshot_0465.bmp", "Width":1920, "Height":1080, "System":"Bleethuae LN-B d1172", "Body":"Bleethuae LN-B d1172 4 b" }
         // { "timestamp":"2023-05-13T02:35:48Z", "event":"Screenshot", "Filename":"\\ED_Pictures\\Screenshot_0522.bmp", "Width":3440, "Height":1440, "System":"IC 2391 Sector YE-A d103", "Body":"IC 2391 Sector YE-A d103 B 1", "Latitude":-54.580612, "Longitude":25.089542, "Heading":187, "Altitude":1612.171509 }
@@ -1012,17 +1012,17 @@ namespace SrvSurvey
         public int RemainingJumpsInRoute;
     }
 
-    class NavRoute : JournalEntry
+   public class NavRoute : JournalEntry
     {
         // { "timestamp":"2023-08-18T13:34:53Z", "event":"NavRoute" }
     }
 
-    class NavRouteClear : JournalEntry
+   public class NavRouteClear : JournalEntry
     {
         // { "timestamp":"2023-08-18T17:59:50Z", "event":"NavRouteClear" }
     }
 
-    class SupercruiseDestinationDrop : JournalEntry
+   public class SupercruiseDestinationDrop : JournalEntry
     {
         // { "timestamp":"2023-06-07T00:52:52Z", "event":"SupercruiseDestinationDrop", "Type":"Chiao Enterprise", "Threat":0, "MarketID":3223505152 }
         // { "timestamp":"2023-07-19T05:48:03Z", "event":"SupercruiseDestinationDrop", "Type":"Guardian Beacon", "Threat":0 }
@@ -1032,7 +1032,7 @@ namespace SrvSurvey
         public string? MarketID;
     }
 
-    class MaterialCollected : JournalEntry
+   public class MaterialCollected : JournalEntry
     {
         // { "timestamp":"2023-10-21T21:36:39Z", "event":"MaterialCollected", "Category":"Encoded", "Name":"ancienttechnologicaldata", "Name_Localised":"Pattern Epsilon Obelisk Data", "Count":3 }
 
@@ -1042,14 +1042,14 @@ namespace SrvSurvey
         public int Count;
     }
 
-    class Backpack : JournalEntry
+   public class Backpack : JournalEntry
     {
         // { "timestamp":"2023-12-13T18:25:08Z", "event":"Backpack", "Items":[  ], "Components":[  ], "Consumables":[ { "Name":"healthpack", "Name_Localised":"Medkit", "OwnerID":0, "Count":1 }, { "Name":"energycell", "Name_Localised":"Energy Cell", "OwnerID":0, "Count":3 }, { "Name":"amm_grenade_emp", "Name_Localised":"Shield Disruptor", "OwnerID":0, "Count":1 }, { "Name":"amm_grenade_frag", "Name_Localised":"Frag Grenade", "OwnerID":0, "Count":1 }, { "Name":"amm_grenade_shield", "Name_Localised":"Shield Projector", "OwnerID":0, "Count":1 }, { "Name":"bypass", "Name_Localised":"E-Breach", "OwnerID":0, "Count":1 } ], "Data":[  ] }
 
         // TODO: all the fields - this is just being used as a trigger currently
     }
 
-    class Missions : JournalEntry
+   public class Missions : JournalEntry
     {
         // { "timestamp":"2024-01-04T03:58:00Z", "event":"Missions", "Active":[ { "MissionID":949733662, "Name":"Mission_HackMegaship_name", "PassengerMission":false, "Expires":0 } ], "Failed":[  ], "Complete":[  ] }
         public List<Mission> Active;
@@ -1057,7 +1057,7 @@ namespace SrvSurvey
         public List<Mission> Complete;
     }
 
-    class Mission
+   public class Mission
     {
         public decimal MissionID;
         public string Name;
@@ -1065,7 +1065,7 @@ namespace SrvSurvey
         public long Expires;
     }
 
-    class MissionAccepted : JournalEntry
+   public class MissionAccepted : JournalEntry
     {
         // { "timestamp":"2024-01-04T04:30:06Z", "event":"MissionAccepted", "Faction":"Meene General Industries", "Name":"Mission_TheDead", "LocalisedName":"Decoding the Ancient Ruins", "Wing":false, "Influence":"None", "Reputation":"None", "MissionID":949931893 }
         // { "timestamp":"2022-07-23T03:46:26Z", "event":"MissionAccepted", "Faction":"Raven Colonial Corporation", "Name":"Mission_Massacre", "LocalisedName":"Kill Grabru Crimson Family faction Pirates", "TargetType":"$MissionUtil_FactionTag_Pirate;", "TargetType_Localised":"Pirates", "TargetFaction":"Grabru Crimson Family", "KillCount":7, "DestinationSystem":"Grabru", "DestinationStation":"Henize Platform", "Expiry":"2022-07-24T08:06:52Z", "Wing":false, "Influence":"++", "Reputation":"++", "Reward":5401452, "MissionID":879230525 }
@@ -1089,7 +1089,7 @@ namespace SrvSurvey
         public int KillCount;
     }
 
-    class MissionCompleted : JournalEntry
+   public class MissionCompleted : JournalEntry
     {
         // { "timestamp":"2023-03-22T04:22:48Z", "event":"MissionCompleted", "Faction":"Xihe Energy Industry", "Name":"Mission_Assassinate_Legal_War_name", "MissionID":920770802, "TargetType":"$MissionUtil_FactionTag_VenerableGeneral;", "TargetType_Localised":"Venerable General", "TargetFaction":"Psi Capricorni Purple Brothers", "DestinationSystem":"Psi Capricorni", "DestinationStation":"Shaw Holdings", "Target":"Zaphod Quagmire", "Reward":1344814, "MaterialsReward":[ { "Name":"EmbeddedFirmware", "Name_Localised":"Modified Embedded Firmware", "Category":"$MICRORESOURCE_CATEGORY_Encoded;", "Category_Localised":"Encoded", "Count":5 } ], "FactionEffects":[ { "Faction":"Xihe Energy Industry", "Effects":[ { "Effect":"$MISSIONUTIL_Interaction_Summary_EP_up;", "Effect_Localised":"The economic status of $#MinorFaction; has improved in the $#System; system.", "Trend":"UpGood" } ], "Influence":[ { "SystemAddress":1183364125402, "Trend":"UpGood", "Influence":"++" } ], "ReputationTrend":"UpGood", "Reputation":"++" }, { "Faction":"", "Effects":[ { "Effect":"$MISSIONUTIL_Interaction_Summary_EP_down;", "Effect_Localised":"The economic status of $#MinorFaction; has declined in the $#System; system.", "Trend":"DownBad" } ], "Influence":[ { "SystemAddress":525873432939, "Trend":"DownBad", "Influence":"+" } ], "ReputationTrend":"DownBad", "Reputation":"+" } ] }
 
@@ -1100,7 +1100,7 @@ namespace SrvSurvey
         // TODO: the rest...
     }
 
-    class MissionFailed : JournalEntry
+   public class MissionFailed : JournalEntry
     {
         // { "timestamp":"2022-03-20T05:41:32Z", "event":"MissionFailed", "Name":"Mission_OnFoot_AssassinationIllegal_MB_name", "MissionID":855110856 }
 
@@ -1112,7 +1112,7 @@ namespace SrvSurvey
         // TODO: the rest...
     }
 
-    class MissionAbandoned : JournalEntry
+   public class MissionAbandoned : JournalEntry
     {
         // { "timestamp":"2024-01-04T04:55:12Z", "event":"MissionAbandoned", "Name":"Mission_TheDead_name", "LocalisedName":"Decoding the Ancient Ruins", "MissionID":949931893 }
         public long MissionID;
@@ -1140,7 +1140,7 @@ namespace SrvSurvey
         }
     }
 
-    class Cargo : JournalEntry
+   public class Cargo : JournalEntry
     {
         // { "timestamp":"2024-01-04T19:16:45Z", "event":"Cargo", "Vessel":"SRV", "Count":3, "Inventory":[ { "Name":"ancienttablet", "Name_Localised":"Guardian Tablet", "Count":1, "Stolen":0 }, { "Name":"ancienturn", "Name_Localised":"Guardian Urn", "Count":1, "Stolen":0 }, { "Name":"ancienttotem", "Name_Localised":"Guardian Totem", "Count":1, "Stolen":0 } ] }
         public string Vessel { get; set; }
@@ -1153,7 +1153,7 @@ namespace SrvSurvey
         }
     }
 
-    class CargoDepot : JournalEntry
+   public class CargoDepot : JournalEntry
     {
         // { "timestamp":"2025-02-07T05:56:22Z", "event":"CargoDepot", "MissionID":1002252135, "UpdateType":"Deliver", "CargoType":"Bertrandite", "Count":368, "StartMarketID":0, "EndMarketID":3227103232, "ItemsCollected":0, "ItemsDelivered":736, "TotalItemsToDeliver":912, "Progress":0.000000 }
         public long MissionID;
@@ -1168,7 +1168,7 @@ namespace SrvSurvey
         public double Progress;
     }
 
-    class InventoryItem
+   public class InventoryItem
     {
         // { "Name":"ancienttablet", "Name_Localised":"Guardian Tablet", "Count":1, "Stolen":0 }
         public string Name;
@@ -1190,7 +1190,7 @@ namespace SrvSurvey
         }
     }
 
-    class CollectCargo : JournalEntry
+   public class CollectCargo : JournalEntry
     {
         // { "timestamp":"2024-01-04T20:42:18Z", "event":"CollectCargo", "Type":"ancienttablet", "Type_Localised":"Guardian Tablet", "Stolen":false }
         public string Type;
@@ -1198,7 +1198,7 @@ namespace SrvSurvey
         public bool Stolen;
     }
 
-    class EjectCargo : JournalEntry
+   public class EjectCargo : JournalEntry
     {
         // { "timestamp":"2024-01-04T21:06:06Z", "event":"EjectCargo", "Type":"ancientrelic", "Type_Localised":"Guardian Relic", "Count":1, "Abandoned":false }
         public string Type;
@@ -1207,14 +1207,14 @@ namespace SrvSurvey
         public bool Abandoned;
     }
 
-    class CargoTransfer : JournalEntry
+   public class CargoTransfer : JournalEntry
     {
         // { "timestamp":"2023-08-17T23:31:00Z", "event":"CargoTransfer", "Transfers":[ { "Type":"ancienttablet", "Type_Localised":"Guardian Tablet", "Count":1, "Direction":"toship" }, { "Type":"ancientrelic", "Type_Localised":"Guardian Relic", "Count":2, "Direction":"toship" }, { "Type":"ancienttotem", "Type_Localised":"Guardian Totem", "Count":1, "Direction":"toship" } ] }
         // { "timestamp":"2025-04-24T04:54:42Z", "event":"CargoTransfer", "Transfers":[ { "Type":"cmmcomposite", "Type_Localised":"CMM Composite", "Count":784, "Direction":"tocarrier" } ] }
         public List<TransferItem> Transfers;
     }
 
-    class TransferItem
+   public class TransferItem
     {
         // { "Type":"ancienttablet", "Type_Localised":"Guardian Tablet", "Count":1, "Direction":"toship" }
         public string Type;
@@ -1228,7 +1228,7 @@ namespace SrvSurvey
         }
     }
 
-    class Materials : JournalEntry
+   public class Materials : JournalEntry
     {
         // { "timestamp":"2024-03-18T00:04:26Z", "event":"Materials", "Raw":[ { "Name":"sulphur", "Count":3 }, { "Name":"zirconium", "Count":6 }, { "Name":"manganese", "Count":9 }, { "Name":"vanadium", "Count":15 }, { "Name":"tungsten", "Count":6 }, { "Name":"zinc", "Count":18 }, { "Name":"chromium", "Count":15 } ], "Manufactured":[ { "Name":"highdensitycomposites", "Name_Localised":"High Density Composites", "Count":3 }, { "Name":"configurablecomponents", "Name_Localised":"Configurable Components", "Count":5 }, { "Name":"phasealloys", "Name_Localised":"Phase Alloys", "Count":3 }, { "Name":"heatconductionwiring", "Name_Localised":"Heat Conduction Wiring", "Count":3 }, { "Name":"crystalshards", "Name_Localised":"Crystal Shards", "Count":3 }, { "Name":"hybridcapacitors", "Name_Localised":"Hybrid Capacitors", "Count":3 }, { "Name":"chemicalprocessors", "Name_Localised":"Chemical Processors", "Count":2 }, { "Name":"biotechconductors", "Name_Localised":"Biotech Conductors", "Count":4 }, { "Name":"refinedfocuscrystals", "Name_Localised":"Refined Focus Crystals", "Count":4 } ], "Encoded":[ { "Name":"encryptionarchives", "Name_Localised":"Atypical Encryption Archives", "Count":15 }, { "Name":"adaptiveencryptors", "Name_Localised":"Adaptive Encryptors Capture", "Count":6 }, { "Name":"consumerfirmware", "Name_Localised":"Modified Consumer Firmware", "Count":9 }, { "Name":"embeddedfirmware", "Name_Localised":"Modified Embedded Firmware", "Count":8 }, { "Name":"dataminedwake", "Name_Localised":"Datamined Wake Exceptions", "Count":12 }, { "Name":"disruptedwakeechoes", "Name_Localised":"Atypical Disrupted Wake Echoes", "Count":29 }, { "Name":"hyperspacetrajectories", "Name_Localised":"Eccentric Hyperspace Trajectories", "Count":18 }, { "Name":"compactemissionsdata", "Name_Localised":"Abnormal Compact Emissions Data", "Count":3 }, { "Name":"fsdtelemetry", "Name_Localised":"Anomalous FSD Telemetry", "Count":6 } ] }
 
@@ -1284,7 +1284,7 @@ namespace SrvSurvey
         }
     }
 
-    class MaterialTrade : JournalEntry
+   public class MaterialTrade : JournalEntry
     {
         // { "timestamp":"2024-02-11T01:42:25Z", "event":"MaterialTrade", "MarketID":3222950656, "TraderType":"manufactured", "Paid":{ "Material":"conductivepolymers", "Material_Localised":"Conductive Polymers", "Category":"Manufactured", "Quantity":1 }, "Received":{ "Material":"conductivecomponents", "Material_Localised":"Conductive Components", "Category":"Manufactured", "Quantity":9 } }
         // { "timestamp":"2024-10-06T06:32:14Z", "event":"MaterialTrade", "MarketID":3229698816, "TraderType":"raw", "Paid":{ "Material":"zinc", "Category":"Raw", "Quantity":36 }, "Received":{ "Material":"selenium", "Category":"Raw", "Quantity":1 } }
@@ -1307,7 +1307,7 @@ namespace SrvSurvey
         }
     }
 
-    class TechnologyBroker : JournalEntry
+   public class TechnologyBroker : JournalEntry
     {
         // { "timestamp":"2024-06-02T02:17:55Z", "event":"TechnologyBroker", "BrokerType":"rescue", "MarketID":129020543, "ItemsUnlocked":[ { "Name":"Hpt_ATMultiCannon_Gimbal_Large", "Name_Localised":"Enhanced AX Multi-Cannon" } ], "Commodities":[  ], "Materials":[ { "Name":"iron", "Count":11, "Category":"Raw" }, { "Name":"zirconium", "Count":16, "Category":"Raw" }, { "Name":"tg_biomechanicalconduits", "Name_Localised":"Bio-Mechanical Conduits", "Count":9, "Category":"Manufactured" }, { "Name":"tg_weaponparts", "Name_Localised":"Weapon Parts", "Count":17, "Category":"Manufactured" }, { "Name":"tg_shipsystemsdata", "Name_Localised":"Ship Systems Data", "Count":6, "Category":"Encoded" }, { "Name":"tg_wreckagecomponents", "Name_Localised":"Wreckage Components", "Count":12, "Category":"Manufactured" } ] }
         // { "timestamp":"2023-09-19T05:02:55Z", "event":"TechnologyBroker", "BrokerType":"rescue", "MarketID":129021823, "ItemsUnlocked":[ { "Name":"Hpt_CausticSinkLauncher_Turret_Tiny", "Name_Localised":"Caustic Sink Launcher" } ], "Commodities":[ { "Name":"thargoidgeneratortissuesample", "Name_Localised":"Caustic Tissue Sample", "Count":5 } ], "Materials":[ { "Name":"galvanisingalloys", "Name_Localised":"Galvanising Alloys", "Count":10, "Category":"Manufactured" }, { "Name":"chemicalstorageunits", "Name_Localised":"Chemical Storage Units", "Count":15, "Category":"Manufactured" }, { "Name":"tg_causticshard", "Name_Localised":"Caustic Shard", "Count":20, "Category":"Manufactured" }, { "Name":"tg_causticgeneratorparts", "Name_Localised":"Corrosive Mechanisms", "Count":10, "Category":"Manufactured" } ] }
@@ -1337,7 +1337,7 @@ namespace SrvSurvey
         }
     }
 
-    class MultiSellExplorationData : JournalEntry
+   public class MultiSellExplorationData : JournalEntry
     {
         // { "timestamp":"2024-02-10T04:26:31Z", "event":"MultiSellExplorationData", "Discovered":[ { "SystemName":"Chu I", "NumBodies":3 }, { "SystemName":"Herculis Sector JC-V b2-2", "NumBodies":4 }, { "SystemName":"Sadhant", "NumBodies":4 }, { "SystemName":"Herculis Sector GW-W b1-4", "NumBodies":1 } ], "BaseValue":84069, "Bonus":0, "TotalEarnings":84069 }
 
@@ -1348,13 +1348,13 @@ namespace SrvSurvey
         public long TotalEarnings;
     }
 
-    class SoldSystem
+   public class SoldSystem
     {
         public string SystemName;
         public int NumBodies;
     }
 
-    class SellExplorationData : JournalEntry
+   public class SellExplorationData : JournalEntry
     {
         // { "timestamp":"2021-12-12T04:30:03Z", "event":"SellExplorationData", "Systems":[ "Phreia Flyou RX-S b49-3" ], "Discovered":[ "Phreia Flyou RX-S b49-3" ], "BaseValue":2350, "Bonus":2519, "TotalEarnings":3724 }
 
@@ -1365,7 +1365,7 @@ namespace SrvSurvey
         public long TotalEarnings;
     }
 
-    class BackpackChange : JournalEntry
+   public class BackpackChange : JournalEntry
     {
         // { "timestamp":"2024-06-16T06:06:47Z", "event":"BackpackChange", "Added":[ { "Name":"evacuationprotocols", "Name_Localised":"Evacuation Protocols", "OwnerID":0, "Count":2, "Type":"Data" } ] }
         // { "timestamp":"2024-05-15T03:26:32Z", "event":"BackpackChange", "Removed":[ { "Name":"energycell", "Name_Localised":"Energy Cell", "OwnerID":0, "Count":1, "Type":"Consumable" } ] }
@@ -1373,7 +1373,7 @@ namespace SrvSurvey
         public List<BackpackChange_Entry> Removed;
     }
 
-    class BackpackChange_Entry
+   public class BackpackChange_Entry
     {
         // { "Name":"energycell", "Name_Localised":"Energy Cell", "OwnerID":0, "Count":1, "Type":"Consumable" }
         public string Name;
@@ -1383,7 +1383,7 @@ namespace SrvSurvey
         public string Type;
     }
 
-    class CollectItems : JournalEntry
+   public class CollectItems : JournalEntry
     {
         // { "timestamp":"2024-06-16T22:49:59Z", "event":"CollectItems", "Name":"graphene", "Type":"Component", "OwnerID":0, "Count":1, "Stolen":true }
         public string Name;
@@ -1393,7 +1393,7 @@ namespace SrvSurvey
         public bool Stolen;
     }
 
-    class UseConsumable : JournalEntry
+   public class UseConsumable : JournalEntry
     {
         // { "timestamp":"2024-05-15T03:26:32Z", "event":"UseConsumable", "Name":"energycell", "Name_Localised":"Energy Cell", "Type":"Consumable" }
         public string Name;
@@ -1429,7 +1429,7 @@ namespace SrvSurvey
         public override string tldr => $"{Count}x {Type} => {TotalSale}";
     }
 
-    class Market : JournalEntry
+   public class Market : JournalEntry
     {
         // { "timestamp":"2025-03-04T21:54:50Z", "event":"Market", "MarketID":3708733696, "StationName":"H6B-5HQ", "StationType":"FleetCarrier", "CarrierDockingAccess":"squadronfriends", "StarSystem":"Sedimo" }
         // { "timestamp":"2025-03-04T18:39:33Z", "event":"Market", "MarketID":3528735744, "StationName":"Hume Beacon", "StationType":"CraterOutpost", "StarSystem":"Sedimo" }
@@ -1441,7 +1441,7 @@ namespace SrvSurvey
         public string StarSystem;
     }
 
-    class Interdicted : JournalEntry
+   public class Interdicted : JournalEntry
     {
         // { "timestamp":"2025-01-31T04:13:05Z", "event":"Interdicted", "Submitted":false, "Interdictor":"Geno Garon", "IsPlayer":true, "CombatRank":10 }
 
@@ -1477,7 +1477,7 @@ namespace SrvSurvey
         public int Payment;
     }
 
-    class ColonisationContribution : JournalEntry
+   public class ColonisationContribution : JournalEntry
     {
         // { "timestamp":"2025-04-14T03:25:34Z", "event":"ColonisationContribution", "MarketID":3955335426, "Contributions":[ { "Name":"$Water_name;", "Name_Localised":"Water", "Amount":1 } ] }
         public long MarketID;
@@ -1492,24 +1492,36 @@ namespace SrvSurvey
         public int Amount;
     }
 
-    class ColonisationSystemClaim : JournalEntry
+   public class ColonisationSystemClaim : JournalEntry
     {
         // { "timestamp":"2025-10-05T07:03:11Z", "event":"ColonisationSystemClaim", "StarSystem":"North America Sector PI-T c3-4", "SystemAddress":1180210008826 }
         public long SystemAddress;
         public string StarSystem;
     }
 
-    class ColonisationBeaconDeployed : JournalEntry
+   public class ColonisationBeaconDeployed : JournalEntry
     {
         // { "timestamp":"2025-10-05T07:08:58Z", "event":"ColonisationBeaconDeployed" }
     }
 
-    class FactionKillBond : JournalEntry
+   public class FactionKillBond : JournalEntry
     {
         // { "timestamp":"2025-06-23T02:10:04Z", "event":"FactionKillBond", "Reward":17361, "AwardingFaction":"Youbee Dominion", "VictimFaction":"Kumo Council" }
         public long Reward;
         public string AwardingFaction;
         public string VictimFaction;
     }
+
+    public class BuyMicroResources : JournalEntry
+    {
+        // { "timestamp":"2026-01-18T02:05:47Z", "event":"BuyMicroResources", "Name":"healthpack", "Name_Localised":"Medkit", "Category":"Consumable", "Count":60, "Price":60000, "MarketID":3228845824 }
+        public string Name;
+        public string Name_Localised;
+        public string Category;
+        public int Count;
+        public int Price;
+        public long MarketID;
+    }
+
 
 }

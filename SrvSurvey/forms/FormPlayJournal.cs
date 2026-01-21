@@ -17,7 +17,7 @@ namespace SrvSurvey.forms
             game.status.StatusChanged += Status_StatusChanged;
             game.journals!.onRawJournalEntry += Journals_onRawJournalEntry;
 
-            Util.applyTheme(this);
+            Util.applyTheme(this, true, false);
 
             this.Status_StatusChanged(false);
             this.pullPriorEntries();

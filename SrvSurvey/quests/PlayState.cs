@@ -134,6 +134,7 @@ namespace SrvSurvey.quests
             .WithImports(new[] {
                 "System",
                 "Newtonsoft.Json.Linq",
+                "System.Text.RegularExpressions",
                 "SrvSurvey",
                 "SrvSurvey.quests.scripting",
             });
@@ -250,7 +251,8 @@ namespace SrvSurvey.quests
 
                     // store initial variables
                     foreach (var var in state.Variables)
-                        pc.vars[$"{var.Name}|{var.Type}"] = var.Value;
+                        if (!var.Name.StartsWith("_"))
+                            pc.vars[$"{var.Name}|{var.Type}"] = var.Value;
 
                     // check for mismatched IDs
                     validateScript(newQuest, id, state.Script.Code, issues);
@@ -266,11 +268,16 @@ namespace SrvSurvey.quests
                 }
             }
 
-            // initialize first chapter
             try
             {
-                newPlayQuest.startChapter(newQuest.firstChapter);
-                newPlayQuest.startTime = DateTimeOffset.UtcNow;
+                if (!newPlayQuest.startTime.HasValue)
+                    newPlayQuest.startTime = DateTimeOffset.UtcNow;
+
+                // initialize first chapter, if needed
+                var chapter = newPlayQuest.chapters.Find(pc => pc.id == newQuest.firstChapter);
+                if (chapter == null) throw new Exception($"Bad firstChapter id: {newQuest.firstChapter}");
+                if (!chapter.startTime.HasValue)
+                    newPlayQuest.startChapter(newQuest.firstChapter);
             }
             catch (Exception ex)
             {
@@ -482,7 +489,8 @@ namespace SrvSurvey.quests
             {
                 // store initial variables
                 foreach (var var in pc.scriptState.Variables)
-                    pc.vars[$"{var.Name}|{var.Type}"] = var.Value;
+                    if (!var.Name.StartsWith("_"))
+                        pc.vars[$"{var.Name}|{var.Type}"] = var.Value;
             }
 
             this.parent.Save();

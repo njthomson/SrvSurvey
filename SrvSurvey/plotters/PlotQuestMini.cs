@@ -1,4 +1,6 @@
-﻿using SrvSurvey.game;
+﻿using SrvSurvey.forms;
+using SrvSurvey.game;
+using SrvSurvey.quests;
 using SrvSurvey.widgets;
 
 namespace SrvSurvey.plotters
@@ -19,7 +21,7 @@ namespace SrvSurvey.plotters
         {
             return Game.settings.enableQuests
                 && game.cmdrPlay?.activeQuests.Count > 0
-                && game.isMode(GameMode.Flying, GameMode.SuperCruising, GameMode.GlideMode, GameMode.InSrv, GameMode.OnFoot, GameMode.OnFoot, GameMode.InTaxi, GameMode.CommsPanel, GameMode.InFighter, GameMode.Docked, GameMode.Landed, GameMode.FSDJumping, GameMode.StationServices)
+                && game.isMode(GameMode.Flying, GameMode.SuperCruising, GameMode.GlideMode, GameMode.InSrv, GameMode.OnFoot, GameMode.OnFootInStation, GameMode.InTaxi, GameMode.CommsPanel, GameMode.InFighter, GameMode.Docked, GameMode.Landed, GameMode.FSDJumping, GameMode.StationServices, GameMode.ExternalPanel)
                 ;
         }
 
@@ -55,28 +57,42 @@ namespace SrvSurvey.plotters
 
         protected override SizeF doRender(Graphics g, TextCursor tt)
         {
+            drawLogo(g, N.eight, N.eight, showStripe, 16);
+
+            var pq = game.cmdrPlay?.activeQuests.FirstOrDefault();
             var countUnread = game.cmdrPlay?.messagesUnread ?? -1;
             var hasUnreadMsgs = countUnread > 0;
-            var newShowStripe = hasUnreadMsgs;
+            var newShowStripe = hasUnreadMsgs; // || pq?.objectives.Any() == true;
             if (newShowStripe != showStripe)
             {
                 showStripe = newShowStripe;
                 background = getBackgroundImage(this.size);
                 g.DrawImage(background, 0, 0);
             }
+            tt.dty = N.six;
+
+            if (pq != null)
+            {
+                //tt.dty -= N.two;
+                foreach (var (key, obj) in pq.objectives)
+                    if (obj.state == PlayObjective.State.visible)
+                        PanelQuest.drawObjective(g, tt, C.orange, key, obj, pq, false, null, N.twenty);
+
+                tt.dty -= N.four;
+                //tt.newLine(true);
+            }
 
             if (hasUnreadMsgs)
             {
-                tt.dty = N.ten;
-                drawEnvelope(g, N.ten, tt.dty + 1, N.twoFour, C.Pens.orange2r);
-                tt.draw(N.fourFour, countUnread.ToString(), GameColors.Fonts.console_16);
+                tt.dty += N.four;
+                //drawEnvelope(g, N.ten, tt.dty + 1, N.twoFour, C.Pens.orange2r);
+                tt.draw(N.threeTwo, $"Unread messages: {countUnread}", C.cyan, GameColors.Fonts.gothic_9);
                 tt.newLine(N.four, true);
             }
 
-            drawLogo(g, this.width - N.twenty, N.eight, showStripe, 16);
-
+            tt.setMinWidth(24);
             tt.setMinHeight(32);
-            return tt.pad(N.twoFour, N.two);
+            return tt.pad(N.ten, N.two);
         }
 
         #region logos

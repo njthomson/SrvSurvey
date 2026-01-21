@@ -238,52 +238,56 @@ namespace SrvSurvey.plotters
 
             this.drawJumpLine(g, tt);
 
-            // 2nd line: discovered vs unvisited + discovered and update dates
-            tt.dtx = N.eight;
-            if (netData.totalBodyCount == 0)
-                tt.draw("▶️ " + netData.discoveryStatus, GameColors.Cyan);
-            else if (netData.discoveredDate.HasValue)
-                tt.draw("▶️ " + Res.DiscoveredBy.format(netData.discoveredBy, netData.discoveredDate.Value.ToCmdrShortDateTime24Hours(true)));
-
-            var lastUpdated = netData.lastUpdated;// ?? netData.spanshSystem?.updated_at.GetValueOrDefault()?.ToLocalTime();
-            if (lastUpdated != null && (lastUpdated > netData.discoveredDate || netData.discoveredDate == null))
+            // stop here if drawing a minimal overlay
+            if (!Game.settings.plotJumpInfoMinimal)
             {
-                if (tt.dtx > N.eight) tt.dtx += N.eight;
-                tt.draw("▶️ " + Res.LastUpdated.format(lastUpdated.Value.ToCmdrShortDateTime24Hours(true)));
-                //tt.draw(eight, lineTwo, netData.discovered == false ? GameColors.Cyan : null);
-                //tt.draw(Game.settings.useLastUpdatedFromSpanshNotEDSM ? "(Spansh)" : "(EDSM)", GameColors.OrangeDim);
-            }
-            tt.newLine(+N.two, true);
+                // 2nd line: discovered vs unvisited + discovered and update dates
+                tt.dtx = N.eight;
+                if (netData.totalBodyCount == 0)
+                    tt.draw("▶️ " + netData.discoveryStatus, GameColors.Cyan);
+                else if (netData.discoveredDate.HasValue)
+                    tt.draw("▶️ " + Res.DiscoveredBy.format(netData.discoveredBy, netData.discoveredDate.Value.ToCmdrShortDateTime24Hours(true)));
 
-            // traffic (if known)
-            var traffic = netData.edsmTraffic?.traffic;
-            if (traffic != null && traffic.total > 0)
-            {
-                var lineThree = $"▶️ " + Res.TrafficInfo.format(traffic.day.ToString("n0"), traffic.week.ToString("n0"), traffic.total.ToString("n0"));
-                tt.draw(N.eight, lineThree);
-                tt.draw(" (EDSM)", GameColors.OrangeDim);
-                tt.newLine(+N.two, true);
-            }
-
-            // 3rd line: count of ports, genus, etc
-            var POIs = netData.countPOI
-                .Where(_ => _.Value > 0)
-                .Select(_ => Misc.ResourceManager.GetString($"NetSysData_{_.Key}") + $": {_.Value}");
-            if (POIs.Any())
-            {
-                var lineThree = "▶️ " + string.Join(", ", POIs);
-                tt.draw(N.eight, lineThree);
-                tt.newLine(+N.two, true);
-            }
-
-            // 4th line: anything special
-            if (netData.special?.Count > 0)
-            {
-                foreach (var pair in netData.special)
+                var lastUpdated = netData.lastUpdated;// ?? netData.spanshSystem?.updated_at.GetValueOrDefault()?.ToLocalTime();
+                if (lastUpdated != null && (lastUpdated > netData.discoveredDate || netData.discoveredDate == null))
                 {
-                    tt.draw(N.eight, $"▶️ {pair.Key}: ", GameColors.Cyan);
-                    tt.draw(string.Join(Res.SpecialJoiner + " ", pair.Value), GameColors.Cyan);
+                    if (tt.dtx > N.eight) tt.dtx += N.eight;
+                    tt.draw("▶️ " + Res.LastUpdated.format(lastUpdated.Value.ToCmdrShortDateTime24Hours(true)));
+                    //tt.draw(eight, lineTwo, netData.discovered == false ? GameColors.Cyan : null);
+                    //tt.draw(Game.settings.useLastUpdatedFromSpanshNotEDSM ? "(Spansh)" : "(EDSM)", GameColors.OrangeDim);
+                }
+                tt.newLine(+N.two, true);
+
+                // traffic (if known)
+                var traffic = netData.edsmTraffic?.traffic;
+                if (traffic != null && traffic.total > 0)
+                {
+                    var lineThree = $"▶️ " + Res.TrafficInfo.format(traffic.day.ToString("n0"), traffic.week.ToString("n0"), traffic.total.ToString("n0"));
+                    tt.draw(N.eight, lineThree);
+                    tt.draw(" (EDSM)", GameColors.OrangeDim);
                     tt.newLine(+N.two, true);
+                }
+
+                // 3rd line: count of ports, genus, etc
+                var POIs = netData.countPOI
+                    .Where(_ => _.Value > 0)
+                    .Select(_ => Misc.ResourceManager.GetString($"NetSysData_{_.Key}") + $": {_.Value}");
+                if (POIs.Any())
+                {
+                    var lineThree = "▶️ " + string.Join(", ", POIs);
+                    tt.draw(N.eight, lineThree);
+                    tt.newLine(+N.two, true);
+                }
+
+                // 4th line: anything special
+                if (netData.special?.Count > 0)
+                {
+                    foreach (var pair in netData.special)
+                    {
+                        tt.draw(N.eight, $"▶️ {pair.Key}: ", GameColors.Cyan);
+                        tt.draw(string.Join(Res.SpecialJoiner + " ", pair.Value), GameColors.Cyan);
+                        tt.newLine(+N.two, true);
+                    }
                 }
             }
 
@@ -452,7 +456,7 @@ namespace SrvSurvey.plotters
 
             }
 
-            tt.newLine(+N.six);
+            tt.newLine(+N.six, true);
         }
     }
 }

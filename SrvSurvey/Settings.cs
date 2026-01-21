@@ -59,6 +59,7 @@ namespace SrvSurvey
         public bool autoShowPlotGalMap = true;
         public bool autoShowPlotJumpInfo = true;
         public bool showPlotJumpInfoIfNextHop = false;
+        public bool plotJumpInfoMinimal = true;
         public bool useLastUpdatedFromSpanshNotEDSM = false;
 
         public bool autoShowPlotBodyInfo = true;

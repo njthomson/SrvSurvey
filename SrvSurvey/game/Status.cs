@@ -7,7 +7,7 @@ namespace SrvSurvey
 {
     delegate void OnStatusChange();
 
-    class Status : ILocation, IDisposable
+    public class Status : ILocation, IDisposable
     {
 
         public static readonly string Filename = "Status.json";
@@ -317,24 +317,32 @@ namespace SrvSurvey
         public bool cargoScoopDeployed { get => (this.Flags & StatusFlags.CargoScoopDeployed) > 0; }
         [JsonIgnore]
         public bool lightsOn { get => (this.Flags & StatusFlags.LightsOn) > 0; }
+
+        public bool isWithin(double lat, double @long, double targetDist)
+        {
+            if (PlanetRadius == 0) return false;
+
+            var actualDist = (double)Util.getDistance(new LatLong2(lat, @long), here, PlanetRadius);
+            return actualDist <= targetDist;
+        }
     }
 
     #region Types
 
-    class FuelStatus
+    public class FuelStatus
     {
         public float FuelMain { get; set; }
         public float FuelReservoir { get; set; }
     }
 
-    class PipsStatus : List<int>
+    public class PipsStatus : List<int>
     {
         public int sys { get => this[0]; }
         public int eng { get => this[1]; }
         public int wep { get => this[2]; }
     }
 
-    class Destination
+    public class Destination
     {
         public long System { get; set; }
         public int Body { get; set; }
@@ -348,7 +356,7 @@ namespace SrvSurvey
     }
 
     [Flags]
-    enum StatusFlags
+    public enum StatusFlags
     {
         // See https://elite-journal.readthedocs.io/en/latest/Status%20File/#status-file
         Docked = 0x_0000_0001, // (on a landing pad)
@@ -386,7 +394,7 @@ namespace SrvSurvey
     }
 
     [Flags]
-    enum StatusFlags2
+    public enum StatusFlags2
     {
         // See https://elite-journal.readthedocs.io/en/latest/Status%20File/#status-file
         OnFoot = 0x_0000_0001,
@@ -414,7 +422,7 @@ namespace SrvSurvey
         Unknown = 0x_0040_0000,
     }
 
-    enum GuiFocus
+    public enum GuiFocus
     {
         NoFocus = 0, // meaning ... playing the game
         InternalPanel, // (right hand side)

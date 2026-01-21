@@ -1423,7 +1423,7 @@ namespace SrvSurvey.game
 
                 // if there's a station that is not a Fleet Carrier ... assume it should be marked as "discovered"
                 // (this helps with bodies in the bubble that do not allow "wasDiscovered" to be true
-                if (entry.stations.Count > 0 && !entry.stations.Any(s => s.primaryEconomy != "Private Enterprise"))
+                if (entry.stations?.Count > 0 && !entry.stations.Any(s => s.primaryEconomy != "Private Enterprise"))
                     body.wasDiscovered = true;
 
                 // update rings

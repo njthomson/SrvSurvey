@@ -75,7 +75,7 @@ namespace SrvSurvey.game
     }
 
     delegate void GameModeChanged(GameMode newMode, bool force);
-    delegate void StatusFileChanged(bool blink);
+    public delegate void StatusFileChanged(bool blink);
 
     public interface ILocation
     {
@@ -124,7 +124,7 @@ namespace SrvSurvey.game
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
-    enum ParentBodyType
+    public enum ParentBodyType
     {
         /// <summary>
         /// BaryCenter

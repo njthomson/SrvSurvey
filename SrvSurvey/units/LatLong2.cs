@@ -9,7 +9,7 @@ namespace SrvSurvey.units
     /// </summary>
 
     [JsonConverter(typeof(LatLong2.JsonConverter))]
-    class LatLong2
+    public class LatLong2
     {
         public static readonly LatLong2 Empty = new LatLong2(0d, 0d);
 

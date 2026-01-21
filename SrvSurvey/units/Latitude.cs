@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents an angle at Latitude, constrained between -90° and < +90°
     /// </summary>
-    struct Latitude
+    public struct Latitude
     {
         private const int limit = 90;
 

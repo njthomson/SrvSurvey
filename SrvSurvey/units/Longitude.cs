@@ -9,7 +9,7 @@ namespace SrvSurvey.units
     /// <summary>
     /// Represents an angle at Longitude, contrained between -180° and < +180°
     /// </summary>
-    struct Longitude
+    public struct Longitude
     {
         private const int limit = 180;
 

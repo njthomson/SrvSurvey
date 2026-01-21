@@ -317,6 +317,8 @@ namespace SrvSurvey.forms
                         {
                             var match = newPQ.chapters.Find(c => c.id == oc.id);
                             if (match == null) continue;
+                            match.startTime = oc.startTime;
+                            match.endTime = oc.endTime;
                             foreach (var (k, v) in oc.vars) match.vars[k] = v;
                         }
 

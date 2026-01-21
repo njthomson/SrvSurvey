@@ -1153,7 +1153,7 @@ namespace SrvSurvey.net
                 // TODO? parents[]
 
                 public List<Ring>? rings;
-                public List<Station> stations;
+                public List<Station>? stations;
 
                 public override string ToString()
                 {
@@ -1255,10 +1255,10 @@ namespace SrvSurvey.net
             public List<ApiSystemDump.System.Station> getAllStations()
             {
                 // get stations from all bodies into a single list
-                var allStations = new List<ApiSystemDump.System.Station>(this.stations);
+                var allStations = this.stations?.ToList() ?? new();
                 this.bodies.ForEach(b =>
                 {
-                    if (b.stations.Count > 0)
+                    if (b.stations?.Count > 0)
                         allStations.AddRange(b.stations);
                 });
 
