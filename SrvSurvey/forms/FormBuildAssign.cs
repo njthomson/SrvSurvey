@@ -15,7 +15,7 @@ namespace SrvSurvey.forms
             InitializeComponent();
 
             txtCmdr.Text = cmdr;
-            comboCommodity.Items.AddRange(commodities.ToArray());
+            comboCommodity.Items.AddRange(commodities.Distinct().ToArray());
         }
 
         private void btnAssign_Click(object sender, EventArgs e)
