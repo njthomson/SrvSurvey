@@ -16,7 +16,7 @@ namespace SrvSurvey.quests
     {
         #region static loading code
 
-        private static string folder = Path.Combine(Program.dataFolder, "playStates");
+        private static string folder = Path.Combine(Program.dataFolder, "quests");
 
         public static Task<PlayState?> loadAsync(string fid)
         {

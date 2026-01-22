@@ -42,6 +42,14 @@
             // 
             // btnQuests
             // 
+            btnQuests.BackColorDisabled = Color.Empty;
+            btnQuests.BackColorHover = Color.Empty;
+            btnQuests.BackColorPressed = Color.Empty;
+            btnQuests.DrawBorder = false;
+            btnQuests.ForeColor = Color.Black;
+            btnQuests.ForeColorDisabled = Color.Empty;
+            btnQuests.ForeColorHover = Color.Empty;
+            btnQuests.ForeColorPressed = Color.Empty;
             btnQuests.Location = new Point(12, 48);
             btnQuests.Name = "btnQuests";
             btnQuests.Size = new Size(72, 72);
@@ -53,6 +61,14 @@
             // 
             // btnMsgs
             // 
+            btnMsgs.BackColorDisabled = Color.Empty;
+            btnMsgs.BackColorHover = Color.Empty;
+            btnMsgs.BackColorPressed = Color.Empty;
+            btnMsgs.DrawBorder = false;
+            btnMsgs.ForeColor = Color.Black;
+            btnMsgs.ForeColorDisabled = Color.Empty;
+            btnMsgs.ForeColorHover = Color.Empty;
+            btnMsgs.ForeColorPressed = Color.Empty;
             btnMsgs.Location = new Point(12, 128);
             btnMsgs.Name = "btnMsgs";
             btnMsgs.Size = new Size(72, 72);
@@ -65,12 +81,13 @@
             // 
             // tlist
             // 
+            tlist.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tlist.AutoSize = true;
             tlist.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tlist.BackColor = Color.Transparent;
             tlist.ColumnCount = 1;
             tlist.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tlist.Controls.Add(panel2, 0, 1);
-            tlist.Dock = DockStyle.Fill;
             tlist.Location = new Point(0, 0);
             tlist.Name = "tlist";
             tlist.RowCount = 4;
@@ -78,7 +95,7 @@
             tlist.RowStyles.Add(new RowStyle());
             tlist.RowStyles.Add(new RowStyle());
             tlist.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tlist.Size = new Size(688, 340);
+            tlist.Size = new Size(688, 50);
             tlist.TabIndex = 0;
             // 
             // panel2
@@ -94,6 +111,7 @@
             // bigPanel
             // 
             bigPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            bigPanel.AutoScroll = true;
             bigPanel.BackColor = Color.Transparent;
             bigPanel.Controls.Add(tlist);
             bigPanel.Location = new Point(100, 48);
@@ -104,11 +122,19 @@
             // btnDev
             // 
             btnDev.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnDev.BackColorDisabled = Color.Empty;
+            btnDev.BackColorHover = Color.Empty;
+            btnDev.BackColorPressed = Color.Empty;
+            btnDev.DrawBorder = false;
+            btnDev.ForeColor = Color.Black;
+            btnDev.ForeColorDisabled = Color.Empty;
+            btnDev.ForeColorHover = Color.Empty;
+            btnDev.ForeColorPressed = Color.Empty;
             btnDev.Location = new Point(12, 306);
             btnDev.Name = "btnDev";
             btnDev.Size = new Size(72, 23);
             btnDev.TabIndex = 3;
-            btnDev.Text = "dev";
+            btnDev.Text = "( dev )";
             btnDev.UseVisualStyleBackColor = true;
             btnDev.Click += btnDev_Click;
             btnDev.Enter += leftButtons_Enter;
@@ -116,12 +142,20 @@
             // btnWatch
             // 
             btnWatch.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnWatch.BackColorDisabled = Color.Empty;
+            btnWatch.BackColorHover = Color.Empty;
+            btnWatch.BackColorPressed = Color.Empty;
+            btnWatch.DrawBorder = false;
             btnWatch.Enabled = false;
+            btnWatch.ForeColor = Color.Black;
+            btnWatch.ForeColorDisabled = Color.Empty;
+            btnWatch.ForeColorHover = Color.Empty;
+            btnWatch.ForeColorPressed = Color.Empty;
             btnWatch.Location = new Point(12, 277);
             btnWatch.Name = "btnWatch";
             btnWatch.Size = new Size(72, 23);
             btnWatch.TabIndex = 2;
-            btnWatch.Text = "watch";
+            btnWatch.Text = "( watch )";
             btnWatch.UseVisualStyleBackColor = true;
             btnWatch.Click += btnWatch_Click;
             btnWatch.Enter += leftButtons_Enter;
@@ -129,6 +163,14 @@
             // btnClose
             // 
             btnClose.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnClose.BackColorDisabled = Color.Empty;
+            btnClose.BackColorHover = Color.Empty;
+            btnClose.BackColorPressed = Color.Empty;
+            btnClose.DrawBorder = false;
+            btnClose.ForeColor = Color.Black;
+            btnClose.ForeColorDisabled = Color.Empty;
+            btnClose.ForeColorHover = Color.Empty;
+            btnClose.ForeColorPressed = Color.Empty;
             btnClose.Location = new Point(12, 365);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(72, 23);
@@ -163,6 +205,7 @@
             Paint += FormPlayComms_Paint;
             tlist.ResumeLayout(false);
             bigPanel.ResumeLayout(false);
+            bigPanel.PerformLayout();
             ResumeLayout(false);
         }
 

@@ -828,7 +828,7 @@ namespace SrvSurvey
             }
         }
 
-        private void setGameColors()
+        public void setGameColors()
         {
 #if DEBUG
             // This stops logging code from starting up when custom controls are created in Visual Studio designer

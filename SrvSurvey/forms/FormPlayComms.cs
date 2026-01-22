@@ -31,6 +31,9 @@ namespace SrvSurvey.forms
 
             btnWatch.Enabled = Game.activeGame != null;
 
+            foreach (var btn in new DrawButton[] { btnClose, btnQuests, btnMsgs, btnWatch, btnDev })
+                btn.setGameColors();
+
             this.Opacity = 0.9f;
         }
 
@@ -193,8 +196,9 @@ namespace SrvSurvey.forms
             if (!(cmdrPlay.activeQuests.Count > 0)) return;
 
             clearSelection();
+            tlist.SuspendLayout();
 
-            var sorted = cmdrPlay.activeQuests.OrderBy(q => q.startTime);
+            var sorted = cmdrPlay.activeQuests.OrderBy(q => q.startTime).ToList();
             foreach (var pq in sorted)
             {
                 if (tlist.Controls[pq.id] != null) continue;
@@ -205,7 +209,7 @@ namespace SrvSurvey.forms
                     Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
                     BackColor = C.orangeDarker,
                 };
-                btn.GotFocus += (s, e) => lastListName = btn.Name;
+                btn.Enter += (s, e) => lastListName = btn.Name;
                 btn.Paint += (s, e) =>
                 {
                     e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
@@ -226,6 +230,14 @@ namespace SrvSurvey.forms
             var stale = tlist.Controls.Cast<Control>().Where(c => !activeIDs.Contains(c.Name));
             foreach (var ctrl in stale) tlist.Controls.Remove(ctrl);
 
+            // Enforce the order
+            for (int n = 0; n < sorted.Count; n++)
+            {
+                var id = sorted[n].id;
+                tlist.SetRow(tlist.Controls[id]!, n);
+            }
+
+            tlist.ResumeLayout();
             this.Invalidate(true);
         }
 
@@ -238,10 +250,11 @@ namespace SrvSurvey.forms
         private void setSelectedThing(Control ctrl)
         {
             selectedThing = ctrl;
+            bigPanel.VerticalScroll.Value = 0;
             bigPanel.Controls.Add(ctrl);
             ctrl.Width = bigPanel.Width;
-            tlist.Hide();
             ctrl.Focus();
+            tlist.Hide();
         }
 
         public void clearSelection()
@@ -267,6 +280,8 @@ namespace SrvSurvey.forms
                 .ToList();
             Game.log($"showing {allMsgs.Count} msgs");
 
+            tlist.SuspendLayout();
+
             var activeNames = new HashSet<string>();
             foreach (var pm in allMsgs)
             {
@@ -282,7 +297,7 @@ namespace SrvSurvey.forms
                     Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
                     BackColor = C.orangeDarker,
                 };
-                btn.GotFocus += (s, e) => lastListName = btn.Name;
+                btn.Enter += (s, e) => lastListName = btn.Name;
                 btn.Paint += (s, e) =>
                 {
                     e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
@@ -310,6 +325,15 @@ namespace SrvSurvey.forms
             var stale = tlist.Controls.Cast<Control>().Where(c => !activeNames.Contains(c.Name));
             foreach (var ctrl in stale) tlist.Controls.Remove(ctrl);
 
+            // Enforce the order
+            for (int n = 0; n < allMsgs.Count; n++)
+            {
+                var pm = allMsgs[n];
+                var name = $"{pm.parent.id}/{pm.id}";
+                tlist.SetRow(tlist.Controls[name]!, n);
+            }
+
+            tlist.ResumeLayout();
             this.Invalidate(true);
         }
 
@@ -540,7 +564,7 @@ namespace SrvSurvey.forms
             btnB.Paint += (s, e) =>
             {
                 e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                var p = btnB.pen(C.Pens.orangeDark3r, C.Pens.menuGold3r, C.Pens.black3r);
+                var p = btnB.pen(C.Pens.orange3r, C.Pens.menuGold3r, C.Pens.black3r);
                 PlotQuestMini.drawBackArrow(e.Graphics, 28, 6, 18, p);
             };
             btnB.Click += BtnB_Click;
@@ -728,19 +752,19 @@ namespace SrvSurvey.forms
             btnB.Paint += (s, e) =>
             {
                 e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                var p = btnB.pen(C.Pens.orangeDark3r, C.Pens.menuGold3r, C.Pens.black3r);
+                var p = btnB.pen(C.Pens.orange3r, C.Pens.menuGold3r, C.Pens.black3r);
                 PlotQuestMini.drawBackArrow(e.Graphics, 28, 6, 18, p);
             };
             this.Controls.Add(btnB);
 
             var btnD = new DrawButton()
             {
-                Name = "questDelete",
+                Name = "msgDelete",
                 Anchor = AnchorStyles.Right | AnchorStyles.Bottom,
                 Text = "Delete",
                 TabIndex = this.Controls.Count,
             };
-            btnD.Left = this.Width - btnD.Width - 6;
+            btnD.Left = ClientSize.Width - btnD.Width - 16;
             btnD.Top = this.Height - btnD.Height - 6;
             btnD.Click += BtnD_Click;
             this.Controls.Add(btnD);
@@ -756,6 +780,7 @@ namespace SrvSurvey.forms
             pq.deleteMsg(pm.id);
             pq.updateIfDirty();
             form.clearSelection();
+            form.onQuestChanged(pq);
         }
 
         private void Btn_Click(object? sender, EventArgs e)
