@@ -278,7 +278,11 @@ namespace SrvSurvey.game
             // ignore asteroid clusters
             if (entry.PlanetClass == null && entry.StarType == null) return;
 
-            // Effectively (but not entirely) FSS scans
+            // track which bodies we've counted to avoid double-counting from DSS scans
+            currentSystem.bodiesScanned ??= new();
+            if (currentSystem.bodiesScanned.Contains(entry.BodyID)) return;
+            currentSystem.bodiesScanned.Add(entry.BodyID);
+
             currentSystem.count.bodyScans++;
 
             if (entry.StarType != null)
@@ -503,6 +507,8 @@ namespace SrvSurvey.game
             public Dictionary<string, int>? landedOn;
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
             public HashSet<long>? codexScanned;
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+            public HashSet<int>? bodiesScanned;
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
             public HashSet<string>? codexNew;
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
