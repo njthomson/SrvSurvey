@@ -790,7 +790,13 @@ namespace SrvSurvey
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning);
 
-                if (rslt == DialogResult.Yes) Clipboard.SetText(Application.ExecutablePath);
+                if (rslt == DialogResult.Yes)
+                {
+                    if (Program.control.InvokeRequired)
+                        Program.control.Invoke(() => Clipboard.SetText(Application.ExecutablePath));
+                    else
+                        Clipboard.SetText(Application.ExecutablePath);
+                }
                 return true;
             }
 
