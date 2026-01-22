@@ -114,10 +114,6 @@ namespace SrvSurvey.plotters
         private void drawRemainingBodies(Graphics g, TextCursor tt, string? destination, List<string> names)
         {
             // adjust for the fact that bold makes rendering shift up a pixel or two
-            var flags = tt.flags;
-            tt.flags = TextFormatFlags.NoPadding | TextFormatFlags.PreserveGraphicsTranslateTransform | TextFormatFlags.VerticalCenter;
-            var dy = (int)Math.Ceiling(tt.lastTextSize.Height / 2);
-            tt.dty += dy;
 
             // draw each remaining body, highlighting color if they are in the same group as the destination, or all of them if no destination
             foreach (var bodyName in names)
@@ -126,16 +122,19 @@ namespace SrvSurvey.plotters
                 var isLocal = string.IsNullOrEmpty(destination) || bodyName[0] == destination[0];
 
                 var useFont = this.font;
-                if (destination == bodyName) useFont = this.boldFont;
+                if (destination == bodyName)
+                {
+                    useFont = this.boldFont;
+                    if (!Program.isLinux) tt.dty += 1;
+                }
                 var useColor = isLocal ? GameColors.Cyan : GameColors.Orange;
 
                 tt.draw(bodyName, useColor, useFont);
+                if (destination == bodyName && !Program.isLinux) tt.dty -= 1;
                 tt.dtx += N.four;
             }
 
             // revert adjustments
-            tt.dty -= dy;
-            tt.flags = flags;
         }
     }
 }
