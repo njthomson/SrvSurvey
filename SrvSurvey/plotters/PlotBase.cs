@@ -4,6 +4,7 @@ using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Globalization;
@@ -36,9 +37,12 @@ namespace SrvSurvey.plotters
         /// A manually set scaling factor given by users with the `z` command.
         /// </summary>
         public float customScale = -1.0f;
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool didFirstPaint { get; set; }
         private bool forceRepaint;
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool showing { get; set; }
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool fading { get; set; }
 
         protected PlotBase()
@@ -207,6 +211,7 @@ namespace SrvSurvey.plotters
         #endregion
 
         /// <summary> When true, forces zero Opacity </summary>
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool forceHide
         {
             get => this._forceHide;

@@ -126,6 +126,8 @@ namespace SrvSurvey.forms
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             var btn = (DrawButton)sender;
             var p = btn.pen(C.Pens.orangeDark3r, C.Pens.menuGold3r, C.Pens.black3r);
+            if (cmdrPlay.messagesUnread > 0) p = C.Pens.cyan3r;
+
             PlotQuestMini.drawEnvelope(e.Graphics, 9, 18, 53, p);
 
             if (mode == "msgs")
@@ -163,7 +165,7 @@ namespace SrvSurvey.forms
             {
                 clearSelection();
             }
-            else if (this.mode != "msgs" || selectedThing != null)
+            else //if (this.mode != "msgs" || selectedThing != null)
             {
                 tlist.Controls.Clear();
                 tlist.RowStyles.Clear();
@@ -182,9 +184,13 @@ namespace SrvSurvey.forms
                     showQuests();
                 else
                     showMsgs();
-            }
 
-            focusTListItemByName(lastListName);
+                focusTListItemByName(lastListName);
+            }
+            else
+            {
+                selectedThing.Invalidate(true);
+            }
 
             this.Invalidate(true);
 
@@ -193,8 +199,6 @@ namespace SrvSurvey.forms
 
         private void showQuests()
         {
-            if (!(cmdrPlay.activeQuests.Count > 0)) return;
-
             clearSelection();
             tlist.SuspendLayout();
 
@@ -271,7 +275,6 @@ namespace SrvSurvey.forms
 
         private void showMsgs()
         {
-            if (!(cmdrPlay.activeQuests.Count > 0)) return;
             clearSelection();
 
             var allMsgs = cmdrPlay.activeQuests
@@ -570,16 +573,27 @@ namespace SrvSurvey.forms
             btnB.Click += BtnB_Click;
             this.Controls.Add(btnB);
 
-            var btnP = new FlatButton()
+            var btnQ = new DrawButton()
             {
-                Name = "questPause",
+                Name = "questQuit",
                 Anchor = AnchorStyles.Right | AnchorStyles.Bottom,
-                Text = "Pause",
-                Visible = false,
+                Text = "Remove",
             };
-            btnP.Left = this.Width - btnP.Width - 6;
-            btnP.Top = this.Height - btnP.Height - 6;
-            this.Controls.Add(btnP);
+            btnQ.Left = this.Width - btnQ.Width - 16;
+            btnQ.Top = this.Height - btnQ.Height - 6;
+            btnQ.Click += BtnQ_Click;
+            this.Controls.Add(btnQ);
+        }
+
+        private void BtnQ_Click(object? sender, EventArgs e)
+        {
+            var rslt = MessageBox.Show("Are you sure you want to abandon this quest?", "SrvSurvey", MessageBoxButtons.YesNo);
+            if (rslt == DialogResult.Yes)
+            {
+                pq.parent.activeQuests.Remove(pq);
+                form.clearSelection();
+                form.onQuestChanged();
+            }
         }
 
         private void BtnB_Click(object? sender, EventArgs e)
@@ -763,6 +777,7 @@ namespace SrvSurvey.forms
                 Anchor = AnchorStyles.Right | AnchorStyles.Bottom,
                 Text = "Delete",
                 TabIndex = this.Controls.Count,
+                Visible = false,
             };
             btnD.Left = ClientSize.Width - btnD.Width - 16;
             btnD.Top = this.Height - btnD.Height - 6;
@@ -773,6 +788,7 @@ namespace SrvSurvey.forms
         private void BtnB_Click(object? sender, EventArgs e)
         {
             form.clearSelection();
+            form.onQuestChanged();
         }
 
         private void BtnD_Click(object? sender, EventArgs e)

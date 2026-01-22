@@ -133,8 +133,9 @@ namespace SrvSurvey.quests
             .AddReferences(typeof(PlayState).Assembly)
             .WithImports(new[] {
                 "System",
-                "Newtonsoft.Json.Linq",
+                "System.Collections.Generic",
                 "System.Text.RegularExpressions",
+                "Newtonsoft.Json.Linq",
                 "SrvSurvey",
                 "SrvSurvey.quests.scripting",
             });

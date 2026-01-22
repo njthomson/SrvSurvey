@@ -421,6 +421,7 @@ namespace SrvSurvey
 
         public string cmdrName { get => this.SelectedItem?.ToString()!; }
 
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string? cmdrFid
         {
             get => this.allCmdrs.FirstOrDefault(_ => _.Value == (this.SelectedItem as string)).Key;
@@ -480,7 +481,7 @@ namespace SrvSurvey
         /// <summary>
         /// Automatically update the text on this control when FSD jumps occur.
         /// </summary>
-        [Browsable(true)]
+        [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool updateOnJump
         {
             get => _updateOnJump;
@@ -542,6 +543,7 @@ namespace SrvSurvey
                 this.Text = fsdJump.StarSystem;
         }
 
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StarRef? SelectedSystem
         {
             get => _selectedSystem;
@@ -720,7 +722,7 @@ namespace SrvSurvey
                 base.Show(_button, new Point(0, _button!.Height));
         }
 
-        [Browsable(true)]
+        [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Button? targetButton
         {
             get => _button;
@@ -788,19 +790,19 @@ namespace SrvSurvey
 
     public class DrawButton : Button
     {
-        [Browsable(true)]
+        [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color BackColorHover { get; set; }
-        [Browsable(true)]
+        [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color BackColorPressed { get; set; }
-        [Browsable(true)]
+        [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color BackColorDisabled { get; set; }
-        [Browsable(true)]
+        [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color ForeColorHover { get; set; }
-        [Browsable(true)]
+        [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color ForeColorPressed { get; set; }
-        [Browsable(true)]
+        [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color ForeColorDisabled { get; set; }
-        [Browsable(true)]
+        [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool DrawBorder { get; set; }
         public bool mouseDown { get; private set; }
         public bool highlight { get; private set; }
@@ -977,6 +979,7 @@ namespace SrvSurvey
 
     public class GroupBox2 : GroupBox
     {
+        [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color LineColor { get; set; } = SystemColors.ActiveBorder;
         private Pen? linePen;
 
@@ -1004,8 +1007,10 @@ namespace SrvSurvey
 
     public class CheckBox2 : CheckBox
     {
+        [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color LineColor { get; set; } = SystemColors.ActiveBorder;
         private Pen? linePen;
+        [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color CheckColor { get; set; } = SystemColors.ControlText;
         private Pen? checkPen;
 

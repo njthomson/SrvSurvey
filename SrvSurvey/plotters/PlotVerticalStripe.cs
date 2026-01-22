@@ -1,6 +1,7 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
@@ -43,9 +44,13 @@ namespace SrvSurvey.plotters
         public static double targetAltitude;
 
         protected Game game = Game.activeGame!;
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool didFirstPaint { get; set; } = true;
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool showing { get; set; }
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool forceHide { get; set; }
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool fading { get; set; }
 
         private Rectangle er;

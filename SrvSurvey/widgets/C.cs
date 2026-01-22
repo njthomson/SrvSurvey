@@ -73,6 +73,7 @@ namespace SrvSurvey.widgets
             public static Pen cyan2 = cyan.toPen(2);
             public static Pen cyan2r = cyan.toPen(2, LineCap.Round);
             public static Pen cyan3 = cyan.toPen(3);
+            public static Pen cyan3r = cyan.toPen(3, LineCap.Round);
             public static Pen cyan4 = cyan.toPen(4);
 
             public static Pen cyanDark1 = cyanDark.toPen(1);

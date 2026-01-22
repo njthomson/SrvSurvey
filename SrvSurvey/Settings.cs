@@ -297,7 +297,7 @@ namespace SrvSurvey
                     {
                         Game.log($"Failed to read settings: {ex}");
                         Game.log(json);
-                        MessageBox.Show("Failed to load settings. Please share the following and include the logs", $"SrvSurvey - {Program.releaseVersion}", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Failed to load settings. Please share the following and include the logs\r\n\r\n{ex.Message}", $"SrvSurvey - {Program.releaseVersion}", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         FormErrorSubmit.Show(ex);
                     }
                 }

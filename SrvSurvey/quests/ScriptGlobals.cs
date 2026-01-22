@@ -170,6 +170,12 @@ namespace SrvSurvey.quests.scripting
                 c.pq.objectives[name].total = total;
                 c.dirty = true;
             }
+
+            public bool isActive(string name)
+            {
+                var isVisible = c.pq.objectives.GetValueOrDefault(name)?.state == PlayObjective.State.visible;
+                return isVisible;
+            }
         }
 
         public class S_game
