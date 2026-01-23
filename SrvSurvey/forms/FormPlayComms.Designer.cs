@@ -17,6 +17,10 @@
             {
                 components.Dispose();
             }
+
+            KeyboardHook.redirect = false;
+            KeyboardHook.buttonsPressed -= KeyboardHook_buttonsPressed;
+
             base.Dispose(disposing);
         }
 

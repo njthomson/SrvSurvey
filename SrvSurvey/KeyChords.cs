@@ -272,7 +272,11 @@ namespace SrvSurvey
                 Elite.setFocusED();
                 Program.defer(() =>
                 {
-                    SendKeys.SendWait(keysToSend);
+                    try
+                    {
+                        SendKeys.SendWait(keysToSend);
+                    }
+                    catch { /* ignore */ }
                 });
             }
 
@@ -498,7 +502,9 @@ namespace SrvSurvey
                     form.Activate();
             }
             else
+            {
                 BaseForm.show<FormPlayComms>();
+            }
             return true;
         }
     }

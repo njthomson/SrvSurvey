@@ -69,6 +69,7 @@ namespace SrvSurvey.plotters
             overrideName = null;
             KeyboardHook.redirect = false;
             KeyboardHook.analogs = false;
+            KeyboardHook.buttonsPressed -= KeyboardHook_buttonsPressed;
             PlotBase2.remove(PlotAdjustFake.def);
             PlotAdjustFake.def.name = nameof(PlotAdjustFake);
 

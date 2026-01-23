@@ -10,7 +10,7 @@ namespace SrvSurvey
     {
         const int WH_KEYBOARD_LL = 13;
 
-        public event KeyEventHandler KeyUp;
+        public static event KeyEventHandler KeyUp;
 
         private readonly HookHandlerDelegate hookProcessor;
         private readonly IntPtr hookId;
@@ -145,10 +145,8 @@ namespace SrvSurvey
                     if (!redirect)
                         KeyChords.processHook(chord);
 
-                    if (this.KeyUp != null)
-                    {
-                        this.KeyUp(null, new KeyEventArgs(keys));
-                    }
+                    if (KeyUp != null)
+                        KeyUp(null, new KeyEventArgs(keys));
                 }
             }
 
@@ -337,7 +335,7 @@ namespace SrvSurvey
         private void processButtons(JoystickUpdate state)
         {
             var isRelease = state.Value == 0;
-            var buttonName = "B" + (state.Offset - JoystickOffset.Buttons0).ToString();
+            var buttonName = "B" + (state.Offset - JoystickOffset.Buttons0 + 1).ToString();
 
             if (isRelease) // a button is released...
             {

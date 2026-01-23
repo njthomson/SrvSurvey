@@ -5,6 +5,7 @@ using SrvSurvey.widgets;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
+using System.Xml.Linq;
 
 namespace SrvSurvey.forms
 {
@@ -16,6 +17,7 @@ namespace SrvSurvey.forms
         private string mode = "quests";
         private Control lastLeftBtn;
         public string? lastListName;
+        private Dictionary<string, string> mappedGameKeyBinds;
 
         public FormPlayComms()
         {
@@ -35,6 +37,14 @@ namespace SrvSurvey.forms
                 btn.setGameColors();
 
             this.Opacity = 0.9f;
+
+            var newMap = parseGameKeybinds();
+            if (newMap != null) mappedGameKeyBinds = newMap;
+
+            KeyboardHook.buttonsPressed += KeyboardHook_buttonsPressed;
+
+            this.Activated += (o,s) => KeyboardHook.redirect = true;
+            this.Deactivate += (o, s) => KeyboardHook.redirect = false;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -72,6 +82,7 @@ namespace SrvSurvey.forms
 
         private void FormPlayComms_Paint(object sender, PaintEventArgs e)
         {
+            if (cmdrPlay == null) return;
             var g = e.Graphics;
 
             g.DrawLine(C.Pens.orangeDark2, bigPanel.Left, bigPanel.Top - 3, bigPanel.Right, bigPanel.Top - 3);
@@ -100,6 +111,7 @@ namespace SrvSurvey.forms
 
         private void btnClose_Paint(object sender, PaintEventArgs e)
         {
+            if (cmdrPlay == null) return;
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             var btn = (DrawButton)sender;
             var p = btn.pen(C.Pens.orangeDark3r, C.Pens.menuGold3r, C.Pens.black3r);
@@ -108,6 +120,7 @@ namespace SrvSurvey.forms
 
         private void btnQuests_Paint(object sender, PaintEventArgs e)
         {
+            if (cmdrPlay == null) return;
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             var btn = (DrawButton)sender;
             var p = btn.pen(C.Pens.orangeDark3r, C.Pens.menuGold3r, C.Pens.black3r);
@@ -123,6 +136,7 @@ namespace SrvSurvey.forms
 
         private void btnMsgs_Paint(object sender, PaintEventArgs e)
         {
+            if (cmdrPlay == null) return;
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             var btn = (DrawButton)sender;
             var p = btn.pen(C.Pens.orangeDark3r, C.Pens.menuGold3r, C.Pens.black3r);
@@ -344,9 +358,31 @@ namespace SrvSurvey.forms
         {
             //Debug.WriteLine($"!1 {keyData} / {this.ActiveControl?.Name} / {selectedThing?.Name}");
 
+            Debug.WriteLine($"ProcessCmdKey: {keyData}");
+
+            // Accept ENTER as it is
             if (keyData == Keys.Enter) return base.ProcessCmdKey(ref msg, keyData);
 
-            // any of the left buttons
+            // Is this a regular key that is mapped to a game keybind?
+            var chord = $"Key_{keyData}";
+            if (mappedGameKeyBinds.ContainsKey(chord))
+            {
+                SendKeys.SendWait(mappedGameKeyBinds[chord]);
+                return true;
+            }
+
+            // Treat ESCAPE like going back
+            if (keyData == Keys.Escape)
+            {
+                if (selectedThing != null)
+                    clearSelection();
+                else
+                    this.Close();
+
+                return true;
+            }
+
+            // Any of the left DrawButtons
             if (ActiveControl is DrawButton && ActiveControl?.Parent == this)
             {
                 if (keyData == Keys.Right)
@@ -381,7 +417,7 @@ namespace SrvSurvey.forms
                 return true;
             }
 
-            // ---
+            // TODO: Clean-up and verify what follows ---
 
             if (ActiveControl is PanelQuest)
             {
@@ -425,6 +461,18 @@ namespace SrvSurvey.forms
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
+        private void KeyboardHook_buttonsPressed(bool hook, string chord, int analog)
+        {
+            // only process when buttons are pushed down and we have focus
+            if (hook || !Elite.focusSrvSurvey) return;
+
+            //Debug.WriteLine($"Hook: {hook}, Chord: {chord}");
+
+            // mimic a keypress if we have a mapping
+            if (mappedGameKeyBinds.ContainsKey(chord))
+                SendKeys.SendWait(mappedGameKeyBinds[chord]);
+        }
+
         private void focusTListItemByName(string? name, bool orFirst = false)
         {
             var ctrl = tlist.Controls[name];
@@ -457,6 +505,100 @@ namespace SrvSurvey.forms
         {
             btnWatch.Enabled = Game.activeGame != null;
         }
+
+
+        #region reading key-binds from the game
+
+        public static Dictionary<string, string>? parseGameKeybinds()
+        {
+            // Read: .\Bindings\StartPreset.4.start to know which .binds file to open
+            var filepath = Path.Combine(Elite.keybingsFolder, "StartPreset.4.start");
+            if (!File.Exists(filepath))
+            {
+                Game.log($"File not found: {filepath}");
+                return null;
+            }
+
+            // use the first line to know which .binds file to read
+            var lines = File.ReadAllLines(filepath);
+            filepath = Directory.GetFiles(Elite.keybingsFolder, $"{lines[0]}.*.binds").Last();
+            if (!File.Exists(filepath))
+            {
+                Game.log($"File not found: {filepath}");
+                return null;
+            }
+
+            var bindsMap = new Dictionary<string, string>();
+
+            using (var sr = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+            {
+                var root = XDocument.Load(sr).Element("Root")!;
+
+                // map these game key-binds into the SendKeys equivalent
+                mapKeyBind(bindsMap, root, "UI_Up", "{UP}");
+                mapKeyBind(bindsMap, root, "UI_Down", "{DOWN}");
+                mapKeyBind(bindsMap, root, "UI_Left", "{LEFT}");
+                mapKeyBind(bindsMap, root, "UI_Right", "{RIGHT}");
+                mapKeyBind(bindsMap, root, "UI_Select", "{ENTER}");
+                mapKeyBind(bindsMap, root, "UI_Back", "{ESC}");
+            }
+
+            return bindsMap;
+        }
+
+        private static void mapKeyBind(Dictionary<string, string> bindsMap, XElement root, string gameBind, string mapsTo)
+        {
+            var binds = root.Element(gameBind)!.Elements();
+
+            var primary = matchGameKeybind(binds.First()!.Attribute("Key")!.Value);
+            if (primary != null)
+                bindsMap[primary] = mapsTo;
+
+            var secondary = matchGameKeybind(binds.Last().Attribute("Key")!.Value);
+            if (secondary != null)
+                bindsMap[secondary] = mapsTo;
+        }
+
+        public static string? matchGameKeybind(string key)
+        {
+            // these work naturally 
+            if (key.StartsWith("Key_") && key.EndsWith("Arrow")) return null;
+            if (key == "Key_Enter") return null;
+            if (key == "Key_Backspace") return "Key_Back";
+
+            // these should map as they are
+            if (key.StartsWith("Key_")) return key;
+
+            if (key.StartsWith("Joy_"))
+                return "B" + key.Substring(4);
+
+            const string prefixGameDPad = "GamePad_DPad";
+            if (key.StartsWith(prefixGameDPad))
+                return "Pov" + key.Substring(prefixGameDPad.Length, 1);
+
+            // game pad buttons
+            if (key == "GamePad_FaceDown") return "B1"; //  btn A
+            if (key == "GamePad_FaceRight") return "B2"; // btn B
+            if (key == "GamePad_FaceLeft") return "B3"; //  btn X
+            if (key == "GamePad_FaceUp") return "B4"; //    btn Y
+            if (key == "GamePad_LBumper") return "B5";
+            if (key == "GamePad_RBumper") return "B6";
+            if (key == "GamePad_LThumb") return "B9";
+            if (key == "GamePad_RThumb") return "B10";
+            if (key == "GamePad_Start") return "B8"; // start
+            if (key == "GamePad_Back") return "B7"; // back
+
+            // joystick POV
+            const string prefixJoyPOV = "Joy_POV1";
+            if (key.StartsWith(prefixJoyPOV))
+                return "Pov" + key.Substring(prefixJoyPOV.Length, 1);
+
+            Game.log($"Unexpected keybind scheme: {key}");
+            Debugger.Break();
+            return null;
+        }
+
+        #endregion
     }
 
     class PanelQuest : Panel

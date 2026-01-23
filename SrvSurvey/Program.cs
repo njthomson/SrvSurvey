@@ -265,7 +265,7 @@ namespace SrvSurvey
                     Game.log($"Program.ShowPlotter: form.show failed:\r\n{ex}");
 
                     // untrack and force close the form
-                    if (!activePlotters.ContainsKey(formTypeName)) activePlotters.Remove(formTypeName);
+                    if (activePlotters.ContainsKey(formTypeName)) activePlotters.Remove(formTypeName);
                     try { form.Close(); } catch { /* swallow */ }
 
                     return default(T);

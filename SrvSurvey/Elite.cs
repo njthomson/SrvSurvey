@@ -35,6 +35,10 @@ namespace SrvSurvey
             Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
             "Frontier Developments", "Elite Dangerous");
 
+        public static readonly string keybingsFolder = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "Frontier Developments\\Elite Dangerous\\Options\\Bindings");
+
         public static Point gameCenter = Point.Empty;
 
         /// <summary> True if we found a game process last time we checked </summary>
