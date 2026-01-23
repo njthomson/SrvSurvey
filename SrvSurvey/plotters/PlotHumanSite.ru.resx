@@ -132,9 +132,10 @@
     <source>HAB</source>
   </data>
   <data name="HasInterstellar">
+    <!--Update needed: RU-->
     <value>Доступен Interstellar Factors</value>
     <comment>Shown when approaching a settlement</comment>
-    <source>Interstellar factions available</source>
+    <source>Interstellar Factors available</source>
   </data>
   <data name="HelpFoot0">
     <value>Для определения вручную:</value>

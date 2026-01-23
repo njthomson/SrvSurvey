@@ -1,0 +1,2 @@
+/plotters/PlotHumanSite.es.resx
+	HasInterstellar

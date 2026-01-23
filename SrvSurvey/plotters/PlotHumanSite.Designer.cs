@@ -187,7 +187,7 @@ namespace Loc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Interstellar factions available.
+        ///   Looks up a localized string similar to Interstellar Factors available.
         /// </summary>
         internal static string HasInterstellar {
             get {

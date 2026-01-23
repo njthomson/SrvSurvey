@@ -132,9 +132,10 @@
     <source>HAB</source>
   </data>
   <data name="HasInterstellar">
+    <!--Update needed: ES-->
     <value>Facciones interestelares disponibles</value>
     <comment>Shown when approaching a settlement</comment>
-    <source>Interstellar factions available</source>
+    <source>Interstellar Factors available</source>
   </data>
   <data name="HelpFoot0">
     <value>Para identificar manualmente:</value>

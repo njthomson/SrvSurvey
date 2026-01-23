@@ -449,7 +449,6 @@
 	NetSysData_MaterialTrader
 	NetSysData_Outposts
 	NetSysData_Settlements
-	NetSysData_StarPorts
 	NetSysData_TechBroker
 	NetSysData_UndiscoveredSystem
 	NetSysData_UnscannedSystem
