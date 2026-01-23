@@ -321,21 +321,22 @@ namespace SrvSurvey.game
 
         private bool findSystemsFromNavRoute(List<RouteEntry>? route)
         {
-            if (route == null || this.current == null) return false;
+            var currentBoxel = this.current;
+            if (route == null || currentBoxel == null) return false;
 
             var dirty = false;
             foreach (var hop in route)
             {
-                if (hop == null || this.current == null) continue;
+                if (hop == null) continue;
                 var bx = Boxel.parse(hop.SystemAddress, hop.StarSystem);
-                if (bx == null || bx.prefix != this.current.prefix) continue;
+                if (bx == null || bx.prefix != currentBoxel.prefix) continue;
                 dirty = true;
 
                 // merge data
                 var sys = findOrAddSystem(bx);
                 sys.starPos ??= hop.StarPos;
 
-                setProgress(current, bx.n2 + 1);
+                setProgress(currentBoxel, bx.n2 + 1);
             }
 
             return dirty;
