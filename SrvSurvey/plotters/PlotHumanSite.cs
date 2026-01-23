@@ -530,6 +530,10 @@ namespace SrvSurvey.plotters
 
             var headerLeftSz = tt.draw(N.eight, headerTxt);
 
+            // quest related?
+            if (game.cmdrPlay?.isTagged(station.name) == true)
+                PlotQuestMini.drawLogo(g, tt.dtx + N.six, N.eight, true, N.oneFour);
+
             // (one time) figure out how much space we need for the zoom headers
             if (zoomLevelAutoWidth == 0) zoomLevelAutoWidth = 8 + Util.maxWidth(GameColors.fontSmall, Res.ZoomHeaderAuto.format((44.4f).ToString("N1")));
             if (zoomLevelMinWidth == 0) zoomLevelMinWidth = 8 + Util.maxWidth(GameColors.fontSmall, Res.ZoomHeaderMin.format((44.4f).ToString("N1")));

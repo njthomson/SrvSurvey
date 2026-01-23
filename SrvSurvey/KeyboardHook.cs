@@ -328,7 +328,10 @@ namespace SrvSurvey
                 //Game.log($">>> FIRE <<< {hook} => [ {chord} ]"); // dbg
 
                 // fire event on the UX thread
-                Program.defer(() => buttonsPressed(hook, chord, 0));
+                Program.defer(() =>
+                {
+                    if (buttonsPressed != null) buttonsPressed(hook, chord, 0);
+                });
             }
         }
 

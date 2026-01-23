@@ -232,6 +232,10 @@ namespace SrvSurvey.plotters
             tt.dty -= N.two;
 
             tt.draw(" " + this.netData.systemName, GameColors.fontMiddleBold);
+            // quest related?
+            if (game.cmdrPlay?.isTagged(netData.systemName) == true)
+                PlotQuestMini.drawLogo(g, tt.dtx + N.six, N.ten, true, N.oneSix);
+
             if (netData.starClass != null)
                 tt.draw(this.width - N.eight, Res.StarClass.format(netData.starClass), netData.starClass == "N" ? GameColors.Cyan : null, null, true);
             tt.newLine(+N.ten, true);

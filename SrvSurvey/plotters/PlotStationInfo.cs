@@ -83,6 +83,13 @@ namespace SrvSurvey.plotters
 
             // title
             tt.draw(N.eight, station.name, GameColors.Fonts.gothic_12B);
+            // quest related?
+            if (game.cmdrPlay?.isTagged(station.name) == true)
+            {
+                PlotQuestMini.drawLogo(g, tt.dtx + N.four, N.oneOne, true, N.oneSix);
+                tt.dtx += N.twenty;
+            }
+
             tt.newLine(N.two, true);
 
             // settlement type?

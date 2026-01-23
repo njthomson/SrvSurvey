@@ -16,10 +16,15 @@ internal class NullListContractResolver : DefaultContractResolver
     {
         var property = base.CreateProperty(member, memberSerialization);
 
-        // For any IList property, ignore null values (keeps the initialized empty list)
-        if (property.PropertyType != null && typeof(IList).IsAssignableFrom(property.PropertyType))
+        if (property.PropertyType != null)
         {
-            property.NullValueHandling = NullValueHandling.Ignore;
+            // For any IList/IDictionary/HashSet property, ignore null values (keeps the initialized empty list)
+            if (typeof(IList).IsAssignableFrom(property.PropertyType) ||
+                typeof(IDictionary).IsAssignableFrom(property.PropertyType) ||
+                (property.PropertyType.IsGenericType && typeof(HashSet<>) == property.PropertyType.GetGenericTypeDefinition()))
+            {
+                property.NullValueHandling = NullValueHandling.Ignore;
+            }
         }
 
         return property;

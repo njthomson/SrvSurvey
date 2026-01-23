@@ -380,6 +380,15 @@ namespace SrvSurvey.quests
                 }
             }
         }
+
+        public bool isTagged(string tag)
+        {
+            foreach (var pq in activeQuests)
+                if (pq.tags.Contains(tag, StringComparer.OrdinalIgnoreCase)) 
+                    return true;
+
+            return false;
+        }
     }
 
     [Draggable, TrackPosition]
@@ -445,6 +454,7 @@ namespace SrvSurvey.quests
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public DateTimeOffset? endTime;
         public DateTimeOffset watermark; // <-- TODO
+        public HashSet<string> tags = new();
         /// <summary> Delivered messages </summary>
         public List<PlayChapter> chapters = new();
         public List<PlayMsg> msgs = new();

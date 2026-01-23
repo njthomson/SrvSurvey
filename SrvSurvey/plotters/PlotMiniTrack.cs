@@ -52,7 +52,11 @@ namespace SrvSurvey.plotters
         protected override SizeF doRender(Graphics g, TextCursor tt)
         {
             var bookmarks = game.systemBody?.bookmarks;
-            if (bookmarks == null) return frame.Size;
+            if (bookmarks == null)
+            {
+                remove(def);
+                return frame.Size;
+            }
 
             var blockWidth = N.fiveTwo;
             var cmdr = Status.here;

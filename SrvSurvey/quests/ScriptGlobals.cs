@@ -81,6 +81,34 @@ namespace SrvSurvey.quests.scripting
 
                 Game.log($"Q.sendMsg [{sg.id}]: {id}: {newMsg.subject ?? newMsg.body}");
             }
+
+            public void tag(params string[] tags)
+            {
+                foreach(var tag in tags)
+                    c.pq.tags.Add(tag);
+
+                c.dirty = true;
+            }
+
+            public void untag(params string[] tags)
+            {
+                foreach (var tag in tags)
+                    c.pq.tags.Remove(tag);
+
+                c.dirty = true;
+            }
+
+            public void setTags(params string[] tags)
+            {
+                c.pq.tags.Clear();
+                tag(tags);
+            }
+
+            public void clearTags()
+            {
+                c.pq.tags.Clear();
+                c.dirty = true;
+            }
         }
 
         public class S_chapter

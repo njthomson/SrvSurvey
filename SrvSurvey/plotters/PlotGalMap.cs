@@ -123,10 +123,10 @@ namespace SrvSurvey.plotters
             else
             {
                 if (this.finalNetData != null)
-                    this.drawSystemSummary(tt, this.finalNetData);
+                    this.drawSystemSummary(g, tt, this.finalNetData);
 
                 if (this.nextNetData != null)
-                    this.drawSystemSummary(tt, this.nextNetData);
+                    this.drawSystemSummary(g, tt, this.nextNetData);
 
                 if (this.distanceJumped > 0)
                 {
@@ -145,7 +145,7 @@ namespace SrvSurvey.plotters
             return tt.pad(+N.ten, +N.ten);
         }
 
-        private void drawSystemSummary(TextCursor tt, NetSysData netData)
+        private void drawSystemSummary(Graphics g, TextCursor tt, NetSysData netData)
         {
             var header = Res.Selected;
 
@@ -161,6 +161,10 @@ namespace SrvSurvey.plotters
             // line 1: system name
             tt.draw(leftWidth, $"► {netData.systemName}", GameColors.fontSmall2Bold);
             tt.newLine(true);
+
+            // quest related?
+            if (game.cmdrPlay?.isTagged(netData.systemName) == true)
+                PlotQuestMini.drawLogo(g, width - N.twoTwo, N.ten, true, N.oneSix);
 
             var highlight = netData.discovered == false || netData.scanBodyCount < netData.totalBodyCount || (netData.totalBodyCount == 0 && netData.discovered.HasValue);
 
