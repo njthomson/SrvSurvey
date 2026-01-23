@@ -221,7 +221,7 @@ namespace SrvSurvey.net
             public string search_reference;
             /// <summary> Size of this page </summary>
             public int size;
-            public List<T> results;
+            public List<T> results = [];
 
             public override string ToString()
             {
@@ -252,7 +252,7 @@ namespace SrvSurvey.net
 
                 public List<Body>? bodies;
 
-                public List<MinorFactionPresence> minor_faction_presences;
+                public List<MinorFactionPresence> minor_faction_presences = [];
 
                 public override string ToString()
                 {

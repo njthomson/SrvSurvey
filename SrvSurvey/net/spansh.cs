@@ -1096,7 +1096,7 @@ namespace SrvSurvey.net
         {
             public string allegiance;
             public int bodyCount;
-            public List<Body> bodies;
+            public List<Body> bodies = [];
             public StarPos coords;
             public DateTimeOffset date;
             public string government;
@@ -1105,8 +1105,8 @@ namespace SrvSurvey.net
             public string primaryEconomy;
             public string secondaryEconomy;
             public string security;
-            public List<Station> stations;
-            public List<MinorFactionPresence> factions;
+            public List<Station> stations = [];
+            public List<MinorFactionPresence> factions = [];
 
             public override string ToString()
             {
@@ -1153,7 +1153,7 @@ namespace SrvSurvey.net
                 // TODO? parents[]
 
                 public List<Ring>? rings;
-                public List<Station>? stations;
+                public List<Station> stations = [];
 
                 public override string ToString()
                 {
@@ -1272,7 +1272,7 @@ namespace SrvSurvey.net
         public int count;
         public int from;
         public int size;
-        public List<Result> results;
+        public List<Result> results = [];
 
         public class Result
         {
@@ -1281,7 +1281,7 @@ namespace SrvSurvey.net
             public double y;
             public double z;
             public long population;
-            public List<MinorFactionPresence> minor_faction_presences;
+            public List<MinorFactionPresence> minor_faction_presences = [];
         }
     }
 
@@ -1377,7 +1377,7 @@ namespace SrvSurvey.net
     {
         public int count;
         public int from;
-        public List<Body> results;
+        public List<Body> results = [];
         // public XXX search; TODO: describe the initial search?
         public string search_reference;
         public int size;

@@ -140,7 +140,7 @@ namespace SrvSurvey.net.EDSM
         public string name;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public int bodyCount;
-        public List<EdsmBody> bodies;
+        public List<EdsmBody> bodies = [];
 
         public override string ToString()
         {
@@ -178,7 +178,7 @@ namespace SrvSurvey.net.EDSM
         public long id64;
         public string name;
         public string url;
-        public List<Station> stations;
+        public List<Station> stations = [];
 
         public class Station
         {
