@@ -670,6 +670,11 @@ namespace SrvSurvey.plotters
 
             // draw relative to cmdr's location ...
             this.resetMiddleRotated(g);
+
+            // draw any quest markers?
+            if (game.cmdrPlay?.activeQuests.Count > 0)
+                drawQuestMarkers(g);
+
             this.drawShipAndSrvLocation(g, tt);
 
             // draw relative to center of window ...
@@ -952,6 +957,31 @@ namespace SrvSurvey.plotters
                         g.DrawString(point.name, GameColors.Fonts.gothic_9B, b, -6, -20);
                     }
                 });
+            }
+        }
+
+        private void drawQuestMarkers(Graphics g)
+        {
+            if (game.cmdrPlay?.activeQuests == null) return;
+
+            foreach (var pq in game.cmdrPlay.activeQuests)
+            {
+                if (pq.bodyLocations.Count == 0) continue;
+
+                foreach (var ll3 in pq.bodyLocations.Values)
+                {
+                    var ll2 = LatLong2.from(ll3);
+                    var mark = Util.getOffset(this.radius, ll2, 180);
+
+                    var markSize = (float)ll3.size;
+                    var rect = new RectangleF(
+                        (float)mark.X - markSize,
+                        (float)-mark.Y - markSize,
+                        markSize * 2,
+                        markSize * 2);
+
+                    g.DrawEllipse(C.Pens.menuGold3r, rect);
+                }
             }
         }
 

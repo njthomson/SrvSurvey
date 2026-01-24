@@ -84,7 +84,7 @@ namespace SrvSurvey.quests.scripting
 
             public void tag(params string[] tags)
             {
-                foreach(var tag in tags)
+                foreach (var tag in tags)
                     c.pq.tags.Add(tag);
 
                 c.dirty = true;
@@ -107,6 +107,27 @@ namespace SrvSurvey.quests.scripting
             public void clearTags()
             {
                 c.pq.tags.Clear();
+                c.dirty = true;
+            }
+
+            public void trackLocation(string name, double lat, double @long, float size)
+            {
+                c.pq.bodyLocations[name] = new LatLong3(lat, @long, size);
+                c.dirty = true;
+            }
+
+            public void clearLocation(string name)
+            {
+                if (c.pq.bodyLocations.ContainsKey(name))
+                {
+                    c.pq.bodyLocations.Remove(name);
+                    c.dirty = true;
+                }
+            }
+
+            public void clearAllLocations()
+            {
+                c.pq.bodyLocations.Clear();
                 c.dirty = true;
             }
         }

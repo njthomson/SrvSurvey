@@ -1,6 +1,7 @@
 ﻿using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.quests;
+using SrvSurvey.units;
 using SrvSurvey.widgets;
 
 namespace SrvSurvey.plotters
@@ -28,6 +29,7 @@ namespace SrvSurvey.plotters
         #endregion
 
         bool showStripe = false;
+        bool hasBodyMarkers = false;
 
         private PlotQuestMini(Game game, PlotDef def) : base(game, def)
         {
@@ -53,6 +55,15 @@ namespace SrvSurvey.plotters
 
             // this removes the need to check during rendering itself
             plotDef.form?.checkLocationAndSize();
+        }
+
+        protected override void onStatusChange(Status status)
+        {
+            base.onStatusChange(status);
+
+            if (hasBodyMarkers)
+                if (status.changed.Contains(nameof(Status.Heading)) || status.changed.Contains(nameof(Status.Latitude)) || status.changed.Contains(nameof(Status.Longitude)))
+                    this.invalidate();
         }
 
         protected override SizeF doRender(Graphics g, TextCursor tt)
@@ -84,15 +95,62 @@ namespace SrvSurvey.plotters
 
             if (hasUnreadMsgs)
             {
-                tt.dty += N.four;
+                tt.dty += N.six;
                 //drawEnvelope(g, N.ten, tt.dty + 1, N.twoFour, C.Pens.orange2r);
                 tt.draw(N.threeTwo, $"Unread messages: {countUnread}", C.cyan, GameColors.Fonts.gothic_9);
                 tt.newLine(N.four, true);
             }
 
+            hasBodyMarkers = false;
+            if (game.cmdrPlay?.activeQuests.Count > 0)
+                drawQuestMarkers(g, tt);
+
             tt.setMinWidth(24);
             tt.setMinHeight(32);
             return tt.pad(N.ten, N.two);
+        }
+
+        private void drawQuestMarkers(Graphics g, TextCursor tt)
+        {
+            if (game.cmdrPlay?.activeQuests == null) return;
+            var cmdr = Status.here;
+            var radius = game.status.PlanetRadius;
+
+            foreach (var pq in game.cmdrPlay.activeQuests)
+            {
+                if (pq.bodyLocations.Count == 0) continue;
+                hasBodyMarkers = true;
+                tt.setMinWidth(N.oneForty);
+
+                foreach (var (key, ll3) in pq.bodyLocations)
+                {
+                    tt.dty += N.six;
+
+                    var target = LatLong2.from(ll3);
+                    var angle2d = Util.getBearing(cmdr, target);
+                    var dist2d = Util.getDistance(cmdr, target, radius);
+
+                    var b = C.Brushes.menuGold;
+                    var p = C.Pens.menuGold3r;
+                    if ((double)dist2d < ll3.size)
+                    {
+                        b = C.Brushes.cyan;
+                        p = C.Pens.cyan3r;
+                    }
+
+                    if ((double)dist2d < ll3.size)
+                        drawCheckMark(g, N.eight, tt.dty, 12, p);
+
+                    tt.draw(N.threeTwo, Util.metersToString(dist2d), p.Color);
+
+                    var deg = angle2d - game.status.Heading;
+                    if (deg < 0) deg += 360;
+                    if (dist2d == 0) deg += game.status.Heading;
+
+                    BaseWidget.renderBearingTo(g, tt.dtx + N.ten, tt.dty, N.eight, (double)deg, key, b, p);
+                    tt.newLine(N.ten, true);
+                }
+            }
         }
 
         #region logos
@@ -160,15 +218,22 @@ namespace SrvSurvey.plotters
             var bit = sz * 0.2f;
             var stick = sz * 0.4f;
             var stick2 = sz * 0.8f;
-            //var widthHalf = sz / 2f;
 
             y += bit;
-            // mail envelope
             g.DrawLineR(p, x, y, stick2, 0);
             g.DrawLineR(p, x + stick2, y, 0, stick);
 
             g.DrawLineR(p, x, y, bit, bit);
             g.DrawLineR(p, x, y, bit, -bit);
+        }
+
+        public static void drawCheckMark(Graphics g, float x, float y, float sz, Pen p)
+        {
+            var h = 1 + (sz * 0.4f);
+
+            y += h;
+            g.DrawLineR(p, x, y, h, h);
+            g.DrawLineR(p, x + h, y+ h, sz, -sz);
         }
 
         #endregion

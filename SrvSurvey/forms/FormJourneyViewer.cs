@@ -228,7 +228,7 @@ namespace SrvSurvey.forms
                 journey.visitedSystems.Clear();
                 journey.watermark = journey.startTime;
 
-                var journal = new JournalFile(Path.Combine(JournalFile.journalFolder, journey.startingJournal), journey.commander);
+                var journal = new JournalFile(Path.Combine(JournalFile.journalFolder, journey.startingJournal), journey.fid);
                 journey.doCatchup(journal)
                     .continueOnMain(this, () =>
                     {

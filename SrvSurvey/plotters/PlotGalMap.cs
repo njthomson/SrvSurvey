@@ -142,6 +142,11 @@ namespace SrvSurvey.plotters
                 tt.newLine(true);
             }
 
+            var maxY = tt.dty;
+
+            if (false && finalNetData?.spanshDump?.factions.Count > 0)
+                drawFactionSummary(g, tt, finalNetData);
+
             return tt.pad(+N.ten, +N.ten);
         }
 
@@ -195,6 +200,33 @@ namespace SrvSurvey.plotters
             }
 
             tt.newLine(+N.ten, true);
+        }
+
+        private void drawFactionSummary(Graphics g, TextCursor tt, NetSysData netData)
+        {
+            var x = tt.frameSize.Width + N.ten;
+            tt.dty = N.eight;
+
+            g.DrawLineR(C.Pens.orangeDarker1, x, N.oneSix, 0, tt.containerHeight - 32);
+            x += N.six;
+
+            tt.draw(x, "Factions:", C.orangeDark);
+            tt.newLine(true);
+
+            var foo = netData.spanshDump.factions
+                .OrderByDescending(f => f.influence)
+                .ToDictionary(f => f.name, f => f.influence);
+
+            x += N.six;
+            var x2 = x + N.ten + Util.maxWidth(tt.font, foo.Keys);
+
+            foreach (var name in foo.Keys)
+            {
+                tt.draw(x, name);
+
+                tt.draw(x2, foo[name].ToString("p0"));
+                tt.newLine(true);
+            }
         }
     }
 }

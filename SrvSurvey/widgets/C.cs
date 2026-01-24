@@ -32,6 +32,7 @@ namespace SrvSurvey.widgets
         #region common colors
 
         public static Color orange = c("orange");
+        public static Color orangeDim = Color.FromArgb(100, c("orange"));
         public static Color orangeDark = c("orangeDark");
         public static Color orangeDarker = Color.FromArgb(100, c("orangeDark"));
 
@@ -65,6 +66,8 @@ namespace SrvSurvey.widgets
             public static Pen orangeDark2 = orangeDark.toPen(2);
             public static Pen orangeDark3 = orangeDark.toPen(3);
             public static Pen orangeDark4 = orangeDark.toPen(4);
+
+            public static Pen orangeDarker1 = orangeDarker.toPen(1);
 
             public static Pen orangeDark2r = orangeDark.toPen(2, LineCap.Round);
             public static Pen orangeDark3r = orangeDark.toPen(3, LineCap.Round);

@@ -156,7 +156,7 @@ namespace SrvSurvey.forms
             this.startSystemAddress = id64;
             var myStartAddress = startSystemAddress;
 
-            var filepath = JournalFile.getSiblingCommanderJournal(cmdr.commander, true, DateTime.Now);
+            var filepath = JournalFile.getSiblingCommanderJournal(cmdr.commander, true, DateTime.Now, cmdr.fid);
             var journal = new JournalWatcher(filepath!);
 
             var countJumps = 0;

@@ -68,6 +68,14 @@ namespace SrvSurvey
                 if (!except.Contains(child))
                     child.Enabled = enabled;
         }
+
+        public static Control? last(this Control.ControlCollection controls)
+        {
+            if (controls.Count == 0)
+                return null;
+            else
+                return controls[controls.Count - 1];
+        }
     }
 
     class FlatButton : Button
@@ -804,6 +812,8 @@ namespace SrvSurvey
         public Color ForeColorDisabled { get; set; }
         [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool DrawBorder { get; set; }
+        [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool AnimateOnPress{ get; set; }
         public bool mouseDown { get; private set; }
         public bool highlight { get; private set; }
         private Pen? borderPen;
@@ -874,6 +884,9 @@ namespace SrvSurvey
             mouseDown = false;
             if (DesignMode) return;
             this.Invalidate();
+
+            if (AnimateOnPress)
+                this.doClickAnimation();
         }
 
         protected override void OnGotFocus(EventArgs e)
@@ -942,6 +955,34 @@ namespace SrvSurvey
             }
         }
 
+        private int foo = 0;
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (AnimateOnPress && keyData == Keys.Enter)
+                doClickAnimation();
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void doClickAnimation()
+        {
+            foo = 1;
+            this.Invalidate();
+
+            Util.deferAfter(50, () =>
+            {
+                foo = 2;
+                this.Invalidate();
+            });
+
+            Util.deferAfter(250, () =>
+            {
+                foo = 0;
+                this.Invalidate();
+            });
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             if (DesignMode)
@@ -951,12 +992,18 @@ namespace SrvSurvey
             }
 
             var bc = BackColor2;
-            if (bc == Color.Transparent)
+            if (foo == 1)
+                e.Graphics.Clear(C.yellow);
+            else if (foo == 2)
+                e.Graphics.Clear(C.menuGold);
+            else if (bc == Color.Transparent)
                 ButtonRenderer.DrawParentBackground(e.Graphics, ClientRectangle, this);
             else
                 e.Graphics.Clear(bc);
 
             var fc = ForeColor2;
+            if (foo > 0)
+                fc = C.black;
 
             if (DrawBorder)
             {

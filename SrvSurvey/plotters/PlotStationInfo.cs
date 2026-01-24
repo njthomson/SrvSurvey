@@ -22,7 +22,7 @@ namespace SrvSurvey.plotters
             return Game.settings.autoShowPlotStationInfo_TEST
                 && Game.activeGame?.systemData != null
                 // NOT suppressed by buildProjectsSuppressOtherOverlays
-                && (Game.activeGame.isMode(GameMode.ExternalPanel) || PlotStationInfo.forceShow);
+                && (game.isMode(GameMode.ExternalPanel) || PlotStationInfo.forceShow);
         }
 
         public static bool forceShow = false;

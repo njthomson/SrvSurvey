@@ -243,10 +243,10 @@ namespace SrvSurvey
                     var lastWriteTime = File.GetLastWriteTime(filepath);
                     if (lastWriteTime < this.targetStartTime) continue;
 
-                    var journal = new JournalFile(filepath, this.targetCmdrName);
-                    if (journal.cmdrName != this.targetCmdrName) continue;
+                    var journal = new JournalFile(filepath, this.targetCmdrFid);
+                    if (journal.cmdrFid != this.targetCmdrFid) continue;
 
-                    // ignore files that are not shutdown, unless they were opened more than 2 days ago - we will process those                    
+                    // ignore files that are not shutdown, unless they were opened more than 2 days ago - we will process those
                     if (!journal.isShutdown && journal.timestamp > DateTime.Now.AddDays(-2)) continue;
 
                     if (firstEvent == DateTimeOffset.MinValue) firstEvent = journal.Entries.First().timestamp;

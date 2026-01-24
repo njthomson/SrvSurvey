@@ -181,8 +181,10 @@ namespace SrvSurvey.forms
                 hookChildMouseEnterEvents(child);
         }
 
-        private void hookChildMouseEvents(Control ctrl)
+        private void hookChildMouseEvents(Control? ctrl)
         {
+            if (ctrl == null) return;
+
             // unless the control has editable text and not one of these ...
             if (ctrl.Cursor != Cursors.IBeam && !(ctrl is Button) && !(ctrl is ComboBox) && !(ctrl is StatusStrip) && !(ctrl is SplitContainer))
             {
@@ -191,6 +193,7 @@ namespace SrvSurvey.forms
                 ctrl.MouseUp += (s, e) => stopDragging();
                 ctrl.MouseMove += (s, e) => onMouseMove(e);
                 ctrl.MouseLeave += (s, e) => stopDragging();
+                ctrl.ControlAdded += (s, e) => hookChildMouseEvents(e.Control);
             }
 
             foreach (Control child in ctrl.Controls)

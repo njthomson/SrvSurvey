@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
+using SrvSurvey.quests;
 
 namespace SrvSurvey.units
 {
@@ -74,6 +75,11 @@ namespace SrvSurvey.units
         public static implicit operator LatLong2(LocationEntry location)
         {
             return new LatLong2(location);
+        }
+
+        public static LatLong2 from(LatLong3 ll)
+        {
+            return new LatLong2(ll.lat, ll.@long);
         }
 
         class JsonConverter : Newtonsoft.Json.JsonConverter

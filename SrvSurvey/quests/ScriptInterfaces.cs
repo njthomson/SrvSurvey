@@ -12,10 +12,15 @@ namespace SrvSurvey.quests.scripting
         void fail();
         /// <summary> Deliver a message to the player </summary>
         void sendMsg(string? id = null, string? from = null, string? subject = null, string? body = null);
+
         void tag(params string[] tags);
         void untag(params string[] tags);
         void setTags(params string[] tags);
         void clearTags();
+
+        void trackLocation(string name, double lat, double @long, float size);
+        void clearLocation(string name);
+        void clearAllLocations();
     }
 
     interface SChapter

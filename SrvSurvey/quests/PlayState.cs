@@ -7,6 +7,7 @@ using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.plotters;
 using SrvSurvey.quests.scripting;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -103,7 +104,11 @@ namespace SrvSurvey.quests
             foreach (var line in lines)
             {
                 var trimmed = line.Trim();
-                if (trimmed.StartsWith("using") || trimmed.Contains("System.") || trimmed.StartsWith("#")) continue;
+                if (trimmed.StartsWith("using") || trimmed.Contains("System.") || trimmed.StartsWith("#"))
+                {
+                    code.AppendLine("// " + line);
+                    continue;
+                }
                 code.AppendLine(line);
 
                 if (trimmed == "void onStart()")
@@ -461,6 +466,7 @@ namespace SrvSurvey.quests
         public DateTimeOffset? endTime;
         public DateTimeOffset watermark; // <-- TODO
         public HashSet<string> tags = new();
+        public Dictionary<string, LatLong3> bodyLocations = new();
         /// <summary> Delivered messages </summary>
         public List<PlayChapter> chapters = new();
         public List<PlayMsg> msgs = new();
@@ -732,6 +738,56 @@ namespace SrvSurvey.quests
             newMsg.body = body == null || body == msg?.body ? null : body ?? msg!.body;
 
             return newMsg;
+        }
+    }
+
+    [JsonConverter(typeof(LatLong3.JsonConverter))]
+    public class LatLong3
+    {
+        public double lat;
+        public double @long;
+        public double size;
+
+        public LatLong3() { }
+
+        public LatLong3(double lat, double @long, double size)
+        {
+            this.lat = lat;
+            this.@long = @long;
+            this.size = size;
+        }
+
+        public override string ToString()
+        {
+            return $"{lat},{@long},{size}";
+        }
+
+        class JsonConverter : Newtonsoft.Json.JsonConverter
+        {
+            public override bool CanConvert(Type objectType) { return false; }
+
+            public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+            {
+                var txt = serializer.Deserialize<string>(reader);
+                if (string.IsNullOrEmpty(txt)) throw new Exception($"Unexpected value: {txt}");
+
+                // eg: "visible|1|10"
+                var parts = txt.Split(',');
+                return new LatLong3()
+                {
+                    lat = double.Parse(parts[0], CultureInfo.InvariantCulture),
+                    @long = double.Parse(parts[1], CultureInfo.InvariantCulture),
+                    size = double.Parse(parts[2], CultureInfo.InvariantCulture),
+                };
+            }
+
+            public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+            {
+                if (value is LatLong3)
+                    writer.WriteValue(value.ToString());
+                else
+                    throw new Exception($"Unexpected value: {value?.GetType().Name}");
+            }
         }
     }
 }

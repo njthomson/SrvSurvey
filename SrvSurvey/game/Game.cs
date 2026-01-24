@@ -182,8 +182,10 @@ namespace SrvSurvey.game
 
         public Game(string? cmdr)
         {
+            string? fid = null;
             if (Program.forceFid != null)
             {
+                fid = Program.forceFid;
                 var fidCmdr = CommanderSettings.getAllCmdrs().GetValueOrDefault(Program.forceFid);
                 log($"Game .ctor, targetFID: {Program.forceFid} => {fidCmdr}");
                 if (fidCmdr != null)
@@ -205,7 +207,7 @@ namespace SrvSurvey.game
             this.navRoute = NavRouteFile.load(true);
 
             // initialize from a journal file
-            var filepath = JournalFile.getSiblingCommanderJournal(this.targetCmdr, true, DateTime.MaxValue);
+            var filepath = JournalFile.getSiblingCommanderJournal(this.targetCmdr, true, DateTime.MaxValue, fid);
             if (filepath == null)
             {
                 Game.log($"No journal files found for: {this.targetCmdr}");

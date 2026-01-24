@@ -38,7 +38,7 @@ namespace SrvSurvey
 
         public bool isShutdown { get; private set; }
 
-        public JournalFile(string filepath, string? targetCmdr = null)
+        public JournalFile(string filepath, string? targetFID = null)
         {
             Game.log($"Reading: {Path.GetFileName(filepath)}");
 
@@ -47,7 +47,7 @@ namespace SrvSurvey
 
             this.reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
 
-            this.readEntries(targetCmdr);
+            this.readEntries(targetFID);
 
 
             // assume Odyssey if we don't have the Fileheader line yet.
@@ -58,14 +58,14 @@ namespace SrvSurvey
 
         public int Count { get => this.Entries.Count; }
 
-        public void readEntries(string? targetCmdr = null)
+        public void readEntries(string? targetFID = null)
         {
             while (!this.reader.EndOfStream)
             {
                 var entry = this.readEntry();
 
                 // stop early if not target cmdr
-                if (targetCmdr != null && entry is Commander && ((Commander)entry).Name != targetCmdr)
+                if (targetFID != null && entry is Commander && ((Commander)entry).FID != targetFID)
                     break;
             }
         }
@@ -185,9 +185,10 @@ namespace SrvSurvey
                     if (finished) break;
                 }
 
-                var priorFilepath = JournalFile.getSiblingCommanderJournal(this.cmdrName, this.isOdyssey, journal.timestamp);
+                var priorFilepath = JournalFile.getSiblingCommanderJournal(this.cmdrName, this.isOdyssey, journal.timestamp, this.cmdrFid);
                 journal = priorFilepath == null ? null : new JournalFile(priorFilepath);
-            };
+            }
+            ;
 
             Game.log($"searchJournalsDeep: count: {count}");
         }
@@ -215,7 +216,7 @@ namespace SrvSurvey
                     if (finished) break;
                 }
 
-                priorFilepath = JournalFile.getSiblingCommanderJournal(this.cmdrName, this.isOdyssey, journal.timestamp, searchUp);
+                priorFilepath = JournalFile.getSiblingCommanderJournal(this.cmdrName, this.isOdyssey, journal.timestamp, this.cmdrFid, searchUp);
                 if (priorFilepath != null)
                     journal = new JournalFile(priorFilepath);
 
@@ -250,7 +251,7 @@ namespace SrvSurvey
             return false;
         }
 
-        public static string? getSiblingCommanderJournal(string? cmdr, bool isOdyssey, DateTime timestamp, bool before = true)
+        public static string? getSiblingCommanderJournal(string? cmdr, bool isOdyssey, DateTime timestamp, string? fid = null, bool before = true)
         {
             var manyFiles = new DirectoryInfo(Game.settings.watchedJournalFolder)
                 .EnumerateFiles("*.log", SearchOption.TopDirectoryOnly);
@@ -271,7 +272,8 @@ namespace SrvSurvey
                 return journalFiles.First();
             }
 
-            var CMDR = cmdr.ToUpper();
+            cmdr = cmdr.ToUpper();
+            fid = fid?.ToUpper();
 
             var filename = journalFiles.FirstOrDefault((filepath) =>
             {
@@ -292,7 +294,7 @@ namespace SrvSurvey
                         {
                             // no need to process further lines
                             //Game.log($"getCommanderJournalBefore: expected cmdr: {cmdr}, found '{line}' from: {filepath}");
-                            return line.ToUpper().Contains($"\"NAME\":\"{CMDR}\"");
+                            return line.ToUpper().Contains($"\"NAME\":\"{cmdr}\"") || line.ToUpper().Contains($"\"FID\":\"{fid}\"");
                         }
                     }
 
