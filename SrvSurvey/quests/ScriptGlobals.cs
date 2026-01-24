@@ -43,7 +43,7 @@ namespace SrvSurvey.quests.scripting
         //    // TODO: ...
         //}
 
-        public class S_quest
+        public class S_quest : SQuest
         {
             Conduit c;
             ScriptGlobals sg;
@@ -111,7 +111,7 @@ namespace SrvSurvey.quests.scripting
             }
         }
 
-        public class S_chapter
+        public class S_chapter : SChapter
         {
             Conduit c;
             ScriptGlobals sg;
@@ -148,7 +148,7 @@ namespace SrvSurvey.quests.scripting
             }
         }
 
-        public class S_objective
+        public class S_objective : SObjective
         {
             Conduit c;
             ScriptGlobals sg;

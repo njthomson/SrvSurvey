@@ -43,7 +43,7 @@ namespace SrvSurvey.forms
 
             KeyboardHook.buttonsPressed += KeyboardHook_buttonsPressed;
 
-            this.Activated += (o,s) => KeyboardHook.redirect = true;
+            this.Activated += (o, s) => KeyboardHook.redirect = true;
             this.Deactivate += (o, s) => KeyboardHook.redirect = false;
         }
 
@@ -261,8 +261,16 @@ namespace SrvSurvey.forms
 
         private void addRow(Control ctrl)
         {
-            tlist.Controls.Add(ctrl, 0, tlist.Controls.Count);
-            tlist.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            if (tlist.Controls[ctrl.Name] == null)
+            {
+                tlist.Controls.Add(ctrl, 0, tlist.Controls.Count);
+                tlist.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            }
+            else
+            {
+                tlist.Controls.RemoveByKey(ctrl.Name);
+                tlist.Controls.Add(ctrl, 0, tlist.Controls.Count);
+            }
         }
 
         private void setSelectedThing(Control ctrl)
@@ -304,7 +312,6 @@ namespace SrvSurvey.forms
             {
                 var name = $"{pm.parent.id}/{pm.id}";
                 activeNames.Add(name);
-                if (tlist.Controls[name] != null) continue;
 
                 var qm = pm.parent.quest.msgs.Find(m => m.id == pm.id)!;
 
@@ -650,7 +657,8 @@ namespace SrvSurvey.forms
 
             tt.draw(N.eight + indent, prefix, cc, GameColors.Fonts.gothic_10);
             var x = N.thirty + indent;
-            tt.draw(x, pq.quest.strings.GetValueOrDefault(key, key), cc, GameColors.Fonts.gothic_10);
+            var txt = pq.quest.strings.GetValueOrDefault(key) ?? pq.quest.objectives.GetValueOrDefault(key) ?? key;
+            tt.draw(x, txt, cc, GameColors.Fonts.gothic_10);
             tt.newLine(N.two, true);
 
             if (obj.total > 0)
@@ -874,7 +882,7 @@ namespace SrvSurvey.forms
 
         private void addButtons()
         {
-            if (qm?.actions != null)
+            if (qm?.actions != null && pm.replied == null)
             {
                 foreach (var (key, txt) in qm.actions)
                 {
@@ -947,9 +955,10 @@ namespace SrvSurvey.forms
             var actionId = btn?.Tag as string;
             if (actionId == null) return;
 
-            pq.invokeMessageAction(pm.chapter!, actionId);
+            pq.invokeMessageAction(pm.id, actionId);
             pq.updateIfDirty();
             form.clearSelection();
+            form.onQuestChanged();
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -961,11 +970,6 @@ namespace SrvSurvey.forms
             var tt = new TextCursor(e.Graphics, this);
             tt.dty = N.four;
 
-            this.Height = drawExpanded(g, tt);
-        }
-
-        int drawExpanded(Graphics g, TextCursor tt)
-        {
             tt.font = GameColors.Fonts.gothic_12B;
             tt.color = C.orange;
 
@@ -999,28 +1003,45 @@ namespace SrvSurvey.forms
             // TODO: show list of strings to copy to clipboard?
 
             // any response actions?
-            var actions = pm.actions ?? qm?.actions?.Keys.ToArray();
-            if (actions != null)
+            if (qm?.actions != null)
             {
-                tt.draw(N.oneTwo, "Respond:", C.orangeDark, GameColors.Fonts.gothic_10);
-                tt.newLine(-N.four);
-                foreach (Button btn in Controls)
-                {
-                    if (btn.Tag == null) continue;
-
-                    btn.Top = (int)(tt.dty + N.eight);
-                    tt.dty += btn.Height + N.eight;
-                }
-
-                // final line
                 tt.dty += N.ten;
-                g.DrawLine(C.Pens.orangeDark2, N.six, tt.dty, Width - N.four, tt.dty);
-                tt.dty += N.four;
+
+                var actions = pm.actions ?? qm.actions.Keys.ToArray();
+                if (actions != null)
+                {
+                    if (pm.replied == null)
+                    {
+                        tt.draw(N.oneTwo, "Reply with:", C.orangeDark, GameColors.Fonts.gothic_10);
+                        tt.newLine(-N.four);
+                        foreach (Button btn in Controls)
+                        {
+                            if (btn.Tag == null) continue;
+
+                            btn.Top = (int)(tt.dty + N.eight);
+                            tt.dty += btn.Height + N.eight;
+                        }
+                    }
+                    else
+                    {
+                        tt.draw(N.oneTwo, "Replied: ▶ ", C.orangeDark, GameColors.Fonts.gothic_10);
+                        var txt = qm.actions.GetValueOrDefault(pm.replied, pm.replied);
+                        tt.draw(txt, GameColors.Fonts.gothic_10);
+                        tt.newLine(-N.four);
+
+                        foreach (Button btn in Controls) btn.Hide();
+                    }
+
+                    // final line
+                    tt.dty += N.twenty;
+                    g.DrawLine(C.Pens.orangeDark2, 0, tt.dty, tt.containerWidth, tt.dty);
+                    tt.dty += N.four;
+                }
             }
 
             // allow space for buttons along the bottom
             tt.dty += N.oneTwo + Controls[0].Height;
-            return (int)tt.dty;
+            this.Height = (int)tt.dty;
         }
     }
 }

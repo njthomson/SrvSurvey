@@ -65,7 +65,7 @@ namespace SrvSurvey.forms
             if (comms != null)
             {
                 comms.Close();
-                BaseForm.show<FormPlayComms>(f => f.cmdrPlay = this.cmdrPlay);
+                BaseForm.show<FormPlayComms>(f => f.cmdrPlay = this.cmdrPlay!);
                 this.Activate();
             }
         }
@@ -77,7 +77,7 @@ namespace SrvSurvey.forms
                 return;
 
             var match = mapQuests.Keys.FirstOrDefault(x => x.id == selectedQuest);
-            comboQuest.DataSource = new BindingSource(mapQuests, null);
+            comboQuest.DataSource = new BindingSource(mapQuests, null!);
 
             if (match != null)
                 comboQuest.SelectedValue = match;

@@ -102,10 +102,11 @@ namespace SrvSurvey.quests
 
             foreach (var line in lines)
             {
-                if (line.StartsWith("using") || line.Contains("System.")) continue;
+                var trimmed = line.Trim();
+                if (trimmed.StartsWith("using") || trimmed.Contains("System.") || trimmed.StartsWith("#")) continue;
                 code.AppendLine(line);
 
-                if (line.Trim() == "void onStart()")
+                if (trimmed == "void onStart()")
                     setFuncs.Add($"setFunc(\"onStart\", new Action<object>((o) => onStart()));");
 
                 var parts = onJournals.Matches(line).FirstOrDefault()?.Groups;
@@ -116,7 +117,7 @@ namespace SrvSurvey.quests
                     setFuncs.Add($"setFunc(\"{eventName}\", new Action<object>((o) => onJournal(({eventName})o)));");
                 }
 
-                if (line.Trim().StartsWith("void onMsgAction("))
+                if (trimmed.StartsWith("void onMsgAction("))
                     setFuncs.Add($"setFunc(\"onMsgAction\", new Action<object>((o) => onMsgAction((string)o)));");
             }
 
@@ -208,8 +209,10 @@ namespace SrvSurvey.quests
                 newQuest.msgs.AddRange(msgs);
             }
 
-            // import strings from .json files
-            newQuest.strings = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(Path.Combine(folder, "strings.json")))!;
+            // import strings from .json files?
+            var stringsPath = Path.Combine(folder, "strings.json");
+            if (File.Exists(stringsPath))
+                newQuest.strings = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(stringsPath))!;
 
             // import chapter scripts
             var scriptFiles = Directory.GetFiles(folder, "*.csx");
@@ -269,20 +272,23 @@ namespace SrvSurvey.quests
                 }
             }
 
-            try
+            if (issues.Length == 0)
             {
-                if (!newPlayQuest.startTime.HasValue)
-                    newPlayQuest.startTime = DateTimeOffset.UtcNow;
+                try
+                {
+                    if (!newPlayQuest.startTime.HasValue)
+                        newPlayQuest.startTime = DateTimeOffset.UtcNow;
 
-                // initialize first chapter, if needed
-                var chapter = newPlayQuest.chapters.Find(pc => pc.id == newQuest.firstChapter);
-                if (chapter == null) throw new Exception($"Bad firstChapter id: {newQuest.firstChapter}");
-                if (!chapter.startTime.HasValue)
-                    newPlayQuest.startChapter(newQuest.firstChapter);
-            }
-            catch (Exception ex)
-            {
-                issues.AppendLine($"start first chapter failed: {ex.Message}");
+                    // initialize first chapter, if needed
+                    var chapter = newPlayQuest.chapters.Find(pc => pc.id == newQuest.firstChapter);
+                    if (chapter == null) throw new Exception($"Bad firstChapter id: {newQuest.firstChapter}");
+                    if (!chapter.startTime.HasValue)
+                        newPlayQuest.startChapter(newQuest.firstChapter);
+                }
+                catch (Exception ex)
+                {
+                    issues.AppendLine($"start first chapter failed: {ex.Message}");
+                }
             }
 
             Game.log($"Parsed quest '{newPlayQuest.quest.title}' ({newPlayQuest.id}) from: {folder}");
@@ -328,9 +334,9 @@ namespace SrvSurvey.quests
             }
         }
 
-        static Regex badObjectiveIDs = new Regex(@"\bobjective.\w+\(\s*""(.+)""");
-        static Regex badMsgIDs = new Regex(@"\.sendMsg\(\s*""(.+)""");
-        static Regex badChapters = new Regex(@"\bchapter.start\(\s*""(.+)""|\bchapter.stop\(\s*""(.+)""");
+        static Regex badObjectiveIDs = new Regex(@"\bobjective.\w+\(\s*""(.+?)""");
+        static Regex badMsgIDs = new Regex(@"\.sendMsg\(\s*""(.+?)""");
+        static Regex badChapters = new Regex(@"\bchapter.start\(\s*""(.+?)""|\bchapter.stop\(\s*""(.+?)""");
 
         private void validateScript(Quest q, string filename, string code, StringBuilder issues)
         {
@@ -384,7 +390,7 @@ namespace SrvSurvey.quests
         public bool isTagged(string tag)
         {
             foreach (var pq in activeQuests)
-                if (pq.tags.Contains(tag, StringComparer.OrdinalIgnoreCase)) 
+                if (pq.tags.Contains(tag, StringComparer.OrdinalIgnoreCase))
                     return true;
 
             return false;
@@ -559,17 +565,25 @@ namespace SrvSurvey.quests
             if (newMsg.from == null && quest.msgs.Find(m => m.id == newMsg.id) == null)
                 throw new Exception($"Bad message: {newMsg.id}");
 
+            // remove any prior entries with the same id
+            msgs.RemoveAll(m => m.id == newMsg.id);
+
             msgs.Add(newMsg);
             conduit.dirty = true;
         }
 
-        public void invokeMessageAction(string chapterId, string actionId)
+        public void invokeMessageAction(string msgId, string actionId)
         {
+            var pm = msgs.Find(m => m.id == msgId);
+            if (pm == null) throw new Exception($"Message not found, id: {msgId}");
+            var chapterId = pm.chapter!;
+
             // invoke the action
             var func = conduit.funcs.GetValueOrDefault($"{chapterId}/onMsgAction");
             if (func == null) throw new Exception($"Missing function 'void onMsgAction(string id)' in chapter: {chapterId}");
 
             func((string)actionId);
+            pm.replied = actionId;
             conduit.dirty = true;
 
             // update any UX
