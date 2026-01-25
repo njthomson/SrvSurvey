@@ -105,9 +105,10 @@ namespace SrvSurvey.game
             var journalFiles = new DirectoryInfo(Game.settings.watchedJournalFolder)
                 .EnumerateFiles("*.log", SearchOption.TopDirectoryOnly)
                 .OrderByDescending(_ => _.LastWriteTimeUtc)
-                .Select(_ => _.FullName);
+                .Select(_ => _.FullName)
+                .ToList();
 
-            if (journalFiles.Count() == 0) return;
+            if (journalFiles.Count == 0) return;
 
             journalFiles.FirstOrDefault((filepath) =>
             {
