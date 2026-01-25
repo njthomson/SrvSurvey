@@ -1638,7 +1638,8 @@ namespace SrvSurvey.game
             var sites = GuardianSitePub.Find(this.name);
             Game.log($"prepSettlements: for: '{this.name}' ({this.address}), sites.Count: {sites.Count}");
             this._settlements = new List<SystemSettlementSummary>();
-            var bodies = this.bodies.ToList();
+            List<SystemBody> bodies;
+            lock (this.bodies) { bodies = this.bodies.ToList(); }
             foreach (var site in sites)
             {
                 if (site.isRuins)
