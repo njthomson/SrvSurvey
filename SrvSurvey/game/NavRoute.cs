@@ -114,7 +114,7 @@ namespace SrvSurvey
                     }
                 }
             }
-            catch (IOException ex) when (attempt < 4)
+            catch (IOException) when (attempt < 4)
             {
                 // file likely locked by game - retry with exponential backoff
                 var delay = 50 * (1 << attempt); // 50, 100, 200, 400ms

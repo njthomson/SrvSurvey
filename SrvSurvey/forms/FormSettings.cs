@@ -132,7 +132,7 @@ namespace SrvSurvey
                 if (device.Type == DeviceType.Gamepad || device.Type == DeviceType.Joystick || device.Type == DeviceType.FirstPerson)
                     devices[device.InstanceGuid] = device.InstanceName;
 
-            comboDirectXDevice.DataSource = new BindingSource(devices, null);
+            comboDirectXDevice.DataSource = new BindingSource(devices, null!);
             comboDirectXDevice.DisplayMember = "Value";
             comboDirectXDevice.ValueMember = "Key";
 

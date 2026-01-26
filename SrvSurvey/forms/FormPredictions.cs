@@ -483,7 +483,7 @@ namespace SrvSurvey
             if (isCurrentBody(node.Parent) || highlightCurrentBody(node.Parent))
                 drawSideBars(g, node, highlight && node != hoverNode);
 
-            var tuple = (Foo)node.Tag;
+            var tuple = (Foo)node.Tag!;
             var species = tuple?.Item1;
             var variants = tuple?.Item2;
             if (species == null || variants == null) return;
@@ -524,7 +524,7 @@ namespace SrvSurvey
             }
 
             // draw credit estimates
-            g.drawTextRight(Util.credits(species.reward, true), node.NodeFont, foreColor, tree.ClientSize.Width - 60, node.Bounds.Top + 1, 0, node.Bounds.Height);
+            g.drawTextRight(Util.credits(species.reward, true), node.NodeFont!, foreColor, tree.ClientSize.Width - 60, node.Bounds.Top + 1, 0, node.Bounds.Height);
         }
 
         /*
@@ -563,7 +563,7 @@ namespace SrvSurvey
 
         private void drawKnownNode(Graphics g, TreeNode node)
         {
-            var org = (SystemOrganism)node.Tag;
+            var org = (SystemOrganism)node.Tag!;
             var highlight = highlightCurrentBody(node.Parent)
                 || (game.cmdr.scanOne?.genus == org.genus && org.body == game.systemBody && game.mode != GameMode.FSS);
 
@@ -582,7 +582,7 @@ namespace SrvSurvey
             {
                 dtx = node.Level * tree.Indent + 8,
                 dty = node.Bounds.Y,
-                font = node.NodeFont,
+                font = node.NodeFont!,
                 centerIn = tree.ItemHeight,
             };
 
@@ -616,13 +616,13 @@ namespace SrvSurvey
                 g.DrawRectangle(p, 16, tt.dty + y, 8, 8);
             }
 
-            if (game.cmdr.scanOne?.genus == org.genus && game.cmdr.scanOne.body == (node.Parent.Tag as SystemBody)?.name)
+            if (game.cmdr.scanOne?.genus == org.genus && game.cmdr.scanOne.body == (node.Parent!.Tag as SystemBody)?.name)
                 tt.draw(org.genus == game.cmdr.scanTwo?.genus ? " ⚫⚫⚪" : " ⚫⚪⚪", org.isFirst ? C.Bio.gold : C.cyan);
         }
 
         private void drawBodyNode(Graphics g, TreeNode node)
         {
-            var body = (SystemBody)node.Tag;
+            var body = (SystemBody)node.Tag!;
             var highlight = highlightCurrentBody(node)
                 || node == hoverNode;
 
@@ -638,7 +638,7 @@ namespace SrvSurvey
                 dtx = node.Level * tree.Indent,
                 dty = node.Bounds.Y + 1,
                 color = highlight ? C.cyan : C.orange,
-                font = node.NodeFont,
+                font = node.NodeFont!,
                 centerIn = tree.ItemHeight,
             };
 
@@ -680,13 +680,6 @@ namespace SrvSurvey
             tt.color = highlight ? GameColors.DarkCyan : GameColors.OrangeDim;
             if (isCollapsedWithGold) tt.color = C.Bio.goldDark;
             tt.draw(Util.lsToString(body.distanceFromArrivalLS), nodeMiddle);
-        }
-
-        private void drawCreditEstimate(Graphics g, TreeNode node, Color color, string text)
-        {
-            //var font = node.Tag is SystemBody ? node.NodeFont : nodeSmall;
-            var font = node.NodeFont;
-            g.drawTextRight(text, font, color, tree.ClientSize.Width - 8, node.Bounds.Top + 1, 0, node.Bounds.Height);
         }
 
         private void drawSideBars(Graphics g, TreeNode node, bool highlight)

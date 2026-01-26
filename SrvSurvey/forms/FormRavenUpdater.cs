@@ -93,7 +93,7 @@ namespace SrvSurvey.forms
             // prep combo items
             var sourceCosts = allCosts.ToDictionary(c => c.buildType, c => $"Tier {c.tier}: {c.displayName}");
             sourceCosts.Add("", "?");
-            comboBuildType.DataSource = new BindingSource(sourceCosts, null);
+            comboBuildType.DataSource = new BindingSource(sourceCosts, null!);
 
             comboStatus.Items.AddRange(Enum.GetNames<SystemSite.Status>());
             game.status.StatusChanged += Status_StatusChanged;
@@ -157,7 +157,7 @@ namespace SrvSurvey.forms
 
                     mapBodies[body.num] = body.name;
                 }
-                comboBody.DataSource = new BindingSource(mapBodies, null);
+                comboBody.DataSource = new BindingSource(mapBodies, null!);
                 comboBody.SelectedIndex = 0;
                 comboBody.Enabled = true;
             }

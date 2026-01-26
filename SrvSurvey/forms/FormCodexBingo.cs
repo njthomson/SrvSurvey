@@ -228,7 +228,7 @@ namespace SrvSurvey
 
         private CodexTag calcNodeCompletion(TreeNode node)
         {
-            var codexTag = (CodexTag)node.Tag;
+            var codexTag = (CodexTag)node.Tag!;
 
             if (node.Nodes.Count == 0)
             {
@@ -413,6 +413,8 @@ namespace SrvSurvey
 
         private void menuEDAstro_Click(object sender, EventArgs e)
         {
+            if (tree.SelectedNode == null) return;
+
             // is this a special link?
             var nodeName = tree.SelectedNode.Name;
             var link = edAstroLinks.FirstOrDefault(pair => nodeName.matches(pair.Key)).Value;
@@ -446,6 +448,8 @@ namespace SrvSurvey
 
         private void menuSpanshNearest_Click(object sender, EventArgs e)
         {
+            if (tree.SelectedNode == null) return;
+
             var codexTag = getSelectedNodeCodexTag();
             if (codexTag?.species != null)
             {

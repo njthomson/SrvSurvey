@@ -31,7 +31,7 @@ namespace SrvSurvey.forms
             var bodyMap = game.systemData!.bodies
                 .Where(_ => _.type != SystemBodyType.Unknown && _.type != SystemBodyType.Barycentre && _.type != SystemBodyType.PlanetaryRing)
                 .ToDictionary(b => b.id, b => $"{b.name} ({b.planetClass})");
-            this.comboBody.DataSource = new BindingSource(bodyMap, null);
+            this.comboBody.DataSource = new BindingSource(bodyMap, null!);
             if (game.systemBody != null)
                 this.comboBody.SelectedValue = game.systemBody.id;
 
@@ -52,7 +52,7 @@ namespace SrvSurvey.forms
                     if (site.status != SystemSite.Status.complete)
                         mapSites.Add(site.id, $"{site.name} ({site.buildType})");
 
-                comboSystemSite.DataSource = new BindingSource(mapSites, null);
+                comboSystemSite.DataSource = new BindingSource(mapSites, null!);
                 comboSystemSite.SelectedIndex = 0;
                 comboSystemSite.Enabled = true;
 
@@ -78,7 +78,7 @@ namespace SrvSurvey.forms
                 .Where(r => (r.location == "orbital") == isOrbital)
                 .ToDictionary(c => c.buildType, c => $"Tier {c.tier}: {c.displayName}");
 
-            comboBuildType.DataSource = new BindingSource(sourceCosts, null);
+            comboBuildType.DataSource = new BindingSource(sourceCosts, null!);
             comboBuildSubType.Items.Clear();
             comboBuildSubType.Items.AddRange(allCosts.First().layouts.ToArray());
             comboBuildSubType.SelectedIndex = 0;
