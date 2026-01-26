@@ -57,6 +57,7 @@ namespace SrvSurvey
         public bool highlightRegionalFirsts = false;
         public bool dimIfAnalyzed = true;
         public bool autoShowPlotGalMap = true;
+        public bool galMapFactions = true;
         public bool autoShowPlotJumpInfo = true;
         public bool showPlotJumpInfoIfNextHop = false;
         public bool plotJumpInfoMinimal = false;

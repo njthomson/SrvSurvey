@@ -31,10 +31,10 @@ namespace SrvSurvey
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            ListViewItem listViewItem5 = new ListViewItem("Materials count after pickup");
-            ListViewItem listViewItem6 = new ListViewItem("Mission remaining cargo count");
-            ListViewItem listViewItem7 = new ListViewItem("Boxel search status");
-            ListViewItem listViewItem8 = new ListViewItem("Next boxel to search");
+            ListViewItem listViewItem1 = new ListViewItem("Materials count after pickup");
+            ListViewItem listViewItem2 = new ListViewItem("Mission remaining cargo count");
+            ListViewItem listViewItem3 = new ListViewItem("Boxel search status");
+            ListViewItem listViewItem4 = new ListViewItem("Next boxel to search");
             panel1 = new Panel();
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
@@ -153,6 +153,7 @@ namespace SrvSurvey
             lblScreenshotTarget = new Label();
             checkLocalTime = new CheckBox();
             tabPage6 = new TabPage();
+            checkBox56 = new CheckBox();
             checkBox51 = new CheckBox();
             checkJumpInfoIfDestination = new CheckBox();
             checkBox36 = new CheckBox();
@@ -272,7 +273,7 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
-            checkBox56 = new CheckBox();
+            checkBox57 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -1866,11 +1867,12 @@ namespace SrvSurvey
             // 
             tabPage6.BackColor = SystemColors.Control;
             tabPage6.BorderStyle = BorderStyle.Fixed3D;
+            tabPage6.Controls.Add(btnSwapCache);
+            tabPage6.Controls.Add(checkBox57);
             tabPage6.Controls.Add(checkBox56);
             tabPage6.Controls.Add(checkBox51);
             tabPage6.Controls.Add(checkJumpInfoIfDestination);
             tabPage6.Controls.Add(checkBox36);
-            tabPage6.Controls.Add(btnSwapCache);
             tabPage6.Controls.Add(checkBox32);
             tabPage6.Controls.Add(checkBox28);
             tabPage6.Controls.Add(pictureBox13);
@@ -1903,6 +1905,18 @@ namespace SrvSurvey
             tabPage6.Size = new Size(699, 448);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
+            // 
+            // checkBox56
+            // 
+            checkBox56.AutoSize = true;
+            checkBox56.FlatStyle = FlatStyle.System;
+            checkBox56.Location = new Point(302, 423);
+            checkBox56.Name = "checkBox56";
+            checkBox56.Size = new Size(116, 20);
+            checkBox56.TabIndex = 36;
+            checkBox56.Tag = "plotJumpInfoMinimal";
+            checkBox56.Text = "Show hops only";
+            checkBox56.UseVisualStyleBackColor = true;
             // 
             // checkBox51
             // 
@@ -1945,9 +1959,9 @@ namespace SrvSurvey
             // btnSwapCache
             // 
             btnSwapCache.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSwapCache.Location = new Point(485, 416);
+            btnSwapCache.Location = new Point(577, 415);
             btnSwapCache.Name = "btnSwapCache";
-            btnSwapCache.Size = new Size(156, 23);
+            btnSwapCache.Size = new Size(110, 23);
             btnSwapCache.TabIndex = 23;
             btnSwapCache.Text = "Swap star cache";
             btnSwapCache.UseVisualStyleBackColor = true;
@@ -1993,7 +2007,7 @@ namespace SrvSurvey
             // 
             pictureBox10.BackgroundImage = (Image)resources.GetObject("pictureBox10.BackgroundImage");
             pictureBox10.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox10.Location = new Point(423, 321);
+            pictureBox10.Location = new Point(409, 306);
             pictureBox10.Name = "pictureBox10";
             pictureBox10.Size = new Size(166, 89);
             pictureBox10.TabIndex = 31;
@@ -3297,15 +3311,15 @@ namespace SrvSurvey
             // listView1
             // 
             listView1.CheckBoxes = true;
-            listViewItem5.StateImageIndex = 0;
-            listViewItem5.Tag = "materialCountAfterPickup";
-            listViewItem6.StateImageIndex = 0;
-            listViewItem6.Tag = "cargoMissionRemaining";
-            listViewItem7.StateImageIndex = 0;
-            listViewItem7.Tag = "currentBoxelSearchStatus";
-            listViewItem8.StateImageIndex = 0;
-            listViewItem8.Tag = "showNextBoxelToSearch";
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem5, listViewItem6, listViewItem7, listViewItem8 });
+            listViewItem1.StateImageIndex = 0;
+            listViewItem1.Tag = "materialCountAfterPickup";
+            listViewItem2.StateImageIndex = 0;
+            listViewItem2.Tag = "cargoMissionRemaining";
+            listViewItem3.StateImageIndex = 0;
+            listViewItem3.Tag = "currentBoxelSearchStatus";
+            listViewItem4.StateImageIndex = 0;
+            listViewItem4.Tag = "showNextBoxelToSearch";
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4 });
             listView1.Location = new Point(12, 331);
             listView1.Name = "listView1";
             listView1.Size = new Size(400, 107);
@@ -3415,17 +3429,17 @@ namespace SrvSurvey
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
             // 
-            // checkBox56
+            // checkBox57
             // 
-            checkBox56.AutoSize = true;
-            checkBox56.FlatStyle = FlatStyle.System;
-            checkBox56.Location = new Point(302, 423);
-            checkBox56.Name = "checkBox56";
-            checkBox56.Size = new Size(116, 20);
-            checkBox56.TabIndex = 36;
-            checkBox56.Tag = "plotJumpInfoMinimal";
-            checkBox56.Text = "Show hops only";
-            checkBox56.UseVisualStyleBackColor = true;
+            checkBox57.AutoSize = true;
+            checkBox57.FlatStyle = FlatStyle.System;
+            checkBox57.Location = new Point(409, 401);
+            checkBox57.Name = "checkBox57";
+            checkBox57.Size = new Size(167, 20);
+            checkBox57.TabIndex = 37;
+            checkBox57.Tag = "galMapFactions";
+            checkBox57.Text = "Show factions in gal-map";
+            checkBox57.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -3756,5 +3770,6 @@ namespace SrvSurvey
         private CheckBox checkBox54;
         private CheckBox checkBox55;
         private CheckBox checkBox56;
+        private CheckBox checkBox57;
     }
 }

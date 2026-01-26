@@ -144,7 +144,7 @@ namespace SrvSurvey.plotters
 
             var maxY = tt.dty;
 
-            if (false && finalNetData?.spanshDump?.factions.Count > 0)
+            if (Game.settings.galMapFactions && finalNetData?.spanshDump?.factions.Count > 0)
                 drawFactionSummary(g, tt, finalNetData);
 
             return tt.pad(+N.ten, +N.ten);
@@ -165,11 +165,11 @@ namespace SrvSurvey.plotters
 
             // line 1: system name
             tt.draw(leftWidth, $"► {netData.systemName}", GameColors.fontSmall2Bold);
-            tt.newLine(true);
-
             // quest related?
             if (game.cmdrPlay?.isTagged(netData.systemName) == true)
-                PlotQuestMini.drawLogo(g, width - N.twoTwo, N.ten, true, N.oneSix);
+                PlotQuestMini.drawLogo(g, tt.dtx + N.six, N.eight, true, N.oneSix);
+
+            tt.newLine(true);
 
             var highlight = netData.discovered == false || netData.scanBodyCount < netData.totalBodyCount || (netData.totalBodyCount == 0 && netData.discovered.HasValue);
 
@@ -210,21 +210,24 @@ namespace SrvSurvey.plotters
             g.DrawLineR(C.Pens.orangeDarker1, x, N.oneSix, 0, tt.containerHeight - 32);
             x += N.six;
 
-            tt.draw(x, "Factions:", C.orangeDark);
-            tt.newLine(true);
-
-            var foo = netData.spanshDump.factions
+            var sorted = netData.spanshDump.factions
                 .OrderByDescending(f => f.influence)
                 .ToDictionary(f => f.name, f => f.influence);
 
-            x += N.six;
-            var x2 = x + N.ten + Util.maxWidth(tt.font, foo.Keys);
+            if (sorted.Count < 6)
+            {
+                tt.draw(x, "Factions:", C.orangeDark);
+                tt.newLine(true);
+            }
 
-            foreach (var name in foo.Keys)
+            x += N.six;
+            var x2 = x + N.ten + Util.maxWidth(tt.font, sorted.Keys);
+
+            foreach (var name in sorted.Keys)
             {
                 tt.draw(x, name);
 
-                tt.draw(x2, foo[name].ToString("p0"));
+                tt.draw(x2, sorted[name].ToString("p0"));
                 tt.newLine(true);
             }
         }
