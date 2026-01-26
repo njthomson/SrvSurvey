@@ -115,6 +115,12 @@ namespace SrvSurvey.forms
             var bx = Boxel.parse(txtConfigBoxel.Text, true);
             if (bx == null) return;
 
+            if (bx.massCode == 'h')
+            {
+                MessageBox.Show(this, "Boxel search is not supported for h mass code systems. Empty boxel tracking is not available at this level of granularity.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             /* NOT READY // confirm we can calculate the id64 - otherwise reject it
             var id64 = bx.getAddress();
             if (id64 == 0)
@@ -651,7 +657,7 @@ namespace SrvSurvey.forms
         {
             // confirm text is a valid boxel
             var bx = Boxel.parse(txtConfigBoxel.Text, true);
-            this.configValid = bx != null;
+            this.configValid = bx != null && bx.massCode != 'h';
             btnBegin.Enabled = this.configValid;
             comboLowMassCode.Enabled = this.configValid;
             lblBadBoxel.Visible = !this.configValid;
