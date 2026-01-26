@@ -1885,12 +1885,6 @@ namespace SrvSurvey
                 BaseForm.show<FormPlayComms>();
         }
 
-        private void menuBuildProjects_Click(object sender, EventArgs e)
-        {
-            if (game?.cmdrColony != null)
-                BaseForm.show<FormBuildNew>();
-        }
-
         private void menuMyProjects_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormMyProjects>();
