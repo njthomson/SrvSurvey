@@ -84,7 +84,7 @@ namespace SrvSurvey
             }
         }
 
-        private void parseFile(bool retry = false)
+        private void parseFile(int attempt = 0)
         {
             if (!File.Exists(Status.Filepath))
             {
@@ -103,7 +103,7 @@ namespace SrvSurvey
                     // ... parse into tmp object ...
                     var obj = JsonConvert.DeserializeObject<NavRouteFile>(json);
 
-                    // ... assign all property values from tmp object 
+                    // ... assign all property values from tmp object
                     var allProps = typeof(NavRouteFile).GetProperties(Program.InstanceProps);
                     foreach (var prop in allProps)
                     {
@@ -114,11 +114,16 @@ namespace SrvSurvey
                     }
                 }
             }
+            catch (IOException ex) when (attempt < 4)
+            {
+                // file likely locked by game - retry with exponential backoff
+                var delay = 50 * (1 << attempt); // 50, 100, 200, 400ms
+                Game.log($"NavRoute.json locked, retrying in {delay}ms (attempt {attempt + 1}/5)");
+                Util.deferAfter(delay, () => parseFile(attempt + 1));
+            }
             catch (Exception ex)
             {
                 Game.log($"Failed to parse NavRoute.json: {ex.Message}\r\n{ex.StackTrace}");
-                if (!retry)
-                    Util.deferAfter(50, () => parseFile(true));
             }
         }
 
