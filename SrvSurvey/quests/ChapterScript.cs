@@ -2,7 +2,10 @@
 
 namespace SrvSurvey.quests.scripting
 {
-    public class ScriptGlobals
+    /// <summary>
+    /// The "script globals" reference given to running scripts, enabling them to call into SrvSurvey code. There is one instance per each active chapter.
+    /// </summary>
+    public class ChapterScript
     {
         public S_quest quest;
         public S_chapter chapter;
@@ -10,10 +13,10 @@ namespace SrvSurvey.quests.scripting
         public S_game game;
 
         /// <summary> The ID of the chapter </summary>
-        string id;
-        Conduit c;
+        private string id;
+        private Conduit c;
 
-        public ScriptGlobals(Conduit c, string id)
+        public ChapterScript(Conduit c, string id)
         {
             this.c = c;
             this.id = id;
@@ -25,6 +28,7 @@ namespace SrvSurvey.quests.scripting
 
         // functions availble to scripting ...
 
+        /// <summary> Used by PlayState infrastructure to track references to specific functions. This is not intended to be called by quest script authors </summary>
         public void setFunc(string name, Action<object> func)
         {
             Game.log($"setFunc [{id}]: {name}");
@@ -46,9 +50,9 @@ namespace SrvSurvey.quests.scripting
         public class S_quest : SQuest
         {
             Conduit c;
-            ScriptGlobals sg;
+            ChapterScript sg;
 
-            public S_quest(Conduit c, ScriptGlobals sg)
+            public S_quest(Conduit c, ChapterScript sg)
             {
                 this.c = c;
                 this.sg = sg;
@@ -56,14 +60,14 @@ namespace SrvSurvey.quests.scripting
 
             public void complete()
             {
-                Game.log($"Q.complete [{sg.id}]");
+                Game.log($"S_quest.complete [{sg.id}]");
                 c.pq.complete();
                 c.dirty = true;
             }
 
             public void fail()
             {
-                Game.log($"Q.fail [{sg.id}]");
+                Game.log($"S_quest.fail [{sg.id}]");
                 c.pq.fail();
                 c.dirty = true;
             }
@@ -79,7 +83,7 @@ namespace SrvSurvey.quests.scripting
                 var newMsg = PlayMsg.send(msg, from, subject, body);
                 c.pq.sendMsg(newMsg);
 
-                Game.log($"Q.sendMsg [{sg.id}]: {id}: {newMsg.subject ?? newMsg.body}");
+                Game.log($"S_quest.sendMsg [{sg.id}]: {id}: {newMsg.subject ?? newMsg.body}");
             }
 
             public void tag(params string[] tags)
@@ -118,12 +122,8 @@ namespace SrvSurvey.quests.scripting
 
             public void clearLocation(string name)
             {
-                if (c.pq.bodyLocations.ContainsKey(name))
-                {
-                    c.pq.bodyLocations.Remove(name);
-                    c.dirty = true;
+                c.dirty |= c.pq.bodyLocations.Remove(name);
                 }
-            }
 
             public void clearAllLocations()
             {
@@ -135,9 +135,9 @@ namespace SrvSurvey.quests.scripting
         public class S_chapter : SChapter
         {
             Conduit c;
-            ScriptGlobals sg;
+            ChapterScript sg;
 
-            public S_chapter(Conduit c, ScriptGlobals sg)
+            public S_chapter(Conduit c, ChapterScript sg)
             {
                 this.c = c;
                 this.sg = sg;
@@ -145,14 +145,14 @@ namespace SrvSurvey.quests.scripting
 
             public void start(string name)
             {
-                Game.log($"C.start [{sg.id}]: {name}");
+                Game.log($"S_chapter.start [{sg.id}]: {name}");
                 c.pq.startChapter(name);
             }
 
             public void stop(string? name = null)
             {
                 name ??= sg.id;
-                Game.log($"C.stop [{sg.id}]: {name}");
+                Game.log($"S_chapter.stop [{sg.id}]: {name}");
                 c.pq.stopChapter(name);
             }
 
@@ -165,16 +165,16 @@ namespace SrvSurvey.quests.scripting
                 var newMsg = PlayMsg.send(msg, from, subject, body, this.sg.id);
                 c.pq.sendMsg(newMsg);
 
-                Game.log($"C.sendMsg [{sg.id}]: {id}: {newMsg.subject ?? newMsg.body}");
+                Game.log($"S_chapter.sendMsg [{sg.id}]: {id}: {newMsg.subject ?? newMsg.body}");
             }
         }
 
         public class S_objective : SObjective
         {
             Conduit c;
-            ScriptGlobals sg;
+            ChapterScript sg;
 
-            public S_objective(Conduit c, ScriptGlobals sg)
+            public S_objective(Conduit c, ChapterScript sg)
             {
                 this.c = c;
                 this.sg = sg;
@@ -182,7 +182,7 @@ namespace SrvSurvey.quests.scripting
 
             public void show(string name, int progress = -1, int total = -1)
             {
-                Game.log($"O.show [{sg.id}]: {name}");
+                Game.log($"S_objective.show [{sg.id}]: {name}");
                 c.pq.objectives.init(name).state = PlayObjective.State.visible;
                 c.dirty = true;
 
@@ -192,28 +192,28 @@ namespace SrvSurvey.quests.scripting
 
             public void hide(string name)
             {
-                Game.log($"O.hide [{sg.id}]: {name}");
+                Game.log($"S_objective.hide [{sg.id}]: {name}");
                 c.pq.objectives.init(name).state = PlayObjective.State.hidden;
                 c.dirty = true;
             }
 
             public void complete(string name)
             {
-                Game.log($"O.complete [{sg.id}]: {name}");
+                Game.log($"S_objective.complete [{sg.id}]: {name}");
                 c.pq.objectives.init(name).state = PlayObjective.State.complete;
                 c.dirty = true;
             }
 
             public void fail(string name)
             {
-                Game.log($"O.fail [{sg.id}]: {name}");
+                Game.log($"S_objective.fail [{sg.id}]: {name}");
                 c.pq.objectives.init(name).state = PlayObjective.State.failed;
                 c.dirty = true;
             }
 
             public void progress(string name, int current, int total)
             {
-                Game.log($"O.progress [{sg.id}]: {name} => {current} of {total}");
+                Game.log($"S_objective.progress [{sg.id}]: {name} => {current} of {total}");
                 c.pq.objectives.init(name);
                 c.pq.objectives[name].current = current;
                 c.pq.objectives[name].total = total;
@@ -230,14 +230,15 @@ namespace SrvSurvey.quests.scripting
         public class S_game
         {
             Conduit c;
-            ScriptGlobals sg;
+            ChapterScript sg;
 
-            public S_game(Conduit c, ScriptGlobals sg)
+            public S_game(Conduit c, ChapterScript sg)
             {
                 this.c = c;
                 this.sg = sg;
             }
 
+            // TODO: It would be much safer to expose an explicitly limited representation of state.json, rather than expose the raw object SrvSurvey already uses
             public Status status => Game.activeGame!.status;
 
             public Docked? lastDocked => Game.activeGame!.lastEverDocked;
@@ -246,6 +247,10 @@ namespace SrvSurvey.quests.scripting
         }
     }
 
+    /// <summary>
+    /// The conduit between ChapterScripts and persisted quest states. There is one instance per quest.
+    /// TODO: Maybe merge with PlayQuest and remove the need for a separate Conduit class?
+    /// </summary>
     public class Conduit
     {
         public bool dirty = false;

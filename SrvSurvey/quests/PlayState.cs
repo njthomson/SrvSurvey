@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 
 namespace SrvSurvey.quests
 {
+    /// <summary> The runtime/persisted state of all quests for a player </summary>
     internal class PlayState : Data
     {
         #region static loading code
@@ -151,10 +152,10 @@ namespace SrvSurvey.quests
             string script = c.pq.quest.chapters[name];
             var code = prepCode(script.Split(Environment.NewLine));
 
-            var sg = new scripting.ScriptGlobals(c, name);
+            var sg = new scripting.ChapterScript(c, name);
 
             // Compile and run once to initialize
-            var compiled = CSharpScript.Create(code, scriptOptions, typeof(scripting.ScriptGlobals));
+            var compiled = CSharpScript.Create(code, scriptOptions, typeof(scripting.ChapterScript));
 
             var state = await compiled.RunAsync(sg);
             return state;
@@ -165,8 +166,15 @@ namespace SrvSurvey.quests
         #region data members
 
         public string fid;
-        public List<PlayQuest> activeQuests = new();
+        public List<PlayQuest> activeQuests = [];
         // TODO: store cmdr level variables?
+
+        /* TODO: paused and completed quests? Maybe ...
+         * 
+         * public List<PlayQuest> quests = [];
+         * 
+         * public [JsonIgnore] List<PlayQuest> activeQuests => quests.Where(pq => pq.active).ToList();
+         */
 
         #endregion
 
@@ -259,9 +267,7 @@ namespace SrvSurvey.quests
                     newPlayQuest.chapters.Add(pc);
 
                     // store initial variables
-                    foreach (var var in state.Variables)
-                        if (!var.Name.StartsWith("_"))
-                            pc.vars[$"{var.Name}|{var.Type}"] = var.Value;
+                    pc.pullScriptVars();
 
                     // check for mismatched IDs
                     validateScript(newQuest, id, state.Script.Code, issues);
@@ -359,6 +365,7 @@ namespace SrvSurvey.quests
             for (int n = 1; n < lines.Length; n++)
             {
                 var line = lines[n - 1];
+                if (line.Trim().StartsWith("//")) continue;
 
                 // bad objective names
                 foreach (var grp in badObjectiveIDs.Matches(line).Select(m => m.Groups[1]))
@@ -402,6 +409,7 @@ namespace SrvSurvey.quests
         }
     }
 
+    /// <summary> A bespoke form shown when side-loading/parsing a quest fails </summary>
     [Draggable, TrackPosition]
     class FormImportProblems : SizableForm
     {
@@ -448,6 +456,7 @@ namespace SrvSurvey.quests
         }
     }
 
+    /// <summary> The runtime/persisted state for an individual quest </summary>
     public class PlayQuest
     {
         [JsonIgnore] internal PlayState parent;
@@ -457,19 +466,44 @@ namespace SrvSurvey.quests
 
         //[JsonIgnore] public Dictionary<string, IJournalEntry entry> priorEvents = new(); // <-- TODO
 
+        #region data members
+
         public string id;
-        public Dictionary<string, object> vars = new();
-        public Dictionary<string, PlayObjective> objectives = new();
+        /// <summary> The values of variables extracted from running scripts </summary>
+        public Dictionary<string, object> vars = [];
+
+        /// <summary> The state of objectives </summary>
+        public Dictionary<string, PlayObjective> objectives = [];
+
+        /// <summary> When this quest began </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public DateTimeOffset? startTime;
+
+        /// <summary> When this quest ended </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public DateTimeOffset? endTime;
-        public DateTimeOffset watermark; // <-- TODO
-        public HashSet<string> tags = new();
-        public Dictionary<string, LatLong3> bodyLocations = new();
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool paused;
+
+        //public DateTimeOffset watermark; // TODO: DO we really want this? Processing missed journal events will be problematic as we cannot know if they take advantage of live values from status.json or NavRoute.json, etc
+
+        /// <summary> The set of 'tags' (system or station names) to highlight in various overlays </summary>
+        public HashSet<string> tags = [];
+
+        /// <summary> The set of actively tracked body locations </summary>
+        public Dictionary<string, LatLong3> bodyLocations = [];
+
+        /// <summary> The current state of all chapters </summary>
+        public List<PlayChapter> chapters = [];
+
         /// <summary> Delivered messages </summary>
-        public List<PlayChapter> chapters = new();
-        public List<PlayMsg> msgs = new();
+        public List<PlayMsg> msgs = [];
+
+        #endregion
+
+        /// <summary> Returns true if this quest is currently active </summary>
+        [JsonIgnore] public bool active => !endTime.HasValue && startTime.HasValue;
 
         [JsonIgnore] public int unreadMessageCount => msgs.Count(m => !m.read);
 
@@ -483,6 +517,7 @@ namespace SrvSurvey.quests
             return $"playQuest:{id}";
         }
 
+        /// <summary> Called by Game.cs so chapters may process journal events as they happen </summary>
         public bool processJournalEntry(IJournalEntry entry)
         {
             conduit.dirty = false;
@@ -504,17 +539,13 @@ namespace SrvSurvey.quests
             return updateIfDirty();
         }
 
+        /// <summary> Returns true if quest states were dirty, after saving to a file </summary>
         public bool updateIfDirty(bool force = false)
         {
             if (!conduit.dirty && !force) return false;
 
             foreach (var pc in chapters)
-            {
-                // store initial variables
-                foreach (var var in pc.scriptState.Variables)
-                    if (!var.Name.StartsWith("_"))
-                        pc.vars[$"{var.Name}|{var.Type}"] = var.Value;
-            }
+                pc.pullScriptVars();
 
             this.parent.Save();
 
@@ -527,12 +558,16 @@ namespace SrvSurvey.quests
 
         public void complete()
         {
-            // TODO: ...
+            this.endTime = DateTimeOffset.UtcNow;
         }
 
         public void fail()
         {
-            // TODO: ...
+            this.endTime = DateTimeOffset.UtcNow;
+
+            /* TODO: what does it really mean for the whole quest to be completed successfully or not?
+             * Maybe we have `string endReason` with something descriptive for players to know success or not
+             */
         }
 
         public void startChapter(string id)
@@ -546,8 +581,9 @@ namespace SrvSurvey.quests
             var func = conduit.funcs.GetValueOrDefault($"{id}/onStart");
             Game.log($"Starting chapter: {id}, run onStart: {func != null}");
             chapter.startTime = DateTimeOffset.UtcNow;
+            chapter.endTime = null;
 
-            // run the init func if it exists
+            // run the onStart func if it exists
             if (func != null)
                 func(null!);
 
@@ -578,6 +614,7 @@ namespace SrvSurvey.quests
             conduit.dirty = true;
         }
 
+        /// <summary> Called by Quest Comms when a player hit a message reply button </summary>
         public void invokeMessageAction(string msgId, string actionId)
         {
             var pm = msgs.Find(m => m.id == msgId);
@@ -608,6 +645,7 @@ namespace SrvSurvey.quests
         }
     }
 
+    /// <summary> The runtime/persisted state for an individual quest objective </summary>
     [JsonConverter(typeof(PlayObjective.JsonConverter))]
     public class PlayObjective
     {
@@ -638,40 +676,65 @@ namespace SrvSurvey.quests
                 var txt = serializer.Deserialize<string>(reader);
                 if (string.IsNullOrEmpty(txt)) throw new Exception($"Unexpected value: {txt}");
 
-                // eg: "visible|1|10"
-                var parts = txt.Split(',');
+                // eg: "visible"
+                // eg: "complete"
+                // eg: "visible,1,10"
+                var parts = txt.Split(',', StringSplitOptions.TrimEntries);
                 return new PlayObjective()
                 {
                     state = Enum.Parse<PlayObjective.State>(parts[0]),
-                    current = int.Parse(parts[1]),
-                    total = int.Parse(parts[2]),
+                    current = parts.Length != 3 ? 0 : int.Parse(parts[1]),
+                    total = parts.Length != 3 ? 0 : int.Parse(parts[2]),
                 };
             }
 
             public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
             {
-                if (value is PlayObjective)
-                    writer.WriteValue(value.ToString());
-                else
-                    throw new Exception($"Unexpected value: {value?.GetType().Name}");
+                var objective = value as PlayObjective;
+                if (objective == null) throw new Exception($"Unexpected value: {value?.GetType().Name}");
+
+                // only include numbers if they are both not zero
+                var json = objective.current == 0 && objective.total == 0
+                    ? $"{objective.state}"
+                    : $"{objective.state},{objective.current},{objective.total}";
+
+                writer.WriteValue(json);
             }
         }
     }
 
+    /// <summary> The runtime/persisted state of a chapter </summary>
     public class PlayChapter
     {
         [JsonIgnore] public PlayQuest parent;
         [JsonIgnore] public ScriptState scriptState;
 
+        #region data members
+
         public string id;
+        /// <summary> When this chapter last started </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public DateTimeOffset? startTime;
+        /// <summary> When this chapter last ended </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public DateTimeOffset? endTime;
-        public Dictionary<string, object> vars = new();
+        /// <summary> Persisted values of script variables </summary>
+        public Dictionary<string, object> vars = [];
 
+        #endregion
+
+        /// <summary> Returns true if this chapter is currently active </summary>
         [JsonIgnore] public bool active => !endTime.HasValue && startTime.HasValue;
 
+        /// <summary> Pull variable values from scriptState into a dictionary, ready for saving. Ignore any variables named with an initial `_` </summary>
+        public void pullScriptVars()
+        {
+            foreach (var scriptVar in scriptState.Variables)
+                if (!scriptVar.Name.StartsWith("_"))
+                    this.vars[$"{scriptVar.Name}|{scriptVar.Type}"] = scriptVar.Value;
+        }
+
+        /// <summary> Push saved variable values into scriptState </summary>
         public void pushScriptVars()
         {
             foreach (var key in vars.Keys)
@@ -680,6 +743,7 @@ namespace SrvSurvey.quests
                 var name = parts[0];
                 var type = Type.GetType(parts[1])!;
                 var raw = vars[key];
+
                 // re-cast the value as the desired type
                 var val = JToken.FromObject(raw).ToObject(type);
 
@@ -692,6 +756,7 @@ namespace SrvSurvey.quests
         }
     }
 
+    /// <summary> A runtime/delivered message. Content fields will be null unless they are overriding statically declared values </summary>
     public class PlayMsg
     {
         [JsonIgnore] public PlayQuest parent;
@@ -741,6 +806,7 @@ namespace SrvSurvey.quests
         }
     }
 
+    /// <summary> Represents a trackabale location at some lat/long value, with a given size radius. </summary>
     [JsonConverter(typeof(LatLong3.JsonConverter))]
     public class LatLong3
     {
@@ -771,8 +837,8 @@ namespace SrvSurvey.quests
                 var txt = serializer.Deserialize<string>(reader);
                 if (string.IsNullOrEmpty(txt)) throw new Exception($"Unexpected value: {txt}");
 
-                // eg: "visible|1|10"
-                var parts = txt.Split(',');
+                // eg: "12.34,56.78,50"
+                var parts = txt.Split(',', StringSplitOptions.TrimEntries);
                 return new LatLong3()
                 {
                     lat = double.Parse(parts[0], CultureInfo.InvariantCulture),

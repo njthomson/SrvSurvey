@@ -127,7 +127,6 @@ namespace SrvSurvey.forms
 
         private void showJson()
         {
-            //if (!comboChapter.Enabled) return;
             txtJson.ReadOnly = false;
 
             selectedView = comboChapter.SelectedItem as string;
