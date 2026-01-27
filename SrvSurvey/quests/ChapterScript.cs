@@ -41,11 +41,6 @@ namespace SrvSurvey.quests.scripting
             // TODO: have a separate trace file per quest? Probably!
         }
 
-        //public void keepLast(string eventName)
-        //{
-        //    Game.log($"setFunc [{id}]: {eventName}");
-        //    // TODO: ...
-        //}
 
         public class S_quest : SQuest
         {
@@ -123,12 +118,26 @@ namespace SrvSurvey.quests.scripting
             public void clearLocation(string name)
             {
                 c.dirty |= c.pq.bodyLocations.Remove(name);
-                }
+            }
 
             public void clearAllLocations()
             {
                 c.pq.bodyLocations.Clear();
                 c.dirty = true;
+            }
+
+            public void keepLast(params string[] eventNames)
+            {
+                Game.log($"keepLast [{sg.id}]: {eventNames}");
+                c.pq.keepLast(eventNames);
+                c.dirty = true;
+            }
+
+            public T? getLast<T>() where T : JournalEntry
+            {
+                var name = typeof(T).Name;
+                var last = c.pq.keptLasts.GetValueOrDefault(name);
+                return last as T;
             }
         }
 
@@ -241,9 +250,7 @@ namespace SrvSurvey.quests.scripting
             // TODO: It would be much safer to expose an explicitly limited representation of state.json, rather than expose the raw object SrvSurvey already uses
             public Status status => Game.activeGame!.status;
 
-            public Docked? lastDocked => Game.activeGame!.lastEverDocked;
 
-            // TODO: solve for arbitrary journal events?
         }
     }
 

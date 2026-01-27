@@ -29,6 +29,12 @@ namespace SrvSurvey.quests.scripting
         void clearLocation(string id);
         /// <summary> Clear all tracked locations </summary>
         void clearAllLocations();
+
+        /// <summary> Tells the system to keep the last reference of named journal events </summary>
+        void keepLast(params string[] eventNames);
+
+        /// <summary> Returns the last seen instance of a journal event, or null if not yet seen </summary>
+        T? getLast<T>() where T : JournalEntry;
     }
 
     interface SChapter

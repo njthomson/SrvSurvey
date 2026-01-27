@@ -500,6 +500,10 @@ namespace SrvSurvey.quests
         /// <summary> Delivered messages </summary>
         public List<PlayMsg> msgs = [];
 
+        /// <summary> A map of last seen journal events </summary>
+        [JsonConverter(typeof(PlayQuest.KeptLastsJsonConverter))]
+        public Dictionary<string, IJournalEntry?> keptLasts = [];
+
         #endregion
 
         /// <summary> Returns true if this quest is currently active </summary>
@@ -531,9 +535,23 @@ namespace SrvSurvey.quests
                 var func = conduit.funcs.GetValueOrDefault(key)!;
                 if (func != null)
                 {
-                    Game.log($"Invoking: {pc.parent.id}/{key}");
-                    func(entry);
+                    try
+                    {
+                        Game.log($"Invoking: {pc.parent.id}/{key}");
+                        func(entry);
+                    }
+                    catch (Exception ex)
+                    {
+                        Game.log($"Quest script error: {ex.Message}\r\n\t{ex.StackTrace}");
+                    }
                 }
+            }
+
+            // keep last references? (always after processing)
+            if (keptLasts.ContainsKey(entry.@event))
+            {
+                keptLasts[entry.@event] = entry;
+                conduit.dirty = true;
             }
 
             return updateIfDirty();
@@ -642,6 +660,50 @@ namespace SrvSurvey.quests
             // update any UX
             BaseForm.get<FormPlayComms>()?.onQuestChanged(this);
             PlotBase2.invalidate(nameof(PlotQuestMini));
+        }
+
+        public void keepLast(params string[] names)
+        {
+            var newKeptLasts = new Dictionary<string, IJournalEntry?>();
+
+            // (keeping any prior references)
+            foreach (var name in names)
+                newKeptLasts[name] = this.keptLasts.GetValueOrDefault(name);
+
+            this.keptLasts = newKeptLasts;
+        }
+
+        class KeptLastsJsonConverter : Newtonsoft.Json.JsonConverter
+        {
+            public override bool CanConvert(Type objectType) { return false; }
+
+            public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+            {
+                var raw = serializer.Deserialize<Dictionary<string, JObject?>>(reader);
+                if (raw == null) throw new Exception($"Unexpected value: ");
+
+                var keptLasts = raw.ToDictionary(kv => kv.Key, kv => JournalFile.hydrate(kv.Value) as IJournalEntry);
+                return keptLasts;
+            }
+
+            public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+            {
+                var keptLasts = value as Dictionary<string, IJournalEntry?>;
+                if (keptLasts == null) throw new Exception($"Unexpected value: {value?.GetType().Name}");
+
+                // serialize each kept entry as a single line (even though we generally serialize indented)
+                writer.WriteStartObject();
+                foreach (var (key, entry) in keptLasts)
+                {
+                    writer.WritePropertyName(key);
+
+                    if (entry == null)
+                        writer.WriteNull();
+                    else
+                        writer.WriteRawValue(JsonConvert.SerializeObject(entry));
+                }
+                writer.WriteEndObject();
+            }
         }
     }
 

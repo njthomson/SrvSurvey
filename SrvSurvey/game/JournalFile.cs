@@ -116,8 +116,10 @@ namespace SrvSurvey
             return null;
         }
 
-        public static JournalEntry? hydrate(JObject entry)
+        public static JournalEntry? hydrate(JObject? entry)
         {
+            if (entry == null) return null;
+
             var eventName = entry["event"]!.Value<string>()!;
             if (typeMap.ContainsKey(eventName))
                 return entry.ToObject(typeMap[eventName]) as JournalEntry;
