@@ -280,7 +280,7 @@ namespace SrvSurvey.plotters
             if (projectNames.Any())
             {
                 // show relevant project names
-                foreach (var name in projectNames)
+                foreach (var name in projectNames.Take(8))
                 {
                     tt.draw(N.twenty, "► " + name, GameColors.Fonts.gothic_9);
                     tt.newLine(true);

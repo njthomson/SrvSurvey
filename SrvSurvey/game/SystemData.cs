@@ -1551,10 +1551,12 @@ namespace SrvSurvey.game
                 // inject rings
                 if (!Game.settings.skipRingsDSS && _.hasRings)
                 {
-                    if (_.rings.Count > 0)
-                        names.Add(_.shortName + "rA");
-                    if (_.rings.Count > 1)
-                        names.Add(_.shortName + "rB");
+                    for (int n = 0; n < _.rings.Count; n++)
+                    {
+                        var ringNotScanned = ordered.FirstOrDefault(b => b.name == _.rings[n].name)?.dssComplete != true;
+                        if (ringNotScanned)
+                            names.Add(_.shortName + $"r{(char)(n + 'A')}");
+                    }
                 }
 
                 // optionally skip gas giants

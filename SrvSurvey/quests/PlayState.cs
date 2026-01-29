@@ -464,8 +464,6 @@ namespace SrvSurvey.quests
         [JsonIgnore] public Conduit conduit;
         [JsonIgnore] public string? watchFolder;
 
-        //[JsonIgnore] public Dictionary<string, IJournalEntry entry> priorEvents = new(); // <-- TODO
-
         #region data members
 
         public string id;
