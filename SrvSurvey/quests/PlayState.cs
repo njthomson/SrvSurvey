@@ -58,7 +58,7 @@ internal class PlayState : Data
 
                 // TODO: use a server for this ...
                 var questPath = Path.Combine(folder, $"{pq.id}.json");
-                if (!File.Exists(filepath)) throw new Exception($"Missing! {questPath}");
+                if (!File.Exists(questPath)) throw new Exception($"Missing! {questPath}");
 
                 var questJson = File.ReadAllText(questPath);
                 pq.quest = JsonConvert.DeserializeObject<DefQuest>(questJson)!;
@@ -213,7 +213,7 @@ internal class PlayState : Data
 
         // start first chapter?
         var firstChapter = pq.chapters.FirstOrDefault(c => c.id == newQuest.firstChapter);
-        if (firstChapter!.endTime == null)
+        if (firstChapter != null && firstChapter.endTime == null)
             await pq.startChapter(newQuest.firstChapter);
 
         this.Save();

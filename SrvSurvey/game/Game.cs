@@ -3432,6 +3432,7 @@ namespace SrvSurvey.game
             var list = this.systemBody.bookmarks[name]
                 .Select(_ => new TrackingDelta(this.systemBody.radius, _, location))
                 .ToList();
+            if (list.Count == 0) return;
             list.Sort((a, b) => a.distance.CompareTo(b.distance));
 
             var victim = list[nearest ? 0 : list.Count - 1].Target;
