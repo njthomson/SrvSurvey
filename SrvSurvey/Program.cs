@@ -47,9 +47,17 @@ namespace SrvSurvey
         [STAThread]
         static void Main(string[] args)
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            //ApplicationConfiguration.Initialize();
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, args2) =>
+            {
+                var name = new AssemblyName(args2.Name);
+                if (name.CultureInfo != null && !name.CultureInfo.Equals(System.Globalization.CultureInfo.InvariantCulture))
+                {
+                    var path = Path.Combine(AppContext.BaseDirectory, "locales", name.CultureInfo.Name, name.Name + ".dll");
+                    if (File.Exists(path))
+                        return Assembly.LoadFrom(path);
+                }
+                return null;
+            };
 
             try
             {
