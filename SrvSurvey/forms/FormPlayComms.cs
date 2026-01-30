@@ -35,7 +35,7 @@ namespace SrvSurvey.forms
 
             lastLeftBtn = btnQuests;
 
-            btnWatch.Enabled = Game.activeGame != null;
+            btnWatch.Enabled = Game.activeGame?.journals != null;
 
             foreach (var btn in new DrawButton[] { btnClose, btnQuests, btnMsgs, btnWatch, btnDev })
                 btn.setGameColors();
@@ -540,7 +540,7 @@ namespace SrvSurvey.forms
 
         private void btnWatch_Click(object sender, EventArgs e)
         {
-            if (Game.activeGame != null)
+            if (Game.activeGame?.journals != null)
                 BaseForm.show<FormPlayJournal>();
         }
 
@@ -551,7 +551,7 @@ namespace SrvSurvey.forms
 
         private void FormPlayComms_Activated(object sender, EventArgs e)
         {
-            btnWatch.Enabled = Game.activeGame != null;
+            btnWatch.Enabled = Game.activeGame?.journals != null;
         }
 
 
