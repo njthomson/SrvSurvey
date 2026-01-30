@@ -160,7 +160,7 @@ namespace SrvSurvey.forms
             {
                 this.viewSys.Hide();
             }
-            else
+            else if (listSystems.SelectedItems[0].Tag != null)
             {
                 this.viewSys.setSystem((SystemStats)listSystems.SelectedItems[0].Tag!);
                 this.viewSys.Show();

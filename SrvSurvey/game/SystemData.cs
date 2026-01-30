@@ -1776,7 +1776,7 @@ namespace SrvSurvey.game
                     var parentBodyId = _.id;
                     var parentStar = this.bodies.Find(_ => _.id == parentBodyId);
 
-                    if (parentStar == null) throw new Exception("Why no parent star?");
+                    if (parentStar == null) continue;
                     parentStars.Add(parentStar);
                     //break;
 

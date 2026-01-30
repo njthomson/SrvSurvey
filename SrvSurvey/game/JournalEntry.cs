@@ -1,6 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Lua;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
+using SrvSurvey.quests;
 
 namespace SrvSurvey
 {
@@ -15,6 +18,20 @@ namespace SrvSurvey
         public string @event { get; set; }
 
         [JsonIgnore] public virtual string tldr { get; }
+
+        public static LuaTable toLua(IJournalEntry entry)
+        {
+            var obj = JObject.FromObject(entry);
+            var tbl = new LuaTable();
+
+            foreach (var (name, token) in obj)
+            {
+                if (name == null || token == null) continue;
+                tbl[name] = token.toLua();
+            }
+
+            return tbl;
+        }
     }
 
     public class LocationEntry : JournalEntry, ILocation

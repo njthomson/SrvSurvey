@@ -34,6 +34,7 @@ namespace SrvSurvey.forms
 
         public void setSystem(SystemStats sys)
         {
+            Game.log($"setSystem: {sys}");
             this.systemStats = sys;
             this.systemData = SystemData.From(sys.starRef, CommanderSettings.currentOrLastFid, CommanderSettings.currentOrLastCmdrName);
 

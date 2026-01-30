@@ -45,7 +45,7 @@ namespace SrvSurvey
         public event StatusFileChanged StatusChanged;
 
         /// <summary> The names of properties that changed when last reading the file </summary>
-        public HashSet<string> changed = new();
+        [JsonIgnore] public HashSet<string> changed = new();
 
         private FileSystemWatcher? fileWatcher;
         //private bool haveRead;
@@ -317,14 +317,6 @@ namespace SrvSurvey
         public bool cargoScoopDeployed { get => (this.Flags & StatusFlags.CargoScoopDeployed) > 0; }
         [JsonIgnore]
         public bool lightsOn { get => (this.Flags & StatusFlags.LightsOn) > 0; }
-
-        public bool isWithin(double lat, double @long, double targetDist)
-        {
-            if (PlanetRadius == 0) return false;
-
-            var actualDist = (double)Util.getDistance(new LatLong2(lat, @long), here, PlanetRadius);
-            return actualDist <= targetDist;
-        }
     }
 
     #region Types

@@ -245,7 +245,7 @@ namespace SrvSurvey
 
         private static bool pasteGalMap()
         {
-            if (game?.mode != GameMode.GalaxyMap) return true;
+            if (game?.mode != GameMode.GalaxyMap && game?.musicTrack != "GalaxyMap") return true;
 
             string? keysToSend = null;
 

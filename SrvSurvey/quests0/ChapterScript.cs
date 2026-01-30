@@ -1,6 +1,6 @@
 ﻿using SrvSurvey.game;
 
-namespace SrvSurvey.quests.scripting
+namespace SrvSurvey.quests0.scripting
 {
     /// <summary>
     /// The "script globals" reference given to running scripts, enabling them to call into SrvSurvey code. There is one instance per each active chapter.

@@ -126,7 +126,7 @@ namespace SrvSurvey.forms
 
             var entry = JournalFile.hydrate(obj)!;
             if (entry != null)
-                game.cmdrPlay!.processJournalEntry(entry);
+                game.cmdrPlay!.processJournalEntry(entry).justDoIt();
         }
     }
 }

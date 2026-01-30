@@ -1,7 +1,7 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.widgets;
 
-namespace SrvSurvey.quests.scripting
+namespace SrvSurvey.quests0.scripting
 {
     // --- start copy for interfaces.csx ---
 

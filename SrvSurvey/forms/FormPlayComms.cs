@@ -228,6 +228,7 @@ namespace SrvSurvey.forms
 
         public void onQuestChanged(PlayQuest? pq = null)
         {
+            PlotBase2.invalidate(nameof(PlotQuestMini));
             var restoreGameFocus = Elite.focusElite;
 
             if (selectedThing == null)
@@ -752,7 +753,7 @@ namespace SrvSurvey.forms
             {
                 Name = "questBack",
                 Anchor = AnchorStyles.Left | AnchorStyles.Bottom,
-                Left = 6,
+                Left = 0,
                 ForeColor = C.orange,
             };
             btnB.Top = this.Height - btnB.Height - 6;
@@ -771,7 +772,7 @@ namespace SrvSurvey.forms
                 Anchor = AnchorStyles.Right | AnchorStyles.Bottom,
                 Text = "Remove",
             };
-            btnQ.Left = this.Width - btnQ.Width - 16;
+            btnQ.Left = this.Width - btnQ.Width;
             btnQ.Top = this.Height - btnQ.Height - 6;
             btnQ.Click += BtnQ_Click;
             this.Controls.Add(btnQ);
@@ -783,6 +784,7 @@ namespace SrvSurvey.forms
             if (rslt == DialogResult.Yes)
             {
                 pq.parent.activeQuests.Remove(pq);
+                pq.parent.Save();
                 form.clearSelection();
                 form.onQuestChanged();
             }
@@ -856,7 +858,7 @@ namespace SrvSurvey.forms
 
     class PanelMsg : Panel
     {
-        public static int drawCollapsed(Graphics g, TextCursor tt, DrawButton btn, PlayMsg pm, Msg qm)
+        public static int drawCollapsed(Graphics g, TextCursor tt, DrawButton btn, PlayMsg pm, DefMsg qm)
         {
             tt.dty = N.four;
             tt.color = btn.ForeColor2;
@@ -886,7 +888,8 @@ namespace SrvSurvey.forms
 
             // message from
             tt.drawRight(tt.containerWidth - N.six, time, null, GameColors.Fonts.gothic_9);
-            tt.draw(N.forty, pm.from ?? qm?.from, GameColors.Fonts.gothic_9);
+            var from = pm.from ?? qm?.from;
+            tt.draw(N.forty, string.IsNullOrEmpty(from) ? "?" : from, GameColors.Fonts.gothic_9);
             tt.newLine(-N.four);
 
             // subject (ellipse if too wide)
@@ -903,14 +906,14 @@ namespace SrvSurvey.forms
         public readonly FormPlayComms form;
         public readonly PlayQuest pq;
         public readonly PlayMsg pm;
-        public readonly Msg? qm;
+        public readonly DefMsg? qm;
         public string bodyText;
         public List<DrawButton>? copyButtons;
         public List<DrawButton>? replyButtons;
         private static Font btnFont = new Font("Segoe UI Emoji", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
         private Font btnFont2 = new Font("Segoe UI Emoji", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
 
-        public PanelMsg(FormPlayComms form, PlayMsg msg, Msg qm)
+        public PanelMsg(FormPlayComms form, PlayMsg msg, DefMsg qm)
         {
             this.Name = "PanelMsg";
             this.form = form;
@@ -1050,10 +1053,12 @@ namespace SrvSurvey.forms
             var actionId = btn?.Tag as string;
             if (actionId == null) return;
 
-            pq.invokeMessageAction(pm.id, actionId);
-            pq.updateIfDirty();
-            form.clearSelection();
-            form.onQuestChanged();
+            pq.invokeMessageAction(pm.id, actionId).continueOnMain(this.form, () =>
+            {
+                pq.updateIfDirty();
+                form.clearSelection();
+                form.onQuestChanged();
+            });
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -1075,7 +1080,8 @@ namespace SrvSurvey.forms
             tt.newLine();
 
             tt.draw(N.sixFour, "From:", GameColors.Fonts.gothic_8);
-            tt.draw(N.oneTwenty, pm.from ?? qm?.from);
+            var from = pm.from ?? qm?.from;
+            tt.draw(N.oneTwenty, string.IsNullOrEmpty(from) ? "?" : from);
             tt.newLine();
 
             var subject = pm.subject ?? qm?.subject;
@@ -1097,7 +1103,7 @@ namespace SrvSurvey.forms
             if (copyButtons != null)
             {
                 tt.dty += N.four;
-                var x = tt.containerWidth;
+                var x = tt.containerWidth - (int)N.twenty;
                 foreach (var btn in copyButtons)
                 {
                     x -= btn.Width;

@@ -135,7 +135,7 @@ namespace SrvSurvey.plotters
             base.onStatusChange(status);
 
             // hide (but not destroy) if not in any of these modes
-            this.hidden = !game.isMode(GameMode.OnFoot, GameMode.Flying, GameMode.Docked, GameMode.InSrv, GameMode.InTaxi, GameMode.Landed, GameMode.CommsPanel, GameMode.ExternalPanel, GameMode.GlideMode, GameMode.RolePanel)
+            this.hidden = !game.isMode(GameMode.OnFoot, GameMode.Flying, GameMode.Docked, GameMode.InSrv, GameMode.InTaxi, GameMode.Landed, GameMode.ExternalPanel, GameMode.GlideMode, GameMode.RolePanel)
                 || PlotStationInfo.allowed(game);
 
             // update if the site recently gained it

@@ -6,12 +6,12 @@ using Newtonsoft.Json.Linq;
 using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.plotters;
-using SrvSurvey.quests.scripting;
+using SrvSurvey.quests0.scripting;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace SrvSurvey.quests
+namespace SrvSurvey.quests0
 {
     /// <summary> The runtime/persisted state of all quests for a player </summary>
     internal class PlayState : Data
@@ -339,8 +339,8 @@ namespace SrvSurvey.quests
                 var pubFilepath = Path.Combine(PlayState.folder, $"{newQuest.id}.json");
                 File.WriteAllText(pubFilepath, JsonConvert.SerializeObject(newQuest, Formatting.Indented));
 
-                BaseForm.get<FormPlayComms>()?.onQuestChanged(newPlayQuest);
-                PlotBase2.invalidate(nameof(PlotQuestMini));
+                //BaseForm.get<FormPlayComms>()?.onQuestChanged(newPlayQuest);
+                //PlotBase2.invalidate(nameof(PlotQuestMini));
                 onComplete(newPlayQuest);
             }
         }
@@ -565,8 +565,8 @@ namespace SrvSurvey.quests
 
             this.parent.Save();
 
-            BaseForm.get<FormPlayComms>()?.onQuestChanged(this);
-            PlotBase2.invalidate(nameof(PlotQuestMini));
+            //BaseForm.get<FormPlayComms>()?.onQuestChanged(this);
+            //PlotBase2.invalidate(nameof(PlotQuestMini));
 
             conduit.dirty = false;
             return true;
@@ -646,8 +646,8 @@ namespace SrvSurvey.quests
             conduit.dirty = true;
 
             // update any UX
-            BaseForm.get<FormPlayComms>()?.onQuestChanged(this);
-            PlotBase2.invalidate(nameof(PlotQuestMini));
+            //BaseForm.get<FormPlayComms>()?.onQuestChanged(this);
+            //PlotBase2.invalidate(nameof(PlotQuestMini));
         }
 
         public void deleteMsg(string id)
@@ -656,8 +656,8 @@ namespace SrvSurvey.quests
             conduit.dirty = true;
 
             // update any UX
-            BaseForm.get<FormPlayComms>()?.onQuestChanged(this);
-            PlotBase2.invalidate(nameof(PlotQuestMini));
+            //BaseForm.get<FormPlayComms>()?.onQuestChanged(this);
+            //PlotBase2.invalidate(nameof(PlotQuestMini));
         }
 
         public void keepLast(params string[] names)

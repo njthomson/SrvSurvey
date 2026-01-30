@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Lua;
+using Newtonsoft.Json;
 using SrvSurvey.game;
 using SrvSurvey.plotters;
 using SrvSurvey.quests;
@@ -109,7 +110,7 @@ namespace SrvSurvey.forms
         private PlayChapter? getSelectedChapter(string? view)
         {
             if (view?.StartsWith("Chapter: ") == true)
-                return pq.chapters.Find(c => c.id == view.Substring(9));
+                return pq.chapters.FirstOrDefault(c => c.id == view.Substring(9));
             else
                 return null;
         }
@@ -133,6 +134,7 @@ namespace SrvSurvey.forms
             var chapter = getSelectedChapter(selectedView);
             if (chapter != null)
             {
+                chapter.pullScriptVars();
                 txtJson.Text = JsonConvert.SerializeObject(chapter.vars, Formatting.Indented);
             }
             else if (selectedView == "Objectives")
@@ -156,7 +158,7 @@ namespace SrvSurvey.forms
                 if (chapter != null)
                 {
                     // only keep changes to variables
-                    var obj = JsonConvert.DeserializeObject<Dictionary<string, object>>(txtJson.Text)!;
+                    var obj = JsonConvert.DeserializeObject<Dictionary<string, LuaValue>>(txtJson.Text)!;
                     var unknownVar = obj.Keys.FirstOrDefault(k =>
                     {
                         var x = !chapter.vars.ContainsKey(k);
@@ -224,7 +226,7 @@ namespace SrvSurvey.forms
 
             var rslt = picker.ShowDialog(this);
             if (rslt == DialogResult.OK)
-                folderImport(picker.SelectedPath);
+                folderImport(picker.SelectedPath).justDoIt();
         }
 
         private void menuWatchJournal_Click(object sender, EventArgs e)
@@ -287,60 +289,60 @@ namespace SrvSurvey.forms
             menuStatus.Text = $"Changes in: {folder}";
             Util.deferAfter(500, () =>
             {
-                folderImport(folder);
+                folderImport(folder).justDoIt();
             });
         }
 
-        private void folderImport(string folder)
+        private async Task folderImport(string folder)
         {
             importing = true;
             menuStatus.Text = $"Importing folder: {folder} ...";
             var oldPQ = cmdrPlay.activeQuests.Find(pq => pq.watchFolder == folder);
 
-            cmdrPlay.importFolder(folder, (newPQ) =>
-            {
-                menuStatus.Text = newPQ == null
-                    ? $"Import failed: {folder}"
-                    : $"Imported: {folder}";
+            var newPQ = await cmdrPlay.sideLoad(folder);
 
-                if (newPQ != null)
+            menuStatus.Text = newPQ == null
+                ? $"Import failed: {folder}"
+                : $"Imported: {folder}";
+
+            if (newPQ != null)
+            {
+                selectedQuest = newPQ.id;
+                if (oldPQ != null)
                 {
-                    selectedQuest = newPQ.id;
-                    if (oldPQ != null)
+                    // preserve state from previous PlayQuest
+                    foreach (var (k, v) in oldPQ.objectives) newPQ.objectives[k] = v;
+                    //foreach (var (k, v) in oldPQ.vars) newPQ.vars[k] = v;
+
+                    foreach (var oc in oldPQ.chapters)
                     {
-                        // preserve state from previous PlayQuest
-                        foreach (var (k, v) in oldPQ.objectives) newPQ.objectives[k] = v;
-                        foreach (var (k, v) in oldPQ.vars) newPQ.vars[k] = v;
-
-                        foreach (var oc in oldPQ.chapters)
-                        {
-                            var match = newPQ.chapters.Find(c => c.id == oc.id);
-                            if (match == null) continue;
-                            match.startTime = oc.startTime;
-                            match.endTime = oc.endTime;
-                            foreach (var (k, v) in oc.vars) match.vars[k] = v;
-                        }
-
-                        foreach (var om in oldPQ.msgs)
-                        {
-                            var idx = newPQ.msgs.FindIndex(m => m.id == om.id);
-                            if (idx == -1)
-                                newPQ.msgs.Add(om);
-                            else
-                                newPQ.msgs[idx] = om;
-                        }
-                        cmdrPlay.Save();
+                        var match = newPQ.chapters.FirstOrDefault(c => c.id == oc.id);
+                        if (match == null) continue;
+                        match.startTime = oc.startTime;
+                        match.endTime = oc.endTime;
+                        foreach (var (k, v) in oc.vars) match.vars[k] = v;
                     }
-                }
 
-                BaseForm.get<FormPlayComms>()?.onQuestChanged();
-                Program.defer(() => initComboQuests());
-                importing = false;
-            }).@catch(ex =>
-            {
-                Game.log($"Import failed: {ex.Message}\r\n\t{ex.StackTrace}");
-                menuStatus.Text = $"Import failed: {ex.Message}";
-            }).justDoIt();
+                    foreach (var om in oldPQ.msgs)
+                    {
+                        var idx = newPQ.msgs.FindIndex(m => m.id == om.id);
+                        if (idx == -1)
+                            newPQ.msgs.Add(om);
+                        else
+                            newPQ.msgs[idx] = om;
+                    }
+                    cmdrPlay.Save();
+                }
+            }
+
+            BaseForm.get<FormPlayComms>()?.onQuestChanged();
+            Program.defer(() => initComboQuests());
+            importing = false;
+            //}).@catch(ex =>
+            //{
+            //    Game.log($"Import failed: {ex.Message}\r\n\t{ex.StackTrace}");
+            //    menuStatus.Text = $"Import failed: {ex.Message}";
+            //})
         }
 
     }

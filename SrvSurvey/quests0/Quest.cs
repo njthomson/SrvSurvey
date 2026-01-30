@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SrvSurvey.quests
+namespace SrvSurvey.quests0
 {
     /// <summary> A static definition of a quest </summary>
     public class Quest

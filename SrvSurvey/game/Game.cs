@@ -1094,7 +1094,7 @@ namespace SrvSurvey.game
                 PlotBase2.processJournalEntry(entry);
 
                 // finally, let active quests know about this
-                cmdrPlay?.processJournalEntry(entry);
+                cmdrPlay?.processJournalEntry(entry).justDoIt();
             }
             catch (Exception ex)
             {

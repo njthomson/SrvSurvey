@@ -57,7 +57,7 @@ namespace SrvSurvey
                 // so lists keep their initialized empty value instead of being set to null
                 JsonConvert.DefaultSettings = () => new JsonSerializerSettings
                 {
-                    ContractResolver = new NullListContractResolver()
+                    ContractResolver = new CustomContractResolver()
                 };
 
                 if (!string.IsNullOrEmpty(Game.settings.lang))
