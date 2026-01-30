@@ -23,15 +23,13 @@ internal static class LuaUtils
 
     public static LuaValue toLua(this object? raw)
     {
-        if (raw == null)
-            return LuaValue.Nil;
-        if (raw is string)
-            return new LuaValue((string)raw);
-        if (raw is double)
-            return new LuaValue((double)raw);
-        if (raw is bool)
-            return new LuaValue((bool)raw);
-
+        if (raw == null) return LuaValue.Nil;
+        if (raw is string) return new LuaValue((string)raw);
+        if (raw is bool) return new LuaValue((bool)raw);
+        if (raw is int) return new LuaValue((int)raw);
+        if (raw is long) return new LuaValue((long)raw);
+        if (raw is double) return new LuaValue((double)raw);
+        if (raw is float) return new LuaValue((float)raw);
         if (raw is DateTimeOffset)
         {
             var time = (DateTimeOffset)raw;

@@ -132,6 +132,8 @@ end");
     /// <summary> Push saved variable values into script state </summary>
     public void pushScriptVars()
     {
+        if (state == null) return;
+
         foreach (var (key, value) in vars)
             state.Environment[key] = value;
     }

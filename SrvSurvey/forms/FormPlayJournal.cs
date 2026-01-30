@@ -27,7 +27,7 @@ namespace SrvSurvey.forms
         {
             if (game.journals == null) return;
 
-            var entries = game.journals.Entries.Slice(game.journals.Entries.Count - 40, 40).ToList();
+            var entries = game.journals.Entries.Slice(game.journals.Entries.Count - 120, 120).ToList();
             foreach (var entry in entries)
             {
                 var obj = JObject.FromObject(entry);
@@ -64,7 +64,7 @@ namespace SrvSurvey.forms
 
         private void Journals_onRawJournalEntry(JObject obj, int index)
         {
-            if (treeJournals.Nodes.Count >= 40)
+            if (treeJournals.Nodes.Count >= 120)
                 treeJournals.Nodes.RemoveAt(treeJournals.Nodes.Count - 1);
 
             if (treeJournals.Nodes.Count > 0)
