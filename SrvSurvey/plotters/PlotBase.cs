@@ -538,12 +538,12 @@ namespace SrvSurvey.plotters
 
         protected void drawCommander0()
         {
-            if (g == null) return;
+            if (g == null || game.status == null) return;
 
             // draw current location pointer (always at center of plot + unscaled)
             g.ResetTransform();
             g.TranslateTransform(mid.Width, mid.Height);
-            g.RotateTransform(360 - game.status!.Heading);
+            g.RotateTransform(360 - game.status.Heading);
 
             var locSz = 5f;
             g.DrawEllipse(GameColors.penLime2, -locSz, -locSz, locSz * 2, locSz * 2);
@@ -568,9 +568,9 @@ namespace SrvSurvey.plotters
 
         protected void drawCompassLines(int heading = -1)
         {
-            if (g == null) return;
+            if (g == null || game.status == null) return;
 
-            if (heading == -1) heading = game.status!.Heading;
+            if (heading == -1) heading = game.status.Heading;
 
             g.ResetTransform();
             this.clipToMiddle();
@@ -592,7 +592,8 @@ namespace SrvSurvey.plotters
             g.ResetTransform();
             g.TranslateTransform(mid.Width, mid.Height);
             g.ScaleTransform(scale, scale);
-            g.RotateTransform(360 - game.status!.Heading);
+            if (game.status == null) return;
+            g.RotateTransform(360 - game.status.Heading);
 
             // draw touchdown marker
             if (game.touchdownLocation != null && game.systemBody != null)
@@ -646,8 +647,9 @@ namespace SrvSurvey.plotters
 
         protected void drawBearingTo(float x, float y, string txt, LatLong2 location)
         {
-            var dd = new TrackingDelta(game.systemBody!.radius, location);
-            Angle deg = dd.angle - game.status!.Heading;
+            if (game.systemBody == null || game.status == null) return;
+            var dd = new TrackingDelta(game.systemBody.radius, location);
+            Angle deg = dd.angle - game.status.Heading;
 
             drawBearingTo(x, y, txt, (double)dd.distance, (double)deg);
         }
