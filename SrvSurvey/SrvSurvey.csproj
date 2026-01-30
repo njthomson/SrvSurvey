@@ -17,6 +17,7 @@
     <ApplicationIcon>logo.ico</ApplicationIcon>
     <PlatformTarget>x64</PlatformTarget>
     <Configurations>Debug;Release;ReleaseOnce;DebugNoPS</Configurations>
+    <SatelliteResourceLanguages>en;de;es;fr;ps;pt-BR;ru;zh-Hans</SatelliteResourceLanguages>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseOnce|x64'">
@@ -473,14 +474,133 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <UsingTask TaskName="SortResxFiles" TaskFactory="RoslynCodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <ProjectDir Required="true" ParameterType="System.String" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.Xml" />
+      <Code Type="Fragment" Language="cs">
+        var locBelowComment = "Localizable elements are below";
+        var resxFiles = Directory.GetFiles(ProjectDir, "*.resx", SearchOption.AllDirectories);
+        Log.LogMessage(MessageImportance.High, $"Found {resxFiles.Length} .resx files");
+
+        foreach (var filepath in resxFiles)
+        {
+            var xml = new System.Xml.XmlDocument();
+            xml.Load(filepath);
+
+            // Check if marked as localizable
+            var metadata = xml.SelectNodes("descendant::metadata");
+            bool localizable = false;
+            foreach (System.Xml.XmlNode m in metadata)
+            {
+                var nameAttr = m.Attributes["name"];
+                var valueAttr = m.Attributes["value"];
+                // value can also be inner text
+                var val = valueAttr != null ? valueAttr.Value : m.InnerText;
+                if (nameAttr != null &amp;&amp; nameAttr.Value == "$this.Localizable" &amp;&amp; val.Trim() == "True")
+                {
+                    localizable = true;
+                    break;
+                }
+            }
+            if (!localizable) continue;
+
+            Log.LogMessage(MessageImportance.High, $"Sorting: {filepath}");
+            var root = xml.DocumentElement;
+
+            // Remove comments matching locBelowComment
+            var toRemove = new System.Collections.Generic.List&lt;System.Xml.XmlNode&gt;();
+            foreach (System.Xml.XmlNode node in root.ChildNodes)
+                if (node.NodeType == System.Xml.XmlNodeType.Comment &amp;&amp; node.Value == locBelowComment)
+                    toRemove.Add(node);
+            foreach (var node in toRemove) root.RemoveChild(node);
+
+            // Collect free-floating comments and their next siblings
+            var comments = new System.Collections.Generic.Dictionary&lt;System.Xml.XmlNode, System.Xml.XmlNode&gt;();
+            foreach (System.Xml.XmlNode node in root.ChildNodes)
+                if (node.NodeType == System.Xml.XmlNodeType.Comment &amp;&amp; node.NextSibling != null &amp;&amp; node.Value != locBelowComment)
+                    comments[node] = node.NextSibling;
+
+            // Collect and sort data nodes
+            var dataNodes = new System.Collections.Generic.List&lt;System.Xml.XmlNode&gt;();
+            foreach (System.Xml.XmlNode node in root.ChildNodes)
+                if (node.LocalName == "data") dataNodes.Add(node);
+            dataNodes.Sort((a, b) =&gt;
+            {
+                var na = a.Attributes["name"].Value.Replace("$", "").Replace("&gt;&gt;", "");
+                var nb = b.Attributes["name"].Value.Replace("$", "").Replace("&gt;&gt;", "");
+                return string.Compare(na, nb, StringComparison.Ordinal);
+            });
+
+            // Remove then re-add sorted
+            foreach (var node in dataNodes) root.RemoveChild(node);
+            foreach (var node in dataNodes) root.AppendChild(node);
+
+            // Separate localizable nodes (no type attribute, name doesn't start with >)
+            var locNodes = new System.Collections.Generic.List&lt;System.Xml.XmlNode&gt;();
+            foreach (var node in dataNodes)
+            {
+                var nameVal = node.Attributes["name"].Value;
+                if (node.Attributes["type"] == null &amp;&amp; !nameVal.StartsWith("&gt;"))
+                    locNodes.Add(node);
+            }
+            foreach (var node in locNodes) root.RemoveChild(node);
+            root.AppendChild(xml.CreateComment(locBelowComment));
+            foreach (var node in locNodes) root.AppendChild(node);
+
+            // Restore comments before their original next siblings
+            foreach (var kv in comments)
+            {
+                var comment = kv.Key;
+                var nextNode = kv.Value;
+                if (comment.ParentNode != null) comment.ParentNode.RemoveChild(comment);
+                if (nextNode.ParentNode != null) nextNode.ParentNode.InsertBefore(comment, nextNode);
+            }
+
+            xml.Save(filepath);
+        }
+      </Code>
+    </Task>
+  </UsingTask>
+
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Exec Command="PowerShell &quot;$(ProjectDir)sort-resx.ps1&quot;" />
+    <SortResxFiles ProjectDir="$(ProjectDir)" />
   </Target>
 
   <ProjectExtensions><VisualStudio><UserProperties theme_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="cmd.exe /c &quot;copy ..\data.json ..\docs\data.json&quot;" />
+    <Copy SourceFiles="$(ProjectDir)..\data.json" DestinationFiles="$(ProjectDir)..\docs\data.json" />
+  </Target>
+
+  <UsingTask TaskName="MoveSatelliteAssemblies" TaskFactory="RoslynCodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <OutputDir Required="true" ParameterType="System.String" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Fragment" Language="cs">
+        var localesDir = Path.Combine(OutputDir, "locales");
+        Directory.CreateDirectory(localesDir);
+        foreach (var dir in Directory.GetDirectories(OutputDir))
+        {
+            if (Path.GetFileName(dir) == "locales") continue;
+            if (Directory.GetFiles(dir, "*.resources.dll").Length > 0)
+            {
+                var dest = Path.Combine(localesDir, Path.GetFileName(dir));
+                if (Directory.Exists(dest)) Directory.Delete(dest, true);
+                Directory.Move(dir, dest);
+            }
+        }
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <Target Name="RelocateSatelliteAssemblies" AfterTargets="Build">
+    <MoveSatelliteAssemblies OutputDir="$(OutputPath)" />
   </Target>
 
 </Project>
