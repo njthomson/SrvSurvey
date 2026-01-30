@@ -229,7 +229,7 @@ namespace SrvSurvey.forms
                 folderImport(picker.SelectedPath).justDoIt();
         }
 
-        private void menuWatchJournal_Click(object sender, EventArgs e)
+        private void menuWatch_Click(object sender, EventArgs e)
         {
             if (Game.activeGame != null)
                 BaseForm.show<FormPlayJournal>();
@@ -240,9 +240,9 @@ namespace SrvSurvey.forms
             this.loadPlayState(true).justDoIt();
         }
 
-        private void menuMore_DropDownOpening(object sender, EventArgs e)
+        private void menuComms_Click(object sender, EventArgs e)
         {
-            menuWatchJournal.Enabled = Game.activeGame != null;
+            BaseForm.show<FormPlayComms>();
         }
 
         private void stopWatching()
@@ -344,6 +344,5 @@ namespace SrvSurvey.forms
             //    menuStatus.Text = $"Import failed: {ex.Message}";
             //})
         }
-
     }
 }

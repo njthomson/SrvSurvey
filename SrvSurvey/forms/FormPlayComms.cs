@@ -13,6 +13,22 @@ namespace SrvSurvey.forms
     [TrackPosition, Draggable]
     internal partial class FormPlayComms : SizableForm
     {
+        public static void toggleForm()
+        {
+            var form = BaseForm.get<FormPlayComms>();
+            if (form == null)
+            {
+                BaseForm.show<FormPlayComms>();
+            }
+            else
+            {
+                if (Elite.focusSrvSurvey)
+                    form.Close();
+                else
+                    form.Activate();
+            }
+        }
+
         public PlayState cmdrPlay;
         private Control? selectedThing;
         private string mode = "quests";
@@ -115,7 +131,9 @@ namespace SrvSurvey.forms
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
             base.OnFormClosed(e);
-            Elite.setFocusED();
+
+            if (Elite.isGameRunning && !Elite.eliteMinimized)
+                Elite.setFocusED();
         }
 
         private void FormPlayComms_Paint(object sender, PaintEventArgs e)

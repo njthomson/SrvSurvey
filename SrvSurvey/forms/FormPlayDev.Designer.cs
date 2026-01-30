@@ -37,10 +37,11 @@
             btnParse = new Button();
             statusStrip1 = new StatusStrip();
             menuMore = new ToolStripDropDownButton();
-            menuImportFolder = new ToolStripMenuItem();
+            menuImportFolder2 = new ToolStripMenuItem();
             menuReadFromFile = new ToolStripMenuItem();
-            menuWatchJournal = new ToolStripMenuItem();
             menuStatus = new ToolStripStatusLabel();
+            menuWatch = new ToolStripDropDownButton();
+            menuComms = new ToolStripDropDownButton();
             checkWatchFolder = new CheckBox();
             btnRefresh = new Button();
             statusStrip1.SuspendLayout();
@@ -111,9 +112,10 @@
             // 
             // statusStrip1
             // 
-            statusStrip1.Items.AddRange(new ToolStripItem[] { menuMore, menuStatus });
+            statusStrip1.Items.AddRange(new ToolStripItem[] { menuMore, menuStatus, menuWatch, menuComms });
             statusStrip1.Location = new Point(0, 384);
             statusStrip1.Name = "statusStrip1";
+            statusStrip1.ShowItemToolTips = true;
             statusStrip1.Size = new Size(782, 22);
             statusStrip1.TabIndex = 8;
             statusStrip1.Text = "statusStrip1";
@@ -121,43 +123,57 @@
             // menuMore
             // 
             menuMore.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            menuMore.DropDownItems.AddRange(new ToolStripItem[] { menuImportFolder, menuReadFromFile, menuWatchJournal });
+            menuMore.DropDownItems.AddRange(new ToolStripItem[] { menuImportFolder2, menuReadFromFile });
             menuMore.Image = (Image)resources.GetObject("menuMore.Image");
             menuMore.ImageTransparentColor = Color.Magenta;
             menuMore.Name = "menuMore";
-            menuMore.Size = new Size(29, 20);
-            menuMore.Text = "...";
-            menuMore.DropDownOpening += menuMore_DropDownOpening;
+            menuMore.Size = new Size(58, 20);
+            menuMore.Text = "Load ...";
             // 
-            // menuImportFolder
+            // menuImportFolder2
             // 
-            menuImportFolder.Name = "menuImportFolder";
-            menuImportFolder.Size = new Size(197, 22);
-            menuImportFolder.Text = "Import quest folder...";
-            menuImportFolder.Click += menuImportFolder_Click;
+            menuImportFolder2.Name = "menuImportFolder2";
+            menuImportFolder2.Size = new Size(185, 22);
+            menuImportFolder2.Text = "Import quest folder...";
+            menuImportFolder2.Click += menuImportFolder_Click;
             // 
             // menuReadFromFile
             // 
             menuReadFromFile.Name = "menuReadFromFile";
-            menuReadFromFile.Size = new Size(197, 22);
+            menuReadFromFile.Size = new Size(185, 22);
             menuReadFromFile.Text = "Reset to file";
             menuReadFromFile.Click += menuReadFromFile_Click;
-            // 
-            // menuWatchJournal
-            // 
-            menuWatchJournal.Name = "menuWatchJournal";
-            menuWatchJournal.Size = new Size(197, 22);
-            menuWatchJournal.Text = "Watch journal events ...";
-            menuWatchJournal.Click += menuWatchJournal_Click;
             // 
             // menuStatus
             // 
             menuStatus.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
             menuStatus.BorderStyle = Border3DStyle.SunkenOuter;
             menuStatus.Name = "menuStatus";
-            menuStatus.Size = new Size(707, 17);
+            menuStatus.Size = new Size(556, 17);
             menuStatus.Spring = true;
             menuStatus.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // menuWatch
+            // 
+            menuWatch.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            menuWatch.ImageTransparentColor = Color.Magenta;
+            menuWatch.Name = "menuWatch";
+            menuWatch.ShowDropDownArrow = false;
+            menuWatch.Size = new Size(57, 20);
+            menuWatch.Text = "( watch )";
+            menuWatch.ToolTipText = "Open quest watch window";
+            menuWatch.Click += menuWatch_Click;
+            // 
+            // menuComms
+            // 
+            menuComms.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            menuComms.ImageTransparentColor = Color.Magenta;
+            menuComms.Name = "menuComms";
+            menuComms.ShowDropDownArrow = false;
+            menuComms.Size = new Size(65, 20);
+            menuComms.Text = "( comms )";
+            menuComms.ToolTipText = "Open quest comms window";
+            menuComms.Click += menuComms_Click;
             // 
             // checkWatchFolder
             // 
@@ -216,8 +232,9 @@
         private CheckBox checkWatchFolder;
         private Button btnRefresh;
         private ToolStripDropDownButton menuMore;
-        private ToolStripMenuItem menuImportFolder;
-        private ToolStripMenuItem menuWatchJournal;
+        private ToolStripMenuItem menuImportFolder2;
         private ToolStripMenuItem menuReadFromFile;
+        private ToolStripDropDownButton menuWatch;
+        private ToolStripDropDownButton menuComms;
     }
 }

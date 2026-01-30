@@ -155,16 +155,6 @@ namespace SrvSurvey.plotters
 
         #region logos
 
-        private static void drawLogo32(Graphics g, float x, float y, bool highlight = false)
-        {
-            drawLogo(g, x, y, highlight, 16);
-        }
-
-        private static void drawLogo16(Graphics g, float x, float y, bool highlight = false)
-        {
-            drawLogo(g, x, y, highlight, 16);
-        }
-
         public static void drawLogo(Graphics g, float x, float y, bool highlight, float sz)
         {
             var half = sz / 2;

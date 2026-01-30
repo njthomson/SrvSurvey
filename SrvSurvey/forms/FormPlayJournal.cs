@@ -8,26 +8,50 @@ namespace SrvSurvey.forms
     [TrackPosition, Draggable]
     internal partial class FormPlayJournal : SizableForm
     {
+        private int maxCount = 120;
+
         private Game game => Game.activeGame!;
+        private TreeNode? nodeLastParent;
+        private HashSet<string> incAttrs = [];
 
         public FormPlayJournal()
         {
             InitializeComponent();
 
-            game.status.StatusChanged += Status_StatusChanged;
-            game.journals!.onRawJournalEntry += Journals_onRawJournalEntry;
-
             Util.applyTheme(this, true, false);
 
             this.Status_StatusChanged(false);
             this.pullPriorEntries();
+            txtNewCode.Text = "";
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            if (game.status == null || game.journals == null)
+            {
+                this.Close();
+                return;
+            }
+
+            game.status.StatusChanged += Status_StatusChanged;
+            game.journals.onRawJournalEntry += Journals_onRawJournalEntry;
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+
+            if (Game.activeGame == null)
+                this.Close();
         }
 
         private void pullPriorEntries()
         {
             if (game.journals == null) return;
 
-            var count = Math.Min(120, game.journals.Entries.Count);
+            var count = Math.Min(maxCount, game.journals.Entries.Count);
             var entries = game.journals.Entries.Slice(game.journals.Entries.Count - count, count).ToList();
             foreach (var entry in entries)
             {
@@ -65,7 +89,7 @@ namespace SrvSurvey.forms
 
         private void Journals_onRawJournalEntry(JObject obj, int index)
         {
-            if (treeJournals.Nodes.Count >= 120)
+            if (treeJournals.Nodes.Count >= maxCount)
                 treeJournals.Nodes.RemoveAt(treeJournals.Nodes.Count - 1);
 
             if (treeJournals.Nodes.Count > 0)
@@ -81,6 +105,7 @@ namespace SrvSurvey.forms
                 if (prop.Value.Type == JTokenType.Null) continue;
                 if (prop.Value.Type == JTokenType.String && string.IsNullOrWhiteSpace($"{prop.Value}")) continue;
                 var child = node.Nodes.Add($"{prop.Name}: {prop.Value}");
+                child.Tag = prop.Name;
 
                 if (prop.Value is JObject childObj)
                 {
@@ -88,7 +113,8 @@ namespace SrvSurvey.forms
                     {
                         if (childProp.Value.Type == JTokenType.Null) continue;
                         if (childProp.Value.Type == JTokenType.String && string.IsNullOrWhiteSpace($"{childProp.Value}")) continue;
-                        child.Nodes.Add($"{childProp.Name}: {childProp.Value}");
+                        child.Nodes.Add($"{childProp.Name}:! {childProp.Value}")
+                            .Tag = $"{prop.Name}.{childProp.Name}";
                     }
                 }
                 else if (prop.Value is JArray arr)
@@ -121,13 +147,110 @@ namespace SrvSurvey.forms
 
         private void btnReplay_Click(object sender, EventArgs e)
         {
-            var node = treeJournals.SelectedNode;
-            var obj = node?.Tag as JObject;
+            if (treeJournals.SelectedNode == null) return;
+
+            var parent = treeJournals.SelectedNode;
+            while (parent.Parent != null)
+                parent = parent.Parent;
+
+            replayNode(parent.Tag as JObject);
+        }
+
+        private void replayNode(JObject? obj)
+        {
             if (obj == null) return;
 
             var entry = JournalFile.hydrate(obj)!;
             if (entry != null)
-                game.cmdrPlay!.processJournalEntry(entry).justDoIt();
+                game.cmdrPlay?.processJournalEntry(entry).justDoIt();
+        }
+
+        private void treeJournals_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+                generateCodeFragment(e.Node);
+        }
+
+        private void generateCodeFragment(TreeNode? node)
+        {
+            if (node?.Tag == null) return;
+
+            // get parent node, with the journal entry
+            var parent = node;
+            while (parent.Parent != null)
+                parent = parent.Parent;
+
+            var obj = parent.Tag as JObject;
+            if (obj == null) return;
+
+            // reset attr's if parent changed
+            if (parent != nodeLastParent) incAttrs.Clear();
+            nodeLastParent = parent;
+
+            var tagName = node.Tag as string;
+            if (tagName != null && tagName != "event")
+            {
+                if (incAttrs.Contains(tagName))
+                    incAttrs.Remove(tagName);
+                else
+                    incAttrs.Add(tagName);
+            }
+
+            // generate a suitably named function
+            var txt = new StringBuilder();
+            var eventName = obj["event"]?.ToString();
+            txt.AppendLine($"function on_{eventName}(entry)");
+
+            // inject an IF block for any selected attributes
+            if (incAttrs.Any())
+            {
+                var clauses = incAttrs
+                    .Select(x =>
+                    {
+                        var val = obj?.SelectToken("$." + x);
+                        switch (val?.Type)
+                        {
+                            case JTokenType.String:
+                                return $"entry.{x} == \"{val}\"";
+                            case JTokenType.Boolean:
+                            case JTokenType.Integer:
+                            case JTokenType.Float:
+                                return $"entry.{x} == {val}";
+                        }
+
+                        // ignore anything else
+                        incAttrs.Remove(x);
+                        return null;
+                    })
+                    .Where(x => x != null);
+
+                txt.AppendLine($"  if {string.Join(" and ", clauses)} then");
+                txt.AppendLine("    -- TODO: your code");
+                txt.AppendLine("  end");
+            }
+            else
+            {
+                txt.AppendLine("  -- TODO: your code");
+            }
+
+            txt.AppendLine("end");
+            txtNewCode.Text = txt.ToString();
+        }
+
+        private void btnCopyCode_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtNewCode.Text))
+                Clipboard.SetText(txtNewCode.Text);
+        }
+
+        private void menuDev_Click(object sender, EventArgs e)
+        {
+            BaseForm.show<FormPlayDev>();
+        }
+
+        private void menuComms_Click(object sender, EventArgs e)
+        {
+            BaseForm.show<FormPlayComms>();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace SrvSurvey
+﻿using System.Diagnostics;
+
+namespace SrvSurvey
 {
     partial class FormBuilder
     {
@@ -20,7 +22,7 @@
 
             if (game.status != null)
                 game.status.StatusChanged -= Status_StatusChanged;
-
+            
             base.Dispose(disposing);
         }
 

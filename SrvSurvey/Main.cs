@@ -343,6 +343,11 @@ namespace SrvSurvey
 
         }
 
+        private void btnQuestComms_Paint(object sender, PaintEventArgs e)
+        {
+            PlotQuestMini.drawLogo(e.Graphics, 8, 4, false, 28);
+        }
+
         private void btnCodexShow_Paint(object sender, PaintEventArgs e)
         {
             var r = new Rectangle(Point.Empty, ImageResources.picture.Size);
@@ -1226,7 +1231,9 @@ namespace SrvSurvey
             var dark = Game.settings.darkTheme;
             Util.applyTheme(this, dark, black);
 
-            foreach (var btn in new DrawButton[] { btnQuit2, btnSettings, btnLogs, btnPredictions, btnCodexBingo, btnResetExploration, btnCopyLocation, btnCodexShow, btnResetBio })
+            btnQuestComms.Visible = Game.settings.enableQuests;
+
+            foreach (var btn in new DrawButton[] { btnQuit2, btnSettings, btnLogs, btnPredictions, btnCodexBingo, btnResetExploration, btnCopyLocation, btnCodexShow, btnResetBio, btnQuestComms })
             {
                 btn.BackColor = black ? C.orangeDarker : dark ? SystemColors.ControlDark : SystemColors.ControlLight;
 
@@ -1860,11 +1867,6 @@ namespace SrvSurvey
             BaseForm.show<FormShowCodex>();
         }
 
-        private void menuSearchTools_Opening(object sender, CancelEventArgs e)
-        {
-            questToolStripMenuItem.Visible = Game.settings.enableQuests;
-        }
-
         private void menuSpherical_Click(object sender, EventArgs e)
         {
             PlotBase2.remove(PlotSphericalSearch.def);
@@ -1877,12 +1879,12 @@ namespace SrvSurvey
             BaseForm.show<FormBoxelSearch>();
         }
 
-        private void questToolStripMenuItem_Click(object sender, EventArgs e)
+        private void btnQuestComms_MouseClick(object sender, MouseEventArgs e)
         {
             if (ModifierKeys.HasFlag(Keys.Control))
                 BaseForm.show<FormPlayDev>();
             else
-                BaseForm.show<FormPlayComms>();
+                FormPlayComms.toggleForm();
         }
 
         private void menuMyProjects_Click(object sender, EventArgs e)

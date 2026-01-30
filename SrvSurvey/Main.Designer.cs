@@ -82,7 +82,6 @@ namespace SrvSurvey
             menuSearchTools = new ButtonContextMenuStrip(components);
             menuSpherical = new ToolStripMenuItem();
             menuBoxel = new ToolStripMenuItem();
-            questToolStripMenuItem = new ToolStripMenuItem();
             btnSearch = new FlatButton();
             lblBig = new Label();
             comboDev = new ComboBox();
@@ -122,6 +121,7 @@ namespace SrvSurvey
             btnRuinsMap = new ToolStripMenuItem();
             btnRuinsOrigin = new ToolStripMenuItem();
             toolTip1 = new ToolTip(components);
+            btnQuestComms = new DrawButton();
             notifyIcon = new NotifyIcon(components);
             menuNotify = new ContextMenuStrip(components);
             menuNotifyCmdr = new ToolStripMenuItem();
@@ -146,6 +146,7 @@ namespace SrvSurvey
             // 
             // btnQuit2
             // 
+            btnQuit2.AnimateOnPress = false;
             btnQuit2.BackColor = SystemColors.ControlDark;
             btnQuit2.BackColorDisabled = Color.Empty;
             btnQuit2.BackColorHover = Color.Empty;
@@ -205,6 +206,7 @@ namespace SrvSurvey
             // btnCopyLocation
             // 
             btnCopyLocation.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnCopyLocation.AnimateOnPress = false;
             btnCopyLocation.BackColor = SystemColors.ControlDark;
             btnCopyLocation.BackColorDisabled = Color.Empty;
             btnCopyLocation.BackColorHover = Color.Empty;
@@ -312,6 +314,7 @@ namespace SrvSurvey
             // btnResetBio
             // 
             btnResetBio.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnResetBio.AnimateOnPress = false;
             btnResetBio.BackColor = SystemColors.ControlDark;
             btnResetBio.BackColorDisabled = Color.Empty;
             btnResetBio.BackColorHover = Color.Empty;
@@ -335,6 +338,7 @@ namespace SrvSurvey
             // btnPredictions
             // 
             btnPredictions.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnPredictions.AnimateOnPress = false;
             btnPredictions.BackColor = SystemColors.ControlDark;
             btnPredictions.BackColorDisabled = Color.Empty;
             btnPredictions.BackColorHover = Color.Empty;
@@ -470,6 +474,7 @@ namespace SrvSurvey
             // 
             // btnCodexShow
             // 
+            btnCodexShow.AnimateOnPress = false;
             btnCodexShow.BackColor = SystemColors.ControlDark;
             btnCodexShow.BackColorDisabled = Color.Empty;
             btnCodexShow.BackColorHover = Color.Empty;
@@ -499,6 +504,7 @@ namespace SrvSurvey
             // 
             // btnLogs
             // 
+            btnLogs.AnimateOnPress = false;
             btnLogs.BackColor = SystemColors.ControlDark;
             btnLogs.BackColorDisabled = Color.Empty;
             btnLogs.BackColorHover = Color.Empty;
@@ -522,6 +528,7 @@ namespace SrvSurvey
             // 
             // btnSettings
             // 
+            btnSettings.AnimateOnPress = false;
             btnSettings.BackColor = SystemColors.ControlDark;
             btnSettings.BackColorDisabled = Color.Empty;
             btnSettings.BackColorHover = Color.Empty;
@@ -696,6 +703,7 @@ namespace SrvSurvey
             // btnResetExploration
             // 
             btnResetExploration.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnResetExploration.AnimateOnPress = false;
             btnResetExploration.BackColor = SystemColors.ControlDark;
             btnResetExploration.BackColorDisabled = Color.Empty;
             btnResetExploration.BackColorHover = Color.Empty;
@@ -768,6 +776,7 @@ namespace SrvSurvey
             // 
             // btnCodexBingo
             // 
+            btnCodexBingo.AnimateOnPress = false;
             btnCodexBingo.BackColor = SystemColors.ControlDark;
             btnCodexBingo.BackColorDisabled = Color.Empty;
             btnCodexBingo.BackColorHover = Color.Empty;
@@ -793,12 +802,11 @@ namespace SrvSurvey
             // 
             menuSearchTools.BackColor = SystemColors.ControlLight;
             menuSearchTools.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            menuSearchTools.Items.AddRange(new ToolStripItem[] { menuSpherical, menuBoxel, questToolStripMenuItem });
+            menuSearchTools.Items.AddRange(new ToolStripItem[] { menuSpherical, menuBoxel });
             menuSearchTools.Name = "menuSearchTools";
             menuSearchTools.RenderMode = ToolStripRenderMode.System;
-            menuSearchTools.Size = new Size(203, 166);
+            menuSearchTools.Size = new Size(203, 112);
             menuSearchTools.targetButton = btnSearch;
-            menuSearchTools.Opening += menuSearchTools_Opening;
             // 
             // menuSpherical
             // 
@@ -822,13 +830,6 @@ namespace SrvSurvey
             menuBoxel.ToolTipText = "Search every system within a named boxel.";
             menuBoxel.Click += menuBoxel_Click;
             // 
-            // questToolStripMenuItem
-            // 
-            questToolStripMenuItem.Name = "questToolStripMenuItem";
-            questToolStripMenuItem.Size = new Size(202, 54);
-            questToolStripMenuItem.Text = "Quest";
-            questToolStripMenuItem.Click += questToolStripMenuItem_Click;
-            // 
             // btnSearch
             // 
             btnSearch.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
@@ -847,7 +848,7 @@ namespace SrvSurvey
             // 
             lblBig.AutoSize = true;
             lblBig.Font = new Font("Century Gothic", 21.75F, FontStyle.Bold);
-            lblBig.Location = new Point(300, 437);
+            lblBig.Location = new Point(248, 509);
             lblBig.Name = "lblBig";
             lblBig.Size = new Size(72, 36);
             lblBig.TabIndex = 11;
@@ -1167,6 +1168,31 @@ namespace SrvSurvey
             btnRuinsOrigin.Text = "Aerial Assist";
             btnRuinsOrigin.Click += btnRuinsOrigin_Click;
             // 
+            // btnQuestComms
+            // 
+            btnQuestComms.AnimateOnPress = false;
+            btnQuestComms.BackColor = SystemColors.ControlDark;
+            btnQuestComms.BackColorDisabled = Color.Empty;
+            btnQuestComms.BackColorHover = Color.Empty;
+            btnQuestComms.BackColorPressed = Color.Empty;
+            btnQuestComms.DrawBorder = true;
+            btnQuestComms.Enabled = false;
+            btnQuestComms.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnQuestComms.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnQuestComms.FlatStyle = FlatStyle.Flat;
+            btnQuestComms.ForeColor = Color.Black;
+            btnQuestComms.ForeColorDisabled = Color.Empty;
+            btnQuestComms.ForeColorHover = Color.Empty;
+            btnQuestComms.ForeColorPressed = Color.Empty;
+            btnQuestComms.Location = new Point(325, 437);
+            btnQuestComms.Name = "btnQuestComms";
+            btnQuestComms.Size = new Size(46, 36);
+            btnQuestComms.TabIndex = 20;
+            toolTip1.SetToolTip(btnQuestComms, "Open quest comms window");
+            btnQuestComms.UseVisualStyleBackColor = false;
+            btnQuestComms.Paint += btnQuestComms_Paint;
+            btnQuestComms.MouseClick += btnQuestComms_MouseClick;
+            // 
             // notifyIcon
             // 
             notifyIcon.ContextMenuStrip = menuNotify;
@@ -1249,12 +1275,12 @@ namespace SrvSurvey
             AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = SystemColors.AppWorkspace;
             ClientSize = new Size(437, 548);
+            Controls.Add(btnQuestComms);
             Controls.Add(btnColonize);
             Controls.Add(btnTravel);
             Controls.Add(btnGuardian);
             Controls.Add(btnSearch);
             Controls.Add(comboDev);
-            Controls.Add(lblBig);
             Controls.Add(groupCodex);
             Controls.Add(btnCodexShow);
             Controls.Add(linkNewBuildAvailable);
@@ -1269,6 +1295,7 @@ namespace SrvSurvey
             Controls.Add(btnQuit2);
             Controls.Add(lblNotInstalled);
             Controls.Add(lblFullScreen);
+            Controls.Add(lblBig);
             Font = new Font("Lucida Sans Typewriter", 8.25F);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -1392,7 +1419,7 @@ namespace SrvSurvey
         private ToolStripMenuItem menuPastJourneys;
         private ToolStripMenuItem menuUpdateStations;
         private ToolStripMenuItem menuMyProjects;
-        private ToolStripMenuItem questToolStripMenuItem;
         private DrawButton btnResetBio;
+        public DrawButton btnQuestComms;
     }
 }
