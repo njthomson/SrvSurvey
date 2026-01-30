@@ -27,7 +27,8 @@ namespace SrvSurvey.forms
         {
             if (game.journals == null) return;
 
-            var entries = game.journals.Entries.Slice(game.journals.Entries.Count - 120, 120).ToList();
+            var count = Math.Min(120, game.journals.Entries.Count);
+            var entries = game.journals.Entries.Slice(game.journals.Entries.Count - count, count).ToList();
             foreach (var entry in entries)
             {
                 var obj = JObject.FromObject(entry);
