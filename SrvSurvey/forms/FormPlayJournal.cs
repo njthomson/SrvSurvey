@@ -125,9 +125,9 @@ namespace SrvSurvey.forms
             var obj = node?.Tag as JObject;
             if (obj == null) return;
 
-            var entry = JournalFile.hydrate(obj)!;
+            var entry = JournalFile.hydrate(obj);
             if (entry != null)
-                game.cmdrPlay!.processJournalEntry(entry).justDoIt();
+                game.cmdrPlay?.processJournalEntry(entry).justDoIt();
         }
     }
 }

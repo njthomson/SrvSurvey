@@ -47,6 +47,7 @@ namespace SrvSurvey
                 if (this.watcher != null)
                 {
                     this.watcher.Changed -= JournalWatcher_Changed;
+                    this.watcher.Dispose();
                     this.watcher = null;
                 }
             }

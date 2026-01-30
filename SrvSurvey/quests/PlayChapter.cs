@@ -35,7 +35,7 @@ public class PlayChapter
 
     #endregion
 
-    private string src => pq.quest.chapters[id];
+    private string? src => pq.quest.chapters.GetValueOrDefault(id);
 
     /// <summary> Returns true if this chapter is currently active </summary>
     [JsonIgnore] public bool active => !endTime.HasValue && startTime.HasValue;
