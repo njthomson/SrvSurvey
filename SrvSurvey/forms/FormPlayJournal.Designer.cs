@@ -38,8 +38,8 @@
             txtStatusFile = new TextBox();
             treeJournals = new TreeView();
             txtNewCode = new TextBox();
-            btnCopyCode = new Button();
-            btnReplay = new Button();
+            btnCopyCode = new DrawButton();
+            btnReplay = new DrawButton();
             statusStrip1 = new StatusStrip();
             menuComms = new ToolStripDropDownButton();
             menuDev = new ToolStripDropDownButton();
@@ -131,11 +131,21 @@
             // btnCopyCode
             // 
             btnCopyCode.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnCopyCode.AnimateOnPress = false;
             btnCopyCode.AutoSize = true;
-            btnCopyCode.Location = new Point(98, 381);
+            btnCopyCode.BackColorDisabled = Color.Empty;
+            btnCopyCode.BackColorHover = Color.Empty;
+            btnCopyCode.BackColorPressed = Color.Empty;
+            btnCopyCode.DrawBorder = true;
+            btnCopyCode.FlatStyle = FlatStyle.Flat;
+            btnCopyCode.ForeColor = Color.Black;
+            btnCopyCode.ForeColorDisabled = Color.Empty;
+            btnCopyCode.ForeColorHover = Color.Empty;
+            btnCopyCode.ForeColorPressed = Color.Empty;
+            btnCopyCode.Location = new Point(96, 381);
             btnCopyCode.Margin = new Padding(10);
             btnCopyCode.Name = "btnCopyCode";
-            btnCopyCode.Size = new Size(80, 25);
+            btnCopyCode.Size = new Size(82, 27);
             btnCopyCode.TabIndex = 4;
             btnCopyCode.Text = "Copy code";
             btnCopyCode.UseVisualStyleBackColor = true;
@@ -144,11 +154,21 @@
             // btnReplay
             // 
             btnReplay.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnReplay.AnimateOnPress = false;
             btnReplay.AutoSize = true;
-            btnReplay.Location = new Point(77, 133);
+            btnReplay.BackColorDisabled = Color.Empty;
+            btnReplay.BackColorHover = Color.Empty;
+            btnReplay.BackColorPressed = Color.Empty;
+            btnReplay.DrawBorder = true;
+            btnReplay.FlatStyle = FlatStyle.Flat;
+            btnReplay.ForeColor = Color.Black;
+            btnReplay.ForeColorDisabled = Color.Empty;
+            btnReplay.ForeColorHover = Color.Empty;
+            btnReplay.ForeColorPressed = Color.Empty;
+            btnReplay.Location = new Point(75, 133);
             btnReplay.Margin = new Padding(10);
             btnReplay.Name = "btnReplay";
-            btnReplay.Size = new Size(101, 25);
+            btnReplay.Size = new Size(103, 27);
             btnReplay.TabIndex = 5;
             btnReplay.Text = "Replay event";
             btnReplay.UseVisualStyleBackColor = true;
@@ -191,7 +211,7 @@
             menuSpring.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
             menuSpring.BorderStyle = Border3DStyle.SunkenOuter;
             menuSpring.Name = "menuSpring";
-            menuSpring.Size = new Size(636, 17);
+            menuSpring.Size = new Size(667, 17);
             menuSpring.Spring = true;
             // 
             // FormPlayJournal
@@ -221,8 +241,8 @@
         private TextBox txtNewCode;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel menuSpring;
-        private Button btnCopyCode;
-        private Button btnReplay;
+        private DrawButton btnCopyCode;
+        private DrawButton btnReplay;
         private ToolStripDropDownButton menuDev;
         private ToolStripDropDownButton menuComms;
     }

@@ -1,7 +1,6 @@
 ﻿using Lua;
 using Newtonsoft.Json;
 using SrvSurvey.game;
-using SrvSurvey.plotters;
 using SrvSurvey.quests;
 using System.Data;
 
@@ -20,8 +19,20 @@ namespace SrvSurvey.forms
         public FormPlayDev()
         {
             InitializeComponent();
+            checkWatchFolder.Enabled = false;
+
             loadPlayState().justDoIt();
+
             Util.applyTheme(this, true, false);
+            foreach (var btn in this.findAll<DrawButton>())
+                btn.setThemeColors(Game.settings.darkTheme, Game.settings.themeMainBlack);
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+
+            menuWatch.Enabled = Game.activeGame != null;
         }
 
         private async Task loadPlayState(bool reset = false)
@@ -37,7 +48,7 @@ namespace SrvSurvey.forms
                 if (newState != null)
                 {
                     this.cmdrPlay = newState;
-                    this.setChildrenEnabled(true);
+                    this.setChildrenEnabled(true, checkWatchFolder, btnRun, txtCode);
                     initComboQuests();
                 }
             }
@@ -48,7 +59,7 @@ namespace SrvSurvey.forms
 
                 this.cmdrPlay = Game.activeGame.cmdrPlay;
                 initComboQuests();
-                this.setChildrenEnabled(true);
+                this.setChildrenEnabled(true, checkWatchFolder, btnRun, txtCode);
             }
 
             if (folderWatches?.Count > 0 && cmdrPlay != null)
@@ -69,6 +80,12 @@ namespace SrvSurvey.forms
                 BaseForm.show<FormPlayComms>(f => f.cmdrPlay = this.cmdrPlay!);
                 this.Activate();
             }
+        }
+
+        public void onQuestChanged(PlayQuest? pq = null)
+        {
+            if (selectedQuest == pq?.id)
+                this.showDebug();
         }
 
         private void initComboQuests()
@@ -117,16 +134,15 @@ namespace SrvSurvey.forms
 
         private void comboChapter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            showJson();
+            showDebug();
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            showJson();
-            menuStatus.Text = $"Refreshed: {selectedView} (at: {DateTime.Now:T})";
+            showDebug();
         }
 
-        private void showJson()
+        private void showDebug()
         {
             txtJson.ReadOnly = false;
 
@@ -136,15 +152,24 @@ namespace SrvSurvey.forms
             {
                 chapter.pullScriptVars();
                 txtJson.Text = JsonConvert.SerializeObject(chapter.vars, Formatting.Indented);
+                btnRestartChapter.Enabled = !chapter.active;
+                btnStopChapter.Enabled = chapter.active;
+                btnRun.Enabled = txtCode.Enabled = true;
             }
             else if (selectedView == "Objectives")
             {
                 txtJson.Text = JsonConvert.SerializeObject(pq.objectives, Formatting.Indented);
+                btnRestartChapter.Enabled = btnStopChapter.Enabled = false;
+                btnRun.Enabled = txtCode.Enabled = false;
             }
             else if (selectedView == "Messages")
             {
                 txtJson.Text = JsonConvert.SerializeObject(pq.msgs, Formatting.Indented);
+                btnRestartChapter.Enabled = btnStopChapter.Enabled = false;
+                btnRun.Enabled = txtCode.Enabled = false;
             }
+
+            menuStatus.Text = $"{selectedView} (at: {DateTime.Now:T})";
         }
 
         private void btnParse_Click(object sender, EventArgs e)
@@ -190,8 +215,7 @@ namespace SrvSurvey.forms
                 menuStatus.Text = $"Parsed and updated: {view}";
                 pq.parent.Save();
 
-                BaseForm.get<FormPlayComms>()?.onQuestChanged(pq);
-                PlotBase2.invalidate(nameof(PlotQuestMini));
+                PlayState.updateUI(pq);
             }
             catch (Exception ex)
             {
@@ -237,12 +261,18 @@ namespace SrvSurvey.forms
 
         private void menuReadFromFile_Click(object sender, EventArgs e)
         {
-            this.loadPlayState(true).justDoIt();
+            var priorView = this.selectedView;
+
+            this.loadPlayState(true).continueOnMain(this, () =>
+            {
+                if (priorView != null && comboChapter.Items.Contains(priorView))
+                    comboChapter.SelectedItem = priorView;
+            });
         }
 
         private void menuComms_Click(object sender, EventArgs e)
         {
-            BaseForm.show<FormPlayComms>();
+            FormPlayComms.toggleForm();
         }
 
         private void stopWatching()
@@ -295,6 +325,8 @@ namespace SrvSurvey.forms
 
         private async Task folderImport(string folder)
         {
+            var priorView = this.selectedView;
+
             importing = true;
             menuStatus.Text = $"Importing folder: {folder} ...";
             var oldPQ = cmdrPlay.activeQuests.Find(pq => pq.watchFolder == folder);
@@ -335,14 +367,75 @@ namespace SrvSurvey.forms
                 }
             }
 
-            BaseForm.get<FormPlayComms>()?.onQuestChanged();
-            Program.defer(() => initComboQuests());
+            Program.defer(() =>
+            {
+                initComboQuests();
+                PlayState.updateUI(newPQ);
+
+                if (priorView != null && comboChapter.Items.Contains(priorView))
+                    comboChapter.SelectedItem = priorView;
+            });
             importing = false;
-            //}).@catch(ex =>
-            //{
-            //    Game.log($"Import failed: {ex.Message}\r\n\t{ex.StackTrace}");
-            //    menuStatus.Text = $"Import failed: {ex.Message}";
-            //})
+        }
+
+        private void btnRestartChapter_Click(object sender, EventArgs e)
+        {
+            var chapter = getSelectedChapter(selectedView);
+            chapter?.start().continueOnMain(this, () =>
+            {
+                cmdrPlay.Save();
+                PlayState.updateUI(chapter.pq);
+            });
+        }
+
+        private void btnStopChapter_Click(object sender, EventArgs e)
+        {
+            var chapter = getSelectedChapter(selectedView);
+            if (chapter == null) return;
+            chapter.stop();
+            cmdrPlay.Save();
+            PlayState.updateUI(chapter.pq);
+        }
+
+        private void btnRun_Click(object sender, EventArgs e)
+        {
+            doRunCode().justDoIt();
+        }
+
+        private async Task doRunCode()
+        {
+            var chapter = getSelectedChapter(selectedView);
+            if (chapter == null) return;
+
+            menuStatus.Text = "Running code ...";
+            txtCode.ReadOnly = true;
+            btnRun.Enabled = false;
+            try
+            {
+                var json = await chapter.runDebug(txtCode.Text);
+                PlayState.updateUI(chapter.pq);
+                menuStatus.Text = json;
+            }
+            catch (Exception ex)
+            {
+                menuStatus.Text = $"Error: {ex.Message}";
+            }
+            finally
+            {
+                txtCode.ReadOnly = false;
+                btnRun.Enabled = true;
+            }
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Enter | Keys.Shift))
+            {
+                doRunCode().justDoIt();
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }

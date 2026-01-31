@@ -8,7 +8,7 @@ namespace SrvSurvey.quests;
 
 internal class PlayState : Data
 {
-    #region static loading code
+    #region static + loading code
 
     private static string folder = Path.Combine(Program.dataFolder, "quests");
 
@@ -80,6 +80,13 @@ internal class PlayState : Data
         Game.log(ps.activeQuests.Select(pq => $"{pq.id}: {pq.quest.title}").formatWithHeader($"Initialized {ps.activeQuests.Count} active quests"));
 
         return ps;
+    }
+
+    public static void updateUI(PlayQuest? pq = null)
+    {
+        PlotBase2.renderAll(null);
+        BaseForm.get<FormPlayComms>()?.onQuestChanged(pq);
+        BaseForm.get<FormPlayDev>()?.onQuestChanged(pq);
     }
 
     #endregion
@@ -218,9 +225,7 @@ internal class PlayState : Data
 
         this.Save();
 
-        BaseForm.get<FormPlayComms>()?.onQuestChanged(pq);
-        PlotBase2.invalidate(nameof(PlotQuestMini));
-
+        PlayState.updateUI(pq);
         return pq;
     }
 

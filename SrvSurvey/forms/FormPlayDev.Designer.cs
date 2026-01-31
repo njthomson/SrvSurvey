@@ -34,7 +34,7 @@
             comboQuest = new ComboBox();
             comboChapter = new ComboBox();
             label2 = new Label();
-            btnParse = new Button();
+            btnParse = new DrawButton();
             statusStrip1 = new StatusStrip();
             menuMore = new ToolStripDropDownButton();
             menuImportFolder2 = new ToolStripMenuItem();
@@ -43,7 +43,11 @@
             menuWatch = new ToolStripDropDownButton();
             menuComms = new ToolStripDropDownButton();
             checkWatchFolder = new CheckBox();
-            btnRefresh = new Button();
+            btnRefresh = new DrawButton();
+            btnRestartChapter = new DrawButton();
+            btnStopChapter = new DrawButton();
+            txtCode = new TextBox();
+            btnRun = new DrawButton();
             statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -55,7 +59,7 @@
             txtJson.Name = "txtJson";
             txtJson.ReadOnly = true;
             txtJson.ScrollBars = ScrollBars.Both;
-            txtJson.Size = new Size(677, 317);
+            txtJson.Size = new Size(728, 244);
             txtJson.TabIndex = 7;
             // 
             // label1
@@ -75,7 +79,7 @@
             comboQuest.FormattingEnabled = true;
             comboQuest.Location = new Point(93, 6);
             comboQuest.Name = "comboQuest";
-            comboQuest.Size = new Size(577, 23);
+            comboQuest.Size = new Size(628, 23);
             comboQuest.TabIndex = 1;
             comboQuest.ValueMember = "Key";
             comboQuest.SelectedIndexChanged += comboQuest_SelectedIndexChanged;
@@ -87,7 +91,7 @@
             comboChapter.FormattingEnabled = true;
             comboChapter.Location = new Point(93, 35);
             comboChapter.Name = "comboChapter";
-            comboChapter.Size = new Size(677, 23);
+            comboChapter.Size = new Size(474, 23);
             comboChapter.TabIndex = 4;
             comboChapter.SelectedIndexChanged += comboChapter_SelectedIndexChanged;
             // 
@@ -102,6 +106,16 @@
             // 
             // btnParse
             // 
+            btnParse.AnimateOnPress = false;
+            btnParse.BackColorDisabled = Color.Empty;
+            btnParse.BackColorHover = Color.Empty;
+            btnParse.BackColorPressed = Color.Empty;
+            btnParse.DrawBorder = true;
+            btnParse.FlatStyle = FlatStyle.Flat;
+            btnParse.ForeColor = Color.Black;
+            btnParse.ForeColorDisabled = Color.Empty;
+            btnParse.ForeColorHover = Color.Empty;
+            btnParse.ForeColorPressed = Color.Empty;
             btnParse.Location = new Point(12, 64);
             btnParse.Name = "btnParse";
             btnParse.Size = new Size(75, 23);
@@ -113,10 +127,10 @@
             // statusStrip1
             // 
             statusStrip1.Items.AddRange(new ToolStripItem[] { menuMore, menuStatus, menuWatch, menuComms });
-            statusStrip1.Location = new Point(0, 384);
+            statusStrip1.Location = new Point(0, 386);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.ShowItemToolTips = true;
-            statusStrip1.Size = new Size(782, 22);
+            statusStrip1.Size = new Size(833, 22);
             statusStrip1.TabIndex = 8;
             statusStrip1.Text = "statusStrip1";
             // 
@@ -149,7 +163,7 @@
             menuStatus.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
             menuStatus.BorderStyle = Border3DStyle.SunkenOuter;
             menuStatus.Name = "menuStatus";
-            menuStatus.Size = new Size(556, 17);
+            menuStatus.Size = new Size(638, 17);
             menuStatus.Spring = true;
             menuStatus.TextAlign = ContentAlignment.MiddleLeft;
             // 
@@ -179,7 +193,7 @@
             // 
             checkWatchFolder.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             checkWatchFolder.AutoSize = true;
-            checkWatchFolder.Location = new Point(676, 8);
+            checkWatchFolder.Location = new Point(727, 8);
             checkWatchFolder.Name = "checkWatchFolder";
             checkWatchFolder.Size = new Size(94, 19);
             checkWatchFolder.TabIndex = 2;
@@ -189,6 +203,16 @@
             // 
             // btnRefresh
             // 
+            btnRefresh.AnimateOnPress = false;
+            btnRefresh.BackColorDisabled = Color.Empty;
+            btnRefresh.BackColorHover = Color.Empty;
+            btnRefresh.BackColorPressed = Color.Empty;
+            btnRefresh.DrawBorder = true;
+            btnRefresh.FlatStyle = FlatStyle.Flat;
+            btnRefresh.ForeColor = Color.Black;
+            btnRefresh.ForeColorDisabled = Color.Empty;
+            btnRefresh.ForeColorHover = Color.Empty;
+            btnRefresh.ForeColorPressed = Color.Empty;
             btnRefresh.Location = new Point(12, 93);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(75, 23);
@@ -197,11 +221,88 @@
             btnRefresh.UseVisualStyleBackColor = true;
             btnRefresh.Click += btnRefresh_Click;
             // 
+            // btnRestartChapter
+            // 
+            btnRestartChapter.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnRestartChapter.AnimateOnPress = false;
+            btnRestartChapter.BackColorDisabled = Color.Empty;
+            btnRestartChapter.BackColorHover = Color.Empty;
+            btnRestartChapter.BackColorPressed = Color.Empty;
+            btnRestartChapter.DrawBorder = true;
+            btnRestartChapter.FlatStyle = FlatStyle.Flat;
+            btnRestartChapter.ForeColor = Color.Black;
+            btnRestartChapter.ForeColorDisabled = Color.Empty;
+            btnRestartChapter.ForeColorHover = Color.Empty;
+            btnRestartChapter.ForeColorPressed = Color.Empty;
+            btnRestartChapter.Location = new Point(573, 34);
+            btnRestartChapter.Name = "btnRestartChapter";
+            btnRestartChapter.Size = new Size(148, 25);
+            btnRestartChapter.TabIndex = 9;
+            btnRestartChapter.Text = "(re) Start chapter";
+            btnRestartChapter.UseVisualStyleBackColor = true;
+            btnRestartChapter.Click += btnRestartChapter_Click;
+            // 
+            // btnStopChapter
+            // 
+            btnStopChapter.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnStopChapter.AnimateOnPress = false;
+            btnStopChapter.BackColorDisabled = Color.Empty;
+            btnStopChapter.BackColorHover = Color.Empty;
+            btnStopChapter.BackColorPressed = Color.Empty;
+            btnStopChapter.DrawBorder = true;
+            btnStopChapter.FlatStyle = FlatStyle.Flat;
+            btnStopChapter.ForeColor = Color.Black;
+            btnStopChapter.ForeColorDisabled = Color.Empty;
+            btnStopChapter.ForeColorHover = Color.Empty;
+            btnStopChapter.ForeColorPressed = Color.Empty;
+            btnStopChapter.Location = new Point(728, 34);
+            btnStopChapter.Name = "btnStopChapter";
+            btnStopChapter.Size = new Size(94, 25);
+            btnStopChapter.TabIndex = 10;
+            btnStopChapter.Text = "Stop";
+            btnStopChapter.UseVisualStyleBackColor = true;
+            btnStopChapter.Click += btnStopChapter_Click;
+            // 
+            // txtCode
+            // 
+            txtCode.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtCode.Location = new Point(93, 314);
+            txtCode.Multiline = true;
+            txtCode.Name = "txtCode";
+            txtCode.ScrollBars = ScrollBars.Both;
+            txtCode.Size = new Size(728, 69);
+            txtCode.TabIndex = 11;
+            // 
+            // btnRun
+            // 
+            btnRun.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnRun.AnimateOnPress = false;
+            btnRun.BackColorDisabled = Color.Empty;
+            btnRun.BackColorHover = Color.Empty;
+            btnRun.BackColorPressed = Color.Empty;
+            btnRun.DrawBorder = true;
+            btnRun.FlatStyle = FlatStyle.Flat;
+            btnRun.ForeColor = Color.Black;
+            btnRun.ForeColorDisabled = Color.Empty;
+            btnRun.ForeColorHover = Color.Empty;
+            btnRun.ForeColorPressed = Color.Empty;
+            btnRun.Location = new Point(12, 314);
+            btnRun.Name = "btnRun";
+            btnRun.Size = new Size(75, 23);
+            btnRun.TabIndex = 12;
+            btnRun.Text = "Run";
+            btnRun.UseVisualStyleBackColor = true;
+            btnRun.Click += btnRun_Click;
+            // 
             // FormPlayDev
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(782, 406);
+            ClientSize = new Size(833, 408);
+            Controls.Add(btnRun);
+            Controls.Add(txtCode);
+            Controls.Add(btnStopChapter);
+            Controls.Add(btnRestartChapter);
             Controls.Add(btnRefresh);
             Controls.Add(checkWatchFolder);
             Controls.Add(statusStrip1);
@@ -226,15 +327,19 @@
         private ComboBox comboQuest;
         private ComboBox comboChapter;
         private Label label2;
-        private Button btnParse;
+        private DrawButton btnParse;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel menuStatus;
         private CheckBox checkWatchFolder;
-        private Button btnRefresh;
+        private DrawButton btnRefresh;
         private ToolStripDropDownButton menuMore;
         private ToolStripMenuItem menuImportFolder2;
         private ToolStripMenuItem menuReadFromFile;
         private ToolStripDropDownButton menuWatch;
         private ToolStripDropDownButton menuComms;
+        private DrawButton btnRestartChapter;
+        private DrawButton btnStopChapter;
+        private TextBox txtCode;
+        private DrawButton btnRun;
     }
 }

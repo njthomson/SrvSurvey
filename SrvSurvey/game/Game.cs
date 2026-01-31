@@ -198,7 +198,8 @@ namespace SrvSurvey.game
             }
 
             // track this instance as the active one
-            Game.activeGame = this;
+            if (!Debugger.IsAttached)
+                Game.activeGame = this; // TODO: retire both lines
 
             if (!Elite.isGameRunning && !Program.useLastIfShutdown) return;
 
@@ -233,6 +234,8 @@ namespace SrvSurvey.game
             this.status.StatusChanged += Status_StatusChanged;
 
             Game.ready = true; // todo: "this.cmdr != null" ?
+            if (Debugger.IsAttached)  // <-- TODO: retire the IF
+                Game.activeGame = this;
 
             Status_StatusChanged(false);
         }
@@ -247,7 +250,6 @@ namespace SrvSurvey.game
         {
             if (disposing)
             {
-
                 if (this.journals != null)
                 {
                     this.journals.onJournalEntry -= Journals_onJournalEntry;
@@ -268,6 +270,9 @@ namespace SrvSurvey.game
                     this.navRoute = null!;
                 }
             }
+
+            if (Game.activeGame == this)
+                Game.activeGame = null;
         }
 
         #region modes
@@ -762,12 +767,7 @@ namespace SrvSurvey.game
 
             // do this last and a bit delayed, once initialization finished
             if (Game.settings.useExternalData && this.systemData != null)
-            {
-                Program.control.BeginInvoke(new Action(() =>
-                {
-                    this.fetchSystemData(this.systemData.name, this.systemData.address);
-                }));
-            }
+                Program.defer(() => this.fetchSystemData(this.systemData.name, this.systemData.address));
         }
 
         public async Task<PlayState?> resetCmdrPlay()
@@ -984,7 +984,7 @@ namespace SrvSurvey.game
                 if (systemAddressEntry?.SystemAddress > 0 && lastLocation != null && systemAddressEntry.SystemAddress != lastLocation.SystemAddress)
                 {
                     log($"Game.initSystemData: Carrier jump since last session? Some SystemAddress ({systemAddressEntry.SystemAddress}) does not match current location ({lastLocation.SystemAddress})");
-                    this.systemData = SystemData.From(lastLocation);
+                    this.systemData = SystemData.From(lastLocation, cmdr.fid, cmdr.commander);
                     return true;
                 }
 
@@ -2169,7 +2169,7 @@ namespace SrvSurvey.game
             cmdr.currentSystem = entry.StarSystem;
             cmdr.currentSystemAddress = entry.SystemAddress;
             cmdr.starPos = entry.StarPos;
-            this.systemData = SystemData.From(entry);
+            this.systemData = SystemData.From(entry, cmdr.fid, cmdr.commander);
 
             // update our region
             cmdr.setGalacticRegion(entry.StarPos);
@@ -2184,8 +2184,8 @@ namespace SrvSurvey.game
                 this.setCurrentBody(entry.BodyID);
 
                 // steal radius from status?
-                if (Game.activeGame!.status.BodyName == entry.Body)
-                    cmdr.currentBodyRadius = Game.activeGame.status.PlanetRadius;
+                if (this.status.BodyName == entry.Body)
+                    cmdr.currentBodyRadius = this.status.PlanetRadius;
                 else
                 {
                     Game.log($"Cannot find PlanetRadius from status file! Searching for last Scan event.");
@@ -2220,8 +2220,8 @@ namespace SrvSurvey.game
             this.setCurrentBody(entry.BodyID);
 
             // steal radius from status?
-            if (Game.activeGame!.status.BodyName == entry.Body)
-                cmdr.currentBodyRadius = Game.activeGame.status.PlanetRadius;
+            if (this.status.BodyName == entry.Body)
+                cmdr.currentBodyRadius = this.status.PlanetRadius;
             else
             {
                 Game.log($"Cannot find PlanetRadius from status file! Searching for last Scan event.");
@@ -2249,8 +2249,8 @@ namespace SrvSurvey.game
                 this.setCurrentBody(entry.BodyID);
 
                 // steal radius from status?
-                if (Game.activeGame!.status.BodyName == entry.Body)
-                    cmdr.currentBodyRadius = Game.activeGame.status.PlanetRadius;
+                if (this.status.BodyName == entry.Body)
+                    cmdr.currentBodyRadius = this.status.PlanetRadius;
                 else
                 {
                     Game.log($"Cannot find PlanetRadius from status file! Searching for last Scan event.");
@@ -2282,7 +2282,7 @@ namespace SrvSurvey.game
             cmdr.currentSystem = entry.StarSystem;
             cmdr.currentSystemAddress = entry.SystemAddress;
             cmdr.starPos = entry.StarPos;
-            this.systemData = SystemData.From(entry, fid, cmdrName);
+            this.systemData = SystemData.From(entry, cmdr.fid, cmdr.commander);
 
             // update our region
             cmdr.setGalacticRegion(entry.StarPos);
@@ -2294,8 +2294,8 @@ namespace SrvSurvey.game
                 this.setCurrentBody(entry.BodyID);
 
                 // steal radius from status?
-                if (Game.activeGame!.status.BodyName == entry.Body)
-                    cmdr.currentBodyRadius = Game.activeGame.status.PlanetRadius;
+                if (this.status.BodyName == entry.Body)
+                    cmdr.currentBodyRadius = this.status.PlanetRadius;
                 else
                 {
                     Game.log($"Cannot find PlanetRadius from status file! Searching for last Scan event.");

@@ -398,6 +398,8 @@ namespace SrvSurvey.plotters
 
         public static void renderAll(Game? game, bool force = false)
         {
+            game ??= Game.activeGame;
+
             if (Program.control.InvokeRequired)
             {
                 Program.defer(() => renderAll(game, force));

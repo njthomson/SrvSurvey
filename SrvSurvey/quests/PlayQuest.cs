@@ -60,11 +60,6 @@ public class PlayQuest
         return $"questId: {id}";
     }
 
-    public PlayMsg? getMsg(string id)
-    {
-        return msgs.Find(x => x.id == id);
-    }
-
     /// <summary> Called by Game.cs so chapters may process journal events as they happen </summary>
     public async Task<bool> processJournalEntry(LuaTable entry)
     {
@@ -84,6 +79,10 @@ public class PlayQuest
             dirty = true;
         }
 
+        // do any pending operations - these we do after everything above
+        foreach (var pc in activeChapters)
+            pc.doPendings();
+
         return updateIfDirty(triggered);
     }
 
@@ -98,8 +97,7 @@ public class PlayQuest
 
         this.parent.Save();
 
-        BaseForm.get<FormPlayComms>()?.onQuestChanged(this);
-        PlotBase2.invalidate(nameof(PlotQuestMini));
+        PlayState.updateUI(this);
 
         dirty = false;
         return true;
@@ -157,6 +155,21 @@ public class PlayQuest
         dirty = true;
     }
 
+    public PlayMsg? getMsg(string id)
+    {
+        return msgs.Find(x => x.id == id);
+    }
+
+    public bool deleteMsg(string id)
+    {
+        var count = msgs.RemoveAll(m => m.id == id);
+        dirty |= count > 0;
+
+        PlayState.updateUI(this);
+
+        return count > 0;
+    }
+
     /// <summary> Called by Quest Comms when a player hit a message reply button </summary>
     public async Task invokeMessageAction(string msgId, string actionId)
     {
@@ -170,15 +183,6 @@ public class PlayQuest
         await chapter.invokeMessageAction(msgId, actionId);
     }
 
-    public void deleteMsg(string id)
-    {
-        var count = msgs.RemoveAll(m => m.id == id);
-        dirty |= count > 0;
-
-        // update any UX
-        BaseForm.get<FormPlayComms>()?.onQuestChanged(this);
-        PlotBase2.invalidate(nameof(PlotQuestMini));
-    }
 
     public void keepLast(params string?[] names)
     {

@@ -19,6 +19,7 @@ public class PlayChapter
 
     private HashSet<string> journalFuncs = [];
     private HashSet<string> varNames = [];
+    private List<Action> pending = [];
 
     #region data members
 
@@ -47,7 +48,7 @@ public class PlayChapter
 
     public async Task<LuaState> load()
     {
-        if (string.IsNullOrEmpty(src) || !active) 
+        if (string.IsNullOrEmpty(src) || !active)
             return state;
         Game.log($"PlayChapter.load: {id}");
 
@@ -85,6 +86,8 @@ public class PlayChapter
             .Select(x => x.Key.Read<string>())
             .ToHashSet();
 
+        // push first: to preserve prior values, then pull: to capture anything new
+        pushScriptVars();
         pullScriptVars();
 
         return state;
@@ -154,15 +157,55 @@ end");
 
         Game.log($"Starting chapter: {id}, run onStart: {onStartFunc != LuaValue.Nil}");
         await state.CallAsync(onStartFunc, new LuaValue[] { });
+
+        pq.dirty = true;
     }
 
     public void stop()
     {
         if (!active) return;
 
+        if (state.IsRunning)
+        {
+            // do this later if we are actively running
+            pending.Add(() =>
+            {
+                stop();
+            });
+            return;
+        }
+
+        // wait if it is still running !
         Game.log($"Stopping chapter: {id}");
         endTime = DateTimeOffset.UtcNow;
+        state.Dispose();
         state = null;
+
+        pq.dirty = true;
+    }
+
+    public void doPendings()
+    {
+        if (pending.Count == 0) return;
+
+        foreach (var t in pending)
+        {
+            t();
+        }
+
+        pending.Clear();
+    }
+
+    internal async Task<string> runDebug(string code)
+    {
+        if (!active || state == null) return "Chapter not active";
+
+        var rslt = await state.DoStringAsync(code);
+        var json = JsonConvert.SerializeObject(rslt.FirstOrDefault());
+
+        doPendings();
+
+        return json;
     }
 
     public async Task<bool> processJournalEntry(LuaTable entry)
@@ -210,8 +253,6 @@ end");
         pm.replied = actionId;
         pq.dirty = true;
 
-        // update any UX
-        BaseForm.get<FormPlayComms>()?.onQuestChanged(pq);
-        PlotBase2.invalidate(nameof(PlotQuestMini));
+        PlayState.updateUI(pq);
     }
 }

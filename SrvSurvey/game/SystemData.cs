@@ -151,13 +151,11 @@ namespace SrvSurvey.game
             return Load(starRef.name, starRef.id64, fid, cmdr, true)!;
         }
 
-        public static SystemData From(ISystemDataStarter entry, string? fid = null, string? cmdrName = null)
+        public static SystemData From(ISystemDataStarter entry, string fid, string cmdrName)
         {
             lock (cache)
             {
                 // load from file or cache
-                fid ??= Game.activeGame!.fid!;
-                cmdrName ??= Game.activeGame!.Commander!;
                 var data = Load(entry.StarSystem, entry.SystemAddress, fid, cmdrName);
 
                 if (data == null)

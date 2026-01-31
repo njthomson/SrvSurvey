@@ -45,6 +45,18 @@ public partial class Quest
     {
         // do we have a pre-published message?
         var msg = id == null ? null : pq.quest.msgs.Find(m => m.id == id);
+
+        // TODO: msg tracking and delivery needs to be reworked
+
+        if (msg == null && id != null && from != null && body != null)
+        {
+            msg = new()
+            {
+                id = id,
+                from = "",
+                body = "",
+            };
+        }
         if (msg?.actions != null)
             throw new Exception($"quest.sendMsg() does not accept messages with actions");
 
@@ -53,6 +65,12 @@ public partial class Quest
         pq.sendMsg(newMsg);
 
         Game.log($"S_quest.sendMsg [{pq.id}]: {id}: {newMsg.subject ?? newMsg.body}");
+    }
+
+    [LuaMember]
+    public bool deleteMsg(string id)
+    {
+        return pq.deleteMsg(id);
     }
 
     [LuaMember]

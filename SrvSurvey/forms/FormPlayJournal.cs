@@ -19,6 +19,8 @@ namespace SrvSurvey.forms
             InitializeComponent();
 
             Util.applyTheme(this, true, false);
+            foreach (var btn in this.findAll<DrawButton>())
+                btn.setThemeColors(Game.settings.darkTheme, Game.settings.themeMainBlack);
 
             this.Status_StatusChanged(false);
             this.pullPriorEntries();

@@ -77,7 +77,7 @@ namespace SrvSurvey.forms
             if (cmdrPlay != null)
             {
                 // no op
-                onQuestChanged();
+                PlayState.updateUI();
             }
             else if (Game.activeGame?.cmdrPlay == null)
             {
@@ -99,7 +99,7 @@ namespace SrvSurvey.forms
                             btnQuests.Focus();
                             showQuests();
                         }
-                        onQuestChanged();
+                        PlayState.updateUI();
                     }
                 });
                 return;
@@ -109,18 +109,20 @@ namespace SrvSurvey.forms
                 this.cmdrPlay = Game.activeGame.cmdrPlay;
             }
 
-            if (cmdrPlay.messagesUnread > 0)
-            {
-                mode = "msgs";
-                btnMsgs.Focus();
-            }
-            else
-            {
-                btnQuests.Focus();
-            }
 
-            Util.deferAfter(500, () =>
+            PlayState.updateUI();
+
+            Util.deferAfter(25, () =>
             {
+                if (cmdrPlay.messagesUnread > 0)
+                {
+                    mode = "msgs";
+                    btnMsgs.Focus();
+                }
+                else
+                {
+                    btnQuests.Focus();
+                }
                 if (mode == "quests")
                     showQuests();
                 else
@@ -823,7 +825,7 @@ namespace SrvSurvey.forms
                 pq.parent.activeQuests.Remove(pq);
                 pq.parent.Save();
                 form.clearSelection();
-                form.onQuestChanged();
+                PlayState.updateUI(pq);
             }
         }
 
