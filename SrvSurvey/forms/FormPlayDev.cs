@@ -286,6 +286,7 @@ namespace SrvSurvey.forms
             folderWatcher.Changed -= FolderWatcher_Changed;
             folderWatcher.Renamed -= FolderWatcher_Changed;
             folderWatcher.Deleted -= FolderWatcher_Changed;
+            folderWatcher.Dispose();
             folderWatcher = null;
 
             checkWatchFolder.Checked = false;

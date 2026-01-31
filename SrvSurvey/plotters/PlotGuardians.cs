@@ -1031,7 +1031,7 @@ namespace SrvSurvey.plotters
             this.invalidate();
         }
 
-        private FileSystemWatcher watcher;
+        private FileSystemWatcher? watcher;
 
         private void devFileWatcher()
         {
@@ -1046,6 +1046,17 @@ namespace SrvSurvey.plotters
             this.watcher.Changed += Watcher_Changed;
             this.watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size;
             this.watcher.EnableRaisingEvents = true;
+        }
+
+        protected override void onClose()
+        {
+            if (this.watcher != null)
+            {
+                this.watcher.Changed -= Watcher_Changed;
+                this.watcher.Dispose();
+                this.watcher = null;
+            }
+            base.onClose();
         }
 
         private void Watcher_Changed(object sender, FileSystemEventArgs e)

@@ -96,11 +96,13 @@ namespace SrvSurvey.plotters
             if (this.mapImageWatcher != null)
             {
                 this.mapImageWatcher.Changed -= MapImageWatcher_Changed;
+                this.mapImageWatcher.Dispose();
                 this.mapImageWatcher = null;
             }
             if (this.templateWatcher != null)
             {
                 this.templateWatcher.Changed -= TemplateWatcher_Changed;
+                this.templateWatcher.Dispose();
                 this.templateWatcher = null;
             }
 

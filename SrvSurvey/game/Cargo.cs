@@ -100,6 +100,7 @@ namespace SrvSurvey
                 if (this.fileWatcher != null)
                 {
                     this.fileWatcher.Changed -= fileWatcher_Changed;
+                    this.fileWatcher.Dispose();
                     this.fileWatcher = null;
                 }
             }
