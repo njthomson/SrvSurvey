@@ -160,7 +160,7 @@ namespace SrvSurvey.forms
         {
             if (obj == null) return;
 
-            var entry = JournalFile.hydrate(obj)!;
+            var entry = JournalFile.hydrate(obj);
             if (entry != null)
                 game.cmdrPlay?.processJournalEntry(entry).justDoIt();
         }

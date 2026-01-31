@@ -34,7 +34,7 @@ namespace SrvSurvey.forms
         private string mode = "quests";
         private Control lastLeftBtn;
         public string? lastListName;
-        private Dictionary<string, string> mappedGameKeyBinds;
+        private Dictionary<string, string> mappedGameKeyBinds = new();
 
         public FormPlayComms()
         {
@@ -270,6 +270,7 @@ namespace SrvSurvey.forms
 
         private void showQuests()
         {
+            if (cmdrPlay == null) return;
             clearSelection();
             tlist.SuspendLayout();
 
@@ -354,6 +355,7 @@ namespace SrvSurvey.forms
 
         private void showMsgs()
         {
+            if (cmdrPlay == null) return;
             clearSelection();
 
             var allMsgs = cmdrPlay.activeQuests
@@ -587,7 +589,13 @@ namespace SrvSurvey.forms
 
             // use the first line to know which .binds file to read
             var lines = File.ReadAllLines(filepath);
-            filepath = Directory.GetFiles(Elite.keybingsFolder, $"{lines[0]}.*.binds").Last();
+            var bindsFiles = Directory.GetFiles(Elite.keybingsFolder, $"{lines[0]}.*.binds");
+            if (bindsFiles.Length == 0)
+            {
+                Game.log($"No .binds files found matching: {lines[0]}");
+                return null;
+            }
+            filepath = bindsFiles.Last();
             if (!File.Exists(filepath))
             {
                 Game.log($"File not found: {filepath}");
@@ -614,15 +622,26 @@ namespace SrvSurvey.forms
 
         private static void mapKeyBind(Dictionary<string, string> bindsMap, XElement root, string gameBind, string mapsTo)
         {
-            var binds = root.Element(gameBind)!.Elements();
+            var element = root.Element(gameBind);
+            if (element == null) return;
+            var binds = element.Elements().ToList();
+            if (binds.Count == 0) return;
 
-            var primary = matchGameKeybind(binds.First()!.Attribute("Key")!.Value);
-            if (primary != null)
-                bindsMap[primary] = mapsTo;
+            var primaryKey = binds.First().Attribute("Key")?.Value;
+            if (primaryKey != null)
+            {
+                var primary = matchGameKeybind(primaryKey);
+                if (primary != null)
+                    bindsMap[primary] = mapsTo;
+            }
 
-            var secondary = matchGameKeybind(binds.Last().Attribute("Key")!.Value);
-            if (secondary != null)
-                bindsMap[secondary] = mapsTo;
+            var secondaryKey = binds.Last().Attribute("Key")?.Value;
+            if (secondaryKey != null)
+            {
+                var secondary = matchGameKeybind(secondaryKey);
+                if (secondary != null)
+                    bindsMap[secondary] = mapsTo;
+            }
         }
 
         public static string? matchGameKeybind(string key)
@@ -954,7 +973,7 @@ namespace SrvSurvey.forms
 
         private void prepBodyText()
         {
-            var raw = pm.body ?? qm?.body!;
+            var raw = pm.body ?? qm?.body ?? "";
 
             var matchParts = new Regex("`(.+?)`");
             var matches = matchParts.Matches(raw);

@@ -600,6 +600,7 @@ namespace SrvSurvey.plotters
         /// <summary> center in middle, scaled and rotated by player's heading </summary>
         protected void resetMiddleRotated(Graphics g)
         {
+            if (game.status == null) return;
             g.ResetTransform();
             g.TranslateTransform(mid.Width, mid.Height);
             g.ScaleTransform(scale, scale);
@@ -616,6 +617,8 @@ namespace SrvSurvey.plotters
         /// <summary> Centered on current origin </summary>
         protected virtual void drawCompassLines(Graphics g)
         {
+            if (game.status == null) return;
+
             // draw black background checks
             g.FillRectangle(GameColors.adjustGroundChecks(scale), -width, -height, width * 2, height * 2);
 
@@ -652,7 +655,7 @@ namespace SrvSurvey.plotters
             }
 
             // draw touchdown marker
-            if (game.cmdr.lastTouchdownLocation != null)
+            if (game.cmdr?.lastTouchdownLocation != null && game.status != null)
             {
                 RectangleF rect;
                 var shipSize = 24f / this.scale;
@@ -738,11 +741,12 @@ namespace SrvSurvey.plotters
             this.distToSiteOrigin = Util.getDistance(siteLocation, Status.here, this.radius);
             this.offsetWithoutHeading = (PointF)Util.getOffset(this.radius, this.siteLocation); // explicitly EXCLUDING site.heading
             this.cmdrOffset = (PointF)Util.getOffset(radius, siteLocation, siteHeading); // explicitly INCLUDING site.heading
-            this.cmdrHeading = game.status.Heading - siteHeading;
+            this.cmdrHeading = status.Heading - siteHeading;
         }
 
         protected void resetMiddleSiteOrigin(Graphics g)
         {
+            if (game.status == null) return;
             g.ResetTransform();
             g.TranslateTransform(mid.Width, mid.Height); // shift to center of window
             g.ScaleTransform(scale, scale); // apply display scale factor (zoom)

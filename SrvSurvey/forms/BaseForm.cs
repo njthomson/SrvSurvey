@@ -128,7 +128,7 @@ namespace SrvSurvey.forms
         protected void applySavedLocation()
         {
             // can we fit in our last location?
-            var savedRect = Game.settings.formLocations.GetValueOrDefault(this.GetType().Name);
+            var savedRect = Game.settings.formLocations.GetValueOrDefault(this.Name);
             if (savedRect.Size != Size.Empty && !this.IsDisposed)
             {
                 var sizable = this.FormBorderStyle.ToString().StartsWith("Sizable");
