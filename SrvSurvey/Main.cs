@@ -1233,21 +1233,10 @@ namespace SrvSurvey
 
             btnQuestComms.Visible = Game.settings.enableQuests;
 
-            foreach (var btn in new DrawButton[] { btnQuit2, btnSettings, btnLogs, btnPredictions, btnCodexBingo, btnResetExploration, btnCopyLocation, btnCodexShow, btnResetBio, btnQuestComms })
-            {
-                btn.BackColor = black ? C.orangeDarker : dark ? SystemColors.ControlDark : SystemColors.ControlLight;
+            foreach (var btn in this.findAll<DrawButton>())
+                btn.setThemeColors(Game.settings.darkTheme, Game.settings.themeMainBlack);
 
-                btn.BackColorHover = black ? C.orangeDark : SystemColors.InactiveCaption;
-                btn.BackColorPressed = black ? C.orange : SystemColors.ActiveCaption;
-                btn.BackColorDisabled = black ? C.grey : SystemColors.ButtonShadow;
-
-                btn.ForeColor = black ? C.orange : SystemColors.ControlText;
-                btn.ForeColorHover = black ? C.menuGold : SystemColors.ControlText;
-                btn.ForeColorPressed = black ? C.black : SystemColors.ControlText;
-                btn.ForeColorDisabled = black ? C.black : SystemColors.GrayText;
-            }
-
-            foreach (var btn in new FlatButton[] { btnSearch, btnGuardian, btnTravel, btnColonize })
+            foreach (var btn in this.findAll<FlatButton>())
             {
                 btn.BackColor = black ? C.orangeDarker : dark ? SystemColors.ControlDark : SystemColors.ControlLight;
                 btn.ForeColor = black ? C.orange : SystemColors.ControlText;
@@ -1256,11 +1245,11 @@ namespace SrvSurvey
                 btn.FlatAppearance.MouseDownBackColor = black ? C.menuGold : SystemColors.ActiveCaption;
             }
 
-            foreach (var gb in new GroupBox2[] { groupCmdr, groupBox3, groupBox5, groupCodex })
+            foreach (var gb in this.findAll<GroupBox2>())
                 gb.LineColor = black ? C.orangeDark : dark ? SystemColors.ControlLight : SystemColors.ControlDark;
 
 
-            foreach (var cb in new CheckBox2[] { checkTempHide, checkFirstFootFall })
+            foreach (var cb in this.findAll<CheckBox2>())
             {
                 cb.LineColor = black ? C.orangeDark : SystemColors.ControlText;
                 cb.CheckColor = black ? C.orange : SystemColors.ControlText;

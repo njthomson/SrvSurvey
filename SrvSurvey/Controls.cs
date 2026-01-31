@@ -76,6 +76,17 @@ namespace SrvSurvey
             else
                 return controls[controls.Count - 1];
         }
+
+        public static IEnumerable<T> findAll<T>(this Control ctrl) where T : Control
+        {
+            foreach (Control child in ctrl.Controls)
+            {
+                if (child is T thing)
+                    yield return thing;
+                foreach (var thing2 in findAll<T>(child))
+                    yield return thing2;
+            }
+        }
     }
 
     class FlatButton : Button
@@ -813,13 +824,14 @@ namespace SrvSurvey
         [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool DrawBorder { get; set; }
         [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public bool AnimateOnPress{ get; set; }
+        public bool AnimateOnPress { get; set; }
         public bool mouseDown { get; private set; }
         public bool highlight { get; private set; }
         private Pen? borderPen;
 
         public DrawButton()
         {
+            FlatStyle = FlatStyle.Flat;
             ForeColor = Color.Black;
             if (DesignMode)
             {
@@ -847,6 +859,8 @@ namespace SrvSurvey
             if (Process.GetCurrentProcess().ProcessName != "SrvSurvey") return;
 #endif
 
+            FlatStyle = FlatStyle.Flat;
+
             BackColor = C.orangeDarker;
             BackColorHover = C.orangeDark;
             BackColorPressed = C.orange;
@@ -856,6 +870,21 @@ namespace SrvSurvey
             ForeColorHover = C.menuGold;
             ForeColorPressed = C.black;
             ForeColorDisabled = C.black;
+        }
+
+        public void setThemeColors(bool dark, bool black)
+        {
+            this.FlatStyle = FlatStyle.Flat;
+            this.BackColor = black ? C.orangeDarker : dark ? SystemColors.ControlDark : SystemColors.ControlLight;
+
+            this.BackColorHover = black ? C.orangeDark : SystemColors.InactiveCaption;
+            this.BackColorPressed = black ? C.orange : SystemColors.ActiveCaption;
+            this.BackColorDisabled = black ? C.grey : SystemColors.ScrollBar;
+
+            this.ForeColor = black ? C.orange : SystemColors.ControlText;
+            this.ForeColorHover = black ? C.menuGold : SystemColors.ControlText;
+            this.ForeColorPressed = black ? C.black : SystemColors.ControlText;
+            this.ForeColorDisabled = black ? C.black : SystemColors.GrayText;
         }
 
         protected override void OnMouseEnter(EventArgs e)
@@ -1018,7 +1047,7 @@ namespace SrvSurvey
             }
 
             if (Text != null)
-                TextRenderer.DrawText(e.Graphics, Text, Font, ClientRectangle, fc);
+                TextRenderer.DrawText(e.Graphics, Text, Font, ClientRectangle, fc, TextFormatFlags.WordBreak | TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
 
             base.RaisePaintEvent(this, e);
         }
@@ -1060,6 +1089,10 @@ namespace SrvSurvey
         [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color CheckColor { get; set; } = SystemColors.ControlText;
         private Pen? checkPen;
+        private SolidBrush? checkBrush;
+
+        [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color CheckBackColor;
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -1081,6 +1114,11 @@ namespace SrvSurvey
             if (linePen?.Color != lc) linePen = lc.toPen(1);
 
             var r = new Rectangle(1, 1, sz.Width, sz.Height);
+            if (CheckBackColor != Color.Empty)
+            {
+                if (checkBrush?.Color != CheckBackColor) checkBrush = new SolidBrush(CheckBackColor);
+                g.FillRectangle(checkBrush, r);
+            }
             g.DrawRectangle(linePen, r);
 
             if (Checked)

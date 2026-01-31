@@ -7,6 +7,7 @@ using SrvSurvey.Properties;
 using SrvSurvey.widgets;
 using System.Diagnostics;
 using System.Reflection;
+using Valve.VR;
 
 namespace SrvSurvey
 {
@@ -50,7 +51,30 @@ namespace SrvSurvey
                 btnSwapCache.Hide();
             }
 
-            // Not themed - this is always light.
+            /*
+            var dark = Game.settings.darkTheme;
+            var black = Game.settings.themeMainBlack;
+            Util.applyTheme(this, dark, black);
+
+            foreach (var btn in this.findAll<DrawButton>())
+                btn.setThemeColors(Game.settings.darkTheme, Game.settings.themeMainBlack);
+
+            foreach (var gb in this.findAll<GroupBox2>())
+                gb.LineColor = black ? C.orangeDark : dark ? SystemColors.ControlLight : SystemColors.ControlDark;
+
+            foreach (var cb in this.findAll<CheckBox2>())
+            {
+                cb.LineColor = black ? C.orangeDark : SystemColors.ControlText;
+                cb.CheckColor = black ? C.orange : SystemColors.ControlText;
+            }
+            // */
+
+            // if NOT theming
+            foreach (var btn in this.findAll<DrawButton>())
+                btn.setThemeColors(false, false); // Game.settings.darkTheme, Game.settings.themeMainBlack);
+
+            foreach (var cb in this.findAll<CheckBox2>())
+                cb.CheckBackColor = SystemColors.ControlLightLight;
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
@@ -210,6 +234,7 @@ namespace SrvSurvey
                             break;
 
                         case nameof(CheckBox):
+                        case nameof(CheckBox2):
                             ((CheckBox)ctrl).Checked = (bool)map[name].GetValue(Game.settings)!;
                             break;
 
@@ -321,6 +346,7 @@ namespace SrvSurvey
                             break;
 
                         case nameof(CheckBox):
+                        case nameof(CheckBox2):
                             val = ((CheckBox)ctrl).Checked;
                             break;
 
