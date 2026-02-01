@@ -381,6 +381,16 @@ namespace SrvSurvey
         }
 
         #endregion
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                tb = null!;
+                eb = null;
+            }
+            base.Dispose(disposing);
+        }
     }
 
     /// <summary>
@@ -1051,6 +1061,16 @@ namespace SrvSurvey
 
             base.RaisePaintEvent(this, e);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                borderPen?.Dispose();
+                borderPen = null;
+            }
+            base.Dispose(disposing);
+        }
     }
 
     public class GroupBox2 : GroupBox
@@ -1058,6 +1078,16 @@ namespace SrvSurvey
         [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color LineColor { get; set; } = SystemColors.ActiveBorder;
         private Pen? linePen;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                linePen?.Dispose();
+                linePen = null;
+            }
+            base.Dispose(disposing);
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -1093,6 +1123,20 @@ namespace SrvSurvey
 
         [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color CheckBackColor;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                linePen?.Dispose();
+                linePen = null;
+                checkPen?.Dispose();
+                checkPen = null;
+                checkBrush?.Dispose();
+                checkBrush = null;
+            }
+            base.Dispose(disposing);
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {

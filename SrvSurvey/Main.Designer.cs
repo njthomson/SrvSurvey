@@ -20,6 +20,10 @@ namespace SrvSurvey
 
                 this.stopHooks();
 
+                logFolderWatcher?.Dispose();
+                settingsFolderWatcher?.Dispose();
+                screenshotWatcher?.Dispose();
+
                 if (this.game != null)
                     this.removeGame();
             }

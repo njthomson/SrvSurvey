@@ -1449,6 +1449,7 @@ namespace SrvSurvey.plotters
             if (disposing)
             {
                 timer.Tick -= Timer_Tick;
+                timer.Dispose();
             }
 
             base.Dispose(disposing);

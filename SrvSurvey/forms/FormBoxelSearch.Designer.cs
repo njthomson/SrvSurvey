@@ -15,6 +15,7 @@
         {
             if (disposing && (components != null))
             {
+                fontHighlightCurrentRow?.Dispose();
                 components.Dispose();
 
                 if (bs != null)

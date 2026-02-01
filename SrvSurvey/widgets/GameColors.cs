@@ -840,7 +840,7 @@ namespace SrvSurvey.widgets
     /// <summary>
     /// A related Pen and Brush
     /// </summary>
-    internal class PenBrush
+    internal class PenBrush : IDisposable
     {
         public Pen pen;
         public Brush brush;
@@ -855,6 +855,12 @@ namespace SrvSurvey.widgets
         {
             this.pen = GameColors.newPen(color, penWidth, endCaps, endCaps);
             this.brush = new SolidBrush(color);
+        }
+
+        public void Dispose()
+        {
+            this.pen?.Dispose();
+            this.brush?.Dispose();
         }
     }
 }

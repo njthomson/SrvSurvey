@@ -15,6 +15,7 @@
         {
             if (disposing && (components != null))
             {
+                viewSys?.Dispose();
                 components.Dispose();
             }
             base.Dispose(disposing);

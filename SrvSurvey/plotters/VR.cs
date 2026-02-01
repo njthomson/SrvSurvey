@@ -176,6 +176,12 @@ namespace SrvSurvey.plotters
 
         public void Dispose()
         {
+            if (texture != null)
+            {
+                texture.Dispose();
+                texture = null;
+            }
+
             if (overlay != null)
             {
                 try

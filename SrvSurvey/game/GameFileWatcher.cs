@@ -38,7 +38,7 @@ namespace SrvSurvey.game
             return watcher.value;
         }
 
-        class JsonFileWatcher<T> where T : IWatchedFile
+        class JsonFileWatcher<T> : IDisposable where T : IWatchedFile
         {
             private readonly string filename;
             private readonly string filepath;

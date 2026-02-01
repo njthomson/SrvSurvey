@@ -97,6 +97,14 @@ namespace SrvSurvey.plotters
             this.nextMode();
         }
 
+        protected override void onClose()
+        {
+            if (siteMap != null) { siteMap.Dispose(); siteMap = null; }
+            if (underlay != null) { underlay.Dispose(); underlay = null; }
+            if (headingGuidance != null) { headingGuidance.Dispose(); headingGuidance = null; }
+            base.onClose();
+        }
+
         public void devRefreshBackground(string imagePath)
         {
             if (this.template == null) return;

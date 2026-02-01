@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace SrvSurvey
 {
-    class JournalFile
+    class JournalFile : IDisposable
     {
 
         public static string journalFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), @"Saved Games\Frontier Developments\Elite Dangerous\");
@@ -54,6 +54,21 @@ namespace SrvSurvey
             this.isOdyssey = true;
             if (this.Entries.Count > 0 && this.Entries[0].@event == nameof(Fileheader))
                 this.isOdyssey = ((Fileheader)this.Entries[0]).Odyssey;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.reader?.Dispose();
+                this.reader = null!;
+            }
         }
 
         public int Count { get => this.Entries.Count; }

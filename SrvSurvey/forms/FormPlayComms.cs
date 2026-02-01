@@ -952,6 +952,15 @@ namespace SrvSurvey.forms
         private static Font btnFont = new Font("Segoe UI Emoji", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
         private Font btnFont2 = new Font("Segoe UI Emoji", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                btnFont2?.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
         public PanelMsg(FormPlayComms form, PlayMsg msg, DefMsg qm)
         {
             this.Name = "PanelMsg";

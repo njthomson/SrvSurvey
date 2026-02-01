@@ -61,6 +61,13 @@ namespace SrvSurvey.plotters
             durationTimer.Tick += DurationTimer_Tick;
         }
 
+        protected override void onClose()
+        {
+            durationTimer.Tick -= DurationTimer_Tick;
+            durationTimer.Dispose();
+            base.onClose();
+        }
+
         // It's easy for this to overlap with PlotBioSystem ... so shift them up if that is the case
         // TODO: REVISIT !!!
         // Program.getPlotter<PlotPriorScans>()?.avoidPlotBioSystem(this);

@@ -3,7 +3,7 @@ using SrvSurvey.game;
 
 namespace SrvSurvey
 {
-    class NavRouteFile
+    class NavRouteFile : IDisposable
     {
 
         public static readonly string Filename = "NavRoute.json";
