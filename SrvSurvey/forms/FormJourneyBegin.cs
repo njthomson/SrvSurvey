@@ -22,7 +22,7 @@ namespace SrvSurvey.forms
             this.MinimizeBox = false;
             this.hideFakeClose = true;
 
-            Util.applyTheme(this);
+            BaseForm.applyThemeWithCustomControls(this);
         }
 
         private void btnReject_Click(object sender, EventArgs e)

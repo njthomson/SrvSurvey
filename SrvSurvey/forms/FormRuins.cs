@@ -940,7 +940,7 @@ namespace SrvSurvey
         {
             var pp = new Pen(GameColors.Map.colorUnknown)
             {
-                Width = 2 * GameColors.scaleFactor,
+                Width = 2 * Program.scaleFactor,
                 LineJoin = LineJoin.Bevel,
                 StartCap = LineCap.Triangle,
                 EndCap = LineCap.Triangle,

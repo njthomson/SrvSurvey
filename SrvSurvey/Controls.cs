@@ -4,6 +4,7 @@ using SrvSurvey.widgets;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 
 namespace SrvSurvey
 {
@@ -81,8 +82,8 @@ namespace SrvSurvey
         {
             foreach (Control child in ctrl.Controls)
             {
-                if (child is T thing)
-                    yield return thing;
+                if (typeof(T).IsAssignableFrom(child.GetType()))
+                    yield return (T)child;
                 foreach (var thing2 in findAll<T>(child))
                     yield return thing2;
             }
@@ -180,6 +181,8 @@ namespace SrvSurvey
 
         public TextBox2()
         {
+            SetStyle(ControlStyles.ResizeRedraw, true);
+
             tb = new TextBox()
             {
                 Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
@@ -187,7 +190,8 @@ namespace SrvSurvey
                 BorderStyle = BorderStyle.None,
                 Font = this.Font,
                 ForeColor = this.ForeColor,
-                Width = this.ClientSize.Width,
+                Left = 1,
+                Width = this.ClientSize.Width - 2,
             };
             this.Controls.Add(tb);
             tb.TextChanged += tb_TextChanged;
@@ -195,6 +199,19 @@ namespace SrvSurvey
             // apply some defaults
             this.BackColor = SystemColors.Window;
             this.ForeColor = SystemColors.WindowText;
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            e.Graphics.Clear(tb.BackColor);
+
+            if (BorderColor != Color.Empty)
+            {
+                if (borderPen?.Color != BorderColor) borderPen = BorderColor.toPen(1);
+                e.Graphics.DrawRectangle(borderPen, 0, 0, ClientRectangle.Width - 1, ClientRectangle.Height - 1);
+            }
         }
 
         private void tb_TextChanged(object? sender, EventArgs e)
@@ -229,6 +246,10 @@ namespace SrvSurvey
             set { base.ForeColor = value; tb.ForeColor = value; }
         }
 
+        [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color BorderColor { get; set; } = SystemColors.ActiveBorder;
+        private Pen? borderPen;
+
         protected override void OnEnabledChanged(EventArgs e)
         {
             base.OnEnabledChanged(e);
@@ -240,6 +261,43 @@ namespace SrvSurvey
         {
             get => base.Font;
             set { base.Font = value; tb.Font = value; }
+        }
+
+        [AllowNull, DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public ScrollBars ScrollBars
+        {
+            get => tb.ScrollBars;
+            set { tb.ScrollBars = value; }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool Multiline
+        {
+            get => tb.Multiline;
+            set
+            {
+                tb.Multiline = value;
+                if (value)
+                {
+                    if (Padding.All == 0) Padding = new Padding(1);
+                    tb.Dock = DockStyle.Fill;
+                }
+                else
+                {
+                    tb.Top = Util.centerIn(this.ClientSize.Height, tb.Height);
+                    var left = Math.Max(1, Padding.Left);
+                    tb.Left = left;
+                    tb.Width = ClientSize.Width - Math.Max(1, Padding.Right) - left;
+                    tb.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+                }
+            }
+        }
+
+        [AllowNull, DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int SelectionStart
+        {
+            get => tb.SelectionStart;
+            set { tb.SelectionStart = SelectionStart; }
         }
 
         [DefaultValue(false)]
@@ -463,7 +521,7 @@ namespace SrvSurvey
     /// <summary>
     /// A ComboBox for choosing known star systems
     /// </summary>
-    internal class ComboStarSystem : ComboBox
+    internal class ComboStarSystem : ComboBox2
     {
         public event StarSystemChanged? selectedSystemChanged;
 
@@ -1138,5 +1196,196 @@ namespace SrvSurvey
 
             base.RaisePaintEvent(this, e);
         }
+    }
+
+    internal class ComboBox2 : ComboBox
+    {
+        // Many thanks to https://github.com/r-aghaei/FlatComboExample/blob/master/src/FlatComboExample.NetFX/FlatComboBox.cs
+
+        private bool mouseInside;
+
+        public ComboBox2()
+        {
+            SetStyle(ControlStyles.ResizeRedraw, true);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            //SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+
+            this.FlatStyle = FlatStyle.Flat;
+        }
+
+        [DefaultValue(typeof(Color), "Gray")]
+        public Color BorderColor { get; set; }
+
+        [DefaultValue(typeof(Color), "Yellow")]
+        public Color BorderHoverColor { get; set; }
+
+        [DefaultValue(typeof(Color), "LightGray")]
+        public Color ButtonColor { get; set; }
+
+        [DefaultValue(typeof(Color), "Orange")]
+        public Color ButtonHoverColor { get; set; }
+
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            base.OnMouseEnter(e);
+            mouseInside = true;
+            Invalidate();
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            base.OnMouseLeave(e);
+            mouseInside = false;
+            Invalidate();
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            if (!mouseInside)
+            {
+                mouseInside = true;
+                Invalidate();
+            }
+        }
+
+        protected override void OnDropDownClosed(EventArgs e)
+        {
+            base.OnDropDownClosed(e);
+            mouseInside = false;
+            Invalidate();
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == WM_PAINT && DropDownStyle != ComboBoxStyle.Simple)
+            {
+                var clientRect = ClientRectangle;
+                var dropDownButtonWidth = SystemInformation.HorizontalScrollBarArrowWidth;
+                var outerBorder = new Rectangle(clientRect.Location, new Size(clientRect.Width - 1, clientRect.Height - 1));
+                var innerBorder = new Rectangle(outerBorder.X + 1, outerBorder.Y + 1, outerBorder.Width - dropDownButtonWidth - 2, outerBorder.Height - 2);
+                var innerInnerBorder = new Rectangle(innerBorder.X + 1, innerBorder.Y + 1, innerBorder.Width - 2, innerBorder.Height - 2);
+                var dropDownRect = new Rectangle(innerBorder.Right + 1, innerBorder.Y, dropDownButtonWidth, innerBorder.Height + 1);
+
+                if (RightToLeft == RightToLeft.Yes)
+                {
+                    innerBorder.X = clientRect.Width - innerBorder.Right;
+                    innerInnerBorder.X = clientRect.Width - innerInnerBorder.Right;
+                    dropDownRect.X = clientRect.Width - dropDownRect.Right;
+                    dropDownRect.Width += 1;
+                }
+                var innerBorderColor = Enabled ? BackColor : SystemColors.Control;
+                var outerBorderColor = !Enabled ? SystemColors.ControlDark : mouseInside ? BorderHoverColor : BorderColor; //Enabled ? BorderColor : SystemColors.ControlDark;
+                var buttonColor = !Enabled ? SystemColors.Control : mouseInside ? ButtonHoverColor : ButtonColor;
+                var middle = new Point(dropDownRect.Left + dropDownRect.Width / 2, dropDownRect.Top + dropDownRect.Height / 2);
+                var arrow = new Point[]
+                {
+                    new Point(middle.X - 3, middle.Y - 2),
+                    new Point(middle.X + 4, middle.Y - 2),
+                    new Point(middle.X, middle.Y + 2)
+                };
+
+                var ps = new PAINTSTRUCT();
+                bool shoulEndPaint = false;
+                IntPtr dc;
+                if (m.WParam == IntPtr.Zero)
+                {
+                    dc = BeginPaint(Handle, ref ps);
+                    m.WParam = dc;
+                    shoulEndPaint = true;
+                }
+                else
+                {
+                    dc = m.WParam;
+                }
+                var rgn = CreateRectRgn(innerInnerBorder.Left, innerInnerBorder.Top, innerInnerBorder.Right, innerInnerBorder.Bottom);
+                SelectClipRgn(dc, rgn);
+                DefWndProc(ref m);
+                DeleteObject(rgn);
+                rgn = CreateRectRgn(clientRect.Left, clientRect.Top, clientRect.Right, clientRect.Bottom);
+                SelectClipRgn(dc, rgn);
+
+                using (var g = Graphics.FromHdc(dc))
+                {
+                    using (var b = new SolidBrush(buttonColor))
+                    {
+                        g.FillRectangle(b, dropDownRect);
+                    }
+                    using (var b = new SolidBrush(outerBorderColor))
+                    {
+                        g.FillPolygon(mouseInside ? b : Brushes.Black , arrow);
+                    }
+                    using (var p = new Pen(innerBorderColor))
+                    {
+                        g.DrawRectangle(p, innerBorder);
+                        g.DrawRectangle(p, innerInnerBorder);
+                    }
+                    using (var p = new Pen(outerBorderColor))
+                    {
+                        g.DrawRectangle(p, outerBorder);
+                    }
+                }
+                if (shoulEndPaint)
+                    EndPaint(Handle, ref ps);
+                DeleteObject(rgn);
+            }
+            else
+                base.WndProc(ref m);
+        }
+
+        private const int WM_PAINT = 0xF;
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            public int L, T, R, B;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct PAINTSTRUCT
+        {
+            public IntPtr hdc;
+            public bool fErase;
+            public int rcPaint_left;
+            public int rcPaint_top;
+            public int rcPaint_right;
+            public int rcPaint_bottom;
+            public bool fRestore;
+            public bool fIncUpdate;
+            public int reserved1;
+            public int reserved2;
+            public int reserved3;
+            public int reserved4;
+            public int reserved5;
+            public int reserved6;
+            public int reserved7;
+            public int reserved8;
+        }
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr BeginPaint(IntPtr hWnd, [In, Out] ref PAINTSTRUCT lpPaint);
+
+        [DllImport("user32.dll")]
+        private static extern bool EndPaint(IntPtr hWnd, ref PAINTSTRUCT lpPaint);
+
+        [DllImport("gdi32.dll")]
+        public static extern int SelectClipRgn(IntPtr hDC, IntPtr hRgn);
+
+        [DllImport("user32.dll")]
+        public static extern int GetUpdateRgn(IntPtr hwnd, IntPtr hrgn, bool fErase);
+
+        public enum RegionFlags
+        {
+            ERROR = 0,
+            NULLREGION = 1,
+            SIMPLEREGION = 2,
+            COMPLEXREGION = 3,
+        }
+
+        [DllImport("gdi32.dll")]
+        internal static extern bool DeleteObject(IntPtr hObject);
+
+        [DllImport("gdi32.dll")]
+        private static extern IntPtr CreateRectRgn(int x1, int y1, int x2, int y2);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.widgets;
 
 namespace SrvSurvey.forms
 {
@@ -11,6 +12,13 @@ namespace SrvSurvey.forms
         {
             InitializeComponent();
             btnOpen.Enabled = false;
+
+            BaseForm.applyThemeWithCustomControls(this);
+            if (Game.settings.themeMainBlack)
+            {
+                SetStyle(ControlStyles.ResizeRedraw, true);
+                this.Paint += (s, e) => e.Graphics.DrawRectangle(C.Pens.grey1, 0, 0, ClientSize.Width - 1, ClientSize.Height - 1);
+            }
         }
 
         private void FormJourneyList_Load(object sender, EventArgs e)

@@ -14,7 +14,7 @@ namespace SrvSurvey
             InitializeComponent();
             this.Icon = Icons.set_square;
 
-            Util.applyTheme(this);
+            BaseForm.applyThemeWithCustomControls(this);
         }
 
         private void btnBegin_Click(object sender, EventArgs e)

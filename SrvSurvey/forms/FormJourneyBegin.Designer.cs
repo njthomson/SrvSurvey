@@ -31,14 +31,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormJourneyBegin));
             lblDesc = new Label();
             lblName = new Label();
-            txtName = new TextBox();
-            btnAccept = new FlatButton();
-            btnReject = new FlatButton();
+            txtName = new TextBox2();
+            btnAccept = new DrawButton();
+            btnReject = new DrawButton();
             radioNow = new RadioButton();
             radioSystem = new RadioButton();
             comboStartFrom = new ComboStarSystem();
             lblWarning = new Label();
-            txtCurrentSystem = new TextBox();
+            txtCurrentSystem = new TextBox2();
             lblLastVisited = new Label();
             SuspendLayout();
             // 
@@ -80,6 +80,7 @@
             btnAccept.TabIndex = 9;
             btnAccept.Text = "Start";
             btnAccept.UseVisualStyleBackColor = true;
+            btnAccept.DrawBorder = true;
             btnAccept.Click += btnAccept_Click;
             // 
             // btnReject
@@ -91,6 +92,7 @@
             btnReject.TabIndex = 10;
             btnReject.Text = "Cancel";
             btnReject.UseVisualStyleBackColor = true;
+            btnReject.DrawBorder = true;
             btnReject.Click += btnReject_Click;
             // 
             // radioNow
@@ -193,14 +195,14 @@
 
         private Label lblDesc;
         private Label lblName;
-        private TextBox txtName;
-        private FlatButton btnAccept;
-        private FlatButton btnReject;
+        private TextBox2 txtName;
+        private DrawButton btnAccept;
+        private DrawButton btnReject;
         private RadioButton radioNow;
         private RadioButton radioSystem;
         private ComboStarSystem comboStartFrom;
         private Label lblWarning;
-        private TextBox txtCurrentSystem;
+        private TextBox2 txtCurrentSystem;
         private Label lblLastVisited;
     }
 }

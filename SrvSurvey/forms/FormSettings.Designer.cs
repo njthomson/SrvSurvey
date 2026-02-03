@@ -39,7 +39,7 @@ namespace SrvSurvey
             btnSave = new DrawButton();
             btnCancel = new DrawButton();
             tabPage1 = new TabPage();
-            checkBox55 = new CheckBox2();
+            checkBlackTheme = new CheckBox2();
             checkEnableVR = new CheckBox2();
             btnAdjustVR = new DrawButton();
             checkBox45 = new CheckBox2();
@@ -51,7 +51,7 @@ namespace SrvSurvey
             pictureBox6 = new PictureBox();
             btnAdjustOverlays = new DrawButton();
             label27 = new Label();
-            comboLang = new ComboBox();
+            comboLang = new ComboBox2();
             numOpacity = new NumericUpDown();
             checkFocusAfterFsdJump = new CheckBox2();
             label3 = new Label();
@@ -62,9 +62,9 @@ namespace SrvSurvey
             panelTheme = new Panel();
             btnTheme = new DrawButton();
             label14 = new Label();
-            comboOverlayScale = new ComboBox();
+            comboOverlayScale = new ComboBox2();
             btnResetOverlays = new DrawButton();
-            comboCmdr = new ComboBox();
+            comboCmdr = new ComboBox2();
             checkHideJournalTimer = new CheckBox2();
             btnChooseJournalFolder = new DrawButton();
             label11 = new Label();
@@ -81,7 +81,7 @@ namespace SrvSurvey
             tabPage4 = new TabPage();
             checkBox54 = new CheckBox2();
             checkBox37 = new CheckBox2();
-            comboBox1 = new ComboBox();
+            comboBox1 = new ComboBox2();
             label29 = new Label();
             checkBox34 = new CheckBox2();
             checkBox27 = new CheckBox2();
@@ -116,7 +116,7 @@ namespace SrvSurvey
             label16 = new Label();
             label17 = new Label();
             tabPage3 = new TabPage();
-            comboGuardianWindowSize = new ComboBox();
+            comboGuardianWindowSize = new ComboBox2();
             checkBox26 = new CheckBox2();
             checkBox25 = new CheckBox2();
             numAltGamma = new NumericUpDown();
@@ -241,7 +241,7 @@ namespace SrvSurvey
             checkBox22 = new CheckBox2();
             checkHumanSitePlotter = new CheckBox2();
             tabKeyChords = new TabPage();
-            comboDirectXDevice = new ComboBox();
+            comboDirectXDevice = new ComboBox2();
             checkKeyChordsDirectX = new CheckBox2();
             listKeys = new ListView();
             colName = new ColumnHeader();
@@ -390,7 +390,7 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
-            tabPage1.Controls.Add(checkBox55);
+            tabPage1.Controls.Add(checkBlackTheme);
             tabPage1.Controls.Add(checkEnableVR);
             tabPage1.Controls.Add(btnAdjustVR);
             tabPage1.Controls.Add(checkBox45);
@@ -436,19 +436,19 @@ namespace SrvSurvey
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
             // 
-            // checkBox55
+            // checkBlackTheme
             // 
-            checkBox55.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            checkBox55.AutoSize = true;
-            checkBox55.CheckColor = SystemColors.ControlText;
-            checkBox55.LineColor = SystemColors.ActiveBorder;
-            checkBox55.Location = new Point(559, 71);
-            checkBox55.Name = "checkBox55";
-            checkBox55.Size = new Size(129, 19);
-            checkBox55.TabIndex = 36;
-            checkBox55.Tag = "themeMainBlack";
-            checkBox55.Text = "Black main window";
-            checkBox55.UseVisualStyleBackColor = true;
+            checkBlackTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            checkBlackTheme.AutoSize = true;
+            checkBlackTheme.CheckColor = SystemColors.ControlText;
+            checkBlackTheme.LineColor = SystemColors.ActiveBorder;
+            checkBlackTheme.Location = new Point(520, 6);
+            checkBlackTheme.Name = "checkBlackTheme";
+            checkBlackTheme.Size = new Size(171, 19);
+            checkBlackTheme.TabIndex = 36;
+            checkBlackTheme.Tag = "themeMainBlack";
+            checkBlackTheme.Text = "Black theme (experimental)";
+            checkBlackTheme.UseVisualStyleBackColor = true;
             // 
             // checkEnableVR
             // 
@@ -614,12 +614,16 @@ namespace SrvSurvey
             // 
             // comboLang
             // 
+            comboLang.BorderColor = SystemColors.ControlDarkDark;
+            comboLang.ButtonColor = SystemColors.ControlDark;
+            comboLang.ButtonHoverColor = SystemColors.AppWorkspace;
             comboLang.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboLang.FlatStyle = FlatStyle.Flat;
             comboLang.FormattingEnabled = true;
             comboLang.Items.AddRange(new object[] { "Match Windows OS default" });
             comboLang.Location = new Point(78, 416);
             comboLang.Name = "comboLang";
-            comboLang.Size = new Size(226, 23);
+            comboLang.Size = new Size(226, 24);
             comboLang.TabIndex = 22;
             comboLang.Tag = "lang";
             // 
@@ -694,7 +698,7 @@ namespace SrvSurvey
             checkDarkTheme.AutoSize = true;
             checkDarkTheme.CheckColor = SystemColors.ControlText;
             checkDarkTheme.LineColor = SystemColors.ActiveBorder;
-            checkDarkTheme.Location = new Point(559, 45);
+            checkDarkTheme.Location = new Point(562, 32);
             checkDarkTheme.Name = "checkDarkTheme";
             checkDarkTheme.Size = new Size(87, 19);
             checkDarkTheme.TabIndex = 23;
@@ -744,7 +748,7 @@ namespace SrvSurvey
             btnTheme.ForeColorDisabled = Color.Empty;
             btnTheme.ForeColorHover = Color.Empty;
             btnTheme.ForeColorPressed = Color.Empty;
-            btnTheme.Location = new Point(530, 100);
+            btnTheme.Location = new Point(531, 100);
             btnTheme.Name = "btnTheme";
             btnTheme.Size = new Size(118, 45);
             btnTheme.TabIndex = 24;
@@ -764,9 +768,11 @@ namespace SrvSurvey
             // comboOverlayScale
             // 
             comboOverlayScale.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboOverlayScale.FlatStyle = FlatStyle.Popup;
             comboOverlayScale.FormattingEnabled = true;
             comboOverlayScale.Items.AddRange(new object[] { "Match Windows OS scale (999%)", "100% (No scaling)", "110%", "120%", "125%", "130%", "140%", "150%", "160%", "170%", "175%", "180%", "190%", "200%", "210%", "220%", "225%", "230%", "240%", "250%", "90%", "80%", "75%", "70%", "60%", "50%" });
             comboOverlayScale.Location = new Point(109, 100);
+            comboOverlayScale.Margin = new Padding(0);
             comboOverlayScale.Name = "comboOverlayScale";
             comboOverlayScale.Size = new Size(243, 23);
             comboOverlayScale.TabIndex = 6;
@@ -2563,12 +2569,16 @@ namespace SrvSurvey
             // 
             txtRavenApiKey.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtRavenApiKey.BackColor = SystemColors.Window;
+            txtRavenApiKey.BorderColor = SystemColors.ActiveBorder;
             txtRavenApiKey.BorderStyle = BorderStyle.FixedSingle;
             txtRavenApiKey.Enabled = false;
             txtRavenApiKey.ForeColor = SystemColors.WindowText;
             txtRavenApiKey.Location = new Point(89, 46);
+            txtRavenApiKey.Multiline = false;
             txtRavenApiKey.Name = "txtRavenApiKey";
             txtRavenApiKey.Padding = new Padding(3);
+            txtRavenApiKey.ScrollBars = ScrollBars.None;
+            txtRavenApiKey.SelectionStart = 0;
             txtRavenApiKey.Size = new Size(253, 23);
             txtRavenApiKey.TabIndex = 3;
             txtRavenApiKey.UseEdgeButton = TextBox2.EdgeButton.Paste;
@@ -3573,10 +3583,10 @@ namespace SrvSurvey
             checkBox42.LineColor = SystemColors.ActiveBorder;
             checkBox42.Location = new Point(12, 16);
             checkBox42.Name = "checkBox42";
-            checkBox42.Size = new Size(334, 19);
+            checkBox42.Size = new Size(254, 19);
             checkBox42.TabIndex = 38;
             checkBox42.Tag = "autoShowPlotStationInfo_TEST";
-            checkBox42.Text = "Show station/target details in left nav panel (experimental)";
+            checkBox42.Text = "Show station/target details in left nav panel";
             checkBox42.UseVisualStyleBackColor = true;
             // 
             // checkBox41
@@ -3806,7 +3816,7 @@ namespace SrvSurvey
         private Label label5;
         private CheckBox2 checkBox2;
         private Label label9;
-        private ComboBox comboGuardianWindowSize;
+        private ComboBox2 comboGuardianWindowSize;
         private CheckBox2 checkBox3;
         private CheckBox2 checkBox5;
         private CheckBox2 checkBox6;
@@ -3843,7 +3853,7 @@ namespace SrvSurvey
         private CheckBox2 checkHideMyOwnCanonnSignals;
         private CheckBox2 checkBox14;
         private CheckBox2 checkBox15;
-        private ComboBox comboCmdr;
+        private ComboBox2 comboCmdr;
         private DrawButton btnResetOverlays;
         private ColorDialog colorDialog;
         private DrawButton btnBannerColor;
@@ -3852,7 +3862,7 @@ namespace SrvSurvey
         private CheckBox2 checkBox16;
         private NumericUpDown numericUpDown1;
         private Label label14;
-        private ComboBox comboOverlayScale;
+        private ComboBox2 comboOverlayScale;
         private CheckBox2 checkBioSystemPlotter;
         private NumericUpDown numMinBioDuration;
         private CheckBox2 checkBox18;
@@ -3928,7 +3938,7 @@ namespace SrvSurvey
         private Label label26;
         private CheckBox2 checkBox32;
         private Label label27;
-        private ComboBox comboLang;
+        private ComboBox2 comboLang;
         private TabPage tabKeyChords;
         private CheckBox2 checkKeyChords;
         private ListView listKeys;
@@ -3949,8 +3959,8 @@ namespace SrvSurvey
         private ToolStripMenuItem menuClearCodexCache;
         private CheckBox2 checkPreDownloadCodexImages;
         private CheckBox2 checkKeyChordsDirectX;
-        private ComboBox comboDirectXDevice;
-        private ComboBox comboBox1;
+        private ComboBox2 comboDirectXDevice;
+        private ComboBox2 comboBox1;
         private Label label29;
         private CheckBox2 checkBox36;
         private CheckBox2 checkBox37;
@@ -3995,7 +4005,7 @@ namespace SrvSurvey
         private CheckBox2 checkBox51;
         private CheckBox2 checkBox53;
         private CheckBox2 checkBox54;
-        private CheckBox2 checkBox55;
+        private CheckBox2 checkBlackTheme;
         private CheckBox2 checkBox56;
         private CheckBox2 checkBox57;
     }

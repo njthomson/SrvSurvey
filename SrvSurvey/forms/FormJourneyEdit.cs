@@ -15,7 +15,7 @@ namespace SrvSurvey.forms
 
             updateFormFromJourney();
 
-            Util.applyTheme(this);
+            BaseForm.applyThemeWithCustomControls(this);
         }
 
         private void updateFormFromJourney()

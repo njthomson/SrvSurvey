@@ -30,10 +30,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSystemNotes));
             label1 = new Label();
-            txtSystem = new TextBox();
-            btnCancel = new FlatButton();
-            txtNotes = new TextBox();
-            btnSave = new FlatButton();
+            txtSystem = new TextBox2();
+            btnCancel = new DrawButton();
+            txtNotes = new TextBox2();
+            btnSave = new DrawButton();
             statusStrip1 = new StatusStrip();
             menuOptions = new ToolStripDropDownButton();
             menuAlwaysOnTop = new ToolStripMenuItem();
@@ -58,16 +58,33 @@
             // txtSystem
             // 
             txtSystem.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtSystem.BackColor = SystemColors.Window;
+            txtSystem.BorderColor = SystemColors.ActiveBorder;
+            txtSystem.ForeColor = SystemColors.WindowText;
             txtSystem.Location = new Point(66, 6);
+            txtSystem.Multiline = false;
             txtSystem.Name = "txtSystem";
             txtSystem.ReadOnly = true;
-            txtSystem.Size = new Size(357, 23);
+            txtSystem.ScrollBars = ScrollBars.None;
+            txtSystem.SelectionStart = 0;
+            txtSystem.Size = new Size(306, 23);
             txtSystem.TabIndex = 4;
+            txtSystem.UseEdgeButton = TextBox2.EdgeButton.None;
             // 
             // btnCancel
             // 
             btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnCancel.Location = new Point(348, 400);
+            btnCancel.AnimateOnPress = false;
+            btnCancel.BackColorDisabled = Color.Empty;
+            btnCancel.BackColorHover = Color.Empty;
+            btnCancel.BackColorPressed = Color.Empty;
+            btnCancel.DrawBorder = true;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.ForeColor = Color.Black;
+            btnCancel.ForeColorDisabled = Color.Empty;
+            btnCancel.ForeColorHover = Color.Empty;
+            btnCancel.ForeColorPressed = Color.Empty;
+            btnCancel.Location = new Point(297, 311);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(75, 23);
             btnCancel.TabIndex = 2;
@@ -78,17 +95,34 @@
             // txtNotes
             // 
             txtNotes.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtNotes.BackColor = SystemColors.Window;
+            txtNotes.BorderColor = SystemColors.ActiveBorder;
+            txtNotes.ForeColor = SystemColors.WindowText;
             txtNotes.Location = new Point(12, 35);
             txtNotes.Multiline = true;
             txtNotes.Name = "txtNotes";
+            txtNotes.Padding = new Padding(2);
             txtNotes.ScrollBars = ScrollBars.Vertical;
-            txtNotes.Size = new Size(411, 359);
+            txtNotes.SelectionStart = 0;
+            txtNotes.Size = new Size(360, 270);
             txtNotes.TabIndex = 0;
+            txtNotes.Text = "Hello World";
+            txtNotes.UseEdgeButton = TextBox2.EdgeButton.None;
             // 
             // btnSave
             // 
             btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSave.Location = new Point(267, 400);
+            btnSave.AnimateOnPress = false;
+            btnSave.BackColorDisabled = Color.Empty;
+            btnSave.BackColorHover = Color.Empty;
+            btnSave.BackColorPressed = Color.Empty;
+            btnSave.DrawBorder = true;
+            btnSave.FlatStyle = FlatStyle.Flat;
+            btnSave.ForeColor = Color.Black;
+            btnSave.ForeColorDisabled = Color.Empty;
+            btnSave.ForeColorHover = Color.Empty;
+            btnSave.ForeColorPressed = Color.Empty;
+            btnSave.Location = new Point(216, 311);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(75, 23);
             btnSave.TabIndex = 1;
@@ -99,9 +133,9 @@
             // statusStrip1
             // 
             statusStrip1.Items.AddRange(new ToolStripItem[] { menuOptions });
-            statusStrip1.Location = new Point(0, 428);
+            statusStrip1.Location = new Point(0, 339);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(435, 22);
+            statusStrip1.Size = new Size(384, 22);
             statusStrip1.TabIndex = 5;
             statusStrip1.Text = "statusStrip1";
             // 
@@ -164,7 +198,7 @@
             // 
             linkOpenImagesFolder.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             linkOpenImagesFolder.AutoSize = true;
-            linkOpenImagesFolder.Location = new Point(12, 404);
+            linkOpenImagesFolder.Location = new Point(12, 315);
             linkOpenImagesFolder.Name = "linkOpenImagesFolder";
             linkOpenImagesFolder.Size = new Size(153, 15);
             linkOpenImagesFolder.TabIndex = 6;
@@ -177,7 +211,7 @@
             // 
             AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
-            ClientSize = new Size(435, 450);
+            ClientSize = new Size(384, 361);
             Controls.Add(linkOpenImagesFolder);
             Controls.Add(statusStrip1);
             Controls.Add(btnSave);
@@ -185,6 +219,7 @@
             Controls.Add(btnCancel);
             Controls.Add(txtSystem);
             Controls.Add(label1);
+            MinimumSize = new Size(400, 400);
             Name = "FormSystemNotes";
             Text = "System notes";
             statusStrip1.ResumeLayout(false);
@@ -196,10 +231,10 @@
         #endregion
 
         private Label label1;
-        private TextBox txtSystem;
-        private FlatButton btnCancel;
-        private TextBox txtNotes;
-        private FlatButton btnSave;
+        private TextBox2 txtSystem;
+        private DrawButton btnCancel;
+        private TextBox2 txtNotes;
+        private DrawButton btnSave;
         private StatusStrip statusStrip1;
         private ToolStripDropDownButton menuOptions;
         private ToolStripMenuItem menuAlwaysOnTop;

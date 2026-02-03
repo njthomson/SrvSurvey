@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.widgets;
 using static SrvSurvey.game.CommanderJourney;
 
 namespace SrvSurvey.forms
@@ -46,7 +47,13 @@ namespace SrvSurvey.forms
             menuTopMost.Checked = Game.settings.viewJourneyTopMost;
             this.TopMost = Game.settings.viewJourneyTopMost;
 
-            //Util.applyTheme(this);
+            BaseForm.applyThemeWithCustomControls(this);
+            if (Game.settings.themeMainBlack)
+            {
+                SetStyle(ControlStyles.ResizeRedraw, true);
+                this.Paint += (s, e) => e.Graphics.DrawRectangle(C.Pens.grey1, 0, 0, ClientSize.Width - 1, ClientSize.Height - 1);
+                status.Paint += (s, e) => e.Graphics.DrawRectangle(C.Pens.grey1, 0, 0, status.ClientSize.Width - 1, status.ClientSize.Height - 1);
+            }
         }
 
         protected override void beforeShowing()

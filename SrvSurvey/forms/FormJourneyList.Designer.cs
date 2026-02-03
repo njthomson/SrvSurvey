@@ -33,9 +33,9 @@
             colStart = new ColumnHeader();
             colEnd = new ColumnHeader();
             lblHeader = new Label();
-            btnOpen = new Button();
-            btnClose = new Button();
-            txtSummary = new TextBox();
+            btnOpen = new DrawButton();
+            btnClose = new DrawButton();
+            txtSummary = new TextBox2();
             SuspendLayout();
             // 
             // list
@@ -78,6 +78,16 @@
             // btnOpen
             // 
             btnOpen.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnOpen.AnimateOnPress = false;
+            btnOpen.BackColorDisabled = Color.Empty;
+            btnOpen.BackColorHover = Color.Empty;
+            btnOpen.BackColorPressed = Color.Empty;
+            btnOpen.DrawBorder = true;
+            btnOpen.FlatStyle = FlatStyle.Flat;
+            btnOpen.ForeColor = Color.Black;
+            btnOpen.ForeColorDisabled = Color.Empty;
+            btnOpen.ForeColorHover = Color.Empty;
+            btnOpen.ForeColorPressed = Color.Empty;
             btnOpen.Location = new Point(692, 326);
             btnOpen.Name = "btnOpen";
             btnOpen.Size = new Size(75, 23);
@@ -89,6 +99,16 @@
             // btnClose
             // 
             btnClose.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnClose.AnimateOnPress = false;
+            btnClose.BackColorDisabled = Color.Empty;
+            btnClose.BackColorHover = Color.Empty;
+            btnClose.BackColorPressed = Color.Empty;
+            btnClose.DrawBorder = true;
+            btnClose.FlatStyle = FlatStyle.Flat;
+            btnClose.ForeColor = Color.Black;
+            btnClose.ForeColorDisabled = Color.Empty;
+            btnClose.ForeColorHover = Color.Empty;
+            btnClose.ForeColorPressed = Color.Empty;
             btnClose.Location = new Point(773, 326);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(75, 23);
@@ -100,13 +120,19 @@
             // txtSummary
             // 
             txtSummary.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            txtSummary.BackColor = SystemColors.Window;
+            txtSummary.BorderColor = SystemColors.ActiveBorder;
+            txtSummary.ForeColor = SystemColors.WindowText;
             txtSummary.Location = new Point(523, 39);
             txtSummary.Multiline = true;
             txtSummary.Name = "txtSummary";
+            txtSummary.Padding = new Padding(1);
             txtSummary.ReadOnly = true;
             txtSummary.ScrollBars = ScrollBars.Both;
+            txtSummary.SelectionStart = 0;
             txtSummary.Size = new Size(325, 271);
             txtSummary.TabIndex = 4;
+            txtSummary.UseEdgeButton = TextBox2.EdgeButton.None;
             // 
             // FormJourneyList
             // 
@@ -133,8 +159,8 @@
         private ColumnHeader colStart;
         private ColumnHeader colEnd;
         private Label lblHeader;
-        private Button btnOpen;
-        private Button btnClose;
-        private TextBox txtSummary;
+        private DrawButton btnOpen;
+        private DrawButton btnClose;
+        private TextBox2 txtSummary;
     }
 }

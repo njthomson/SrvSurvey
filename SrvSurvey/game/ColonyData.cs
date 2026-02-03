@@ -565,6 +565,8 @@ namespace SrvSurvey.game
             var tidalsNeeded = 0;
             foreach (var b in sys.bodies)
             {
+                if (b.type == SystemBodyType.PlanetaryRing) continue;
+
                 var bod = new Bod
                 {
                     num = b.id,
@@ -610,7 +612,7 @@ namespace SrvSurvey.game
                 {
                     Game.log($"Why body type not known? {bod.name} => {b.planetClass}");
                     Debugger.Break();
-                    return null;
+                    continue;
                 }
 
                 // map features

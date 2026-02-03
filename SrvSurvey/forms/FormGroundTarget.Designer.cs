@@ -32,14 +32,14 @@ namespace SrvSurvey
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGroundTarget));
             label2 = new Label();
             label3 = new Label();
-            txtLat = new TextBox();
-            txtLong = new TextBox();
-            btnBegin = new FlatButton();
-            btnCancel = new FlatButton();
+            txtLat = new TextBox2();
+            txtLong = new TextBox2();
+            btnBegin = new DrawButton();
+            btnCancel = new DrawButton();
             label6 = new Label();
-            button1 = new FlatButton();
-            btnTargetCurrent = new FlatButton();
-            btnPaste = new FlatButton();
+            button1 = new DrawButton();
+            btnTargetCurrent = new DrawButton();
+            btnPaste = new DrawButton();
             flowLayoutPanel1 = new FlowLayoutPanel();
             tableLayoutPanel1 = new TableLayoutPanel();
             flowLayoutPanel1.SuspendLayout();
@@ -58,13 +58,11 @@ namespace SrvSurvey
             // 
             // txtLat
             // 
-            txtLat.BorderStyle = BorderStyle.FixedSingle;
             resources.ApplyResources(txtLat, "txtLat");
             txtLat.Name = "txtLat";
             // 
             // txtLong
             // 
-            txtLong.BorderStyle = BorderStyle.FixedSingle;
             resources.ApplyResources(txtLong, "txtLong");
             txtLong.Name = "txtLong";
             // 
@@ -73,6 +71,7 @@ namespace SrvSurvey
             resources.ApplyResources(btnBegin, "btnBegin");
             btnBegin.Name = "btnBegin";
             btnBegin.UseVisualStyleBackColor = true;
+            btnBegin.DrawBorder = true;
             btnBegin.Click += btnBegin_Click;
             // 
             // btnCancel
@@ -81,6 +80,7 @@ namespace SrvSurvey
             btnCancel.DialogResult = DialogResult.Cancel;
             btnCancel.Name = "btnCancel";
             btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.DrawBorder = true;
             // 
             // label6
             // 
@@ -92,6 +92,7 @@ namespace SrvSurvey
             resources.ApplyResources(button1, "button1");
             button1.Name = "button1";
             button1.UseVisualStyleBackColor = true;
+            button1.DrawBorder = true;
             button1.Click += button1_Click;
             // 
             // btnTargetCurrent
@@ -99,6 +100,7 @@ namespace SrvSurvey
             resources.ApplyResources(btnTargetCurrent, "btnTargetCurrent");
             btnTargetCurrent.Name = "btnTargetCurrent";
             btnTargetCurrent.UseVisualStyleBackColor = true;
+            btnTargetCurrent.DrawBorder = true;
             btnTargetCurrent.Click += btnTargetCurrent_Click;
             // 
             // btnPaste
@@ -106,6 +108,7 @@ namespace SrvSurvey
             resources.ApplyResources(btnPaste, "btnPaste");
             btnPaste.Name = "btnPaste";
             btnPaste.UseVisualStyleBackColor = true;
+            btnPaste.DrawBorder = true;
             btnPaste.Click += btnPaste_Click;
             // 
             // flowLayoutPanel1
@@ -153,14 +156,14 @@ namespace SrvSurvey
         #endregion
         private Label label2;
         private Label label3;
-        private TextBox txtLat;
-        private TextBox txtLong;
-        private FlatButton btnBegin;
-        private FlatButton btnCancel;
+        private TextBox2 txtLat;
+        private TextBox2 txtLong;
+        private DrawButton btnBegin;
+        private DrawButton btnCancel;
         private Label label6;
-        private FlatButton button1;
-        private FlatButton btnTargetCurrent;
-        private FlatButton btnPaste;
+        private DrawButton button1;
+        private DrawButton btnTargetCurrent;
+        private DrawButton btnPaste;
         private FlowLayoutPanel flowLayoutPanel1;
         private TableLayoutPanel tableLayoutPanel1;
     }

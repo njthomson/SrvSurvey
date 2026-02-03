@@ -51,30 +51,7 @@ namespace SrvSurvey
                 btnSwapCache.Hide();
             }
 
-            /*
-            var dark = Game.settings.darkTheme;
-            var black = Game.settings.themeMainBlack;
-            Util.applyTheme(this, dark, black);
-
-            foreach (var btn in this.findAll<DrawButton>())
-                btn.setThemeColors(Game.settings.darkTheme, Game.settings.themeMainBlack);
-
-            foreach (var gb in this.findAll<GroupBox2>())
-                gb.LineColor = black ? C.orangeDark : dark ? SystemColors.ControlLight : SystemColors.ControlDark;
-
-            foreach (var cb in this.findAll<CheckBox2>())
-            {
-                cb.LineColor = black ? C.orangeDark : SystemColors.ControlText;
-                cb.CheckColor = black ? C.orange : SystemColors.ControlText;
-            }
-            // */
-
-            // if NOT theming
-            foreach (var btn in this.findAll<DrawButton>())
-                btn.setThemeColors(false, false); // Game.settings.darkTheme, Game.settings.themeMainBlack);
-
-            foreach (var cb in this.findAll<CheckBox2>())
-                cb.CheckBackColor = SystemColors.ControlLightLight;
+            BaseForm.applyThemeWithCustomControls(this);
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
@@ -243,6 +220,7 @@ namespace SrvSurvey
                             break;
 
                         case nameof(ComboBox):
+                        case nameof(ComboBox2):
                             if (map[name].FieldType == typeof(int) || map[name].FieldType == typeof(float))
                                 ((ComboBox)ctrl).SelectedIndex = Convert.ToInt32(map[name].GetValue(Game.settings));
                             else if (map[name].FieldType == typeof(string))
@@ -360,6 +338,7 @@ namespace SrvSurvey
                             break;
 
                         case nameof(ComboBox):
+                        case nameof(ComboBox2):
                             if (map[name].FieldType == typeof(int) || map[name].FieldType == typeof(float))
                                 val = Convert.ToInt32(((ComboBox)ctrl).SelectedIndex);
                             else if (map[name].FieldType == typeof(string))

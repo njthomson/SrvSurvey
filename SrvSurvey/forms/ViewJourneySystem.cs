@@ -1,5 +1,7 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.widgets;
 using System.Data;
+using System.Windows.Forms;
 using static SrvSurvey.game.CommanderJourney;
 
 namespace SrvSurvey.forms
@@ -16,6 +18,7 @@ namespace SrvSurvey.forms
         {
             InitializeComponent();
             this.viewForm = viewForm;
+            BaseForm.applyThemeWithCustomControls(this);
         }
 
         public void refreshTexts()

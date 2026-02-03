@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.widgets;
 
 namespace SrvSurvey.forms
 {
@@ -35,7 +36,13 @@ namespace SrvSurvey.forms
             // do we have any images?
             linkOpenImagesFolder.Visible = Directory.Exists(systemData.folderImages);
 
-            Util.applyTheme(this);
+            BaseForm.applyThemeWithCustomControls(this);
+            if (Game.settings.themeMainBlack)
+            {
+                SetStyle(ControlStyles.ResizeRedraw, true);
+                this.Paint += (s, e) => e.Graphics.DrawRectangle(C.Pens.grey1, 0, 0, ClientSize.Width - 1, ClientSize.Height - 1);
+                statusStrip1.Paint += (s, e) => e.Graphics.DrawRectangle(C.Pens.grey1, 0, 0, statusStrip1.ClientSize.Width - 1, statusStrip1.ClientSize.Height - 1);
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

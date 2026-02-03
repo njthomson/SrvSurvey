@@ -173,12 +173,12 @@ namespace SrvSurvey.widgets
 
         public static Pen toPen(this Color color, float width)
         {
-            return new Pen(color, width * GameColors.scaleFactor);
+            return new Pen(color, width * Program.scaleFactor);
         }
 
         public static Pen toPen(this Color color, float width, LineCap lineCap)
         {
-            return new Pen(color, width * GameColors.scaleFactor)
+            return new Pen(color, width * Program.scaleFactor)
             {
                 StartCap = lineCap,
                 EndCap = lineCap,
@@ -187,7 +187,7 @@ namespace SrvSurvey.widgets
 
         public static Pen toPen(this Color color, float width, DashStyle dashStyle)
         {
-            return new Pen(color, width * GameColors.scaleFactor)
+            return new Pen(color, width * Program.scaleFactor)
             {
                 DashStyle = dashStyle,
             };

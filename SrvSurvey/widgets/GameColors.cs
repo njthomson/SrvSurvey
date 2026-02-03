@@ -1,7 +1,6 @@
 ﻿using SrvSurvey.game;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Windows.Forms;
 
 namespace SrvSurvey.widgets
 {
@@ -19,135 +18,6 @@ namespace SrvSurvey.widgets
             public static Color Cyan = Color.FromArgb(255, 84, 223, 237);
             public static Color DarkCyan = Color.FromArgb(255, 0, 139, 139);  // DarkCyan
         }
-
-        // IMPORTANT: figure out scaling and fontScaling before anything else
-
-        private static float getScaleFactor()
-        {
-            if (Program.control == null || Game.settings == null) return 1f;
-
-            switch (Game.settings.plotterScale)
-            {
-                default:
-                case 0: // match OS scaling
-                    return Program.control.DeviceDpi / 96f;
-                case 1: // force 100%
-                    return 1f;
-                case 2: // force 110%
-                    return 1.1f;
-                case 3: // force 120%
-                    return 1.2f;
-                case 4: // force 125%
-                    return 1.25f;
-                case 5: // force 130%
-                    return 1.3f;
-                case 6: // force 140%
-                    return 1.4f;
-                case 7: // force 150%
-                    return 1.5f;
-                case 8: // force 160%
-                    return 1.6f;
-                case 9: // force 170%
-                    return 1.7f;
-                case 10: // force 175%
-                    return 1.75f;
-                case 11: // force 180%
-                    return 1.8f;
-                case 12: // force 190%
-                    return 1.9f;
-                case 13: // force 200%
-                    return 2f;
-                case 14: // force 210%
-                    return 2.1f;
-                case 15: // force 220%
-                    return 2.2f;
-                case 16: // force 225%
-                    return 2.25f;
-                case 17: // force 230%
-                    return 2.3f;
-                case 18: // force 240%
-                    return 2.4f;
-                case 19: // force 250%
-                    return 2.5f;
-                case 20: // force 90%
-                    return 0.9f;
-                case 21: // force 80%
-                    return 0.8f;
-                case 22: // force 75%
-                    return 0.75f;
-                case 23: // force 70%
-                    return 0.7f;
-                case 24: // force 60%
-                    return 0.6f;
-                case 25: // force 50%
-                    return 0.5f;
-            }
-        }
-        public static float scaleFactor = GameColors.getScaleFactor();
-
-        private static float getFontScaleFactor()
-        {
-            if (Program.control == null || Game.settings == null) return 1f;
-
-            var osScaleFactor = 96f / Program.control.DeviceDpi;
-            switch (Game.settings.plotterScale)
-            {
-                default:
-                case 0: // match OS scaling
-                    return 1; // Program.control.DeviceDpi / 96f;
-                case 1: // force 100%
-                    return 1f * osScaleFactor;
-                case 2: // force 110%
-                    return 1.1f * osScaleFactor;
-                case 3: // force 120%
-                    return 1.2f * osScaleFactor;
-                case 4: // force 125%
-                    return 1.25f * osScaleFactor;
-                case 5: // force 130%
-                    return 1.3f * osScaleFactor;
-                case 6: // force 140%
-                    return 1.4f * osScaleFactor;
-                case 7: // force 150%
-                    return 1.5f * osScaleFactor;
-                case 8: // force 160%
-                    return 1.6f * osScaleFactor;
-                case 9: // force 170%
-                    return 1.7f * osScaleFactor;
-                case 10: // force 175%
-                    return 1.75f * osScaleFactor;
-                case 11: // force 180%
-                    return 1.8f * osScaleFactor;
-                case 12: // force 190%
-                    return 1.9f * osScaleFactor;
-                case 13: // force 200%
-                    return 2f * osScaleFactor;
-                case 14: // force 210%
-                    return 2.1f * osScaleFactor;
-                case 15: // force 220%
-                    return 2.2f * osScaleFactor;
-                case 16: // force 225%
-                    return 2.25f * osScaleFactor;
-                case 17: // force 230%
-                    return 2.3f * osScaleFactor;
-                case 18: // force 240%
-                    return 2.4f * osScaleFactor;
-                case 19: // force 250%
-                    return 2.5f * osScaleFactor;
-                case 20: // force 90%
-                    return 0.9f * osScaleFactor;
-                case 21: // force 80%
-                    return 0.8f * osScaleFactor;
-                case 22: // force 75%
-                    return 0.75f * osScaleFactor;
-                case 23: // force 70%
-                    return 0.7f * osScaleFactor;
-                case 24: // force 60%
-                    return 0.6f * osScaleFactor;
-                case 25: // force 50%
-                    return 0.5f * osScaleFactor;
-            }
-        }
-        public static float fontScaleFactor = GameColors.getFontScaleFactor();
 
         static GameColors()
         {
@@ -388,8 +258,8 @@ namespace SrvSurvey.widgets
         public static Pen penShipDepartFar = newPen(Color.FromArgb(64, Color.Red), 32, DashStyle.DashDotDot);
         public static Pen penShipDepartNear = newPen(Color.FromArgb(255, Color.Red), 32, DashStyle.DashDotDot);
 
-        public static Pen penMapEditGuideLineGreen = new Pen(Color.Green, 0.5f * scaleFactor) { DashStyle = DashStyle.Dash, EndCap = LineCap.ArrowAnchor, StartCap = LineCap.ArrowAnchor };
-        public static Pen penMapEditGuideLineGreenYellow = new Pen(Color.GreenYellow, 0.5f * scaleFactor) { DashStyle = DashStyle.Dash, EndCap = LineCap.ArrowAnchor, StartCap = LineCap.ArrowAnchor };
+        public static Pen penMapEditGuideLineGreen = new Pen(Color.Green, 0.5f * Program.scaleFactor) { DashStyle = DashStyle.Dash, EndCap = LineCap.ArrowAnchor, StartCap = LineCap.ArrowAnchor };
+        public static Pen penMapEditGuideLineGreenYellow = new Pen(Color.GreenYellow, 0.5f * Program.scaleFactor) { DashStyle = DashStyle.Dash, EndCap = LineCap.ArrowAnchor, StartCap = LineCap.ArrowAnchor };
 
         public static Brush brushHumanBuilding = new SolidBrush(Color.FromArgb(255, 0, 32, 0));
 
@@ -470,8 +340,8 @@ namespace SrvSurvey.widgets
         public static Pen penPoiPuddlePresent = newPen(Color.Orange, 3, DashStyle.Solid);
         public static Pen penPoiPuddleMissing = newPen(Color.DarkRed, 3, DashStyle.Solid);
 
-        public static Pen penObelisk = new Pen(DarkCyan, 0.5f * scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle };
-        public static Pen penObeliskActive = new Pen(Cyan, 0.5f * scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle };
+        public static Pen penObelisk = new Pen(DarkCyan, 0.5f * Program.scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle };
+        public static Pen penObeliskActive = new Pen(Cyan, 0.5f * Program.scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle };
 
         public static Brush brushShipDismissWarning = new HatchBrush(HatchStyle.WideUpwardDiagonal, Color.Red, Color.Black);
 
@@ -507,7 +377,7 @@ namespace SrvSurvey.widgets
             {
                 { POIType.relic, new Dictionary<SitePoiStatus, Pen> {
                     { SitePoiStatus.unknown, penUnknown },
-                    { SitePoiStatus.present, new Pen(Color.CadetBlue, 3 * scaleFactor) { DashStyle = DashStyle.Solid, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle, } },
+                    { SitePoiStatus.present, new Pen(Color.CadetBlue, 3 * Program.scaleFactor) { DashStyle = DashStyle.Solid, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle, } },
                     { SitePoiStatus.absent, penAbsent },
                     { SitePoiStatus.empty, penEmpty } } },
 
@@ -544,21 +414,21 @@ namespace SrvSurvey.widgets
 
 
                 { POIType.obelisk, new Dictionary<SitePoiStatus, Pen> {
-                    { SitePoiStatus.unknown,  new Pen(Cyan, 2 * scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
-                    { SitePoiStatus.present, new Pen(Color.DodgerBlue, 2 * scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
-                    { SitePoiStatus.absent, new Pen(colorPoiMissingLight, 2 * scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
+                    { SitePoiStatus.unknown,  new Pen(Cyan, 2 * Program.scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
+                    { SitePoiStatus.present, new Pen(Color.DodgerBlue, 2 * Program.scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
+                    { SitePoiStatus.absent, new Pen(colorPoiMissingLight, 2 * Program.scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
                     { SitePoiStatus.empty, penEmpty } } },
 
                 { POIType.pylon, new Dictionary<SitePoiStatus, Pen> {
-                    { SitePoiStatus.unknown,  new Pen(Cyan, 2 * scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
-                    { SitePoiStatus.present, new Pen(Color.DodgerBlue, 2 * scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
-                    { SitePoiStatus.absent, new Pen(colorPoiMissingLight, 2 * scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
+                    { SitePoiStatus.unknown,  new Pen(Cyan, 2 * Program.scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
+                    { SitePoiStatus.present, new Pen(Color.DodgerBlue, 2 * Program.scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
+                    { SitePoiStatus.absent, new Pen(colorPoiMissingLight, 2 * Program.scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
                     { SitePoiStatus.empty, penEmpty } } },
 
                 { POIType.component, new Dictionary<SitePoiStatus, Pen> {
-                    { SitePoiStatus.unknown,  new Pen(Cyan, 1 * scaleFactor) { DashStyle = DashStyle.Dash, LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
-                    { SitePoiStatus.present, new Pen(Color.Lime, 1 * scaleFactor) { DashStyle = DashStyle.Dash, LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
-                    { SitePoiStatus.absent, new Pen(colorPoiMissingLight, 1 * scaleFactor) { DashStyle = DashStyle.Dash, LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
+                    { SitePoiStatus.unknown,  new Pen(Cyan, 1 * Program.scaleFactor) { DashStyle = DashStyle.Dash, LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
+                    { SitePoiStatus.present, new Pen(Color.Lime, 1 * Program.scaleFactor) { DashStyle = DashStyle.Dash, LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
+                    { SitePoiStatus.absent, new Pen(colorPoiMissingLight, 1 * Program.scaleFactor) { DashStyle = DashStyle.Dash, LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
                     { SitePoiStatus.empty, penEmpty } } },
         };
 
@@ -607,7 +477,7 @@ namespace SrvSurvey.widgets
 
             public static Pen penComponentUnknown = new Pen(colorUnknown)
             {
-                Width = 1 * GameColors.scaleFactor,
+                Width = 1 * Program.scaleFactor,
                 DashStyle = DashStyle.Dash,
                 LineJoin = LineJoin.Bevel,
                 StartCap = LineCap.Triangle,
@@ -615,7 +485,7 @@ namespace SrvSurvey.widgets
             };
             public static Pen penComponentPresent = new Pen(Color.Lime)
             {
-                Width = 1 * GameColors.scaleFactor,
+                Width = 1 * Program.scaleFactor,
                 DashStyle = DashStyle.Dash,
                 LineJoin = LineJoin.Bevel,
                 StartCap = LineCap.Triangle,
@@ -623,7 +493,7 @@ namespace SrvSurvey.widgets
             };
             public static Pen penComponentAbsent = new Pen(colorAbsent)
             {
-                Width = 1 * GameColors.scaleFactor,
+                Width = 1 * Program.scaleFactor,
                 DashStyle = DashStyle.Dash,
                 LineJoin = LineJoin.Bevel,
                 StartCap = LineCap.Triangle,
@@ -707,66 +577,66 @@ namespace SrvSurvey.widgets
 
         public static void resetFontScale()
         {
-            font1 = new Font("Lucida Console", 16F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            fontSmall = new Font("Lucida Console", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            fontSmallBold = new Font("Lucida Console", 8F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
-            fontSmall2 = new Font("Century Gothic", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            fontSmaller = new Font("Century Gothic", 10F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            fontMiddle = new Font("Century Gothic", 12F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            fontMiddleBold = new Font("Century Gothic", 12F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
-            font2 = new Font("Century Gothic", 16F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            fontBig = new Font("Century Gothic", 22F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            fontBigBold = new Font("Century Gothic", 22F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
-            font18 = new Font("Century Gothic", 18F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            font14 = new Font("Century Gothic", 14F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            font1 = new Font("Lucida Console", 16F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            fontSmall = new Font("Lucida Console", 8F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            fontSmallBold = new Font("Lucida Console", 8F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+            fontSmall2 = new Font("Century Gothic", 8F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            fontSmaller = new Font("Century Gothic", 10F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            fontMiddle = new Font("Century Gothic", 12F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            fontMiddleBold = new Font("Century Gothic", 12F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+            font2 = new Font("Century Gothic", 16F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            fontBig = new Font("Century Gothic", 22F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            fontBigBold = new Font("Century Gothic", 22F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+            font18 = new Font("Century Gothic", 18F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            font14 = new Font("Century Gothic", 14F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
         }
 
-        public static Font font1 = new Font("Lucida Console", 16F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-        public static Font fontSmall = new Font("Lucida Console", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-        public static Font fontSmallBold = new Font("Lucida Console", 8F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+        public static Font font1 = new Font("Lucida Console", 16F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontSmall = new Font("Lucida Console", 8F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontSmallBold = new Font("Lucida Console", 8F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
 
-        public static Font fontSmall2 = new Font("Century Gothic", 9F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-        public static Font fontSmall2Bold = new Font("Century Gothic", 9F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
-        public static Font fontSmaller = new Font("Century Gothic", 10F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-        public static Font fontMiddle = new Font("Century Gothic", 12F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-        public static Font fontMiddleBold = new Font("Century Gothic", 12F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
-        public static Font font2 = new Font("Century Gothic", 16F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-        public static Font fontBig = new Font("Century Gothic", 22F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-        public static Font fontBigBold = new Font("Century Gothic", 22F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
-        public static Font font18 = new Font("Century Gothic", 18F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-        public static Font font16 = new Font("Century Gothic", 16F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-        public static Font font16b = new Font("Century Gothic", 16F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
-        public static Font font14 = new Font("Century Gothic", 14F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontSmall2 = new Font("Century Gothic", 9F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontSmall2Bold = new Font("Century Gothic", 9F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+        public static Font fontSmaller = new Font("Century Gothic", 10F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontMiddle = new Font("Century Gothic", 12F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontMiddleBold = new Font("Century Gothic", 12F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+        public static Font font2 = new Font("Century Gothic", 16F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontBig = new Font("Century Gothic", 22F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontBigBold = new Font("Century Gothic", 22F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+        public static Font font18 = new Font("Century Gothic", 18F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font font16 = new Font("Century Gothic", 16F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font font16b = new Font("Century Gothic", 16F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+        public static Font font14 = new Font("Century Gothic", 14F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
 
         internal static class Fonts
         {
-            public static Font wingdings_4B = new Font("Wingdings", 4F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
-            public static Font wingdings2_8 = new Font("Wingdings 2", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            public static Font wingdings2_6 = new Font("Wingdings 2", 6F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            public static Font wingdings2_4 = new Font("Wingdings 2", 4F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font wingdings_4B = new Font("Wingdings", 4F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+            public static Font wingdings2_8 = new Font("Wingdings 2", 8F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font wingdings2_6 = new Font("Wingdings 2", 6F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font wingdings2_4 = new Font("Wingdings 2", 4F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
 
-            public static Font console_7 = new Font("Lucida Console", 7F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            public static Font console_8 = new Font("Lucida Console", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            public static Font console_8B = new Font("Lucida Console", 8F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
-            public static Font console_16 = new Font("Lucida Console", 16F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font console_7 = new Font("Lucida Console", 7F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font console_8 = new Font("Lucida Console", 8F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font console_8B = new Font("Lucida Console", 8F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+            public static Font console_16 = new Font("Lucida Console", 16F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
 
-            public static Font gothic_7 = new Font("Century Gothic", 7F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            public static Font gothic_8 = new Font("Century Gothic", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            public static Font gothic_9 = new Font("Century Gothic", 9F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            public static Font gothic_9B = new Font("Century Gothic", 9F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
-            public static Font gothic_10 = new Font("Century Gothic", 10F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            public static Font gothic_10B = new Font("Century Gothic", 10F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
-            public static Font gothic_12 = new Font("Century Gothic", 12F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            public static Font gothic_12B = new Font("Century Gothic", 12F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
-            public static Font gothic_14B = new Font("Century Gothic", 14F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
-            public static Font gothic_16B = new Font("Century Gothic", 16F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+            public static Font gothic_7 = new Font("Century Gothic", 7F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font gothic_8 = new Font("Century Gothic", 8F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font gothic_9 = new Font("Century Gothic", 9F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font gothic_9B = new Font("Century Gothic", 9F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+            public static Font gothic_10 = new Font("Century Gothic", 10F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font gothic_10B = new Font("Century Gothic", 10F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+            public static Font gothic_12 = new Font("Century Gothic", 12F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font gothic_12B = new Font("Century Gothic", 12F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+            public static Font gothic_14B = new Font("Century Gothic", 14F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+            public static Font gothic_16B = new Font("Century Gothic", 16F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
 
             // TODO: confirm these Pixel sized fonts scale properly with large fonts
-            public static Font typewriter_p4 = new Font("Lucida Console", 4F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Pixel);
-            public static Font typewriter_p6 = new Font("Lucida Console", 6F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Pixel);
+            public static Font typewriter_p4 = new Font("Lucida Console", 4F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Pixel);
+            public static Font typewriter_p6 = new Font("Lucida Console", 6F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Pixel);
 
-            public static Font segoeEmoji_6 = new Font("Segoe UI Emoji", 6F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            public static Font segoeEmoji_8 = new Font("Segoe UI Emoji", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font segoeEmoji_6 = new Font("Segoe UI Emoji", 6F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font segoeEmoji_8 = new Font("Segoe UI Emoji", 8F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
             /// <summary> Not scaled </summary>
             public static Font segoeEmoji_16_ns = new Font("Segoe UI Emoji", 16F);
             public static Font gothic_12_ns = new Font("Century Gothic", 12F);
@@ -784,8 +654,8 @@ namespace SrvSurvey.widgets
             pfc = new PrivateFontCollection();
             pfc.AddFontFile("seguiemj.ttf");
 
-            Fonts.segoeEmoji_6 = new Font(pfc.Families[0], 6F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            Fonts.segoeEmoji_8 = new Font(pfc.Families[0], 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            Fonts.segoeEmoji_6 = new Font(pfc.Families[0], 6F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            Fonts.segoeEmoji_8 = new Font(pfc.Families[0], 8F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
             Fonts.segoeEmoji_16_ns = new Font(pfc.Families[0], 16F);
             Game.log($"GameColors: Loading local fonts: success!");
         }
@@ -796,22 +666,22 @@ namespace SrvSurvey.widgets
 
         public static Pen newPen(Color color)
         {
-            return new Pen(color, 1 * GameColors.scaleFactor);
+            return new Pen(color, 1 * Program.scaleFactor);
         }
 
         public static Pen newPen(Color color, float width = 1)
         {
-            return new Pen(color, width * GameColors.scaleFactor);
+            return new Pen(color, width * Program.scaleFactor);
         }
 
         public static Pen newPen(Brush brush, float width = 1)
         {
-            return new Pen(brush, width * GameColors.scaleFactor);
+            return new Pen(brush, width * Program.scaleFactor);
         }
 
         public static Pen newPen(Color color, float width = 1, DashStyle dashStyle = DashStyle.Dot)
         {
-            return new Pen(color, width * GameColors.scaleFactor)
+            return new Pen(color, width * Program.scaleFactor)
             {
                 DashStyle = dashStyle,
             };
@@ -819,7 +689,7 @@ namespace SrvSurvey.widgets
 
         public static Pen newPen(Color color, float width = 1, LineCap startCap = LineCap.Flat, LineCap endCap = LineCap.Flat)
         {
-            return new Pen(color, width * GameColors.scaleFactor)
+            return new Pen(color, width * Program.scaleFactor)
             {
                 StartCap = startCap,
                 EndCap = endCap,
@@ -828,7 +698,7 @@ namespace SrvSurvey.widgets
 
         public static Pen newPen(Color color, float width = 1, LineCap startCap = LineCap.Flat, LineCap endCap = LineCap.Flat, DashStyle dashStyle = DashStyle.Dot)
         {
-            return new Pen(color, width * GameColors.scaleFactor)
+            return new Pen(color, width * Program.scaleFactor)
             {
                 StartCap = startCap,
                 EndCap = endCap,

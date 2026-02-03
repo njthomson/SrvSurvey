@@ -63,12 +63,12 @@ namespace SrvSurvey.plotters
 
         public static int scaled(int n)
         {
-            return (int)(n * GameColors.scaleFactor);
+            return (int)(n * Program.scaleFactor);
         }
 
         public static float scaled(float n)
         {
-            return (n * GameColors.scaleFactor);
+            return (n * Program.scaleFactor);
         }
 
         public static Rectangle scaled(Rectangle r)

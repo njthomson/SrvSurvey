@@ -1229,31 +1229,9 @@ namespace SrvSurvey
         {
             var black = Game.settings.themeMainBlack;
             var dark = Game.settings.darkTheme;
-            Util.applyTheme(this, dark, black);
+            BaseForm.applyThemeWithCustomControls(this);
 
             btnQuestComms.Visible = Game.settings.enableQuests;
-
-            foreach (var btn in this.findAll<DrawButton>())
-                btn.setThemeColors(Game.settings.darkTheme, Game.settings.themeMainBlack);
-
-            foreach (var btn in this.findAll<FlatButton>())
-            {
-                btn.BackColor = black ? C.orangeDarker : dark ? SystemColors.ControlDark : SystemColors.ControlLight;
-                btn.ForeColor = black ? C.orange : SystemColors.ControlText;
-
-                btn.FlatAppearance.MouseOverBackColor = black ? C.orangeDark : SystemColors.InactiveCaption;
-                btn.FlatAppearance.MouseDownBackColor = black ? C.menuGold : SystemColors.ActiveCaption;
-            }
-
-            foreach (var gb in this.findAll<GroupBox2>())
-                gb.LineColor = black ? C.orangeDark : dark ? SystemColors.ControlLight : SystemColors.ControlDark;
-
-
-            foreach (var cb in this.findAll<CheckBox2>())
-            {
-                cb.LineColor = black ? C.orangeDark : SystemColors.ControlText;
-                cb.CheckColor = black ? C.orange : SystemColors.ControlText;
-            }
 
             this.Invalidate(true);
         }

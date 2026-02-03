@@ -241,6 +241,51 @@ namespace SrvSurvey.forms
         }
 
         #endregion
+
+        public static void applyThemeWithCustomControls(Control form)
+        {
+            var dark = Game.settings.darkTheme;
+            var black = Game.settings.themeMainBlack;
+
+            Util.applyTheme(form, dark, black);
+
+            foreach (var txt in form.findAll<TextBox2>())
+                txt.BorderColor = black ? C.orangeDark : SystemColors.ControlText;
+
+            foreach (var btn in form.findAll<DrawButton>())
+                btn.setThemeColors(Game.settings.darkTheme, Game.settings.themeMainBlack);
+
+            foreach (var gb in form.findAll<GroupBox2>())
+                gb.LineColor = black ? C.orangeDark : dark ? SystemColors.ControlLight : SystemColors.ControlDark;
+
+            foreach (var btn in form.findAll<FlatButton>())
+            {
+                btn.BackColor = black ? C.orangeDarker : dark ? SystemColors.ControlDark : SystemColors.ControlLight;
+                btn.ForeColor = black ? C.orange : SystemColors.ControlText;
+
+                btn.FlatAppearance.MouseOverBackColor = black ? C.orangeDark : SystemColors.InactiveCaption;
+                btn.FlatAppearance.MouseDownBackColor = black ? C.menuGold : SystemColors.ActiveCaption;
+            }
+
+            foreach (var cb in form.findAll<CheckBox2>())
+            {
+                cb.LineColor = black ? C.orangeDark : SystemColors.ControlText;
+                cb.CheckColor = black ? C.orange : SystemColors.ControlText;
+                cb.CheckBackColor = black ? C.black : SystemColors.ControlLightLight;
+            }
+
+            foreach (var cb in form.findAll<ComboBox2>())
+            {
+                cb.BorderColor = black ? C.orangeDark : SystemColors.ControlDarkDark;
+                cb.BorderHoverColor = black ? C.menuGold: SystemColors.ControlLight;
+
+                cb.ButtonColor = black ? C.orangeDark : SystemColors.ControlDark;
+                cb.ButtonHoverColor = black ? C.orangeDarker : SystemColors.ControlDarkDark;
+            }
+
+            foreach (var ll in form.findAll<LinkLabel>())
+                ll.LinkColor = black ? C.menuGold : Color.Blue;
+        }
     }
 
     [System.ComponentModel.DesignerCategory("Form")]

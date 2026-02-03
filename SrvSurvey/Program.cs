@@ -1,6 +1,5 @@
 using Newtonsoft.Json;
 using SrvSurvey.game;
-using SrvSurvey.net;
 using SrvSurvey.plotters;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -654,6 +653,133 @@ namespace SrvSurvey
             if (control.IsDisposed) return;
             Program.control.BeginInvoke(func);
         }
+
+        private static float getScaleFactor()
+        {
+            if (Program.control == null || Game.settings == null) return 1f;
+
+            switch (Game.settings.plotterScale)
+            {
+                default:
+                case 0: // match OS scaling
+                    return Program.control.DeviceDpi / 96f;
+                case 1: // force 100%
+                    return 1f;
+                case 2: // force 110%
+                    return 1.1f;
+                case 3: // force 120%
+                    return 1.2f;
+                case 4: // force 125%
+                    return 1.25f;
+                case 5: // force 130%
+                    return 1.3f;
+                case 6: // force 140%
+                    return 1.4f;
+                case 7: // force 150%
+                    return 1.5f;
+                case 8: // force 160%
+                    return 1.6f;
+                case 9: // force 170%
+                    return 1.7f;
+                case 10: // force 175%
+                    return 1.75f;
+                case 11: // force 180%
+                    return 1.8f;
+                case 12: // force 190%
+                    return 1.9f;
+                case 13: // force 200%
+                    return 2f;
+                case 14: // force 210%
+                    return 2.1f;
+                case 15: // force 220%
+                    return 2.2f;
+                case 16: // force 225%
+                    return 2.25f;
+                case 17: // force 230%
+                    return 2.3f;
+                case 18: // force 240%
+                    return 2.4f;
+                case 19: // force 250%
+                    return 2.5f;
+                case 20: // force 90%
+                    return 0.9f;
+                case 21: // force 80%
+                    return 0.8f;
+                case 22: // force 75%
+                    return 0.75f;
+                case 23: // force 70%
+                    return 0.7f;
+                case 24: // force 60%
+                    return 0.6f;
+                case 25: // force 50%
+                    return 0.5f;
+            }
+        }
+        public static float scaleFactor = Program.getScaleFactor();
+
+        private static float getFontScaleFactor()
+        {
+            if (Program.control == null || Game.settings == null) return 1f;
+
+            var osScaleFactor = 96f / Program.control.DeviceDpi;
+            switch (Game.settings.plotterScale)
+            {
+                default:
+                case 0: // match OS scaling
+                    return 1; // Program.control.DeviceDpi / 96f;
+                case 1: // force 100%
+                    return 1f * osScaleFactor;
+                case 2: // force 110%
+                    return 1.1f * osScaleFactor;
+                case 3: // force 120%
+                    return 1.2f * osScaleFactor;
+                case 4: // force 125%
+                    return 1.25f * osScaleFactor;
+                case 5: // force 130%
+                    return 1.3f * osScaleFactor;
+                case 6: // force 140%
+                    return 1.4f * osScaleFactor;
+                case 7: // force 150%
+                    return 1.5f * osScaleFactor;
+                case 8: // force 160%
+                    return 1.6f * osScaleFactor;
+                case 9: // force 170%
+                    return 1.7f * osScaleFactor;
+                case 10: // force 175%
+                    return 1.75f * osScaleFactor;
+                case 11: // force 180%
+                    return 1.8f * osScaleFactor;
+                case 12: // force 190%
+                    return 1.9f * osScaleFactor;
+                case 13: // force 200%
+                    return 2f * osScaleFactor;
+                case 14: // force 210%
+                    return 2.1f * osScaleFactor;
+                case 15: // force 220%
+                    return 2.2f * osScaleFactor;
+                case 16: // force 225%
+                    return 2.25f * osScaleFactor;
+                case 17: // force 230%
+                    return 2.3f * osScaleFactor;
+                case 18: // force 240%
+                    return 2.4f * osScaleFactor;
+                case 19: // force 250%
+                    return 2.5f * osScaleFactor;
+                case 20: // force 90%
+                    return 0.9f * osScaleFactor;
+                case 21: // force 80%
+                    return 0.8f * osScaleFactor;
+                case 22: // force 75%
+                    return 0.75f * osScaleFactor;
+                case 23: // force 70%
+                    return 0.7f * osScaleFactor;
+                case 24: // force 60%
+                    return 0.6f * osScaleFactor;
+                case 25: // force 50%
+                    return 0.5f * osScaleFactor;
+            }
+        }
+        public static float fontScaleFactor = Program.getFontScaleFactor();
     }
 
     interface PlotterForm

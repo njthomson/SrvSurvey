@@ -31,7 +31,7 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewJourneySystem));
             txtSystemName = new TextBox2();
-            txtNotes = new TextBox();
+            txtNotes = new TextBox2();
             txtStuff = new TextBox2();
             imageList1 = new ImageList(components);
             flowImages = new FlowLayoutPanel();
@@ -40,8 +40,8 @@
             pictureBox3 = new PictureBox();
             label1 = new Label();
             split = new SplitContainer();
-            txtRoughStats = new TextBox();
-            checkJourneyImagesOnly = new CheckBox();
+            txtRoughStats = new TextBox2();
+            checkJourneyImagesOnly = new CheckBox2();
             table = new TableLayoutPanel();
             flowImages.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -72,7 +72,6 @@
             // 
             // txtNotes
             // 
-            txtNotes.BorderStyle = BorderStyle.FixedSingle;
             txtNotes.Dock = DockStyle.Fill;
             txtNotes.Location = new Point(0, 0);
             txtNotes.Multiline = true;
@@ -248,7 +247,7 @@
         #endregion
 
         private TextBox2 txtSystemName;
-        private TextBox txtNotes;
+        private TextBox2 txtNotes;
         private TextBox2 txtStuff;
         private ImageList imageList1;
         private FlowLayoutPanel flowImages;
@@ -257,8 +256,8 @@
         private PictureBox pictureBox3;
         private Label label1;
         private SplitContainer split;
-        private CheckBox checkJourneyImagesOnly;
+        private CheckBox2 checkJourneyImagesOnly;
         private TableLayoutPanel table;
-        private TextBox txtRoughStats;
+        private TextBox2 txtRoughStats;
     }
 }

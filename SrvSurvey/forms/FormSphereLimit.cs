@@ -34,7 +34,7 @@ namespace SrvSurvey
                 txtCurrentDistance.Text = $"-";
             }
 
-            Util.applyTheme(this);
+            BaseForm.applyThemeWithCustomControls(this);
         }
 
         private void btnAccept_Click(object sender, EventArgs e)

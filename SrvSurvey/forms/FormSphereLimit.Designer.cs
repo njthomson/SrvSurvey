@@ -31,18 +31,18 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSphereLimit));
             label1 = new Label();
             label2 = new Label();
-            btnCancel = new FlatButton();
-            txtStarPos = new TextBox();
+            btnCancel = new DrawButton();
+            txtStarPos = new TextBox2();
             label3 = new Label();
             numRadius = new NumericUpDown();
-            btnAccept = new FlatButton();
+            btnAccept = new DrawButton();
             label4 = new Label();
             comboSystemName = new ComboStarSystem();
-            btnDisable = new FlatButton();
+            btnDisable = new DrawButton();
             label5 = new Label();
             label6 = new Label();
-            txtCurrentSystem = new TextBox();
-            txtCurrentDistance = new TextBox();
+            txtCurrentSystem = new TextBox2();
+            txtCurrentDistance = new TextBox2();
             tableLayoutPanel1 = new TableLayoutPanel();
             flowLayoutPanel1 = new FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)numRadius).BeginInit();
@@ -66,11 +66,11 @@
             btnCancel.DialogResult = DialogResult.Cancel;
             btnCancel.Name = "btnCancel";
             btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.DrawBorder = true;
             btnCancel.Click += btnCancel_Click;
             // 
             // txtStarPos
             // 
-            txtStarPos.BorderStyle = BorderStyle.FixedSingle;
             resources.ApplyResources(txtStarPos, "txtStarPos");
             txtStarPos.Name = "txtStarPos";
             txtStarPos.ReadOnly = true;
@@ -94,6 +94,7 @@
             resources.ApplyResources(btnAccept, "btnAccept");
             btnAccept.Name = "btnAccept";
             btnAccept.UseVisualStyleBackColor = true;
+            btnAccept.DrawBorder = true;
             btnAccept.Click += btnAccept_Click;
             // 
             // label4
@@ -116,6 +117,7 @@
             resources.ApplyResources(btnDisable, "btnDisable");
             btnDisable.Name = "btnDisable";
             btnDisable.UseVisualStyleBackColor = true;
+            btnDisable.DrawBorder = true;
             btnDisable.Click += btnDisable_Click;
             // 
             // label5
@@ -130,14 +132,12 @@
             // 
             // txtCurrentSystem
             // 
-            txtCurrentSystem.BorderStyle = BorderStyle.FixedSingle;
             resources.ApplyResources(txtCurrentSystem, "txtCurrentSystem");
             txtCurrentSystem.Name = "txtCurrentSystem";
             txtCurrentSystem.ReadOnly = true;
             // 
             // txtCurrentDistance
             // 
-            txtCurrentDistance.BorderStyle = BorderStyle.FixedSingle;
             resources.ApplyResources(txtCurrentDistance, "txtCurrentDistance");
             txtCurrentDistance.Name = "txtCurrentDistance";
             txtCurrentDistance.ReadOnly = true;
@@ -192,18 +192,18 @@
 
         private Label label1;
         private Label label2;
-        private FlatButton btnCancel;
-        private TextBox txtStarPos;
+        private DrawButton btnCancel;
+        private TextBox2 txtStarPos;
         private Label label3;
         private NumericUpDown numRadius;
-        private FlatButton btnAccept;
+        private DrawButton btnAccept;
         private Label label4;
         private ComboStarSystem comboSystemName;
-        private FlatButton btnDisable;
+        private DrawButton btnDisable;
         private Label label5;
         private Label label6;
-        private TextBox txtCurrentSystem;
-        private TextBox txtCurrentDistance;
+        private TextBox2 txtCurrentSystem;
+        private TextBox2 txtCurrentDistance;
         private TableLayoutPanel tableLayoutPanel1;
         private FlowLayoutPanel flowLayoutPanel1;
     }

@@ -432,7 +432,7 @@ namespace SrvSurvey.game.RavenColonial
         /// <summary>
         /// Replace server body data with what we have
         /// </summary>
-        public async Task<List<Bod>> updateSysBodies(long address, List<Bod> bods)
+        public async Task<List<Bod>?> updateSysBodies(long address, List<Bod> bods)
         {
             Game.log($"RCC.updateSysBodies: {address} - bodies: {bods.Count}");
 
@@ -443,7 +443,10 @@ namespace SrvSurvey.game.RavenColonial
             var json2 = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
+            {
                 Game.log($"updateSysBodies '{address}' failed: HTTP:{(int)response.StatusCode}({response.StatusCode}): {json2}");
+                return null;
+            }
 
             var newBods = JsonConvert.DeserializeObject<List<Bod>>(json2)!;
             return newBods;

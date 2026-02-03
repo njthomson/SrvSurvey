@@ -74,12 +74,12 @@ namespace SrvSurvey.widgets
 
         public static int s(int n)
         {
-            return (int)(n * GameColors.scaleFactor);
+            return (int)(n * Program.scaleFactor);
         }
 
         public static float s(float n)
         {
-            return (n * GameColors.scaleFactor);
+            return (n * Program.scaleFactor);
         }
 
         public static Rectangle s(Rectangle r)
