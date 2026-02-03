@@ -135,7 +135,7 @@ namespace SrvSurvey.forms
             var data = SystemData.Load(starSystem.name, starSystem.id64, cmdr.fid, cmdr.commander, true);
             if (data == null)
             {
-                setWarning($"You nave not visited: {starSystem.name}");
+                setWarning($"You have not visited: {starSystem.name}");
                 return;
             }
 

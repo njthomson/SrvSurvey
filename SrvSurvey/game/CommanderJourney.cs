@@ -230,10 +230,49 @@ namespace SrvSurvey.game
         [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "It is necessary")]
         private void onJournalEntry(JournalEntry entry) { /* ignore */ }
 
+        private void onJournalEntry(Location entry)
+        {
+            // ignore if the same system as before
+            if (currentSystem?.starRef.id64 == entry.SystemAddress) return;
+
+            // close out the current system
+            if (currentSystem != null && currentSystem.departed == null)
+                currentSystem.departed = entry.timestamp;
+
+            currentSystem = new SystemStats(entry);
+            visitedSystems.Add(currentSystem);
+
+            // TODO: detect changing galactic regions?
+
+            // if journey viewer is open - make it refresh
+            BaseForm.get<FormJourneyViewer>()?.refresh();
+        }
+
+        private void onJournalEntry(CarrierJump entry)
+        {
+            // ignore if the same system as before
+            if (currentSystem?.starRef.id64 == entry.SystemAddress) return;
+
+            // close out the current system
+            if (currentSystem != null && currentSystem.departed == null)
+                currentSystem.departed = entry.timestamp;
+
+            currentSystem = new SystemStats(entry);
+            visitedSystems.Add(currentSystem);
+
+            // TODO: detect changing galactic regions?
+
+            // if journey viewer is open - make it refresh
+            BaseForm.get<FormJourneyViewer>()?.refresh();
+        }
+
         private void onJournalEntry(FSDJump entry)
         {
+            // ignore if the same system as before
+            if (currentSystem?.starRef.id64 == entry.SystemAddress) return;
+
             // close out the current system
-            if (currentSystem != null && currentSystem.departed != null)
+            if (currentSystem != null && currentSystem.departed == null)
                 currentSystem.departed = entry.timestamp;
 
             currentSystem = new SystemStats(entry);
@@ -521,6 +560,18 @@ namespace SrvSurvey.game
             public SystemStats() { }
 
             public SystemStats(FSDJump entry)
+            {
+                this.starRef = StarRef.from(entry);
+                this.arrived = entry.timestamp;
+            }
+
+            public SystemStats(Location entry)
+            {
+                this.starRef = StarRef.from(entry);
+                this.arrived = entry.timestamp;
+            }
+
+            public SystemStats(CarrierJump entry)
             {
                 this.starRef = StarRef.from(entry);
                 this.arrived = entry.timestamp;
