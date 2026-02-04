@@ -44,7 +44,7 @@ namespace SrvSurvey
             txtBuildingName = new TextBox();
             btnStartCircle = new Button();
             btnEndCircle = new Button();
-            numCircle = new NumericUpDown();
+            numCircle = new ThemedNumericUpDown();
             button8 = new Button();
             btnBattery = new Button();
             groupBox1 = new GroupBox();
@@ -56,7 +56,7 @@ namespace SrvSurvey
             levelZero = new CheckBox();
             levelOne = new CheckBox();
             btnDoor2 = new Button();
-            comboPOI = new ComboBox();
+            comboPOI = new ThemedComboBox();
             button14 = new Button();
             button12 = new Button();
             btnDataTerminal = new Button();
@@ -417,7 +417,7 @@ namespace SrvSurvey
         private TextBox txtBuildingName;
         private Button btnStartCircle;
         private Button btnEndCircle;
-        private NumericUpDown numCircle;
+        private ThemedNumericUpDown numCircle;
         private Button button8;
         private Button btnBattery;
         private GroupBox groupBox1;
@@ -428,7 +428,7 @@ namespace SrvSurvey
         private Button btnDataTerminal;
         private Button btnMedkit;
         private Button btnDoor2;
-        private ComboBox comboPOI;
+        private ThemedComboBox comboPOI;
         private CheckBox floorThree;
         private CheckBox floorTwo;
         private CheckBox floorOne;

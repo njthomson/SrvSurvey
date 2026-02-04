@@ -58,7 +58,7 @@ namespace SrvSurvey
             linkLabel1 = new LinkLabel();
             label2 = new Label();
             linkLabel2 = new LinkLabel();
-            tabControl1 = new TabControl();
+            tabControl1 = new ThemedTabControl();
             tabPage1 = new TabPage();
             listLogs = new ListView();
             columnHeader1 = new ColumnHeader();
@@ -822,7 +822,7 @@ namespace SrvSurvey
         private LinkLabel linkLabel1;
         private Label label2;
         private LinkLabel linkLabel2;
-        private TabControl tabControl1;
+        private ThemedTabControl tabControl1;
         private TabPage tabPage1;
         private TabPage tabPage2;
         private ColumnHeader columnHeader6;

@@ -57,7 +57,7 @@
             panel1 = new Panel();
             comboCmdr = new ComboCmdr();
             label2 = new Label();
-            comboRegion = new ComboBox();
+            comboRegion = new ThemedComboBox();
             label1 = new Label();
             contextMenu = new ContextMenuStrip(components);
             menuCopyName = new ToolStripMenuItem();
@@ -396,7 +396,7 @@
         private ToolStripSeparator menuCanonnSeparator;
         private ToolStripMenuItem menuEDAstro;
         private Label label2;
-        private ComboBox comboRegion;
+        private ThemedComboBox comboRegion;
         private ToolStripStatusLabel toolRegionName;
         private ToolStripStatusLabel toolDiscoveryDate;
         private ToolStripStatusLabel toolFiller;

@@ -211,16 +211,17 @@ namespace SrvSurvey
                             break;
 
                         case nameof(CheckBox):
-                        case nameof(CheckBox2):
+                        case nameof(ThemedCheckBox):
                             ((CheckBox)ctrl).Checked = (bool)map[name].GetValue(Game.settings)!;
                             break;
 
                         case nameof(NumericUpDown):
+                        case nameof(ThemedNumericUpDown):
                             ((NumericUpDown)ctrl).Value = Convert.ToDecimal(map[name].GetValue(Game.settings));
                             break;
 
                         case nameof(ComboBox):
-                        case nameof(ComboBox2):
+                        case nameof(ThemedComboBox):
                             if (map[name].FieldType == typeof(int) || map[name].FieldType == typeof(float))
                                 ((ComboBox)ctrl).SelectedIndex = Convert.ToInt32(map[name].GetValue(Game.settings));
                             else if (map[name].FieldType == typeof(string))
@@ -324,11 +325,12 @@ namespace SrvSurvey
                             break;
 
                         case nameof(CheckBox):
-                        case nameof(CheckBox2):
+                        case nameof(ThemedCheckBox):
                             val = ((CheckBox)ctrl).Checked;
                             break;
 
                         case nameof(NumericUpDown):
+                        case nameof(ThemedNumericUpDown):
                             if (map[name].FieldType == typeof(int))
                                 val = Convert.ToInt32(((NumericUpDown)ctrl).Value);
                             else if (map[name].FieldType == typeof(float))
@@ -338,7 +340,7 @@ namespace SrvSurvey
                             break;
 
                         case nameof(ComboBox):
-                        case nameof(ComboBox2):
+                        case nameof(ThemedComboBox):
                             if (map[name].FieldType == typeof(int) || map[name].FieldType == typeof(float))
                                 val = Convert.ToInt32(((ComboBox)ctrl).SelectedIndex);
                             else if (map[name].FieldType == typeof(string))

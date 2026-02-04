@@ -30,9 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSystemNotes));
             label1 = new Label();
-            txtSystem = new TextBox2();
+            txtSystem = new ThemedTextBox();
             btnCancel = new DrawButton();
-            txtNotes = new TextBox2();
+            txtNotes = new ThemedTextBox();
             btnSave = new DrawButton();
             statusStrip1 = new StatusStrip();
             menuOptions = new ToolStripDropDownButton();
@@ -69,7 +69,7 @@
             txtSystem.SelectionStart = 0;
             txtSystem.Size = new Size(306, 23);
             txtSystem.TabIndex = 4;
-            txtSystem.UseEdgeButton = TextBox2.EdgeButton.None;
+            txtSystem.UseEdgeButton = ThemedTextBox.EdgeButton.None;
             // 
             // btnCancel
             // 
@@ -107,7 +107,7 @@
             txtNotes.Size = new Size(360, 270);
             txtNotes.TabIndex = 0;
             txtNotes.Text = "Hello World";
-            txtNotes.UseEdgeButton = TextBox2.EdgeButton.None;
+            txtNotes.UseEdgeButton = ThemedTextBox.EdgeButton.None;
             // 
             // btnSave
             // 
@@ -231,9 +231,9 @@
         #endregion
 
         private Label label1;
-        private TextBox2 txtSystem;
+        private ThemedTextBox txtSystem;
         private DrawButton btnCancel;
-        private TextBox2 txtNotes;
+        private ThemedTextBox txtNotes;
         private DrawButton btnSave;
         private StatusStrip statusStrip1;
         private ToolStripDropDownButton menuOptions;

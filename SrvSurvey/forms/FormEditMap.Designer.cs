@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormEditMap));
-            tabs = new TabControl();
+            tabs = new ThemedTabControl();
             tabItems = new TabPage();
             btnSaveEdits = new Button();
             btnRemovePoi = new Button();
@@ -45,11 +45,11 @@
             checkPoiPrecision = new CheckBox();
             btnPoiApply = new Button();
             checkApplyPoiLive = new CheckBox();
-            comboPoiStatus = new ComboBox();
-            comboPoiType = new ComboBox();
-            numPoiRot = new NumericUpDown();
-            numPoiAngle = new NumericUpDown();
-            numPoiDist = new NumericUpDown();
+            comboPoiStatus = new ThemedComboBox();
+            comboPoiType = new ThemedComboBox();
+            numPoiRot = new ThemedNumericUpDown();
+            numPoiAngle = new ThemedNumericUpDown();
+            numPoiDist = new ThemedNumericUpDown();
             label10 = new Label();
             label9 = new Label();
             label8 = new Label();
@@ -68,17 +68,17 @@
             checkApplyBackgroundLive = new CheckBox();
             btnApplyImage = new Button();
             btnChooseBackgroundImage = new Button();
-            numScaleFactor = new NumericUpDown();
+            numScaleFactor = new ThemedNumericUpDown();
             label3 = new Label();
-            numOriginTop = new NumericUpDown();
-            numOriginLeft = new NumericUpDown();
+            numOriginTop = new ThemedNumericUpDown();
+            numOriginLeft = new ThemedNumericUpDown();
             label2 = new Label();
             txtBackgroundImage = new TextBox();
             label1 = new Label();
             tabPage1 = new TabPage();
             button1 = new Button();
-            numGroupNameAngle = new NumericUpDown();
-            numGroupNameDist = new NumericUpDown();
+            numGroupNameAngle = new ThemedNumericUpDown();
+            numGroupNameDist = new ThemedNumericUpDown();
             label14 = new Label();
             label15 = new Label();
             listGroupNames = new ListBox();
@@ -782,10 +782,10 @@
         #endregion
         private TabPage tabItems;
         private TabPage tabBackground;
-        private NumericUpDown numScaleFactor;
+        private ThemedNumericUpDown numScaleFactor;
         private Label label3;
-        private NumericUpDown numOriginTop;
-        private NumericUpDown numOriginLeft;
+        private ThemedNumericUpDown numOriginTop;
+        private ThemedNumericUpDown numOriginLeft;
         private Label label2;
         private TextBox txtBackgroundImage;
         private Label label1;
@@ -796,11 +796,11 @@
         private Label label4;
         private TextBox txtPoiName;
         private GroupBox groupCurrentPoi;
-        private ComboBox comboPoiStatus;
-        private ComboBox comboPoiType;
-        private NumericUpDown numPoiRot;
-        private NumericUpDown numPoiAngle;
-        private NumericUpDown numPoiDist;
+        private ThemedComboBox comboPoiStatus;
+        private ThemedComboBox comboPoiType;
+        private ThemedNumericUpDown numPoiRot;
+        private ThemedNumericUpDown numPoiAngle;
+        private ThemedNumericUpDown numPoiDist;
         private Label label10;
         private Label label9;
         private Label label8;
@@ -832,12 +832,12 @@
         private Label lblSiteType;
         public CheckBox checkHideAllPoi;
         private TabPage tabPage1;
-        private NumericUpDown numGroupNameAngle;
-        private NumericUpDown numGroupNameDist;
+        private ThemedNumericUpDown numGroupNameAngle;
+        private ThemedNumericUpDown numGroupNameDist;
         private Label label14;
         private Label label15;
         private Button button1;
         public ListBox listGroupNames;
-        public TabControl tabs;
+        public ThemedTabControl tabs;
     }
 }

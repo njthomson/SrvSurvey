@@ -249,13 +249,13 @@ namespace SrvSurvey.forms
 
             Util.applyTheme(form, dark, black);
 
-            foreach (var txt in form.findAll<TextBox2>())
+            foreach (var txt in form.findAll<ThemedTextBox>())
                 txt.BorderColor = black ? C.orangeDark : SystemColors.ControlText;
 
             foreach (var btn in form.findAll<DrawButton>())
                 btn.setThemeColors(Game.settings.darkTheme, Game.settings.themeMainBlack);
 
-            foreach (var gb in form.findAll<GroupBox2>())
+            foreach (var gb in form.findAll<ThemedGroupBox>())
                 gb.LineColor = black ? C.orangeDark : dark ? SystemColors.ControlLight : SystemColors.ControlDark;
 
             foreach (var btn in form.findAll<FlatButton>())
@@ -267,20 +267,26 @@ namespace SrvSurvey.forms
                 btn.FlatAppearance.MouseDownBackColor = black ? C.menuGold : SystemColors.ActiveCaption;
             }
 
-            foreach (var cb in form.findAll<CheckBox2>())
+            foreach (var cb in form.findAll<ThemedCheckBox>())
             {
                 cb.LineColor = black ? C.orangeDark : SystemColors.ControlText;
                 cb.CheckColor = black ? C.orange : SystemColors.ControlText;
                 cb.CheckBackColor = black ? C.black : SystemColors.ControlLightLight;
             }
 
-            foreach (var cb in form.findAll<ComboBox2>())
+            foreach (var cb in form.findAll<ThemedComboBox>())
             {
                 cb.BorderColor = black ? C.orangeDark : SystemColors.ControlDarkDark;
                 cb.BorderHoverColor = black ? C.menuGold : SystemColors.ControlLight;
 
                 cb.ButtonColor = black ? C.orangeDark : SystemColors.ControlDark;
                 cb.ButtonHoverColor = black ? C.orangeDarker : SystemColors.ControlDarkDark;
+            }
+
+            foreach (var nud in form.findAll<ThemedNumericUpDown>())
+            {
+                // ThemedNumericUpDown handles its own theming, just trigger a refresh
+                nud.Invalidate();
             }
 
             foreach (var ll in form.findAll<LinkLabel>())

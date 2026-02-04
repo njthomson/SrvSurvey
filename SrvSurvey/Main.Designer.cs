@@ -41,7 +41,7 @@ namespace SrvSurvey
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             btnQuit2 = new DrawButton();
-            groupCmdr = new GroupBox2();
+            groupCmdr = new ThemedGroupBox();
             btnNextWindow = new Button();
             btnCopyLocation = new DrawButton();
             txtCommander = new TextBox();
@@ -49,10 +49,10 @@ namespace SrvSurvey
             txtMode = new TextBox();
             txtLocation = new TextBox();
             txtVehicle = new TextBox();
-            groupBox3 = new GroupBox2();
+            groupBox3 = new ThemedGroupBox();
             btnResetBio = new DrawButton();
             btnPredictions = new DrawButton();
-            checkFirstFootFall = new CheckBox2();
+            checkFirstFootFall = new ThemedCheckBox();
             txtBodyBioValues = new TextBox();
             txtBodyBioSignals = new TextBox();
             lblSysBio = new Label();
@@ -70,8 +70,8 @@ namespace SrvSurvey
             lblFullScreen = new Label();
             lblNotInstalled = new LinkLabel();
             linkLabel2 = new LinkLabel();
-            checkTempHide = new CheckBox2();
-            groupBox5 = new GroupBox2();
+            checkTempHide = new ThemedCheckBox();
+            groupBox5 = new ThemedGroupBox();
             txtExplorationValue = new TextBox();
             txtDistance = new TextBox();
             txtJumps = new TextBox();
@@ -81,14 +81,14 @@ namespace SrvSurvey
             label1 = new Label();
             txtBodies = new TextBox();
             linkNewBuildAvailable = new LinkLabel();
-            groupCodex = new GroupBox2();
+            groupCodex = new ThemedGroupBox();
             btnCodexBingo = new DrawButton();
             menuSearchTools = new ButtonContextMenuStrip(components);
             menuSpherical = new ToolStripMenuItem();
             menuBoxel = new ToolStripMenuItem();
             btnSearch = new FlatButton();
             lblBig = new Label();
-            comboDev = new ComboBox();
+            comboDev = new ThemedComboBox();
             menuJourney = new ButtonContextMenuStrip(components);
             menuSetLatLong = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
@@ -1329,9 +1329,9 @@ namespace SrvSurvey
 
         #endregion
         private DrawButton btnQuit2;
-        private GroupBox2 groupCmdr;
+        private ThemedGroupBox groupCmdr;
         private TextBox txtCommander;
-        private GroupBox2 groupBox3;
+        private ThemedGroupBox groupBox3;
         private TextBox txtVehicle;
         private TextBox txtLocation;
         private System.Windows.Forms.Timer timer1;
@@ -1352,11 +1352,11 @@ namespace SrvSurvey
         private Label labelSignalsAndRewards;
         private Label lblBodyBio;
         private LinkLabel linkLabel2;
-        private CheckBox2 checkFirstFootFall;
-        public CheckBox2 checkTempHide;
+        private ThemedCheckBox checkFirstFootFall;
+        public ThemedCheckBox checkTempHide;
         private DrawButton btnPredictions;
         private DrawButton btnCopyLocation;
-        private GroupBox2 groupBox5;
+        private ThemedGroupBox groupBox5;
         private Label label1;
         private TextBox txtExplorationValue;
         private TextBox txtBodies;
@@ -1367,10 +1367,10 @@ namespace SrvSurvey
         private TextBox txtDistance;
         private LinkLabel linkNewBuildAvailable;
         public DrawButton btnCodexShow;
-        private GroupBox2 groupCodex;
+        private ThemedGroupBox groupCodex;
         private DrawButton btnCodexBingo;
         private Label lblBig;
-        private ComboBox comboDev;
+        private ThemedComboBox comboDev;
         private ButtonContextMenuStrip menuSearchTools;
         private ToolStripMenuItem menuSpherical;
         private ToolStripMenuItem menuBoxel;
