@@ -657,7 +657,7 @@ namespace SrvSurvey.forms
         {
             // confirm text is a valid boxel
             var bx = Boxel.parse(txtConfigBoxel.Text, true);
-            this.configValid = bx != null && bx.massCode != 'h';
+            this.configValid = bx != null;
             btnBegin.Enabled = this.configValid;
             comboLowMassCode.Enabled = this.configValid;
             lblBadBoxel.Visible = !this.configValid;

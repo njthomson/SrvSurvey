@@ -1368,6 +1368,13 @@ namespace SrvSurvey
                 // assume a hard-coded folder if the setting is bad
                 folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Frontier Developments\\Elite Dangerous");
             }
+
+            if (!Directory.Exists(folder))
+            {
+                MessageBox.Show($"Cannot find folder for game screenshots:\r\n\r\n{folder}\r\n\r\nPlease check your settings.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             this.screenshotWatcher = new FileSystemWatcher(folder, "*.bmp");
             this.screenshotWatcher.Created += ScreenshotWatcher_Created;
             this.screenshotWatcher.EnableRaisingEvents = true;

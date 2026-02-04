@@ -455,9 +455,7 @@ namespace SrvSurvey.game
 
         private void prepEmptyBoxelFilePath()
         {
-            if (current.massCode == 'h')
-                throw new Exception("Empty boxels are not stored at mass-code: h");
-
+            if (current.massCode == 'h') return;
             if (this.emptyBoxelsFilepath != null) return;
 
             var bx = current.to(0);

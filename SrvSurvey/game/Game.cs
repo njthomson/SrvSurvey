@@ -197,10 +197,6 @@ namespace SrvSurvey.game
                 this.targetCmdr = cmdr;
             }
 
-            // track this instance as the active one
-            if (!Debugger.IsAttached)
-                Game.activeGame = this; // TODO: retire both lines
-
             if (!Elite.isGameRunning && !Program.useLastIfShutdown) return;
 
             // track status file changes and force an immediate read
@@ -234,8 +230,7 @@ namespace SrvSurvey.game
             this.status.StatusChanged += Status_StatusChanged;
 
             Game.ready = true; // todo: "this.cmdr != null" ?
-            if (Debugger.IsAttached)  // <-- TODO: retire the IF
-                Game.activeGame = this;
+            Game.activeGame = this;
 
             Status_StatusChanged(false);
         }
