@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.Properties;
 using SrvSurvey.widgets;
 using Res = Loc.PlotSphericalSearch;
 
@@ -400,6 +401,17 @@ namespace SrvSurvey.plotters
             if (route.nextHop?.notes != null)
             {
                 tt.draw(N.eight, "► " + route.nextHop.notes, col, ff);
+                tt.newLine(true);
+            }
+
+            var alerts = new List<string>();
+            if (route.nextHop?.neutron == true)
+                alerts.Add("⚠️ " + FormRouteExtras.Neutron);
+            if (route.nextHop?.refuel == true)
+                alerts.Add("⛽ " + FormRouteExtras.Refuel);
+            if (alerts.Count > 0)
+            {
+                tt.draw(N.eight, "► " + string.Join(" • ", alerts), GameColors.Cyan, ff);
                 tt.newLine(true);
             }
 

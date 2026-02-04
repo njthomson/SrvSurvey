@@ -180,9 +180,10 @@ namespace SrvSurvey.plotters
                     // and show any notes
                     if (nextHop.notes != null)
                         set.Add(nextHop.notes!);
-                    // show refuel indicator from Spansh route
+                    if (nextHop.neutron)
+                        set.Add("⚠️ " + FormRouteExtras.Neutron);
                     if (nextHop.refuel)
-                        set.Add("⛽ REFUEL");
+                        set.Add("⛽ " + FormRouteExtras.Refuel);
                 }
             }
 
