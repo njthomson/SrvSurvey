@@ -102,6 +102,13 @@ namespace SrvSurvey.plotters
             if (siteMap != null) { siteMap.Dispose(); siteMap = null; }
             if (underlay != null) { underlay.Dispose(); underlay = null; }
             if (headingGuidance != null) { headingGuidance.Dispose(); headingGuidance = null; }
+
+            if (this.watcher != null)
+            {
+                this.watcher.Changed -= Watcher_Changed;
+                this.watcher.Dispose();
+                this.watcher = null;
+            }
             base.onClose();
         }
 
@@ -810,14 +817,14 @@ namespace SrvSurvey.plotters
             var filepath = Path.Combine(Application.StartupPath, "images", $"{siteData.type}-heading-guide.png");
             if (File.Exists(filepath))
             {
-                using (var img = Bitmap.FromFile(filepath))
-                    this.headingGuidance = new Bitmap(img);
+                using var img = Bitmap.FromFile(filepath);
+                this.headingGuidance = new Bitmap(img);
             }
             else if (siteData.name.StartsWith("$Ancient_Medium") || siteData.name.StartsWith("$Ancient_Small"))
             {
                 filepath = Path.Combine(Application.StartupPath, "images", $"data-port-heading-guide.png");
-                using (var img = Bitmap.FromFile(filepath))
-                    this.headingGuidance = new Bitmap(img);
+                using var img = Bitmap.FromFile(filepath);
+                this.headingGuidance = new Bitmap(img);
             }
         }
 
@@ -1056,17 +1063,6 @@ namespace SrvSurvey.plotters
             this.watcher.EnableRaisingEvents = true;
         }
 
-        protected override void onClose()
-        {
-            if (this.watcher != null)
-            {
-                this.watcher.Changed -= Watcher_Changed;
-                this.watcher.Dispose();
-                this.watcher = null;
-            }
-            base.onClose();
-        }
-
         private void Watcher_Changed(object sender, FileSystemEventArgs e)
         {
             if (this.isClosed) return;
@@ -1237,7 +1233,6 @@ namespace SrvSurvey.plotters
 
             var headerTxt = Res.TrackOriginHeaderPrefix.format(siteData.siteHeading);
 
-            Brush brush = GameColors.brushGameOrange;
             if (Math.Abs(adjustAngle) > 2)
             {
                 var ax = 30f;
@@ -1697,7 +1692,6 @@ namespace SrvSurvey.plotters
             if (formEditMap != null && formEditMap.checkHighlightAll.Checked)
             {
                 // highlight everything if map editor check says so
-                var b = new SolidBrush(Color.FromArgb(160, Color.DarkSlateBlue));
                 g.DrawEllipse(Pens.AntiqueWhite, -pt.X - dd - 2, -pt.Y - dd - 2, d + 4, d + 4);
             }
 
@@ -1993,17 +1987,12 @@ namespace SrvSurvey.plotters
             g.ResetTransform();
             this.clipToMiddle(g);
 
-            string msg;
-            SizeF sz;
-            var tx = 10f;
-            var ty = 20f;
-
             tt.drawFooter($"{game.systemBody?.name}");
 
             // if we don't know the site type yet ...
-            msg = "\r\n" + Res.IdentifySiteType.format(Properties.Guardian.Alpha, Properties.Guardian.Beta, Properties.Guardian.Gamma);
-            sz = g.MeasureString(msg, GameColors.font1, this.width);
-            g.DrawString(msg, GameColors.font1, GameColors.brushCyan, tx, ty, StringFormat.GenericTypographic);
+            var msg = "\r\n" + Res.IdentifySiteType.format(Properties.Guardian.Alpha, Properties.Guardian.Beta, Properties.Guardian.Gamma);
+            g.MeasureString(msg, GameColors.font1, this.width);
+            g.DrawString(msg, GameColors.font1, GameColors.brushCyan, 10f, 20f, StringFormat.GenericTypographic);
         }
 
         private void drawSiteHeadingHelper(Graphics g, TextCursor tt)

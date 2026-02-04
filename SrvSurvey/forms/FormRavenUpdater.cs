@@ -199,7 +199,7 @@ namespace SrvSurvey.forms
                     data.delete.Add(site.id);
             }
 
-            if (data.update.Any() || data.delete.Any())
+            if (data.update.Count > 0 || data.delete.Count > 0)
             {
                 Game.log($"saveSites: '{sysData.name}' ({id64}) update: {data.update.Count}, delete: {data.delete.Count}");
                 // update, then reload everything
@@ -613,7 +613,7 @@ namespace SrvSurvey.forms
             this.createUnknownSignals(fssSignals);
 
             var pendingInstallations = sites.Where(s => s.bodyNum == -1 && buildTypesInstallation.Contains(s.buildType?.TrimEnd('?') ?? "")).ToList();
-            if (pendingInstallations.Any() && phase < Phase.noBodyInstallation)
+            if (pendingInstallations.Count > 0 && phase < Phase.noBodyInstallation)
             {
                 setPhase(Phase.noBodyInstallation, "On the left/external panel, set the filter to 'Points of interest' or use the system map.\r\nSelect the following installations:");
                 return;
@@ -636,7 +636,7 @@ namespace SrvSurvey.forms
             }
 
             var pendingOrbitals = sites.Where(s => s.bodyNum == -1 && buildTypesOrbitalPorts.Contains(s.buildType?.TrimEnd('?') ?? "")).ToList();
-            if (pendingOrbitals.Any())
+            if (pendingOrbitals.Count > 0)
             {
                 setPhase(Phase.noBodyOrbitalPorts, "Open the system map in the game. In the list below: select each orbital port then set their parent body.");
                 return;
@@ -727,7 +727,7 @@ namespace SrvSurvey.forms
             foreach (var signal in fssSignals)
             {
                 // skip FCs, RES sites, CZs, etc
-                if (signal.SignalName.StartsWith("$") || signal.SignalName_Localised != null || signal.SignalType == "FleetCarrier" || signal.SignalType == "SquadronCarrier" || signal.SignalName.Contains("Construction Site")) continue;
+                if (signal.SignalName.StartsWith('$') || signal.SignalName_Localised != null || signal.SignalType == "FleetCarrier" || signal.SignalType == "SquadronCarrier" || signal.SignalName.Contains("Construction Site")) continue;
 
                 // skip if already exists
                 var match = sites.Find(s => s.name.Equals(signal.SignalName, StringComparison.OrdinalIgnoreCase));
@@ -754,7 +754,7 @@ namespace SrvSurvey.forms
             if (this.IsDisposed || sysData == null || game?.status?.Destination == null || game?.status?.Destination?.System != id64) return;
             var name = game.status.Destination.Name;
             var bodyNum = game.status.Destination.Body;
-            if (string.IsNullOrWhiteSpace(name) || name.StartsWith("$")) return;
+            if (string.IsNullOrWhiteSpace(name) || name.StartsWith('$')) return;
 
             if (phase == Phase.noBodyInstallation && !name.StartsWith(sysData.name))
             {

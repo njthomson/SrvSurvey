@@ -377,7 +377,7 @@ namespace SrvSurvey.plotters
             {
                 sz = tt.drawHeader(Res.OnApproachHeaderStructure);
                 tt.setMinWidth(sz.Width);
-                var msg = $"{site.type} ";
+                string msg;
 
                 if (site.type == GuardianSiteData.SiteType.Robolobster || site.type == GuardianSiteData.SiteType.Squid || site.type == GuardianSiteData.SiteType.Stickyhand)
                     msg = Res.OnApproachMiddleStructure.format(site.type, Properties.Guardian.BluePrintFighter);

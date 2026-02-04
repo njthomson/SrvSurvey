@@ -223,7 +223,7 @@ namespace SrvSurvey.plotters
 
             //Game.log($"Render: {this.name}, stale: {this.stale}");
             var renderCount = 0;
-            Bitmap? nextFrame = null;
+            Bitmap? nextFrame;
             do
             {
                 // re-create background when missing or size has changed

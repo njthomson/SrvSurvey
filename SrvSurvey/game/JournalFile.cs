@@ -75,6 +75,8 @@ namespace SrvSurvey
 
         public void readEntries(string? targetFID = null)
         {
+            if (isShutdown || reader == null) return;
+
             while (!this.reader.EndOfStream)
             {
                 var entry = this.readEntry();

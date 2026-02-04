@@ -110,7 +110,7 @@ namespace SrvSurvey.game
 
             if (journalFiles.Count == 0) return;
 
-            journalFiles.FirstOrDefault((filepath) =>
+            journalFiles.Find((filepath) =>
             {
                 var journal = new JournalFile(filepath);
                 if (journal.isOdyssey && !string.IsNullOrEmpty(journal.cmdrName) && !string.IsNullOrEmpty(journal.cmdrFid))

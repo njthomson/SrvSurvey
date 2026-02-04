@@ -277,7 +277,7 @@ namespace SrvSurvey.forms
             foreach (var cb in form.findAll<ComboBox2>())
             {
                 cb.BorderColor = black ? C.orangeDark : SystemColors.ControlDarkDark;
-                cb.BorderHoverColor = black ? C.menuGold: SystemColors.ControlLight;
+                cb.BorderHoverColor = black ? C.menuGold : SystemColors.ControlLight;
 
                 cb.ButtonColor = black ? C.orangeDark : SystemColors.ControlDark;
                 cb.ButtonHoverColor = black ? C.orangeDarker : SystemColors.ControlDarkDark;
@@ -299,6 +299,18 @@ namespace SrvSurvey.forms
         public FixedForm()
         {
             titleHeight = scaleBy(titleHeight);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                fakeClose?.Dispose();
+                fakeClose = null;
+                fakeMinimize?.Dispose();
+                fakeMinimize = null;
+            }
+            base.Dispose(disposing);
         }
 
         #region fake title bar
@@ -430,6 +442,4 @@ namespace SrvSurvey.forms
 
     /// <summary> This form can be moved by dragging any (non text editable) part of the form </summary>
     class DraggableAttribute : Attribute { }
-
-    // TODO: Attribute for forms that should be themed?
 }

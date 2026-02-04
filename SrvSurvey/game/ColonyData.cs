@@ -700,10 +700,10 @@ namespace SrvSurvey.game
                     return "Y (Brown dwarf) Star";
             }
 
-            if (b.starType?.StartsWith("D") == true)
+            if (b.starType?.StartsWith('D') == true)
                 return $"White Dwarf ({b.starType}) Star";
 
-            if (b.starType?.StartsWith("W") == true)
+            if (b.starType?.StartsWith('W') == true)
                 return $"Wolf-Rayet ({b.starType}) Star";
 
             Debugger.Break();

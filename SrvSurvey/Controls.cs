@@ -444,8 +444,13 @@ namespace SrvSurvey
         {
             if (disposing)
             {
+                tb?.Dispose();
                 tb = null!;
+                eb?.Dispose();
                 eb = null;
+
+                borderPen?.Dispose();
+                borderPen = null;
             }
             base.Dispose(disposing);
         }
@@ -591,7 +596,7 @@ namespace SrvSurvey
             if (journals == null) return;
 
             // primary lambda to call when new journal entries
-            var func = new OnJournalEntry((JournalEntry entry, int index) =>
+            var func = new OnJournalEntry((entry, index) =>
             {
                 if (this.IsDisposed) return;
 
@@ -1357,7 +1362,7 @@ namespace SrvSurvey
                     }
                     using (var b = new SolidBrush(outerBorderColor))
                     {
-                        g.FillPolygon(mouseInside ? b : Brushes.Black , arrow);
+                        g.FillPolygon(mouseInside ? b : Brushes.Black, arrow);
                     }
                     using (var p = new Pen(innerBorderColor))
                     {
