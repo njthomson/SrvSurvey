@@ -17,6 +17,7 @@ namespace SrvSurvey
         {
             if (disposing && (components != null))
             {
+                nextPath?.Dispose();
                 components.Dispose();
             }
 

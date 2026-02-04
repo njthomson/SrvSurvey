@@ -17,6 +17,9 @@ namespace SrvSurvey
         {
             if (disposing && (components != null))
             {
+                nodeBig?.Dispose();
+                nodeMiddle?.Dispose();
+                nodeSmall2?.Dispose();
                 components.Dispose();
 
                 Game.update -= Game_update;

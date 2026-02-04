@@ -15,6 +15,7 @@
         {
             if (disposing && (components != null))
             {
+                img?.Dispose();
                 components.Dispose();
             }
 

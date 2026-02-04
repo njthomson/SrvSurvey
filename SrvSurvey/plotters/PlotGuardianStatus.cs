@@ -35,15 +35,24 @@ namespace SrvSurvey.plotters
 
         private PlotGuardianStatus(Game game, PlotDef def) : base(game, def)
         {
-            timer.Tick += (sender, e) =>
-            {
-                timer.Stop();
-                this.highlightBlink = false;
-                this.invalidate();
-            };
+            timer.Tick += Timer_Tick;
 
             var ww = Util.maxWidth(GameColors.fontMiddle, Res.ChoosePresent, Res.ChooseAbsent, Res.ChooseEmpty);
             this.blockWidth = (ww + N.six) * 1.30f;
+        }
+
+        private void Timer_Tick(object? sender, EventArgs e)
+        {
+            timer.Stop();
+            this.highlightBlink = false;
+            this.invalidate();
+        }
+
+        protected override void onClose()
+        {
+            timer.Tick -= Timer_Tick;
+            timer.Dispose();
+            base.onClose();
         }
 
         protected override void onStatusChange(Status status)

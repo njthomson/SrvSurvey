@@ -11,7 +11,7 @@ using Res = Loc.PlotHumanSite;
 
 namespace SrvSurvey.plotters
 {
-    internal class PlotHumanSite : PlotBase2Site
+    internal class PlotHumanSite : PlotBase2Site, IDisposable
     {
         #region def + statics
 
@@ -110,6 +110,14 @@ namespace SrvSurvey.plotters
 
             if (this.builder != null)
                 this.builder.Close();
+        }
+
+        public void Dispose()
+        {
+            this.mapImageWatcher?.Dispose();
+            this.mapImageWatcher = null;
+            this.templateWatcher?.Dispose();
+            this.templateWatcher = null;
         }
 
         private void setSizeByHugeness()

@@ -50,6 +50,12 @@ namespace SrvSurvey.plotters
             this.setPriorScans();
         }
 
+        protected override void onClose()
+        {
+            boldFont.Dispose();
+            base.onClose();
+        }
+
         // It's easy for this to overlap with PlotBioSystem ... so shift ourselves up if that is the case
         //var bioSys = Program.getPlotter<PlotBioSystem>(); TODO: REVISIT !!!
         //if (bioSys != null) avoidPlotBioSystem(bioSys);

@@ -3,7 +3,7 @@ using SrvSurvey.game;
 
 namespace SrvSurvey
 {
-    class CargoFile : Cargo
+    class CargoFile : Cargo, IDisposable
     {
 
         public static readonly string Filename = "Cargo.json";

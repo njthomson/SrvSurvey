@@ -7,7 +7,7 @@ namespace SrvSurvey
     delegate void OnJournalEntry(JournalEntry entry, int index);
     delegate void OnRawJournalEntry(JObject entry, int index);
 
-    class JournalWatcher : JournalFile, IDisposable
+    class JournalWatcher : JournalFile
     {
         private FileSystemWatcher? watcher;
         private bool disposed = false;
@@ -25,13 +25,6 @@ namespace SrvSurvey
             this.watcher.EnableRaisingEvents = true;
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-            this.disposed = true;
-        }
-
         public void poke()
         {
             // FileSystemWatcher sometimes gets stale and needs to be poked, forcing a flush of any pending file writes
@@ -40,10 +33,11 @@ namespace SrvSurvey
             stream.Close();
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
+                this.disposed = true;
                 if (this.watcher != null)
                 {
                     this.watcher.Changed -= JournalWatcher_Changed;
@@ -51,6 +45,7 @@ namespace SrvSurvey
                     this.watcher = null;
                 }
             }
+            base.Dispose(disposing);
         }
 
         private void JournalWatcher_Changed(object sender, FileSystemEventArgs e)

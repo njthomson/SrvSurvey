@@ -70,6 +70,13 @@ namespace SrvSurvey.plotters
             this.timer.Tick += timer_Tick;
         }
 
+        protected override void onClose()
+        {
+            timer.Tick -= timer_Tick;
+            timer.Dispose();
+            base.onClose();
+        }
+
         private void timer_Tick(object? sender, EventArgs e)
         {
             // remove any expired messages

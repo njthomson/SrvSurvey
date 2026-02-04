@@ -2,6 +2,12 @@
 
 # IDE1006: Naming Styles
 dotnet_diagnostic.IDE1006.severity = none
+
+# CA2213: Disposable fields should be disposed
+dotnet_diagnostic.CA2213.severity = suggestion
+
+# CA1001: Types that own disposable fields should be disposable
+dotnet_diagnostic.CA1001.severity = suggestion
 csharp_indent_labels = one_less_than_current
 csharp_using_directive_placement = outside_namespace:silent
 csharp_prefer_simple_using_statement = true:suggestion

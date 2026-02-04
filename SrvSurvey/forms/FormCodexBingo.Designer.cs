@@ -15,6 +15,7 @@
         {
             if (disposing && (components != null))
             {
+                treeBackBrush?.Dispose();
                 components.Dispose();
             }
             base.Dispose(disposing);
