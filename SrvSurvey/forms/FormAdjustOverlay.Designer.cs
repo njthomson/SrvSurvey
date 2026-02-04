@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             lblChoose = new Label();
-            comboPlotter = new ComboBox();
+            comboPlotter = new ThemedComboBox();
             btnCancel = new Button();
             btnAccept = new Button();
             checkLeft = new CheckBox();
@@ -39,12 +39,12 @@
             checkMiddle = new CheckBox();
             checkBottom = new CheckBox();
             labelOffset = new Label();
-            numY = new NumericUpDown();
-            numX = new NumericUpDown();
+            numY = new ThemedNumericUpDown();
+            numX = new ThemedNumericUpDown();
             groupBox1 = new GroupBox();
             flowLayoutPanel5 = new FlowLayoutPanel();
             checkOpacity = new CheckBox();
-            numOpacity = new NumericUpDown();
+            numOpacity = new ThemedNumericUpDown();
             btnReset = new Button();
             flowLayoutPanel4 = new FlowLayoutPanel();
             flowLayoutPanel1 = new FlowLayoutPanel();
@@ -431,7 +431,7 @@
         #endregion
 
         private Label lblChoose;
-        private ComboBox comboPlotter;
+        private ThemedComboBox comboPlotter;
         private Button btnCancel;
         private Button btnAccept;
         private CheckBox checkLeft;
@@ -441,8 +441,8 @@
         private CheckBox checkMiddle;
         private CheckBox checkBottom;
         private Label labelOffset;
-        private NumericUpDown numY;
-        private NumericUpDown numX;
+        private ThemedNumericUpDown numY;
+        private ThemedNumericUpDown numX;
         private GroupBox groupBox1;
         private FlowLayoutPanel flowLayoutPanel4;
         private FlowLayoutPanel flowLayoutPanel1;
@@ -454,7 +454,7 @@
         private Label lblAdvise;
         private CheckBox checkOpacity;
         private FlowLayoutPanel flowLayoutPanel5;
-        private NumericUpDown numOpacity;
+        private ThemedNumericUpDown numOpacity;
         private CheckBox checkShowAll;
     }
 }

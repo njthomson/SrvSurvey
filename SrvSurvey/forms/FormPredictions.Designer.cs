@@ -37,16 +37,16 @@ namespace SrvSurvey
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPredictions));
             lblSysEst = new Label();
-            tree = new TreeView2();
+            tree = new ThemedTreeView();
             lblSysEstFF = new Label();
-            txtScanCount = new TextBox2();
+            txtScanCount = new ThemedTextBox();
             lblScanCount = new Label();
-            txtSysEst = new TextBox2();
-            txtSysEstFF = new TextBox2();
-            txtSystem = new TextBox2();
+            txtSysEst = new ThemedTextBox();
+            txtSysEstFF = new ThemedTextBox();
+            txtSystem = new ThemedTextBox();
             tableTop = new TableLayoutPanel();
             lblSysActual = new Label();
-            txtSysActual = new TextBox2();
+            txtSysActual = new ThemedTextBox();
             flowCounts = new FlowLayoutPanel();
             statusStrip1 = new StatusStrip();
             toolFiller = new ToolStripStatusLabel();
@@ -133,7 +133,7 @@ namespace SrvSurvey
             txtScanCount.TabIndex = 8;
             txtScanCount.Text = "99 of 99";
             txtScanCount.TextAlign = HorizontalAlignment.Center;
-            txtScanCount.UseEdgeButton = TextBox2.EdgeButton.None;
+            txtScanCount.UseEdgeButton = ThemedTextBox.EdgeButton.None;
             // 
             // lblScanCount
             // 
@@ -161,7 +161,7 @@ namespace SrvSurvey
             txtSysEst.TabIndex = 2;
             txtSysEst.Text = "9999.9 ~ 999.9M cr";
             txtSysEst.TextAlign = HorizontalAlignment.Center;
-            txtSysEst.UseEdgeButton = TextBox2.EdgeButton.None;
+            txtSysEst.UseEdgeButton = ThemedTextBox.EdgeButton.None;
             // 
             // txtSysEstFF
             // 
@@ -177,7 +177,7 @@ namespace SrvSurvey
             txtSysEstFF.TabIndex = 4;
             txtSysEstFF.Text = "9999.9 ~ 999.9M cr";
             txtSysEstFF.TextAlign = HorizontalAlignment.Center;
-            txtSysEstFF.UseEdgeButton = TextBox2.EdgeButton.None;
+            txtSysEstFF.UseEdgeButton = ThemedTextBox.EdgeButton.None;
             // 
             // txtSystem
             // 
@@ -195,7 +195,7 @@ namespace SrvSurvey
             txtSystem.Size = new Size(482, 26);
             txtSystem.TabIndex = 0;
             txtSystem.Text = "Dryaa Proae PT-O d7-67 ABC 2 h a";
-            txtSystem.UseEdgeButton = TextBox2.EdgeButton.None;
+            txtSystem.UseEdgeButton = ThemedTextBox.EdgeButton.None;
             // 
             // tableTop
             // 
@@ -252,7 +252,7 @@ namespace SrvSurvey
             txtSysActual.TabIndex = 6;
             txtSysActual.Text = "999.9M cr";
             txtSysActual.TextAlign = HorizontalAlignment.Center;
-            txtSysActual.UseEdgeButton = TextBox2.EdgeButton.None;
+            txtSysActual.UseEdgeButton = ThemedTextBox.EdgeButton.None;
             // 
             // flowCounts
             // 
@@ -451,18 +451,18 @@ namespace SrvSurvey
         #endregion
         private Label lblSysEst;
         private Label lblSysEstFF;
-        private TextBox2 txtScanCount;
+        private ThemedTextBox txtScanCount;
         private Label lblScanCount;
-        private TextBox2 txtSysEst;
-        private TextBox2 txtSysEstFF;
-        private TextBox2 txtSystem;
+        private ThemedTextBox txtSysEst;
+        private ThemedTextBox txtSysEstFF;
+        private ThemedTextBox txtSystem;
         private TableLayoutPanel tableTop;
         private FlowLayoutPanel flowCounts;
         private StatusStrip statusStrip1;
-        private TreeView2 tree;
+        private ThemedTreeView tree;
         private Panel panelTop;
         private Label lblSysActual;
-        private TextBox2 txtSysActual;
+        private ThemedTextBox txtSysActual;
         private ToolStripDropDownButton toolMore;
         private ToolStripStatusLabel toolFiller;
         private ToolStripMenuItem viewOnCanonnSignalsToolStripMenuItem;

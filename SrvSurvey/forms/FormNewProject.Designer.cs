@@ -34,17 +34,17 @@
             label7 = new Label();
             txtName = new TextBox();
             label5 = new Label();
-            comboBuildType = new ComboBox();
+            comboBuildType = new ThemedComboBox();
             label2 = new Label();
             btnCreate = new FlatButton();
             btnCancel = new FlatButton();
-            comboBuildSubType = new ComboBox();
-            comboSystemSite = new ComboBox();
+            comboBuildSubType = new ThemedComboBox();
+            comboSystemSite = new ThemedComboBox();
             label1 = new Label();
             radioOrbital = new RadioButton();
             radioSurface = new RadioButton();
             label3 = new Label();
-            comboBody = new ComboBox();
+            comboBody = new ThemedComboBox();
             label4 = new Label();
             SuspendLayout();
             // 
@@ -279,17 +279,17 @@
         private Label label7;
         private TextBox txtName;
         private Label label5;
-        private ComboBox comboBuildType;
+        private ThemedComboBox comboBuildType;
         private Label label2;
         private FlatButton btnCreate;
         private FlatButton btnCancel;
-        private ComboBox comboBuildSubType;
-        private ComboBox comboSystemSite;
+        private ThemedComboBox comboBuildSubType;
+        private ThemedComboBox comboSystemSite;
         private Label label1;
         private RadioButton radioOrbital;
         private RadioButton radioSurface;
         private Label label3;
-        private ComboBox comboBody;
+        private ThemedComboBox comboBody;
         private Label label4;
     }
 }

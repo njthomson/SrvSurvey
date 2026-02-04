@@ -31,14 +31,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormJourneyBegin));
             lblDesc = new Label();
             lblName = new Label();
-            txtName = new TextBox2();
+            txtName = new ThemedTextBox();
             btnAccept = new DrawButton();
             btnReject = new DrawButton();
             radioNow = new RadioButton();
             radioSystem = new RadioButton();
             comboStartFrom = new ComboStarSystem();
             lblWarning = new Label();
-            txtCurrentSystem = new TextBox2();
+            txtCurrentSystem = new ThemedTextBox();
             lblLastVisited = new Label();
             SuspendLayout();
             // 
@@ -195,14 +195,14 @@
 
         private Label lblDesc;
         private Label lblName;
-        private TextBox2 txtName;
+        private ThemedTextBox txtName;
         private DrawButton btnAccept;
         private DrawButton btnReject;
         private RadioButton radioNow;
         private RadioButton radioSystem;
         private ComboStarSystem comboStartFrom;
         private Label lblWarning;
-        private TextBox2 txtCurrentSystem;
+        private ThemedTextBox txtCurrentSystem;
         private Label lblLastVisited;
     }
 }
