@@ -16,7 +16,7 @@ namespace SrvSurvey.plotters
 
             PlotVerticalStripe.targetAltitude = targetAltitude;
             PlotVerticalStripe.mode = mode;
-            return Program.showPlotter<PlotVerticalStripe>();
+            return Program.showPlotter<PlotVerticalStripe>(Game.activeGame!);
         }
 
         public enum Mode

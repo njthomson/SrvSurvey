@@ -169,7 +169,7 @@ namespace SrvSurvey
 
         private static readonly Dictionary<string, PlotterForm> activePlotters = new Dictionary<string, PlotterForm>();
 
-        public static T? showPlotter<T>(Rectangle? gameRect = null, PlotDef? def = null) where T : PlotterForm
+        public static T? showPlotter<T>(Game game, Rectangle? gameRect = null, PlotDef? def = null) where T : PlotterForm
         {
             var formType = typeof(T);
             var formTypeName = def?.name ?? formType.Name;
@@ -197,7 +197,7 @@ namespace SrvSurvey
                     if (def == null)
                         throw new Exception($"Why no def for: {formTypeName}");
                     if (def.form == null)
-                        def.form = new PlotContainer(def);
+                        def.form = new PlotContainer(game, def);
                     form = (T)(PlotterForm)def.form;
                 }
                 else
@@ -225,7 +225,7 @@ namespace SrvSurvey
                     if (def != null)
                         def.form = null;
                     activePlotters.Remove(formTypeName);
-                    return showPlotter<T>(gameRect, def);
+                    return showPlotter<T>(game, gameRect, def);
                 }
 
                 form.Invalidate();
@@ -260,7 +260,7 @@ namespace SrvSurvey
                                 Game.log("Run-as-admin problem? Setting disableWindowParentIsGame=true");
                                 Game.settings.disableWindowParentIsGame = true;
                                 Game.settings.Save();
-                                showPlotter<T>(gameRect, def);
+                                showPlotter<T>(game, gameRect, def);
                             }
                             else
                                 throw;

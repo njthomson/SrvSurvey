@@ -24,7 +24,7 @@ namespace SrvSurvey.plotters
             return Game.settings.autoShowPlotBioSystem
                 && game.status != null
                 && game.systemData != null
-                && game.systemData.suppressBioOverlays == false
+                //&& game.systemData.suppressBioOverlays == false
                 && !Game.settings.buildProjectsSuppressOtherOverlays
                 && game.systemData.bioSignalsTotal > 0
                 && !game.status.InTaxi

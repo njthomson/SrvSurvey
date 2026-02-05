@@ -21,7 +21,7 @@ namespace SrvSurvey.plotters
     [System.ComponentModel.DesignerCategory("")]
     internal abstract partial class PlotBase : Form, PlotterForm, IDisposable
     {
-        protected Game game = Game.activeGame!;
+        protected Game game;
         public TrackingDelta? touchdownLocation0; // TODO: move to PlotSurfaceBase // make protected again
         protected TrackingDelta? srvLocation0; // TODO: move to PlotSurfaceBase
 
@@ -45,8 +45,9 @@ namespace SrvSurvey.plotters
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool fading { get; set; }
 
-        protected PlotBase()
+        protected PlotBase(Game game)
         {
+            this.game = game;
             this.Cursor = Cursors.Cross;
             this.BackColor = Color.Black;
             this.ShowIcon = false;
@@ -65,7 +66,6 @@ namespace SrvSurvey.plotters
             else
                 this.Size = new Size(640, 640);
 
-            if (this.game == null) throw new Exception("Why no active game?");
 
             if (game.systemData != null && game.systemBody != null) // retire
             {
@@ -1220,6 +1220,8 @@ namespace SrvSurvey.plotters
     /// </summary>
     internal abstract class PlotBaseSurface : PlotBase
     {
+        protected PlotBaseSurface(Game game) : base(game) { }
+
         // TODO: Move these to here
         //protected TrackingDelta? touchdownLocation;
         //protected TrackingDelta? srvLocation;
@@ -1285,6 +1287,8 @@ namespace SrvSurvey.plotters
         protected Image? mapImage;
         protected Point mapCenter;
         protected float mapScale;
+
+        protected PlotBaseSite(Game game) : base(game) { }
 
         protected override void Status_StatusChanged(bool blink)
         {
@@ -1436,7 +1440,7 @@ namespace SrvSurvey.plotters
         private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         private bool highlightBlink = false;
 
-        protected PlotBaseSelectable() : base()
+        protected PlotBaseSelectable(Game game) : base(game)
         {
             this.Width = 500;
             this.Height = 108;

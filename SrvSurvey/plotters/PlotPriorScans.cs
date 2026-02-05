@@ -23,7 +23,7 @@ namespace SrvSurvey.plotters
             return Game.settings.useExternalData
                 && Game.settings.autoLoadPriorScans
                 && game.systemBody != null
-                && game.systemData.suppressBioOverlays == false
+                //&& game.systemData.suppressBioOverlays == false
                 && !Game.settings.buildProjectsSuppressOtherOverlays
                 && !game.hidePlottersFromCombatSuits
                 && !game.status.Docked

@@ -236,7 +236,7 @@ namespace SrvSurvey.plotters
             // TODO: does this ever happen?
             Debugger.Break();
             Game.log($"showAiming: {PlotVerticalStripe.mode}");
-            return Program.showPlotter<PlotVerticalStripe>();
+            return Program.showPlotter<PlotVerticalStripe>(game);
         }
 
         protected override void onJournalEntry(SendText entry)
