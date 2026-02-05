@@ -1157,9 +1157,14 @@ namespace SrvSurvey.game
         private void onJournalEntry(Died entry)
         {
             Game.log($"You died. Clearing ${Util.credits(this.cmdr.organicRewards)} from {this.cmdr.scannedBioEntryIds.Count} organisms.");
-            // revisit all active bio-scan entries per body and mark them as Died
+
+            // (on another thread) revisit bio-scan entries per body and mark them as Died
+            var scannedBioEntryIds = this.cmdr.scannedBioEntryIds.ToList();
+            Task.Run(() => BioScan.setUnclaimedSystemBioScansAsDied(scannedBioEntryIds, this.fid!));
 
             this.cmdr.scannedOrganics?.Clear(); // retire?
+            this.cmdr.scannedBioEntryIds.Clear();
+            this.cmdr.organicRewards = 0;
             this.cmdr.scanOne = null;
             this.cmdr.scanTwo = null;
             this.cmdr.lastOrganicScan = null;

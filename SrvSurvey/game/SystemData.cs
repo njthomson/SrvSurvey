@@ -93,6 +93,10 @@ namespace SrvSurvey.game
                 }
             }
 
+            // remember to hide bio overlays if we've been to this system before and everything has been scanned
+            if (Game.settings.autoHideBioPlotOnRepeat && systemData.firstVisited != systemData.lastVisited && systemData.bioSignalsRemaining == 0)
+                systemData.suppressBioOverlays = true;
+
             // Remove any stations that got tracked during colonisation. Anything with economy of "Colony" is guaranteed to fail to match
             if (systemData.stations?.Any(s => s.economy == Economy.Colony) == true)
                 systemData.stations = systemData.stations.Where(s => s.economy != Economy.Colony).ToList();
@@ -116,15 +120,15 @@ namespace SrvSurvey.game
         /// <summary>
         /// Close a SystemData object for the a star system by name or address.
         /// </summary>
-        /// <param name="systemName"></param>
-        /// <param name="systemAddress"></param>
         public static void Close(SystemData? data)
         {
-            Game.log($"Closing and saving SystemData for: '{data?.name}' ({data?.address})");
+            if (data == null) return;
+
+            Game.log($"Closing and saving SystemData for: '{data.name}' ({data.address})");
             lock (cache)
             {
                 // ensure data is saved then remove from the cache
-                data?.Save();
+                data.Save();
 
                 if (data != null && cache.ContainsValue(data))
                     cache.Remove(data.address);
@@ -1519,20 +1523,23 @@ namespace SrvSurvey.game
         }
 
         [JsonIgnore]
-        public int fssBodyCount { get => this.bodies.ToList().Count(_ => _.type != SystemBodyType.Asteroid && _.type != SystemBodyType.Unknown && _.type != SystemBodyType.Barycentre && _.type != SystemBodyType.PlanetaryRing); }
+        public int fssBodyCount => this.bodies.ToList().Count(_ => _.type != SystemBodyType.Asteroid && _.type != SystemBodyType.Unknown && _.type != SystemBodyType.Barycentre && _.type != SystemBodyType.PlanetaryRing);
 
         /// <summary> Returns True when all non-star/non-asteroid bodies have been found with FSS </summary>
         [JsonIgnore]
-        public bool fssComplete { get => this.fssBodyCount >= this.bodyCount; }
+        public bool fssComplete => this.fssBodyCount >= this.bodyCount;
 
         [JsonIgnore]
-        public int dssBodyCount { get => this.bodies.ToList().Count(_ => _.dssComplete); }
+        public int dssBodyCount => this.bodies.ToList().Count(_ => _.dssComplete);
 
         [JsonIgnore]
-        public int bioSignalsTotal { get => this.bodies.ToList().Sum(_ => _.bioSignalCount); }
+        public int bioSignalsTotal => this.bodies.ToList().Sum(_ => _.bioSignalCount);
 
         [JsonIgnore]
-        public int bioSignalsRemaining { get => this.bodies.Sum(_ => _.bioSignalCount - _.countAnalyzedBioSignals); }
+        public int bioSignalsRemaining => this.bodies.Sum(_ => _.bioSignalCount - _.countAnalyzedBioSignals);
+
+        [JsonIgnore]
+        public bool suppressBioOverlays;
 
         public List<string> getDssRemainingNames()
         {
@@ -1919,7 +1926,7 @@ namespace SrvSurvey.game
             this.displayName = displayName;
         }
 
-        public string name { get => bioRef.name; }
+        public string name => bioRef.name;
 
         public SummarySpecies findSpecies(string speciesName, string displayName, bool prediction = false)
         {
@@ -1970,8 +1977,8 @@ namespace SrvSurvey.game
             return $"{this.bioRef.genus.englishName} {this.displayName} (guessed: {this.predicted}) {Util.credits(this.reward, true)}";
         }
 
-        public string name { get => bioRef.name; }
-        public long reward { get => bioRef.reward; }
+        public string name => bioRef.name;
+        public long reward => bioRef.reward;
     }
 
     internal class SummaryBody
@@ -2171,22 +2178,14 @@ namespace SrvSurvey.game
         public string shortName;
 
         [JsonIgnore]
-        public bool hasRings { get => this.rings?.Count > 0; }
+        public bool hasRings => this.rings?.Count > 0;
 
         [JsonIgnore]
-        public bool hasValue { get => valuables.Contains(this.type); }
+        public bool hasValue => valuables.Contains(this.type);
         private readonly SystemBodyType[] valuables = { SystemBodyType.Star, SystemBodyType.LandableBody, SystemBodyType.Giant, SystemBodyType.SolidBody };
 
         [JsonIgnore]
-        public bool isMainStar
-        {
-            get
-            {
-                if (this.type != SystemBodyType.Star) return false;
-                if (this.id == 0 || this.name.EndsWith("A")) return true;
-                return false;
-            }
-        }
+        public bool isMainStar => type == SystemBodyType.Star && (this.id == 0 || this.name.EndsWith("A"));
 
         public bool hasParent(int targetBodyId)
         {
@@ -2203,15 +2202,11 @@ namespace SrvSurvey.game
         }
 
         [JsonIgnore]
-        public List<SystemBody> parentBodies
-        {
-            get => this.parents == null
-                ? new List<SystemBody>()
-                : this.parents
-                    .Select(p => this.system.bodies.FirstOrDefault(b => b.id == p.id))
-                    .Where(b => b != null)
-                    .ToList()!;
-        }
+        public List<SystemBody> parentBodies => this.parents?
+            .Select(p => this.system.bodies.FirstOrDefault(b => b.id == p.id))
+            .Where(b => b != null)
+            .ToList()
+            ?? new();
 
         public double getRelativeBrightness(SystemBody star)
         {
@@ -2254,12 +2249,7 @@ namespace SrvSurvey.game
         }
 
         [JsonIgnore]
-        public int countAnalyzedBioSignals
-        {
-            get => this.organisms == null
-                ? 0
-                : this.organisms.Count(_ => _.analyzed);
-        }
+        public int countAnalyzedBioSignals => this.organisms?.Count(_ => _.analyzed) ?? 0;
 
         [JsonIgnore]
         public Dictionary<string, BioVariant> predictions = new Dictionary<string, BioVariant>();
@@ -2313,7 +2303,7 @@ namespace SrvSurvey.game
         }
 
         [JsonIgnore]
-        public long sumAnalyzed { get => this.organisms?.Sum(o => !o.analyzed ? 0 : this.firstFootFall ? o.reward * 5 : o.reward) ?? 0; }
+        public long sumAnalyzed => this.organisms?.Sum(o => !o.analyzed ? 0 : this.firstFootFall ? o.reward * 5 : o.reward) ?? 0;
 
         /// <summary>
         /// Exploration reward estimate for body
@@ -2332,7 +2322,6 @@ namespace SrvSurvey.game
                           // this.dssComplete, // isMapped
                     !this.wasMapped // isFirstMapped
                 );
-
                 return estimate;
             }
         }
@@ -2529,10 +2518,7 @@ namespace SrvSurvey.game
         }
 
         /// <summary> A distinct list of geo signal names </summary>
-        public HashSet<string> geoSignalNames
-        {
-            get => this.geoSignals?.Select(_ => _.nameLocalized).ToHashSet() ?? new();
-        }
+        public HashSet<string> geoSignalNames => this.geoSignals?.Select(_ => _.nameLocalized).ToHashSet() ?? new();
     }
 
     internal class SystemRing
@@ -2646,7 +2632,7 @@ namespace SrvSurvey.game
         /// Returns true if this is a regional or cmdr first discovery
         /// </summary>
         [JsonIgnore]
-        public bool isFirst { get => (this.isNewEntry && Game.settings.highlightRegionalFirsts) || this.isCmdrFirst; }
+        public bool isFirst => (this.isNewEntry && Game.settings.highlightRegionalFirsts) || this.isCmdrFirst;
 
         [JsonIgnore]
         public string prefix
@@ -2665,19 +2651,10 @@ namespace SrvSurvey.game
         }
 
         [JsonIgnore]
-        public VolColor volCol
-        {
-            get
-            {
-                if (this.isFirst)
-                    return VolColor.Gold;
-                else
-                    return VolColor.Orange;
-            }
-        }
+        public VolColor volCol => this.isFirst ? VolColor.Gold : VolColor.Orange;
 
         [JsonIgnore]
-        public int range { get => BioGenus.getRange(this.genus); }
+        public int range => BioGenus.getRange(this.genus);
 
         public void lookupMissingNamesIfNeeded()
         {
@@ -2751,7 +2728,7 @@ namespace SrvSurvey.game
             this.species = new Dictionary<BioSpecies, List<SystemVariantPrediction>>();
         }
 
-        public bool isGold { get => hasCmdrNew || (Game.settings.highlightRegionalFirsts && hasCmdrRegionalNew); }
+        public bool isGold => hasCmdrNew || (Game.settings.highlightRegionalFirsts && hasCmdrRegionalNew);
 
         [JsonIgnore]
         public VolColor volCol
@@ -2796,7 +2773,7 @@ namespace SrvSurvey.game
             this.isCmdrRegionalNew = isCmdrRegionalNew;
         }
 
-        public bool isGold { get => isCmdrNew || (Game.settings.highlightRegionalFirsts && isCmdrRegionalNew); }
+        public bool isGold => isCmdrNew || (Game.settings.highlightRegionalFirsts && isCmdrRegionalNew);
 
         public string prefix
         {

@@ -65,6 +65,61 @@ namespace SrvSurvey
             Abandoned,
             Died,
         }
+
+        public static void setUnclaimedSystemBioScansAsDied(List<string> scannedBioEntryIds, string fid)
+        {
+            // parse/group prior scans by system
+            var scansBySystem = new Dictionary<long, List<ScannedBioEntryId>>();
+            foreach (var hash in scannedBioEntryIds)
+            {
+                var parsed = new ScannedBioEntryId(hash);
+                scansBySystem.init(parsed.id64).Add(parsed);
+            }
+
+            // open each system, update bioScan entries' status to Died as needed
+            foreach (var (id64, scans) in scansBySystem)
+            {
+                var sys = SystemData.Load("", id64, fid, null, true);
+                if (sys == null) continue;
+                Game.log($"Purging {scans.Count} bio scans from: {sys.name}");
+
+                foreach (var scan in scans)
+                {
+                    var bs = sys
+                        .bodies.Find(b => b.id == scan.bodyNum)
+                        ?.bioScans?.Find(bs => bs.entryId == scan.entryId);
+
+                    if (bs != null && bs.status != Status.Abandoned)
+                        bs.status = Status.Died;
+                }
+
+                // close the system - unless it's our current system
+                if (sys != Game.activeGame?.systemData)
+                    SystemData.Close(sys);
+                else
+                    sys.Save();
+            }
+        }
+    }
+
+    class ScannedBioEntryId
+    {
+        public long id64;
+        public int bodyNum;
+        public long entryId;
+        public long reward;
+        public bool firstFootfall;
+
+        public ScannedBioEntryId(string hash)
+        {
+            // {sys.address}_{body.id}_{organism.entryId}_{organism.reward}_{firstFootfall}
+            var parts = hash.Split('_', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+            this.id64 = long.Parse(parts[0]);
+            this.bodyNum = int.Parse(parts[1]);
+            this.entryId = long.Parse(parts[2]);
+            this.reward = long.Parse(parts[3]);
+            this.firstFootfall = bool.Parse(parts[4]);
+        }
     }
 
     class OrganicSummary
