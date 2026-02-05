@@ -289,6 +289,11 @@ namespace SrvSurvey.forms
                 nud.Invalidate();
             }
 
+            foreach (var tc in form.findAll<ThemedTabControl>())
+            {
+                tc.BorderColor = black ? C.orangeDark : dark ? SystemColors.ControlLight : SystemColors.ControlDark;
+            }
+
             foreach (var ll in form.findAll<LinkLabel>())
                 ll.LinkColor = black ? C.menuGold : Color.Blue;
         }

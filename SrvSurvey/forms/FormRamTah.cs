@@ -46,7 +46,7 @@ namespace SrvSurvey
             if (only2ndMissionActive || Game.activeGame?.systemSite?.isRuins == false)
                 tabControl1.SelectedIndex = 1;
 
-            Util.applyTheme(this);
+            BaseForm.applyThemeWithCustomControls(this);
         }
 
         private void prepLogCheckboxes()

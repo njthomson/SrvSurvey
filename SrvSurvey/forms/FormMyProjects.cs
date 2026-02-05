@@ -25,7 +25,7 @@ namespace SrvSurvey.forms
             if (game?.cmdrColony != null)
                 setData(game.cmdrColony.hiddenIDs, game.cmdrColony.projects);
 
-            Util.applyTheme(this);
+            BaseForm.applyThemeWithCustomControls(this);
         }
 
         private void FormMyProjects_Load(object sender, EventArgs e)

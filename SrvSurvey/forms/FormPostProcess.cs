@@ -43,7 +43,7 @@ namespace SrvSurvey
             this.targetStartTime = dateTimePicker.Value;
             this.btnStart.Enabled = false;
 
-            Util.applyTheme(this);
+            BaseForm.applyThemeWithCustomControls(this);
         }
 
         protected override void OnLoad(EventArgs e)

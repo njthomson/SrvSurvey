@@ -44,7 +44,7 @@ namespace SrvSurvey
             if (Game.activeGame?.cmdr?.decodeTheRuinsMissionActive == TahMissionStatus.Active || Game.activeGame?.cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active)
                 checkOnlyNeeded.Checked = true;
 
-            Util.applyTheme(this);
+            BaseForm.applyThemeWithCustomControls(this);
         }
 
         private void FormBeacons_Load(object sender, EventArgs e)

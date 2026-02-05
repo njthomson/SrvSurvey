@@ -29,7 +29,7 @@ namespace SrvSurvey
         {
             InitializeComponent();
             this.Icon = Icons.moai;
-            Util.applyTheme(this);
+            BaseForm.applyThemeWithCustomControls(this);
         }
 
         private void btnClose_Click(object sender, EventArgs e)

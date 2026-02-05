@@ -23,9 +23,7 @@ namespace SrvSurvey.forms
 
             loadPlayState().justDoIt();
 
-            Util.applyTheme(this, true, false);
-            foreach (var btn in this.findAll<DrawButton>())
-                btn.setThemeColors(Game.settings.darkTheme, Game.settings.themeMainBlack);
+            BaseForm.applyThemeWithCustomControls(this);
         }
 
         protected override void OnActivated(EventArgs e)

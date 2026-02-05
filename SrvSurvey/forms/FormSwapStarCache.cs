@@ -35,7 +35,7 @@ namespace SrvSurvey.forms
         {
             InitializeComponent();
             this.Icon = Icons.sphere;
-            Util.applyTheme(this);
+            BaseForm.applyThemeWithCustomControls(this);
 
             this.comboCmdrs.cmdrFid = cmdr.fid;
             this.systemName = systemName ?? cmdr.currentSystem ?? "Sol";

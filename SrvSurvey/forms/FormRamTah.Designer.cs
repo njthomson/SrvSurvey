@@ -165,7 +165,8 @@ namespace SrvSurvey
             linkLabel1.LinkArea = new LinkArea(1, 12);
             linkLabel1.Location = new Point(347, 37);
             linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(79, 19);
+            linkLabel1.Padding = new Padding(0, 0, 2, 0);
+            linkLabel1.Size = new Size(81, 19);
             linkLabel1.TabIndex = 4;
             linkLabel1.TabStop = true;
             linkLabel1.Text = "(Canonn guide)";
@@ -188,7 +189,8 @@ namespace SrvSurvey
             linkLabel2.LinkArea = new LinkArea(1, 12);
             linkLabel2.Location = new Point(348, 65);
             linkLabel2.Name = "linkLabel2";
-            linkLabel2.Size = new Size(79, 19);
+            linkLabel2.Padding = new Padding(0, 0, 2, 0);
+            linkLabel2.Size = new Size(81, 19);
             linkLabel2.TabIndex = 8;
             linkLabel2.TabStop = true;
             linkLabel2.Text = "(Canonn guide)";
@@ -198,10 +200,13 @@ namespace SrvSurvey
             // tabControl1
             // 
             tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tabControl1.BorderColor = SystemColors.ControlDark;
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
+            tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabControl1.Location = new Point(12, 91);
             tabControl1.Name = "tabControl1";
+            tabControl1.Padding = new Point(1, 1);
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new Size(472, 469);
             tabControl1.TabIndex = 8;
@@ -209,10 +214,10 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.Controls.Add(listLogs);
-            tabPage1.Location = new Point(4, 24);
+            tabPage1.Location = new Point(4, 23);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(464, 441);
+            tabPage1.Size = new Size(464, 442);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Mission 1";
             // 
@@ -239,7 +244,7 @@ namespace SrvSurvey
             listLogs.Location = new Point(3, 3);
             listLogs.Name = "listLogs";
             listLogs.OwnerDraw = true;
-            listLogs.Size = new Size(458, 435);
+            listLogs.Size = new Size(458, 436);
             listLogs.TabIndex = 0;
             listLogs.UseCompatibleStateImageBehavior = false;
             listLogs.View = View.Details;
@@ -291,10 +296,10 @@ namespace SrvSurvey
             tabPage2.Controls.Add(groupWar);
             tabPage2.Controls.Add(groupThargoids);
             tabPage2.Controls.Add(groupBodyProtectorate);
-            tabPage2.Location = new Point(4, 24);
+            tabPage2.Location = new Point(4, 23);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(464, 441);
+            tabPage2.Size = new Size(464, 442);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Mission 2";
             // 
@@ -746,7 +751,8 @@ namespace SrvSurvey
             lblObelisk.AutoSize = true;
             lblObelisk.Location = new Point(12, 570);
             lblObelisk.Name = "lblObelisk";
-            lblObelisk.Size = new Size(49, 15);
+            lblObelisk.Padding = new Padding(0, 0, 2, 0);
+            lblObelisk.Size = new Size(51, 15);
             lblObelisk.TabIndex = 10;
             lblObelisk.Text = "Obelisk:";
             // 

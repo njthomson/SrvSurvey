@@ -31,7 +31,7 @@ namespace SrvSurvey
 
             Util.useLastLocation(this, Game.settings.formMapEditor);
 
-            Util.applyTheme(this);
+            BaseForm.applyThemeWithCustomControls(this);
         }
 
         private void FormEditMap_FormClosed(object sender, FormClosedEventArgs e)

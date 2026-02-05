@@ -183,7 +183,7 @@ namespace SrvSurvey.forms
                 this.list.Items.Add(item);
             }
 
-            Util.applyTheme(this);
+            BaseForm.applyThemeWithCustomControls(this);
         }
 
         protected override void OnLoad(EventArgs e)
