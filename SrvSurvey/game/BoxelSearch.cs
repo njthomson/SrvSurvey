@@ -433,7 +433,7 @@ namespace SrvSurvey.game
             {
                 Game.log($"Updating: .\\emptyBoxels\\{emptyBoxelsFilepath}");
                 var json = JsonConvert.SerializeObject(this.emptyBoxels);
-                File.WriteAllText(emptyBoxelsFilepath!, json);
+                Data.saveWithRetry(emptyBoxelsFilepath!, json);
             }
 
             this.fireChanged();

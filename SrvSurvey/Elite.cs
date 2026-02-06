@@ -200,21 +200,19 @@ namespace SrvSurvey
 
         public static GraphicsMode getGraphicsMode()
         {
-            using (var sr = new StreamReader(new FileStream(displaySettingsXml, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+            try
             {
-                try
-                {
-                    var doc = XDocument.Load(sr);
-                    var element = doc.Element("DisplayConfig")!.Element("FullScreen")!;
-                    Elite.graphicsMode = (GraphicsMode)int.Parse(element.Value);
-                }
-                catch
-                {
-                    Elite.graphicsMode = GraphicsMode.Windowed;
-                }
-
-                return Elite.graphicsMode;
+                using var sr = Data.openSharedStreamReader(displaySettingsXml);
+                var doc = XDocument.Load(sr);
+                var element = doc.Element("DisplayConfig")!.Element("FullScreen")!;
+                Elite.graphicsMode = (GraphicsMode)int.Parse(element.Value);
             }
+            catch
+            {
+                Elite.graphicsMode = GraphicsMode.Windowed;
+            }
+
+            return Elite.graphicsMode;
         }
 
         public static GraphicsMode graphicsMode { get; private set; }

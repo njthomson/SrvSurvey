@@ -1658,8 +1658,7 @@ namespace SrvSurvey.plotters
             Game.log($"Resetting custom overlay positions");
             // read and write (a basic file copy has issues with BitLocker on Win11?)
             var txt = File.ReadAllText(defaultPlotterPositionPath);
-            if (!Directory.Exists(Program.dataFolder)) Directory.CreateDirectory(Program.dataFolder);
-            File.WriteAllText(customPlotterPositionPath, txt);
+            Data.saveWithRetry(customPlotterPositionPath, txt, true);
         }
 
         public static void backup()
@@ -1707,7 +1706,7 @@ namespace SrvSurvey.plotters
             json.Append(string.Join(",\r\n", lines));
             json.AppendLine("\r\n}");
 
-            File.WriteAllText(customPlotterPositionPath, json.ToString());
+            Data.saveWithRetry(customPlotterPositionPath, json.ToString());
 
             backupPositions = null;
         }

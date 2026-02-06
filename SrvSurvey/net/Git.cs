@@ -89,7 +89,7 @@ namespace SrvSurvey.net
                 {
                     Game.log($"Downloading {GuardianSiteTemplate.filename}");
                     var json2 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/{GuardianSiteTemplate.filename}");
-                    File.WriteAllText(Path.Combine(Git.pubDataFolder, GuardianSiteTemplate.filename), json2);
+                    Data.saveWithRetry(Path.Combine(Git.pubDataFolder, GuardianSiteTemplate.filename), json2);
 
                     this.updateRawPoiAfterRefresh();
                     // then re-import
@@ -104,7 +104,7 @@ namespace SrvSurvey.net
                 {
                     Game.log($"Downloading Boxel.Names.txt ...");
                     var txt = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/game/Boxel.Names.txt");
-                    File.WriteAllText(Git.boxelNamesPath, txt);
+                    Data.saveWithRetry(Git.boxelNamesPath, txt);
                     Game.log($"Downloading Boxel.Names.txt - complete");
                 }
 
@@ -113,11 +113,11 @@ namespace SrvSurvey.net
                 {
                     Game.log($"Downloading allRuins.json");
                     var json3 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/allRuins.json");
-                    File.WriteAllText(Path.Combine(Git.pubDataFolder, "allRuins.json"), json3);
+                    Data.saveWithRetry(Path.Combine(Git.pubDataFolder, "allRuins.json"), json3);
 
                     Game.log($"Downloading allStructuresRuins.json");
                     var json4 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/allStructures.json");
-                    File.WriteAllText(Path.Combine(Git.pubDataFolder, "allStructures.json"), json4);
+                    Data.saveWithRetry(Path.Combine(Git.pubDataFolder, "allStructures.json"), json4);
 
                     // Remove folder, to remove any orphan files
                     if (Directory.Exists(Git.pubGuardianFolder))
@@ -172,9 +172,9 @@ namespace SrvSurvey.net
 
             // write into both locations
             var newPubJson = JsonConvert.SerializeObject(pubData, Formatting.Indented);
-            File.WriteAllText(devGitDataFilepath, newPubJson);
+            Data.saveWithRetry(devGitDataFilepath, newPubJson);
             var docsPath = Path.Combine(srcRootFolder, "docs", "data.json");
-            File.WriteAllText(docsPath, newPubJson);
+            Data.saveWithRetry(docsPath, newPubJson);
         }
 
         private void updateRawPoiAfterRefresh()
@@ -429,7 +429,7 @@ namespace SrvSurvey.net
                     Game.log($"Updating pubData for: '{site.displayName}' into: {filepath}");
 
                     var json = JsonConvert.SerializeObject(site.pubData, Formatting.Indented);
-                    File.WriteAllText(filepath, json);
+                    Data.saveWithRetry(filepath, json);
                 }
             }
 

@@ -154,7 +154,7 @@ namespace SrvSurvey.canonn
                 {
                     Game.log("loadCodexRef: preparing from network ...");
                     json = await client.GetStringAsync("https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/ref");
-                    File.WriteAllText(codexRefPath, json);
+                    Data.saveWithRetry(codexRefPath, json);
                     Game.log("loadCodexRef: complete");
                     Game.settings.lastCodexRefDownload = DateTime.Now;
                 }
@@ -164,7 +164,7 @@ namespace SrvSurvey.canonn
 
                     Game.log("loadCodexRef: preparing shadow from network ...");
                     json = await client.GetStringAsync("https://raw.githubusercontent.com/njthomson/SrvSurvey/refs/heads/main/docs/codexRef.json");
-                    File.WriteAllText(codexRefPath, json);
+                    Data.saveWithRetry(codexRefPath, json);
                     Game.log("loadCodexRef: shadow complete");
                     Game.settings.lastCodexRefDownload = DateTime.Now;
                 }
@@ -318,7 +318,7 @@ namespace SrvSurvey.canonn
                 //this.genus.First(_ => _.englishName == "Sinuous Tubers").englishName = "Tubers";
                 this.genus.First(_ => _.englishName == "Shards").englishName = "Crystalline Shards";
 
-                File.WriteAllText(bioRefPath, JsonConvert.SerializeObject(this.genus, Formatting.Indented));
+                Data.saveWithRetry(bioRefPath, JsonConvert.SerializeObject(this.genus, Formatting.Indented));
                 Game.log("prepBioRef: complete");
             }
             else
@@ -541,7 +541,7 @@ namespace SrvSurvey.canonn
                             };
                         })
                         .ToList();
-                    File.WriteAllText(nebulaePath, JsonConvert.SerializeObject(this.allNebula));
+                    Data.saveWithRetry(nebulaePath, JsonConvert.SerializeObject(this.allNebula));
 
                     Game.log("prepNebulae: complete");
                     return this.allNebula;
@@ -662,7 +662,7 @@ namespace SrvSurvey.canonn
 
                 this.codexNotFound = parseNotFountCsv(csv);
                 var json = JsonConvert.SerializeObject(this.codexNotFound, Formatting.Indented);
-                File.WriteAllText(codexNotFoundPath, json);
+                Data.saveWithRetry(codexNotFoundPath, json);
 
                 Game.log("prepCodexNotFounds: complete");
                 Game.settings.lastCodexNotFoundDownload = DateTime.Now;

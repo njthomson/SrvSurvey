@@ -52,40 +52,40 @@ namespace SrvSurvey.game
             saveWithRetry(this.filepath, JsonConvert.SerializeObject(this, Formatting.Indented));
         }
 
-        protected static void saveWithRetry(string filepath,  string json)
+        public static void saveWithRetry(string filepath, string json, bool checkFolder = false)
         {
-            if (filepath == null) return;
+            saveWithRetry(filepath, json, true, checkFolder);
+        }
+
+        private static void saveWithRetry(string filepath, string json, bool allowRetry, bool checkFolder = false)
+        {
+            if (string.IsNullOrEmpty(filepath)) return;
 
             try
             {
-                var folder = Path.GetDirectoryName(filepath)!;
-                Directory.CreateDirectory(folder);
-
-                var success = false;
-                var attempts = 0;
-                while (!success && attempts < 50)
+                if (checkFolder)
                 {
-                    try
-                    {
-                        attempts++;
-                        if (json.Length == 0) return;
-
-                        File.WriteAllText(filepath, json);
-                        success = true;
-                    }
-                    catch (Exception ex)
-                    {
-                        Game.log($"Failed on attempt {attempts} to save: {filepath}\r\n\r\n{ex}");
-                        // swallow and try again
-                        Application.DoEvents();
-                    }
+                    var folder = Path.GetDirectoryName(filepath);
+                    if (!string.IsNullOrEmpty(folder) && !Directory.Exists(folder))
+                        Directory.CreateDirectory(folder);
                 }
+
+                // write to a temporary file, then clobber the original
+                var filepathTmp = filepath + ".tmp";
+                File.WriteAllText(filepathTmp, json);
+                File.Move(filepathTmp, filepath, true);
             }
             catch (Exception ex)
             {
-                Game.log($"Error preparing to save: {filepath.Replace(Program.dataFolder, "")}\r\n\r\n{ex}");
-                FormErrorSubmit.Show(ex);
+                Game.log($"Failed to save: {filepath} (allowRetry:{allowRetry})\r\n\r\n{ex}");
+                if (allowRetry)
+                    Program.defer(() => saveWithRetry(filepath, json, false));
             }
+        }
+
+        public static StreamReader openSharedStreamReader(string filepath)
+        {
+            return new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
         }
     }
 

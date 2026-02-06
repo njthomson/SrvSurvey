@@ -83,9 +83,10 @@ namespace SrvSurvey
                 var locPath = Path.Combine(Git.srcRootFolder, "SrvSurvey", "Properties", $"_loc-{lang}-needed.txt");
                 File.Delete(locPath);
                 if (files.Count != 0)
-                    File.WriteAllText(
-                        locPath,
-                        string.Join("\r\n\r\n", files.Select(_ => _.Value.formatWithHeader(_.Key.Replace(".resx", $".{lang}.resx"), "\r\n\t"))) + "\r\n");
+                {
+                    var txt = string.Join("\r\n\r\n", files.Select(_ => _.Value.formatWithHeader(_.Key.Replace(".resx", $".{lang}.resx"), "\r\n\t"))) + "\r\n";
+                    Data.saveWithRetry(locPath, txt);
+                }
             }
 
             locMissing.Remove("ps");
@@ -94,9 +95,10 @@ namespace SrvSurvey
                 var locPath = Path.Combine(Git.srcRootFolder, "SrvSurvey", "Properties", $"_loc-{lang}-missing.txt");
                 File.Delete(locPath);
                 if (files.Count != 0)
-                    File.WriteAllText(
-                        locPath,
-                        string.Join("\r\n\r\n", files.Select(_ => _.Value.formatWithHeader(_.Key.Replace(".resx", $".{lang}.resx"), "\r\n\t"))) + "\r\n");
+                {
+                    var txt = string.Join("\r\n\r\n", files.Select(_ => _.Value.formatWithHeader(_.Key.Replace(".resx", $".{lang}.resx"), "\r\n\t"))) + "\r\n";
+                    Data.saveWithRetry(locPath, txt);
+                }
             }
         }
 

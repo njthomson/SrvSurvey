@@ -606,18 +606,16 @@ namespace SrvSurvey.forms
 
             var bindsMap = new Dictionary<string, string>();
 
-            using (var sr = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
-            {
-                var root = XDocument.Load(sr).Element("Root")!;
+            using var sr = Data.openSharedStreamReader(filepath);
+            var root = XDocument.Load(sr).Element("Root")!;
 
-                // map these game key-binds into the SendKeys equivalent
-                mapKeyBind(bindsMap, root, "UI_Up", "{UP}");
-                mapKeyBind(bindsMap, root, "UI_Down", "{DOWN}");
-                mapKeyBind(bindsMap, root, "UI_Left", "{LEFT}");
-                mapKeyBind(bindsMap, root, "UI_Right", "{RIGHT}");
-                mapKeyBind(bindsMap, root, "UI_Select", "{ENTER}");
-                mapKeyBind(bindsMap, root, "UI_Back", "{ESC}");
-            }
+            // map these game key-binds into the SendKeys equivalent
+            mapKeyBind(bindsMap, root, "UI_Up", "{UP}");
+            mapKeyBind(bindsMap, root, "UI_Down", "{DOWN}");
+            mapKeyBind(bindsMap, root, "UI_Left", "{LEFT}");
+            mapKeyBind(bindsMap, root, "UI_Right", "{RIGHT}");
+            mapKeyBind(bindsMap, root, "UI_Select", "{ENTER}");
+            mapKeyBind(bindsMap, root, "UI_Back", "{ESC}");
 
             return bindsMap;
         }

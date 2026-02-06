@@ -41,10 +41,10 @@ namespace SrvSurvey.plotters
                 }
                 catch (Win32Exception ex)
                 {
+                    Game.log($"Run-as-admin problem? NativeErrorCode:{ex.NativeErrorCode}, Setting disableWindowParentIsGame=true");
                     if (ex.NativeErrorCode == 5 && !Game.settings.disableWindowParentIsGame)
                     {
                         // Might be the run-as-admin problem? Tweak a setting and try again
-                        Game.log("Run-as-admin problem? Setting disableWindowParentIsGame=true");
                         Game.settings.disableWindowParentIsGame = true;
                         Game.settings.Save();
                         init(game);

@@ -87,7 +87,7 @@ namespace SrvSurvey.plotters
                 var json = JsonConvert.SerializeObject(raw, Formatting.Indented);
                 var filepath = Path.Combine(folder, $"{key}.json");
                 Game.log($"Writing: {filepath}");
-                File.WriteAllText(filepath, json);
+                Data.saveWithRetry(filepath, json);
             }
         }
 

@@ -54,14 +54,12 @@ namespace SrvSurvey
                 Game.log($"Reading {humanSiteTemplates}: {filepath}");
                 if (File.Exists(filepath))
                 {
-                    using (var reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
-                    {
-                        var json = reader.ReadToEnd();
-                        var newSites = JsonConvert.DeserializeObject<List<HumanSiteTemplate>>(json)!;
-                        templates = newSites;
+                    using var reader = Data.openSharedStreamReader(filepath);
+                    var json = reader.ReadToEnd();
+                    var newSites = JsonConvert.DeserializeObject<List<HumanSiteTemplate>>(json)!;
+                    templates = newSites;
 
-                        Game.log($"HumanSiteTemplate.Imported {templates.Count} templates");
-                    }
+                    Game.log($"HumanSiteTemplate.Imported {templates.Count} templates");
                 }
                 else
                 {
@@ -95,7 +93,7 @@ namespace SrvSurvey
             var json = JsonConvert.SerializeObject(templates, Formatting.Indented)!;
             var filepath = Path.Combine(Git.srcRootFolder, "SrvSurvey", "settlements", humanSiteTemplates);
 
-            File.WriteAllText(filepath, json);
+            Data.saveWithRetry(filepath, json);
         }
 
         public override string ToString()

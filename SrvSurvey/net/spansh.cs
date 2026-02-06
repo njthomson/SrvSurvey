@@ -96,8 +96,7 @@ namespace SrvSurvey.net
                     json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/dump/{systemAddress}/");
                     if (useCache)
                     {
-                        Directory.CreateDirectory(BioPredictor.netCache);
-                        File.WriteAllText(cacheFilename, json);
+                        Data.saveWithRetry(cacheFilename, json, true);
                     }
                 }
 

@@ -315,23 +315,8 @@ namespace SrvSurvey
 
         public void Save()
         {
-            this.Save(true);
-        }
-
-        private void Save(bool allowRetry)
-        {
-            try
-            {
-                var json = JsonConvert.SerializeObject(this, Formatting.Indented);
-                File.WriteAllText(settingsPath, json);
-            }
-            catch (Exception ex)
-            {
-                Game.log($"Failed to write settings (allowRetry: {allowRetry}): {ex}");
-                // allow a single retry if we fail to write settings
-                if (allowRetry)
-                    Program.control.BeginInvoke(() => this.Save(false));
-            }
+            var json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            Data.saveWithRetry(settingsPath, json);
         }
 
         class KeyActionsSettingJsonConverter : Newtonsoft.Json.JsonConverter

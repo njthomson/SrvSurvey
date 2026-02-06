@@ -85,7 +85,7 @@ namespace SrvSurvey.plotters
 
         public void setPriorScans()
         {
-            if (game.systemData == null || game.systemBody == null || game.canonnPoi == null) throw new Exception("Why?");
+            if (game.systemData == null || game.systemBody == null || game.canonnPoi == null) return;
 
             var currentBody = game.systemBody.name.Replace(game.systemData.name, "").Trim();
             var bioPoi = game.canonnPoi.codex.Where(_ => _.body == currentBody && _.hud_category == "Biology" && _.latitude != null && _.longitude != null).ToList();

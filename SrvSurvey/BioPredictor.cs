@@ -458,8 +458,7 @@ namespace BioCriterias
             {
                 filepath = Path.Combine(folderMissedReports, $"{body.system.name}_{++n}.txt");
             } while (File.Exists(filepath));
-            if (!Directory.Exists(folderMissedReports)) Directory.CreateDirectory(folderMissedReports);
-            File.WriteAllText(filepath, txt.ToString());
+            Data.saveWithRetry(filepath, txt.ToString(), true);
         }
 
         #region automated tests

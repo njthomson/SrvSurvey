@@ -56,7 +56,7 @@ namespace SrvSurvey
                     Game.log($"Creating empty CargoFile.json in: {CargoFile.Filepath}");
                     var isoNow = DateTimeOffset.UtcNow.ToString("s");
                     var json = "{ \"timestamp\":\"" + isoNow + "Z\", \"event\":\"Cargo\", \"Vessel\":\"Ship\", \"Count\":0, \"Inventory\":[] }";
-                    File.WriteAllText(CargoFile.Filepath, json);
+                    Data.saveWithRetry(CargoFile.Filepath, json);
                 }
                 catch (Exception ex)
                 {
@@ -121,22 +121,20 @@ namespace SrvSurvey
                     lastInventory[entry.Name] = entry.Count;
 
             // read the file contents ...
-            using (var sr = new StreamReader(new FileStream(CargoFile.Filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+            using var sr = Data.openSharedStreamReader(CargoFile.Filepath);
+            var json = sr.ReadToEnd();
+            if (json == null || json == "") return;
+
+            // ... parse into tmp object ...
+            var obj = JsonConvert.DeserializeObject<Cargo>(json);
+
+            // ... assign all property values from tmp object 
+            var allProps = typeof(Cargo).GetProperties(Program.InstanceProps);
+            foreach (var prop in allProps)
             {
-                var json = sr.ReadToEnd();
-                if (json == null || json == "") return;
-
-                // ... parse into tmp object ...
-                var obj = JsonConvert.DeserializeObject<Cargo>(json);
-
-                // ... assign all property values from tmp object 
-                var allProps = typeof(Cargo).GetProperties(Program.InstanceProps);
-                foreach (var prop in allProps)
+                if (prop.CanWrite)
                 {
-                    if (prop.CanWrite)
-                    {
-                        prop.SetValue(this, prop.GetValue(obj));
-                    }
+                    prop.SetValue(this, prop.GetValue(obj));
                 }
             }
 
