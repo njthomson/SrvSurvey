@@ -31,7 +31,6 @@ namespace SrvSurvey.game
 
             Game.removeExcessLogFiles();
 
-            settings = Settings.Load();
             codexRef = new CodexRef();
             canonn = new Canonn();
             spansh = new Spansh();
@@ -89,7 +88,7 @@ namespace SrvSurvey.game
                 .OrderByDescending(_ => _.LastWriteTimeUtc)
                 .ToList();
 
-            for (var idx = 5; idx < logFiles.Count; idx++)
+            for (var idx = 10; idx < logFiles.Count; idx++)
             {
                 var filename = logFiles[idx].FullName;
                 Game.log($"Removing old log file: {filename}");
@@ -104,7 +103,7 @@ namespace SrvSurvey.game
         #endregion
 
         public static Game? activeGame { get; private set; }
-        public static Settings settings { get; private set; }
+        public static Settings settings => Settings.instance;
         public static CodexRef codexRef { get; private set; }
         public static Canonn canonn { get; private set; }
         public static Spansh spansh { get; private set; }

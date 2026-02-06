@@ -202,9 +202,6 @@ namespace SrvSurvey
         public int inferTolerance = 25;
         public float inferThreshold = 0.002f;
 
-        /// <summary> True once we have migrated from old the 1.0.0.0 data folder </summary>
-        public bool dataFolder1100 = false;
-
         public int pubBioCriteria = 0;
         public int pubCodexRef = 0;
         public int pubDataSettlementTemplate = 0;
@@ -274,6 +271,7 @@ namespace SrvSurvey
         #region loading / saving
 
         static readonly string settingsPath = Path.Combine(Program.dataFolder, "settings.json");
+        public static Settings instance { get; private set; }
 
         public static Settings Load()
         {
@@ -293,6 +291,7 @@ namespace SrvSurvey
                         if (string.IsNullOrWhiteSpace(settings.downloadCodexImageFolder))
                             settings.downloadCodexImageFolder = CodexRef.defaultCodexImagesFolder;
 
+                        Settings.instance = settings;
                         return settings;
                     }
                     catch (Exception ex)
@@ -310,6 +309,7 @@ namespace SrvSurvey
             var newSettings = new Settings();
             newSettings.Save();
 
+            Settings.instance = newSettings;
             return newSettings;
         }
 
