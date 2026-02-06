@@ -1249,6 +1249,26 @@ namespace SrvSurvey.net
                         public string symbol;
                     }
                 }
+
+                public static Dictionary<StationType, string> mapTypeNames = new()
+                {
+                    { StationType.AsteroidBase, "Asteroid base"},
+                    { StationType.Coriolis, "Coriolis Starport"},
+                    { StationType.DockablePlanetStation, "Dockable Planet Station"},
+                    { StationType.Dodec, "Dodec Starport"},
+                    { StationType.FleetCarrier, "Drake-Class Carrier"},
+                    { StationType.MegaShip, "Mega Ship"},
+                    { StationType.Ocellus, "Ocellus Starport"},
+                    { StationType.Bernal, "Ocellus Starport"},
+                    { StationType.Orbis, "Orbis Starport"},
+                    { StationType.Outpost, "Outpost"},
+                    { StationType.PlanetaryConstructionDepot, "Planetary Construction Depot"},
+                    { StationType.CraterOutpost, "Planetary Outpost"},
+                    { StationType.SurfaceStation, "Planetary Outpost"},
+                    { StationType.CraterPort, "Planetary Port"},
+                    { StationType.OnFootSettlement, "Settlement"},
+                    { StationType.SpaceConstructionDepot, "Space Construction Depot"},
+                };
             }
 
             /// <summary> Get stations from all bodies into a single list </summary>

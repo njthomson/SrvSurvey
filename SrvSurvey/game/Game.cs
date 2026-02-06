@@ -2839,53 +2839,57 @@ namespace SrvSurvey.game
             // stop here if we're not at an Odyssey settlement
             if (entry.StationType != StationType.OnFootSettlement || this.systemData == null || ColonyData.isConstructionSite(entry)) return;
 
-            // new ...
             if (this.systemStation == null || this.systemStation.marketId != entry.MarketID)
             {
                 this.initHumanSite();
-                return;
-            }
-
-            if (this.systemStation.availablePads == null)
-                this.systemStation.availablePads = entry.LandingPads;
-
-            if (this._mode == GameMode.NoFocus && status.Docked)
-            {
-                // when called from initHumanSite during initialization, delay not needed
-                onDockedWhenSafe(CalcMethod.AutoDock, false);
-            }
-            else if (this.musicTrack != "DockingComputer" && !entry.Taxi)
-            {
-                // wait for a mode change - as Heading in status file does not update until something else happens
-                Task.Delay(3000).ContinueWith(t =>
-                {
-                    Game.log($"~~enqueue onDockedWhenSafe: alt: {status.Altitude} / {status.Heading}");
-                    this.processDockedOnNextStatusChange = true;
-                });
             }
             else
             {
-                // delay a little
-                Task.Delay(500).ContinueWith(t => onDockedWhenSafe(CalcMethod.AutoDock, entry.Taxi));
+                if (this.systemStation.availablePads == null)
+                    this.systemStation.availablePads = entry.LandingPads;
+
+                if (this._mode == GameMode.NoFocus && status.Docked)
+                {
+                    // when called from initHumanSite during initialization, delay not needed
+                    onDockedWhenSafe(CalcMethod.AutoDock, false);
+                }
+                else if (this.musicTrack != "DockingComputer" && !entry.Taxi)
+                {
+                    // wait for a mode change - as Heading in status file does not update until something else happens
+                    Task.Delay(3000).ContinueWith(t =>
+                    {
+                        Game.log($"~~enqueue onDockedWhenSafe: alt: {status.Altitude} / {status.Heading}");
+                        this.processDockedOnNextStatusChange = true;
+                    });
+                }
+                else
+                {
+                    // delay a little
+                    Task.Delay(500).ContinueWith(t => onDockedWhenSafe(CalcMethod.AutoDock, entry.Taxi));
+                }
             }
 
-            //// old ...
-            //// wait a bit for the status file to be written?
-            //if (this.humanSite == null)
-            //{
-            //    this.initHumanSite();
-            //    if (Game.settings.collectMatsCollectionStatsTest && this.humanSite != null) this.initMats(this.humanSite);
-            //}
-            //else if (this.humanSite.marketId == entry.MarketID)
-            //{
-            //    this.humanSite.docked(entry, this.status.Heading);
-            //    if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.humanSite);
-            //}
-            //else
-            //{
-            //    Game.log($"Mismatched name or marketId?! {entry.StationName} ({entry.MarketID})");
-            //}
+            // update in-memory cached data with live values
+            var spanshMatch = this.systemData?.spanshStations?.Find(x => x.id == entry.MarketID);
+            if (spanshMatch != null)
+            {
+                spanshMatch.name = entry.StationName_Localised ?? entry.StationName;
+                spanshMatch.landingPads = entry.LandingPads;
+                spanshMatch.controllingFaction = entry.StationFaction.Name;
+                spanshMatch.controllingFactionState = entry.StationFaction.FactionState ?? "";
+                spanshMatch.government = entry.StationGovernment_Localised ?? "";
 
+                spanshMatch.type = ApiSystemDump.System.Station.mapTypeNames.GetValueOrDefault(entry.StationType) ?? spanshMatch.type;
+
+                // TODO: Map service values from journal to display names used by Spansh
+                //if (entry.StationServices != null)
+                //    spanshMatch.services = entry.StationServices.ToList();
+
+                if (entry.StationEconomies != null)
+                    spanshMatch.economies = entry.StationEconomies.ToDictionary(x => x.Name_Localised, x => (float)x.Proportion * 100);
+
+                PlotBase2.invalidate(nameof(PlotStationInfo));
+            }
         }
 
         private void onDockedWhenSafe(CalcMethod calcMethod, bool inTaxi)

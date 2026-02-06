@@ -2203,8 +2203,9 @@ namespace SrvSurvey.game
 
         [JsonIgnore]
         public List<SystemBody> parentBodies => this.parents?
-            .Select(p => this.system.bodies.FirstOrDefault(b => b.id == p.id))
+            .Select(p => this.system.bodies.Find(b => b.id == p.id))
             .Where(b => b != null)
+            .Cast<SystemBody>()
             .ToList()
             ?? new();
 
