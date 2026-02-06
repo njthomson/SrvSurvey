@@ -304,7 +304,7 @@ namespace SrvSurvey.plotters
                 tt.dty += N.one;
             }
 
-            var boxelSearch = Game.activeGame?.cmdr.boxelSearch;
+            var boxelSearch = game.cmdr.boxelSearch;
             if (boxelSearch?.active != true || boxelSearch.current == null) return;
 
             var ff = GameColors.fontSmall;

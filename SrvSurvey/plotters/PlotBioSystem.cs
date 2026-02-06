@@ -22,13 +22,11 @@ namespace SrvSurvey.plotters
         public static bool allowed(Game game)
         {
             return Game.settings.autoShowPlotBioSystem
-                && game.status != null
-                && game.systemData != null
-                //&& game.systemData.suppressBioOverlays == false
                 && !Game.settings.buildProjectsSuppressOtherOverlays
+                && game.status != null
+                && game.systemData?.suppressBioOverlays == false
                 && game.systemData.bioSignalsTotal > 0
                 && !game.status.InTaxi
-                && !game.hidePlottersFromCombatSuits
                 && (!Game.settings.enableGuardianSites || !PlotGuardians.allowed(game))
                 && (
                     game.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
@@ -78,8 +76,7 @@ namespace SrvSurvey.plotters
             get
             {
                 var game = Game.activeGame;
-                if (game == null || game.isShutdown)
-                    return null;
+                if (game == null || game.isShutdown) return null;
 
                 // assuming we're not in any of these modes ...
                 if (game.isMode(GameMode.ExternalPanel, GameMode.SystemMap, GameMode.Orrery))

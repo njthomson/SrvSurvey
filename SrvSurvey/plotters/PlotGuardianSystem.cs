@@ -18,14 +18,13 @@ namespace SrvSurvey.plotters
 
         public static bool allowed(Game game)
         {
-            // Game.settings.enableGuardianSites && Game.settings.autoShowGuardianSummary && PlotGuardianSystem.allowPlotter && game?.systemData?.settlements.Count > 0
-            return Game.settings.enableGuardianSites
-                && Game.settings.autoShowGuardianSummary
+            return Game.settings.autoShowGuardianSummary
                 && !Game.settings.buildProjectsSuppressOtherOverlays
-                && Game.activeGame?.systemData != null
-                && Game.activeGame.systemData.settlements.Count > 0
+                && Game.settings.enableGuardianSites
+                && game.systemData != null
+                && game.systemData.settlements.Count > 0
                 && !PlotFSSInfo.forceShow && !PlotBodyInfo.forceShow
-                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap);
+                && game.isMode(GameMode.SuperCruising, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap);
         }
 
         #endregion

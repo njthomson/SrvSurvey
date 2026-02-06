@@ -19,9 +19,8 @@ namespace SrvSurvey.plotters
         public static bool allowed(Game game)
         {
             return Game.settings.autoShowFlightWarnings
-                && game.systemBody != null
                 // NOT suppressed by buildProjectsSuppressOtherOverlays
-                && game.systemBody.type == SystemBodyType.LandableBody
+                && game.systemBody?.type == SystemBodyType.LandableBody
                 && game.systemBody.surfaceGravity >= Game.settings.highGravityWarningLevel * 10
                 && game.isMode(GameMode.Landed, GameMode.SuperCruising, GameMode.GlideMode, GameMode.Flying, GameMode.InFighter, GameMode.InSrv)
                 //&& (!Game.settings.autoShowPlotJumpInfo || !PlotJumpInfo.allowed(game)) // hide if PlotJumpInfo is showing? Maybe not

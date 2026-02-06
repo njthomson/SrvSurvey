@@ -20,9 +20,9 @@ namespace SrvSurvey.plotters
         {
             // TODO: show this earlier, like on approach?
             return Game.settings.autoShowRamTah
-                && Game.settings.enableGuardianSites
                 && !Game.settings.buildProjectsSuppressOtherOverlays
-                && game?.systemBody != null
+                && Game.settings.enableGuardianSites
+                && game.systemBody != null
                 && game.cmdr.ramTahActive
                 && game.status?.hasLatLong == true
                 && game.systemSite?.location != null

@@ -20,8 +20,8 @@ namespace SrvSurvey.plotters
         public static bool allowed(Game game)
         {
             return Game.settings.autoShowPlotStationInfo_TEST
-                && Game.activeGame?.systemData != null
                 // NOT suppressed by buildProjectsSuppressOtherOverlays
+                && game.systemData != null
                 && (game.isMode(GameMode.ExternalPanel) || PlotStationInfo.forceShow);
         }
 

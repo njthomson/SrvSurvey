@@ -5,7 +5,7 @@ using Res = Loc.PlotTrackers;
 
 namespace SrvSurvey.plotters
 {
-    internal class PlotTrackers : PlotBase2
+    internal class PlotTrackers : PlotBase2 // TODO: refactor this into PlotGrounded
     {
         #region def + statics
 
@@ -22,8 +22,8 @@ namespace SrvSurvey.plotters
             return PlotGrounded.allowed(game)
                 // same as PlotGrounded + do we have any bookmarks?
                 && (
-                    (!Game.settings.autoShowPlotMiniTrack_TEST && Game.activeGame?.systemBody?.bookmarks?.Count > 0)
-                || (Game.settings.autoShowPlotMiniTrack_TEST && Game.activeGame?.systemBody?.bookmarks?.Keys.Count(k => k[0] != '#') > 0)
+                    (!Game.settings.autoShowPlotMiniTrack_TEST && game.systemBody?.bookmarks?.Count > 0)
+                || (Game.settings.autoShowPlotMiniTrack_TEST && game.systemBody?.bookmarks?.Keys.Count(k => k[0] != '#') > 0)
                 );
         }
 

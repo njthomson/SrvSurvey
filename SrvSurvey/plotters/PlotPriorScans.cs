@@ -21,11 +21,9 @@ namespace SrvSurvey.plotters
         public static bool allowed(Game game)
         {
             return Game.settings.useExternalData
-                && Game.settings.autoLoadPriorScans
-                && game.systemBody != null
-                //&& game.systemData.suppressBioOverlays == false
                 && !Game.settings.buildProjectsSuppressOtherOverlays
-                && !game.hidePlottersFromCombatSuits
+                && Game.settings.autoLoadPriorScans
+                && game.systemData?.suppressBioOverlays == false
                 && !game.status.Docked
                 && (!Game.settings.enableGuardianSites || !PlotGuardians.allowed(game))
                 && (!Game.settings.autoShowHumanSitesTest || !PlotHumanSite.allowed(game))

@@ -21,6 +21,7 @@ namespace SrvSurvey.plotters
         public static bool allowed(Game game)
         {
             return Game.settings.enableQuests
+                // NOT suppressed by buildProjectsSuppressOtherOverlays
                 && game.cmdrPlay?.activeQuests.Count > 0
                 && game.isMode(GameMode.Flying, GameMode.SuperCruising, GameMode.GlideMode, GameMode.InSrv, GameMode.OnFoot, GameMode.OnFootInStation, GameMode.InTaxi, GameMode.CommsPanel, GameMode.InFighter, GameMode.Docked, GameMode.Landed, GameMode.FSDJumping, GameMode.StationServices, GameMode.ExternalPanel)
                 ;

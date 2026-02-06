@@ -22,6 +22,7 @@ namespace SrvSurvey.plotters
         {
             var guardianSystemDisabled = !Game.settings.enableGuardianSites && !Game.settings.autoShowGuardianSummary;
             return Game.settings.autoShowPlotFSSInfo
+                // NOT suppressed by buildProjectsSuppressOtherOverlays
                 && (
                     game.mode == GameMode.FSS
                     || (PlotFSSInfo.forceShow && !game.fsdJumping) // or a keystroke forced it

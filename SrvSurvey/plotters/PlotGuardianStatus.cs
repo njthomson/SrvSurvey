@@ -22,7 +22,7 @@ namespace SrvSurvey.plotters
         public static bool allowed(Game game)
         {
                 return PlotGuardians.allowed(game)
-                || (game.mode == GameMode.GlideMode && PlotGuardianStatus.glideSite != null);
+                    || (game.mode == GameMode.GlideMode && PlotGuardianStatus.glideSite != null);
         }
 
         #endregion

@@ -22,8 +22,8 @@ namespace SrvSurvey.plotters
             return Game.settings.autoShowPlotMiniTrack_TEST
                 // NOT suppressed by buildProjectsSuppressOtherOverlays
                 && game.systemBody != null
-                && game.status.hasLatLong
-                && quickTrackers?.Any() == true
+                && game.status?.hasLatLong == true
+                && quickTrackers?.Count > 0
                 && game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.RolePanel)
                 ;
         }
@@ -77,7 +77,7 @@ namespace SrvSurvey.plotters
                     tt.draw(x, key);
 
                     tt.dty = N.sixty;
-                    tt.draw(x , Util.metersToString(dist2d));
+                    tt.draw(x, Util.metersToString(dist2d));
 
                     var deg = angle2d - game.status.Heading;
                     if (deg < 0) deg += 360;

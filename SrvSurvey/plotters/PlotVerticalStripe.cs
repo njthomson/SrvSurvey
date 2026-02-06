@@ -8,7 +8,7 @@ using System.Drawing.Drawing2D;
 namespace SrvSurvey.plotters
 {
     [System.ComponentModel.DesignerCategory("")]
-    internal class PlotVerticalStripe : Form, PlotterForm, IDisposable
+    internal class PlotVerticalStripe : Form, PlotterForm, IDisposable // TODO: Migrate this onto PlotBase2
     {
         public static PlotVerticalStripe? show(PlotVerticalStripe.Mode mode, double targetAltitude)
         {

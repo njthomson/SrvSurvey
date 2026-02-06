@@ -22,6 +22,7 @@ namespace SrvSurvey.plotters
         public static bool allowed(Game game)
         {
             return !Game.settings.hideJournalWriteTimer
+                // NOT suppressed by buildProjectsSuppressOtherOverlays
                 && !game.isMode(GameMode.GalaxyMap, GameMode.SystemMap);
         }
 

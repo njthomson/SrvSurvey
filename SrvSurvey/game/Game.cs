@@ -463,6 +463,12 @@ namespace SrvSurvey.game
                 if (this.fsdJumping)
                     return GameMode.FSDJumping;
 
+                if (musicTrack == "GalaxyMap")
+                    return GameMode.GalaxyMap;
+
+                if (musicTrack == "SystemMap")
+                    return GameMode.SystemMap;
+
                 // otherwise use the type of vehicle we are in
                 var activeVehicle = this.vehicle;
                 if (activeVehicle == ActiveVehicle.Fighter)

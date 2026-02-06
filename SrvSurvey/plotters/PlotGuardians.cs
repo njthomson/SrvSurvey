@@ -2073,8 +2073,7 @@ namespace SrvSurvey.plotters
             {
                 plotter.setMode(newMode);
                 Elite.setFocusED();
-                if (Game.activeGame != null)
-                    Game.activeGame.fireUpdate(false);
+                Game.activeGame?.fireUpdate(false);
             }
         }
 

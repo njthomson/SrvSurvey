@@ -22,10 +22,10 @@ namespace SrvSurvey.plotters
         public static bool allowed(Game game)
         {
             return Game.settings.autoShowBioPlot
-                && game.systemBody != null
-                && !game.status.Docked
                 && !Game.settings.buildProjectsSuppressOtherOverlays
-                && game.status.hasLatLong
+                && game.systemBody != null
+                && game.status?.hasLatLong == true
+                && !game.status.Docked
                 && game.status.Altitude < 10_000
                 && !game.status.InTaxi
                 && !game.status.FsdChargingJump

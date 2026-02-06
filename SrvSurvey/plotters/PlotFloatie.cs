@@ -31,7 +31,8 @@ namespace SrvSurvey.plotters
         public static void showMessage(string msg)
         {
             // exit early if this plotter is disabled
-            if (!Game.settings.autoShowFloatie_TEST || Game.activeGame == null) return;
+            var game = Game.activeGame;
+            if (!Game.settings.autoShowFloatie_TEST || game == null) return;
 
             var existing = messages.Find(_ => _.msg == msg);
             if (existing != null)
@@ -42,7 +43,7 @@ namespace SrvSurvey.plotters
             messages.Add(new(msg, closeTime));
 
             if (def.instance == null)
-                PlotBase2.add(Game.activeGame, def);
+                PlotBase2.add(game, def);
 
             var form = def.instance as PlotFloatie;
             if (form != null)

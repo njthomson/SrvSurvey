@@ -19,6 +19,7 @@ namespace SrvSurvey.plotters
         public static bool allowed(Game game)
         {
             return Game.settings.autoShowPlotFSS
+                // NOT suppressed by buildProjectsSuppressOtherOverlays
                 && game.systemData != null
                 && game.isMode(GameMode.FSS);
         }

@@ -22,7 +22,7 @@ namespace SrvSurvey.plotters
         {
             return Game.settings.autoShowPlotGalMap
                 // NOT suppressed by buildProjectsSuppressOtherOverlays
-                && (game.mode == GameMode.GalaxyMap || game?.musicTrack == "GalaxyMap")
+                && game.mode == GameMode.GalaxyMap
                 ;
         }
 

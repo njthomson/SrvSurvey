@@ -19,9 +19,11 @@ namespace SrvSurvey.plotters
         public static bool allowed(Game game)
         {
             var guardianSystemDisabled = !Game.settings.enableGuardianSites && !Game.settings.autoShowGuardianSummary;
-            return game.targetBody != null
+
+            return Game.settings.autoShowPlotBodyInfo
+                && !Game.settings.buildProjectsSuppressOtherOverlays
+                && game.targetBody != null
                 && game.systemData != null
-                && Game.settings.autoShowPlotBodyInfo
                 && (guardianSystemDisabled || !PlotGuardianSystem.allowed(game))
                 && (!Game.settings.autoHidePlotBodyInfoInBubble || Util.getSystemDistance(game.systemData.starPos, Util.sol) > Game.settings.bodyInfoBubbleSize)
                 && (
@@ -48,8 +50,8 @@ namespace SrvSurvey.plotters
         private PlotBodyInfo(Game game, PlotDef def) : base(game, def)
         {
             this.font = GameColors.fontSmall2;
-            if (Game.activeGame?.systemData != null)
-                this.withinHumanBubble = Util.getSystemDistance(Game.activeGame.systemData.starPos, Util.sol) < Game.settings.bodyInfoBubbleSize;
+            if (game.systemData != null)
+                this.withinHumanBubble = Util.getSystemDistance(game.systemData.starPos, Util.sol) < Game.settings.bodyInfoBubbleSize;
         }
 
         protected override void onStatusChange(Status status)
