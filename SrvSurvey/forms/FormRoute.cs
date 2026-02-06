@@ -263,7 +263,12 @@ namespace SrvSurvey.forms
 
                     var highlight = list.Items[n].Text == cmdr.currentSystem
                         || (n - 1 == lastIdx && n > 0 && list.Items[n - 1].Text != cmdr.currentSystem);
-                    item.BackColor = highlight ? Color.Black : SystemColors.WindowFrame;
+
+                    if (highlight)
+                    {
+                        item.ForeColor = C.menuGold;
+                        item.BackColor = Game.settings.themeMainBlack ? C.orangeDark : C.black;
+                    }
 
                     var dist = Util.getSystemDistance(star.xyz, lastStar.xyz);
                     var subDist = item.SubItems.Add(dist == -1 ? "?" : $"{dist:N2} ly "); // the extra space makes it wide enough for the column header
