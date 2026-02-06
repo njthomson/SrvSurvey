@@ -1,10 +1,10 @@
 {
-  "ghVer": "2.0.91.47",
+  "ghVer": "2.0.91.53",
   "msVer": "2.0.91.0",
   "bioCriteria": 6,
   "bioEngine": 4,
   "codexRef": 10,
-  "settlementTemplate": 47,
+  "settlementTemplate": 48,
   "guardian": 65,
   "settlements": 6
 }
