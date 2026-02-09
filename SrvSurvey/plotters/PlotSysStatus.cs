@@ -70,7 +70,7 @@ namespace SrvSurvey.plotters
             }
             else if (!game.systemData.fssComplete)
             {
-                var fssProgress = 100.0 / (float)game.systemData.bodyCount * (float)game.systemData.fssBodyCount;
+                var fssProgress = game.systemData.fssProgress * 100.0;
                 var txt = dssRemaining.Count == 0
                     ? Res.FssCompleteLong.format((int)fssProgress)
                     : Res.FssCompleteShort.format((int)fssProgress);
