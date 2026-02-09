@@ -782,6 +782,7 @@ static class Util
         if (ex == null) return false;
         if (ex != null && !ex.Message.Contains("404")) Game.log($"isFirewallProblem?\r\n{ex}");
         if (ex?.Message.Contains("An attempt was made to access a socket in a way forbidden by its access permissions") == true
+            || ex?.Message.Contains("The SSL connection could not be established") == true
             || ex?.Message.Contains("A socket operation was attempted to an unreachable network") == true)
         {
             var rslt = MessageBox.Show(

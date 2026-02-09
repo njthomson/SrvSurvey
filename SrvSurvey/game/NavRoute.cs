@@ -35,7 +35,7 @@ namespace SrvSurvey
                     Game.log($"Creating empty NavRoute.json in: {NavRouteFile.Filepath}");
                     var isoNow = DateTimeOffset.UtcNow.ToString("s");
                     var json = "{ \"timestamp\":\"" + isoNow + "Z\", \"event\":\"NavRouteClear\", \"Route\":[] }";
-                    File.WriteAllText(NavRouteFile.Filepath, json);
+                    Data.saveWithRetry(NavRouteFile.Filepath, json);
                 }
                 catch (Exception ex)
                 {
@@ -96,22 +96,20 @@ namespace SrvSurvey
             try
             {
                 // read the file contents ...
-                using (var sr = new StreamReader(new FileStream(NavRouteFile.Filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+                using var sr = Data.openSharedStreamReader(NavRouteFile.Filepath);
+                var json = sr.ReadToEnd();
+                if (json == null || json == "") return;
+
+                // ... parse into tmp object ...
+                var obj = JsonConvert.DeserializeObject<NavRouteFile>(json);
+
+                // ... assign all property values from tmp object
+                var allProps = typeof(NavRouteFile).GetProperties(Program.InstanceProps);
+                foreach (var prop in allProps)
                 {
-                    var json = sr.ReadToEnd();
-                    if (json == null || json == "") return;
-
-                    // ... parse into tmp object ...
-                    var obj = JsonConvert.DeserializeObject<NavRouteFile>(json);
-
-                    // ... assign all property values from tmp object
-                    var allProps = typeof(NavRouteFile).GetProperties(Program.InstanceProps);
-                    foreach (var prop in allProps)
+                    if (prop.CanWrite)
                     {
-                        if (prop.CanWrite)
-                        {
-                            prop.SetValue(this, prop.GetValue(obj));
-                        }
+                        prop.SetValue(this, prop.GetValue(obj));
                     }
                 }
             }

@@ -23,14 +23,10 @@ namespace SrvSurvey.plotters
         public static bool allowed(Game game)
         {
             return (SystemData.isWithinLastDssDuration() || Game.settings.autoShowBioSummary)
-                && game.systemBody != null
                 && !Game.settings.buildProjectsSuppressOtherOverlays
-                && game.systemBody.bioSignalCount > 0
+                && game.systemBody?.bioSignalCount > 0
                 //&& (game.systemStation == null || !Game.settings.autoShowHumanSitesTest)
-                && !game.hidePlottersFromCombatSuits
                 && !game.status.Docked
-                && !game.isShutdown
-                && !game.atMainMenu
                 && !game.status.InTaxi
                 && !game.status.FsdChargingJump
                 && (!Game.settings.enableGuardianSites || !PlotGuardians.allowed(game))

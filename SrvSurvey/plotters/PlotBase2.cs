@@ -448,7 +448,7 @@ namespace SrvSurvey.plotters
                     {
                         if (def.form == null)
                         {
-                            Program.showPlotter<PlotContainer>(null, def);
+                            Program.showPlotter<PlotContainer>(game, null, def);
                         }
                         def.form?.updateFrame();
                     }
@@ -813,7 +813,7 @@ namespace SrvSurvey.plotters
     {
         private readonly PlotDef def;
 
-        public PlotContainer(PlotDef def)
+        public PlotContainer(Game game, PlotDef def) : base(game)
         {
             this.def = def;
             this.Name = def.name;

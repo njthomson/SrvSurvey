@@ -109,7 +109,7 @@ namespace SrvSurvey
                 var oldFlags2 = this.Flags2;
 
                 // read the file contents ...
-                using (var sr = new StreamReader(new FileStream(Status.Filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+                using (var sr = Data.openSharedStreamReader(Status.Filepath))
                 {
                     var json = sr.ReadToEnd();
                     if (json == null || json == "") return;

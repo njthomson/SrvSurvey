@@ -1,13 +1,15 @@
 {
   "sid": "GR286",
   "idx": 2,
-  "sh": -1,
+  "sh": 35,
   "t": "Gamma",
   "rh": -1,
   "ll": {
     "lat": 46.77602,
     "long": -150.447266
   },
+  "pa": "p12",
+  "pp": "p7",
   "og": "DFGHKNOPRS",
   "ao": [
     "D03-ta,ur-L18-",

@@ -22,10 +22,11 @@ namespace SrvSurvey.plotters
             return Game.settings.autoShowPlotSysStatus
                 // NOT suppressed by buildProjectsSuppressOtherOverlays
                 && game.status?.InTaxi != true
-                && game.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
                 // show only after honking or we have Canonn data
                 && game.systemData != null
-                && (game.systemData.honked || game.canonnPoi != null);
+                && (game.systemData.honked || game.canonnPoi != null)
+                && game.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
+                ;
         }
 
 

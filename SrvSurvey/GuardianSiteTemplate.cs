@@ -49,18 +49,16 @@ namespace SrvSurvey
             Game.log($"Reading {GuardianSiteTemplate.filename}: {filepath}");
             if (File.Exists(filepath))
             {
-                using (var reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+                using var reader = Data.openSharedStreamReader(filepath);
+                var json = reader.ReadToEnd();
+                var newSites = JsonConvert.DeserializeObject<Dictionary<GuardianSiteData.SiteType, GuardianSiteTemplate>>(json)!;
+                foreach (var _ in newSites)
                 {
-                    var json = reader.ReadToEnd();
-                    var newSites = JsonConvert.DeserializeObject<Dictionary<GuardianSiteData.SiteType, GuardianSiteTemplate>>(json)!;
-                    foreach (var _ in newSites)
-                    {
-                        _.Value.init();
-                        GuardianSiteTemplate.sites[_.Key] = _.Value;
-                    }
-
-                    Game.log($"SiteTemplate.Imported {GuardianSiteTemplate.sites.Count} templates");
+                    _.Value.init();
+                    GuardianSiteTemplate.sites[_.Key] = _.Value;
                 }
+
+                Game.log($"SiteTemplate.Imported {GuardianSiteTemplate.sites.Count} templates");
             }
             else
             {
@@ -80,7 +78,7 @@ namespace SrvSurvey
                     .ToList();
 
             var json = JsonConvert.SerializeObject(GuardianSiteTemplate.sites, Formatting.Indented);
-            File.WriteAllText(editableFilepath, json);
+            Data.saveWithRetry(editableFilepath, json);
 
             // restore the destructablePanel's
             foreach (var template in GuardianSiteTemplate.sites.Values)

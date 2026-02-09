@@ -177,7 +177,7 @@ internal class PlayState : Data
         // "publish" the quest srcs into a json file for later use
         var questJson = JsonConvert.SerializeObject(newQuest, Formatting.Indented);
         var questFilepath = Path.Combine(PlayState.folder, $"{newQuest.id}.json");
-        File.WriteAllText(questFilepath, questJson);
+        Data.saveWithRetry(questFilepath, questJson, true);
 
         var oldPQ = activeQuests.Find(pq => pq.watchFolder == folder || pq.id == newQuest.id);
 

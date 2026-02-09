@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.4.33213.308
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11415.280 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{24930DE3-46FC-4CFF-83B0-6399FF0CCEA6}"
 	ProjectSection(SolutionItems) = preProject
@@ -43,7 +43,6 @@ Global
 		{7ACA3CF3-6EFD-4484-848A-FF3372C7FB31}.Debug|x64.ActiveCfg = Debug|x64
 		{7ACA3CF3-6EFD-4484-848A-FF3372C7FB31}.Debug|x64.Deploy.0 = Debug|x64
 		{7ACA3CF3-6EFD-4484-848A-FF3372C7FB31}.DebugNoPS|x64.ActiveCfg = DebugNoPS|x64
-		{7ACA3CF3-6EFD-4484-848A-FF3372C7FB31}.DebugNoPS|x64.Build.0 = DebugNoPS|x64
 		{7ACA3CF3-6EFD-4484-848A-FF3372C7FB31}.DebugNoPS|x64.Deploy.0 = DebugNoPS|x64
 		{7ACA3CF3-6EFD-4484-848A-FF3372C7FB31}.Release|x64.ActiveCfg = Release|x64
 		{7ACA3CF3-6EFD-4484-848A-FF3372C7FB31}.Release|x64.Build.0 = Release|x64

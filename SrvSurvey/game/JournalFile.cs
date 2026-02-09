@@ -45,7 +45,7 @@ namespace SrvSurvey
             this.filepath = filepath;
             this.timestamp = File.GetLastWriteTime(filepath);
 
-            this.reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+            this.reader = Data.openSharedStreamReader(filepath);
 
             this.readEntries(targetFID);
 
@@ -294,42 +294,40 @@ namespace SrvSurvey
 
             var filename = journalFiles.FirstOrDefault((filepath) =>
             {
-                using (var reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+                using var reader = Data.openSharedStreamReader(filepath);
+                while (!reader.EndOfStream)
                 {
-                    while (!reader.EndOfStream)
+                    var line = reader.ReadLine();
+                    if (line == null) break;
+
+                    if (line.Contains("\"event\":\"Fileheader\"") && !line.ToUpperInvariant().Contains($"\"Odyssey\":{isOdyssey}".ToUpperInvariant()))
                     {
-                        var line = reader.ReadLine();
-                        if (line == null) break;
-
-                        if (line.Contains("\"event\":\"Fileheader\"") && !line.ToUpperInvariant().Contains($"\"Odyssey\":{isOdyssey}".ToUpperInvariant()))
-                        {
-                            Game.log($"getCommanderJournalBefore: wrong isOdyssey: {isOdyssey} - skip: {filepath}");
-                            return false;
-                        }
-
-                        if (line.Contains("\"event\":\"Commander\""))
-                        {
-                            // no need to process further lines
-                            //Game.log($"getCommanderJournalBefore: expected cmdr: {cmdr}, found '{line}' from: {filepath}");
-                            return line.ToUpper().Contains($"\"NAME\":\"{cmdr}\"") || line.ToUpper().Contains($"\"FID\":\"{fid}\"");
-                        }
-                    }
-
-                    // it might be the right cmdr - we cannot tell yet as the game has not started
-                    Game.log($"getCommanderJournalBefore: no cmdr found yet from: {filepath}");
-
-                    // but confirm this is the current game log by failing to read it without sharing (proving the game has the file locked open)
-                    try
-                    {
-                        File.ReadAllText(filepath);
-                        // this file is NOT locked open - do not use it
+                        Game.log($"getCommanderJournalBefore: wrong isOdyssey: {isOdyssey} - skip: {filepath}");
                         return false;
                     }
-                    catch (IOException)
+
+                    if (line.Contains("\"event\":\"Commander\""))
                     {
-                        // yup, it's locked open - we'll use this file until we know who the cmdr is
-                        return true;
+                        // no need to process further lines
+                        //Game.log($"getCommanderJournalBefore: expected cmdr: {cmdr}, found '{line}' from: {filepath}");
+                        return line.ToUpper().Contains($"\"NAME\":\"{cmdr}\"") || line.ToUpper().Contains($"\"FID\":\"{fid}\"");
                     }
+                }
+
+                // it might be the right cmdr - we cannot tell yet as the game has not started
+                Game.log($"getCommanderJournalBefore: no cmdr found yet from: {filepath}");
+
+                // but confirm this is the current game log by failing to read it without sharing (proving the game has the file locked open)
+                try
+                {
+                    File.ReadAllText(filepath);
+                    // this file is NOT locked open - do not use it
+                    return false;
+                }
+                catch (IOException)
+                {
+                    // yup, it's locked open - we'll use this file until we know who the cmdr is
+                    return true;
                 }
             });
 

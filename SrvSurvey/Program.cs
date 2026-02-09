@@ -67,12 +67,6 @@ namespace SrvSurvey
                     ContractResolver = new CustomContractResolver()
                 };
 
-                if (!string.IsNullOrEmpty(Game.settings.lang))
-                {
-                    var culture = System.Globalization.CultureInfo.CreateSpecificCulture(Game.settings.lang);
-                    Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = culture;
-                }
-
                 Application.EnableVisualStyles();
                 Application.SetHighDpiMode(HighDpiMode.DpiUnawareGdiScaled);
                 Application.SetCompatibleTextRenderingDefault(true);
@@ -81,6 +75,18 @@ namespace SrvSurvey
                 // create some control for invoking back onto the UI thread
                 Program.control = new Control();
                 Program.control.CreateControl();
+
+                // Load settings and prep window/font scaling
+                Settings.Load();
+                scaleFactor = Program.getScaleFactor();
+                fontScaleFactor = Program.getFontScaleFactor();
+
+                // Force locale, if needed
+                if (!string.IsNullOrEmpty(Game.settings.lang))
+                {
+                    var culture = System.Globalization.CultureInfo.CreateSpecificCulture(Game.settings.lang);
+                    Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = culture;
+                }
 
                 // BEFORE we touch the main code - check if we're an AppStore build using a relocated data folder, meaning are we using:
                 // %USERPROFILE%\AppData\Local\Packages\35333NosmohtSoftware.142860789C73F_p4c193bsm1z5a\LocalCache\Roaming\SrvSurvey
@@ -169,7 +175,7 @@ namespace SrvSurvey
 
         private static readonly Dictionary<string, PlotterForm> activePlotters = new Dictionary<string, PlotterForm>();
 
-        public static T? showPlotter<T>(Rectangle? gameRect = null, PlotDef? def = null) where T : PlotterForm
+        public static T? showPlotter<T>(Game game, Rectangle? gameRect = null, PlotDef? def = null) where T : PlotterForm
         {
             var formType = typeof(T);
             var formTypeName = def?.name ?? formType.Name;
@@ -197,7 +203,7 @@ namespace SrvSurvey
                     if (def == null)
                         throw new Exception($"Why no def for: {formTypeName}");
                     if (def.form == null)
-                        def.form = new PlotContainer(def);
+                        def.form = new PlotContainer(game, def);
                     form = (T)(PlotterForm)def.form;
                 }
                 else
@@ -225,7 +231,7 @@ namespace SrvSurvey
                     if (def != null)
                         def.form = null;
                     activePlotters.Remove(formTypeName);
-                    return showPlotter<T>(gameRect, def);
+                    return showPlotter<T>(game, gameRect, def);
                 }
 
                 form.Invalidate();
@@ -254,13 +260,13 @@ namespace SrvSurvey
                         }
                         catch (Win32Exception ex)
                         {
+                            Game.log($"Run-as-admin problem? NativeErrorCode:{ex.NativeErrorCode}, Setting disableWindowParentIsGame=true");
                             if (ex.NativeErrorCode == 5 && !Game.settings.disableWindowParentIsGame)
                             {
                                 // Might be the run-as-admin problem? Tweak a setting and try again
-                                Game.log("Run-as-admin problem? Setting disableWindowParentIsGame=true");
                                 Game.settings.disableWindowParentIsGame = true;
                                 Game.settings.Save();
-                                showPlotter<T>(gameRect, def);
+                                showPlotter<T>(game, gameRect, def);
                             }
                             else
                                 throw;
@@ -397,152 +403,6 @@ namespace SrvSurvey
         }
 
         public static bool tempHideAllPlotters = false;
-
-        #endregion
-
-        #region migrate data files
-
-        public static List<string> getMigratableFolders()
-        {
-            // do we have any settings files in any folder already?
-            var folders = Directory.EnumerateFiles(dataRootFolder, "settings.json", SearchOption.AllDirectories)
-                .Where(_ => !_.EndsWith("\\SrvSurvey\\1.1.0.0\\settings.json"))
-                .Select(_ => Path.GetDirectoryName(_)!)
-                .ToList();
-
-            return folders;
-        }
-
-        public static void migrateToNewDataFolder()
-        {
-            try
-            {
-                // make a .zip backup of everything before beginning
-                var datepart = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-                var zipBackupPath = Path.GetFullPath(Path.Combine(dataRootFolder, "..", $"pre-migration-backup-{datepart}.zip"));
-                Game.log($"Creating pre migration backup: {zipBackupPath}");
-                ZipFile.CreateFromDirectory(dataRootFolder, zipBackupPath, CompressionLevel.SmallestSize, false);
-
-                Game.log($"migrateToNewDataFolder: old data into common folder: {Program.dataFolder} ...");
-                Directory.CreateDirectory(Program.dataFolder);
-
-                var rootFolder = new DirectoryInfo(Path.GetFullPath(Path.Combine(Program.dataFolder, "..")));
-                var oldFolders = getMigratableFolders()
-                    // order by oldest first
-                    .OrderBy(_ => File.GetLastWriteTime(Path.Combine(_, "settings.json")))
-                    .ToList();
-                Game.log($"Migrating old folders:\r\n  " + string.Join("\r\n  ", oldFolders));
-
-                // move core files from the most recent folder only
-                moveCoreFiles(oldFolders.Last());
-
-                oldFolders.ForEach(_ => mergeScannedBioEntryIds(_));
-                oldFolders.ForEach(_ => mergeChildFiles(_));
-            }
-            catch (Exception ex)
-            {
-                Game.log($"migrateToNewDataFolder: exception: {ex}");
-            }
-            finally
-            {
-                Game.log($"migrateToNewDataFolder: old data into common folder - complete");
-            }
-        }
-
-        private static void moveCoreFiles(string oldFolder)
-        {
-            Game.log($"> moveCoreFiles: {oldFolder}");
-            var filenames = new List<string>();
-
-            var settingsFilepath = Path.Combine(oldFolder, "settings.json");
-            if (File.Exists(settingsFilepath)) filenames.Add(settingsFilepath);
-
-            filenames.AddRange(Directory.EnumerateFiles(oldFolder, "*-legacy.json"));
-            filenames.AddRange(Directory.EnumerateFiles(oldFolder, "*-live.json"));
-
-            Game.log(string.Join("\r\n", filenames));
-
-            filenames.ForEach(_ =>
-            {
-                Game.log($">> moveCoreFile: {_}");
-                File.Copy(_, _.Replace(oldFolder, dataFolder), true);
-            });
-        }
-
-        private static void mergeScannedBioEntryIds(string oldFolder)
-        {
-            var cmdrFiles = Directory.EnumerateFiles(oldFolder, "*-live.json");
-            foreach (var cmdrFile in cmdrFiles)
-            {
-                var oldCmdr = Data.Load<CommanderSettings>(cmdrFile)!;
-                var newCmdr = Data.Load<CommanderSettings>(cmdrFile.Replace(oldFolder, dataFolder))!;
-                if (newCmdr == null) newCmdr = CommanderSettings.Load(oldCmdr.fid, oldCmdr.isOdyssey, oldCmdr.commander, true);
-
-                Game.log($">> mergeScannedBioEntryIds: {cmdrFile}");
-
-                // merge prior scans, both types, and update total
-                BodyDataOld.migrate_ScannedOrganics_Into_ScannedBioEntryIds(oldCmdr);
-                foreach (var old in oldCmdr.scannedBioEntryIds)
-                    newCmdr.scannedBioEntryIds.Add(old);
-
-                newCmdr.reCalcOrganicRewards();
-
-                // force these migrations to happen again
-                newCmdr.migratedNonSystemDataOrganics = false;
-                newCmdr.migratedScannedOrganicsInEntryId = false;
-                newCmdr.Save();
-            }
-        }
-
-        private static void mergeChildFiles(string oldFolder)
-        {
-            var allOldFiles = new List<string>();
-            if (Directory.Exists(Path.Combine(oldFolder, "guardian")))
-                allOldFiles.AddRange(Directory.EnumerateFiles(Path.Combine(oldFolder, "guardian"), "*.*", SearchOption.AllDirectories));
-            if (Directory.Exists(Path.Combine(oldFolder, "guardian-beacon")))
-                allOldFiles.AddRange(Directory.EnumerateFiles(Path.Combine(oldFolder, "guardian-beacon"), "*.*", SearchOption.AllDirectories));
-            if (Directory.Exists(Path.Combine(oldFolder, "organic")))
-                allOldFiles.AddRange(Directory.EnumerateFiles(Path.Combine(oldFolder, "organic"), "*.*", SearchOption.AllDirectories));
-            if (Directory.Exists(Path.Combine(oldFolder, "systems")))
-                allOldFiles.AddRange(Directory.EnumerateFiles(Path.Combine(oldFolder, "systems"), "*.*", SearchOption.AllDirectories));
-
-            Game.log($"> Merging {allOldFiles.Count} files (or clobbering if they are larger)");
-
-            foreach (var oldFile in allOldFiles)
-            {
-                var newFile = oldFile.Replace(oldFolder, dataFolder);
-                Directory.CreateDirectory(Path.GetDirectoryName(newFile)!);
-
-                if (!File.Exists(newFile))
-                {
-                    // copy old if it does not exist
-                    File.Copy(oldFile, newFile, true);
-                }
-                else
-                {
-                    // if old is larger, overwrite new with old
-                    var oldLength = new FileInfo(oldFile).Length;
-                    var newLength = new FileInfo(newFile).Length;
-                    if (oldLength > newLength)
-                        File.Copy(oldFile, newFile, true);
-                }
-            }
-            Game.log($"> Merging {allOldFiles.Count} files - complete");
-        }
-
-        public static async Task migrate_BodyData_Into_SystemData()
-        {
-            Game.log($"migrate_BodyData_Into_SystemData ...");
-
-            var cmdrFiles = Directory.EnumerateFiles(dataFolder, "*-live.json");
-            foreach (var cmdrFile in cmdrFiles)
-            {
-                var newCmdr = Data.Load<CommanderSettings>(cmdrFile)!;
-                await SystemData.migrate_BodyData_Into_SystemData(newCmdr);
-            }
-
-            Game.log($"migrateToNewDataFolder - complete");
-        }
 
         #endregion
 
@@ -715,7 +575,7 @@ namespace SrvSurvey
                     return 0.5f;
             }
         }
-        public static float scaleFactor = Program.getScaleFactor();
+        public static float scaleFactor { get; private set; }
 
         private static float getFontScaleFactor()
         {
@@ -779,7 +639,7 @@ namespace SrvSurvey
                     return 0.5f * osScaleFactor;
             }
         }
-        public static float fontScaleFactor = Program.getFontScaleFactor();
+        public static float fontScaleFactor { get; private set; }
     }
 
     interface PlotterForm

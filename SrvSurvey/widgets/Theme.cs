@@ -16,7 +16,7 @@ namespace SrvSurvey.widgets
             {
                 // read and write (a basic file copy has issues with BitLocker on Win11?)
                 var txt = File.ReadAllText(themeDefaultPath);
-                File.WriteAllText(themePath, txt);
+                Data.saveWithRetry(themePath, txt, true);
             }
 
             Exception? caughtError = null;
@@ -199,7 +199,7 @@ namespace SrvSurvey.widgets
             }
 
             var json = JsonConvert.SerializeObject(root, Formatting.Indented);
-            File.WriteAllText(themePath, json);
+            Data.saveWithRetry(themePath, json);
             Game.log($"Theme written to: {themePath}");
         }
 

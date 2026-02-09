@@ -22,9 +22,9 @@ namespace SrvSurvey.plotters
         {
             var hasProjects = game.cmdrColony.projects.Count > game.cmdrColony.hiddenIDs.Count;
 
-            var allowed = Game.settings.buildProjects_TEST
-                && Game.settings.autoShowPlotBuildCommodities
+            var allowed = Game.settings.autoShowPlotBuildCommodities
                 // NOT suppressed by buildProjectsSuppressOtherOverlays
+                && Game.settings.buildProjects_TEST
                 && (
                     // forced but not jumping or in external panel
                     (PlotBuildCommodities.forceShow && !game.fsdJumping && !game.isMode(GameMode.ExternalPanel))
@@ -118,8 +118,8 @@ namespace SrvSurvey.plotters
 
         public void setHeaderTextAndNeeds()
         {
-            var isDockedAtConstructionSite = Game.activeGame?.lastDocked != null
-                && ColonyData.isConstructionSite(Game.activeGame.lastDocked);
+            var isDockedAtConstructionSite = game.lastDocked != null
+                && ColonyData.isConstructionSite(game.lastDocked);
 
             setHeaderTextAndNeeds(isDockedAtConstructionSite);
         }

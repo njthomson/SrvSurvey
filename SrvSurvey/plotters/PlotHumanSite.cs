@@ -30,12 +30,9 @@ namespace SrvSurvey.plotters
         public static bool allowed(Game game)
         {
             return Game.settings.autoShowHumanSitesTest
-                && Game.activeGame?.status != null
-                && !Game.activeGame.atMainMenu
-                && Game.activeGame.status.hasLatLong
                 && !Game.settings.buildProjectsSuppressOtherOverlays
-                && !Game.activeGame.hidePlottersFromCombatSuits
-                && Game.activeGame.systemStation != null
+                && game.status?.hasLatLong == true
+                && game.systemStation != null
                 // Explicitly no mode check - we don't want to destroy this plotter too easily
                 ;
         }

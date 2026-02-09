@@ -21,13 +21,10 @@ namespace SrvSurvey.plotters
         public static bool allowed(Game game)
         {
             return Game.settings.targetLatLongActive
-                && !game.atMainMenu
-                && game.systemBody != null
-                && game.status != null
-                && game.status.hasLatLong
-                && !game.status.InTaxi
                 // NOT suppressed by buildProjectsSuppressOtherOverlays
-                && !game.hidePlottersFromCombatSuits
+                && game.systemBody != null
+                && game.status?.hasLatLong == true
+                && !game.status.InTaxi
                 && game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel);
         }
 

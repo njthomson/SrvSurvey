@@ -93,7 +93,7 @@ namespace SrvSurvey
             foreach (var body in game.systemData.bodies.OrderBy(b => b.id))
             {
                 if (body.bioSignalCount == 0) continue;
-                if (!stuff.ContainsKey(body)) stuff[body] = new();
+                stuff.init(body);
 
                 // prep known organisms
                 if (body.organisms?.Count > 0)
@@ -556,7 +556,8 @@ namespace SrvSurvey
                     }
                 }
 
-                if (bodyMenu.DropDownItems.Count != stuff[body].Count && (Game.activeGame?.targetBody == null || body == Game.activeGame?.targetBody))
+                var countOnBody = stuff.GetValueOrDefault(body)?.Count ?? 0;
+                if (bodyMenu.DropDownItems.Count != countOnBody && (Game.activeGame?.targetBody == null || body == Game.activeGame?.targetBody))
                     rePrepStuff = true;
             }
 

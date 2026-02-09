@@ -46,6 +46,7 @@ namespace SrvSurvey
         public bool autoShowBioPlot = true;
         public int bioPlotSize = 3;
         public bool autoHideBioPlotNoGear = false;
+        public bool autoHideBioPlotOnRepeat = true;
         public bool autoShowPlotFSS = true;
         public bool autoShowPlotFSSInfo = true;
         public bool autoShowPlotFSSInfoInSystemMap = false;
@@ -201,9 +202,6 @@ namespace SrvSurvey
         public int inferTolerance = 25;
         public float inferThreshold = 0.002f;
 
-        /// <summary> True once we have migrated from old the 1.0.0.0 data folder </summary>
-        public bool dataFolder1100 = false;
-
         public int pubBioCriteria = 0;
         public int pubCodexRef = 0;
         public int pubDataSettlementTemplate = 0;
@@ -273,6 +271,7 @@ namespace SrvSurvey
         #region loading / saving
 
         static readonly string settingsPath = Path.Combine(Program.dataFolder, "settings.json");
+        public static Settings instance { get; private set; }
 
         public static Settings Load()
         {
@@ -292,6 +291,7 @@ namespace SrvSurvey
                         if (string.IsNullOrWhiteSpace(settings.downloadCodexImageFolder))
                             settings.downloadCodexImageFolder = CodexRef.defaultCodexImagesFolder;
 
+                        Settings.instance = settings;
                         return settings;
                     }
                     catch (Exception ex)
@@ -309,28 +309,14 @@ namespace SrvSurvey
             var newSettings = new Settings();
             newSettings.Save();
 
+            Settings.instance = newSettings;
             return newSettings;
         }
 
         public void Save()
         {
-            this.Save(true);
-        }
-
-        private void Save(bool allowRetry)
-        {
-            try
-            {
-                var json = JsonConvert.SerializeObject(this, Formatting.Indented);
-                File.WriteAllText(settingsPath, json);
-            }
-            catch (Exception ex)
-            {
-                Game.log($"Failed to write settings (allowRetry: {allowRetry}): {ex}");
-                // allow a single retry if we fail to write settings
-                if (allowRetry)
-                    Program.control.BeginInvoke(() => this.Save(false));
-            }
+            var json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            Data.saveWithRetry(settingsPath, json);
         }
 
         class KeyActionsSettingJsonConverter : Newtonsoft.Json.JsonConverter

@@ -116,10 +116,7 @@ namespace SrvSurvey.canonn
             {
                 json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/biostats?id={systemAddress}");
                 if (BioPredictor.useTestCache)
-                {
-                    Directory.CreateDirectory(BioPredictor.netCache);
-                    File.WriteAllText(cacheFilename, json);
-                }
+                    Data.saveWithRetry(cacheFilename, json, true);
             }
 
             var obj = JsonConvert.DeserializeObject<JObject>(json)!;
@@ -195,7 +192,7 @@ namespace SrvSurvey.canonn
             //Game.log($"{response.StatusCode} : {response.IsSuccessStatusCode}");
             var json = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
-                File.WriteAllText(allRuinsRefPath, json);
+                Data.saveWithRetry(allRuinsRefPath, json);
             else
                 Game.log(json);
 
@@ -220,7 +217,7 @@ namespace SrvSurvey.canonn
             //Game.log($"{response.StatusCode} : {response.IsSuccessStatusCode}");
             var json = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
-                File.WriteAllText(allRuinsRefPath, json);
+                Data.saveWithRetry(allRuinsRefPath, json);
             else
                 Game.log(json);
 
@@ -266,7 +263,7 @@ namespace SrvSurvey.canonn
                 //Game.log($"{response.StatusCode} : {response.IsSuccessStatusCode}");
                 json = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
-                    File.WriteAllText(allRuinsRefPath, json);
+                    Data.saveWithRetry(allRuinsRefPath, json);
                 else
                     Game.log(json);
             }
@@ -330,7 +327,7 @@ namespace SrvSurvey.canonn
                 summaries = allRuins.Select(_ => GuardianRuinSummary.from(_));
 
                 var json = JsonConvert.SerializeObject(summaries);
-                File.WriteAllText(ruinSummariesPath, json);
+                Data.saveWithRetry(ruinSummariesPath, json);
             }
             else
             {
@@ -647,7 +644,7 @@ namespace SrvSurvey.canonn
         {
             // save new summaries
             var json = JsonConvert.SerializeObject(newSummaries, Formatting.Indented);
-            File.WriteAllText(allRuinsStaticPathDbg, json);
+            Data.saveWithRetry(allRuinsStaticPathDbg, json);
         }
 
         public void readXmlSheetRuins(string filepath)
@@ -1147,7 +1144,7 @@ namespace SrvSurvey.canonn
 
             /* update needed?
             var json = JsonConvert.SerializeObject(this.allBeacons, Formatting.Indented);
-            File.WriteAllText(allBeaconsStaticPath, json);
+            Data.saveWithRetry(allBeaconsStaticPath, json);
             // */
         }
 
@@ -1181,7 +1178,7 @@ namespace SrvSurvey.canonn
                 }
 
                 var json = JsonConvert.SerializeObject(site, Formatting.Indented);
-                File.WriteAllText(pubPath, json);
+                Data.saveWithRetry(pubPath, json);
 
                 // update parts of summary from file
                 var ruinSummary = this.allRuins.FirstOrDefault(_ => _.systemName.Equals(site.systemName, StringComparison.OrdinalIgnoreCase) && _.bodyName.Equals(site.bodyName, StringComparison.OrdinalIgnoreCase) && _.idx == site.idx);
@@ -1224,7 +1221,7 @@ namespace SrvSurvey.canonn
             }
 
             var summaryJson = JsonConvert.SerializeObject(this.allRuins, Formatting.Indented);
-            File.WriteAllText(allRuinsStaticPathDbg, summaryJson);
+            Data.saveWithRetry(allRuinsStaticPathDbg, summaryJson);
 
             Game.log($"Writing {sites.Count} pubData Ruins files - complete");
         }
@@ -1432,7 +1429,7 @@ namespace SrvSurvey.canonn
                 site.ao = site.ao.OrderBy(_ => _.name).ToHashSet();
 
                 var json = JsonConvert.SerializeObject(site, Formatting.Indented);
-                File.WriteAllText(pubPath, json);
+                Data.saveWithRetry(pubPath, json);
 
                 // update parts of summary from file
                 var siteSummary = this.allStructures.FirstOrDefault(_ => _.systemName.Equals(site.systemName, StringComparison.OrdinalIgnoreCase) && _.bodyName.Equals(site.bodyName, StringComparison.OrdinalIgnoreCase)); // && _.idx == site.idx);
@@ -1482,7 +1479,7 @@ namespace SrvSurvey.canonn
             }
 
             var summaryJson = JsonConvert.SerializeObject(this.allStructures, Formatting.Indented);
-            File.WriteAllText(allStructuresStaticPathDbg, summaryJson);
+            Data.saveWithRetry(allStructuresStaticPathDbg, summaryJson);
 
             Game.log($"Writing {sites.Count} pubData Structure files - complete");
         }
@@ -1729,7 +1726,7 @@ namespace SrvSurvey.canonn
         {
             // save new summaries
             var json = JsonConvert.SerializeObject(this.newStructures, Formatting.Indented);
-            File.WriteAllText(allStructuresStaticPathDbg, json);
+            Data.saveWithRetry(allStructuresStaticPathDbg, json);
         }
 
 
@@ -1946,7 +1943,7 @@ namespace SrvSurvey.canonn
             rows.Insert(0, headers);
 
             var lines = rows.Select(row => string.Join(',', row.Select(_ => $"\"{_}\"")));
-            File.WriteAllText(Path.Combine(dumpFolder, "ruins-raw.csv"), string.Join("\n", lines));
+            Data.saveWithRetry(Path.Combine(dumpFolder, "ruins-raw.csv"), string.Join("\n", lines));
 
             // return raw data without headers
             rows.RemoveAt(0);
@@ -1960,12 +1957,10 @@ namespace SrvSurvey.canonn
             {
                 rows.Add($"Total {foo.Key} sites:", foo.Value.total);
                 rows.Add($"Total {foo.Key} surveyComplete:", foo.Value.surveyComplete);
-
-
             }
 
             var lines = rows.Select(row => string.Join(',', $"\"{row.Key}\",\"{row.Value}\""));
-            File.WriteAllText(Path.Combine(dumpFolder, "raw-summary.csv"), string.Join("\n", lines));
+            Data.saveWithRetry(Path.Combine(dumpFolder, "raw-summary.csv"), string.Join("\n", lines));
         }
 
         internal class DumpTotalCounts
