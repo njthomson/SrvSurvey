@@ -28,6 +28,7 @@ namespace SrvSurvey.plotters
 
         private static int pulseTick;
         private static System.Windows.Forms.Timer? timer;
+        private static DateTime? superCruiseOverDriveStopped;
 
         private static Image pulseBackground;
 
@@ -66,8 +67,11 @@ namespace SrvSurvey.plotters
                 {
                     if (pulseTick > 0)
                         pulseTick--;
-                    else
+                    else if (superCruiseOverDriveStopped == null)
                         timer.Stop();
+
+                    if (superCruiseOverDriveStopped < DateTime.UtcNow.AddSeconds(-10))
+                        superCruiseOverDriveStopped = null;
 
                     PlotBase2.invalidate(nameof(PlotPulse));
                 };
@@ -85,6 +89,14 @@ namespace SrvSurvey.plotters
                 Program.control.Invoke(() => timer?.Start());
         }
 
+        protected override void onStatusChange(Status status)
+        {
+            base.onStatusChange(status);
+
+            if (status.changed.Contains(nameof(StatusFlags2.SCOverdrive)) && status.SCOverdrive == false)
+                superCruiseOverDriveStopped = status.timestamp;
+        }
+
         protected override SizeF doRender(Graphics g, TextCursor tt)
         {
             // don't render anything when in maps
@@ -97,9 +109,24 @@ namespace SrvSurvey.plotters
             // we want a fuzzy outline on this rectangle
             g.SmoothingMode = SmoothingMode.HighQuality;
 
-            g.FillRectangle(C.Brushes.orange,
-                10, 27 - pulseTick,
-                10, pulseTick);
+            if (pulseTick >= 0)
+            {
+                g.FillRectangle(C.Brushes.orange,
+                    10, 27 - pulseTick,
+                    10, pulseTick);
+            }
+
+            // show a red dot when SuperCruise Overdrive is active, that slowly falls, turning cyan once it can be used again
+            if (game.status.SCOverdrive)
+            {
+                g.FillEllipse(C.Brushes.red, width - 10f, height - 32f, 8, 8);
+            }
+            else if (superCruiseOverDriveStopped != null)
+            {
+                var diff = (DateTime.UtcNow - superCruiseOverDriveStopped.Value).TotalSeconds;
+                var b = diff > 9 ? C.Brushes.cyan : C.Brushes.menuGold;
+                g.FillEllipse(b, width - 10f, height - 31f - (float)diff * -2, 8, 8);
+            }
 
             return plotPulseDefaultSize;
         }

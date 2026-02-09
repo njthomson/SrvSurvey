@@ -1158,6 +1158,13 @@ namespace SrvSurvey.game
             if (canonnPoi.system != this.name) { Game.log($"Unmatched system! SystemPoi Expected: `{this.name}`, got: {canonnPoi.system}"); return; }
             if (!Game.settings.useExternalData || !Game.settings.useExternalBioData) return;
 
+            // avoid threading issues by processing on the UI thread
+            if (Program.control.InvokeRequired)
+            {
+                Program.defer(() => onCanonnPoiData(canonnPoi));
+                return;
+            }
+
             // update count of bio signals in bodies
             if (canonnPoi.SAAsignals != null)
             {
@@ -1243,6 +1250,13 @@ namespace SrvSurvey.game
         {
             if (newStations == null || newStations.Count == 0) return;
 
+            // avoid threading issues by processing on the UI thread
+            if (Program.control.InvokeRequired)
+            {
+                Program.defer(() => onCanonnStationData(newStations));
+                return;
+            }
+
             // merge update stations with results
             this.stations ??= new List<CanonnStation>();
 
@@ -1257,13 +1271,19 @@ namespace SrvSurvey.game
 
                 //TODO: merge or replace if CalcMethod is better?
             }
-
         }
 
         public void onEdsmResponse(EdsmSystem edsmSystem)
         {
             if (edsmSystem.id64 != this.address) { Game.log($"Unmatched system! EdsmSystem Expected: `{this.name}`, got: {edsmSystem.name}"); return; }
             if (!Game.settings.useExternalData) return;
+
+            // avoid threading issues by processing on the UI thread
+            if (Program.control.InvokeRequired)
+            {
+                Program.defer(() => onEdsmResponse(edsmSystem));
+                return;
+            }
 
             // update bodies from response
             foreach (var entry in edsmSystem.bodies)
@@ -1377,6 +1397,13 @@ namespace SrvSurvey.game
         {
             if (spanshSystem.id64 != this.address) { Game.log($"Unmatched system! ApiSystemDump Expected: `{this.name}`, got: {spanshSystem.name}"); return; }
             if (!Game.settings.useExternalData) return;
+
+            // avoid threading issues by processing on the UI thread
+            if (Program.control.InvokeRequired)
+            {
+                Program.defer(() => onSpanshResponse(spanshSystem));
+                return;
+            }
 
             var shouldPredictBios = false;
 

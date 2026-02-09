@@ -2841,6 +2841,28 @@ namespace SrvSurvey.game
                 cmdrColony.checkConstructionSiteUponDocking(entry, this);
             }
 
+            // update in-memory cached data with live values
+            var spanshMatch = this.systemData?.spanshStations?.Find(x => x.id == entry.MarketID);
+            if (spanshMatch != null)
+            {
+                spanshMatch.name = entry.StationName_Localised ?? entry.StationName;
+                spanshMatch.landingPads = entry.LandingPads;
+                spanshMatch.controllingFaction = entry.StationFaction.Name;
+                spanshMatch.controllingFactionState = entry.StationFaction.FactionState ?? "";
+                spanshMatch.government = entry.StationGovernment_Localised ?? "";
+
+                spanshMatch.type = ApiSystemDump.System.Station.mapTypeNames.GetValueOrDefault(entry.StationType) ?? spanshMatch.type;
+
+                // TODO: Map service values from journal to display names used by Spansh
+                //if (entry.StationServices != null)
+                //    spanshMatch.services = entry.StationServices.ToList();
+
+                if (entry.StationEconomies != null)
+                    spanshMatch.economies = entry.StationEconomies.ToDictionary(x => x.Name_Localised, x => (float)x.Proportion * 100);
+
+                PlotBase2.invalidate(nameof(PlotStationInfo));
+            }
+
             // stop here if we're not at an Odyssey settlement
             if (entry.StationType != StationType.OnFootSettlement || this.systemData == null || ColonyData.isConstructionSite(entry)) return;
 
@@ -2874,27 +2896,7 @@ namespace SrvSurvey.game
                 }
             }
 
-            // update in-memory cached data with live values
-            var spanshMatch = this.systemData?.spanshStations?.Find(x => x.id == entry.MarketID);
-            if (spanshMatch != null)
-            {
-                spanshMatch.name = entry.StationName_Localised ?? entry.StationName;
-                spanshMatch.landingPads = entry.LandingPads;
-                spanshMatch.controllingFaction = entry.StationFaction.Name;
-                spanshMatch.controllingFactionState = entry.StationFaction.FactionState ?? "";
-                spanshMatch.government = entry.StationGovernment_Localised ?? "";
 
-                spanshMatch.type = ApiSystemDump.System.Station.mapTypeNames.GetValueOrDefault(entry.StationType) ?? spanshMatch.type;
-
-                // TODO: Map service values from journal to display names used by Spansh
-                //if (entry.StationServices != null)
-                //    spanshMatch.services = entry.StationServices.ToList();
-
-                if (entry.StationEconomies != null)
-                    spanshMatch.economies = entry.StationEconomies.ToDictionary(x => x.Name_Localised, x => (float)x.Proportion * 100);
-
-                PlotBase2.invalidate(nameof(PlotStationInfo));
-            }
         }
 
         private void onDockedWhenSafe(CalcMethod calcMethod, bool inTaxi)

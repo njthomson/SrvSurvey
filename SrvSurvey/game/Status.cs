@@ -318,6 +318,8 @@ namespace SrvSurvey
         public bool cargoScoopDeployed { get => (this.Flags & StatusFlags.CargoScoopDeployed) > 0; }
         [JsonIgnore]
         public bool lightsOn { get => (this.Flags & StatusFlags.LightsOn) > 0; }
+        [JsonIgnore]
+        public bool SCOverdrive => this.Flags2.HasFlag(StatusFlags2.SCOverdrive);
     }
 
     #region Types

@@ -1640,6 +1640,16 @@
       { "offset": { "X": -61.090458, "Y": -27.376522 }, "floor": 1, "level": 0 },
       { "offset": { "X": -45.233963, "Y": -11.657115 }, "floor": 1, "level": 0, "rot": 270 }
     ],
+    "czPoints":  	[
+      { "name": "A", "offset": { "X": -59.47105, "Y": -11.671276 }, "floor": 0, "level": 0 },
+      { "name": "B", "offset": { "X": -72.580185, "Y": -79.72568 }, "floor": 0, "level": 0 },
+      { "name": "C", "offset": { "X": -13.534832, "Y": -65.1581 }, "floor": 0, "level": 0 },
+      { "name": "D", "offset": { "X": 19.967169, "Y": -65.73946 }, "floor": 0, "level": 0 },
+      { "name": "E", "offset": { "X": 45.974636, "Y": -12.869647 }, "floor": 0, "level": 0 },
+      { "name": "F", "offset": { "X": 18.737005, "Y": -36.567142 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -14.787331, "Y": -40.39953 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 52.340153, "Y": -33.215385 }, "floor": 0, "level": 0 },
+    ],
     "namedPoi": [
       { "name": "Atmos", "offset": { "X": 55.436176, "Y": -10.774093 }, "floor": 1, "level": 2 },
       { "name": "Power", "offset": { "X": 47.692318, "Y": -12.128205 }, "floor": 1, "level": 3 },
@@ -1727,6 +1737,15 @@
       { "offset": { "X": -32.269054, "Y": 19.696695 }, "floor": 1, "level": 3, "rot": 62 },
       { "offset": { "X": -21.138678, "Y": 7.950495 }, "floor": 1, "level": 2, "rot": 332 },
       { "offset": { "X": -25.495102, "Y": -4.0693173 }, "floor": 2, "level": 3, "rot": 62 }
+    ],
+    "czPoints": [
+      { "name": "A", "offset": { "X": 19.04736, "Y": -83.2304 }, "floor": 0, "level": 0 },
+      { "name": "B", "offset": { "X": 36.690044, "Y": -32.181225 }, "floor": 0, "level": 0 },
+      { "name": "C", "offset": { "X": 66.66355, "Y": -45.296528 }, "floor": 0, "level": 0 },
+      { "name": "D", "offset": { "X": 63.82762, "Y": -98.34873 }, "floor": 0, "level": 0 },
+      { "name": "E", "offset": { "X": 119.57698, "Y": -99.49332 }, "floor": 0, "level": 0 },
+      { "name": "F", "offset": { "X": 105.54727, "Y": -55.3863 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 46.48791, "Y": -60.132076 }, "floor": 0, "level": 0 },
     ],
     "namedPoi": [
       { "name": "Power", "offset": { "X": 38.18215, "Y": -31.642601 }, "floor": 1, "level": 3 },
@@ -1821,6 +1840,17 @@
       { "offset": { "X": 70.21661, "Y": -14.065474 }, "floor": 2, "level": 2, "rot": 270 },
       { "offset": { "X": 60.811447, "Y": -23.45607 }, "floor": 2, "level": 2 },
       { "offset": { "X": -98.730995, "Y": 41.41605 }, "floor": 1, "level": 3, "rot": 270 }
+    ],
+    "czPoints":  [
+      { "name": "A", "offset": { "X": 18.614595, "Y": -20.613827 }, "floor": 0, "level": 0 },
+      { "name": "B", "offset": { "X": 67.249756, "Y": 19.642626 }, "floor": 0, "level": 0 },
+      { "name": "C", "offset": { "X": -54.527515, "Y": 1.6676327 }, "floor": 0, "level": 0 },
+      { "name": "D", "offset": { "X": 34.37767, "Y": 63.73581 }, "floor": 0, "level": 0 },
+      { "name": "E", "offset": { "X": 18.718733, "Y": 47.483055 }, "floor": 0, "level": 0 },
+      { "name": "F", "offset": { "X": -55.98826, "Y": 60.363213 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -32.438133, "Y": 31.248804 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 17.541332, "Y": 2.77967 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 29.502619, "Y": 93.52123 }, "floor": 0, "level": 0 }
     ],
     "namedPoi": [
       { "name": "Power", "offset": { "X": -104.869804, "Y": 45.89899 }, "floor": 1, "level": 0 },
