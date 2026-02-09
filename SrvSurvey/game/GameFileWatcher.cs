@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SrvSurvey.plotters;
 
 namespace SrvSurvey.game
 {
@@ -53,7 +54,7 @@ namespace SrvSurvey.game
 
                 // read the file or initialize with a default constructed instance if not found
                 this.value = this.parseFile() ?? Activator.CreateInstance<T>();
-                Game.log($"Initializing: {this.filename}");
+                Game.log($"JsonFileWatcher: initializing: {this.filename}");
 
                 // initialize things AFTER we've performed the first read
                 this.value.preRead();
@@ -69,7 +70,9 @@ namespace SrvSurvey.game
                     if (value && !this._watching)
                     {
                         // start watching
-                        this.watcher = new FileSystemWatcher(Game.settings.watchedJournalFolder, filename);
+                        Game.log($"JsonFileWatcher: watching: {filepath}");
+                        var folder = Path.GetDirectoryName(filepath)!;
+                        this.watcher = new FileSystemWatcher(folder, filename);
                         this.watcher.NotifyFilter = NotifyFilters.LastWrite;
                         this.watcher.Changed += this.fileWatcher_Changed;
                         this.watcher.EnableRaisingEvents = true;
@@ -93,6 +96,7 @@ namespace SrvSurvey.game
                 Program.crashGuard(() =>
                 {
                     this.readFile();
+                    PlotBase2.renderAll(Game.activeGame, true);
                 });
             }
 
@@ -152,6 +156,7 @@ namespace SrvSurvey.game
                     if (this.watcher != null)
                     {
                         this.watcher.Changed -= fileWatcher_Changed;
+                        this.watcher.Dispose();
                         this.watcher = null;
                     }
                 }
@@ -263,5 +268,37 @@ namespace SrvSurvey.game
         {
             return this.Inventory.FirstOrDefault(i => i.Name == commodity)?.Count ?? 0;
         }
+    }
+
+    internal class SystemNickNames : WatchedFile
+    {
+        /* A sample .json file
+{
+  "timestamp": "2026-01-01T00:00:00Z",
+  "event": "SystemNickNames",
+  "map": {
+    "Sol": "Birthplace of Humanity",
+    "abc": "xyz"
+  }
+}
+        */
+
+        private static readonly string filepath = Path.Combine(Program.dataFolder, "system-nick-names.json");
+
+        /// <summary> Returns a nick-name for a given system or the name if no match is found </summary>
+        public static string get(string? systemName)
+        {
+            if (systemName == null) return null!;
+
+            if (Game.settings.useSystemNickNames)
+                return instance.map.GetValueOrDefault(systemName, StringComparison.OrdinalIgnoreCase) ?? systemName;
+            else
+                return systemName;
+        }
+
+        private static SystemNickNames instance => GameFileWatcher.watch<SystemNickNames>(SystemNickNames.filepath);
+
+        /// <summary> A map of real system names to alternate nick-names </summary>
+        public Dictionary<string, string> map = [];
     }
 }

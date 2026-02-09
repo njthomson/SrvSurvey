@@ -261,11 +261,13 @@ namespace SrvSurvey.plotters
             var ww = N.ten + Util.maxWidth(this.font, Res.From, Res.To, Res.Distance);
 
             tt.draw(N.eight, Res.From);
-            tt.draw(ww, game.cmdr.sphereLimit.centerSystemName);
+            var sysName = SystemNickNames.get(game.cmdr.sphereLimit.centerSystemName);
+            tt.draw(ww, sysName);
             tt.newLine(true);
 
             tt.draw(N.eight, Res.To);
-            tt.draw(ww, this.targetSystemName);
+            sysName = SystemNickNames.get(this.targetSystemName);
+            tt.draw(ww, sysName);
             tt.newLine(true);
 
             tt.draw(N.eight, Res.Distance);
@@ -329,8 +331,9 @@ namespace SrvSurvey.plotters
 
             tt.draw(N.eight, Res.Next, ff);
             var next = boxelSearch.nextSystem;
-            if (next == boxelSearch.current.prefix || next == boxelSearch.boxel.prefix) next += " ?";
-            tt.draw(ww, next, GameColors.fontMiddle);
+            var sysName = SystemNickNames.get(next);
+            if (next == boxelSearch.current.prefix || next == boxelSearch.boxel.prefix) sysName += " ?";
+            tt.draw(ww, sysName, GameColors.fontMiddle);
             tt.dtx += N.ten;
 
             // warn if destination is outside the search boxel
@@ -395,7 +398,8 @@ namespace SrvSurvey.plotters
                 col = C.cyan;
 
             tt.dty += N.four;
-            tt.draw(N.twoEight, route.nextHop?.name ?? "?", col, GameColors.Fonts.gothic_12B);
+            var sysName = SystemNickNames.get(route.nextHop?.name ?? "?");
+            tt.draw(N.twoEight, sysName, col, GameColors.Fonts.gothic_12B);
             tt.newLine(+N.four, true);
 
             if (route.nextHop?.notes != null)

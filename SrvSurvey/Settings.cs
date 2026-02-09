@@ -226,6 +226,8 @@ namespace SrvSurvey
         public bool darkTheme = false;
         public bool themeMainBlack = false;
 
+        public bool useSystemNickNames = false;
+
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public PlotFSS.WatchFssPixelSettings? watchFssSettings_TEST = new();
 

@@ -235,7 +235,8 @@ namespace SrvSurvey.plotters
             tt.draw(N.eight, Res.NextJump);
             tt.dty -= N.two;
 
-            tt.draw(" " + this.netData.systemName, GameColors.fontMiddleBold);
+            var sysName = SystemNickNames.get(this.netData.systemName);
+            tt.draw(" " + sysName, GameColors.fontMiddleBold);
             // quest related?
             if (game.cmdrPlay?.isTagged(netData.systemName) == true)
                 PlotQuestMini.drawLogo(g, tt.dtx + N.six, N.ten, true, N.oneSix);

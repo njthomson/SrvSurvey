@@ -164,7 +164,8 @@ namespace SrvSurvey.plotters
             tt.draw(N.eight, header);
 
             // line 1: system name
-            tt.draw(leftWidth, $"► {netData.systemName}", GameColors.fontSmall2Bold);
+            var sysName = SystemNickNames.get(netData.systemName);
+            tt.draw(leftWidth, $"► {sysName}", GameColors.fontSmall2Bold);
             // quest related?
             if (game.cmdrPlay?.isTagged(netData.systemName) == true)
                 PlotQuestMini.drawLogo(g, tt.dtx + N.six, N.eight, true, N.oneSix);
