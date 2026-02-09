@@ -553,6 +553,14 @@ namespace SrvSurvey.game
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool fssAllBodies;
 
+        /// <summary> The game's FSS progress (0.0-1.0) at honk time </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public double honkProgress;
+
+        /// <summary> How many bodies were already known (auto-scanned) at honk time </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public int honkBodyCount;
+
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool dssAllBodies;
 
@@ -636,6 +644,8 @@ namespace SrvSurvey.game
             this.honked = true;
             this.bodyCount = entry.BodyCount;
             this.rawNonBodyCount = entry.NonBodyCount;
+            this.honkProgress = entry.Progress;
+            this.honkBodyCount = this.fssBodyCount;
 
             return true;
         }
@@ -1528,6 +1538,23 @@ namespace SrvSurvey.game
         /// <summary> Returns True when all non-star/non-asteroid bodies have been found with FSS </summary>
         [JsonIgnore]
         public bool fssComplete => this.fssBodyCount >= this.bodyCount;
+
+        /// <summary> FSS progress (0.0-1.0), anchored to in-game honk progress then interpolated as bodies are scanned </summary>
+        [JsonIgnore]
+        public double fssProgress
+        {
+            get
+            {
+                if (!this.honked || this.bodyCount == 0) return 0;
+                if (this.fssAllBodies || this.fssComplete) return 1.0;
+
+                var remainingAfterHonk = this.bodyCount - this.honkBodyCount;
+                if (remainingAfterHonk <= 0) return this.honkProgress;
+
+                var scannedSinceHonk = this.fssBodyCount - this.honkBodyCount;
+                return this.honkProgress + (1.0 - this.honkProgress) * ((double)scannedSinceHonk / remainingAfterHonk);
+            }
+        }
 
         [JsonIgnore]
         public int dssBodyCount => this.bodies.ToList().Count(_ => _.dssComplete);
