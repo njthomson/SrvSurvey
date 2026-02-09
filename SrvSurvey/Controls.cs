@@ -186,6 +186,9 @@ namespace SrvSurvey
             Padding = new Point(1, 1); // Minimal padding as requested
         }
 
+        [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color BorderColor { get; set; } = SystemColors.ControlDark;
+
         protected override void OnCreateControl()
         {
             base.OnCreateControl();
@@ -201,16 +204,21 @@ namespace SrvSurvey
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            if (DesignMode || Parent == null)
+            {
+                base.OnPaint(e);
+                return;
+            }
+
             var dark = Game.settings.darkTheme;
             var black = Game.settings.themeMainBlack;
-            var bgColor = black ? Color.Black : dark ? SystemColors.ControlDarkDark : SystemColors.ControlLight;
-            var borderColor = black ? C.orangeDark : dark ? SystemColors.ControlDark : SystemColors.ControlDarkDark;
 
-            using var brush = new SolidBrush(bgColor);
-            using var borderPen = new Pen(borderColor);
+            using var brush = Parent.BackColor.toBrush(); // Setting our own backcolor is ignored, so we borrow our parents
+            using var borderPen = BorderColor.toPen(1);
 
             // Fill entire background
             e.Graphics.FillRectangle(brush, ClientRectangle);
+            e.Graphics.DrawRectangle(borderPen, 0, ItemSize.Height, ClientSize.Width - 1, ClientSize.Height - ItemSize.Height - 1);
 
             // Draw the page content area with flat orange border
             if (TabCount > 0)
@@ -228,7 +236,7 @@ namespace SrvSurvey
                 }
                 else if (dark)
                 {
-                    using var darkBorderPen = new Pen(borderColor, 2);
+                    using var darkBorderPen = new Pen(BorderColor, 2);
                     e.Graphics.DrawRectangle(darkBorderPen,
                         displayRect.X + 1, displayRect.Y + 1,
                         displayRect.Width - 3, displayRect.Height - 3);
@@ -308,7 +316,7 @@ namespace SrvSurvey
                 Font,
                 textBounds,
                 text,
-                TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+                TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis | TextFormatFlags.NoPadding);
         }
     }
 

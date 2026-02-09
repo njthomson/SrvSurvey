@@ -42,7 +42,7 @@
             menuStatus = new ToolStripStatusLabel();
             menuWatch = new ToolStripDropDownButton();
             menuComms = new ToolStripDropDownButton();
-            checkWatchFolder = new CheckBox();
+            checkWatchFolder = new ThemedCheckBox();
             btnRefresh = new DrawButton();
             btnRestartChapter = new DrawButton();
             btnStopChapter = new DrawButton();
@@ -330,7 +330,7 @@
         private DrawButton btnParse;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel menuStatus;
-        private CheckBox checkWatchFolder;
+        private ThemedCheckBox checkWatchFolder;
         private DrawButton btnRefresh;
         private ToolStripDropDownButton menuMore;
         private ToolStripMenuItem menuImportFolder2;
