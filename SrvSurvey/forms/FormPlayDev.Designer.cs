@@ -31,8 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPlayDev));
             txtJson = new TextBox();
             label1 = new Label();
-            comboQuest = new ComboBox();
-            comboChapter = new ComboBox();
+            comboQuest = new ThemedComboBox();
+            comboChapter = new ThemedComboBox();
             label2 = new Label();
             btnParse = new DrawButton();
             statusStrip1 = new StatusStrip();
@@ -42,7 +42,7 @@
             menuStatus = new ToolStripStatusLabel();
             menuWatch = new ToolStripDropDownButton();
             menuComms = new ToolStripDropDownButton();
-            checkWatchFolder = new CheckBox();
+            checkWatchFolder = new ThemedCheckBox();
             btnRefresh = new DrawButton();
             btnRestartChapter = new DrawButton();
             btnStopChapter = new DrawButton();
@@ -324,13 +324,13 @@
 
         private TextBox txtJson;
         private Label label1;
-        private ComboBox comboQuest;
-        private ComboBox comboChapter;
+        private ThemedComboBox comboQuest;
+        private ThemedComboBox comboChapter;
         private Label label2;
         private DrawButton btnParse;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel menuStatus;
-        private CheckBox checkWatchFolder;
+        private ThemedCheckBox checkWatchFolder;
         private DrawButton btnRefresh;
         private ToolStripDropDownButton menuMore;
         private ToolStripMenuItem menuImportFolder2;

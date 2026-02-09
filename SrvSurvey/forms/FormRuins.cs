@@ -119,7 +119,7 @@ namespace SrvSurvey
             prepTowerMenus(toolTowerTop);
             prepTowerMenus(toolTowerMiddle);
             prepTowerMenus(toolTowerBottom);
-            Util.applyTheme(this);
+            applyThemeWithCustomControls(this);
         }
 
         private void prepTowerMenus(ToolStripMenuItem menuItem)

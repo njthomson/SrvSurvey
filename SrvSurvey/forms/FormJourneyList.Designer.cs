@@ -35,7 +35,7 @@
             lblHeader = new Label();
             btnOpen = new DrawButton();
             btnClose = new DrawButton();
-            txtSummary = new TextBox2();
+            txtSummary = new ThemedTextBox();
             SuspendLayout();
             // 
             // list
@@ -132,7 +132,7 @@
             txtSummary.SelectionStart = 0;
             txtSummary.Size = new Size(325, 271);
             txtSummary.TabIndex = 4;
-            txtSummary.UseEdgeButton = TextBox2.EdgeButton.None;
+            txtSummary.UseEdgeButton = ThemedTextBox.EdgeButton.None;
             // 
             // FormJourneyList
             // 
@@ -161,6 +161,6 @@
         private Label lblHeader;
         private DrawButton btnOpen;
         private DrawButton btnClose;
-        private TextBox2 txtSummary;
+        private ThemedTextBox txtSummary;
     }
 }

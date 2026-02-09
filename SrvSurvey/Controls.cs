@@ -1,4 +1,4 @@
-﻿using SrvSurvey.game;
+using SrvSurvey.game;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.ComponentModel;
@@ -148,11 +148,11 @@ namespace SrvSurvey
         }
     }
 
-    public class TreeView2 : TreeView
+    public class ThemedTreeView : TreeView
     {
         public bool doNotPaint = false;
 
-        public TreeView2()
+        public ThemedTreeView()
         {
             this.DoubleBuffered = true;
         }
@@ -174,12 +174,158 @@ namespace SrvSurvey
         }
     }
 
-    public class TextBox2 : Panel
+    internal class ThemedTabControl : TabControl
+    {
+        public ThemedTabControl()
+        {
+            SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            DrawMode = TabDrawMode.OwnerDrawFixed;
+            SizeMode = TabSizeMode.Normal;
+            Padding = new Point(1, 1); // Minimal padding as requested
+        }
+
+        [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public Color BorderColor { get; set; } = SystemColors.ControlDark;
+
+        protected override void OnCreateControl()
+        {
+            base.OnCreateControl();
+            DrawMode = TabDrawMode.OwnerDrawFixed;
+            SizeMode = TabSizeMode.Normal;
+            Invalidate();
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            // Skip base; we'll paint the page area ourselves
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            if (DesignMode || Parent == null)
+            {
+                base.OnPaint(e);
+                return;
+            }
+
+            var dark = Game.settings.darkTheme;
+            var black = Game.settings.themeMainBlack;
+
+            using var brush = Parent.BackColor.toBrush(); // Setting our own backcolor is ignored, so we borrow our parents
+            using var borderPen = BorderColor.toPen(1);
+
+            // Fill entire background
+            e.Graphics.FillRectangle(brush, ClientRectangle);
+            e.Graphics.DrawRectangle(borderPen, 0, ItemSize.Height, ClientSize.Width - 1, ClientSize.Height - ItemSize.Height - 1);
+
+            // Draw the page content area with flat orange border
+            if (TabCount > 0)
+            {
+                var displayRect = DisplayRectangle;
+                e.Graphics.FillRectangle(brush, displayRect);
+
+                // Draw visible flat border around content area (2px for visibility)
+                if (black)
+                {
+                    using var orangeBorderPen = new Pen(C.orange, 2);
+                    e.Graphics.DrawRectangle(orangeBorderPen,
+                        displayRect.X + 1, displayRect.Y + 1,
+                        displayRect.Width - 3, displayRect.Height - 3);
+                }
+                else if (dark)
+                {
+                    using var darkBorderPen = new Pen(BorderColor, 2);
+                    e.Graphics.DrawRectangle(darkBorderPen,
+                        displayRect.X + 1, displayRect.Y + 1,
+                        displayRect.Width - 3, displayRect.Height - 3);
+                }
+            }
+
+            // Draw all tabs
+            for (int i = 0; i < TabCount; i++)
+            {
+                OnDrawItem(new DrawItemEventArgs(e.Graphics, Font, GetTabRect(i), i,
+                    i == SelectedIndex ? DrawItemState.Selected : DrawItemState.None));
+            }
+        }
+
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+            DrawMode = TabDrawMode.OwnerDrawFixed;
+            SizeMode = TabSizeMode.Normal;
+        }
+
+        protected override void OnDrawItem(DrawItemEventArgs e)
+        {
+            if (DesignMode)
+            {
+                base.OnDrawItem(e);
+                return;
+            }
+
+            var dark = Game.settings.darkTheme;
+            var black = Game.settings.themeMainBlack;
+            var selected = (e.State & DrawItemState.Selected) == DrawItemState.Selected;
+
+            var baseBack = black
+                ? Color.Black
+                : dark ? SystemColors.ControlDark : SystemColors.ControlLight;
+            var selectedBack = black
+                ? C.orangeDark
+                : dark ? SystemColors.ControlDarkDark : ControlPaint.LightLight(baseBack);
+            var border = black
+                ? C.orangeDark
+                : dark ? ControlPaint.Dark(baseBack) : SystemColors.ControlDark;
+            var accent = black ? C.orange : C.menuGold;
+            var text = black
+                ? (selected ? C.orange : C.menuGold)
+                : (selected ? ForeColor : ForeColor); // keep default forecolor if not black theme
+
+            var bounds = GetTabRect(e.Index);
+
+            using var backBrush = new SolidBrush(selected ? selectedBack : baseBack);
+            using var borderPen = new Pen(border);
+
+            e.Graphics.FillRectangle(backBrush, bounds);
+
+            // Draw border, but omit bottom edge for selected tab
+            if (selected)
+            {
+                e.Graphics.DrawLine(borderPen, bounds.Left, bounds.Top, bounds.Left, bounds.Bottom - 1);
+                e.Graphics.DrawLine(borderPen, bounds.Right - 1, bounds.Top, bounds.Right - 1, bounds.Bottom - 1);
+                e.Graphics.DrawLine(borderPen, bounds.Left, bounds.Top, bounds.Right - 1, bounds.Top);
+            }
+            else
+            {
+                e.Graphics.DrawRectangle(borderPen, bounds);
+            }
+
+            if (selected)
+            {
+                using var accentPen = new Pen(accent, 2);
+                e.Graphics.DrawLine(accentPen, bounds.Left + 2, bounds.Top + 1, bounds.Right - 2, bounds.Top + 1);
+            }
+
+            var textBounds = Rectangle.Inflate(bounds, -2, -3);
+            TextRenderer.DrawText(
+                e.Graphics,
+                TabPages[e.Index].Text,
+                Font,
+                textBounds,
+                text,
+                TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis | TextFormatFlags.NoPadding);
+        }
+    }
+
+    public class ThemedTextBox : Panel
     {
         private TextBox tb;
         private Button? eb;
 
-        public TextBox2()
+        public ThemedTextBox()
         {
             SetStyle(ControlStyles.ResizeRedraw, true);
 
@@ -459,7 +605,7 @@ namespace SrvSurvey
     /// <summary>
     /// A ComboBox for choosing known Commanders
     /// </summary>
-    public class ComboCmdr : ComboBox
+    public class ComboCmdr : ThemedComboBox
     {
         /// <summary> Fid => Commander </summary>
         public Dictionary<string, string> allCmdrs { get; private set; } = new();
@@ -536,7 +682,7 @@ namespace SrvSurvey
     /// <summary>
     /// A ComboBox for choosing known star systems
     /// </summary>
-    internal class ComboStarSystem : ComboBox2
+    internal class ComboStarSystem : ThemedComboBox
     {
         public event StarSystemChanged? selectedSystemChanged;
 
@@ -937,12 +1083,12 @@ namespace SrvSurvey
             BackColor = C.orangeDarker;
             BackColorHover = C.orangeDark;
             BackColorPressed = C.orange;
-            BackColorDisabled = C.grey;
+            BackColorDisabled = Color.Black;
 
             ForeColor = C.orange;
             ForeColorHover = C.menuGold;
             ForeColorPressed = C.black;
-            ForeColorDisabled = C.black;
+            ForeColorDisabled = C.grey;
         }
 
         public void setThemeColors(bool dark, bool black)
@@ -952,12 +1098,12 @@ namespace SrvSurvey
 
             this.BackColorHover = black ? C.orangeDark : SystemColors.InactiveCaption;
             this.BackColorPressed = black ? C.orange : SystemColors.ActiveCaption;
-            this.BackColorDisabled = black ? C.grey : SystemColors.ScrollBar;
+            this.BackColorDisabled = black ? Color.Black : SystemColors.ScrollBar;
 
             this.ForeColor = black ? C.orange : SystemColors.ControlText;
             this.ForeColorHover = black ? C.menuGold : SystemColors.ControlText;
             this.ForeColorPressed = black ? C.black : SystemColors.ControlText;
-            this.ForeColorDisabled = black ? C.black : SystemColors.GrayText;
+            this.ForeColorDisabled = black ? C.grey : SystemColors.GrayText;
         }
 
         protected override void OnMouseEnter(EventArgs e)
@@ -1136,7 +1282,7 @@ namespace SrvSurvey
         }
     }
 
-    public class GroupBox2 : GroupBox
+    public class ThemedGroupBox : GroupBox
     {
         [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color LineColor { get; set; } = SystemColors.ActiveBorder;
@@ -1167,14 +1313,15 @@ namespace SrvSurvey
             if (linePen?.Color != LineColor) linePen = LineColor.toPen(1);
             g.DrawRectangle(linePen, 0, h, ClientRectangle.Width - 1, ClientRectangle.Height - h - 2);
 
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            TextRenderer.DrawText(g, Text, Font, new Point(6, 0), ForeColor, BackColor);
+            // Draw text without any "shadow" effect
+            var textColor = Enabled ? ForeColor : (BackColor == Color.Black ? C.grey : SystemColors.GrayText);
+            TextRenderer.DrawText(g, Text, Font, new Point(6, 0), textColor, BackColor);
 
             base.RaisePaintEvent(this, e);
         }
     }
 
-    public class CheckBox2 : CheckBox
+    public class ThemedCheckBox : CheckBox
     {
         [Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color LineColor { get; set; } = SystemColors.ActiveBorder;
@@ -1247,13 +1394,218 @@ namespace SrvSurvey
         }
     }
 
-    internal class ComboBox2 : ComboBox
+    public class ThemedTrackBar : TrackBar
+    {
+        private bool initialized;
+
+        public ThemedTrackBar()
+        {
+            SetStyle(ControlStyles.Opaque, true);
+        }
+
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+            initialized = true;
+            UpdateTheme();
+            Invalidate();
+        }
+
+        private void UpdateTheme()
+        {
+            var dark = Game.settings.darkTheme;
+            var black = Game.settings.themeMainBlack;
+
+            BackColor = black ? Color.Black : dark ? SystemColors.ControlDark : SystemColors.ControlLight;
+            ForeColor = black ? C.orange : SystemColors.ControlText;
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            if (!initialized)
+            {
+                base.OnPaintBackground(e);
+                return;
+            }
+
+            var dark = Game.settings.darkTheme;
+            var black = Game.settings.themeMainBlack;
+            var bgColor = black ? Color.Black : dark ? SystemColors.ControlDark : SystemColors.ControlLight;
+
+            using var brush = new SolidBrush(bgColor);
+            e.Graphics.FillRectangle(brush, ClientRectangle);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            if (!initialized)
+            {
+                base.OnPaint(e);
+                return;
+            }
+
+            // Paint background
+            OnPaintBackground(e);
+
+            // Let the base control paint the track and thumb with system rendering
+            // Unfortunately, full custom painting of TrackBar requires P/Invoke
+            base.OnPaint(e);
+        }
+    }
+
+    public class ThemedNumericUpDown : NumericUpDown
+    {
+        private bool initialized;
+
+        public ThemedNumericUpDown()
+        {
+            SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            BorderStyle = BorderStyle.None;
+        }
+
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+            initialized = true;
+            UpdateColors();
+            Invalidate();
+        }
+
+        private void UpdateColors()
+        {
+            var dark = Game.settings.darkTheme;
+            var black = Game.settings.themeMainBlack;
+
+            BackColor = black ? Color.Black : dark ? SystemColors.WindowFrame : SystemColors.Window;
+            ForeColor = black ? C.orange : SystemColors.WindowText;
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            // Skip base background painting
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            if (DesignMode || !initialized)
+            {
+                base.OnPaint(e);
+                return;
+            }
+
+            var dark = Game.settings.darkTheme;
+            var black = Game.settings.themeMainBlack;
+
+            var bgColor = Enabled
+                ? (black ? Color.Black : dark ? SystemColors.WindowFrame : SystemColors.Window)
+                : (black ? Color.Black : dark ? SystemColors.ControlDark : SystemColors.Control);
+            var fgColor = Enabled
+                ? (black ? C.orange : SystemColors.WindowText)
+                : (black ? C.grey : SystemColors.GrayText);
+            var borderColor = Enabled
+                ? (black ? C.orangeDark : dark ? SystemColors.ControlDark : SystemColors.ControlDarkDark)
+                : (black ? C.grey : SystemColors.ControlDark);
+            var buttonBg = Enabled
+                ? (black ? C.orangeDark : dark ? SystemColors.ControlDark : SystemColors.Control)
+                : (black ? C.orangeDarker : dark ? SystemColors.ControlDarkDark : SystemColors.ControlDark);
+            var arrowColor = Enabled
+                ? (black ? C.orange : SystemColors.ControlText)
+                : (black ? C.grey : SystemColors.GrayText);
+
+            var g = e.Graphics;
+
+            // Fill background
+            using (var brush = new SolidBrush(bgColor))
+            {
+                g.FillRectangle(brush, ClientRectangle);
+            }
+
+            // Draw border with 2px width for visibility
+            using (var pen = new Pen(borderColor, 2))
+            {
+                g.DrawRectangle(pen, 1, 1, Width - 2, Height - 2);
+            }
+
+            // Calculate button area (right side)
+            var buttonWidth = SystemInformation.VerticalScrollBarWidth;
+            var buttonRect = new Rectangle(Width - buttonWidth - 1, 1, buttonWidth, Height - 2);
+            var topButtonRect = new Rectangle(buttonRect.X, buttonRect.Y, buttonRect.Width, buttonRect.Height / 2);
+            var bottomButtonRect = new Rectangle(buttonRect.X, buttonRect.Y + buttonRect.Height / 2, buttonRect.Width, buttonRect.Height - buttonRect.Height / 2);
+
+            // Draw buttons
+            using (var brush = new SolidBrush(buttonBg))
+            {
+                g.FillRectangle(brush, buttonRect);
+            }
+
+            // Draw separator line between buttons
+            using (var pen = new Pen(borderColor))
+            {
+                g.DrawLine(pen, buttonRect.Left, buttonRect.Top + buttonRect.Height / 2, buttonRect.Right, buttonRect.Top + buttonRect.Height / 2);
+                g.DrawLine(pen, buttonRect.Left, buttonRect.Top, buttonRect.Left, buttonRect.Bottom);
+            }
+
+            // Draw arrows
+            var arrowSize = 3;
+            using (var brush = new SolidBrush(arrowColor))
+            {
+                // Up arrow
+                var upMid = new Point(topButtonRect.Left + topButtonRect.Width / 2, topButtonRect.Top + topButtonRect.Height / 2 - 1);
+                var upArrow = new Point[]
+                {
+                    new Point(upMid.X, upMid.Y - arrowSize / 2),
+                    new Point(upMid.X - arrowSize, upMid.Y + arrowSize / 2),
+                    new Point(upMid.X + arrowSize, upMid.Y + arrowSize / 2)
+                };
+                g.FillPolygon(brush, upArrow);
+
+                // Down arrow
+                var downMid = new Point(bottomButtonRect.Left + bottomButtonRect.Width / 2, bottomButtonRect.Top + bottomButtonRect.Height / 2 + 1);
+                var downArrow = new Point[]
+                {
+                    new Point(downMid.X, downMid.Y + arrowSize / 2),
+                    new Point(downMid.X - arrowSize, downMid.Y - arrowSize / 2),
+                    new Point(downMid.X + arrowSize, downMid.Y - arrowSize / 2)
+                };
+                g.FillPolygon(brush, downArrow);
+            }
+
+            // Draw text
+            var textRect = new Rectangle(4, 0, Width - buttonWidth - 6, Height);
+            var text = Value.ToString();
+            if (DecimalPlaces > 0)
+                text = Value.ToString($"F{DecimalPlaces}");
+
+            TextRenderer.DrawText(g, text, Font, textRect, fgColor,
+                TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
+        }
+
+        protected override void OnEnabledChanged(EventArgs e)
+        {
+            base.OnEnabledChanged(e);
+            if (initialized)
+            {
+                UpdateColors();
+                Invalidate();
+            }
+        }
+
+        protected override void OnValueChanged(EventArgs e)
+        {
+            base.OnValueChanged(e);
+            Invalidate();
+        }
+    }
+
+    public class ThemedComboBox : ComboBox
     {
         // Many thanks to https://github.com/r-aghaei/FlatComboExample/blob/master/src/FlatComboExample.NetFX/FlatComboBox.cs
 
         private bool mouseInside;
 
-        public ComboBox2()
+        public ThemedComboBox()
         {
             SetStyle(ControlStyles.ResizeRedraw, true);
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);

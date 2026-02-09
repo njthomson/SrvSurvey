@@ -72,6 +72,8 @@ namespace SrvSurvey.forms
 
             var mw = flowCommands.Right;
             this.MinimumSize = new Size(mw, 188);
+
+            BaseForm.applyThemeWithCustomControls(this);
         }
 
         private void btnConfig_Click(object sender, EventArgs e)

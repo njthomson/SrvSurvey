@@ -34,10 +34,10 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormBoxelSearch));
-            txtConfigBoxel = new TextBox2();
+            txtConfigBoxel = new ThemedTextBox();
             btnConfig = new FlatButton();
             lblMaxNum = new Label();
-            txtCurrent = new TextBox2();
+            txtCurrent = new ThemedTextBox();
             btnCopyNext = new FlatButton();
             list = new ListView();
             colSystem = new ColumnHeader();
@@ -54,11 +54,11 @@
             menuMore = new ToolStripDropDownButton();
             menuHelpLink = new ToolStripMenuItem();
             checkAutoCopy = new CheckBox();
-            numMax = new NumericUpDown();
+            numMax = new ThemedNumericUpDown();
             panelList = new Panel();
             tableTop = new TableLayoutPanel();
             label1 = new Label();
-            txtMainBoxel = new TextBox2();
+            txtMainBoxel = new ThemedTextBox();
             btnParent = new FlatButton();
             label3 = new Label();
             flowCommands = new FlowLayoutPanel();
@@ -80,7 +80,7 @@
             label4 = new Label();
             checkCompleteOnEnterSystem = new CheckBox();
             dateStart = new DateTimePicker();
-            comboLowMassCode = new ComboBox();
+            comboLowMassCode = new ThemedComboBox();
             lblBadBoxel = new Label();
             lblBoxelCount = new Label();
             contextList.SuspendLayout();
@@ -101,7 +101,7 @@
             tableConfig.SetColumnSpan(txtConfigBoxel, 4);
             txtConfigBoxel.ForeColor = SystemColors.WindowText;
             txtConfigBoxel.Name = "txtConfigBoxel";
-            txtConfigBoxel.UseEdgeButton = TextBox2.EdgeButton.None;
+            txtConfigBoxel.UseEdgeButton = ThemedTextBox.EdgeButton.None;
             txtConfigBoxel.TextChanged += txtConfigBoxel_TextChanged;
             // 
             // btnConfig
@@ -125,7 +125,7 @@
             txtCurrent.ForeColor = SystemColors.WindowText;
             txtCurrent.Name = "txtCurrent";
             txtCurrent.ReadOnly = true;
-            txtCurrent.UseEdgeButton = TextBox2.EdgeButton.None;
+            txtCurrent.UseEdgeButton = ThemedTextBox.EdgeButton.None;
             // 
             // btnCopyNext
             // 
@@ -282,7 +282,7 @@
             txtMainBoxel.ForeColor = SystemColors.WindowText;
             txtMainBoxel.Name = "txtMainBoxel";
             txtMainBoxel.ReadOnly = true;
-            txtMainBoxel.UseEdgeButton = TextBox2.EdgeButton.None;
+            txtMainBoxel.UseEdgeButton = ThemedTextBox.EdgeButton.None;
             // 
             // btnParent
             // 
@@ -491,10 +491,10 @@
         }
 
         #endregion
-        private TextBox2 txtConfigBoxel;
+        private ThemedTextBox txtConfigBoxel;
         private FlatButton btnConfig;
         private Label lblMaxNum;
-        private TextBox2 txtCurrent;
+        private ThemedTextBox txtCurrent;
         private FlatButton btnCopyNext;
         private ListView list;
         private ColumnHeader colSystem;
@@ -504,7 +504,7 @@
         private ColumnHeader colCompleted;
         private StatusStrip status;
         private CheckBox checkAutoCopy;
-        private NumericUpDown numMax;
+        private ThemedNumericUpDown numMax;
         private Panel panelList;
         private ToolStripSplitButton btnToggleList;
         private ToolStripStatusLabel lblStatus;
@@ -523,7 +523,7 @@
         private CheckBox checkCompleteOnEnterSystem;
         private CheckBox checkCompleteOnFssAllBodies;
         private Label label5;
-        private ComboBox comboLowMassCode;
+        private ThemedComboBox comboLowMassCode;
         private Label lblConfigHeader;
         private Label lblBoxelCount;
         private ContextMenuStrip contextList;
@@ -533,7 +533,7 @@
         private FlatButton btnConfigNav;
         private Label label6;
         private Label label1;
-        private TextBox2 txtMainBoxel;
+        private ThemedTextBox txtMainBoxel;
         private Panel panelGraphic;
         private Label labelGraphic;
         private FlowLayoutPanel flowCommands;

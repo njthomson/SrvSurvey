@@ -38,10 +38,10 @@
             listSystems = new ListView();
             colSystem = new ColumnHeader();
             colInterest = new ColumnHeader();
-            tabControl1 = new TabControl();
+            tabControl1 = new ThemedTabControl();
             tabPage1 = new TabPage();
-            txtByline = new TextBox2();
-            txtJourneyName = new TextBox2();
+            txtByline = new ThemedTextBox();
+            txtJourneyName = new ThemedTextBox();
             txtDescription = new TextBox();
             tabPage2 = new TabPage();
             splitContainer1 = new SplitContainer();
@@ -160,7 +160,7 @@
             txtByline.Size = new Size(453, 34);
             txtByline.TabIndex = 1;
             txtByline.Text = "cmdr Stuff | Jan 2nd 2025 ~ Dec 31st 3304";
-            txtByline.UseEdgeButton = TextBox2.EdgeButton.None;
+            txtByline.UseEdgeButton = ThemedTextBox.EdgeButton.None;
             // 
             // txtJourneyName
             // 
@@ -176,7 +176,7 @@
             txtJourneyName.Size = new Size(453, 34);
             txtJourneyName.TabIndex = 0;
             txtJourneyName.Text = "journey name";
-            txtJourneyName.UseEdgeButton = TextBox2.EdgeButton.None;
+            txtJourneyName.UseEdgeButton = ThemedTextBox.EdgeButton.None;
             txtJourneyName.TextChanged2 += journey_TextChanged;
             // 
             // txtDescription
@@ -354,12 +354,12 @@
         private ColumnHeader colMetricCount;
         private ListView listSystems;
         private ColumnHeader colSystem;
-        private TabControl tabControl1;
+        private ThemedTabControl tabControl1;
         private TabPage tabPage1;
         private TabPage tabPage2;
-        private TextBox2 txtJourneyName;
+        private ThemedTextBox txtJourneyName;
         private TextBox txtDescription;
-        private TextBox2 txtByline;
+        private ThemedTextBox txtByline;
         private SplitContainer splitContainer1;
         private Panel panelSystem;
         private ColumnHeader colInterest;

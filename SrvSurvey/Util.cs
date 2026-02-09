@@ -1,4 +1,4 @@
-﻿using DecimalMath;
+using DecimalMath;
 using Microsoft.Extensions.Http.Resilience;
 using Polly;
 using SrvSurvey.canonn;
@@ -1195,10 +1195,49 @@ static class Util
 
     public static void applyTheme(Control ctrl, bool dark, bool black)
     {
-        if (ctrl is Button)
+        if (ctrl is Button btn)
         {
-            ctrl.BackColor = black ? Color.Black : dark ? SystemColors.ControlDark : SystemColors.ControlLight;
-            ctrl.ForeColor = black ? C.orange : SystemColors.ControlText;
+            applyThemeToButton(btn, dark, black);
+            btn.EnabledChanged -= ButtonThemeEnabledChanged;
+            btn.EnabledChanged += ButtonThemeEnabledChanged;
+        }
+        else if (ctrl is ThemedNumericUpDown)
+        {
+            // ThemedNumericUpDown handles its own theming
+        }
+        else if (ctrl is NumericUpDown nud)
+        {
+            nud.BackColor = black ? Color.Black : dark ? SystemColors.WindowFrame : SystemColors.Window;
+            nud.ForeColor = black ? C.orange : SystemColors.WindowText;
+            nud.BorderStyle = BorderStyle.FixedSingle;
+
+            // Try to theme internal controls
+            try
+            {
+                foreach (Control child in nud.Controls)
+                {
+                    if (child is TextBox tb)
+                    {
+                        tb.BackColor = black ? Color.Black : dark ? SystemColors.WindowFrame : SystemColors.Window;
+                        tb.ForeColor = black ? C.orange : SystemColors.WindowText;
+                        tb.BorderStyle = BorderStyle.None;
+                    }
+                    else if (child.GetType().Name == "UpDownButtons")
+                    {
+                        child.BackColor = black ? C.orangeDark : dark ? SystemColors.ControlDark : SystemColors.Control;
+                        child.ForeColor = black ? C.orange : SystemColors.ControlText;
+                    }
+                }
+            }
+            catch { /* Ignore if reflection fails */ }
+        }
+        else if (ctrl is TrackBar track)
+        {
+            // Skip; ThemedTrackBar will handle itself
+        }
+        else if (ctrl is ThemedTrackBar)
+        {
+            // Handled via custom painting
         }
         else if (ctrl is TextBox)
         {
@@ -1213,15 +1252,56 @@ static class Util
                 ctrl.ForeColor = black ? C.orange : SystemColors.ControlText;
             }
         }
-        else if (ctrl is ListView)
+        else if (ctrl is ThemedComboBox combo)
         {
-            ctrl.BackColor = black ? Color.Black : dark ? SystemColors.WindowFrame : SystemColors.Window;
-            ctrl.ForeColor = black ? C.orange : dark ? SystemColors.Info : SystemColors.ControlText;
+            ctrl.BackColor = black ? Color.Black : dark ? SystemColors.ScrollBar : SystemColors.Window;
+            ctrl.ForeColor = black ? C.orange : SystemColors.ControlText;
+
+            combo.BorderColor = black ? C.orangeDark : SystemColors.ControlDarkDark;
+            combo.BorderHoverColor = black ? C.menuGold : SystemColors.ControlLight;
+            combo.ButtonColor = black ? C.orangeDark : SystemColors.ControlDark;
+            combo.ButtonHoverColor = black ? C.orangeDarker : SystemColors.ControlDarkDark;
+        }
+        else if (ctrl is ThemedTabControl)
+        {
+            ctrl.BackColor = black
+                ? Color.Black
+                : dark ? SystemColors.ControlDarkDark : SystemColors.ControlLight;
+            ctrl.ForeColor = black ? C.orange : SystemColors.ControlText;
+        }
+        else if (ctrl is ListView lv)
+        {
+            lv.BackColor = black ? Color.Black : dark ? SystemColors.WindowFrame : SystemColors.Window;
+            lv.ForeColor = black ? C.orange : dark ? SystemColors.Info : SystemColors.ControlText;
+
+            // Enable owner draw for black theme to style headers and grid
+            if (black)
+            {
+                lv.OwnerDraw = true;
+                lv.DrawColumnHeader -= ListView_DrawColumnHeader;
+                lv.DrawColumnHeader += ListView_DrawColumnHeader;
+                lv.DrawItem -= ListView_DrawItem;
+                lv.DrawItem += ListView_DrawItem;
+                lv.DrawSubItem -= ListView_DrawSubItem;
+                lv.DrawSubItem += ListView_DrawSubItem;
+            }
         }
         else if (ctrl is ListBox)
         {
             ctrl.BackColor = black ? Color.Black : dark ? SystemColors.ScrollBar : SystemColors.Window;
             ctrl.ForeColor = black ? C.orange : SystemColors.ControlText;
+        }
+        else if (ctrl is Label lbl)
+        {
+            ctrl.BackColor = black ? Color.Black : (dark ? SystemColors.AppWorkspace : SystemColors.Control);
+            // For labels, set both enabled and disabled colors to avoid 3D shadow effect
+            ctrl.ForeColor = ctrl.Enabled
+                ? (black ? C.orange : SystemColors.ControlText)
+                : (black ? C.grey : SystemColors.GrayText);
+
+            // Always hook Paint event to override 3D shadow effect when disabled
+            lbl.Paint -= Label_FlatPaint;
+            lbl.Paint += Label_FlatPaint;
         }
         else
         {
@@ -1234,6 +1314,112 @@ static class Util
             if (child.Tag is string && child.Tag.ToString() == "NoTheme") continue;
 
             applyTheme(child, dark, black);
+        }
+    }
+
+    private static void ButtonThemeEnabledChanged(object? sender, EventArgs e)
+    {
+        if (sender is not Button btn) return;
+        applyThemeToButton(btn, Game.settings.darkTheme, Game.settings.themeMainBlack);
+    }
+
+    private static void Label_FlatPaint(object? sender, PaintEventArgs e)
+    {
+        if (sender is not Label lbl) return;
+
+        var black = Game.settings.themeMainBlack;
+        var dark = Game.settings.darkTheme;
+
+        // Draw flat label without 3D shadow effect (even when disabled)
+        var textColor = lbl.Enabled
+            ? (black ? C.orange : SystemColors.ControlText)
+            : (black ? C.grey : SystemColors.GrayText);
+        var bgColor = black ? Color.Black : (dark ? SystemColors.AppWorkspace : SystemColors.Control);
+
+        e.Graphics.Clear(bgColor);
+
+        var flags = TextFormatFlags.EndEllipsis;
+        // Simple alignment based on TextAlign
+        if (lbl.TextAlign.ToString().Contains("Left"))
+            flags |= TextFormatFlags.Left;
+        else if (lbl.TextAlign.ToString().Contains("Right"))
+            flags |= TextFormatFlags.Right;
+        else
+            flags |= TextFormatFlags.HorizontalCenter;
+
+        if (lbl.TextAlign.ToString().Contains("Top"))
+            flags |= TextFormatFlags.Top;
+        else if (lbl.TextAlign.ToString().Contains("Bottom"))
+            flags |= TextFormatFlags.Bottom;
+        else
+            flags |= TextFormatFlags.VerticalCenter;
+
+        TextRenderer.DrawText(e.Graphics, lbl.Text, lbl.Font, lbl.ClientRectangle, textColor, bgColor, flags);
+    }
+
+    private static void ListView_DrawColumnHeader(object? sender, DrawListViewColumnHeaderEventArgs e)
+    {
+        // Draw header with BRIGHT orange background and black text
+        using var brush = new SolidBrush(C.orange);
+        e.Graphics.FillRectangle(brush, e.Bounds);
+
+        using var pen = new Pen(C.orangeDark);
+        e.Graphics.DrawRectangle(pen, e.Bounds.X, e.Bounds.Y, e.Bounds.Width - 1, e.Bounds.Height - 1);
+
+        TextRenderer.DrawText(e.Graphics, e.Header?.Text ?? "", e.Font, e.Bounds, Color.Black,
+            TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+    }
+
+    private static void ListView_DrawItem(object? sender, DrawListViewItemEventArgs e)
+    {
+        e.DrawDefault = false;
+    }
+
+    private static void ListView_DrawSubItem(object? sender, DrawListViewSubItemEventArgs e)
+    {
+        // Draw background
+        var bgColor = e.Item.Selected ? C.orangeDark : Color.Black;
+        using var brush = new SolidBrush(bgColor);
+        e.Graphics.FillRectangle(brush, e.Bounds);
+
+        // Draw grid lines in bright orange
+        using var gridPen = new Pen(C.orange);
+        e.Graphics.DrawLine(gridPen, e.Bounds.Right - 1, e.Bounds.Top, e.Bounds.Right - 1, e.Bounds.Bottom);
+        e.Graphics.DrawLine(gridPen, e.Bounds.Left, e.Bounds.Bottom - 1, e.Bounds.Right, e.Bounds.Bottom - 1);
+
+        // Draw text
+        var textColor = e.Item.Selected ? Color.Black : C.orange;
+        TextRenderer.DrawText(e.Graphics, e.SubItem?.Text ?? "", e.Item.Font, e.Bounds, textColor,
+            TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+    }
+
+    private static void applyThemeToButton(Button btn, bool dark, bool black)
+    {
+        // Skip if this is a custom button type that handles its own theming
+        if (btn is DrawButton || btn is FlatButton) return;
+
+        btn.UseVisualStyleBackColor = false;
+        btn.FlatStyle = FlatStyle.Flat;
+
+        var enabled = btn.Enabled;
+
+        if (enabled)
+        {
+            // Enabled button styling
+            btn.BackColor = black ? C.orangeDarker : dark ? SystemColors.ControlDark : SystemColors.ControlLight;
+            btn.ForeColor = black ? C.orange : SystemColors.ControlText;
+            btn.FlatAppearance.BorderColor = black ? C.orangeDark : SystemColors.ControlDark;
+            btn.FlatAppearance.BorderSize = 1;
+            btn.FlatAppearance.MouseOverBackColor = black ? C.orangeDark : SystemColors.InactiveCaption;
+            btn.FlatAppearance.MouseDownBackColor = black ? C.menuGold : SystemColors.ActiveCaption;
+        }
+        else
+        {
+            // Disabled button styling - grey text and grey outline on black background
+            btn.BackColor = black ? Color.Black : dark ? SystemColors.ControlDarkDark : SystemColors.Control;
+            btn.ForeColor = black ? C.grey : SystemColors.GrayText;
+            btn.FlatAppearance.BorderColor = black ? C.grey : SystemColors.ControlDark;
+            btn.FlatAppearance.BorderSize = 1;
         }
     }
 

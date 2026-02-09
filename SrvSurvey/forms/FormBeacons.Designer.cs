@@ -55,7 +55,7 @@
             toolStripSeparator4 = new ToolStripSeparator();
             decodingTheAncientRuinsToolStripMenuItem = new ToolStripMenuItem();
             ramTah2DecryptingTheGuardianLogsToolStripMenuItem = new ToolStripMenuItem();
-            comboCurrentSystem = new ComboBox();
+            comboCurrentSystem = new ThemedComboBox();
             label1 = new Label();
             txtFilter = new TextBox();
             btnFilter = new FlatButton();
@@ -72,7 +72,7 @@
             colImages = new ColumnHeader();
             colSurveyComplete = new ColumnHeader();
             colRamTah = new ColumnHeader();
-            comboVisited = new ComboBox();
+            comboVisited = new ThemedComboBox();
             checkRamTah = new CheckBox();
             btnSiteTypes = new FlatButton();
             txtSiteTypes = new TextBox();
@@ -578,8 +578,8 @@
         private ColumnHeader colSystem;
         private ListView grid;
         private ColumnHeader colSiteType;
-        public ComboBox comboCurrentSystem;
-        private ComboBox comboVisited;
+        public ThemedComboBox comboCurrentSystem;
+        private ThemedComboBox comboVisited;
         private CheckBox checkRamTah;
         private FlatButton btnSiteTypes;
         private TextBox txtSiteTypes;

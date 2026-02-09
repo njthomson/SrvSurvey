@@ -30,9 +30,9 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewJourneySystem));
-            txtSystemName = new TextBox2();
-            txtNotes = new TextBox2();
-            txtStuff = new TextBox2();
+            txtSystemName = new ThemedTextBox();
+            txtNotes = new ThemedTextBox();
+            txtStuff = new ThemedTextBox();
             imageList1 = new ImageList(components);
             flowImages = new FlowLayoutPanel();
             pictureBox1 = new PictureBox();
@@ -40,8 +40,8 @@
             pictureBox3 = new PictureBox();
             label1 = new Label();
             split = new SplitContainer();
-            txtRoughStats = new TextBox2();
-            checkJourneyImagesOnly = new CheckBox2();
+            txtRoughStats = new ThemedTextBox();
+            checkJourneyImagesOnly = new ThemedCheckBox();
             table = new TableLayoutPanel();
             flowImages.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -68,7 +68,7 @@
             txtSystemName.Size = new Size(723, 34);
             txtSystemName.TabIndex = 0;
             txtSystemName.Text = "system name";
-            txtSystemName.UseEdgeButton = TextBox2.EdgeButton.None;
+            txtSystemName.UseEdgeButton = ThemedTextBox.EdgeButton.None;
             // 
             // txtNotes
             // 
@@ -94,7 +94,7 @@
             txtStuff.Size = new Size(723, 20);
             txtStuff.TabIndex = 1;
             txtStuff.Text = "stuff";
-            txtStuff.UseEdgeButton = TextBox2.EdgeButton.None;
+            txtStuff.UseEdgeButton = ThemedTextBox.EdgeButton.None;
             // 
             // imageList1
             // 
@@ -246,9 +246,9 @@
 
         #endregion
 
-        private TextBox2 txtSystemName;
-        private TextBox2 txtNotes;
-        private TextBox2 txtStuff;
+        private ThemedTextBox txtSystemName;
+        private ThemedTextBox txtNotes;
+        private ThemedTextBox txtStuff;
         private ImageList imageList1;
         private FlowLayoutPanel flowImages;
         private PictureBox pictureBox1;
@@ -256,8 +256,8 @@
         private PictureBox pictureBox3;
         private Label label1;
         private SplitContainer split;
-        private CheckBox2 checkJourneyImagesOnly;
+        private ThemedCheckBox checkJourneyImagesOnly;
         private TableLayoutPanel table;
-        private TextBox2 txtRoughStats;
+        private ThemedTextBox txtRoughStats;
     }
 }

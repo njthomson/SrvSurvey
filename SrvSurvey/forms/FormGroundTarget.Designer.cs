@@ -32,8 +32,8 @@ namespace SrvSurvey
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGroundTarget));
             label2 = new Label();
             label3 = new Label();
-            txtLat = new TextBox2();
-            txtLong = new TextBox2();
+            txtLat = new ThemedTextBox();
+            txtLong = new ThemedTextBox();
             btnBegin = new DrawButton();
             btnCancel = new DrawButton();
             label6 = new Label();
@@ -156,8 +156,8 @@ namespace SrvSurvey
         #endregion
         private Label label2;
         private Label label3;
-        private TextBox2 txtLat;
-        private TextBox2 txtLong;
+        private ThemedTextBox txtLat;
+        private ThemedTextBox txtLong;
         private DrawButton btnBegin;
         private DrawButton btnCancel;
         private Label label6;

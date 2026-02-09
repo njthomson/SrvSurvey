@@ -48,7 +48,7 @@ namespace SrvSurvey
             btnStartPolygon.Enabled = true;
             btnStartCircle.Enabled = true;
 
-            Util.applyTheme(this);
+            BaseForm.applyThemeWithCustomControls(this);
         }
 
         protected override void OnResizeEnd(EventArgs e)
