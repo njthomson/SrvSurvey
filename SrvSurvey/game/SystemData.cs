@@ -1594,6 +1594,22 @@ namespace SrvSurvey.game
             return names;
         }
 
+        public List<int> getDssRemainingBodyIds()
+        {
+            var ids = new List<int>();
+            var ordered = this.bodies.OrderBy(_ => _.id);
+            foreach (var _ in ordered)
+            {
+                if (_.dssComplete) continue;
+                if (_.type != SystemBodyType.Giant && _.type != SystemBodyType.SolidBody && _.type != SystemBodyType.LandableBody) continue;
+                if (Game.settings.skipGasGiantDSS && _.type == SystemBodyType.Giant) continue;
+                if (Game.settings.skipLowValueDSS && _.rewardEstimate < Game.settings.skipLowValueAmount) continue;
+                if (Game.settings.skipHighDistanceDSS && _.distanceFromArrivalLS > Game.settings.skipHighDistanceDSSValue) continue;
+                ids.Add(_.id);
+            }
+            return ids;
+        }
+
         public List<string> getBioRemainingNames()
         {
             var names = this.bodies
@@ -1928,9 +1944,12 @@ namespace SrvSurvey.game
         #region orbital route optimization
 
         /// <summary>
-        /// Calculate optimal visit order for bodies worth mapping/visiting using orbital mechanics.
+        /// Calculate optimal visit order for the given target bodies using orbital mechanics.
         /// </summary>
-        public void CalculateOptimalRoute()
+        [JsonIgnore]
+        public OrbitalCalculator? lastCalculator;
+
+        public void CalculateOptimalRoute(List<int> targetBodyIds)
         {
             try
             {
@@ -1938,13 +1957,9 @@ namespace SrvSurvey.game
                 foreach (var body in bodies)
                     body.visitOrder = 0;
 
-                // Find bodies worth visiting (high value, unmapped, bio signals, etc.)
-                var worthVisiting = bodies
-                    .Where(b => b.shouldVisit)
-                    .Select(b => b.id)
-                    .ToList();
+                lastCalculator = null;
 
-                if (worthVisiting.Count == 0)
+                if (targetBodyIds.Count == 0)
                     return;
 
                 // Build orbital calculator with all bodies (including root bodies at origin)
@@ -1993,7 +2008,7 @@ namespace SrvSurvey.game
                     startBodyId = bodies.FirstOrDefault(b => b.isMainStar)?.id ?? 0;
 
                 // Optimize route
-                var route = RouteOptimizer.OptimizeRoute(startBodyId, worthVisiting, calculator);
+                var route = RouteOptimizer.OptimizeRoute(startBodyId, targetBodyIds, calculator);
 
                 // Set visit orders (skip first as it's the starting position)
                 for (int i = 1; i < route.Count; i++)
@@ -2003,7 +2018,8 @@ namespace SrvSurvey.game
                         body.visitOrder = i;
                 }
 
-                Game.log($"Calculated optimal route for {worthVisiting.Count} bodies in {this.name}");
+                lastCalculator = calculator;
+                Game.log($"Calculated optimal route for {targetBodyIds.Count} bodies in {this.name}");
             }
             catch (Exception ex)
             {
