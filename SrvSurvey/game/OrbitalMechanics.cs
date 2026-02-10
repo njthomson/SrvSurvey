@@ -102,12 +102,12 @@ namespace SrvSurvey.game
             if (body.SemiMajorAxis <= 0 || body.OrbitalPeriod <= 0)
                 return new Vec3d(0, 0, 0);
 
-            // Convert to radians and km
+            // Convert to radians and km — negate angles to match game coordinate system
             double a = body.SemiMajorAxis / 1000.0; // meters to km
             double e = body.Eccentricity;
-            double i = body.Inclination * Math.PI / 180.0;
-            double omega = body.ArgumentOfPeriapsis * Math.PI / 180.0;
-            double Omega = body.LongitudeAscendingNode * Math.PI / 180.0;
+            double i = -(body.Inclination * Math.PI / 180.0);
+            double omega = 2.0 * Math.PI - body.ArgumentOfPeriapsis * Math.PI / 180.0;
+            double Omega = -(body.LongitudeAscendingNode * Math.PI / 180.0);
             double M0 = body.MeanAnomalyAtEpoch * Math.PI / 180.0;
 
             // Mean Anomaly at current time
@@ -186,23 +186,72 @@ namespace SrvSurvey.game
     }
 
     /// <summary>
-    /// Route optimizer using greedy nearest-neighbor heuristic for TSP.
+    /// Route optimizer: exact solution for small systems, heuristic for large ones.
     /// </summary>
     internal static class RouteOptimizer
     {
+        private const int ExactThreshold = 10;
+
         /// <summary>
         /// Find an efficient route visiting all target bodies, starting from startBodyId.
+        /// Uses exact permutation search for up to 10 targets, nearest-neighbor + 2-opt above that.
         /// Returns ordered list of body IDs including the start.
         /// </summary>
         public static List<int> OptimizeRoute(int startBodyId, List<int> targetBodyIds, OrbitalCalculator calculator)
         {
-            var route = new List<int> { startBodyId };
-            var remaining = new HashSet<int>(targetBodyIds.Where(id => id != startBodyId));
+            var targets = targetBodyIds.Where(id => id != startBodyId).ToList();
 
-            if (remaining.Count == 0)
-                return route;
+            if (targets.Count == 0)
+                return new List<int> { startBodyId };
 
-            int current = startBodyId;
+            if (targets.Count <= ExactThreshold)
+                return ExactShortestRoute(startBodyId, targets, calculator);
+
+            return HeuristicRoute(startBodyId, targets, calculator);
+        }
+
+        private static List<int> ExactShortestRoute(int startId, List<int> targets, OrbitalCalculator calc)
+        {
+            var bestPerm = new List<int>(targets);
+            double bestDist = double.MaxValue;
+
+            Permute(targets, 0, startId, calc, ref bestPerm, ref bestDist);
+
+            var route = new List<int>(bestPerm.Count + 1) { startId };
+            route.AddRange(bestPerm);
+            return route;
+        }
+
+        private static void Permute(List<int> arr, int start, int startId, OrbitalCalculator calc,
+            ref List<int> bestPerm, ref double bestDist)
+        {
+            if (start == arr.Count)
+            {
+                double dist = calc.GetDistanceLightSeconds(startId, arr[0]);
+                for (int i = 1; i < arr.Count; i++)
+                    dist += calc.GetDistanceLightSeconds(arr[i - 1], arr[i]);
+
+                if (dist < bestDist)
+                {
+                    bestDist = dist;
+                    bestPerm = new List<int>(arr);
+                }
+                return;
+            }
+
+            for (int i = start; i < arr.Count; i++)
+            {
+                (arr[start], arr[i]) = (arr[i], arr[start]);
+                Permute(arr, start + 1, startId, calc, ref bestPerm, ref bestDist);
+                (arr[start], arr[i]) = (arr[i], arr[start]);
+            }
+        }
+
+        private static List<int> HeuristicRoute(int startId, List<int> targets, OrbitalCalculator calc)
+        {
+            var route = new List<int> { startId };
+            var remaining = new HashSet<int>(targets);
+            int current = startId;
 
             while (remaining.Count > 0)
             {
@@ -211,7 +260,7 @@ namespace SrvSurvey.game
 
                 foreach (var id in remaining)
                 {
-                    double d = calculator.GetDistanceLightSeconds(current, id);
+                    double d = calc.GetDistanceLightSeconds(current, id);
                     if (d < minDist)
                     {
                         minDist = d;
@@ -226,7 +275,43 @@ namespace SrvSurvey.game
                 current = nearest;
             }
 
+            if (route.Count > 3)
+                Improve2Opt(route, calc);
+
             return route;
+        }
+
+        private static void Improve2Opt(List<int> route, OrbitalCalculator calc, int maxPasses = 20)
+        {
+            int n = route.Count;
+            bool improved = true;
+            int pass = 0;
+
+            while (improved && pass < maxPasses)
+            {
+                improved = false;
+                pass++;
+
+                for (int i = 1; i < n - 1; i++)
+                {
+                    for (int j = i + 1; j < n; j++)
+                    {
+                        double oldDist = calc.GetDistanceLightSeconds(route[i - 1], route[i]);
+                        if (j + 1 < n)
+                            oldDist += calc.GetDistanceLightSeconds(route[j], route[j + 1]);
+
+                        double newDist = calc.GetDistanceLightSeconds(route[i - 1], route[j]);
+                        if (j + 1 < n)
+                            newDist += calc.GetDistanceLightSeconds(route[i], route[j + 1]);
+
+                        if (newDist < oldDist)
+                        {
+                            route.Reverse(i, j - i + 1);
+                            improved = true;
+                        }
+                    }
+                }
+            }
         }
     }
 }

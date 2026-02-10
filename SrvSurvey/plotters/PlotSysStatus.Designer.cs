@@ -140,5 +140,14 @@ namespace Loc {
                 return ResourceManager.GetString("NonBodySignals", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Visit route:.
+        /// </summary>
+        internal static string VisitRoute {
+            get {
+                return ResourceManager.GetString("VisitRoute", resourceCulture);
+            }
+        }
     }
 }
