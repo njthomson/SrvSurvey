@@ -675,6 +675,13 @@ namespace SrvSurvey.game
             body.mass = entry.MassEM > 0 ? entry.MassEM : entry.StellarMass; // mass
             body.distanceFromArrivalLS = entry.DistanceFromArrivalLS;
             body.semiMajorAxis = entry.SemiMajorAxis;
+            body.eccentricity = entry.Eccentricity;
+            body.orbitalInclination = entry.OrbitalInclination;
+            body.periapsis = entry.Periapsis;
+            body.meanAnomaly = entry.MeanAnomaly;
+            body.orbitalPeriod = entry.OrbitalPeriod;
+            body.ascendingNode = entry.AscendingNode;
+            body.orbitalEpoch = entry.timestamp;
             body.absoluteMagnitude = entry.AbsoluteMagnitude;
             body.radius = entry.Radius;
             body.parents = entry.Parents;
@@ -765,6 +772,13 @@ namespace SrvSurvey.game
             body.scanned = true;
             body.type = SystemBodyType.Barycentre;
             body.semiMajorAxis = entry.SemiMajorAxis;
+            body.eccentricity = entry.Eccentricity;
+            body.orbitalInclination = entry.OrbitalInclination;
+            body.periapsis = entry.Periapsis;
+            body.meanAnomaly = entry.MeanAnomaly;
+            body.orbitalPeriod = entry.OrbitalPeriod;
+            body.ascendingNode = entry.AscendingNode;
+            body.orbitalEpoch = entry.timestamp;
 
             return true;
         }
@@ -1607,6 +1621,22 @@ namespace SrvSurvey.game
             return names;
         }
 
+        public List<int> getDssRemainingBodyIds()
+        {
+            var ids = new List<int>();
+            var ordered = this.bodies.OrderBy(_ => _.id);
+            foreach (var _ in ordered)
+            {
+                if (_.dssComplete) continue;
+                if (_.type != SystemBodyType.Giant && _.type != SystemBodyType.SolidBody && _.type != SystemBodyType.LandableBody) continue;
+                if (Game.settings.skipGasGiantDSS && _.type == SystemBodyType.Giant) continue;
+                if (Game.settings.skipLowValueDSS && _.rewardEstimate < Game.settings.skipLowValueAmount) continue;
+                if (Game.settings.skipHighDistanceDSS && _.distanceFromArrivalLS > Game.settings.skipHighDistanceDSSValue) continue;
+                ids.Add(_.id);
+            }
+            return ids;
+        }
+
         public List<string> getBioRemainingNames()
         {
             var names = this.bodies
@@ -1937,6 +1967,94 @@ namespace SrvSurvey.game
 
         [JsonIgnore]
         public string folderImages => Path.Combine(Game.settings.screenshotTargetFolder!, this.name);
+
+        #region orbital route optimization
+
+        /// <summary>
+        /// Calculate optimal visit order for the given target bodies using orbital mechanics.
+        /// </summary>
+        [JsonIgnore]
+        public OrbitalCalculator? lastCalculator;
+
+        public void CalculateOptimalRoute(List<int> targetBodyIds)
+        {
+            try
+            {
+                // Reset all visit orders
+                foreach (var body in bodies)
+                    body.visitOrder = 0;
+
+                lastCalculator = null;
+
+                if (targetBodyIds.Count == 0)
+                    return;
+
+                // Build orbital calculator with all bodies (including root bodies at origin)
+                var calculator = new OrbitalCalculator();
+                foreach (var body in bodies)
+                {
+                    // Immediate parent is the first entry in the Parents list
+                    int parentId = body.parents?.FirstOrDefault()?.id ?? -1;
+
+                    if (body.semiMajorAxis > 0 && body.orbitalPeriod > 0 && body.orbitalEpoch.HasValue)
+                    {
+                        calculator.AddBody(new OrbitalCalculator.OrbitalBody
+                        {
+                            BodyId = body.id,
+                            Name = body.name,
+                            SemiMajorAxis = body.semiMajorAxis,
+                            Eccentricity = body.eccentricity,
+                            Inclination = body.orbitalInclination,
+                            ArgumentOfPeriapsis = body.periapsis,
+                            LongitudeAscendingNode = body.ascendingNode,
+                            MeanAnomalyAtEpoch = body.meanAnomaly,
+                            Epoch = body.orbitalEpoch.Value.UtcDateTime,
+                            OrbitalPeriod = body.orbitalPeriod,
+                            Radius = (double)body.radius,
+                            ParentId = parentId,
+                        });
+                    }
+                    else
+                    {
+                        // Root bodies (main star, barycentres with no orbit) placed at origin
+                        calculator.AddBody(new OrbitalCalculator.OrbitalBody
+                        {
+                            BodyId = body.id,
+                            Name = body.name,
+                            ParentId = parentId,
+                        });
+                    }
+                }
+
+                // Calculate current positions
+                calculator.UpdatePositions(DateTime.UtcNow);
+
+                // Start from player's current body if known, otherwise main star
+                int startBodyId = Game.activeGame?.cmdr?.currentBodyId ?? -1;
+                if (startBodyId < 0 || !calculator.HasBody(startBodyId))
+                    startBodyId = bodies.FirstOrDefault(b => b.isMainStar)?.id ?? 0;
+
+                // Optimize route
+                var route = RouteOptimizer.OptimizeRoute(startBodyId, targetBodyIds, calculator);
+
+                // Set visit orders (skip first as it's the starting position)
+                for (int i = 1; i < route.Count; i++)
+                {
+                    var body = bodies.FirstOrDefault(b => b.id == route[i]);
+                    if (body != null)
+                        body.visitOrder = i;
+                }
+
+                lastCalculator = calculator;
+                Game.log($"Calculated optimal route for {targetBodyIds.Count} bodies in {this.name}");
+            }
+            catch (Exception ex)
+            {
+                Game.log($"Error calculating optimal route: {ex.Message}");
+            }
+        }
+
+        #endregion
     }
 
     internal class SummaryGenus
@@ -2084,6 +2202,31 @@ namespace SrvSurvey.game
         public double semiMajorAxis;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public double eccentricity;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public double orbitalInclination;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public double periapsis;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public double meanAnomaly;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public double orbitalPeriod;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public double ascendingNode;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public DateTimeOffset? orbitalEpoch;
+
+        /// <summary> Visit order for route optimization (0 = not in route, 1+ = order to visit) </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public int visitOrder;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double absoluteMagnitude;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
@@ -2213,6 +2356,38 @@ namespace SrvSurvey.game
 
         [JsonIgnore]
         public bool isMainStar => type == SystemBodyType.Star && (this.id == 0 || this.name.EndsWith("A"));
+
+        /// <summary>
+        /// Determine if this body is worth visiting for mapping/exploration
+        /// </summary>
+        [JsonIgnore]
+        public bool shouldVisit
+        {
+            get
+            {
+                // Skip if already mapped
+                if (this.wasMapped || this.dssComplete)
+                    return false;
+
+                // Skip non-valuable types
+                if (!this.hasValue)
+                    return false;
+
+                // Include bodies with biological signals
+                if (this.bioSignalCount > 0)
+                    return true;
+
+                // Include high-value bodies (terraformable, water worlds, ELW, etc.)
+                if (this.reward > 500000) // Configurable threshold
+                    return true;
+
+                // Include landable bodies with materials
+                if (this.type == SystemBodyType.LandableBody && this.materials?.Count > 0)
+                    return true;
+
+                return false;
+            }
+        }
 
         public bool hasParent(int targetBodyId)
         {
