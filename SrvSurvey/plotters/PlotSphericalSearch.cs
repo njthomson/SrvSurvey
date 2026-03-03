@@ -55,7 +55,11 @@ namespace SrvSurvey.plotters
                 // give priority to route following over boxel searches
                 if (game.cmdr.route?.useNextHop == true && game.cmdr.route.nextHop?.name != null)
                 {
-                    Clipboard.SetDataObject(new DataObject(DataFormats.UnicodeText, game.cmdr.route.nextHop.name), true, 2, 50);
+                    if (Program.control.InvokeRequired)
+                        Program.control.Invoke(() => Clipboard.SetDataObject(new DataObject(DataFormats.UnicodeText, game.cmdr.route.nextHop.name), true, 2, 50));
+                    else
+                        Clipboard.SetDataObject(new DataObject(DataFormats.UnicodeText, game.cmdr.route.nextHop.name), true, 2, 50);
+
                     this.nextRouteSystemCopied = true;
                     this.invalidate();
                 }

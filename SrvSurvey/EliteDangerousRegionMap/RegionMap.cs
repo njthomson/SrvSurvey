@@ -62,19 +62,21 @@ namespace EliteDangerousRegionMap
         private const double y0 = -40985;
         private const double z0 = -24105;
 
-        public static Region FindRegion(double[] starPos)
+        public static Region? FindRegion(double[]? starPos)
         {
+            if (starPos == null || starPos.Length != 3) return null;
+
             return FindRegion(starPos[0], starPos[1], starPos[2]);
         }
 
-        public static Region FindRegion(double x, double y, double z)
+        public static Region? FindRegion(double x, double y, double z)
         {
             var px = (int)((x - x0) * 83 / 4096);
             var pz = (int)((z - z0) * 83 / 4096);
 
             if (px < 0 || pz < 0 || pz >= RegionMapLines.Length)
             {
-                return default!;
+                return default;
             }
             else
             {
@@ -97,7 +99,7 @@ namespace EliteDangerousRegionMap
 
                 if (pv == 0)
                 {
-                    return null!;
+                    return null;
                 }
                 else
                 {
@@ -106,19 +108,21 @@ namespace EliteDangerousRegionMap
             }
         }
 
-        public static SystemBoxel FindRegionForBoxel(long id64)
+        public static SystemBoxel? FindRegionForBoxel(long id64)
         {
             int masscode = (int)(id64 & 7);
             double x = (((id64 >> (30 - masscode * 2)) & (0x3FFF >> masscode)) << masscode) * 10 + x0;
             double y = (((id64 >> (17 - masscode)) & (0x1FFF >> masscode)) << masscode) * 10 + y0;
             double z = (((id64 >> 3) & (0x3FFF >> masscode)) << masscode) * 10 + z0;
+            var region = FindRegion(x, y, z);
+            if (region == null) return null;
 
             return new SystemBoxel
             {
                 X = x,
                 Y = y,
                 Z = z,
-                Region = FindRegion(x, y, z)
+                Region = region
             };
         }
 
@@ -151,12 +155,12 @@ namespace EliteDangerousRegionMap
                     sysdata.Y = y;
                     sysdata.Z = z;
 
-                    sysdata.Region = FindRegion(x, y, z);
+                    sysdata.Region = FindRegion(x, y, z)!;
                 }
 
                 if (system.id64 != 0)
                 {
-                    sysdata.Boxel = FindRegionForBoxel((long)system.id64);
+                    sysdata.Boxel = FindRegionForBoxel((long)system.id64)!;
                 }
             }
 

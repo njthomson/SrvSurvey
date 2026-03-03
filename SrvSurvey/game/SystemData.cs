@@ -972,8 +972,8 @@ namespace SrvSurvey.game
             // track if this is a personal first discovery
             if (Game.activeGame != null)
             {
-                var galacticRegion = EliteDangerousRegionMap.RegionMap.FindRegion(this.starPos);
-                Game.activeGame.cmdrCodex.trackCodex(entry.Name_Localised, entry.EntryID, entry.timestamp, entry.SystemAddress, entry.BodyID, galacticRegion.Id);
+                var galacticRegionId = EliteDangerousRegionMap.RegionMap.FindRegion(this.starPos)?.Id ?? GalacticRegions.getIdxFromName(entry.Region);
+                Game.activeGame.cmdrCodex.trackCodex(entry.Name_Localised, entry.EntryID, entry.timestamp, entry.SystemAddress, entry.BodyID, galacticRegionId);
             }
 
             if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! CodexEntry Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }

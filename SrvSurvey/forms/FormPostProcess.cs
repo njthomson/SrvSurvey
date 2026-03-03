@@ -307,9 +307,8 @@ namespace SrvSurvey
                             var codexEntry = entry as SrvSurvey.CodexEntry;
                             if (codexEntry != null)
                             {
-                                var galacticRegionId = sysData != null
-                                        ? EliteDangerousRegionMap.RegionMap.FindRegion(sysData.starPos).Id
-                                        : GalacticRegions.getIdxFromName(codexEntry.Region);
+                                var galacticRegionId = EliteDangerousRegionMap.RegionMap.FindRegion(sysData?.starPos)?.Id
+                                    ?? GalacticRegions.getIdxFromName(codexEntry.Region);
 
                                 cmdrCodex.trackCodex(codexEntry.Name_Localised, codexEntry.EntryID, codexEntry.timestamp, codexEntry.SystemAddress, codexEntry.BodyID, galacticRegionId);
                             }
@@ -356,9 +355,8 @@ namespace SrvSurvey
                             var codexEntry = entry as SrvSurvey.CodexEntry;
                             if (codexEntry != null)
                             {
-                                var galacticRegionId = lastStarPos.Length > 0
-                                    ? EliteDangerousRegionMap.RegionMap.FindRegion(lastStarPos).Id
-                                    : GalacticRegions.getIdxFromName(codexEntry.Region);
+                                var galacticRegionId = EliteDangerousRegionMap.RegionMap.FindRegion(lastStarPos)?.Id
+                                    ?? GalacticRegions.getIdxFromName(codexEntry.Region);
 
                                 //if (codexEntry.SubCategory_Localised == "Organic structures" && (codexEntry.BodyID == null || codexEntry.BodyID == 0) && lastBodyId == 0)
                                 //    Debugger.Break(); // TODO: Does this ever happen?
