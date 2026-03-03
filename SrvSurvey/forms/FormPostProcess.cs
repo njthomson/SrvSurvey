@@ -92,10 +92,10 @@ namespace SrvSurvey
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            if (!comboCmdr.Enabled) return;
-
             if (!this.processingFiles)
             {
+                if (!comboCmdr.Enabled) return;
+
                 // set cmdr details first
                 this.targetCmdrName = comboCmdr.cmdrName;
                 this.targetCmdrFid = comboCmdr.cmdrFid!;

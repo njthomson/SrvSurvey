@@ -699,6 +699,9 @@ namespace SrvSurvey.game.RavenColonial
         /// <summary>Need to match Spansh</summary>
         public string? subType;
         public required HashSet<BodyFeature> features;
+        public double radius = -1;
+        public double temp = -1;
+        public double gravity = -1;
 
         [JsonConverter(typeof(StringEnumConverter))]
         public enum BodyType

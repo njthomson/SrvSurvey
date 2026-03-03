@@ -860,7 +860,7 @@ namespace SrvSurvey
         public List<Dictionary<ParentBodyType, int>> Parents { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public bool TidalLock { get; set; } // 1 if tidally locked
+        public bool? TidalLock { get; set; } // 1 if tidally locked
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string TerraformState { get; set; } // Terraformable, Terraforming, Terraformed, or null
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]

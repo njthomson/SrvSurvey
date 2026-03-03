@@ -670,6 +670,7 @@ namespace SrvSurvey.game
             body.scanned = true;
             body.type = SystemBody.typeFrom(entry.StarType, entry.PlanetClass, entry.Landable, entry.BodyName);
             body.planetClass = entry.PlanetClass;
+            body.tidalLock = entry.TidalLock;
             if (!string.IsNullOrEmpty(entry.TerraformState))
                 body.terraformable = entry.TerraformState == "Terraformable";
             body.mass = entry.MassEM > 0 ? entry.MassEM : entry.StellarMass; // mass
@@ -716,7 +717,14 @@ namespace SrvSurvey.game
                         {
                             name = newRing.Name,
                             ringClass = newRing.RingClass,
+                            innerRad = newRing.InnerRad,
+                            outerRad = newRing.OuterRad,
                         });
+                    }
+                    else
+                    {
+                        ring.innerRad = newRing.InnerRad;
+                        ring.outerRad = newRing.OuterRad;
                     }
                 }
             }
@@ -1308,6 +1316,7 @@ namespace SrvSurvey.game
                 if (body.radius == 0 && entry.radius > 0) body.radius = entry.radius * 1000;
                 body.planetClass ??= getPlanetClassFromExternal(entry.subType);
                 if (body.parents == null && entry.parents != null) body.parents = entry.parents;
+                if (!body.tidalLock.HasValue && entry.rotationalPeriodTidallyLocked == true) body.tidalLock = true;
                 if (!string.IsNullOrEmpty(entry.terraformingState))
                     body.terraformable = entry.terraformingState == "Candidate for terraforming";
                 if (body.mass == 0) body.mass = entry.earthMasses > 0 ? entry.earthMasses : entry.solarMasses; // mass
@@ -1345,7 +1354,14 @@ namespace SrvSurvey.game
                             {
                                 name = newRing.name,
                                 ringClass = newRing.type,
+                                innerRad = newRing.innerRadius,
+                                outerRad = newRing.outerRadius,
                             });
+                        }
+                        else
+                        {
+                            if (ring.innerRad == 0) ring.innerRad = newRing.innerRadius;
+                            if (ring.outerRad == 0) ring.outerRad = newRing.outerRadius;
                         }
                     }
                 }
@@ -1431,6 +1447,7 @@ namespace SrvSurvey.game
                 if (body.radius == 0 && entry.solarRadius != null) body.radius = (decimal)entry.solarRadius * 695_700_000; // radius of the sun in m
                 if (body.parents == null && entry.parents != null) body.parents = entry.parents;
                 if (body.planetClass == null) body.planetClass = getPlanetClassFromExternal(entry.subType);
+                if (!body.tidalLock.HasValue && entry.rotationalPeriodTidallyLocked.HasValue) body.tidalLock = entry.rotationalPeriodTidallyLocked.Value;
                 if (!string.IsNullOrEmpty(entry.terraformingState))
                     body.terraformable = entry.terraformingState == "Candidate for terraforming";
                 if (body.mass == 0) body.mass = (entry.earthMasses > 0 ? entry.earthMasses : entry.solarMasses) ?? 0; // mass
@@ -1469,7 +1486,14 @@ namespace SrvSurvey.game
                             {
                                 name = newRing.name,
                                 ringClass = newRing.type,
+                                innerRad = newRing.innerRadius,
+                                outerRad = newRing.outerRadius,
                             });
+                        }
+                        else
+                        {
+                            if (ring.innerRad == 0) ring.innerRad = newRing.innerRadius;
+                            if (ring.outerRad == 0) ring.outerRad = newRing.outerRadius;
                         }
                     }
                 }
@@ -2096,6 +2120,9 @@ namespace SrvSurvey.game
         public string? planetClass;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public bool? tidalLock;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool terraformable;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
@@ -2555,6 +2582,10 @@ namespace SrvSurvey.game
         public string ringClass;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool dssComplete;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public double innerRad;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public double outerRad;
 
         public override string ToString()
         {
@@ -2568,13 +2599,16 @@ namespace SrvSurvey.game
                 case "Rocky":
                 case "eRingClass_Rocky":
                     return "Rocky";
+
                 case "Metallic":
+                case "Metalic":
                 case "eRingClass_Metalic":
-                    return "Matalic";
+                    return "Matallic";
 
                 case "Metal Rich":
+                case "Metal rich":
                 case "eRingClass_MetalRich":
-                    return "Metal rich";
+                    return "Metal Rich";
 
                 case "Icy":
                 case "eRingClass_Icy":
@@ -2582,6 +2616,17 @@ namespace SrvSurvey.game
 
                 default: throw new Exception($"Unexpected: {ringClass}");
             }
+        }
+
+        public static List<SystemRing> from(List<Scan.Ring> scanRings)
+        {
+            return scanRings.Select(r => new SystemRing()
+            {
+                name = r.Name,
+                ringClass = r.RingClass,
+                innerRad = r.InnerRad,
+                outerRad = r.OuterRad,
+            }).ToList();
         }
     }
 

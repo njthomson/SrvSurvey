@@ -562,10 +562,10 @@ namespace SrvSurvey.game
             if (sys?.fssAllBodies != true || Game.activeGame?.journals == null) return null;
 
             var bods = new List<Bod>();
-            var tidalsNeeded = 0;
+            var pendingBodyScans = new HashSet<string>();
             foreach (var b in sys.bodies)
             {
-                if (b.type == SystemBodyType.PlanetaryRing) continue;
+                if (b.type == SystemBodyType.PlanetaryRing || b.type == SystemBodyType.Asteroid) continue;
 
                 var bod = new Bod
                 {
@@ -577,6 +577,9 @@ namespace SrvSurvey.game
                     type = Bod.BodyType.un,
                     subType = Util.pascal(b.planetClass?.Replace("Sudarsky ", "")),
                     features = new(),
+                    radius = (double)b.radius,
+                    temp = b.surfaceTemperature,
+                    gravity = b.surfaceGravity,
                 };
 
                 // map type
@@ -594,18 +597,27 @@ namespace SrvSurvey.game
                     else bod.type = Bod.BodyType.st;
 
                     bod.subType = getSubType(b);
+
+                    if (b.rings.Count > 0)
+                    {
+                        // progress ring data, or we may need to scan old journal entries firest
+                        if (b.rings[0].innerRad == 0)
+                            pendingBodyScans.Add(b.name);
+                        else
+                            processStarRings(bods, b.rings, b.id, b.distanceFromArrivalLS, b.parents);
+                    }
                 }
                 else if (b.planetClass?.Contains("gas giant", StringComparison.OrdinalIgnoreCase) == true)
                 {
                     bod.type = Bod.BodyType.gg;
                 }
-                else if (b.type == SystemBodyType.Asteroid)
-                {
-                    bod.type = Bod.BodyType.ac;
-                }
                 else
                 {
-                    tidalsNeeded++;
+                    if (!b.tidalLock.HasValue)
+                        pendingBodyScans.Add(b.name);
+                    else if (b.tidalLock.Value == true)
+                        bod.features.Add(BodyFeature.tidal);
+
                     bod.type = Bod.mapBodyTypeFromPlanetClass.GetValueOrDefault(b.planetClass!, StringComparison.OrdinalIgnoreCase);
                 }
                 if (bod.type == Bod.BodyType.un)
@@ -623,44 +635,113 @@ namespace SrvSurvey.game
                 if (b.terraformable) bod.features.Add(BodyFeature.terraformable);
                 if (b.type == SystemBodyType.LandableBody) bod.features.Add(BodyFeature.landable);
 
-                // as tidally locked is not stored, will must parse journals to find (done in a batch below)
-
                 bods.Add(bod);
             }
 
-            Game.log($"Parsing journals for {tidalsNeeded} tidally locked status");
-            var countJournals = 0;
-            Game.activeGame.journals.walkDeep(true, entry =>
+            Game.log($"Parsing journals for {pendingBodyScans.Count} prior scans");
+            if (pendingBodyScans.Count > 0)
             {
-                var scan = entry as Scan;
-                if (scan == null) return false;
+                var countJournals = 0;
+                Game.activeGame.journals.walkDeep(true, entry =>
+                {
+                    var scan = entry as Scan;
+                    if (scan == null) return false;
 
-                var match = bods.Find(b => b.name == scan.BodyName);
-                if (match == null) { return false; }
+                    if (!pendingBodyScans.Contains(scan.BodyName))
+                        return false;
 
-                Game.log($"Found #{tidalsNeeded} '{scan.BodyName}' => {scan.TidalLock}");
-                if (scan.TidalLock)
-                    match.features.Add(BodyFeature.tidal);
+                    var match = bods.Find(b => b.name == scan.BodyName);
+                    if (match == null) { return false; }
 
-                tidalsNeeded--;
+                    if (match.type == Bod.BodyType.st && scan.Rings.Count > 0)
+                    {
+                        // handle asteroid belts on stars
+                        Game.log($"Found '{scan.BodyName}' => {scan.Rings.Count} asteroid belts");
+                        pendingBodyScans.Remove(scan.BodyName);
+                        processStarRings(bods, SystemRing.from(scan.Rings), scan.BodyID, scan.DistanceFromArrivalLS, scan.Parents);
+                    }
+                    else
+                    {
+                        // handle tidal locking
+                        Game.log($"Found '{scan.BodyName}' => {scan.TidalLock}");
+                        pendingBodyScans.Remove(scan.BodyName);
+                        if (scan.TidalLock == true)
+                            match.features.Add(BodyFeature.tidal);
+                    }
 
-                if (tidalsNeeded <= 0)
-                    return true;
-                else
-                    return false;
-            }, _ =>
-            {
-                // search through 100 journal files max
-                countJournals++;
-                if (countJournals < 100)
-                    return false;
-                else
-                    return true;
-            });
+                    if (pendingBodyScans.Count == 0)
+                        return true;
+                    else
+                        return false;
+                }, _ =>
+                {
+                    // search through 100 journal files max
+                    countJournals++;
+                    if (countJournals < 100)
+                        return false;
+                    else
+                        return true;
+                });
+            }
 
+            // remove and re-inject asteroid clusters based on their distLS values
+            adjustAstroidBeltOrder(bods);
 
             Game.log($"{sys.address} / {sys.name}\n\n" + JsonConvert.SerializeObject(bods, Formatting.Indented));
             return await Game.rcc.updateSysBodies(sys.address, bods);
+        }
+
+        private static void processStarRings(List<Bod> bods, List<SystemRing> rings, int parentBodyId, double parentDistLS, BodyParents? parentParents)
+        {
+            for (var idx = 0; idx < rings.Count; idx++)
+            {
+                var belt = rings[idx];
+                var parents = parentParents?.Select(kv => kv.id).ToList() ?? new();
+                parents.Insert(0, parentBodyId);
+
+                //  299_792_458 M per LS
+                var innerLS = belt.innerRad / 299_792_458d;
+
+                var bb = new Bod
+                {
+                    name = belt.name,
+                    num = 100_000 + (parentBodyId * 100) + idx,
+                    distLS = innerLS + parentDistLS, // belt distances are relative to their parent
+                    type = Bod.BodyType.ac,
+                    subType = SystemRing.decode(belt.ringClass),
+                    features = new(),
+                    parents = parents,
+                };
+                bods.Add(bb);
+            }
+        }
+
+        private static void adjustAstroidBeltOrder(List<Bod> bods)
+        {
+            var belts = bods.Where(b => b.type == Bod.BodyType.ac).ToList();
+            foreach (var belt in belts)
+            {
+                var prefix = belt.name.Substring(0, belt.name.Length - 7);
+                bods.Remove(belt);
+                var idx = bods.FindIndex(b =>
+                {
+                    var match = b.type != Bod.BodyType.ac
+                        && b.name.StartsWith(prefix)
+                        && b.distLS > belt.distLS;
+                    return match;
+                });
+                if (idx == -1)
+                {
+                    // if no match found, just be after the star in question.
+                    idx = bods.FindIndex(b => b.name.StartsWith(prefix) && (b.type == Bod.BodyType.st
+                        || b.type == Bod.BodyType.bh
+                        || b.type == Bod.BodyType.ns
+                        || b.type == Bod.BodyType.wd));
+                    if (idx >= 0) idx += 1;
+                }
+                if (idx < 0) { idx = 1; }
+                bods.Insert(idx, belt);
+            }
         }
 
         private static string getSubType(SystemBody b)
