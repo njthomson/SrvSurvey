@@ -57,6 +57,35 @@ namespace SrvSurvey.game
             cache[systemData.address] = systemData;
 
             // post-process after loading ...
+            prep(systemData);
+
+            // remember to hide bio overlays if we've been to this system before and everything has been scanned
+            if (Game.settings.autoHideBioPlotOnRepeat && systemData.firstVisited != systemData.lastVisited && systemData.bioSignalsRemaining == 0)
+                systemData.suppressBioOverlays = true;
+
+            // Remove any stations that got tracked during colonisation. Anything with economy of "Colony" is guaranteed to fail to match
+            if (systemData.stations?.Any(s => s.economy == Economy.Colony) == true)
+                systemData.stations = systemData.stations.Where(s => s.economy != Economy.Colony).ToList();
+
+            // make predictions based on what we know - after everything else
+            if (Game.ready && Game.activeGame?.fid == fid && !skipPredictSpecies)
+                foreach (var body in systemData.bodies)
+                    body.predictSpecies();
+
+            // save an update if Commander name has changed
+            if (commanderName != null && systemData.commander != commanderName)
+            {
+                Game.log($"Updating SystemData cmdr: {systemData.commander} => {commanderName}");
+                systemData.commander = commanderName;
+                systemData.Save();
+            }
+
+            return systemData;
+        }
+
+        public static void prep(SystemData systemData)
+        {
+            // post-process after loading ...
             foreach (var body in systemData.bodies)
             {
                 // make all bodies aware of their parent system
@@ -92,29 +121,6 @@ namespace SrvSurvey.game
                     }
                 }
             }
-
-            // remember to hide bio overlays if we've been to this system before and everything has been scanned
-            if (Game.settings.autoHideBioPlotOnRepeat && systemData.firstVisited != systemData.lastVisited && systemData.bioSignalsRemaining == 0)
-                systemData.suppressBioOverlays = true;
-
-            // Remove any stations that got tracked during colonisation. Anything with economy of "Colony" is guaranteed to fail to match
-            if (systemData.stations?.Any(s => s.economy == Economy.Colony) == true)
-                systemData.stations = systemData.stations.Where(s => s.economy != Economy.Colony).ToList();
-
-            // make predictions based on what we know - after everything else
-            if (Game.ready && Game.activeGame?.fid == fid && !skipPredictSpecies)
-                foreach (var body in systemData.bodies)
-                    body.predictSpecies();
-
-            // save an update if Commander name has changed
-            if (commanderName != null && systemData.commander != commanderName)
-            {
-                Game.log($"Updating SystemData cmdr: {systemData.commander} => {commanderName}");
-                systemData.commander = commanderName;
-                systemData.Save();
-            }
-
-            return systemData;
         }
 
         /// <summary>

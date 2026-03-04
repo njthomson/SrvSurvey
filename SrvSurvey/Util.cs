@@ -498,6 +498,8 @@ static class Util
         //  CS C CN CJ CH CHd
         if (starType[0] == 'D' || starType[0] == 'W' || starType[0] == 'C')
             return starType[0].ToString();
+        else if (starType.Length > 1 && starType[1] == '_')
+            return starType[0].ToString(); // eg: `M_RedGiant` => `M`
         else
             return starType;
     }

@@ -89,6 +89,14 @@ namespace BioCriterias
             // calc distance to nearest Guardian bubble
             var withinGuardianBubble = Game.codexRef.isWithinGuardianBubble(body.system.starPos);
 
+            // when there is a single entry - force that atmosphereComposition to 100% 
+            var atmosphereComposition = body.atmosphereComposition?.ToDictionary(x => x.Key, x => x.Value);
+            if (atmosphereComposition?.Count == 1)
+            {
+                var key = atmosphereComposition.Keys.First();
+                atmosphereComposition[key] = 100;
+            }
+
             // prepare members, converting to suitable units
             var bodyProps = new Dictionary<string, object>
             {
@@ -98,7 +106,7 @@ namespace BioCriterias
                 { "SurfacePressure", body.surfacePressure / 100_000f },
                 { "Atmosphere", body.atmosphere.Replace(" atmosphere", "") },
                 { "AtmosphereType", body.atmosphereType },
-                { "AtmosphereComposition", body.atmosphereComposition },
+                { "AtmosphereComposition", atmosphereComposition! },
                 { "DistanceFromArrivalLS", (double)body.distanceFromArrivalLS },
                 { "Volcanism", string.IsNullOrEmpty(body.volcanism) ? "None" : body.volcanism },
                 { "Materials", body.materials },
@@ -478,7 +486,7 @@ namespace BioCriterias
 
             // force current region to be the one for this test
             var region = EliteDangerousRegionMap.RegionMap.FindRegion(bioStats.coords.x, bioStats.coords.y, bioStats.coords.z);
-            GalacticRegions.currentIdxOverride = region.Id;
+            GalacticRegions.currentIdxOverride = region!.Id;
 
             if (systemData.nebulaDist == 0)
                 await systemData.getNebulaDist();
@@ -517,6 +525,40 @@ namespace BioCriterias
             }
 
             Game.log($"Done: {systemData.name} ({address})");
+        }
+
+        public static async Task testMissedSystem()
+        {
+            // paste test details here:
+            var filename = "xxx";
+            var target = "xxx";
+            var missed = "xxx";
+            BioPredictor.logOrganism = missed;
+
+            // run the test ...
+            var filepath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", filename);
+            var txt = File.ReadAllText(filepath);
+            var json = txt.Split("System json:").Last().Trim();
+            var systemData = JsonConvert.DeserializeObject<SystemData>(json)!;
+            SystemData.prep(systemData);
+
+            // force current region to be the one for this test
+            var region = EliteDangerousRegionMap.RegionMap.FindRegion(systemData.starPos[0], systemData.starPos[1], systemData.starPos[2]);
+            GalacticRegions.currentIdxOverride = region!.Id;
+            if (systemData.nebulaDist == 0) await systemData.getNebulaDist();
+            var body = systemData.bodies.Find(b => b.shortName.like(target))!;
+
+            Game.log($"**** https://signals.canonn.tech/?system={systemData.address}");
+
+            var predictions = BioPredictor.predict(body); // <--- drag execution up to here
+
+            if (!predictions.Any(t => t.Contains(missed, StringComparison.OrdinalIgnoreCase)))
+            {
+                Game.log(predictions.formatWithHeader($"Missed: '{missed}' from:\r\n"));
+                Debugger.Break();
+            }
+
+            Game.log("All done.");
         }
 
         public static async Task testSystemsAsync()

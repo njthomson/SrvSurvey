@@ -1884,6 +1884,7 @@ namespace SrvSurvey
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormCodexBingo>();
+            //BioPredictor.testMissedSystem().justDoIt();
 
             //var filterMarket = new Spansh.SearchQuery.Markets();
             //filterMarket.Add(new Spansh.SearchQuery.Market() { name = "Copper", supply = new Spansh.Query.Market.Clause(100, 10_000_000) });

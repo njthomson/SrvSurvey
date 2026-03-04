@@ -440,24 +440,24 @@ namespace SrvSurvey.net
         public static void buildWholeSet()
         {
             // define ...
-            var species = "Bacterium/Bacterium Tela";
+            var species = "Tussock/Tussock Capillum";
             var atmosTypes = new List<string>()
             {
                 //"No atmosphere",
                 //"Ammonia",
                 //"Ammonia-rich",
-                //"Argon",
+                "Argon",
                 //"Argon-rich",
                 //"Carbon dioxide",
                 //"Carbon dioxide-rich",
                 //"Helium",
-                //"Methane",
+                "Methane",
                 //"Methane-rich",
                 //"Neon",
                 //"Neon-rich",
                 //"Nitrogen",
                 //"Oxygen",
-                "Sulphur dioxide",
+                //"Sulphur dioxide",
                 //"Water",
                 //"Water-rich",
             };
@@ -577,7 +577,7 @@ namespace SrvSurvey.net
             }
 
             var json = JsonConvert.SerializeObject(parent, Formatting.Indented) + ",";
-            Clipboard.SetText(json);
+            Program.control.Invoke(() => Clipboard.SetText(json));
             return json;
         }
 
@@ -778,7 +778,7 @@ namespace SrvSurvey.net
                 } while (volcanism != null);
             }
 
-            if (countNoVolcanism > 0 && matchedVolcanism.FirstOrDefault() != "Some")
+            if (false && countNoVolcanism > 0 && matchedVolcanism.FirstOrDefault() != "Some") // <-- what was this for again?
             {
                 // alpha sort but add None first
                 var list = matchedVolcanism.Order().ToList();
