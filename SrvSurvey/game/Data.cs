@@ -79,7 +79,7 @@ namespace SrvSurvey.game
             {
                 Game.log($"Failed to save: {filepath} (allowRetry:{allowRetry})\r\n\r\n{ex}");
                 if (allowRetry)
-                    Program.defer(() => saveWithRetry(filepath, json, false));
+                    Program.defer(() => saveWithRetry(filepath, json, false, checkFolder));
             }
         }
 

@@ -174,7 +174,7 @@ namespace SrvSurvey.plotters
                 var nextHop = game.cmdr.route.nextHop;
                 if (nextHop.id64 == next.SystemAddress || nextHop.name.like(next.StarSystem))
                 {
-                    var set = netData.special.init(Res.SpecialRouteHop);
+                    var set = netData.special[Res.SpecialRouteHop] = new();
                     var lastIdx = game.cmdr.route.hops.IndexOf(nextHop);
                     set.Add(Res.SpecialHopInfo.format(lastIdx + 1, game.cmdr.route.hops.Count));
                     // and show any notes
@@ -185,13 +185,17 @@ namespace SrvSurvey.plotters
                     if (nextHop.refuel)
                         set.Add("⛽ " + FormRouteExtras.Refuel);
                 }
+                else
+                {
+                    netData.special.Remove(Res.SpecialRouteHop);
+                }
             }
 
             // are we entering a different galactic region?
             if (next.StarPos != null)
             {
                 var nextRegion = EliteDangerousRegionMap.RegionMap.FindRegion(next.StarPos);
-                if (nextRegion.Name != GalacticRegions.current)
+                if (nextRegion!= null && nextRegion.Name != GalacticRegions.current)
                     netData.special.init(Res.SpecialNowEntering).Add(nextRegion.Name);
             }
         }

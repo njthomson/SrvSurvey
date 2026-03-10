@@ -102,8 +102,8 @@ namespace SrvSurvey.game
         public void setNextHop(StarRef star)
         {
             // exit early if we didn't start yet, or we jumped into a system that is not a known hop
-            var idx = hops.FindIndex(h => h.id64 == star.id64 || h.name.like(star.name));
-            if (!active) return;
+            var idx = hops.FindIndex(this.last, h => h.id64 == star.id64 || h.name.like(star.name));
+            if (!active || idx == -1) return;
 
             var dirty = false;
 
@@ -131,7 +131,7 @@ namespace SrvSurvey.game
             if (dirty)
                 this.Save();
 
-            BaseForm.get<FormRoute>()?.updateChecks(star);
+            BaseForm.get<FormRoute>()?.updateChecks(this.last, star);
         }
 
         /// <summary> If we should auto-copy the next hop </summary>

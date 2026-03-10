@@ -152,7 +152,15 @@ namespace SrvSurvey.forms
                     Game.log($"doImportNames: imported {count} systems");
                     lblStatus.Text = Properties.FormRouteExtras.ImportedSystems.format(count);
                     this.setChildrenEnabled(true);
-                    btnSave.Visible = true;
+                    if (this.hops.Count > 0)
+                    {
+                        btnActive.Enabled = true;
+                        btnActive.Checked = true;
+                        if (cmdr.currentSystemAddress == this.hops[0].id64)
+                            list.Items[0].Checked = true;
+
+                        btnSave.Visible = true;
+                    }
                 });
             }
         }
@@ -233,7 +241,15 @@ namespace SrvSurvey.forms
                     prepList();
                     lblStatus.Text = status;
                     this.setChildrenEnabled(true);
-                    btnSave.Visible = true;
+                    if (this.hops.Count > 0)
+                    {
+                        btnActive.Enabled = true;
+                        btnActive.Checked = true;
+                        if (cmdr.currentSystemAddress == this.hops[0].id64)
+                            list.Items[0].Checked = true;
+
+                        btnSave.Visible = true;
+                    }
                 });
             }
         }
@@ -357,9 +373,8 @@ namespace SrvSurvey.forms
         }
 
         /// <summary> Called from external code to update which systems are checked, if this window is open and we are FSD jumping between systems </summary>
-        public void updateChecks(StarRef star)
+        public void updateChecks(int idx, StarRef star)
         {
-            var idx = hops.FindIndex(h => h.id64 == star.id64 || h.name.like(star.name));
             if (idx >= 0)
             {
                 // update checks if we just arrived in a route hop

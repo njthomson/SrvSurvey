@@ -35,6 +35,9 @@ internal class PlayState : Data
 
     public static async Task<PlayState> load(string fid)
     {
+        if (!string.IsNullOrEmpty(folder) && !Directory.Exists(folder))
+            Directory.CreateDirectory(folder);
+
         var filepath = Path.Combine(folder, fid + ".json");
         PlayState? ps = null;
         if (!File.Exists(filepath))

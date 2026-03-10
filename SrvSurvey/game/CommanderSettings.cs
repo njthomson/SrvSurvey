@@ -385,8 +385,6 @@ namespace SrvSurvey.game
             }
         }
         private FollowRoute? _followRoute;
-
-
     }
 
     internal class SphereLimit
