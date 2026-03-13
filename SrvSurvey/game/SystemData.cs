@@ -1403,10 +1403,11 @@ namespace SrvSurvey.game
             }
         }
 
+        private static Regex regParseStarType = new Regex(@"\((.*)\)", RegexOptions.Compiled);
+
         private string parseStarType(string starType)
         {
-            var r = new Regex(@"\((.*)\)", RegexOptions.Compiled);
-            var m = r.Match(starType);
+            var m = regParseStarType.Match(starType);
             if (m.Groups.Count == 2 && m.Groups[1].Value.Length <= 3)
                 return m.Groups[1].Value;
             else if (starType == "T Tauri Star")

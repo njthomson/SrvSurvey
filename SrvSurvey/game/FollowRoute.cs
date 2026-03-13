@@ -102,7 +102,7 @@ namespace SrvSurvey.game
         public void setNextHop(StarRef star)
         {
             // exit early if we didn't start yet, or we jumped into a system that is not a known hop
-            var idx = hops.FindIndex(this.last, h => h.id64 == star.id64 || h.name.like(star.name));
+            var idx = hops.FindIndex(Math.Max(0, this.last), h => h.id64 == star.id64 || h.name.like(star.name));
             if (!active || idx == -1) return;
 
             var dirty = false;
