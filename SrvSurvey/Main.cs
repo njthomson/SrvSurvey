@@ -302,7 +302,7 @@ namespace SrvSurvey
             }
 
             // show/hide multi-floatie if we have focus
-            if (multiFloatie != null && !multiFloatie.IsDisposed) multiFloatie.Visible = Elite.focusElite || Elite.focusSrvSurvey;
+            if (multiFloatie != null && !multiFloatie.IsDisposed) multiFloatie.Visible = (Elite.focusElite || Elite.focusSrvSurvey) && !Program.tempHideAllPlotters;
 
             this.lastWindowRect = rect;
             this.gameHadFocus = Elite.focusElite;
@@ -1508,9 +1508,15 @@ namespace SrvSurvey
             checkTempHide.Checked = Program.tempHideAllPlotters;
             BigOverlay.invalidate();
             if (Program.tempHideAllPlotters)
+            {
                 Program.hideActivePlotters();
+                FormMultiFloatie.current?.Hide();
+            }
             else
+            {
                 Program.showActivePlotters();
+                FormMultiFloatie.current?.Show();
+            }
         }
 
         private void Main_MouseDoubleClick(object sender, MouseEventArgs e)

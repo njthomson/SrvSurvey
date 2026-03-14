@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.plotters;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
@@ -120,7 +121,23 @@ namespace SrvSurvey
                 if (isIconic)
                     ShowWindow(hwnd, 0x9); // 0x9 : Restore
                 else
+                {
+                    // use or create a (hidden) window to activate first
+                    Form? form = BigOverlay.current as Form ?? SwitcherWindow.current as Form;
+                    if (form == null)
+                    {
+                        form = new SwitcherWindow();
+                        form.Show();
+                    }
+                    else if (form.IsHandleCreated)
+                    {
+                        form.Activate();
+                    }
+
+                    Application.DoEvents();
+                    // then set focus on the game window
                     SetForegroundWindow(hwnd);
+                }
             }
             else
                 Game.log("setFocusED: got Zero!");
@@ -326,5 +343,51 @@ namespace SrvSurvey
         Windowed = 0,
         FullScreen = 1,
         Borderless = 2
+    }
+
+    /// <summary>
+    /// A window for efficiently forcing focus on the game
+    /// </summary>
+    public class SwitcherWindow : Form
+    {
+        public static SwitcherWindow? current;
+
+        public SwitcherWindow()
+        {
+            this.Name = this.GetType().Name;
+            this.Text = this.Name;
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.StartPosition = FormStartPosition.Manual;
+            this.MinimizeBox = false;
+            this.MaximizeBox = false;
+            this.ControlBox = false;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.DoubleBuffered = true;
+            this.ResizeRedraw = true;
+            this.Size = new Size(40, 40);
+
+            // This needs to be a colour that won't naturally appear
+            this.BackColor = Game.settings.bigOverlayMaskColor;
+
+            this.TransparencyKey = Game.settings.bigOverlayMaskColor;
+            this.AllowTransparency = true;
+        }
+
+        protected override bool ShowWithoutActivation => true;
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x00000020 // WS_EX_TRANSPARENT
+                    + 0x00080000 // WS_EX_LAYERED
+                    + 0x08000000 // WS_EX_NOACTIVATE
+                    + 0x00000004 // WS_EX_NOPARENTNOTIFY
+                    ;
+                return cp;
+            }
+        }
     }
 }
