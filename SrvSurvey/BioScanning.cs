@@ -65,61 +65,6 @@ namespace SrvSurvey
             Abandoned,
             Died,
         }
-
-        public static void setUnclaimedSystemBioScansAsDied(List<string> scannedBioEntryIds, string fid)
-        {
-            // parse/group prior scans by system
-            var scansBySystem = new Dictionary<long, List<ScannedBioEntryId>>();
-            foreach (var hash in scannedBioEntryIds)
-            {
-                var parsed = new ScannedBioEntryId(hash);
-                scansBySystem.init(parsed.id64).Add(parsed);
-            }
-
-            // open each system, update bioScan entries' status to Died as needed
-            foreach (var (id64, scans) in scansBySystem)
-            {
-                var sys = SystemData.Load("", id64, fid, null, true);
-                if (sys == null) continue;
-                Game.log($"Purging {scans.Count} bio scans from: {sys.name}");
-
-                foreach (var scan in scans)
-                {
-                    var bs = sys
-                        .bodies.Find(b => b.id == scan.bodyNum)
-                        ?.bioScans?.Find(bs => bs.entryId == scan.entryId);
-
-                    if (bs != null && bs.status != Status.Abandoned)
-                        bs.status = Status.Died;
-                }
-
-                // close the system - unless it's our current system
-                if (sys != Game.activeGame?.systemData)
-                    SystemData.Close(sys);
-                else
-                    sys.Save();
-            }
-        }
-    }
-
-    class ScannedBioEntryId
-    {
-        public long id64;
-        public int bodyNum;
-        public long entryId;
-        public long reward;
-        public bool firstFootfall;
-
-        public ScannedBioEntryId(string hash)
-        {
-            // {sys.address}_{body.id}_{organism.entryId}_{organism.reward}_{firstFootfall}
-            var parts = hash.Split('_', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-            this.id64 = long.Parse(parts[0]);
-            this.bodyNum = int.Parse(parts[1]);
-            this.entryId = long.Parse(parts[2]);
-            this.reward = long.Parse(parts[3]);
-            this.firstFootfall = bool.Parse(parts[4]);
-        }
     }
 
     class OrganicSummary
@@ -361,6 +306,8 @@ namespace SrvSurvey
              * Data is mined from:
              * https://ed-dsn.net/en/conditions-of-emergence-of-exobiological-species-on-planets-a-atmosphere-fine/
              * https://docs.google.com/spreadsheets/d/1Q2ydo7R2ttiTo6_DepAM17HIBxyLLvf-x_HAY1VSGMY/
+             * 
+             * https://bioforge.canonn.tech/ contains information of availability by star class/region which will help for implementation of the proposed Bingo View
              */
 
             // 5x Aleoida - https://canonn.science/codex/aleoida-2/ - https://ed-dsn.net/en/aleoida_en/
@@ -368,8 +315,8 @@ namespace SrvSurvey
             { "Aleoids | Aleoida Arcus     | HMC,Rocky | 2.7 | CarbonDioxide | None | 175 | 180 | B,A,F,K,M,L,T,TTS,Y,W,D,N" },
             { "Aleoids | Aleoida Coronamus | HMC,Rocky | 2.7 | CarbonDioxide | None | 180 | 190 | B,A,F,K,M,L,T,TTS,Y,W,D,N" },
             { "Aleoids | Aleoida Gravis    | HMC,Rocky | 2.7 | CarbonDioxide | None | 190 | 196 | B,A,F,K,M,L,T,TTS,Y,W,D,N" },
-            { "Aleoids | Aleoida Laminiae  | HMC,Rocky | 2.7 | Ammonia       | *    | 152 | 177 | B,A,F,K,M,L,T,TTS,Y,W,D,N" },
-            { "Aleoids | Aleoida Spica     | HMC,Rocky | 2.7 | Ammonia       | *    | 170 | 177 | B,A,F,K,M,L,T,TTS,Y,W,D,N" }, // TODO NOT Sagittarius-Carina Arm
+            { "Aleoids | Aleoida Laminiae  | HMC,Rocky | 2.7 | Ammonia       | *    | 152 | 177 | B,A,F,K,M,L,T,TTS,Y,W,D,N | ~SagittariusCarinaArm,~CentreLeft" },
+            { "Aleoids | Aleoida Spica     | HMC,Rocky | 2.7 | Ammonia       | *    | 170 | 177 | B,A,F,K,M,L,T,TTS,Y,W,D,N | !~SagittariusCarinaArm" },
 
             // 13x Bacterium - https://canonn.science/codex/bacteria-2/ - https://ed-dsn.net/en/bacterium_en/
             //     genus | species             | body               | <g  | atmosphereType | volcanism             | >t  | <t  |sta| mats | galactic regions
@@ -421,10 +368,10 @@ namespace SrvSurvey
 
             // 5x Cactoida - https://canonn.science/codex/cactoida/ - https://ed-dsn.net/en/cactoida_en/
             //   genus | species             | body      | <g  | atmosType      | vol  | >t  | <t  | star type         |mts| galactic regions
-            { "Cactoid | Cactoida Cortexum   | Rocky,HMC | 2.7 | CarbonDioxide  | None | 180 | 196 | O,A,F,G,M,L,T,TTS,Y,W,D,N | * | ~OrionCygnusArm,Odin'sHold,GalacticCentre" },
-            { "Cactoid | Cactoida Lapis      | Rocky,HMC | 2.8 | Ammonia        | *    | 160 | 187 | O,A,F,G,M,L,T,TTS,Y,W,D,N | * | ~OrionCygnusArm,~SagittariusCarinaArm,Odin'sHold,GalacticCentre" },
-            { "Cactoid | Cactoida Peperatis  | Rocky,HMC | 2.8 | Ammonia        | *    | 160 | 186 | O,A,F,G,M,L,T,TTS,Y,W,D,N | * | ~ScutumCentaurusArm,Odin'sHold,GalacticCentre,Orion-CygnusArm" },
-            { "Cactoid | Cactoida Pullulanta | Rocky,HMC | 2.7 | CarbonDioxide  | None | 180 | 196 | O,A,F,G,M,L,T,TTS,Y,W,D,N | * | ~PerseusArm,Ryker'sHope,GalacticCentre" },
+            { "Cactoid | Cactoida Cortexum   | Rocky,HMC | 2.7 | CarbonDioxide  | None | 180 | 196 | O,A,F,G,M,L,T,TTS,Y,W,D,N | * | ~OrionCygnusArm,~CentreLeft" },
+            { "Cactoid | Cactoida Lapis      | Rocky,HMC | 2.8 | Ammonia        | *    | 160 | 187 | O,A,F,G,M,L,T,TTS,Y,W,D,N | * | ~SagittariusCarinaArm,~CentreLeft" },
+            { "Cactoid | Cactoida Peperatis  | Rocky,HMC | 2.8 | Ammonia        | *    | 160 | 186 | O,A,F,G,M,L,T,TTS,Y,W,D,N | * | ~ScutumCentaurusArm,~CentreLeft" },
+            { "Cactoid | Cactoida Pullulanta | Rocky,HMC | 2.7 | CarbonDioxide  | None | 180 | 196 | O,A,F,G,M,L,T,TTS,Y,W,D,N | * | ~PerseusArm,~CentreTop" },
             { "Cactoid | Cactoida Vermis     | Rocky     | 2.7 | SulphurDioxide | *    | 160 | 207 | O,A,F,G,M,L,T,TTS,Y,W,D,N | * | *" },
             { "Cactoid | Cactoida Vermis     | Rocky,HMC | 2.7 | Water          | None | 390 | 450 | O,A,F,G,M,L,T,TTS,Y,W,D,N | * | *" },
 
@@ -441,7 +388,7 @@ namespace SrvSurvey
             // 4x Concha - https://canonn.science/codex/Concha/ - https://ed-dsn.net/en/Concha_en/
             //  genus  | species           | body      | <g  | atmosType     | volcanism| >t  | <t  | star type |mats| galactic regions
             { "Conchas | Concha Aureolas   | HMC,Rocky | 2.7 | Ammonia       | *        | 152 | 177 | B,A,F,G,K,L,Y,W,D,N" },
-            { "Conchas | Concha Biconcavis | HMC,Rocky | 2.7 | Nitrogen      | None     |  42 | 51  | * | ant+" },
+            { "Conchas | Concha Biconcavis | HMC,Rocky | 2.7 | Nitrogen      | None     |  42 | 51  | * | ant+" },//TODO: Not found in The Void, Aquila's Halo, Errant Marches, Sagittarius-Carina Arm, and possibly more
             { "Conchas | Concha Labiata    | HMC,Rocky | 2.6 | CarbonDioxide | None     | 150 | 199 | B,A,F,G,K,L,Y,W,D,N" },
             { "Conchas | Concha Renibus    | HMC,Rocky | 2.7 | Ammonia       | Silicate | 163 | 177 | * | cad+" },
             { "Conchas | Concha Renibus    | HMC,Rocky | 2.7 | CarbonDioxide | None     | 180 | 196 | * | cad+" },
@@ -471,11 +418,11 @@ namespace SrvSurvey
 
             // 7x Frutexa - https://canonn.science/codex/Frutexa/ - https://ed-dsn.net/en/fruxeta_en/
             //  genus | species            | body      | <g   | atmosType      | volc | >t  | <t  | star  | mats | galactic regions
-            { "Shrubs | Frutexa Acus       | Rocky     | 2.4  | CarbonDioxide  | None | 146 | 196 | O,B,F,G,M,L,TTS,W,D,N | * | ~OrionCygnusArm,Odin'sHold,GalacticCentre" },
+            { "Shrubs | Frutexa Acus       | Rocky     | 2.4  | CarbonDioxide  | None | 146 | 196 | O,B,F,G,M,L,TTS,W,D,N | * | ~OrionCygnusArm,~CentreLeft" },
             { "Shrubs | Frutexa Collum     | HMC,Rocky | 2.8  | SulphurDioxide | *    | 132 | 167 | O,B,F,G,M,L,TTS,W,D,N" },
             { "Shrubs | Frutexa Fera       | Rocky     | 2.4  | CarbonDioxide  | None | 146 | 196 | O,B,F,G,M,L,TTS,W,D,N | * | ~OuterArm,EmpyreanStraits,GalacticCentre" },
-            { "Shrubs | Frutexa Flabellum  | Rocky     | 2.7  | Ammonia        | *    | 152 | 177 | O,B,F,G,M,L,TTS,W,D,N | * | !~ScutumCentaurusArm" },
-            { "Shrubs | Frutexa Flammasis  | Rocky     | 2.7  | Ammonia        | *    | 152 | 186 | O,B,F,G,M,L,TTS,W,D,N | * | ~ScutumCentaurusArm,Odin'sHold,GalacticCenter,Orion-CygnusArm,InnerOrion-PerseusConflux" },
+            { "Shrubs | Frutexa Flabellum  | Rocky     | 2.7  | Ammonia        | *    | 152 | 177 | O,B,F,G,M,L,TTS,W,D,N | * | !~ScutumCentaurusArm,!~CentreLeft" },
+            { "Shrubs | Frutexa Flammasis  | Rocky     | 2.7  | Ammonia        | *    | 152 | 186 | O,B,F,G,M,L,TTS,W,D,N | * | ~ScutumCentaurusArm,~CentreLeft" },
             { "Shrubs | Frutexa Metallicum | HMC       | 2.8  | Ammonia        | None | 152 | 176 | O,B,F,G,M,L,TTS,W,D,N" },
             { "Shrubs | Frutexa Metallicum | HMC       | 2.7  | CarbonDioxide  | None | 146 | 196 | O,B,F,G,M,L,TTS,W,D,N" },
             { "Shrubs | Frutexa Metallicum | HMC       | 0.52 | Water          | None | 390 | 400 | O,B,F,G,M,L,TTS,W,D,N" },
@@ -501,30 +448,31 @@ namespace SrvSurvey
             { "Fumerolas | Fumerola Nitris   | Icy                | 2.7 | Nitrogen       | Ammonia,Nitrogen        |  60 |  81 | * | cad+" },
             { "Fumerolas | Fumerola Nitris   | Icy                | 2.7 | SulphurDioxide | Ammonia,Nitrogen        | 161 | 249 | * | cad+" },
 
-            // 4x Fungoida - https://canonn.science/codex/Fungoida/ - https://ed-dsn.net/en/fungoida_en/
+            // 4x Fungoida - https://canonn.science/codex/Fungoida/ - https://ed-dsn.net/en/fungoida_en/ - https://bioforge.canonn.tech/?entryid=Fungo
+            //Fungoida Gelata and Fungoida Stabitis are mutually exclusive
             //    genus | species           | body               | <g  | atmosType     | volc     | >t  | <t  |sta| mats | galactic regions
             { "Fungoids | Fungoida Bullarum | HMC,Rocky,RockyIce | 2.8 | Argon         | *        |  50 | 132 | * | ant+" },
             { "Fungoids | Fungoida Bullarum | HMC,Rocky,RockyIce | 2.7 | Nitrogen      | None     |  50 |  70 | * | ant+" },
-            { "Fungoids | Fungoida Gelata   | Rocky,RockyIce     | 0.7 | Ammonia       | *        | 161 | 177 | * | cad+" },
-            { "Fungoids | Fungoida Gelata   | HMC,Rocky          | 2.7 | CarbonDioxide | None     | 180 | 199 | * | cad+" },
-            { "Fungoids | Fungoida Gelata   | HMC                | 1.2 | Methane       | *        |  79 | 107 | * | cad+" },
-            { "Fungoids | Fungoida Gelata   | HMC,Rocky          | 0.63 | Water         | None     | 390 | 453 | * | cad+" },
+            { "Fungoids | Fungoida Gelata   | Rocky,RockyIce     | 0.7 | Ammonia       | *        | 161 | 177 | * | cad+ | !~OrionCygnusArm" },
+            { "Fungoids | Fungoida Gelata   | HMC,Rocky          | 2.7 | CarbonDioxide | None     | 180 | 199 | * | cad+ | !~OrionCygnusArm" },
+            { "Fungoids | Fungoida Gelata   | HMC                | 1.2 | Methane       | *        |  79 | 107 | * | cad+ | !~OrionCygnusArm" },
+            { "Fungoids | Fungoida Gelata   | HMC,Rocky          | 0.63 | Water         | None     | 390 | 453 | * | cad+| !~OrionCygnusArm" },
             { "Fungoids | Fungoida Setisis  | HMC,Rocky,RockyIce | 2.7 | Ammonia       | *        | 152 | 177 | * | ant+" },
             { "Fungoids | Fungoida Setisis  | HMC,Rocky,RockyIce | 2.7 | Methane       | *        |  67 | 109 | * | ant+" },
-            { "Fungoids | Fungoida Stabitis | Rocky,RockyIce     | 0.5 | Ammonia       | *        | 158 | 177 | * | cad+ | ~OrionCygnusArm,Odin'sHold,GalacticCentre" },
-            { "Fungoids | Fungoida Stabitis | HMC,Rocky          | 2.7 | CarbonDioxide | None     | 180 | 196 | * | cad+ | ~OrionCygnusArm,Odin'sHold,GalacticCentre" },
-            { "Fungoids | Fungoida Stabitis | HMC                | 1.3 | Methane       | Silicate |  78 | 109 | * | cad+ | ~OrionCygnusArm,Odin'sHold,GalacticCentre" },
-            { "Fungoids | Fungoida Stabitis | HMC,Rocky          | 4.84 | Water         | None     | 392 | 452 | * | cad+ | ~OrionCygnusArm,Odin'sHold,GalacticCentre" },
+            { "Fungoids | Fungoida Stabitis | Rocky,RockyIce     | 0.5 | Ammonia       | *        | 158 | 177 | * | cad+ | ~OrionCygnusArm,~CentreLeft" },
+            { "Fungoids | Fungoida Stabitis | HMC,Rocky          | 2.7 | CarbonDioxide | None     | 180 | 196 | * | cad+ | ~OrionCygnusArm,~CentreLeft" },
+            { "Fungoids | Fungoida Stabitis | HMC                | 1.3 | Methane       | Silicate |  78 | 109 | * | cad+ | ~OrionCygnusArm,~CentreLeft" },
+            { "Fungoids | Fungoida Stabitis | HMC,Rocky          | 4.84 | Water         | None     | 392 | 452 | * | cad+ | ~OrionCygnusArm,~CentreLeft" },
 
             // 6x Osseus - https://canonn.science/codex/Osseus/ - https://ed-dsn.net/en/Osseus_en/
             //  genus | species            | body               | <g  | atmosType     | volc | >t  | <t  | star class        |mat| galactic regions
-            { "Osseus | Osseus Cornibus    | HMC,Rocky          | 2.7 | CarbonDioxide | *    | 180 | 196 | O,A,F,G,K,T,TTS,Y | * | ~PerseusArm,Ryker'sHope,GalacticCentre" },
+            { "Osseus | Osseus Cornibus    | HMC,Rocky          | 2.7 | CarbonDioxide | *    | 180 | 196 | O,A,F,G,K,T,TTS,Y | * | ~PerseusArm,~CentreTop" },
             { "Osseus | Osseus Discus      | HMC,Rocky,RockyIce | 0.9 | Ammonia       | *    | 161 | 177 | *                 | cad+" },
             { "Osseus | Osseus Discus      | RockyIce           | 2.7 | Argon         | *    |  68 | 119 | *                 | cad+" },
             { "Osseus | Osseus Discus      | Rocky              | 1.3 | Methane       | *    |  78 | 109 | *                 | cad+" },
             { "Osseus | Osseus Discus      | HMC,Rocky          | 2.7 | Water         | *    | 390 | 452 | *                 | cad+" },
-            { "Osseus | Osseus Fractus     | HMC,Rocky          | 2.7 | CarbonDioxide | *    | 180 | 190 | O,A,F,G,K,T,TTS,Y | * | !~PerseusArm,Odin'sHold,EmpyreanStraits,InnerScutum-CentaurusArm" },
-            { "Osseus | Osseus Pellebantus | HMC,Rocky          | 2.7 | CarbonDioxide | None | 191 | 197 | O,A,F,G,K,T,TTS,Y | * | !~PerseusArm,Odin'sHold,EmpyreanStraits,InnerScutum-CentaurusArm" },
+            { "Osseus | Osseus Fractus     | HMC,Rocky          | 2.7 | CarbonDioxide | *    | 180 | 190 | O,A,F,G,K,T,TTS,Y | * | !~PerseusArm,!~CentreTop" },
+            { "Osseus | Osseus Pellebantus | HMC,Rocky          | 2.7 | CarbonDioxide | None | 191 | 197 | O,A,F,G,K,T,TTS,Y | * | !~PerseusArm,!~CentreTop" },
             { "Osseus | Osseus Pumice      | HMC,Rocky,RockyIce | 2.8 | Argon         | *    |  50 | 134 | *                 | ant+" },
             { "Osseus | Osseus Pumice      | RockyIce           | 2.8 | ArgonRich     | None |  61 |  79 | *                 | ant+" },
             { "Osseus | Osseus Pumice      | HMC,Rocky,RockyIce | 2.7 | Methane       | *    |  67 | 109 | *                 | ant+" },
@@ -545,21 +493,21 @@ namespace SrvSurvey
             // 8x Stratum - https://canonn.science/codex/stratum/ and https://ed-dsn.net/en/stratum_en/
             //   genus | species            | body  | <g  | atmosType         | volc | >t  | <t  | star type              |mat| galactic regions
             { "Stratum | Stratum Araneamus  | Rocky | 5.4 | SulphurDioxide    | *    | 165 | 373 | F,K,M,L,T,TTS,Ae,Y,W,D" },
-            { "Stratum | Stratum Cucumisis  | Rocky | 5.9 | CarbonDioxide     | None | 191 | 371 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~SagittariusCarinaArm,Odin'sHold,GalacticCentre" },
-            { "Stratum | Stratum Cucumisis  | Rocky | 5.6 | CarbonDioxideRich | *    | 121 | 246 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~SagittariusCarinaArm,Odin'sHold,GalacticCentre" },
-            { "Stratum | Stratum Cucumisis  | Rocky | 4.6 | Oxygen            | *    | 165 | 190 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~SagittariusCarinaArm,Odin'sHold,GalacticCentre" },
-            { "Stratum | Stratum Cucumisis  | Rocky | 4.6 | Oxygen?           | *    | 200 | 245 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~SagittariusCarinaArm,Odin'sHold,GalacticCentre" },
-            { "Stratum | Stratum Cucumisis  | Rocky | 5.8 | SulphurDioxide    | *    | 191 | 373 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~SagittariusCarinaArm,Odin'sHold,GalacticCentre" },
-            { "Stratum | Stratum Excutitus  | Rocky | 4.7 | CarbonDioxide     | None | 165 | 190 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~OrionCygnusArm,Odin'sHold,GalacticCentre" },
-            { "Stratum | Stratum Excutitus  | Rocky | 4.1 | SulphurDioxide    | *    | 165 | 190 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~OrionCygnusArm,Odin'sHold,GalacticCentre" },
+            { "Stratum | Stratum Cucumisis  | Rocky | 5.9 | CarbonDioxide     | None | 191 | 371 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~SagittariusCarinaArm,~CentreLeft" },
+            { "Stratum | Stratum Cucumisis  | Rocky | 5.6 | CarbonDioxideRich | *    | 121 | 246 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~SagittariusCarinaArm,~CentreLeft" },
+            { "Stratum | Stratum Cucumisis  | Rocky | 4.6 | Oxygen            | *    | 165 | 190 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~SagittariusCarinaArm,~CentreLeft" },
+            { "Stratum | Stratum Cucumisis  | Rocky | 4.6 | Oxygen?           | *    | 200 | 245 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~SagittariusCarinaArm,~CentreLeft" },
+            { "Stratum | Stratum Cucumisis  | Rocky | 5.8 | SulphurDioxide    | *    | 191 | 373 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~SagittariusCarinaArm,~CentreLeft" },
+            { "Stratum | Stratum Excutitus  | Rocky | 4.7 | CarbonDioxide     | None | 165 | 190 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~OrionCygnusArm,~CentreLeft" },
+            { "Stratum | Stratum Excutitus  | Rocky | 4.1 | SulphurDioxide    | *    | 165 | 190 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~OrionCygnusArm,~CentreLeft" },
             { "Stratum | Stratum Frigus     | Rocky | 5.4 | CarbonDioxide     | *    | 191 | 368 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~PerseusArm,Ryker'sHope" },
             { "Stratum | Stratum Frigus     | Rocky | 5.5 | CarbonDioxideRich | None | 205 | 246 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~PerseusArm,Ryker'sHope" },
             { "Stratum | Stratum Frigus     | Rocky | 4.5 | Oxygen            | *    | 207 | 237 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~PerseusArm,Ryker'sHope" },
             { "Stratum | Stratum Frigus     | Rocky | 5.4 | SulphurDioxide    | *    | 191 | 371 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~PerseusArm,Ryker'sHope" },
-            { "Stratum | Stratum Laminamus  | Rocky | 3.4 | Ammonia           | *    | 161 | 177 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~OrionCygnusArm,Odin'sHold,GalacticCentre" },
-            { "Stratum | Stratum Limaxus    | Rocky | 3.9 | CarbonDioxide     | *    | 165 | 190 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~ScutumCentaurusArm,Orion-CygnusArm" },
-            { "Stratum | Stratum Limaxus    | Rocky | 4.8 | Oxygen            | *    | 165 | 190 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~ScutumCentaurusArm,Orion-CygnusArm" },
-            { "Stratum | Stratum Limaxus    | Rocky | 4.0 | SulphurDioxide    | *    | 165 | 190 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~ScutumCentaurusArm,Orion-CygnusArm" },
+            { "Stratum | Stratum Laminamus  | Rocky | 3.4 | Ammonia           | *    | 161 | 177 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~OrionCygnusArm,~CentreLeft" },
+            { "Stratum | Stratum Limaxus    | Rocky | 3.9 | CarbonDioxide     | *    | 165 | 190 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~ScutumCentaurusArm" },
+            { "Stratum | Stratum Limaxus    | Rocky | 4.8 | Oxygen            | *    | 165 | 190 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~ScutumCentaurusArm" },
+            { "Stratum | Stratum Limaxus    | Rocky | 4.0 | SulphurDioxide    | *    | 165 | 190 | F,K,M,L,T,TTS,Ae,Y,W,D | * | ~ScutumCentaurusArm" },
             { "Stratum | Stratum Paleas     | Rocky | 3.4 | Ammonia           | *    | 165 | 177 | F,K,M,L,T,TTS,Ae,Y,W,D" },
             { "Stratum | Stratum Paleas     | Rocky | 5.8 | CarbonDioxide     | *    | 165 | 419 | F,K,M,L,T,TTS,Ae,Y,W,D" },
             { "Stratum | Stratum Paleas     | Rocky | 5.9 | CarbonDioxideRich | *    | 186 | 257 | F,K,M,L,T,TTS,Ae,Y,W,D" },
@@ -577,9 +525,9 @@ namespace SrvSurvey
 
             // 5x Tubus - https://canonn.science/codex/Tubus/ - https://ed-dsn.net/en/tubus_en/
             // genus | species          | body  | <g  | atmosType     | volc | >t  | <t  | star type                   |mats| galactic regions
-            { "Tubus | Tubus Cavas      | Rocky | 1.5 | CarbonDioxide | None | 160 | 197 | O,B,A,F,G,K,M,L,T,TTS,W,D,N | * | ~ScutumCentaurusArm,Odin'sHold,GalacticCentre,EmpyreanStraits,NormaArm,InnerOrion-PerseusConflux,Temple,ElysianShore,SanguineousRim,Orion-CygnusArm" },
-            { "Tubus | Tubus Compagibus | Rocky | 1.5 | CarbonDioxide | None | 160 | 197 | O,B,A,F,G,K,M,L,T,TTS,W,D,N | * | ~SagittariusCarinaArm,Odin'sHold,GalacticCentre,EmpyreanStraits,NormaArm,InnerOrion-PerseusConflux,Temple,ElysianShore,SanguineousRim,InnerScutum-CentaurusArm" },
-            { "Tubus | Tubus Conifer    | Rocky | 1.5 | CarbonDioxide | None | 160 | 196 | O,B,A,F,G,K,M,L,T,TTS,W,D,N | * | ~PerseusArm,Ryker'sHope,GalacticCentre" },
+            { "Tubus | Tubus Cavas      | Rocky | 1.5 | CarbonDioxide | None | 160 | 197 | O,B,A,F,G,K,M,L,T,TTS,W,D,N | * | ~ScutumCentaurusArm,~CentreLeft" },
+            { "Tubus | Tubus Compagibus | Rocky | 1.5 | CarbonDioxide | None | 160 | 197 | O,B,A,F,G,K,M,L,T,TTS,W,D,N | * | ~SagittariusCarinaArm,~CentreLeft" },
+            { "Tubus | Tubus Conifer    | Rocky | 1.5 | CarbonDioxide | None | 160 | 196 | O,B,A,F,G,K,M,L,T,TTS,W,D,N | * | ~PerseusArm,~CentreTop" },
             { "Tubus | Tubus Rosarium   | Rocky | 1.6 | Ammonia       | *    | 160 | 177 | O,B,A,F,G,K,M,L,T,TTS,W,D,N" },
             { "Tubus | Tubus Sororibus  | HMC   | 1.6 | Ammonia       | None | 160 | 177 | O,B,A,F,G,K,M,L,T,TTS,W,D,N" },
             { "Tubus | Tubus Sororibus  | HMC   | 1.5 | CarbonDioxide | None | 160 | 194 | O,B,A,F,G,K,M,L,T,TTS,W,D,N" },
@@ -595,13 +543,13 @@ namespace SrvSurvey
             { "Tussocks | Tussock Capillum  | Rocky          | 2.8 | Argon          | *    |  80 | 129" },
             { "Tussocks | Tussock Capillum  | Rocky,RockyIce | 2.7 | Methane        | *    |  90 | 109" },
             { "Tussocks | Tussock Caputus   | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 181 | 190 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
-            { "Tussocks | Tussock Catena    | HMC,Rocky      | 2.7 | Ammonia        | *    | 152 | 177 | F,G,K,M,L,T,Y,W,D | * | ~ScutumCentaurusArm,Orion-CygnusArm" },
-            { "Tussocks | Tussock Cultro    | HMC,Rocky      | 2.8 | Ammonia        | *    | 152 | 177 | F,G,K,M,L,T,Y,W,D | * | ~OrionCygnusArm,Odin'sHold,EmpyreanStraits,GalacticCentre" },
-            { "Tussocks | Tussock Divisa    | HMC,Rocky      | 2.7 | Ammonia        | *    | 152 | 177 | F,G,K,M,L,T,Y,W,D | * | ~PerseusArm,Ryker'sHope" },
+            { "Tussocks | Tussock Catena    | HMC,Rocky      | 2.7 | Ammonia        | *    | 152 | 177 | F,G,K,M,L,T,Y,W,D | * | ~ScutumCentaurusArm" },
+            { "Tussocks | Tussock Cultro    | HMC,Rocky      | 2.8 | Ammonia        | *    | 152 | 177 | F,G,K,M,L,T,Y,W,D | * | ~OrionCygnusArm,~CentreLeft" },
+            { "Tussocks | Tussock Divisa    | HMC,Rocky      | 2.7 | Ammonia        | *    | 152 | 177 | F,G,K,M,L,T,Y,W,D | * | ~PerseusArm,Ryker'sHope" },//TODO: Not in Izanami
             { "Tussocks | Tussock Ignis     | HMC,Rocky      | 1.9 | CarbonDioxide  | None | 160 | 170 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
-            { "Tussocks | Tussock Pennata   | HMC,Rocky      | 0.9 | CarbonDioxide  | None | 145 | 154 | F,G,K,M,L,T,Y,W,D,N | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
-            { "Tussocks | Tussock Pennatis  | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 147 | 196 | F,G,K,M,L,T,Y,W,D | * | ~OuterArm,EmpyreanStraits,GalacticCentre" },
-            { "Tussocks | Tussock Propagito | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 145 | 197 | F,G,K,M,L,T,Y,W,D | * | ~ScutumCentaurusArm,Odin'sHold,GalacticCentre,Orion-CygnusArm" },
+            { "Tussocks | Tussock Pennata   | HMC,Rocky      | 0.9 | CarbonDioxide  | None | 145 | 154 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },//Does neutron exist?
+            { "Tussocks | Tussock Pennatis  | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 147 | 196 | F,G,K,M,L,T,Y,W,D | * | ~OuterArm,EmpyreanStraits,GalacticCentre" },//Canonn incorrectly indicates InnerOrionSpur for lime, perhaps contact them?
+            { "Tussocks | Tussock Propagito | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 145 | 197 | F,G,K,M,L,T,Y,W,D | * | ~ScutumCentaurusArm,~CentreLeft" },
             { "Tussocks | Tussock Serrati   | HMC,Rocky      | 2.3 | CarbonDioxide  | None | 171 | 178 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
             { "Tussocks | Tussock Stigmasis | HMC,Rocky      | 2.8 | SulphurDioxide | *    | 132 | 207" },
             { "Tussocks | Tussock Triticum  | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 191 | 196 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
@@ -612,18 +560,27 @@ namespace SrvSurvey
             // 1x Amphora plant
             // Has special case for systems containing: Earth-like Worlds, Gas Giants with Water-Based Life, and Water Giants
             // genus | species       | body               | <g  | atmosType      | volc                    | >t  | <t  |sta| mats | galactic regions
-            { "Vents | Amphora Plant | Metal-rich | * | None | * | * | * | * | A" },
+            { "Vents | Amphora Plant | Metal-rich | * | None | * | * | * | B,A,F,G,K,M,L,T,Y,TTS,N | NormaExpanse,Hawking'sGap,Dryman'sPoint,Sagittarius-CarinaArm,MareSomnia" },
 
             // 8x Anemone
+            // TODO: Left batch refers to a region containing Izanami, Inner Orion-Perseus Conflux, Newton's Vault, Outer Orion-Perseus Conflux, Orion-Cygnus Arm, Temple, Inner Orion Spur, The Conduit, Persus Arm, Vulcan Gate, Outer Arm
             // genus      | species                         | body               | <g  | atmosType      | volc                    | >t  | <t  |sta| mats | galactic regions
-            { "Sphere     | Luteolum Anemone                | MetalRich,Rocky | * | None | * | * | * | * | A,B,O" },
-            { "SphereABCD | Croceum Anemone                 | body | * | None | * | * | * | * | A,B,O" },
-            { "SphereABCD | Puniceum Anemone                | body | * | None | * | * | * | * | A,B,O" },
-            { "SphereABCD | Roseum Anemone                  | body | * | None | * | * | * | * | A,B,O" },
-            { "SphereEFGH | Blatteum Bioluminescent Anemone | HMC,Metal-rich | * | None | * | * | * | * | A,B,O" },
-            { "SphereEFGH | Rubeum Bioluminescent Anemone   | * | * | None | * | * | * | * | A,B,O" },
-            { "SphereEFGH | Prasinum Bioluminescent Anemone | * | * | None | * | * | * | * | A,B,O" },
-            { "SphereEFGH | Roseum Bioluminescent Anemone   | HMC,Metal-rich | * | None | * | * | * | * | A,B,O" },
+            //Only A supergiant? Left batch
+            { "Sphere     | Luteolum Anemone                | MetalRich,Rocky | * | None | * | * | * | B,A | * | *" },
+            //Left batch
+            { "SphereABCD | Croceum Anemone                 | Rocky | * | None | * | * | * | B,A | * | *" },
+            //Left batch
+            { "SphereABCD | Puniceum Anemone                | Icy,RockyIce | * | None | * | * | * | O,W | * | *" },
+            //Left batch
+            { "SphereABCD | Roseum Anemone                  | Rocky | * | None | * | * | * | B | * | *" },
+            // Only K supergiant, also black hole. Left batch
+            { "SphereEFGH | Blatteum Bioluminescent Anemone | HMC,Metal-rich | * | None | * | * | * | O,B,K,N | * | *" },
+            // Only F supergiant, also black hole
+            { "SphereEFGH | Rubeum Bioluminescent Anemone   | * | * | None | * | * | * | O,B,A,F,N | * | *" },
+            //All except Acheron,The Abyss, Tenebrae,Xibalba,Aquila's Halo
+            { "SphereEFGH | Prasinum Bioluminescent Anemone | MetalRich,Rocky,HMC | * | None | * | * | * | O,B,Ae,W | * | *" },
+            //Also black hole
+            { "SphereEFGH | Roseum Bioluminescent Anemone   | HMC,Metal-rich | * | None | * | * | * | O,B,A | * | *" },//TODO: Not Aquila's Halo? Or simply undiscovered yet?
 
             // 1x Bark Mounds
             // genus| species     |bod|<g | atm  |vol|>t |<t |sta| mats | galactic regions

@@ -225,11 +225,14 @@ namespace SrvSurvey.game
 
         public static Dictionary<string, string> mapArms = new Dictionary<string, string>()
         {
-            { "~OrionCygnusArm", "Izanami,InnerOrion-PerseusConflux,InnerScutum-CentaurusArm,Orion-CygnusArm,Temple,InnerOrionSpur,ElysianShore,SanguineousRim,OuterOrionSpur" },
-            { "~OuterArm", "NormaArm,ArcadianStream,Newton'sVault,TheConduit,OuterArm,ErrantMarches,TheFormidineRift,Xibalba,Kepler'sCrest" },
-            { "~ScutumCentaurusArm", "InnerScutum-CentaurusArm,NormaExpanse,TrojanBelt,TheVeils,FormorianFrontier,HieronymusDelta,OuterScutum-CentaurusArm,Aquila'sHalo,TheVoid" },
+
+            { "~CentreLeft", "GalacticCentre,Odin'sHold" },
+            { "~CentreTop", "GalacticCentre,Ryker'sHope" },
+            { "~OrionCygnusArm", "Izanami,InnerOrion-PerseusConflux,InnerScutum-CentaurusArm,Orion-CygnusArm,Temple,InnerOrionSpur,OuterOrionSpur" },
+            { "~OuterArm", "NormaArm,ArcadianStream,Newton'sVault,TheConduit,OuterArm,ErrantMarches,TheFormidineRift,Kepler'sCrest,Xibalba" },
+            { "~ScutumCentaurusArm", "InnerScutum-CentaurusArm,NormaExpanse,TrojanBelt,TheVeils,FormorianFrontier,HieronymusDelta,OuterScutum-CentaurusArm,TheVoid,Aquila'sHalo" },
             { "~PerseusArm", "Izanami,OuterOrion-PerseusConflux,PerseusArm,VulcanGate,ElysianShore,SanguineousRim,Achilles'sAltar,Lyra'sSong,Tenebrae" },
-            { "~SagittariusCarinaArm", "InnerOrion-PerseusConflux,Orion-CygnusArm,Temple,InnerOrionSpur,Hawking'sGap,Dryman'sPoint,Sagittarius-CarinaArm,MareSomnia,Acheron,OuterOrionSpur,TheAbyss" },
+            { "~SagittariusCarinaArm", "InnerScutum-CentaurusArm,InnerOrionSpur,Hawking'sGap,Dryman'sPoint,Sagittarius-CarinaArm,MareSomnia,Acheron,TheAbyss" },
         };
 
         /* All Region:
