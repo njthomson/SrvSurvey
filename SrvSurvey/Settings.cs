@@ -293,6 +293,11 @@ namespace SrvSurvey
                         if (string.IsNullOrWhiteSpace(settings.downloadCodexImageFolder))
                             settings.downloadCodexImageFolder = CodexRef.defaultCodexImagesFolder;
 
+                        // set default key-chords if not seen before
+                        foreach(var key in KeyChords.defaultKeys.Keys)
+                            if (settings.keyActions_TEST?.ContainsKey(key) == false)
+                                settings.keyActions_TEST[key] = KeyChords.defaultKeys[key];
+
                         Settings.instance = settings;
                         return settings;
                     }

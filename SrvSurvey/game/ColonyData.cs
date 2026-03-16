@@ -598,7 +598,7 @@ namespace SrvSurvey.game
 
                     bod.subType = getSubType(b);
 
-                    if (b.rings.Count > 0)
+                    if (b.rings?.Count > 0)
                     {
                         // progress ring data, or we may need to scan old journal entries firest
                         if (b.rings[0].innerRad == 0)

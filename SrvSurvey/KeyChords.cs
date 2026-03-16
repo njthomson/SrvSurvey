@@ -68,7 +68,7 @@ namespace SrvSurvey
 
         #endregion
 
-        public readonly static Dictionary<KeyAction, string>? defaultKeys = new()
+        public readonly static Dictionary<KeyAction, string> defaultKeys = new()
         {
             { KeyAction.toggleAllVisibility, "ALT F2" },
             { KeyAction.mapZoomIn, "CTRL +" },
@@ -97,7 +97,8 @@ namespace SrvSurvey
             { KeyAction.streamOne, "ALT CTRL O" },
             { KeyAction.adjustVR, "ALT V" },
             { KeyAction.toggleFF, "" },
-            { KeyAction.questShow, "ALT Q"}
+            { KeyAction.questShow, "ALT Q"},
+            { KeyAction.toggleImageEmbed, "ALT CTRL I"},
         };
 
         public static bool doKeyAction(KeyAction keyAction)
@@ -138,6 +139,7 @@ namespace SrvSurvey
                     case KeyAction.adjustVR: return adjustVR();
                     case KeyAction.toggleFF: return toggleFF();
                     case KeyAction.questShow: return questShow();
+                    case KeyAction.toggleImageEmbed: return toggleImageEmbeds();
 
                     default:
                         Game.log($"Unsupported key action: {keyAction}");
@@ -481,6 +483,19 @@ namespace SrvSurvey
             FormPlayComms.toggleForm();
             return true;
         }
+
+        private static bool toggleImageEmbeds()
+        {
+            // flip setting, save and notify
+            Game.settings.addBannerToScreenshots = !Game.settings.addBannerToScreenshots;
+            Game.settings.Save();
+
+            var msg = Game.settings.addBannerToScreenshots ? "Adding embedded banner to future screenshots" : "Future screenshots will have no embedded banner";
+            Game.log("toggleImageEmbeds: " + msg);
+            PlotFloatie.showMessage(msg);
+
+            return true;
+        }
     }
 
     /// <summary>
@@ -543,7 +558,9 @@ namespace SrvSurvey
         track7,
         /// <summary> Track the current location as #8 </summary>
         track8,
-        /// <summary> Show quests window</summary>
+        /// <summary> Show quests window </summary>
         questShow,
+        /// <summary> Toggle adding data embeds to screenshots </summary>
+        toggleImageEmbed,
     }
 }

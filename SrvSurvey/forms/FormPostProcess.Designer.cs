@@ -233,7 +233,6 @@
             Name = "FormPostProcess";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "SrvSurvey - Old Journal Processor";
-            Click += btnLongAgo_Click;
             ResumeLayout(false);
             PerformLayout();
         }

@@ -10,6 +10,9 @@ namespace SrvSurvey
     {
         public static FormPostProcess? activeForm;
 
+        private static DateTime gameReleaseDate = new DateTime(2014, 12, 15);
+        private static DateTime trailblazersReleaseDate = new DateTime(2025, 2, 26);
+
         private string targetCmdrName;
         private string targetCmdrFid;
         private DateTime targetStartTime = DateTime.MinValue;
@@ -82,12 +85,14 @@ namespace SrvSurvey
         private void dateTimePicker_ValueChanged(object sender, EventArgs e)
         {
             this.targetStartTime = dateTimePicker.Value;
+            // only enable Trailblazers check if date preceeds its release date
+            checkTrailblazers.Checked = checkTrailblazers.Enabled = this.targetStartTime < trailblazersReleaseDate;
         }
 
         private void btnLongAgo_Click(object sender, EventArgs e)
         {
             // Original release date for Elite Dangerous
-            dateTimePicker.Value = new DateTime(2014, 12, 15);
+            dateTimePicker.Value = gameReleaseDate;
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -136,8 +141,9 @@ namespace SrvSurvey
         {
             try
             {
-                var parts = filepath.Split('.');
-                var time = filepath.Contains('-')
+                var filename = Path.GetFileName(filepath);
+                var parts = filename.Split('.');
+                var time = filename.Contains('-')
                     ? DateTimeOffset.ParseExact(parts[1], "yyyy-MM-ddTHHmmss", null)
                     : DateTimeOffset.ParseExact(parts[1], "yyMMddHHmmss", null);
                 return time;
@@ -173,9 +179,7 @@ namespace SrvSurvey
             var countCargoSoldTB = 0;
             var countCargoTransferredTB = 0;
 
-            var trailblazersReleaseDate = new DateTime(2025, 2, 26);
-
-            var isAllTime = this.targetStartTime == new DateTime(2014, 12, 15);
+            var isAllTime = this.targetStartTime == gameReleaseDate;
             var isBeforeTrailblazers = this.targetStartTime < trailblazersReleaseDate;
             Game.log($"postProcessJournals: starting from: {targetStartTime}, isAllTime: {isAllTime}");
 
@@ -391,7 +395,8 @@ namespace SrvSurvey
                             $"Difference: {(boughtAfter - countCargoBoughtTB):N0} / {(soldAfter - countCargoSoldTB):N0} / {(transferredAfter - countCargoTransferredTB):N0}\n\n" +
                             $"Cargo contributed to construction sites: {countCargoContributed:N0}";
 
-                        MessageBox.Show(this, finalTally, $"SrvSurvey: {targetCmdrName}");
+                        if (checkTrailblazers.Checked)
+                            MessageBox.Show(this, finalTally, $"SrvSurvey: {targetCmdrName}");
                         Game.log(finalTally);
                     });
                 }
