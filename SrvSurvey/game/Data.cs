@@ -235,6 +235,20 @@ namespace SrvSurvey.game
             { "~SagittariusCarinaArm", "InnerScutum-CentaurusArm,InnerOrionSpur,Hawking'sGap,Dryman'sPoint,Sagittarius-CarinaArm,MareSomnia,Acheron,TheAbyss" },
         };
 
+        /// <summary>
+        /// Maps arm names to their constituent region IDs for easier bio criteria definition
+        /// </summary>
+        public static Dictionary<string, int[]> mapArmRegions = new Dictionary<string, int[]>()
+        {
+            { "Orion-Cygnus Arm", new[] { 7, 8, 9, 16, 17, 18, 35 } },
+            { "Outer Arm", new[] { 5, 6, 13, 14, 27, 29, 31, 41, 37 } },
+            { "Scutum-Centaurus Arm", new[] { 9, 10, 11, 12, 24, 25, 26, 42, 28 } },
+            { "Perseus Arm", new[] { 7, 15, 30, 32, 33, 34, 36, 38, 39 } },
+            { "Sagittarius-Carina Arm", new[] { 9, 18, 19, 20, 21, 22, 23, 40 } },
+            { "Centre Left", new[] { 1, 4 } },
+            { "Centre Top", new[] { 1, 3 } },
+        };
+
         /* All Region:
          * Acheron Achilles'sAltar Aquila'sHalo ArcadianStream Dryman'sPoint ElysianShore EmpyreanStraits ErrantMarches FormorianFrontier GalacticCentre Hawking'sGap HieronymusDelta InnerOrionSpur InnerOrion-PerseusConflux InnerScutum-CentaurusArm Izanami
          * Kepler'sCrest Lyra'sSong MareSomnia Newton'sVault NormaArm NormaExpanse Odin'sHold Orion-CygnusArm OuterArm OuterOrionSpur OuterOrion-PerseusConflux OuterScutum-CentaurusArm PerseusArm Ryker'sHope VulcanGate Sagittarius-CarinaArm SanguineousRim

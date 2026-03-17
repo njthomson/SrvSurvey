@@ -296,6 +296,24 @@ namespace BioCriterias
                 return;
             }
 
+            // Special handling for region/arms queries
+            if ((clause.property == "regions" || clause.property == "arms") && bodyValue is string)
+            {
+                if (int.TryParse((string)bodyValue, out var currentRegionId))
+                {
+                    var clauseRegionIds = clause.values
+                        .Where(v => int.TryParse(v, out _))
+                        .Select(v => int.Parse(v))
+                        .ToList();
+                    
+                    if (clauseRegionIds.Count == 0 || !clauseRegionIds.Contains(currentRegionId))
+                    {
+                        failures.Add(new ClauseFailure(bodyName, "Region not in allowed list", clause, currentRegionId.ToString()));
+                    }
+                }
+                return;
+            }
+
             // match any clause value from a set of bodyValue strings
             var bodyValues = bodyValue as List<string>;
             if (bodyValue is Dictionary<string, float>)
