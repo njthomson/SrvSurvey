@@ -65,8 +65,6 @@ namespace SrvSurvey
             Abandoned,
             Died,
         }
-    }
-    
 
         public static void setUnclaimedSystemBioScansAsDied(List<string> scannedBioEntryIds, string fid)
         {
