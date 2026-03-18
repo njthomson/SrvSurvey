@@ -13,7 +13,7 @@
         "     temp [200 ~ 440]",
         " pressure [ ~ 0.0007]",
         "volcanism [Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers,Minor Rocky Magma]",
-        "  regions [7,8,13,14,15,16,17,18,27,30,32]",
+        "     arms [Anemone Batch]",
         "     mats &[Iron,Nickel]"
       ]
     },
@@ -29,7 +29,7 @@
         "     temp [202 ~ 440]",
         " pressure [ ~ 0]",
         "volcanism [Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]",
-        "  regions [7,8,13,14,15,16,17,18,27,30,32]",
+        "     arms [Anemone Batch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ]
     },
@@ -45,7 +45,7 @@
         "     temp [75 ~ 860]",
         " pressure [ ~ 0]",
         "volcanism [None]",
-        "  regions [7,8,13,14,15,16,17,18,27,30,32]",
+        "     arms [Anemone Batch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ]
     },
@@ -61,7 +61,7 @@
         "     temp [201 ~ 440]",
         " pressure [ ~ 0]",
         "volcanism [Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]",
-        "  regions [7,8,13,14,15,16,17,18,27,30,32]"
+        "     arms [Anemone Batch]"
       ]
     },
 
@@ -81,7 +81,7 @@
             "     temp [213 ~ 1362]",
             " pressure [ ~ 0.0006]",
             "volcanism [Major Rocky Magma,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]",
-            "  regions [7,8,13,14,15,16,17,18,27,30,32]"
+            "     arms [Anemone Batch]"
           ]
         },
         {
@@ -93,7 +93,7 @@
             "     temp [804 ~ 5178]",
             " pressure [ ~ 0]",
             "volcanism [Major Metallic Magma,Major Rocky Magma,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Rocky Magma,Silicate Vapour Geysers]",
-            "  regions [7,8,13,14,15,16,17,18,27,30,32]"
+            "     arms [Anemone Batch]"
           ]
         }
       ]

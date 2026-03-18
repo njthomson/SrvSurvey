@@ -7,7 +7,7 @@
       "query": [
         "# hit count: 698",
         "atmosType [None]",
-        "  regions [1,2,3,4,5,6,7,8,9,10,11,18,19]",
+        "     arms [Tubers Batch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [
@@ -42,7 +42,7 @@
         "# hit count: 1274",
         "# hit count: 1085",
         "atmosType [None]",
-        "  regions [1,2,3,4,5,9,10,11]",
+        "     arms [Tubers Batch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [
@@ -76,7 +76,7 @@
       "query": [
         "# hit count: 250",
         "atmosType [None]",
-        "  regions [1,2,3,4,5,9,10,11]",
+        "     arms [Tubers Batch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [
@@ -110,7 +110,7 @@
       "query": [
         "# hit count: 539",
         "atmosType [None]",
-        "  regions [1,2,3,4,5,8,9,11]",
+        "     arms [Tubers Batch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [
@@ -144,7 +144,7 @@
       "query": [
         "# hit count: 210",
         "atmosType [None]",
-        "  regions [3,4,6,7,9,10,18,19]",
+        "     arms [Tubers Batch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [
@@ -179,7 +179,7 @@
         "# hit count: 186",
         "atmosType [None]",
         " pressure [ ~ 0]",
-        "  regions [3,4,6,7,9,10,18,19]",
+        "     arms [Tubers Batch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [
@@ -211,7 +211,7 @@
       "query": [
         "# hit count: 92",
         "atmosType [None]",
-        "  regions [2,3,4,5,6,7,9,10,18,19]",
+        "     arms [Tubers Batch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [
@@ -246,7 +246,7 @@
         "# hit count: 61",
         "atmosType [None]",
         " pressure [ ~ 0]",
-        "  regions [3,4,7,8,9,10,18,19]",
+        "     arms [Tubers Batch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [

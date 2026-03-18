@@ -57,6 +57,7 @@
       "species": "Gelata",
       "query": [
         "# hit count: 10000"
+        "     arms ![Orion-Cygnus Arm]"
       ],
       "commonChildren": [
         { "variant": "Lime", "query": [ "    mats [Mercury]" ] },
@@ -255,7 +256,7 @@
       "species": "Stabitis",
       "query": [
         "# hit count: 10000",
-        "  regions [1,4,7,8,16,17,18,35]"
+        "     arms [Orion-Cygnus Arm,Centre Left]"
       ],
       "commonChildren": [
         { "variant": "Green", "query": [ "  mats [Mercury]" ] },

@@ -101,6 +101,7 @@ namespace SrvSurvey
             }
         }
     }
+}
 
     class ScannedBioEntryId
 {
@@ -602,7 +603,7 @@ namespace SrvSurvey
             { "Tussocks | Tussock Divisa    | HMC,Rocky      | 2.7 | Ammonia        | *    | 152 | 177 | F,G,K,M,L,T,Y,W,D | * | ~PerseusArm,Ryker'sHope" },//TODO: Not in Izanami
             { "Tussocks | Tussock Ignis     | HMC,Rocky      | 1.9 | CarbonDioxide  | None | 160 | 170 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
             { "Tussocks | Tussock Pennata   | HMC,Rocky      | 0.9 | CarbonDioxide  | None | 145 | 154 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },//Does neutron exist?
-            { "Tussocks | Tussock Pennatis  | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 147 | 196 | F,G,K,M,L,T,Y,W,D | * | ~OuterArm,EmpyreanStraits,GalacticCentre" },//Canonn incorrectly indicates InnerOrionSpur for lime, perhaps contact them?
+            { "Tussocks | Tussock Pennatis  | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 147 | 196 | F,G,K,M,L,T,Y,W,D | * | ~OuterArm,~CentreRight" },//Canonn incorrectly indicates InnerOrionSpur for lime, perhaps contact them?
             { "Tussocks | Tussock Propagito | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 145 | 197 | F,G,K,M,L,T,Y,W,D | * | ~ScutumCentaurusArm,~CentreLeft" },
             { "Tussocks | Tussock Serrati   | HMC,Rocky      | 2.3 | CarbonDioxide  | None | 171 | 178 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
             { "Tussocks | Tussock Stigmasis | HMC,Rocky      | 2.8 | SulphurDioxide | *    | 132 | 207" },

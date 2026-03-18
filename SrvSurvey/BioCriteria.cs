@@ -16,7 +16,7 @@ namespace BioCriterias
         /// The "predictor engine" version - used to defend against future criteria not understood by older builds.
         /// Increment this any time breaking changes are added to criteria
         /// </summary>
-        public static int engVer = 5;
+        public static int engVer = 4;
         // v1 : initial support, with legacy species recently added and incomplete
         // v2 : support for Brain Tree's with "Guardian" criteria
         // v3 : support for &[] for matches ALL and ![] matches NONE
@@ -312,7 +312,9 @@ namespace BioCriterias
 
         /// <summary>
         /// Normalize region values by expanding arm names to region IDs.
-        /// Supports both old format (numeric region IDs) and new format (arm names).
+        /// Supports formats:
+        /// - Numeric region IDs (e.g., "7", "8", "9")
+        /// - Arm names (e.g., "Orion-Cygnus Arm")
         /// Returns comma-separated region IDs.
         /// </summary>
         private static string NormalizeRegionValue(string value)
