@@ -289,7 +289,8 @@ namespace BioCriterias
                     clause.op = Op.Not;
                 else if (txt.Contains("&["))
                     clause.op = Op.All;
-                else clause.op = Op.Is;
+                else
+                    clause.op = Op.Is;
 
                 clause.values = valTxt.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
                     .Select(v => {

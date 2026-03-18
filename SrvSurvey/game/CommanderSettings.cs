@@ -231,6 +231,8 @@ namespace SrvSurvey.game
         public void setGalacticRegion(StarPos starPos)
         {
             var region = EliteDangerousRegionMap.RegionMap.FindRegion(starPos.x, starPos.y, starPos.z);
+            if (region == null) return;
+
             var regionId = GalacticRegions.getNameFromIdx(region.Id);
 
             if (this.galacticRegion != regionId)

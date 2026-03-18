@@ -97,7 +97,7 @@ namespace SrvSurvey.game
             {
                 var currentGalacticRegion = Game.activeGame?.cmdr?.galacticRegion ?? "";
                 var mappedGalacticRegion = GalacticRegions.mapRegions.GetValueOrDefault(currentGalacticRegion);
-                return mappedGalacticRegion ?? "???";
+                return mappedGalacticRegion ?? "?";
             }
         }
 
@@ -222,6 +222,8 @@ namespace SrvSurvey.game
             { "$Codex_RegionName_41;", "Kepler's Crest" },
             { "$Codex_RegionName_42;", "The Void" },
         };
+
+        // TODO: change mapArms into Dictionary<string, List<int>>
 
         public static Dictionary<string, string> mapArms = new Dictionary<string, string>()
         {

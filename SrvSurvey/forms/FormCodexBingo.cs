@@ -575,7 +575,7 @@ namespace SrvSurvey
                         // set galactic region
                         var starPos = t.Result.coords;
                         var region = EliteDangerousRegionMap.RegionMap.FindRegion(starPos.x, starPos.y, starPos.z);
-                        toolRegionName.Text = region.Name;
+                        toolRegionName.Text = region?.Name ?? "?";
 
                         // set body name, with URL for clicking
                         toolBodyName.Text = bodyName;
