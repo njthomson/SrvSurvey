@@ -52,7 +52,7 @@
         "# hit count: 4943",
         "   body [Rocky]",
         "   temp [165 ~ 190]",
-        "     arms [Sagittarius-Carina Arm,Centre Left]"
+        "  regions [Sagittarius-CarinaArm,CentreLeft]"
       ],
       "children": [
         {
@@ -110,7 +110,7 @@
       "query": [
         "# hit count: 10000",
         "   body [Rocky]",
-        "     arms [Orion-Cygnus Arm,Centre Left]"
+        "  regions [Orion-CygnusArm,CentreLeft]"
       ],
       "children": [
         {
@@ -145,7 +145,7 @@
       "query": [
         "# hit count: 1336",
         "   body [Rocky]",
-        "     arms [Perseus Arm,3,7]"
+        "  regions [PerseusArm,3,7]"
       ],
       "children": [
         {
@@ -207,7 +207,7 @@
         "# hit count: 4012",
         "   body [Rocky]",
         "   temp [165 ~ 190]",
-        "     arms [Scutum-Centaurus Arm]"
+        "  regions [Scutum-CentaurusArm]"
       ],
       "children": [
         {

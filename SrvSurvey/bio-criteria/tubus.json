@@ -29,7 +29,7 @@
         " pressure [0.0032 ~ ]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
-        "     arms [Scutum-Centaurus Arm,CentreLeft]"
+        "  regions [Scutum-CentaurusArm,CentreLeft]"
       ]
     },
 
@@ -45,7 +45,7 @@
         " pressure [0.003 ~ ]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
-        "     arms [Sagittarius-Carina Arm,Centre Left]"
+        "  regions [Sagittarius-CarinaArm,CentreLeft]"
       ]
     },
 
@@ -61,7 +61,7 @@
         " pressure [0.0031 ~ ]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
-        "  regions [Perseus Arm,Centre Top]"
+        "  regions [PerseusArm,CentreTop]"
       ]
     },
 

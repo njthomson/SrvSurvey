@@ -7,7 +7,7 @@
       "query": [
         "# hit count: 698",
         "atmosType [None]",
-        "     arms [Tubers Batch]",
+        "  regions [TubersBatch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [
@@ -42,7 +42,7 @@
         "# hit count: 1274",
         "# hit count: 1085",
         "atmosType [None]",
-        "     arms [Tubers Batch]",
+        "  regions [TubersBatch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [
@@ -76,7 +76,7 @@
       "query": [
         "# hit count: 250",
         "atmosType [None]",
-        "     arms [Tubers Batch]",
+        "  regions [TubersBatch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [
@@ -110,7 +110,7 @@
       "query": [
         "# hit count: 539",
         "atmosType [None]",
-        "     arms [Tubers Batch]",
+        "  regions [TubersBatch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [
@@ -144,7 +144,7 @@
       "query": [
         "# hit count: 210",
         "atmosType [None]",
-        "     arms [Tubers Batch]",
+        "  regions [TubersBatch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [
@@ -179,7 +179,7 @@
         "# hit count: 186",
         "atmosType [None]",
         " pressure [ ~ 0]",
-        "     arms [Tubers Batch]",
+        "  regions [TubersBatch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [
@@ -211,7 +211,7 @@
       "query": [
         "# hit count: 92",
         "atmosType [None]",
-        "     arms [Tubers Batch]",
+        "  regions [TubersBatch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [
@@ -246,7 +246,7 @@
         "# hit count: 61",
         "atmosType [None]",
         " pressure [ ~ 0]",
-        "     arms [Tubers Batch]",
+        "  regions [TubersBatch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [

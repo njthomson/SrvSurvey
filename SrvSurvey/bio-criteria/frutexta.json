@@ -26,7 +26,7 @@
         " pressure [0.0029 ~ ]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.98]",
-        "     arms [Orion-Cygnus Arm,Centre Left]"
+        "  regions [Orion-CygnusArm,CentreLeft]"
       ]
     },
 
@@ -75,7 +75,7 @@
         " pressure [0.003 ~ ]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
-        "     arms [Outer Arm,Centre Right]"
+        "  regions [OuterArm,CentreRight]"
       ]
     },
 
@@ -91,7 +91,7 @@
         " pressure [ ~ 0.0132]",
         "volcanism [None,Major Silicate Vapour Geysers,Minor Metallic Magma,Minor Water Magma]",
       "atmosComp [Ammonia >= 100]",
-        "     arms ![Scutum-Centaurus Arm,Centre Left]"
+        "  regions ![Scutum-CentaurusArm,CentreLeft]"
       ]
     },
 
@@ -107,7 +107,7 @@
         " pressure [ ~ 0.0134]",
         "volcanism [None,Major Silicate Vapour Geysers,Minor Water Magma]",
         "atmosComp [Ammonia >= 100]",
-        "     arms [Scutum-Centaurus Arm,Centre Left]"
+        "  regions [Scutum-CentaurusArm,CentreLeft]"
       ]
     },
 

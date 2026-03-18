@@ -101,25 +101,25 @@ namespace SrvSurvey
             }
         }
     }
-}
 
     class ScannedBioEntryId
-{
-    public long id64;
-    public int bodyNum;
-    public long entryId;
-    public long reward;
-    public bool firstFootfall;
-
-    public ScannedBioEntryId(string hash)
     {
-        // {sys.address}_{body.id}_{organism.entryId}_{organism.reward}_{firstFootfall}
-        var parts = hash.Split('_', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-        this.id64 = long.Parse(parts[0]);
-        this.bodyNum = int.Parse(parts[1]);
-        this.entryId = long.Parse(parts[2]);
-        this.reward = long.Parse(parts[3]);
-        this.firstFootfall = bool.Parse(parts[4]);
+        public long id64;
+        public int bodyNum;
+        public long entryId;
+        public long reward;
+        public bool firstFootfall;
+
+        public ScannedBioEntryId(string hash)
+        {
+            // {sys.address}_{body.id}_{organism.entryId}_{organism.reward}_{firstFootfall}
+            var parts = hash.Split('_', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+            this.id64 = long.Parse(parts[0]);
+            this.bodyNum = int.Parse(parts[1]);
+            this.entryId = long.Parse(parts[2]);
+            this.reward = long.Parse(parts[3]);
+            this.firstFootfall = bool.Parse(parts[4]);
+        }
     }
 
     class OrganicSummary

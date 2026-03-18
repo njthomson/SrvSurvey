@@ -27,7 +27,7 @@
         "     temp [180 ~ 196]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
-        "     arms [Orion-Cygnus Arm,Centre Left]"
+        "  regions [Orion-CygnusArm,CentreLeft]"
       ],
       "children": [
         {
@@ -59,7 +59,7 @@
             "  gravity [0.04 ~ 0.276]",
         "     temp [160 ~ 177]",
         "atmosComp [Ammonia >= 100]",
-        "     arms [Sagittarius-Carina Arm,Centre Left]"
+        "  regions [Sagittarius-CarinaArm,CentreLeft]"
       ],
       "children": [
         {
@@ -90,7 +90,7 @@
         "atmosType [Ammonia]",
         "     temp [160 ~ 177]",
         "atmosComp [Ammonia >= 100]",
-        "     arms [Scutum-Centaurus Arm,Centre Left]"
+        "  regions [Scutum-CentaurusArm,CentreLeft]"
       ],
       "children": [
         {
@@ -124,7 +124,7 @@
         "     temp [180 ~ 196]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
-        "     arms [Perseus Arm,Centre Top]"
+        "  regions [PerseusArm,CentreTop]"
       ],
       "children": [
         {

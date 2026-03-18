@@ -11,7 +11,7 @@
       "query": [
         "# hit count: 8553",
         "atmosType [None]",
-        "     arms [Brain Tree Batch]",
+        "  regions [BrainTreeBatch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [
@@ -74,7 +74,7 @@
         " pressure [ ~ 0]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]",
         "volcanism [Metallic Magma,Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers]",
-        "     arms [Brain Tree Batch]"
+        "  regions [BrainTreeBatch]"
       ]
     },
 
@@ -124,7 +124,7 @@
         " pressure [ ~ 0.0001]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]",
         "volcanism [Major Rocky Magma,Major Silicate Vapour Geysers,Major Water Geysers,Minor Carbon Dioxide Geysers,Minor Rocky Magma,Minor Metallic Magma,Water Geysers]",
-        "     arms [Brain Tree Batch]"
+        "  regions [BrainTreeBatch]"
       ]
     },
 
@@ -139,7 +139,7 @@
         "     temp [300 ~ 500]",
         " pressure [ ~ 0]",
         "volcanism [None,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers]",
-        "     arms [Brain Tree Batch]"
+        "  regions [BrainTreeBatch]"
       ]
     },
 
@@ -148,7 +148,7 @@
       "query": [
         "# hit count: 398",
         "atmosType [None]",
-        "     arms [Brain Tree Batch]",
+        "  regions [BrainTreeBatch]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [
@@ -217,7 +217,7 @@
         "# hit count: 35",
         "atmosType [None]",
         " pressure [ ~ 0]",
-        "     arms [Brain Tree Batch]"
+        "  regions [BrainTreeBatch]"
       ],
       "children": [
         {

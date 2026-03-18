@@ -21,7 +21,7 @@
         " pressure [0.0161 ~ ]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
-        "     arms [Sagittarius-Carina Arm,Perseus Arm,3,7]"
+        "  regions [Sagittarius-CarinaArm,PerseusArm,3,7]"
       ],
       "children": [
         {
@@ -104,7 +104,7 @@
         " pressure [0.0277 ~ ]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
-        "     arms [Sagittarius-Carina Arm,Perseus Arm,3,7]"
+        "  regions [Sagittarius-CarinaArm,PerseusArm,3,7]"
       ],
       "children": [
         {
@@ -135,7 +135,7 @@
         "     temp [152 ~ 177]",
         " pressure [ ~ 0.0134]",
         "atmosComp [Ammonia >= 100]",
-        "     arms [Scutum-Centaurus Arm]"
+        "  regions [Scutum-CentaurusArm]"
       ],
       "children": [
         {
@@ -165,7 +165,7 @@
         "  gravity [0.04 ~ 0.276]",
         "     temp [152 ~ 177]",
         "atmosComp [Ammonia >= 100]",
-        "     arms [Orion-Cygnus Arm,Centre Left]"
+        "  regions [Orion-CygnusArm,CentreLeft]"
       ],
       "children": [
         {
@@ -198,7 +198,7 @@
         "     temp [152 ~ 177]",
         " pressure [ ~ 0.0129]",
         "atmosComp [Ammonia >= 100]",
-        "     arms [Perseus Arm,3]"
+        "  regions [PerseusArm,3]"
       ],
       "children": [
         {
@@ -228,7 +228,7 @@
         "     temp [161 ~ 170]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
-        "     arms [Sagittarius-Carina Arm,Perseus Arm,3,7]"
+        "  regions [Sagittarius-CarinaArm,PerseusArm,3,7]"
       ],
       "children": [
         {
@@ -261,7 +261,7 @@
         " pressure [0.0028 ~ 0.0113]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
-        "     arms [Sagittarius-Carina Arm,Perseus Arm,3,7]"
+        "  regions [Sagittarius-CarinaArm,PerseusArm,3,7]"
       ],
       "children": [
         {
@@ -292,7 +292,7 @@
         " pressure [0.0029 ~ ]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
-        "     arms [Outer Arm,Centre Right]"
+        "  regions [OuterArm,CentreRight]"
       ],
       "children": [
         {
@@ -323,7 +323,7 @@
         " pressure [0.0029 ~ ]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
-        "     arms [Scutum-Centaurus Arm,Centre Left]"
+        "  regions [Scutum-CentaurusArm,CentreLeft]"
       ],
       "children": [
         {
@@ -354,7 +354,7 @@
         "pressure [0.0106 ~ 0.0704]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
-        "     arms [Sagittarius-Carina Arm,Perseus Arm,3,7]"
+        "  regions [Sagittarius-CarinaArm,PerseusArm,3,7]"
       ],
       "children": [
         {
@@ -418,7 +418,7 @@
         " pressure [0.058 ~ ]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
-        "     arms [Sagittarius-Carina Arm,Perseus Arm,3,7]"
+        "  regions [Sagittarius-CarinaArm,PerseusArm,3,7]"
       ],
       "children": [
         {
@@ -446,7 +446,7 @@
         "# hit count: 7626",
         "atmosType [CarbonDioxide]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
-        "     arms [Sagittarius-Carina Arm,Perseus Arm,3,7]"
+        "  regions [Sagittarius-CarinaArm,PerseusArm,3,7]"
       ],
       "children": [
         {

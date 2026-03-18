@@ -121,7 +121,7 @@
         "atmosType [Ammonia]",
         "     temp [152 ~ 177]",
         "atmosComp [Ammonia >= 100]",
-        "     arms [Sagittarius-Carina Arm,Centre Left]"
+        "  regions [Sagittarius-CarinaArm,CentreLeft]"
       ],
       "children": [
         {
@@ -154,7 +154,7 @@
         "atmosType [Ammonia]",
         "     temp [170 ~ 177]",
         "atmosComp [Ammonia >= 100]",
-        "     arms ![Sagittarius-Carina Arm]"
+        "  regions ![Sagittarius-CarinaArm]"
       ],
       "children": [
         {

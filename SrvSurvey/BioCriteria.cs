@@ -298,7 +298,7 @@ namespace BioCriterias
                         if (Map.values.ContainsKey(v))
                             return Map.values[v]!;
                         // For regions/arms properties, normalize to region IDs
-                        if (property == "regions" || property == "arms")
+                        if (property == "regions")
                             return NormalizeRegionValue(v);
                         return v;
                     })
@@ -330,7 +330,7 @@ namespace BioCriterias
             if (GalacticRegions.mapArmRegions.TryGetValue(value, out var regionIds))
                 return string.Join(",", regionIds.OrderBy(r => r));
             
-            // Unknown value, return as-is (will fail validation later if needed)
+            // Unknown value, return as-is (Additional validation here?)
             return value;
         }
 

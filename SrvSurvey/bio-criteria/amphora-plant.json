@@ -10,7 +10,7 @@
     "     temp [1000 ~ 1736]",
     " pressure [ ~ 0]",
     "volcanism [Major Metallic Magma,Major Rocky Magma,Major Silicate Vapour Geysers]",
-    "     arms [Amphora Batch]",
+    "  regions [AmphoraBatch]",
     "     mats &[Iron,Nickel]"
   ]
 
