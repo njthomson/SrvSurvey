@@ -479,7 +479,7 @@ namespace BioCriterias
             // load known bio signals from Canonn, and body data from Spansh
             var pendingBioStats = Game.canonn.systemBioStats(address);
             var pendingSpanshDump = Game.spansh.getSystemDump(address);
-            await Task.WhenAll(pendingBioStats);
+            await Task.WhenAll(pendingBioStats, pendingSpanshDump);
 
             var bioStats = pendingBioStats.Result;
             var systemData = SystemData.From(pendingSpanshDump.Result, fid, cmdr);
