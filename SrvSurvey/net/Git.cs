@@ -1,5 +1,6 @@
 ﻿using BioCriterias;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
 using System.Diagnostics;
 using System.Globalization;
@@ -138,7 +139,21 @@ namespace SrvSurvey.net
                     // finally, re-init Canonn to get updated allRuins
                     Game.canonn.init();
                     Game.log($"Downloading guardian.zip - complete");
+                }
 
+                if (hadNoPubFolder || pubData.nicknames > Game.settings.pubNicknames)
+                {
+                    await this.updateNicknames();
+
+                    // update settings to current level
+                    Game.settings.pubNicknames = pubData.nicknames;
+                    Game.settings.Save();
+                }
+                var filepathRavenNicknames = Path.Combine(Git.pubDataFolder, "nicknames.json");
+                if (File.Exists(filepathRavenNicknames))
+                {
+                    var json2 = await File.ReadAllTextAsync(filepathRavenNicknames);
+                    SystemNickNames.ravenMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(json2) ?? new();
                 }
             }
             catch (Exception ex)
@@ -528,6 +543,42 @@ namespace SrvSurvey.net
             ZipFile.ExtractToDirectory(filepath, Git.pubSettlementsFolder, true);
         }
 
+        public async Task updateNicknames()
+        {
+            Game.log($"Downloading colonized system nicknames ...");
+            var url = $"https://ravencolonial100-awcbdvabgze4c5cq.canadacentral-01.azurewebsites.net/api/misc/nicknames";
+            var filepath = Path.Combine(Git.pubDataFolder, "nicknames.json");
+
+            Game.log($"{url} => {filepath}");
+            var json1 = await Git.client.GetStringAsync(url);
+
+            // we only want to save the original name and nickname
+            var data = JsonConvert.DeserializeObject<JArray>(json1);
+            if (data?.Type != JTokenType.Array)
+            {
+                Game.log("Bad json from /api/misc/nicknames ?");
+                return;
+            }
+            var map = new Dictionary<string, string>();
+            foreach (var o in data)
+            {
+                var name = o.Value<string>("name");
+                var nickname = o.Value<string>("nickname");
+
+                if (name != null && nickname != null)
+                    map[name] = nickname;
+            }
+
+            var json2 = JsonConvert.SerializeObject(map);
+            json2 = json2.Replace("\",", "\"," + Environment.NewLine);
+
+            // Make a backup of the prior file
+            if (File.Exists(filepath))
+                File.Move(filepath, Path.Combine(Git.pubDataFolder, "nicknames-prior.json"), true);
+
+            await File.WriteAllTextAsync(filepath, json2);
+        }
+
         public static async Task updateToNextVersion(Version ver)
         {
             // prep folders
@@ -574,5 +625,6 @@ namespace SrvSurvey.net
         public int settlementTemplate;
         public int guardian;
         public int settlements;
+        public int nicknames;
     }
 }

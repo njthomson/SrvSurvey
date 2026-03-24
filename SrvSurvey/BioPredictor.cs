@@ -492,10 +492,15 @@ namespace BioCriterias
                 await systemData.getNebulaDist();
 
             // predict this system
-            foreach (var body in systemData.bodies)
+            foreach (var body in systemData.bodies.ToList())
             {
                 var realBody = bioStats.bodies.Find(b => b.bodyId == body.id);
-                if (realBody?.signals?.biology == null /*&& body.name != "Ihad BK-L b35-0 1 a"*/) continue; // skip bodies without known bio signals
+                if (realBody?.signals?.genuses == null || realBody.signals.genuses.Count == 0) continue; // skip bodies without known bio signals
+                if (realBody?.signals?.biology == null)
+                {
+                    Game.log($"** Missing realBody?.signals?.biology for: {body.name} (system id64: {systemData.address})");
+                    continue;
+                }
 
                 BioPredictor.logOrganism = "";
                 var predictions = BioPredictor.predict(body); // <--- drag execution up to here
