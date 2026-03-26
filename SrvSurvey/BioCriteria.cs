@@ -419,11 +419,8 @@ namespace BioCriterias
             { "volcanism", "Volcanism" },
             { "mats", "Materials" },
 
-            // Property values are an array of numbers matching galactic regions or NOT matching, eg: [1, 2, 3] or ![1, 2, 3]
+            // Property values are an array of numbers or sectors matching galactic regions or NOT matching, eg: [1, 2, Orion-Cygnus Arm] or ![Perseus Arm, 3]
             { "regions", "Region" },
-
-            // Property values are arm names that expand to galactic regions, eg: [Orion-Cygnus Arm,Perseus Arm]
-            { "arms", "Region" },
 
             // Some parent star(s)
             { "star", "Star" },

@@ -621,179 +621,179 @@ namespace BioCriterias
         {
             var testSystems = new List<long>()
             {
-                /* these are good */
-                3136055823779, //    prua phoe jr-u d3-91     - inner scutum-centaurus arm
-                7259190873515, //    prua phoe lx-s d4-211    - inner scutum-centaurus arm
-                6125336284579, //    prua phoe ir-u d3-178    - inner scutum-centaurus arm
-                6121703676746, //    prua phoe uo-n c8-22     - inner scutum-centaurus arm
-                6365837675955, //    prua phoe pd-r d5-185    - inner scutum-centaurus arm
-                284180729219, //     prua phoe wi-b d8        - inner scutum-centaurus arm
-                2415457537675, //    graea hypue aa-z d70     - norma expanse
-                2312378322571, //    graea hypue aa-z d67     - norma expanse
-                2003140677259, //    graea hypue aa-z d58     - norma expanse
-                1728262770315, //    graea hypue aa-z d50     - norma expanse
-                1659543293579, //    graea hypue aa-z d48     - norma expanse
-                1350305648267, //    graea hypue aa-z d39     - norma expanse
+                ///* these are good */
+                //3136055823779, //    prua phoe jr-u d3-91     - inner scutum-centaurus arm
+                //7259190873515, //    prua phoe lx-s d4-211    - inner scutum-centaurus arm
+                //6125336284579, //    prua phoe ir-u d3-178    - inner scutum-centaurus arm
+                //6121703676746, //    prua phoe uo-n c8-22     - inner scutum-centaurus arm
+                //6365837675955, //    prua phoe pd-r d5-185    - inner scutum-centaurus arm
+                //284180729219, //     prua phoe wi-b d8        - inner scutum-centaurus arm
+                //2415457537675, //    graea hypue aa-z d70     - norma expanse
+                //2312378322571, //    graea hypue aa-z d67     - norma expanse
+                //2003140677259, //    graea hypue aa-z d58     - norma expanse
+                //1728262770315, //    graea hypue aa-z d50     - norma expanse
+                //1659543293579, //    graea hypue aa-z d48     - norma expanse
+                //1350305648267, //    graea hypue aa-z d39     - norma expanse
 
-                /* more from me */
-                1144147218059, //    graea hypue aa-z d33     - norma expanse
-                1659576977859, //    swoiwns oe-o d7-48       - inner orion spur // bc1 is trouble? needs help
-                319933188363, //     wregoe ja-z d9           - inner orion spur
-                546399072737, //     nyeajeou vp-g b56-0      - temple
-                241824687268, //     hip 17694                - inner orion spur
-                83718378202, //      bd+47 2267               - inner orion spur
-                2878029308905, //    2mass j05334575-0441245  - sanguineous rim
-                2930853613195, //    graea hypue aa-z d85     - norma expanse
-                40280107390979, //   bleethuae ln-b d1172     - izanami
-                83718410970, //      hip 76045                - inner orion spur
-                //2557619442410, //    hip 97950                - inner orion spur <-- abc 1 f, g, h: no parent star?
-                52850328756, //      gd 140                   - inner orion spur
-                125860586676, //     hr 5716                  - inner orion spur
-                //7373867459, //       ushosts lc-m d7-0        - elysian shore <-- ab 1 e: no parent star?
-                //113170581619, //     slegi xv-c d13-3         - elysian shore <-- ab 3 a: no parent star?
-                8055311831762, //    nltt 55164               - inner orion spur
-                721911088556658, //  eorld byoe bq-g c13-2626 - ryker's hope
-                1005802506067, //    heart sector ze-a d29    - elysian shore
-                2789153444971, //    phimbo gc-d d12-81       - perseus arm
-                33682769023907, //   phroi pra pp-v d3-980    - galactic centre
-
-
-                /* new places to try */
-                147547244739, //     outorst oc-m d7-4         - elysian shore
-                79347697283, //      cyoidai vi-b d2           - sanguineous rim
-                /*8084881608371,*/ //    graea hypue is-r d5-235   - norma expanse // legacy in atmosphere :/ fails to predict brain tree's - this is on purpose
-                37790682707, //      bleae phlai ak-i d9-1     - errant marches
-                10887906389, //      eor audst lm-w f1-20      - odin's hold
-                234056927058952, //  phroi pri gm-w a1-13      - galactic centre
-                2009339794090, //    synuefe fo-t c19-7        - inner orion spur
-                5264816150115, //    hypaa bliae nd-h d11-153  - outer orion-perseus conflux
-                3464481251, //       pidgio gs-h d11-0         - errant marches
-                51239337267043, //   blua eaec ed-h d11-1491   - inner scutum-centaurus arm
-                683033437569, //     col 173 sector vv-d b28-0 - inner orion spur <-- b 3: many are wrong? needs help
-                113808345931, //     blu euq nh-l d8-3         - inner orion spur
-                305709086413707, //  stuemeae fg-y d8897       - galactic centre
-                184943642675, //     heguae nl-p d5-5          - sanguineous rim <-- ab 1 b: many are wrong? needs help
-
-                /* top 20 bodies */
-                216887347755, //     aucoks rx-s d4-6         - inner orion spur
-                /* 1182953163019,*///hyuedau lv-y d34         - achilles's altar - did someone really see tussock virgam - emerald, not yellow? otherwise this is good */
-                43847125659, //      drojau bg-w d2-1         - inner orion spur
-                2302134985738, //    athaiwyg eg-y c8         - arcadian stream
-                672833020273, //     flyooe eohn cs-h b43-0   - sanguineous rim
-                //3931941933746, //    lyncis sector cl-y c14   - inner orion spur <-- abc 1 c,d, etc: no parent stars?
-                11548763827697, //   blaa drye wc-f b58-5     - temple
-                11360960255658, //   blau eur rz-o c19-41     - hawking's gap
-                721151664337, //     slegeae su-r b24-0       - sanguineous rim
-                674712855233, //     outotz zq-k b22-0        - sanguineous rim
-                //102509547578, //     hegou fb-s c6-0          - sanguineous rim <-- bodies with no parent stars
-                2851187073897, //    oochoss nm-k b42-1       - elysian shore
-                1148829126400920, // byoomao cg-d a108-65     - galactic centre
-                111098727130, //     groem bl-e c25-0         - kepler's crest
-                612973965713, //     wruetheia nl-u b46-0     - formorian frontier
-                4879485709721, //    blie eup rq-o b47-2      - elysian shore
-                265348273105, //     dryaa bloae ii-n b54-0   - outer arm
-                787453456673, //     nyeakeia za-v b33-0      - hawking's gap
-                629372094563, //     hegoo fw-e d11-18        - sanguineous rim
-                1976177703003690, // choomee if-r c4-7189     - empyrean straits
-                //7373867459, //       ushosts lc-m d7-0        - elysian shore <-- ab 1 e: no parent star?
-                //113170581619, //     slegi xv-c d13-3         - elysian shore <-- bodies with no parent stars
-                8055311831762, //    nltt 55164               - inner orion spur
-                721911088556658, //  eorld byoe bq-g c13-2626 - ryker's hope
-                1005802506067, //    heart sector ze-a d29    - elysian shore
-                2789153444971, //    phimbo gc-d d12-81       - perseus arm
-                33682769023907, //   phroi pra pp-v d3-980    - galactic centre
-
-                ///* top 20 systems */
-                //3107241202402, //    col 285 sector bs-i c10-11 - inner orion spur <-- bodies with no parent stars
-                2962579378659, //    kyloagh pe-g d11-86        - orion-cygnus arm
-                16604217544995, //   eol prou qs-t d3-483       - inner scutum-centaurus arm
-                1182223274666, //    synuefai mw-u c19-4        - inner orion spur
-                1453569624435, //    hip 82068                  - inner orion spur - hip 82068 9 f is missing an atmosphere
-                358999069386, //     76 leonis                  - inner orion spur
-                233444419892, //     hypio flyao xp-p e5-54     - arcadian stream
-                10612427019, //      hip 56843                  - inner orion spur
-                10376464763, //      hd 221180                  - inner orion spur
-                //3626137373140, //    phaa audst gw-w e1-844     - odin's hold <-- bodies with no parent stars
-                91956533317099, //   pru aim gr-d d12-2676      - inner scutum-centaurus arm - revisit abcd 1 a - clypeus speculumi distance calculation needs fixing  <-- bodies with no parent stars
-                //15149635267028, //   phua aub wu-x e1-3527      - galactic centre <-- bodies with no parent stars
-                455962777099, //     scheau bluae jc-b d1-13    - odin's hold
-                1693617998187, //    synuefue zx-f d12-49       - inner orion spur
-                //27118431768755, //   dryio flyuae iy-q d5-789   - inner scutum-centaurus arm <-- bodies with no parent stars
-                1005903105339, //    skaude gd-q d6-29          - inner scutum-centaurus arm
-                800801672259, //     flyooe hypue ft-o d7-23    - inner orion spur
-                2004164284331, //    byoi aip ve-r d4-58        - norma arm // stratum emerald star f vs n ?? needs help
-                14096678161971, //   clooku hi-r d5-410         - inner scutum-centaurus arm
-                175621288252019, //  dumbio gn-b d13-5111       - odin's hold
-
-                /* more ad-hoc systems */
-                //113170581619, //     slegi xv-c d13-3         - elysian shore <-- bodies with no parent stars
-                8055311831762, //    nltt 55164               - inner orion spur
-                721911088556658, //  eorld byoe bq-g c13-2626 - ryker's hope
-                1005802506067, //    heart sector ze-a d29    - elysian shore
-                2789153444971, //    phimbo gc-d d12-81       - perseus arm
-                33682769023907, //   phroi pra pp-v d3-980    - galactic centre
-                27011785954, //     cumbou yh-f c26-0
-
-                /* aleoida coronamus - lime (l star systems) */
-                2492825675329, // pra dryoo ul-x b7-1
-                633272537650, // synuefai ea-u c5-2
-                962207294841, // hyuedeae ug-w b43-0
-                1726677521610, // bleae thaa xx-h c23-6
-                516869988849, // slegue tp-z b57-0
-
-                /* bark mounds */
-                // resume here !!!
-                13876099622273, // pencil sector mr-w b1-6
-                2036007784483, // eulail rx-t d3-59
-                869487643043, // ic 4604 sector dl-y d25 <-- wrong star l vs g for fonticulua campestris? needs help
-
-                // amphora plant
-                13648186819, // eifoqs xz-n d7-0
-                82032053243, // pyroifa dx-a d14-2
-                320570575667, // blaa dryou fn-r d5-9
-                150969781115, // blaea euq oo-z d13-4
-
-                /* luteolum anemone */
-                52837737636, // hr 326
-                4998038101, // hip 42398
-                1238889013, // hd 37127
-
-                /* prasinum bioluminescent anemone */
-                284175090653, // floawns os-u f2-529
-                36011151, // gcrv 950
-
-                /* brain trees */
-                802563263091, // eta carina sector el-y d23
-                //835329116475, // col 132 sector bm-m d7-24 <-- bodies with no parent stars
-                1797418617131, // col 140 sector bq-y d52
-
-                /* tubers */
-                143518344886673, // blua hypa pi-a b47-65 (partially useful)
-
-                /* shards */
-                100562634522, // aidoms mt-u c2-0 (partially useful)
-
-                /* fonticulua campestris */
-                77409424274, // prae drye xn-w c16-0 a 3
-
-                361481876986, //       greae flyao uf-d c29-1   - check 1 d
-                3650755408786, //      prae pruae eg-y c16-13 // ? why no fonticular campestris - amethyst 
-                6406178542290, // guathiti 8 a // no fumerola nitris lime
+                ///* more from me */
+                //1144147218059, //    graea hypue aa-z d33     - norma expanse
+                //1659576977859, //    swoiwns oe-o d7-48       - inner orion spur // bc1 is trouble? needs help
+                //319933188363, //     wregoe ja-z d9           - inner orion spur
+                //546399072737, //     nyeajeou vp-g b56-0      - temple
+                //241824687268, //     hip 17694                - inner orion spur
+                //83718378202, //      bd+47 2267               - inner orion spur
+                //2878029308905, //    2mass j05334575-0441245  - sanguineous rim
+                //2930853613195, //    graea hypue aa-z d85     - norma expanse
+                //40280107390979, //   bleethuae ln-b d1172     - izanami
+                //83718410970, //      hip 76045                - inner orion spur
+                ////2557619442410, //    hip 97950                - inner orion spur <-- abc 1 f, g, h: no parent star?
+                //52850328756, //      gd 140                   - inner orion spur
+                //125860586676, //     hr 5716                  - inner orion spur
+                ////7373867459, //       ushosts lc-m d7-0        - elysian shore <-- ab 1 e: no parent star?
+                ////113170581619, //     slegi xv-c d13-3         - elysian shore <-- ab 3 a: no parent star?
+                //8055311831762, //    nltt 55164               - inner orion spur
+                //721911088556658, //  eorld byoe bq-g c13-2626 - ryker's hope
+                //1005802506067, //    heart sector ze-a d29    - elysian shore
+                //2789153444971, //    phimbo gc-d d12-81       - perseus arm
+                //33682769023907, //   phroi pra pp-v d3-980    - galactic centre
 
 
-                675416645714, // eolls ploe yk-l c9-2 - has root barycentre but alas no concrete bio data for comparisons
-                84431081539, // eolls ploe ox-l d7-2
+                ///* new places to try */
+                //147547244739, //     outorst oc-m d7-4         - elysian shore
+                //79347697283, //      cyoidai vi-b d2           - sanguineous rim
+                ///*8084881608371,*/ //    graea hypue is-r d5-235   - norma expanse // legacy in atmosphere :/ fails to predict brain tree's - this is on purpose
+                //37790682707, //      bleae phlai ak-i d9-1     - errant marches
+                //10887906389, //      eor audst lm-w f1-20      - odin's hold
+                //234056927058952, //  phroi pri gm-w a1-13      - galactic centre
+                //2009339794090, //    synuefe fo-t c19-7        - inner orion spur
+                //5264816150115, //    hypaa bliae nd-h d11-153  - outer orion-perseus conflux
+                //3464481251, //       pidgio gs-h d11-0         - errant marches
+                //51239337267043, //   blua eaec ed-h d11-1491   - inner scutum-centaurus arm
+                //683033437569, //     col 173 sector vv-d b28-0 - inner orion spur <-- b 3: many are wrong? needs help
+                //113808345931, //     blu euq nh-l d8-3         - inner orion spur
+                //305709086413707, //  stuemeae fg-y d8897       - galactic centre
+                //184943642675, //     heguae nl-p d5-5          - sanguineous rim <-- ab 1 b: many are wrong? needs help
 
-                353504315603, // oochody yf-l d9-10 // consistently wrong star choice?
-                49786130467, // eock flyao xy-s d3-1 // single star system
+                ///* top 20 bodies */
+                //216887347755, //     aucoks rx-s d4-6         - inner orion spur
+                ///* 1182953163019,*///hyuedau lv-y d34         - achilles's altar - did someone really see tussock virgam - emerald, not yellow? otherwise this is good */
+                //43847125659, //      drojau bg-w d2-1         - inner orion spur
+                //2302134985738, //    athaiwyg eg-y c8         - arcadian stream
+                //672833020273, //     flyooe eohn cs-h b43-0   - sanguineous rim
+                ////3931941933746, //    lyncis sector cl-y c14   - inner orion spur <-- abc 1 c,d, etc: no parent stars?
+                //11548763827697, //   blaa drye wc-f b58-5     - temple
+                //11360960255658, //   blau eur rz-o c19-41     - hawking's gap
+                //721151664337, //     slegeae su-r b24-0       - sanguineous rim
+                //674712855233, //     outotz zq-k b22-0        - sanguineous rim
+                ////102509547578, //     hegou fb-s c6-0          - sanguineous rim <-- bodies with no parent stars
+                //2851187073897, //    oochoss nm-k b42-1       - elysian shore
+                //1148829126400920, // byoomao cg-d a108-65     - galactic centre
+                //111098727130, //     groem bl-e c25-0         - kepler's crest
+                //612973965713, //     wruetheia nl-u b46-0     - formorian frontier
+                //4879485709721, //    blie eup rq-o b47-2      - elysian shore
+                //265348273105, //     dryaa bloae ii-n b54-0   - outer arm
+                //787453456673, //     nyeakeia za-v b33-0      - hawking's gap
+                //629372094563, //     hegoo fw-e d11-18        - sanguineous rim
+                //1976177703003690, // choomee if-r c4-7189     - empyrean straits
+                ////7373867459, //       ushosts lc-m d7-0        - elysian shore <-- ab 1 e: no parent star?
+                ////113170581619, //     slegi xv-c d13-3         - elysian shore <-- bodies with no parent stars
+                //8055311831762, //    nltt 55164               - inner orion spur
+                //721911088556658, //  eorld byoe bq-g c13-2626 - ryker's hope
+                //1005802506067, //    heart sector ze-a d29    - elysian shore
+                //2789153444971, //    phimbo gc-d d12-81       - perseus arm
+                //33682769023907, //   phroi pra pp-v d3-980    - galactic centre
 
-                113053059083, // slegi av-y d3 // not predicted: stratum tectonicas green / due to a neutron being deemed the hottest but it should have been the local m stars
-                2282674557658, // vodyakamana // <-- bc4 fails because argon is < 100% but there's no nitrogen in the atmosphere (or anything else?!)
-                1050522316081, // ihad bk-l b35-0 // <-- we are missing data about the star and canonn has incomplete bio data for ihad bk-l b35-0 1 a
+                /////* top 20 systems */
+                ////3107241202402, //    col 285 sector bs-i c10-11 - inner orion spur <-- bodies with no parent stars
+                //2962579378659, //    kyloagh pe-g d11-86        - orion-cygnus arm
+                //16604217544995, //   eol prou qs-t d3-483       - inner scutum-centaurus arm
+                //1182223274666, //    synuefai mw-u c19-4        - inner orion spur
+                //1453569624435, //    hip 82068                  - inner orion spur - hip 82068 9 f is missing an atmosphere
+                //358999069386, //     76 leonis                  - inner orion spur
+                //233444419892, //     hypio flyao xp-p e5-54     - arcadian stream
+                //10612427019, //      hip 56843                  - inner orion spur
+                //10376464763, //      hd 221180                  - inner orion spur
+                ////3626137373140, //    phaa audst gw-w e1-844     - odin's hold <-- bodies with no parent stars
+                //91956533317099, //   pru aim gr-d d12-2676      - inner scutum-centaurus arm - revisit abcd 1 a - clypeus speculumi distance calculation needs fixing  <-- bodies with no parent stars
+                ////15149635267028, //   phua aub wu-x e1-3527      - galactic centre <-- bodies with no parent stars
+                //455962777099, //     scheau bluae jc-b d1-13    - odin's hold
+                //1693617998187, //    synuefue zx-f d12-49       - inner orion spur
+                ////27118431768755, //   dryio flyuae iy-q d5-789   - inner scutum-centaurus arm <-- bodies with no parent stars
+                //1005903105339, //    skaude gd-q d6-29          - inner scutum-centaurus arm
+                //800801672259, //     flyooe hypue ft-o d7-23    - inner orion spur
+                //2004164284331, //    byoi aip ve-r d4-58        - norma arm // stratum emerald star f vs n ?? needs help
+                //14096678161971, //   clooku hi-r d5-410         - inner scutum-centaurus arm
+                //175621288252019, //  dumbio gn-b d13-5111       - odin's hold
 
-                2519946200947, // qiefoea kz-d d13-73 // d4 osseus not found or d3 stratum not found
-                10393127859, // chaloa pi-r d5-0 // missing stratum tectonicas green, cactoida cortexum amethyst & frutexa metallicum grey ? 
-                7269366113697, // icz zj-z b3
+                ///* more ad-hoc systems */
+                ////113170581619, //     slegi xv-c d13-3         - elysian shore <-- bodies with no parent stars
+                //8055311831762, //    nltt 55164               - inner orion spur
+                //721911088556658, //  eorld byoe bq-g c13-2626 - ryker's hope
+                //1005802506067, //    heart sector ze-a d29    - elysian shore
+                //2789153444971, //    phimbo gc-d d12-81       - perseus arm
+                //33682769023907, //   phroi pra pp-v d3-980    - galactic centre
+                //27011785954, //     cumbou yh-f c26-0
+
+                ///* aleoida coronamus - lime (l star systems) */
+                //2492825675329, // pra dryoo ul-x b7-1
+                //633272537650, // synuefai ea-u c5-2
+                //962207294841, // hyuedeae ug-w b43-0
+                //1726677521610, // bleae thaa xx-h c23-6
+                //516869988849, // slegue tp-z b57-0
+
+                ///* bark mounds */
+                //// resume here !!!
+                //13876099622273, // pencil sector mr-w b1-6
+                //2036007784483, // eulail rx-t d3-59
+                //869487643043, // ic 4604 sector dl-y d25 <-- wrong star l vs g for fonticulua campestris? needs help
+
+                //// amphora plant
+                //13648186819, // eifoqs xz-n d7-0
+                //82032053243, // pyroifa dx-a d14-2
+                //320570575667, // blaa dryou fn-r d5-9
+                //150969781115, // blaea euq oo-z d13-4
+
+                ///* luteolum anemone */
+                //52837737636, // hr 326
+                //4998038101, // hip 42398
+                //1238889013, // hd 37127
+
+                ///* prasinum bioluminescent anemone */
+                //284175090653, // floawns os-u f2-529
+                //36011151, // gcrv 950
+
+                ///* brain trees */
+                //802563263091, // eta carina sector el-y d23
+                ////835329116475, // col 132 sector bm-m d7-24 <-- bodies with no parent stars
+                //1797418617131, // col 140 sector bq-y d52
+
+                ///* tubers */
+                //143518344886673, // blua hypa pi-a b47-65 (partially useful)
+
+                ///* shards */
+                //100562634522, // aidoms mt-u c2-0 (partially useful)
+
+                ///* fonticulua campestris */
+                //77409424274, // prae drye xn-w c16-0 a 3
+
+                //361481876986, //       greae flyao uf-d c29-1   - check 1 d
+                //3650755408786, //      prae pruae eg-y c16-13 // ? why no fonticular campestris - amethyst 
+                //6406178542290, // guathiti 8 a // no fumerola nitris lime
+
+
+                //675416645714, // eolls ploe yk-l c9-2 - has root barycentre but alas no concrete bio data for comparisons
+                //84431081539, // eolls ploe ox-l d7-2
+
+                //353504315603, // oochody yf-l d9-10 // consistently wrong star choice?
+                //49786130467, // eock flyao xy-s d3-1 // single star system
+
+                //113053059083, // slegi av-y d3 // not predicted: stratum tectonicas green / due to a neutron being deemed the hottest but it should have been the local m stars
+                //2282674557658, // vodyakamana // <-- bc4 fails because argon is < 100% but there's no nitrogen in the atmosphere (or anything else?!)
+                //1050522316081, // ihad bk-l b35-0 // <-- we are missing data about the star and canonn has incomplete bio data for ihad bk-l b35-0 1 a
+
+                //2519946200947, // qiefoea kz-d d13-73 // d4 osseus not found or d3 stratum not found
+                //10393127859, // chaloa pi-r d5-0 // missing stratum tectonicas green, cactoida cortexum amethyst & frutexa metallicum grey ? 
+                //7269366113697, // icz zj-z b3
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");

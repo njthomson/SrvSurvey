@@ -97,7 +97,7 @@ namespace SrvSurvey.game
             {
                 var currentGalacticRegion = Game.activeGame?.cmdr?.galacticRegion ?? "";
                 var mappedGalacticRegion = GalacticRegions.mapRegions.GetValueOrDefault(currentGalacticRegion);
-                return mappedGalacticRegion ?? "???";
+                return mappedGalacticRegion ?? "?";
             }
         }
 
