@@ -535,7 +535,7 @@ namespace BioCriterias
             // load known bio signals from Canonn, and body data from Spansh
             var pendingBioStats = Game.canonn.systemBioStats(address);
             var pendingSpanshDump = Game.spansh.getSystemDump(address);
-            await Task.WhenAll(pendingBioStats);
+            await Task.WhenAll(pendingBioStats, pendingSpanshDump);
 
             var bioStats = pendingBioStats.Result;
             var systemData = SystemData.From(pendingSpanshDump.Result, fid, cmdr);
@@ -548,10 +548,15 @@ namespace BioCriterias
                 await systemData.getNebulaDist();
 
             // predict this system
-            foreach (var body in systemData.bodies)
+            foreach (var body in systemData.bodies.ToList())
             {
                 var realBody = bioStats.bodies.Find(b => b.bodyId == body.id);
-                if (realBody?.signals?.biology == null /*&& body.name != "Ihad BK-L b35-0 1 a"*/) continue; // skip bodies without known bio signals
+                if (realBody?.signals?.genuses == null || realBody.signals.genuses.Count == 0) continue; // skip bodies without known bio signals
+                if (realBody?.signals?.biology == null)
+                {
+                    Game.log($"** Missing realBody?.signals?.biology for: {body.name} (system id64: {systemData.address})");
+                    continue;
+                }
 
                 BioPredictor.logOrganism = "";
                 var predictions = BioPredictor.predict(body); // <--- drag execution up to here

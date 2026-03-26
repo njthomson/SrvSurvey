@@ -3,7 +3,6 @@ using SrvSurvey.game;
 using SrvSurvey.plotters;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO.Compression;
 using System.Reflection;
 
 [assembly: System.Resources.NeutralResourcesLanguage("en")]
@@ -18,7 +17,7 @@ namespace SrvSurvey
         public static string dataFolder2 = Path.GetFullPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData", "Roaming", "SrvSurvey", "SrvSurvey", "1.1.0.0"));
         public static bool isAppStoreBuild = Assembly.GetExecutingAssembly().Location.Contains("NosmohtSoftware");
 #if DEBUG
-        public static string releaseVersion = $"1.{DateTime.Now.Year}.{(DateTime.Now.Month * 100) + DateTime.Now.Day}.{(DateTime.Now.Hour * 100) + DateTime.Now.Minute}";
+        public static string releaseVersion = $"100.{DateTime.Now.Year}.{(DateTime.Now.Month * 100) + DateTime.Now.Day}.{(DateTime.Now.Hour * 100) + DateTime.Now.Minute}";
 #else
         public static string releaseVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version!;
 #endif

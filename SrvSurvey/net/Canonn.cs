@@ -93,17 +93,6 @@ namespace SrvSurvey.canonn
             return systemPoi;
         }
 
-        public async Task<Dictionary<int, CanonnBioStats>> biostats(string genus)
-        {
-            Game.log($"Requesting biostats: {genus}");
-
-            var json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/biostats/{genus}");
-            if (json == "what happen") return null!;
-            var biostats = JsonConvert.DeserializeObject<Dictionary<int, CanonnBioStats>>(json)!;
-
-            return biostats;
-        }
-
         public async Task<CanonnBodyBioStats> systemBioStats(long systemAddress)
         {
             var cacheFilename = Path.Combine(BioPredictor.netCache, $"systemBioStats-{systemAddress}.json");
@@ -114,7 +103,7 @@ namespace SrvSurvey.canonn
             }
             else
             {
-                json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/biostats?id={systemAddress}");
+                json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/biostats?caller=SrvSurveyBioTests&id={systemAddress}");
                 if (BioPredictor.useTestCache)
                     Data.saveWithRetry(cacheFilename, json, true);
             }

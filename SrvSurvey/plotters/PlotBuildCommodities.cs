@@ -20,11 +20,12 @@ namespace SrvSurvey.plotters
 
         public static bool allowed(Game game)
         {
-            var hasProjects = game.cmdrColony.projects.Count > game.cmdrColony.hiddenIDs.Count;
+            var hasProjects = game.cmdrColony?.projects.Count > game.cmdrColony?.hiddenIDs.Count;
 
             var allowed = Game.settings.autoShowPlotBuildCommodities
                 // NOT suppressed by buildProjectsSuppressOtherOverlays
                 && Game.settings.buildProjects_TEST
+                && game.cmdrColony != null
                 && (
                     // forced but not jumping or in external panel
                     (PlotBuildCommodities.forceShow && !game.fsdJumping && !game.isMode(GameMode.ExternalPanel))

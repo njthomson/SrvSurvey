@@ -207,6 +207,7 @@ namespace SrvSurvey
         public int pubDataSettlementTemplate = 0;
         public int pubDataGuardian = 0;
         public int pubSettlements = 0;
+        public int pubNicknames = 0;
 
         public DateTime lastCodexRefDownload = DateTime.MinValue;
         public DateTime lastCodexNotFoundDownload = DateTime.MinValue;
@@ -267,6 +268,8 @@ namespace SrvSurvey
         public bool disableBetterAlphaBlending = true;
         public bool disableWindowParentIsGame = false;
         public bool displayVR = false;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string? vrProcessName = null;
 
         public bool enableQuests = false;
 
