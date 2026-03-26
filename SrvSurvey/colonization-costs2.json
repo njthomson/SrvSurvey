@@ -63,7 +63,6 @@
     "tier": 3,
     "location": "orbital",
     "displayName": "Dodec Starport",
-    "displayName2": "Dodec Starport",
     "layouts": [ "dodec", "quint_truss", "dec_truss" ],
     "cargo": {
       "aluminium": 45248,
@@ -604,7 +603,7 @@
     "category": "Research Station",
     "tier": 2,
     "location": "orbital",
-    "displayName": "Scientific Installation",
+    "displayName": "Research Installation",
     "layouts": [ "Astraeus", "Coeus", "Dodona", "Dione" ],
     "cargo": {
       "liquidoxygen": 1506,
@@ -1207,7 +1206,7 @@
     "category": "Research Bio Tier 2",
     "tier": 2,
     "location": "surface",
-    "displayName": "High Tech Settlement - Small",
+    "displayName": "Bio Settlement - Small",
     "layouts": [ "Pheobe" ],
     "cargo": {
       "liquidoxygen": 351,
@@ -1241,7 +1240,7 @@
     "category": "Research Bio Tier 2",
     "tier": 2,
     "location": "surface",
-    "displayName": "High Tech Settlement - Medium",
+    "displayName": "Bio Settlement - Medium",
     "layouts": [ "Asteria", "Caerus" ],
     "cargo": {
       "liquidoxygen": 702,
@@ -1275,7 +1274,7 @@
     "category": "Research Bio Tier 2",
     "tier": 2,
     "location": "surface",
-    "displayName": "High Tech Settlement - Large",
+    "displayName": "Bio Settlement - Large",
     "layouts": [ "Chronos" ],
     "cargo": {
       "liquidoxygen": 1053,

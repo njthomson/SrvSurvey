@@ -290,15 +290,19 @@ namespace SrvSurvey.game
         {
             if (systemName == null) return null!;
 
-            if (Game.settings.useSystemNickNames)
-                return instance.map.GetValueOrDefault(systemName, StringComparison.OrdinalIgnoreCase) ?? systemName;
-            else
+            if (!Game.settings.useSystemNickNames)
                 return systemName;
+
+            var match = instance.map.GetValueOrDefault(systemName, StringComparison.OrdinalIgnoreCase)
+                ?? ravenMap.GetValueOrDefault(systemName, StringComparison.OrdinalIgnoreCase);
+
+            return match ?? systemName;
         }
 
         private static SystemNickNames instance => GameFileWatcher.watch<SystemNickNames>(SystemNickNames.filepath);
 
         /// <summary> A map of real system names to alternate nick-names </summary>
         public Dictionary<string, string> map = [];
+        public static Dictionary<string, string> ravenMap = [];
     }
 }

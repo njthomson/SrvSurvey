@@ -426,7 +426,14 @@ namespace SrvSurvey
 
             // reset bigOverlay
             BigOverlay.init(game);
-            if (VR.enabled) VR.init();
+            if (VR.enabled)
+            {
+                // only start VR if an expected process already exists
+                var processName = Game.settings.vrProcessName ?? "vrserver";
+                var p = Process.GetProcessesByName(processName).FirstOrDefault();
+                if (p != null)
+                    VR.init();
+            }
         }
 
         private void updateAllControls(GameMode? newMode = null)

@@ -30,10 +30,14 @@ namespace SrvSurvey.forms
             // use map of bodyNum / name (type)
             var bodyMap = game.systemData!.bodies
                 .Where(_ => _.type != SystemBodyType.Unknown && _.type != SystemBodyType.Barycentre && _.type != SystemBodyType.PlanetaryRing)
+                .OrderBy(_ => _.id)
                 .ToDictionary(b => b.id, b => $"{b.name} ({b.planetClass})");
+            bodyMap.Add(-1, "Unknown");
             this.comboBody.DataSource = new BindingSource(bodyMap, null!);
             if (game.systemBody != null)
                 this.comboBody.SelectedValue = game.systemBody.id;
+            else
+                this.comboBody.SelectedValue = -1;
 
             txtArchitect.Text = game.Commander;
 
@@ -49,7 +53,7 @@ namespace SrvSurvey.forms
                 var mapSites = new Dictionary<string, string>() { { "", "None" } };
 
                 foreach (var site in sites)
-                    if (site.status != SystemSite.Status.complete)
+                    if (site.status == SystemSite.Status.plan)
                         mapSites.Add(site.id, $"{site.name} ({site.buildType})");
 
                 comboSystemSite.DataSource = new BindingSource(mapSites, null!);
@@ -133,6 +137,9 @@ namespace SrvSurvey.forms
 
                         comboBuildType.SelectedValue = costMatch.buildType;
                         comboBuildSubType.Text = siteMatch.buildType;
+
+                        if (comboBody.SelectedValue is int && (int)comboBody.SelectedValue == -1 && siteMatch.bodyNum != -1)
+                            comboBody.SelectedValue = siteMatch.bodyNum;
 
                         comboBuildType.Enabled = false;
                         comboBuildSubType.Enabled = false;
