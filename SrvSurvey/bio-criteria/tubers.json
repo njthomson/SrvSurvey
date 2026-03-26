@@ -152,7 +152,6 @@
       "species": "Lindigoticum Sinuous Tubers",
       "query": [
         "# hit count: 186",
-        "atmosType [None]",
         "  regions [4,5,6,7,8,9,10,18,19]"
       ],
       "children": [
@@ -162,7 +161,7 @@
             "# hit count: 170",
             "     body [Rocky]",
             "  gravity [ ~ 0.5]",
-            "volcanism [None,Major Metallic Magma,Major Silicate Vapour Geysers]"
+            "volcanism [Major Metallic Magma,Major Silicate Vapour Geysers]"
           ]
         },
         {
@@ -171,7 +170,7 @@
             "# hit count: 16",
             "     body [HMC]",
             "  gravity [ ~ 2]",
-            "volcanism [None,Major Rocky Magma,Metallic Magma,Rocky Magma]"
+            "volcanism [Major Rocky Magma,Metallic Magma,Rocky Magma]"
           ]
         }
       ]
@@ -190,7 +189,7 @@
             "# hit count: 60",
             "     body [Rocky]",
             "  gravity [ ~ 0.5]",
-            "volcanism [None,Major Metallic Magma,Major Silicate Vapour Geysers]"
+            "volcanism [Major Metallic Magma,Major Silicate Vapour Geysers]"
           ]
         },
         {
