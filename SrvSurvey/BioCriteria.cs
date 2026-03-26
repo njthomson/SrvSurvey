@@ -229,15 +229,14 @@ namespace BioCriterias
         public static Clause parse(string txt)
         {
             // "<property name> [<condition values>]"
-            // eg: "temp [146 ~ 196]"
-            // eg: "gravity [ ~ 0.28]"
+            // eg: "temp [146 ~ 195.41]"
+            // eg: "gravity [ ~ 0.276]"
             // eg: "pressure [0.01 ~ ]"
             // eg: "atmosphere [Thin Ammonia]"
             // eg: "atmosType [CarbonDioxide,SulphurDioxide,Water]"
             // eg: "atmosComp [SulphurDioxide >= 0.99 | Neon >= 3]"
             // eg: "matsComp [Sulphur >= 0.99]"
-            // eg: "regions [7,8,13,14,15,16,17,18,27,30,32]"
-            // eg: "arms [Orion-Cygnus Arm,Perseus Arm]"
+            // eg: "regions [Orion-Cygnus Arm, 30,32]"
 
             var r0 = new Regex(@"\s*(\w+)\s*[&!]?\[(.+)\]");
             var m0 = r0.Match(txt);

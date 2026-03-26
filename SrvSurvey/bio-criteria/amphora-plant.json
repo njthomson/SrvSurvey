@@ -3,15 +3,14 @@
   "species": "Amphora Plant",
   "variant": "",
   "query": [
-    "# hit count: 449",
+    "# hit count: 619",
     "atmosType [None]",
     "     body [MRB]",
-    "  gravity [0.042 ~ 4.473]",
-    "     temp [1000 ~ 1736]",
+    "  gravity [0.04 ~ ]",
+    "     temp [1000.0 ~ 1800]",
     " pressure [ ~ 0]",
     "volcanism [Major Metallic Magma,Major Rocky Magma,Major Silicate Vapour Geysers]",
-    "  regions [AmphoraBatch]",
-    "     mats &[Iron,Nickel]"
+    "  regions [AmphoraBatch]"
   ]
 
 }

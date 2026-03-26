@@ -1,5 +1,9 @@
 {
   "genus": "Frutexa",
+  "query": [
+    "     body [Rocky,HMC]",
+    "  gravity [ ~ 0.276]"
+  ],
   "commonChildren": [
     { "variant": "Yellow", "query": [ " star [O]" ] },
     { "variant": "Lime", "query": [ "   star [B]" ] },
@@ -18,11 +22,11 @@
       "species": "Acus",
       "useCommonChildren": true,
       "query": [
-        "# hit count: 10000",
+        "# hit count: 56826",
         "atmosType [CarbonDioxide]",
         "     body [Rocky]",
-        "  gravity [ ~ 0.237]",
-        "     temp [146 ~ 196]",
+        "  gravity [ ~ 0.238]",
+        "     temp [146.0 ~ 195.41]",
         " pressure [0.0029 ~ ]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.98]",
@@ -33,7 +37,7 @@
     {
       "species": "Collum",
       "query": [
-        "# hit count: 797",
+        "# hit count: 1483",
         "atmosType [SulphurDioxide]",
         "atmosComp [SulphurDioxide >= 100]"
       ],
@@ -41,21 +45,19 @@
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 722",
+            "# hit count: 1333",
             "     body [Rocky]",
-            "  gravity [0.04 ~ 0.275]",
             "     temp [132 ~ 211]",
-            " pressure [ ~ 0.0105]",
-            "volcanism [None,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma]"
+            " pressure [ ~ 0.017]",
+            "volcanism [None,Major Metallic Magma,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers,Minor Water Magma]"
           ]
         },
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 75",
+            "# hit count: 150",
             "     body [HMC]",
-            "  gravity [0.268 ~ 0.276]",
-            "     temp [132 ~ 151]",
+            "     temp [ ~ 151]",
             " pressure [ ~ 0.0017]",
             "volcanism [None]"
           ]
@@ -67,12 +69,12 @@
       "species": "Fera",
       "useCommonChildren": true,
       "query": [
-        "# hit count: 7603",
+        "# hit count: 13873",
         "atmosType [CarbonDioxide]",
         "     body [Rocky]",
-        "  gravity [0.04 ~ 0.237]",
-        "     temp [146 ~ 196]",
-        " pressure [0.003 ~ ]",
+        "  gravity [ ~ 0.238]",
+        "     temp [146 ~ 195.41]",
+        " pressure [0.002 ~ ]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
         "  regions [OuterArm,CentreRight]"
@@ -81,17 +83,32 @@
 
     {
       "species": "Flabellum",
-      "useCommonChildren": true,
       "query": [
-        "# hit count: 10000",
-        "atmosType [Ammonia]",
-        "     body [Rocky]",
-        "  gravity [ ~ 0.275]",
-        "     temp [152 ~ 177]",
-        " pressure [ ~ 0.0132]",
-        "volcanism [None,Major Silicate Vapour Geysers,Minor Metallic Magma,Minor Water Magma]",
-      "atmosComp [Ammonia >= 100]",
+        "# hit count: 36802",
         "  regions ![Scutum-CentaurusArm,CentreLeft]"
+      ],
+      "children": [
+        {
+          "useCommonChildren": true,
+          "query": [
+            "# hit count: 36775",
+            "atmosType [Ammonia]",
+            "     body [Rocky]",
+            "volcanism [None,Major Silicate Vapour Geysers,Minor Metallic Magma,Minor Water Magma]",
+            "atmosComp [Ammonia >= 100]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "# hit count: 27",
+            "atmosType [CarbonDioxide]",
+            "     body [HMC]",
+            "     temp [152 ~ 195.41]",
+            " pressure [0.004 ~ ]",
+            "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]"
+          ]
+        }
       ]
     },
 
@@ -99,13 +116,10 @@
       "species": "Flammasis",
       "useCommonChildren": true,
       "query": [
-        "# hit count: 7694",
+        "# hit count: 14670",
         "atmosType [Ammonia]",
         "     body [Rocky]",
-        "  gravity [0.041 ~ 0.275]",
-        "     temp [152 ~ 177]",
-        " pressure [ ~ 0.0134]",
-        "volcanism [None,Major Silicate Vapour Geysers,Minor Water Magma]",
+        "volcanism [None,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers,Minor Water Magma]",
         "atmosComp [Ammonia >= 100]",
         "  regions [Scutum-CentaurusArm,CentreLeft]"
       ]
@@ -114,30 +128,25 @@
     {
       "species": "Metallicum",
       "query": [
-        "# hit count: 10000",
+        "# hit count: 37856",
+        "     body [HMC]",
         "volcanism [None]"
       ],
       "children": [
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 10000",
+            "# hit count: 20089",
             "atmosType [Ammonia]",
-            "     body [HMC]",
-            "  gravity [0.045 ~ 0.276]",
-            "     temp [152 ~ 176]",
-            " pressure [ ~ 0.0096]",
             "atmosComp [Ammonia >= 100]"
           ]
         },
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 9123",
+            "# hit count: 17718",
             "atmosType [CarbonDioxide]",
-            "     body [HMC]",
-            "  gravity [ ~ 0.272]",
-            "     temp [146 ~ 196]",
+            "     temp [146 ~ 195.41]",
             " pressure [0.002 ~ ]",
             "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]"
           ]
@@ -145,12 +154,20 @@
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 27",
+            "# hit count: 2",
+            "atmosType [Methane]",
+            "     temp [100 ~ 102]",
+            " pressure [0.053 ~ ]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "# hit count: 47",
             "atmosType [Water]",
-            "     body [HMC]",
-            "  gravity [0.045 ~ 0.052]",
-            "     temp [390 ~ 400]",
-            " pressure [0.0521 ~ 0.0679]",
+            "  gravity [ ~ 0.052]",
+            "     temp [390 ~ ]",
+            " pressure [0.052 ~ 0.068]",
             "atmosComp [Water >= 100]"
           ]
         }
@@ -161,12 +178,11 @@
       "species": "Sponsae",
       "useCommonChildren": true,
       "query": [
-        "# hit count: 3119",
+        "# hit count: 7765",
         "atmosType [Water]",
         "     body [Rocky]",
-        "  gravity [ ~ 0.056]",
-        "     temp [392 ~ 452]",
-        " pressure [0.0528 ~ ]",
+        "     temp [390 ~ ]",
+        " pressure [0.052 ~ ]",
         "volcanism [None,Minor Water Magma]",
         "atmosComp [Water >= 100]"
       ]

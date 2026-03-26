@@ -2,7 +2,8 @@
   "genus": "Clypeus",
   "query": [
     "     body [HMC,Rocky]",
-    "atmosType [CarbonDioxide,Water]"
+    "atmosType [CarbonDioxide,Water]",
+    "  gravity [ ~ 0.276]"
   ],
   "commonChildren": [
     { "variant": "Maroon", "query": [ "   star [B]" ] },
@@ -21,18 +22,18 @@
     {
       "species": "Lacrimam",
       "query": [
-        "# hit count: 9280",
+        "# hit count: 20670",
         "body [Rocky]"
       ],
       "children": [
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 4583",
+            "# hit count: 9254",
             "atmosType [CarbonDioxide]",
-            "  gravity [0.04 ~ 0.238]",
+            "  gravity [ ~ 0.238]",
             "     temp [190 ~ 199]",
-            " pressure [0.0545 ~ ]",
+            " pressure [0.048 ~ ]",
             "volcanism [None]",
             "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]"
           ]
@@ -40,11 +41,9 @@
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 4696",
+            "# hit count: 11416",
             "atmosType [Water]",
-            "  gravity [ ~ 0.056]",
-            "     temp [394 ~ 452]",
-            " pressure [0.0539 ~ ]",
+            "     temp [390 ~ ]",
             "volcanism [None,Minor Water Magma]",
             "atmosComp [Water >= 100]"
           ]
@@ -55,7 +54,7 @@
     {
       "species": "Margaritus",
       "query": [
-        "# hit count: 4963",
+        "# hit count: 11020",
         "     body [HMC]",
         "volcanism [None]"
       ],
@@ -63,22 +62,19 @@
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 2706",
+            "# hit count: 6054",
             "atmosType [CarbonDioxide]",
-            "  gravity [0.059 ~ 0.272]",
-            "     temp [190 ~ 196]",
-            " pressure [0.0545 ~ ]",
+            "     temp [190 ~ 195.41]",
+            " pressure [0.054 ~ ]",
             "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]"
           ]
         },
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 2257",
+            "# hit count: 4966",
             "atmosType [Water]",
-            "  gravity [0.044 ~ 0.063]",
-            "     temp [390 ~ 452]",
-            " pressure [0.0509 ~ ]",
+            "     temp [390 ~ ]",
             "atmosComp [Water >= 100]"
           ]
         }
@@ -88,18 +84,18 @@
     {
       "species": "Speculumi",
       "query": [
-        "# hit count: 3078"
+        "# hit count: 6782"
       ],
       "children": [
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 2150",
+            "# hit count: 4328",
             "atmosType [CarbonDioxide]",
             "     body [Rocky]",
-            "  gravity [0.041 ~ 0.237]",
-            "     temp [190 ~ 196]",
-            " pressure [0.0548 ~ ]",
+            "  gravity [ ~ 0.238]",
+            "     temp [190 ~ 195.41]",
+            " pressure [0.054 ~ ]",
             "volcanism [None]",
             "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]"
           ]
@@ -107,12 +103,12 @@
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 928",
+            "# hit count: 2454",
             "atmosType [Water]",
             "     body [Rocky]",
             "  gravity [ ~ 0.056]",
-            "     temp [392 ~ 452]",
-            " pressure [0.0528 ~ ]",
+            "     temp [390 ~ ]",
+            " pressure [0.052 ~ ]",
             "volcanism [None,Minor Water Magma]",
             "atmosComp [Water >= 100]"
           ]

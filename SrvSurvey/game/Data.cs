@@ -251,8 +251,10 @@ namespace SrvSurvey.game
             // Additional groupings for specific organisms
             { "AmphoraBatch", new[] { 10, 19, 20, 21, 22 } },  // NormaExpanse, Hawking'sGap, Dryman'sPoint, Sagittarius-Carina Arm, Mare Somnia
             { "AnemoneBatch", new[] { 7, 8, 9, 13, 14, 15, 16, 17, 18, 27, 31 } },  // Izanami, Inner Orion-Perseus Conflux, Inner Scutum-Centaurus Arm, Newton's Vault, The Conduit, Outer Orion-Perseus Conflux, Orion-Cygnus Arm, Temple, Inner Orion Spur, Outer Arm, The Formidine Rift
+            { "BarkMoundBatch", new[] { 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 25, 32, 33, 34 } },
             { "BrainTreeBatch", new[] { 2, 9, 10, 17, 18, 35 } }, //Empyrean Straits, Inner-Scutum Centaurus Arm, Norma Expanse, Temple, Inner Orion Spur, Outer Orion Spur
-            { "TubersBatch", new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 18, 19 } }//Galactic Centre, Odin's Hold, Empyrean Straits,Ryker's Hope, Norma Arm, Arcadian Stream, Izanami, Inner Orion-Perseus Conflux, Inner Scutum-Centaurus Arm, Inner Orion Spur, Hawking's Gap, Norma Expanse, Trojan Belt
+            { "TubersBatch", new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 18, 19 } },//Galactic Centre, Odin's Hold, Empyrean Straits,Ryker's Hope, Norma Arm, Arcadian Stream, Izanami, Inner Orion-Perseus Conflux, Inner Scutum-Centaurus Arm, Inner Orion Spur, Hawking's Gap, Norma Expanse, Trojan Belt
+            { "ShardBatch", new[] { 14, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 34, 36, 37, 38, 39, 40, 41, 42 } }
         };
 
         /* All Region:

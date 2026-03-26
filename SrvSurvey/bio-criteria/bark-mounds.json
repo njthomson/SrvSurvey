@@ -2,55 +2,57 @@
   "genus": "Bark Mounds",
   "species": "Bark Mounds",
   "query": [
-    "# hit count: 3317",
+    "# hit count: 9304",
     "atmosType [None]",
-    "  regions [4,5,6,7,8,9,10,11,12,13,15,16,17,18,19,20,25,32,33,34]",
-    "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]",
+    "     temp [200 ~ 440]",
+    "  regions [BarkMoundBatch]",
     "  nebulae [ ~ 160]"
   ],
   "children": [
     {
       "variant": "",
-          "query": [
-        "# hit count: 54",
+      "query": [
+        "# hit count: 145",
         "     body [Icy]",
-        "  gravity [ ~ 2.217]",
-        "     temp [201 ~ 361]",
-        " pressure [ ~ 0]",
+        "  gravity [ ~ 2.5]",
         "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers,Major Water Magma,Minor Carbon Dioxide Geysers,Water Geysers]"
       ]
     },
     {
       "variant": "",
-          "query": [
-        "# hit count: 2422",
+      "query": [
+        "# hit count: 5393",
         "     body [Rocky]",
-        "  gravity [ ~ 0.448]",
-        "     temp [200 ~ 440]",
-        " pressure [ ~ 0.0009]",
-        "volcanism [None,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]"
+        "  gravity [ ~ 0.49]",
+        "volcanism [None,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers,Minor Water Magma]"
       ]
     },
     {
       "variant": "",
-          "query": [
-        "# hit count: 17",
+      "query": [
+        "# hit count: 73",
         "     body [RockyIce]",
-        "  gravity [ ~ 0.404]",
-        "     temp [200 ~ 249]",
-        " pressure [ ~ 0.0001]",
-        "volcanism [None,Water Geysers]"
+        "  gravity [ ~ 1.9]",
+        "     temp [200 ~ 277]",
+        "volcanism [None,Minor Carbon Dioxide Geysers,Water Geysers]"
       ]
     },
     {
       "variant": "",
-          "query": [
-        "# hit count: 824",
+      "query": [
+        "# hit count: 3692",
         "     body [HMC]",
-        "  gravity [ ~ 3.462]",
-        "     temp [200 ~ 440]",
-        " pressure [ ~ 0.0009]",
-        "volcanism [None,Major Rocky Magma,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]"
+        "  gravity [ ~ 3.5]",
+        "volcanism [None,Major Rocky Magma,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers,Rocky Magma]"
+      ]
+    },
+    {
+      "variant": "",
+      "query": [
+        "# hit count: 1",
+        "     body [MetalRich]",
+        "  gravity [ ~ 3.5]",
+        "volcanism [Major Silicate Vapour Geysers]"
       ]
     }
   ]

@@ -569,7 +569,7 @@ namespace BioCriterias
                     Game.log(txt);
                     Debugger.Break(); // When this hits. Clear the debug console and drag the execution point up to the "BioPredictor.predict(body)" line above
                 }
-                else if (wrong.Count > 5)
+                else if (wrong.Count > 4)
                 {
                     // TODO: write these to some file?
                     Game.log(txt);

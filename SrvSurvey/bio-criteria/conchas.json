@@ -1,16 +1,16 @@
 {
   "genus": "Concha",
   "query": [
-    "body [HMC,Rocky]"
+    "body [HMC,Rocky]",
+    "  gravity [ ~ 0.276]"
   ],
   "children": [
 
     {
       "species": "Aureolas",
       "query": [
-        "# hit count: 9186",
+        "# hit count: 17201",
         "atmosType [Ammonia]",
-        "     temp [152 ~ 177]",
         "atmosComp [Ammonia >= 100]"
       ],
       "commonChildren": [
@@ -28,21 +28,17 @@
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 9119",
+            "# hit count: 17056",
             "     body [Rocky]",
-            "  gravity [ ~ 0.275]",
-            " pressure [ ~ 0.0134]",
-            "volcanism [None,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Water Magma]"
+            "volcanism [None,Major Metallic Magma,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers,Minor Water Magma]"
           ]
         },
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 67",
+            "# hit count: 145",
             "     body [HMC]",
-            "  gravity [0.045 ~ 0.269]",
-            " pressure [ ~ 0.0117]",
-            "volcanism [None]"
+            "volcanism [None,Major Rocky Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers,Rocky Magma]"
           ]
         }
       ]
@@ -51,7 +47,7 @@
     {
       "species": "Biconcavis",
       "query": [
-        "# hit count: 404",
+        "# hit count: 871",
         "atmosType [Nitrogen]",
         "volcanism [None]",
         "atmosComp [Nitrogen >= 100]"
@@ -67,11 +63,10 @@
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 395",
+            "# hit count: 854",
             "    body [Rocky]",
-            " gravity [0.053 ~ 0.275]",
-            "    temp [42 ~ 51]",
-            "pressure [ ~ 0.0096]"
+            "    temp [ ~ 52]",
+            "pressure [ ~ 0.01]"
           ]
         },
         {
@@ -79,9 +74,8 @@
           "query": [
             "# hit count: 9",
             "    body [HMC]",
-            " gravity [0.148 ~ 0.275]",
-            "    temp [46 ~ 50]",
-            "pressure [0.001 ~ 0.0035]"
+            "    temp [ ~ 50]",
+            "pressure [ ~ 0.004]"
           ]
         }
       ]
@@ -90,9 +84,9 @@
     {
       "species": "Labiata",
       "query": [
-        "# hit count: 10000",
-        "# hit count: 10000",
+        "# hit count: 54187",
         "atmosType [CarbonDioxide]",
+        "     temp [150 ~ 195.41]",
         "volcanism [None]"
       ],
       "commonChildren": [
@@ -111,22 +105,19 @@
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 10000",
+            "# hit count: 52868",
             "     body [Rocky]",
-            "  gravity [ ~ 0.237]",
-            "     temp [150 ~ 199]",
-            " pressure [0.0029 ~ ]",
+            "  gravity [ ~ 0.238]",
+            " pressure [0.0027 ~ ]",
             "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.96]"
           ]
         },
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 662",
+            "# hit count: 1319",
             "     body [HMC]",
-            "  gravity [ ~ 0.265]",
-            "     temp [150 ~ 196]",
-            " pressure [0.002 ~ 0.097]",
+            " pressure [0.002 ~ ]",
             "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]"
           ]
         }
@@ -136,7 +127,7 @@
     {
       "species": "Renibus",
       "query": [
-        "# hit count: 10000"
+        "# hit count: 41548"
       ],
       "commonChildren": [
         { "variant": "Mulberry", "query": [ "  mats [Mercury]" ] },
@@ -148,23 +139,38 @@
       ],
       "children": [
         {
-          "useCommonChildren": true,
           "query": [
-            "# hit count: 14",
+            "# hit count: 27",
             "atmosType [Ammonia]",
             "     body [Rocky]",
-            "  gravity [ ~ 0.169]",
-            "     temp [163 ~ 177]",
-            " pressure [0.0017 ~ 0.0132]",
-            "volcanism [Major Silicate Vapour Geysers]",
+            "  gravity [ ~ 0.05]",
+            "     temp [174 ~ ]",
+            " pressure [0.009 ~ ]",
+            "volcanism [Major Rocky Magma,Major Silicate Vapour Geysers]",
             "atmosComp [Ammonia >= 100]"
+          ],
+          "children": [
+            {
+              "useCommonChildren": true,
+              "query": [
+                "# hit count: 26",
+                "    body [Rocky]"
+              ]
+            },
+            {
+              "useCommonChildren": true,
+              "query": [
+                "# hit count: 1",
+                "    body [HMC]"
+              ]
+            }
           ]
         },
         {
           "query": [
-            "# hit count: 10000",
+            "# hit count: 24810",
             "atmosType [CarbonDioxide]",
-            "     temp [180 ~ 196]",
+            "     temp [180.0 ~ 195.41]",
             "volcanism [None]",
             "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]"
           ],
@@ -172,62 +178,74 @@
             {
               "useCommonChildren": true,
               "query": [
-                "# hit count: 10000",
+                "# hit count: 23654",
                 "    body [Rocky]",
-                " gravity [0.041 ~ 0.238]",
-                "pressure [0.0255 ~ ]"
+                " gravity [ ~ 0.238]",
+                "pressure [0.025 ~ ]"
               ]
             },
             {
               "useCommonChildren": true,
               "query": [
-                "# hit count: 585",
+                "# hit count: 1156",
                 "    body [HMC]",
-                " gravity [0.076 ~ 0.269]",
-                "pressure [0.0258 ~ ]"
+                "pressure [0.025 ~ ]"
               ]
             }
           ]
         },
         {
-          "useCommonChildren": true,
           "query": [
-            "# hit count: 51",
+            "# hit count: 105",
             "atmosType [Methane]",
             "     body [Rocky]",
-            "  gravity [0.043 ~ 0.112]",
-            "     temp [79 ~ 103]",
-            " pressure [0.0125 ~ 0.0814]",
-            "volcanism [Major Silicate Vapour Geysers]",
+            "  gravity [ ~ 0.12]",
+            "     temp [79 ~ 104]",
+            " pressure [0.011 ~ ]",
+            "volcanism [Major Metallic Magma,Major Silicate Vapour Geysers]",
             "atmosComp [Methane >= 100]"
+          ],
+          "children": [
+            {
+              "useCommonChildren": true,
+              "query": [
+                "# hit count: 104",
+                "    body [Rocky]"
+              ]
+            },
+            {
+              "useCommonChildren": true,
+              "query": [
+                "# hit count: 1",
+                "    body [HMC]"
+              ]
+            }
           ]
         },
         {
           "query": [
-            "# hit count: 6819",
+            "# hit count: 16606",
             "atmosType [Water]",
+            "     temp [390 ~ ]",
+            " pressure [0.052 ~ ]",
             "atmosComp [Water >= 100]"
           ],
           "children": [
             {
               "useCommonChildren": true,
               "query": [
-                "# hit count: 4887",
+                "# hit count: 12302",
                 "     body [Rocky]",
                 "  gravity [ ~ 0.056]",
-                "     temp [392 ~ 452]",
-                " pressure [0.0528 ~ ]",
                 "volcanism [None,Minor Water Magma]"
               ]
             },
             {
               "useCommonChildren": true,
               "query": [
-                "# hit count: 1932",
+                "# hit count: 4304",
                 "     body [HMC]",
-                "  gravity [0.045 ~ 0.064]",
-                "     temp [390 ~ 452]",
-                " pressure [0.0521 ~ ]",
+                "  gravity [ ~ 0.064]",
                 "volcanism [None]"
               ]
             }
@@ -235,6 +253,5 @@
         }
       ]
     }
-
   ]
 }

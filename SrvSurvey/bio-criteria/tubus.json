@@ -21,12 +21,12 @@
       "species": "Cavas",
       "useCommonChildren": true,
       "query": [
-        "# hit count: 10000",
+        "# hit count: 21750",
         "atmosType [CarbonDioxide]",
         "     body [Rocky]",
-        "  gravity [0.041 ~ 0.153]",
+        "  gravity [ ~ 0.153]",
         "     temp [160 ~ 197]",
-        " pressure [0.0032 ~ ]",
+        " pressure [0.003 ~ ]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
         "  regions [Scutum-CentaurusArm,CentreLeft]"
@@ -37,10 +37,10 @@
       "species": "Compagibus",
       "useCommonChildren": true,
       "query": [
-        "# hit count: 10000",
+        "# hit count: 53426",
         "atmosType [CarbonDioxide]",
         "     body [Rocky]",
-        "  gravity [0.04 ~ 0.16]",
+        "  gravity [ ~ 0.160]",
         "     temp [160 ~ 197]",
         " pressure [0.003 ~ ]",
         "volcanism [None]",
@@ -53,12 +53,12 @@
       "species": "Conifer",
       "useCommonChildren": true,
       "query": [
-        "# hit count: 8876",
+        "# hit count: 16775",
         "atmosType [CarbonDioxide]",
         "     body [Rocky]",
-        "  gravity [0.041 ~ 0.152]",
-        "     temp [160 ~ 196]",
-        " pressure [0.0031 ~ ]",
+        "  gravity [ ~ 0.152]",
+        "     temp [160 ~ 195.41]",
+        " pressure [0.003 ~ ]",
         "volcanism [None]",
         "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
         "  regions [PerseusArm,CentreTop]"
@@ -69,12 +69,11 @@
       "species": "Rosarium",
       "useCommonChildren": true,
       "query": [
-        "# hit count: 9787",
+        "# hit count: 16737",
         "atmosType [Ammonia]",
         "     body [Rocky]",
         "  gravity [ ~ 0.164]",
-        "     temp [160 ~ 177]",
-        " pressure [ ~ 0.0134]",
+        "     temp [160 ~ ]",
         "atmosComp [Ammonia >= 100]",
         "# More volcanism is likely but only on certain variants?"
       ]
@@ -83,19 +82,18 @@
     {
       "species": "Sororibus",
       "query": [
-        "# hit count: 5615",
+        "# hit count: 11274",
         "     body [HMC]",
-        "  gravity [0.045 ~ 0.153]",
+        "  gravity [ ~ 0.153]",
         "volcanism [None]"
       ],
       "children": [
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 159",
+            "# hit count: 312",
             "atmosType [Ammonia]",
-            "     temp [160 ~ 177]",
-            " pressure [ ~ 0.013]",
+            "     temp [160 ~ ]",
             "atmosComp [Ammonia >= 100]"
           ]
         },
@@ -104,8 +102,9 @@
           "query": [
             "# hit count: 5456",
             "atmosType [CarbonDioxide]",
-            "     temp [160 ~ 194]",
-            " pressure [0.0028 ~ ]",
+            "     temp [160 ~ 195.41]",
+            " pressure [0.002 ~ ]",
+            "volcanism [None]",
             "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]"
           ]
         }
