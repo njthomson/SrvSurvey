@@ -1409,6 +1409,16 @@
       { "offset": { "X": -76.00954, "Y": 80.228294 }, "floor": 1, "level": 1 },
       { "offset": { "X": -26.166508, "Y": 85.64509 }, "floor": 1, "level": 3 }
     ],
+    "czPoints": [
+      { "name": "A", "offset": { "X": 10.001874, "Y": -54.608936 }, "floor": 0, "level": 0 },
+      { "name": "B", "offset": { "X": 52.51008, "Y": -54.875767 }, "floor": 0, "level": 0 },
+      { "name": "C", "offset": { "X": 36.20842, "Y": -27.26762 }, "floor": 0, "level": 0 },
+      { "name": "D", "offset": { "X": 33.800564, "Y": 18.328169 }, "floor": 0, "level": 0 },
+      { "name": "E", "offset": { "X": 57.378674, "Y": 36.419113 }, "floor": 0, "level": 0 },
+      { "name": "F", "offset": { "X": -4.934284, "Y": 38.323814 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 5.4803805, "Y": 15.1496725 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 29.292564, "Y": -47.228615 }, "floor": 0, "level": 0 }
+    ],
     "buildings": [
       {
         "name": "HAB",
@@ -2203,6 +2213,18 @@
     "dataTerminals": [
       { "offset": { "X": 0.7048308, "Y": -267.64334 }, "floor": 1, "level": 3 },
       { "offset": { "X": 7.1653595, "Y": 218.95279 }, "floor": 1, "level": 0 }
+    ],
+    "czPoints": [
+      { "name": "A", "offset": { "X": 57.531628, "Y": 58.044155 }, "floor": 0, "level": 0 },
+      { "name": "B", "offset": { "X": -7.4799194, "Y": 226.98706 }, "floor": 0, "level": 0 },
+      { "name": "C", "offset": { "X": -3.1925333, "Y": 101.83407 }, "floor": 0, "level": 0 },
+      { "name": "D", "offset": { "X": -69.329704, "Y": 227.65587 }, "floor": 0, "level": 0 },
+      { "name": "E", "offset": { "X": -28.670172, "Y": 219.69205 }, "floor": 0, "level": 0 },
+      { "name": "F", "offset": { "X": 47.177254, "Y": 227.54654 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 3.857817, "Y": 185.29378 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 2.2004745, "Y": 231.81877 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -114.31558, "Y": 214.58643 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 100.29243, "Y": 239.67717 }, "floor": 0, "level": 0 }
     ],
     "buildings": [
       {

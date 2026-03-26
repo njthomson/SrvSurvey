@@ -59,10 +59,6 @@
 
         /// <summary> Main : Record that a particular body has been visited </summary>
         public const string visited = ".visited";
-        /// <summary> Main : submit a Landscape survey </summary>
-        public const string submit = ".submit";
-        /// <summary> Main : reserve another block of Landscape survey systems </summary>
-        public const string nextSystem = ".nextSystem";
         /// <summary> Main : Record that first footfall on current body </summary>
         public const string firstFoot = ".firstFoot";
         /// <summary> Main : Record that first footfall on current body </summary>

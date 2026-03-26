@@ -287,26 +287,6 @@ namespace SrvSurvey.game.RavenColonial
             }
         }
 
-        public async Task<List<Project>> getCmdrProjects(string cmdr)
-        {
-            Game.log($"RCC.getCmdrProjects: {cmdr}");
-
-            var response = await RavenColonial.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}");
-            var json = await response.Content.ReadAsStringAsync();
-            var obj = JsonConvert.DeserializeObject<List<Project>>(json)!;
-            return obj;
-        }
-
-        public async Task<CmdrSummary> getCmdrSummary(string cmdr)
-        {
-            Game.log($"RCC.getCmdrProjects: {cmdr}");
-
-            var response = await RavenColonial.client.GetAsync($"{svcUri}/api/cmdr/{Uri.EscapeDataString(cmdr)}/summary");
-            var json = await response.Content.ReadAsStringAsync();
-            var obj = JsonConvert.DeserializeObject<CmdrSummary>(json)!;
-            return obj;
-        }
-
         public async Task<List<Project>> getCmdrActive(string cmdr)
         {
             Game.log($"RCC.getCmdrActive: {cmdr}");
@@ -473,7 +453,7 @@ namespace SrvSurvey.game.RavenColonial
 
         public async Task publishCurrentShip(CmdrCurrentShip ship)
         {
-            Game.log($"RCC.publishCurrentShip: {ship.name} ({ship.type})");
+            Game.log(ship.cargo.formatWithHeader( $"RCC.publishCurrentShip: {ship.name} ({ship.type})"));
 
             var json1 = JsonConvert.SerializeObject(ship);
             var body = new StringContent(json1, Encoding.Default, "application/json");
@@ -482,9 +462,7 @@ namespace SrvSurvey.game.RavenColonial
             var response = await RavenColonial.client.PostAsync($"{svcUri}/api/cmdr/currentShip", body);
             var json2 = await response.Content.ReadAsStringAsync();
 
-            if (response.IsSuccessStatusCode)
-                Game.log($"RCC.publishCurrentShip: response json:\r\n\t{json2}\r\n");
-            else
+            if (!response.IsSuccessStatusCode)
                 Game.log($"RCC.publishCurrentShip: HTTP:{(int)response.StatusCode}({response.StatusCode}): failed: {json2}");
         }
 
@@ -550,6 +528,8 @@ namespace SrvSurvey.game.RavenColonial
 
     public class Project : ProjectCore
     {
+        public static string fc_loading = "fc_loading";
+
         public DateTimeOffset? Timestamp { get; set; }
         public string ETag { get; set; }
 

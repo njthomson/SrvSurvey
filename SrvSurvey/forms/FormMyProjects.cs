@@ -42,7 +42,12 @@ namespace SrvSurvey.forms
             // get hidden IDs first
             var buildIDs = await Game.rcc.getHiddenIDs(cmdr);
 
-            await Game.rcc.getCmdrActive(cmdr).continueOnMain(this, data => setData(buildIDs, data));
+            var cmdrColony = game?.cmdrColony;
+            if (cmdrColony != null)
+                await cmdrColony.fetchLatest().continueOnMain(this, () => setData(buildIDs, cmdrColony.projects));
+            else
+                await Game.rcc.getCmdrActive(cmdr).continueOnMain(this, data => setData(buildIDs, data));
+
         }
 
         private void setData(List<string> buildIDs, List<Project> projects)
@@ -60,13 +65,14 @@ namespace SrvSurvey.forms
                 var sorted = projects.OrderBy(p => $"{p.systemName}~${p.buildName}");
                 foreach (var proj in sorted)
                 {
+                    var isPrep = proj.buildType == Project.fc_loading;
                     var match = allCosts.Find(c => c.layouts.Contains(proj.buildType, StringComparer.OrdinalIgnoreCase));
-                    var typeTxt = match == null ? "?" : $"{match.displayName} ({proj.buildType})";
+                    var typeTxt = isPrep ? "FC Loading" : match == null ? "?" : $"{match.displayName} ({proj.buildType})";
                     var remaining = proj.maxNeed - proj.sumNeed;
                     var p = 1f / proj.maxNeed * remaining;
 
                     var item = list.Items.Add(proj.buildName, proj.buildId, proj);
-                    item.SubItems.Add($"{p:P0} of {proj.maxNeed:N0}");
+                    item.SubItems.Add(isPrep  ? $"? of {proj.maxNeed:N0}" : $"{p:P0} of {proj.maxNeed:N0}");
                     item.SubItems.Add(typeTxt);
                     item.SubItems.Add(proj.systemName);
 
