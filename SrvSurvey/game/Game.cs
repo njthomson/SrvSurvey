@@ -2858,7 +2858,11 @@ namespace SrvSurvey.game
                 //    spanshMatch.services = entry.StationServices.ToList();
 
                 if (entry.StationEconomies != null)
-                    spanshMatch.economies = entry.StationEconomies.ToDictionary(x => x.Name_Localised, x => (float)x.Proportion * 100);
+                {
+                    spanshMatch.economies = new();
+                    foreach (var x in entry.StationEconomies)
+                        spanshMatch.economies[x.Name_Localised] = (float)x.Proportion * 100;
+                }
 
                 PlotBase2.invalidate(nameof(PlotStationInfo));
             }

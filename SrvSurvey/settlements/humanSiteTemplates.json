@@ -1658,7 +1658,7 @@
       { "name": "E", "offset": { "X": 45.974636, "Y": -12.869647 }, "floor": 0, "level": 0 },
       { "name": "F", "offset": { "X": 18.737005, "Y": -36.567142 }, "floor": 0, "level": 0 },
       { "name": "P", "offset": { "X": -14.787331, "Y": -40.39953 }, "floor": 0, "level": 0 },
-      { "name": "P", "offset": { "X": 52.340153, "Y": -33.215385 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 52.340153, "Y": -33.215385 }, "floor": 0, "level": 0 }
     ],
     "namedPoi": [
       { "name": "Atmos", "offset": { "X": 55.436176, "Y": -10.774093 }, "floor": 1, "level": 2 },
@@ -1755,7 +1755,7 @@
       { "name": "D", "offset": { "X": 63.82762, "Y": -98.34873 }, "floor": 0, "level": 0 },
       { "name": "E", "offset": { "X": 119.57698, "Y": -99.49332 }, "floor": 0, "level": 0 },
       { "name": "F", "offset": { "X": 105.54727, "Y": -55.3863 }, "floor": 0, "level": 0 },
-      { "name": "P", "offset": { "X": 46.48791, "Y": -60.132076 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 46.48791, "Y": -60.132076 }, "floor": 0, "level": 0 }
     ],
     "namedPoi": [
       { "name": "Power", "offset": { "X": 38.18215, "Y": -31.642601 }, "floor": 1, "level": 3 },

@@ -12,6 +12,9 @@ namespace BioCriterias
         public static bool useTestCache = false;
         public static string netCache = Path.Combine(Program.dataFolder, "netCache");
         public static string folderMissedReports = Path.Combine(Program.dataFolder, "missedPrediction");
+        public static bool runningBioTests = false;
+        public static List<string> bodyExcessWrong = new();
+        public static List<string> bodyMissedPredictions = new();
 
         public static List<Clause> predictTarget(SystemBody body, string? targetVariant)
         {
@@ -31,7 +34,9 @@ namespace BioCriterias
             if (body.parents == null || body.parents.Count == 0) return null;
             lock (BioCriteria.allCriteria)
             {
-                if (BioCriteria.allCriteria.Count == 0 || Debugger.IsAttached) BioCriteria.readCriteria();
+                if (BioCriteria.allCriteria.Count == 0 || (Debugger.IsAttached
+                    && !BioPredictor.runningBioTests) // *!* Comment when editing criteria files and tests SHOULD re-read every time (makes tests much slower)
+                ) BioCriteria.readCriteria();
             }
 
             // get the primary star for the system
@@ -49,7 +54,8 @@ namespace BioCriterias
                 .Where(s => s.Value > 0)
                 .OrderByDescending(s => s.Value)
                 .ToDictionary(_ => _.Key, _ => _.Value);
-            Game.log($"Radiant stars for '{body.name}': \r\n" + string.Join("\r\n", parentsByBrightness.Select(_ => $"  > {_.Key.shortName} ({_.Key.starType}) : {_.Value}")) + "\r\n");
+            if (!BioPredictor.runningBioTests || BioPredictor.logOrganism != "")
+                Game.log($"Radiant stars for '{body.name}': \r\n" + string.Join("\r\n", parentsByBrightness.Select(_ => $"  > {_.Key.shortName} ({_.Key.starType}) : {_.Value}")) + "\r\n");
 
             if (parentsByBrightness.Count == 0)
             {
@@ -527,7 +533,7 @@ namespace BioCriterias
 
         #region automated tests
 
-        private static async Task testSystem(long address)
+        private static async Task testSystem(long address, bool breakOnMissed)
         {
             var cmdr = "none";
             var fid = "F101";
@@ -541,7 +547,7 @@ namespace BioCriterias
             var systemData = SystemData.From(pendingSpanshDump.Result, fid, cmdr);
 
             // force current region to be the one for this test
-            var region = EliteDangerousRegionMap.RegionMap.FindRegion(bioStats.coords.x, bioStats.coords.y, bioStats.coords.z);
+            var region = EliteDangerousRegionMap.RegionMap.FindRegion(systemData.starPos[0], systemData.starPos[1], systemData.starPos[2]);
             GalacticRegions.currentIdxOverride = region!.Id;
 
             if (systemData.nebulaDist == 0)
@@ -550,38 +556,38 @@ namespace BioCriterias
             // predict this system
             foreach (var body in systemData.bodies.ToList())
             {
-                var realBody = bioStats.bodies.Find(b => b.bodyId == body.id);
-                if (realBody?.signals?.genuses == null || realBody.signals.genuses.Count == 0) continue; // skip bodies without known bio signals
-                if (realBody?.signals?.biology == null)
-                {
-                    Game.log($"** Missing realBody?.signals?.biology for: {body.name} (system id64: {systemData.address})");
-                    continue;
-                }
+                var bodyVariants = bioStats
+                    .Where(x => x.body_id == body.id)
+                    .Select(x => Game.codexRef.matchFromEntryId2(x.entryid)?.variant.englishName!)
+                    .Where(x => x != null)
+                    .ToList();
+                if (bodyVariants.Count == 0) continue; // skip bodies without known bio signals
 
                 BioPredictor.logOrganism = "";
                 var predictions = BioPredictor.predict(body); // <--- drag execution up to here
 
-                var countSuccess = predictions.Count(p => realBody.signals.biology.Contains(p));
-                var missed = realBody.signals.biology.Where(b => !predictions.Contains(b)).Order().ToList();
-                var wrong = predictions.Where(p => !realBody.signals.biology.Contains(p)).Order().ToList();
+                var countSuccess = predictions.Count(p => bodyVariants.Contains(p));
+                var missed = bodyVariants.Where(v => !predictions.Contains(v)).Order().ToList();
+                var wrong = predictions.Where(p => !bodyVariants.Contains(p)).Order().ToList();
                 var countWrong = predictions.Count - countSuccess;
-                var txt = $"\r\n** {body.system.address} '{body.name}' ({body.id}) - actual count: {realBody.signals.biology.Count}, success: {countSuccess}, missed: {missed.Count}, wrong: {wrong.Count} **\r\nREAL:\r\n\t" + string.Join("\r\n\t", realBody.signals.biology) + $"\r\nPREDICTED WRONG:\r\n\t" + string.Join("\r\n\t", wrong) + "\r\n";
+                var txt = $"\r\n** {body.system.address} '{body.name}' ({body.id}) - actual count: {bodyVariants.Count}, success: {countSuccess}, missed: {missed.Count}, wrong: {wrong.Count} **\r\nREAL:\r\n\t" + string.Join("\r\n\t", bodyVariants) + $"\r\nPREDICTED WRONG:\r\n\t" + string.Join("\r\n\t", wrong) + "\r\n";
 
                 if (predictions.Count > 0 && missed.Count > 0)
                 {
+                    bodyMissedPredictions.Add($"(id64: {systemData.address}) {body.name}, missed: {missed.Count}: " + string.Join(", ", missed));
                     txt += $"MISSED: \r\n\t" + string.Join("\r\n\t", missed);
                     BioPredictor.logOrganism = missed.First().Split(" ")[1]; // for legacy bio's - comment out .split(..)
                     Game.log(txt);
-                    Debugger.Break(); // When this hits. Clear the debug console and drag the execution point up to the "BioPredictor.predict(body)" line above
+                    if (breakOnMissed) Debugger.Break(); // *!* When this hits. Clear the debug console and drag the execution point up to the "BioPredictor.predict(body)" line above
                 }
                 else if (wrong.Count > 4)
                 {
-                    // TODO: write these to some file?
+                    bodyExcessWrong.Add($"{body.name}, wrong: {wrong.Count}, id64: {systemData.address}");
                     Game.log(txt);
                 }
                 else
                 {
-                    Game.log(txt);
+                    // Game.log(txt);
                 }
             }
 
@@ -622,204 +628,240 @@ namespace BioCriterias
             Game.log("All done.");
         }
 
-        public static async Task testSystemsAsync()
+        public static async Task testSystemsAsync(bool runInSeries = false, List<long>? testSystems = null)
         {
-            var testSystems = new List<long>()
-            {
-                ///* these are good */
-                //3136055823779, //    Prua Phoe JR-U d3-91     - Inner Scutum-Centaurus Arm
-                //7259190873515, //    Prua Phoe LX-S d4-211    - Inner Scutum-Centaurus Arm
-                //6125336284579, //    Prua Phoe IR-U d3-178    - Inner Scutum-Centaurus Arm
-                //6121703676746, //    Prua Phoe UO-N c8-22     - Inner Scutum-Centaurus Arm
-                //6365837675955, //    Prua Phoe PD-R d5-185    - Inner Scutum-Centaurus Arm
-                //284180729219, //     Prua Phoe WI-B d8        - Inner Scutum-Centaurus Arm
-                //2415457537675, //    Graea Hypue AA-Z d70     - Norma Expanse
-                //2312378322571, //    Graea Hypue AA-Z d67     - Norma Expanse
-                //2003140677259, //    Graea Hypue AA-Z d58     - Norma Expanse
-                //1728262770315, //    Graea Hypue AA-Z d50     - Norma Expanse
-                //1659543293579, //    Graea Hypue AA-Z d48     - Norma Expanse
-                //1350305648267, //    Graea Hypue AA-Z d39     - Norma Expanse
-
-                ///* more from me */
-                //1144147218059, //    Graea Hypue AA-Z d33     - Norma Expanse
-                //1659576977859, //    Swoiwns OE-O d7-48       - Inner Orion Spur // BC1 is trouble? needs help
-                //319933188363, //     Wregoe JA-Z d9           - Inner Orion Spur
-                //546399072737, //     Nyeajeou VP-G b56-0      - Temple
-                //241824687268, //     HIP 17694                - Inner Orion Spur
-                //83718378202, //      BD+47 2267               - Inner Orion Spur
-                //2878029308905, //    2MASS J05334575-0441245  - Sanguineous Rim
-                //2930853613195, //    Graea Hypue AA-Z d85     - Norma Expanse
-                //40280107390979, //   Bleethuae LN-B d1172     - Izanami
-                //83718410970, //      HIP 76045                - Inner Orion Spur
-                ////2557619442410, //    HIP 97950                - Inner Orion Spur <-- ABC 1 f, g, h: no parent star?
-                //52850328756, //      GD 140                   - Inner Orion Spur
-                //125860586676, //     HR 5716                  - Inner Orion Spur
-                ////7373867459, //       Ushosts LC-M d7-0        - Elysian Shore <-- AB 1 e: no parent star?
-                ////113170581619, //     Slegi XV-C d13-3         - Elysian Shore <-- AB 3 a: no parent star?
-                //8055311831762, //    NLTT 55164               - Inner Orion Spur
-                //721911088556658, //  Eorld Byoe BQ-G c13-2626 - Ryker's Hope
-                //1005802506067, //    Heart Sector ZE-A d29    - Elysian Shore
-                //2789153444971, //    Phimbo GC-D d12-81       - Perseus Arm
-                //33682769023907, //   Phroi Pra PP-V d3-980    - Galactic Centre
-
-
-                ///* New places to try */
-                //147547244739, //     Outorst OC-M d7-4         - Elysian Shore
-                //79347697283, //      Cyoidai VI-B d2           - Sanguineous Rim
-                /*8084881608371,*/ //    Graea Hypue IS-R d5-235   - Norma Expanse // legacy in atmosphere :/ fails to predict brain tree's - this is on purpose
-                //37790682707, //      Bleae Phlai AK-I d9-1     - Errant Marches
-                //10887906389, //      Eor Audst LM-W f1-20      - Odin's Hold
-                //234056927058952, //  Phroi Pri GM-W a1-13      - Galactic Centre
-                //2009339794090, //    Synuefe FO-T c19-7        - Inner Orion Spur
-                //5264816150115, //    Hypaa Bliae ND-H d11-153  - Outer Orion-Perseus Conflux
-                //3464481251, //       Pidgio GS-H d11-0         - Errant Marches
-                //51239337267043, //   Blua Eaec ED-H d11-1491   - Inner Scutum-Centaurus Arm
-                //683033437569, //     Col 173 Sector VV-D b28-0 - Inner Orion Spur <-- B 3: many are wrong? needs help
-                //113808345931, //     Blu Euq NH-L d8-3         - Inner Orion Spur
-                //305709086413707, //  Stuemeae FG-Y d8897       - Galactic Centre
-                //184943642675, //     Heguae NL-P d5-5          - Sanguineous Rim <-- AB 1 b: many are wrong? needs help
-
-                ///* top 20 bodies */
-                //216887347755, //     Aucoks RX-S d4-6         - Inner Orion Spur
-                ///* 1182953163019,*///Hyuedau LV-Y d34         - Achilles's Altar - Did someone really see Tussock Virgam - Emerald, not Yellow? Otherwise this is good */
-                //43847125659, //      Drojau BG-W d2-1         - Inner Orion Spur
-                //2302134985738, //    Athaiwyg EG-Y c8         - Arcadian Stream
-                //672833020273, //     Flyooe Eohn CS-H b43-0   - Sanguineous Rim
-                ////3931941933746, //    Lyncis Sector CL-Y c14   - Inner Orion Spur <-- ABC 1 c,d, etc: no parent stars?
-                //11548763827697, //   Blaa Drye WC-F b58-5     - Temple
-                //11360960255658, //   Blau Eur RZ-O c19-41     - Hawking's Gap
-                //721151664337, //     Slegeae SU-R b24-0       - Sanguineous Rim
-                //674712855233, //     Outotz ZQ-K b22-0        - Sanguineous Rim
-                ////102509547578, //     Hegou FB-S c6-0          - Sanguineous Rim <-- bodies with no parent stars
-                //2851187073897, //    Oochoss NM-K b42-1       - Elysian Shore
-                //1148829126400920, // Byoomao CG-D a108-65     - Galactic Centre
-                //111098727130, //     Groem BL-E c25-0         - Kepler's Crest
-                //612973965713, //     Wruetheia NL-U b46-0     - Formorian Frontier
-                //4879485709721, //    Blie Eup RQ-O b47-2      - Elysian Shore
-                //265348273105, //     Dryaa Bloae II-N b54-0   - Outer Arm
-                //787453456673, //     Nyeakeia ZA-V b33-0      - Hawking's Gap
-                //629372094563, //     Hegoo FW-E d11-18        - Sanguineous Rim
-                //1976177703003690, // Choomee IF-R c4-7189     - Empyrean Straits
-                ////7373867459, //       Ushosts LC-M d7-0        - Elysian Shore <-- AB 1 e: no parent star?
-                ////113170581619, //     Slegi XV-C d13-3         - Elysian Shore <-- bodies with no parent stars
-                //8055311831762, //    NLTT 55164               - Inner Orion Spur
-                //721911088556658, //  Eorld Byoe BQ-G c13-2626 - Ryker's Hope
-                //1005802506067, //    Heart Sector ZE-A d29    - Elysian Shore
-                //2789153444971, //    Phimbo GC-D d12-81       - Perseus Arm
-                //33682769023907, //   Phroi Pra PP-V d3-980    - Galactic Centre
-
-                /////* top 20 systems */
-                ////3107241202402, //    Col 285 Sector BS-I c10-11 - Inner Orion Spur <-- bodies with no parent stars
-                //2962579378659, //    Kyloagh PE-G d11-86        - Orion-Cygnus Arm
-                //16604217544995, //   Eol Prou QS-T d3-483       - Inner Scutum-Centaurus Arm
-                //1182223274666, //    Synuefai MW-U c19-4        - Inner Orion Spur
-                //1453569624435, //    HIP 82068                  - Inner Orion Spur - HIP 82068 9 f is missing an atmosphere
-                //358999069386, //     76 Leonis                  - Inner Orion Spur
-                //233444419892, //     Hypio Flyao XP-P e5-54     - Arcadian Stream
-                //10612427019, //      HIP 56843                  - Inner Orion Spur
-                //10376464763, //      HD 221180                  - Inner Orion Spur
-                ////3626137373140, //    Phaa Audst GW-W e1-844     - Odin's Hold <-- bodies with no parent stars
-                //91956533317099, //   Pru Aim GR-D d12-2676      - Inner Scutum-Centaurus Arm - revisit ABCD 1 a - Clypeus Speculumi distance calculation needs fixing  <-- bodies with no parent stars
-                ////15149635267028, //   Phua Aub WU-X e1-3527      - Galactic Centre <-- bodies with no parent stars
-                //455962777099, //     Scheau Bluae JC-B d1-13    - Odin's Hold
-                //1693617998187, //    Synuefue ZX-F d12-49       - Inner Orion Spur
-                ////27118431768755, //   Dryio Flyuae IY-Q d5-789   - Inner Scutum-Centaurus Arm <-- bodies with no parent stars
-                //1005903105339, //    Skaude GD-Q d6-29          - Inner Scutum-Centaurus Arm
-                //800801672259, //     Flyooe Hypue FT-O d7-23    - Inner Orion Spur
-                //2004164284331, //    Byoi Aip VE-R d4-58        - Norma Arm // Stratum Emerald star F vs N ?? needs help
-                //14096678161971, //   Clooku HI-R d5-410         - Inner Scutum-Centaurus Arm
-                //175621288252019, //  Dumbio GN-B d13-5111       - Odin's Hold
-
-                ///* more ad-hoc systems */
-                ////113170581619, //     Slegi XV-C d13-3         - Elysian Shore <-- bodies with no parent stars
-                //8055311831762, //    NLTT 55164               - Inner Orion Spur
-                //721911088556658, //  Eorld Byoe BQ-G c13-2626 - Ryker's Hope
-                //1005802506067, //    Heart Sector ZE-A d29    - Elysian Shore
-                //2789153444971, //    Phimbo GC-D d12-81       - Perseus Arm
-                //33682769023907, //   Phroi Pra PP-V d3-980    - Galactic Centre
-                //27011785954, //     Cumbou YH-F c26-0
-
-                ///* Aleoida Coronamus - Lime (L star systems) */
-                //2492825675329, // Pra Dryoo UL-X b7-1
-                //633272537650, // Synuefai EA-U c5-2
-                //962207294841, // Hyuedeae UG-W b43-0
-                //1726677521610, // Bleae Thaa XX-H c23-6
-                //516869988849, // Slegue TP-Z b57-0
-
-                ///* Bark Mounds */
-                //// resume here !!!
-                //13876099622273, // Pencil Sector MR-W b1-6
-                //2036007784483, // Eulail RX-T d3-59
-                //869487643043, // IC 4604 Sector DL-Y d25 <-- wrong star L vs G for Fonticulua Campestris? needs help
-
-                //// Amphora Plant
-                //13648186819, // Eifoqs XZ-N d7-0
-                //82032053243, // Pyroifa DX-A d14-2
-                //320570575667, // Blaa Dryou FN-R d5-9
-                //150969781115, // Blaea Euq OO-Z d13-4
-
-                ///* Luteolum Anemone */
-                //52837737636, // HR 326
-                //4998038101, // HIP 42398
-                //1238889013, // HD 37127
-
-                ///* Prasinum Bioluminescent Anemone */
-                //284175090653, // Floawns OS-U f2-529
-                //36011151, // GCRV 950
-
-                ///* Brain Trees */
-                //802563263091, // Eta Carina Sector EL-Y d23
-                ////835329116475, // Col 132 Sector BM-M d7-24 <-- bodies with no parent stars
-                //1797418617131, // Col 140 Sector BQ-Y d52
-
-                ///* Tubers */
-                //143518344886673, // Blua Hypa PI-A b47-65 (partially useful)
-
-                ///* Shards */
-                //100562634522, // Aidoms MT-U c2-0 (partially useful)
-
-                ///* Fonticulua Campestris */
-                //77409424274, // Prae Drye XN-W c16-0 A 3
-
-                //361481876986, //       Greae Flyao UF-D c29-1   - check 1 d
-                //3650755408786, //      Prae Pruae EG-Y c16-13 // ? Why no Fonticular Campestris - Amethyst 
-                //6406178542290, // Guathiti 8 a // No Fumerola Nitris Lime
-
-
-                //675416645714, // Eolls Ploe YK-L c9-2 - has root barycentre but alas no concrete bio data for comparisons
-                //84431081539, // Eolls Ploe OX-L d7-2
-
-                //353504315603, // Oochody YF-L d9-10 // consistently wrong star choice?
-                //49786130467, // Eock Flyao XY-S d3-1 // single star system
-
-                //113053059083, // Slegi AV-Y d3 // Not Predicted: Stratum Tectonicas Green / Due to a Neutron being deemed the hottest but it should have been the local M stars
-                //2282674557658, // Vodyakamana // <-- BC4 Fails because Argon is < 100% BUT there's no Nitrogen in the atmosphere (or anything else?!)
-                //1050522316081, // Ihad BK-L b35-0 // <-- we are missing data about the star AND Canonn has incomplete bio data for Ihad BK-L b35-0 1 a
-
-                //2519946200947, // Qiefoea KZ-D d13-73 // D4 Osseus not found or D3 Stratum not found
-                //10393127859, // Chaloa PI-R d5-0 // missing Stratum Tectonicas Green, Cactoida Cortexum Amethyst & Frutexa Metallicum Grey ? 
-                //7269366113697, // ICZ ZJ-Z b3
-
-                //2282674557658, //Vodyakamana BC 4 missing bacterium
-                //664470014523, //IC 2944 Sector EL-W d2-19 Body B 3 a missing tussock
-            };
-
+            testSystems ??= getSystemsToTest();
+            Game.log($"----------------------------------------------------------------");
             Game.log($"Testing {testSystems.Count} systems ...");
             var startTime = DateTime.Now;
+            runningBioTests = true;
             useTestCache = true;
+            bodyExcessWrong.Clear();
+            bodyMissedPredictions.Clear();
+            // always force a re-read of criteria files. 
+            BioCriteria.readCriteria(false); // *!* Toggle reading dev (false) or currently published criteria (true)
             try
             {
-                // in series
-                foreach (var address in testSystems) await testSystem(address);
-
-                //// in parallel
-                //await Task.WhenAll(testSystems.Select(a => testSystem(a)));
+                // run tests in ...
+                if (runInSeries)
+                    foreach (var a in testSystems) await testSystem(a, true); // ... in series
+                else
+                    await Task.WhenAll(testSystems.Select(a => testSystem(a, false))); // ... in parallel
+            }
+            catch (Exception ex)
+            {
+                Game.log($"\r\n**\r\n** ERROR: {ex.Message} duration: {DateTime.Now - startTime}\r\n**\r\n:{ex.StackTrace}");
             }
             finally
             {
+                runningBioTests = false;
                 useTestCache = false;
             }
+
             Game.log($"\r\n**\r\n** All done: everything - count: {testSystems.Count}, duration: {DateTime.Now - startTime}\r\n**");
+
+            Game.log($"** Found {bodyExcessWrong.Count} bodies with excess WRONG counts");
+            if (bodyExcessWrong.Count > 0)
+                Game.log(bodyExcessWrong.formatWithHeader("") + "\r\n\r\n");
+
+            var newTestSystems = bodyMissedPredictions
+                .Select(x => x.Substring(0, x.IndexOf(')')).Replace("(id64:", "").Trim())
+                .Select(x => long.Parse(x))
+                .ToHashSet()
+                .ToList();
+
+            Game.log($"** Found {bodyMissedPredictions.Count} bodies with MISSED counts, across {newTestSystems.Count} systems");
+            if (bodyMissedPredictions.Count > 0)
+                Game.log(bodyMissedPredictions.formatWithHeader("") + "\r\n\r\n");
+
+
+            // *!* re-run just MISSED systems in series?
+            Debugger.Break();
+            if (newTestSystems.Count > 0 && !runInSeries)
+                await testSystemsAsync(true, newTestSystems);
+        }
+
+        public static List<long> getSystemsToTest()
+        {
+            return new List<long>()
+            {
+                /* these are good */
+                3136055823779, //    Prua Phoe JR-U d3-91     - Inner Scutum-Centaurus Arm
+                7259190873515, //    Prua Phoe LX-S d4-211    - Inner Scutum-Centaurus Arm
+                6125336284579, //    Prua Phoe IR-U d3-178    - Inner Scutum-Centaurus Arm
+                6121703676746, //    Prua Phoe UO-N c8-22     - Inner Scutum-Centaurus Arm
+                6365837675955, //    Prua Phoe PD-R d5-185    - Inner Scutum-Centaurus Arm
+                284180729219, //     Prua Phoe WI-B d8        - Inner Scutum-Centaurus Arm
+                2415457537675, //    Graea Hypue AA-Z d70     - Norma Expanse
+                2312378322571, //    Graea Hypue AA-Z d67     - Norma Expanse
+                2003140677259, //    Graea Hypue AA-Z d58     - Norma Expanse
+                1728262770315, //    Graea Hypue AA-Z d50     - Norma Expanse
+                1659543293579, //    Graea Hypue AA-Z d48     - Norma Expanse
+                1350305648267, //    Graea Hypue AA-Z d39     - Norma Expanse
+
+                /* more from me */
+                1144147218059, //    Graea Hypue AA-Z d33     - Norma Expanse
+                1659576977859, //    Swoiwns OE-O d7-48       - Inner Orion Spur // BC1 is trouble? needs help
+                319933188363, //     Wregoe JA-Z d9           - Inner Orion Spur
+                546399072737, //     Nyeajeou VP-G b56-0      - Temple
+                241824687268, //     HIP 17694                - Inner Orion Spur
+                83718378202, //      BD+47 2267               - Inner Orion Spur
+                2878029308905, //    2MASS J05334575-0441245  - Sanguineous Rim
+                2930853613195, //    Graea Hypue AA-Z d85     - Norma Expanse
+                40280107390979, //   Bleethuae LN-B d1172     - Izanami
+                83718410970, //      HIP 76045                - Inner Orion Spur
+                //2557619442410, //    HIP 97950                - Inner Orion Spur <-- ABC 1 f, g, h: no parent star?
+                52850328756, //      GD 140                   - Inner Orion Spur
+                125860586676, //     HR 5716                  - Inner Orion Spur
+                //7373867459, //       Ushosts LC-M d7-0        - Elysian Shore <-- AB 1 e: no parent star?
+                //113170581619, //     Slegi XV-C d13-3         - Elysian Shore <-- AB 3 a: no parent star?
+                8055311831762, //    NLTT 55164               - Inner Orion Spur
+                721911088556658, //  Eorld Byoe BQ-G c13-2626 - Ryker's Hope
+                1005802506067, //    Heart Sector ZE-A d29    - Elysian Shore
+                2789153444971, //    Phimbo GC-D d12-81       - Perseus Arm
+                33682769023907, //   Phroi Pra PP-V d3-980    - Galactic Centre
+
+
+                /* New places to try */
+                147547244739, //     Outorst OC-M d7-4         - Elysian Shore
+                79347697283, //      Cyoidai VI-B d2           - Sanguineous Rim
+                /*8084881608371,*/ //    Graea Hypue IS-R d5-235   - Norma Expanse // legacy in atmosphere :/ fails to predict brain tree's - this is on purpose
+                37790682707, //      Bleae Phlai AK-I d9-1     - Errant Marches
+                10887906389, //      Eor Audst LM-W f1-20      - Odin's Hold
+                234056927058952, //  Phroi Pri GM-W a1-13      - Galactic Centre
+                2009339794090, //    Synuefe FO-T c19-7        - Inner Orion Spur
+                5264816150115, //    Hypaa Bliae ND-H d11-153  - Outer Orion-Perseus Conflux
+                3464481251, //       Pidgio GS-H d11-0         - Errant Marches
+                51239337267043, //   Blua Eaec ED-H d11-1491   - Inner Scutum-Centaurus Arm
+                683033437569, //     Col 173 Sector VV-D b28-0 - Inner Orion Spur <-- B 3: many are wrong? needs help
+                113808345931, //     Blu Euq NH-L d8-3         - Inner Orion Spur
+                305709086413707, //  Stuemeae FG-Y d8897       - Galactic Centre
+                184943642675, //     Heguae NL-P d5-5          - Sanguineous Rim <-- AB 1 b: many are wrong? needs help
+
+                /* top 20 bodies */
+                216887347755, //     Aucoks RX-S d4-6         - Inner Orion Spur
+                /* 1182953163019,*///Hyuedau LV-Y d34         - Achilles's Altar - Did someone really see Tussock Virgam - Emerald, not Yellow? Otherwise this is good */
+                43847125659, //      Drojau BG-W d2-1         - Inner Orion Spur
+                2302134985738, //    Athaiwyg EG-Y c8         - Arcadian Stream
+                672833020273, //     Flyooe Eohn CS-H b43-0   - Sanguineous Rim
+                //3931941933746, //    Lyncis Sector CL-Y c14   - Inner Orion Spur <-- ABC 1 c,d, etc: no parent stars?
+                11548763827697, //   Blaa Drye WC-F b58-5     - Temple
+                11360960255658, //   Blau Eur RZ-O c19-41     - Hawking's Gap
+                721151664337, //     Slegeae SU-R b24-0       - Sanguineous Rim
+                674712855233, //     Outotz ZQ-K b22-0        - Sanguineous Rim
+                //102509547578, //     Hegou FB-S c6-0          - Sanguineous Rim <-- bodies with no parent stars
+                2851187073897, //    Oochoss NM-K b42-1       - Elysian Shore
+                1148829126400920, // Byoomao CG-D a108-65     - Galactic Centre
+                111098727130, //     Groem BL-E c25-0         - Kepler's Crest
+                612973965713, //     Wruetheia NL-U b46-0     - Formorian Frontier
+                4879485709721, //    Blie Eup RQ-O b47-2      - Elysian Shore
+                265348273105, //     Dryaa Bloae II-N b54-0   - Outer Arm
+                787453456673, //     Nyeakeia ZA-V b33-0      - Hawking's Gap
+                629372094563, //     Hegoo FW-E d11-18        - Sanguineous Rim
+                1976177703003690, // Choomee IF-R c4-7189     - Empyrean Straits
+                //7373867459, //       Ushosts LC-M d7-0        - Elysian Shore <-- AB 1 e: no parent star?
+                //113170581619, //     Slegi XV-C d13-3         - Elysian Shore <-- bodies with no parent stars
+                8055311831762, //    NLTT 55164               - Inner Orion Spur
+                721911088556658, //  Eorld Byoe BQ-G c13-2626 - Ryker's Hope
+                1005802506067, //    Heart Sector ZE-A d29    - Elysian Shore
+                2789153444971, //    Phimbo GC-D d12-81       - Perseus Arm
+                33682769023907, //   Phroi Pra PP-V d3-980    - Galactic Centre
+
+                ///* top 20 systems */
+                //3107241202402, //    Col 285 Sector BS-I c10-11 - Inner Orion Spur <-- bodies with no parent stars
+                2962579378659, //    Kyloagh PE-G d11-86        - Orion-Cygnus Arm
+                16604217544995, //   Eol Prou QS-T d3-483       - Inner Scutum-Centaurus Arm
+                1182223274666, //    Synuefai MW-U c19-4        - Inner Orion Spur
+                1453569624435, //    HIP 82068                  - Inner Orion Spur - HIP 82068 9 f is missing an atmosphere
+                358999069386, //     76 Leonis                  - Inner Orion Spur
+                233444419892, //     Hypio Flyao XP-P e5-54     - Arcadian Stream
+                10612427019, //      HIP 56843                  - Inner Orion Spur
+                10376464763, //      HD 221180                  - Inner Orion Spur
+                //3626137373140, //    Phaa Audst GW-W e1-844     - Odin's Hold <-- bodies with no parent stars
+                91956533317099, //   Pru Aim GR-D d12-2676      - Inner Scutum-Centaurus Arm - revisit ABCD 1 a - Clypeus Speculumi distance calculation needs fixing  <-- bodies with no parent stars
+                //15149635267028, //   Phua Aub WU-X e1-3527      - Galactic Centre <-- bodies with no parent stars
+                455962777099, //     Scheau Bluae JC-B d1-13    - Odin's Hold
+                1693617998187, //    Synuefue ZX-F d12-49       - Inner Orion Spur
+                //27118431768755, //   Dryio Flyuae IY-Q d5-789   - Inner Scutum-Centaurus Arm <-- bodies with no parent stars
+                1005903105339, //    Skaude GD-Q d6-29          - Inner Scutum-Centaurus Arm
+                800801672259, //     Flyooe Hypue FT-O d7-23    - Inner Orion Spur
+                2004164284331, //    Byoi Aip VE-R d4-58        - Norma Arm // Stratum Emerald star F vs N ?? needs help
+                14096678161971, //   Clooku HI-R d5-410         - Inner Scutum-Centaurus Arm
+                175621288252019, //  Dumbio GN-B d13-5111       - Odin's Hold
+
+                /* more ad-hoc systems */
+                //113170581619, //     Slegi XV-C d13-3         - Elysian Shore <-- bodies with no parent stars
+                8055311831762, //    NLTT 55164               - Inner Orion Spur
+                721911088556658, //  Eorld Byoe BQ-G c13-2626 - Ryker's Hope
+                1005802506067, //    Heart Sector ZE-A d29    - Elysian Shore
+                2789153444971, //    Phimbo GC-D d12-81       - Perseus Arm
+                33682769023907, //   Phroi Pra PP-V d3-980    - Galactic Centre
+                27011785954, //     Cumbou YH-F c26-0
+
+                /* Aleoida Coronamus - Lime (L star systems) */
+                2492825675329, // Pra Dryoo UL-X b7-1
+                633272537650, // Synuefai EA-U c5-2
+                962207294841, // Hyuedeae UG-W b43-0
+                1726677521610, // Bleae Thaa XX-H c23-6
+                516869988849, // Slegue TP-Z b57-0
+
+                /* Bark Mounds */
+                // resume here !!!
+                13876099622273, // Pencil Sector MR-W b1-6
+                2036007784483, // Eulail RX-T d3-59
+                869487643043, // IC 4604 Sector DL-Y d25 <-- wrong star L vs G for Fonticulua Campestris? needs help
+
+                // Amphora Plant
+                13648186819, // Eifoqs XZ-N d7-0
+                82032053243, // Pyroifa DX-A d14-2
+                320570575667, // Blaa Dryou FN-R d5-9
+                150969781115, // Blaea Euq OO-Z d13-4
+
+                /* Luteolum Anemone */
+                52837737636, // HR 326
+                4998038101, // HIP 42398
+                1238889013, // HD 37127
+
+                /* Prasinum Bioluminescent Anemone */
+                284175090653, // Floawns OS-U f2-529
+                36011151, // GCRV 950
+
+                /* Brain Trees */
+                802563263091, // Eta Carina Sector EL-Y d23
+                //835329116475, // Col 132 Sector BM-M d7-24 <-- bodies with no parent stars
+                1797418617131, // Col 140 Sector BQ-Y d52
+
+                /* Tubers */
+                143518344886673, // Blua Hypa PI-A b47-65 (partially useful)
+
+                /* Shards */
+                100562634522, // Aidoms MT-U c2-0 (partially useful)
+
+                /* Fonticulua Campestris */
+                77409424274, // Prae Drye XN-W c16-0 A 3
+
+                361481876986, //       Greae Flyao UF-D c29-1   - check 1 d
+                3650755408786, //      Prae Pruae EG-Y c16-13 // ? Why no Fonticular Campestris - Amethyst 
+                6406178542290, // Guathiti 8 a // No Fumerola Nitris Lime
+
+
+                675416645714, // Eolls Ploe YK-L c9-2 - has root barycentre but alas no concrete bio data for comparisons
+                84431081539, // Eolls Ploe OX-L d7-2
+
+                353504315603, // Oochody YF-L d9-10 // consistently wrong star choice?
+                49786130467, // Eock Flyao XY-S d3-1 // single star system
+
+                113053059083, // Slegi AV-Y d3 // Not Predicted: Stratum Tectonicas Green / Due to a Neutron being deemed the hottest but it should have been the local M stars
+                2282674557658, // Vodyakamana // <-- BC4 Fails because Argon is < 100% BUT there's no Nitrogen in the atmosphere (or anything else?!)
+                1050522316081, // Ihad BK-L b35-0 // <-- we are missing data about the star AND Canonn has incomplete bio data for Ihad BK-L b35-0 1 a
+
+                2519946200947, // Qiefoea KZ-D d13-73 // D4 Osseus not found or D3 Stratum not found
+                10393127859, // Chaloa PI-R d5-0 // missing Stratum Tectonicas Green, Cactoida Cortexum Amethyst & Frutexa Metallicum Grey ? 
+                7269366113697, // ICZ ZJ-Z b3
+
+                2282674557658, //Vodyakamana BC 4 missing bacterium
+                664470014523, //IC 2944 Sector EL-W d2-19 Body B 3 a missing tussock
+            };
         }
 
         #endregion

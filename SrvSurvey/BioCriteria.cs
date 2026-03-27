@@ -43,13 +43,13 @@ namespace BioCriterias
             return $"{genus}{species}{variant} queries:{query?.Count}";
         }
 
-        public static void readCriteria()
+        public static void readCriteria(bool forcePublished = false)
         {
             //Game.log("readCriteria");
             allCriteria.Clear();
 
             // use source files if debugging, otherwise published files
-            var folder = Debugger.IsAttached ? devSrcFolder : Git.pubBioCriteriaFolder;
+            var folder = Debugger.IsAttached && !forcePublished ? devSrcFolder : Git.pubBioCriteriaFolder;
             var files = Directory.GetFiles(folder, "*.json");
 
             foreach (var filepath in files)
