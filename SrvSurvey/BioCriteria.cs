@@ -328,8 +328,10 @@ namespace BioCriterias
             // Try to expand as arm name
             if (GalacticRegions.mapArmRegions.TryGetValue(value, out var regionIds))
                 return string.Join(",", regionIds.OrderBy(r => r));
-            
-            // Unknown value, return as-is (Additional validation here?)
+
+            // Unknown value
+            Game.log($"Invalid region detected: {value} will potentially be ignored");
+            Debugger.Break();
             return value;
         }
 
