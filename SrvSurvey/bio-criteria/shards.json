@@ -2,53 +2,50 @@
   "genus": "Crystalline Shards",
   "species": "Crystalline Shards",
   "query": [
-    "# hit count: 2221",
+    "# hit count: 3670",
     "atmosType [None]",
-    "  regions [14,21,22,23,24,25,26,27,28,29,34,36,37,38,39,40,41,42]"
+    "  regions [ShardBatch]",
+    "     dist [10000 ~ ]"
   ],
   "children": [
     {
       "variant": "",
       "query": [
-        "# hit count: 1421",
+        "# hit count: 2340",
         "     body [Icy]",
-        "  gravity [ ~ 0.209]",
-        "     temp [27 ~ 208]",
-        " pressure [ ~ 0.0009]",
-        "volcanism [Minor Ammonia Magma,Minor Carbon Dioxide Geysers,Minor Methane Magma,Minor Nitrogen Magma,Minor Water Magma]"
+        "  gravity [ ~ 0.21]",
+        "     temp [20 ~ 207]",
+        "volcanism [Minor Ammonia Magma,Minor Carbon Dioxide Geysers,Minor Methane Magma,Minor Nitrogen Magma,Minor Water Geysers,Minor Water Magma]"
       ]
     },
     {
       "variant": "",
       "query": [
-        "# hit count: 626",
+        "# hit count: 1095",
         "     body [Rocky]",
-        "  gravity [0.043 ~ 0.251]",
-        "     temp [43 ~ 251]",
-        " pressure [ ~ 0]",
-        "volcanism [Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers]"
+        "  gravity [ ~ 0.24]",
+        "     temp [43 ~ 250]",
+        "volcanism [Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers,Minor Water Magma]"
       ]
     },
     {
       "variant": "",
       "query": [
-        "# hit count: 58",
+        "# hit count: 82",
         "     body [RockyIce]",
-        "  gravity [ ~ 0.203]",
+        "  gravity [ ~ 0.19]",
         "     temp [86 ~ 240]",
-        " pressure [ ~ 0]",
-        "volcanism [Minor Carbon Dioxide Geysers,Minor Metallic Magma,Minor Silicate Vapour Geysers,Minor Water Geysers]"
+        "volcanism [Minor Carbon Dioxide Geysers,Minor Metallic Magma,Minor Silicate Vapour Geysers,Minor Water Geysers,Minor Water Magma]"
       ]
     },
     {
       "variant": "",
       "query": [
-        "# hit count: 116",
+        "# hit count: 153",
         "     body [HMC]",
-        "  gravity [0.056 ~ 1.459]",
-        "     temp [89 ~ 249]",
-        " pressure [ ~ 0.0007]",
-        "volcanism [Minor Metallic Magma,Minor Silicate Vapour Geysers]"
+        "  gravity [ ~ 1.45]",
+        "     temp [57 ~ 249]",
+        "volcanism [Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers]"
       ]
     }
   ]

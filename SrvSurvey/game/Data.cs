@@ -223,15 +223,38 @@ namespace SrvSurvey.game
             { "$Codex_RegionName_42;", "The Void" },
         };
 
-        // TODO: change mapArms into Dictionary<string, List<int>>
-
         public static Dictionary<string, string> mapArms = new Dictionary<string, string>()
         {
-            { "~OrionCygnusArm", "Izanami,InnerOrion-PerseusConflux,InnerScutum-CentaurusArm,Orion-CygnusArm,Temple,InnerOrionSpur,ElysianShore,SanguineousRim,OuterOrionSpur" },
-            { "~OuterArm", "NormaArm,ArcadianStream,Newton'sVault,TheConduit,OuterArm,ErrantMarches,TheFormidineRift,Xibalba,Kepler'sCrest" },
-            { "~ScutumCentaurusArm", "InnerScutum-CentaurusArm,NormaExpanse,TrojanBelt,TheVeils,FormorianFrontier,HieronymusDelta,OuterScutum-CentaurusArm,Aquila'sHalo,TheVoid" },
-            { "~PerseusArm", "Izanami,OuterOrion-PerseusConflux,PerseusArm,VulcanGate,ElysianShore,SanguineousRim,Achilles'sAltar,Lyra'sSong,Tenebrae" },
-            { "~SagittariusCarinaArm", "InnerOrion-PerseusConflux,Orion-CygnusArm,Temple,InnerOrionSpur,Hawking'sGap,Dryman'sPoint,Sagittarius-CarinaArm,MareSomnia,Acheron,OuterOrionSpur,TheAbyss" },
+
+            { "~CentreLeft", "GalacticCentre,Odin'sHold" },
+            { "~CentreTop", "Izanami,GalacticCentre,Ryker'sHope" },
+            { "~OrionCygnusArm", "Izanami,InnerOrion-PerseusConflux,InnerScutum-CentaurusArm,Orion-CygnusArm,Temple,InnerOrionSpur,OuterOrionSpur" },
+            { "~OuterArm", "NormaArm,ArcadianStream,Newton'sVault,TheConduit,OuterArm,ErrantMarches,TheFormidineRift,Kepler'sCrest,Xibalba" },
+            { "~ScutumCentaurusArm", "InnerScutum-CentaurusArm,NormaExpanse,TrojanBelt,TheVeils,FormorianFrontier,HieronymusDelta,OuterScutum-CentaurusArm,TheVoid,Aquila'sHalo" },
+            { "~PerseusArm", "OuterOrion-PerseusConflux,PerseusArm,VulcanGate,ElysianShore,SanguineousRim,Achilles'sAltar,Lyra'sSong,Tenebrae" },
+            { "~SagittariusCarinaArm", "InnerScutum-CentaurusArm,InnerOrionSpur,Hawking'sGap,Dryman'sPoint,Sagittarius-CarinaArm,MareSomnia,Acheron,TheAbyss" },
+        };
+
+        /// <summary>
+        /// Maps arm names to their constituent region IDs for easier bio criteria definition
+        /// </summary>
+        public static Dictionary<string, int[]> mapArmRegions = new Dictionary<string, int[]>()
+        {
+            { "Orion-CygnusArm", new[] { 7, 8, 9, 16, 17, 18, 35 } },
+            { "OuterArm", new[] { 5, 6, 13, 14, 27, 29, 31, 41, 37 } },
+            { "Scutum-CentaurusArm", new[] { 9, 10, 11, 12, 24, 25, 26, 42, 28 } },
+            { "PerseusArm", new[] { 15, 30, 32, 33, 34, 36, 38, 39 } },
+            { "Sagittarius-CarinaArm", new[] { 9, 18, 19, 20, 21, 22, 23, 40 } },
+            { "CentreLeft", new[] { 1, 4 } },
+            { "CentreTop", new[] { 1, 3, 7 } },
+            { "CentreRight", new[] {1, 2 } },
+            // Additional groupings for specific organisms
+            { "AmphoraBatch", new[] { 10, 19, 20, 21, 22 } },  // NormaExpanse, Hawking'sGap, Dryman'sPoint, Sagittarius-Carina Arm, Mare Somnia
+            { "AnemoneBatch", new[] { 7, 8, 9, 13, 14, 15, 16, 17, 18, 27, 31 } },  // Izanami, Inner Orion-Perseus Conflux, Inner Scutum-Centaurus Arm, Newton's Vault, The Conduit, Outer Orion-Perseus Conflux, Orion-Cygnus Arm, Temple, Inner Orion Spur, Outer Arm, The Formidine Rift
+            { "BarkMoundBatch", new[] { 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 25, 32, 33, 34 } },
+            { "BrainTreeBatch", new[] { 2, 9, 10, 17, 18, 35 } }, //Empyrean Straits, Inner-Scutum Centaurus Arm, Norma Expanse, Temple, Inner Orion Spur, Outer Orion Spur
+            { "TubersBatch", new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 18, 19 } },//Galactic Centre, Odin's Hold, Empyrean Straits,Ryker's Hope, Norma Arm, Arcadian Stream, Izanami, Inner Orion-Perseus Conflux, Inner Scutum-Centaurus Arm, Inner Orion Spur, Hawking's Gap, Norma Expanse, Trojan Belt
+            { "ShardBatch", new[] { 14, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 34, 36, 37, 38, 39, 40, 41, 42 } }
         };
 
         /* All Region:

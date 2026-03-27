@@ -1,7 +1,8 @@
 {
   "genus": "Electricae",
   "query": [
-    "body [Icy]"
+    "body [Icy]",
+    "  gravity [ ~ 0.276]"
   ],
   "children": [
 
@@ -16,30 +17,39 @@
         { "variant": "Mulberry", "query": [ "mats [Yttrium]" ] }
       ],
       "query": [
-        "# hit count: 2597",
-        "primaryStar [A,B,D,H,N,W]"
+        "# hit count: 5181",
+        "star [O,B,A,H,Ae,D,N,W]"
       ],
       "children": [
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 2461",
+            "# hit count: 4810",
             "atmosType [Argon]",
-            "  gravity [ ~ 0.275]",
-            "     temp [50 ~ 150]",
-            "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers,Major Water Magma,Minor Carbon Dioxide Geysers,Minor Nitrogen Magma,Water Geysers]",
+            "     temp [ ~ 150]",
+            "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers,Major Water Magma,Minor Ammonia Magma,Minor Carbon Dioxide Geysers,Minor Methane Magma,Minor Nitrogen Magma,Minor Water Geysers,Minor Water Magma,Water Geysers,Water Magma]",
             "atmosComp [Argon >= 100 | Nitrogen >= 0.06]"
           ]
         },
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 110",
+            "# hit count: 218",
             "atmosType [ArgonRich]",
-            "  gravity [0.218 ~ 0.275]",
-            "     temp [63 ~ 121]",
-            " pressure [0.0209 ~ ]",
+            "     temp [ ~ 121]",
+            " pressure [0.02 ~ ]",
             "volcanism [None]",
+            "atmosComp [Nitrogen >= 50]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "# hit count: 12",
+            "atmosType [Neon]",
+            "     temp [ ~ 45]",
+            " pressure [ ~ 0.0011]",
+            "volcanism [None,Major Water Geysers,Minor Carbon Dioxide Geysers,Minor Methane Magma,Water Geysers]",
             "atmosComp [Nitrogen >= 50]"
           ]
         },
@@ -48,9 +58,8 @@
           "query": [
             "# hit count: 22",
             "atmosType [NeonRich]",
-            "  gravity [0.262 ~ 0.276]",
-            "     temp [61 ~ 69]",
-            " pressure [0.0017 ~ 0.0053]",
+            "     temp [60 ~ 69]",
+            " pressure [ ~ 0.006]",
             "volcanism [None]",
             "atmosComp [Nitrogen >= 87]"
           ]
@@ -69,29 +78,27 @@
         { "variant": "Green", "query": [ "     mats [Yttrium]" ] }
       ],
       "query": [
-        "# hit count: 7714",
+        "# hit count: 12771",
         "nebulae [ ~ 150]"
       ],
       "children": [
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 7476",
+            "# hit count: 12345",
             "atmosType [Argon]",
-            "  gravity [ ~ 0.275]",
-            "     temp [50 ~ 149]",
-            "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers,Major Water Magma,Minor Nitrogen Magma,Water Geysers]",
+            "     temp [ ~ 150]",
+            "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers,Major Water Magma,Minor Ammonia Magma,Minor Carbon Dioxide Geysers,Minor Methane Magma,Minor Nitrogen Magma,Minor Water Geysers,Minor Water Magma,Water Geysers,Water Magma]",
             "atmosComp [Argon >= 100 | Nitrogen >= 0.06]"
           ]
         },
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 200",
+            "# hit count: 365",
             "atmosType [ArgonRich]",
-            "  gravity [0.212 ~ 0.275]",
-            "     temp [61 ~ 110]",
-            " pressure [0.0214 ~ ]",
+            "     temp [ ~ 121]",
+            " pressure [0.02 ~ ]",
             "volcanism [None]",
             "atmosComp [Nitrogen >= 50]"
           ]
@@ -99,11 +106,27 @@
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 35",
+            "# hit count: 2",
+            "atmosType [Methane]",
+            " pressure [0.07 ~ ]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "# hit count: 3",
+            "atmosType [Neon]",
+            " pressure [0.07 ~ ]",
+            "volcanism [None,Minor Water Geysers,Minor Water Magma]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "# hit count: 56",
             "atmosType [NeonRich]",
-            "  gravity [0.261 ~ 0.274]",
-            "     temp [61 ~ 68]",
-            " pressure [0.0016 ~ 0.0048]",
+            "     temp [56 ~ 69]",
+            " pressure [ ~ 0.04]",
             "volcanism [None]",
             "atmosComp [Nitrogen >= 80]"
           ]

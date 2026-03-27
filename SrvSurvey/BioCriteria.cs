@@ -229,13 +229,14 @@ namespace BioCriterias
         public static Clause parse(string txt)
         {
             // "<property name> [<condition values>]"
-            // eg: "temp [146 ~ 196]"
-            // eg: "gravity [ ~ 0.28]"
+            // eg: "temp [146 ~ 195.41]"
+            // eg: "gravity [ ~ 0.276]"
             // eg: "pressure [0.01 ~ ]"
             // eg: "atmosphere [Thin Ammonia]"
             // eg: "atmosType [CarbonDioxide,SulphurDioxide,Water]"
             // eg: "atmosComp [SulphurDioxide >= 0.99 | Neon >= 3]"
             // eg: "matsComp [Sulphur >= 0.99]"
+            // eg: "regions [Orion-Cygnus Arm, 30,32]"
 
             var r0 = new Regex(@"\s*(\w+)\s*[&!]?\[(.+)\]");
             var m0 = r0.Match(txt);
@@ -291,7 +292,15 @@ namespace BioCriterias
                     clause.op = Op.Is;
 
                 clause.values = valTxt.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
-                    .Select(v => Map.values.ContainsKey(v) ? Map.values[v]! : v)
+                    .Select(v => {
+                        // Apply Map.values translation if available
+                        if (Map.values.ContainsKey(v))
+                            return Map.values[v]!;
+                        // For regions/arms properties, normalize to region IDs
+                        if (property == "regions")
+                            return NormalizeRegionValue(v);
+                        return v;
+                    })
                     .ToList();
             }
 
@@ -299,6 +308,31 @@ namespace BioCriterias
             if (string.IsNullOrEmpty(clause.property)) throw new Exception($"Bad criteria: {txt}");
             if (clause.op == Op.Is && (clause.values == null || clause.values.Count == 0)) throw new Exception($"Bad criteria: {txt}");
             return clause;
+        }
+
+        /// <summary>
+        /// Normalize region values by expanding arm names to region IDs.
+        /// Supports formats:
+        /// - Numeric region IDs (e.g., "7", "8", "9")
+        /// - Arm names (e.g., "Orion-Cygnus Arm")
+        /// Returns comma-separated region IDs.
+        /// </summary>
+        private static string NormalizeRegionValue(string value)
+        {
+            value = value.Trim();
+            
+            // If it's already a number, return as-is
+            if (int.TryParse(value, out _))
+                return value;
+            
+            // Try to expand as arm name
+            if (GalacticRegions.mapArmRegions.TryGetValue(value, out var regionIds))
+                return string.Join(",", regionIds.OrderBy(r => r));
+
+            // Unknown value
+            Game.log($"Invalid region detected: {value} will potentially be ignored");
+            Debugger.Break();
+            return value;
         }
 
         class JsonConverter : Newtonsoft.Json.JsonConverter
@@ -387,7 +421,7 @@ namespace BioCriterias
             { "volcanism", "Volcanism" },
             { "mats", "Materials" },
 
-            // Property values are an array of numbers matching galactic regions or NOT matching, eg: [1, 2, 3] or ![1, 2, 3]
+            // Property values are an array of numbers or sectors matching galactic regions or NOT matching, eg: [1, 2, Orion-Cygnus Arm] or ![Perseus Arm, 3]
             { "regions", "Region" },
 
             // Some parent star(s)

@@ -101,9 +101,9 @@ namespace BioCriterias
             var bodyProps = new Dictionary<string, object>
             {
                 { "PlanetClass", body.planetClass! },
-                { "SurfaceGravity", body.surfaceGravity / 10f },
+                { "SurfaceGravity", body.surfaceGravity / 9.80665f },
                 { "SurfaceTemperature", body.surfaceTemperature },
-                { "SurfacePressure", body.surfacePressure / 100_000f },
+                { "SurfacePressure", body.surfacePressure / 101_325f },
                 { "Atmosphere", body.atmosphere.Replace(" atmosphere", "") },
                 { "AtmosphereType", body.atmosphereType },
                 { "AtmosphereComposition", atmosphereComposition! },
@@ -296,6 +296,34 @@ namespace BioCriterias
                 return;
             }
 
+            // Special handling for region/arms queries
+            if ((clause.property == "regions") && bodyValue is string)
+            {
+                if (int.TryParse((string)bodyValue, out var currentRegionId))
+                {
+                    var allowedRegionIds = new HashSet<int>();
+
+                    // Parse comma-separated region IDs from each clause value
+                    foreach (var regionString in clause.values)
+                    {
+                        var ids = regionString.Split(',');
+                        foreach (var id in ids)
+                        {
+                            if (int.TryParse(id.Trim(), out var regionId))
+                            {
+                                allowedRegionIds.Add(regionId);
+                            }
+                        }
+                    }
+
+                    if (!allowedRegionIds.Contains(currentRegionId))
+                    {
+                        failures.Add(new ClauseFailure(bodyName, "No region match", clause, currentRegionId.ToString()));
+                    }
+                }
+                return;
+            }
+
             // match any clause value from a set of bodyValue strings
             var bodyValues = bodyValue as List<string>;
             if (bodyValue is Dictionary<string, float>)
@@ -371,6 +399,34 @@ namespace BioCriterias
         private void testNotQuery(Clause clause, object? bodyValue, List<ClauseFailure> failures)
         {
             if (clause.values == null) throw new Exception("Missing clause values?");
+
+            // Special handling for region/arms queries
+            if ((clause.property == "regions") && bodyValue is string)
+            {
+                if (int.TryParse((string)bodyValue, out var currentRegionId))
+                {
+                    var disallowedRegionIds = new HashSet<int>();
+
+                    // Parse comma-separated region IDs from each clause value
+                    foreach (var regionString in clause.values)
+                    {
+                        var ids = regionString.Split(',');
+                        foreach (var id in ids)
+                        {
+                            if (int.TryParse(id.Trim(), out var regionId))
+                            {
+                                disallowedRegionIds.Add(regionId);
+                            }
+                        }
+                    }
+
+                    if (disallowedRegionIds.Contains(currentRegionId))
+                    {
+                        failures.Add(new ClauseFailure(bodyName, "Match with disallowed region", clause, currentRegionId.ToString()));
+                    }
+                }
+                return;
+            }
 
             // convert singular bodyValue strings into a list
             if (bodyValue is string)
@@ -518,7 +574,7 @@ namespace BioCriterias
                     Game.log(txt);
                     Debugger.Break(); // When this hits. Clear the debug console and drag the execution point up to the "BioPredictor.predict(body)" line above
                 }
-                else if (wrong.Count > 5)
+                else if (wrong.Count > 4)
                 {
                     // TODO: write these to some file?
                     Game.log(txt);
@@ -743,6 +799,9 @@ namespace BioCriterias
                 //2519946200947, // Qiefoea KZ-D d13-73 // D4 Osseus not found or D3 Stratum not found
                 //10393127859, // Chaloa PI-R d5-0 // missing Stratum Tectonicas Green, Cactoida Cortexum Amethyst & Frutexa Metallicum Grey ? 
                 //7269366113697, // ICZ ZJ-Z b3
+
+                //2282674557658, //Vodyakamana BC 4 missing bacterium
+                //664470014523, //IC 2944 Sector EL-W d2-19 Body B 3 a missing tussock
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");
