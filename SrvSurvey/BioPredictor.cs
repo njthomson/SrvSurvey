@@ -101,9 +101,9 @@ namespace BioCriterias
             var bodyProps = new Dictionary<string, object>
             {
                 { "PlanetClass", body.planetClass! },
-                { "SurfaceGravity", body.surfaceGravity / 10f },
+                { "SurfaceGravity", body.surfaceGravity / 9.80665f },
                 { "SurfaceTemperature", body.surfaceTemperature },
-                { "SurfacePressure", body.surfacePressure / 100_000f },
+                { "SurfacePressure", body.surfacePressure / 101_325f },
                 { "Atmosphere", body.atmosphere.Replace(" atmosphere", "") },
                 { "AtmosphereType", body.atmosphereType },
                 { "AtmosphereComposition", atmosphereComposition! },
@@ -799,6 +799,9 @@ namespace BioCriterias
                 //2519946200947, // Qiefoea KZ-D d13-73 // D4 Osseus not found or D3 Stratum not found
                 //10393127859, // Chaloa PI-R d5-0 // missing Stratum Tectonicas Green, Cactoida Cortexum Amethyst & Frutexa Metallicum Grey ? 
                 //7269366113697, // ICZ ZJ-Z b3
+
+                //2282674557658, //Vodyakamana BC 4 missing bacterium
+                //664470014523, //IC 2944 Sector EL-W d2-19 Body B 3 a missing tussock
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");
