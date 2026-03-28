@@ -240,7 +240,7 @@ namespace SrvSurvey.game
         /// </summary>
         public static Dictionary<string, int[]> mapArmRegions = new Dictionary<string, int[]>()
         {
-            { "Orion-CygnusArm", new[] { 7, 8, 9, 16, 17, 18, 35 } },
+            { "Orion-CygnusArm", new[] { 7, 8, 16, 17, 18, 35 } },
             { "OuterArm", new[] { 5, 6, 13, 14, 27, 29, 31, 41, 37 } },
             { "Scutum-CentaurusArm", new[] { 9, 10, 11, 12, 24, 25, 26, 42, 28 } },
             { "PerseusArm", new[] { 15, 30, 32, 33, 34, 36, 38, 39 } },
