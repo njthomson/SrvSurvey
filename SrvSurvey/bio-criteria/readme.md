@@ -125,18 +125,20 @@ In this example:
     Eg: Tussock Cultro - Red has only been found in Odin's Hold, Izanami and Inner Orion Spur. The clause would be: `regions [4,7,18]`
     
     Alternatively, species can use the galactic arms corresponding to specific sets of regions:
-    - Orion-CygnusArm: { 7, 8, 9, 16, 17, 18, 35 }
-    - OuterArm": { 5, 6, 13, 14, 27, 29, 31, 41, 37 }
-    - Scutum-CentaurusArm": { 9, 10, 11, 12, 24, 25, 26, 42, 28 }
-    - PerseusArm": { 15, 30, 32, 33, 34, 36, 38, 39 }
-    - Sagittarius-CarinaArm": { 9, 18, 19, 20, 21, 22, 23, 40 }
-    - CentreLeft": { 1, 4 }
-    - CentreTop": { 1, 3, 7 }
-    - CentreRight": {1, 2 }
-    - AmphoraBatch": { 10, 19, 20, 21, 22 }
-    - AnemoneBatch": { 7, 8, 9, 13, 14, 15, 16, 17, 18, 27, 31 }
-    - BrainTreeBatch": { 2, 9, 10, 17, 18, 35 }
-    - TubersBatch": { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 18, 19 }
+    - Orion-CygnusArm: { 7, 8, 16, 17, 18, 35 }
+    - OuterArm: { 5, 6, 13, 14, 27, 29, 31, 41, 37 }
+    - Scutum-CentaurusArm: { 9, 10, 11, 12, 24, 25, 26, 42, 28 }
+    - PerseusArm: { 15, 30, 32, 33, 34, 36, 38, 39 }
+    - Sagittarius-CarinaArm: { 9, 18, 19, 20, 21, 22, 23, 40 }
+    - CentreLeft: { 1, 4 }
+    - CentreTop: { 1, 3, 7 }
+    - CentreRight: {1, 2 }
+    - AmphoraBatch: { 10, 19, 20, 21, 22 }
+    - AnemoneBatch: { 7, 8, 9, 13, 14, 15, 16, 17, 18, 27, 31 }
+    - BarkMoundBatch: { 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 25, 32, 33, 34 }
+    - BrainTreeBatch: { 2, 9, 10, 17, 18, 35 }
+    - TubersBatch: { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 18, 19 }
+    - ShardBatch: { 14, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 34, 36, 37, 38, 39, 40, 41, 42 }
 
     Eg: regions `[Sagittarius-CarinaArm,CentreLeft]` contains the regions associated with both Sagittarius-CarinaArm and CentreLeft. `![Sagittarius-CarinaArm,CentreLeft]` would contain all regions except those in Sagittarius-CarinaArm or CentreLeft.
 

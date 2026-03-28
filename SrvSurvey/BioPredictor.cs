@@ -107,9 +107,9 @@ namespace BioCriterias
             var bodyProps = new Dictionary<string, object>
             {
                 { "PlanetClass", body.planetClass! },
-                { "SurfaceGravity", body.surfaceGravity / 9.80665f },
+                { "SurfaceGravity", body.surfaceGravity / 10.0f },
                 { "SurfaceTemperature", body.surfaceTemperature },
-                { "SurfacePressure", body.surfacePressure / 101_325f },
+                { "SurfacePressure", body.surfacePressure / 100_000f },
                 { "Atmosphere", body.atmosphere.Replace(" atmosphere", "") },
                 { "AtmosphereType", body.atmosphereType },
                 { "AtmosphereComposition", atmosphereComposition! },
@@ -357,7 +357,7 @@ namespace BioCriterias
                 else if (clause.property == "volcanism")
                 {
                     // special case for 'volcanism' clauses to use `Contains` not `Equals`
-                    if (clause.values[0] == "Some")
+                    if (clause.values[0] == "Any")
                     {
                         if (bodyValueString == "None")
                             failures.Add(new ClauseFailure(bodyName, "No match Volcanism Some vs None", clause, bodyValueString));
@@ -580,7 +580,7 @@ namespace BioCriterias
                     Game.log(txt);
                     if (breakOnMissed) Debugger.Break(); // *!* When this hits. Clear the debug console and drag the execution point up to the "BioPredictor.predict(body)" line above
                 }
-                else if (wrong.Count > 4)
+                else if (wrong.Count > 1)
                 {
                     bodyExcessWrong.Add($"{body.name}, wrong: {wrong.Count}, id64: {systemData.address}");
                     Game.log(txt);
@@ -686,7 +686,7 @@ namespace BioCriterias
             return new List<long>()
             {
                 /* these are good */
-                3136055823779, //    Prua Phoe JR-U d3-91     - Inner Scutum-Centaurus Arm
+                /*3136055823779,*/ //    Prua Phoe JR-U d3-91     - Inner Scutum-Centaurus Arm //Genus vs landmark mismatch
                 7259190873515, //    Prua Phoe LX-S d4-211    - Inner Scutum-Centaurus Arm
                 6125336284579, //    Prua Phoe IR-U d3-178    - Inner Scutum-Centaurus Arm
                 6121703676746, //    Prua Phoe UO-N c8-22     - Inner Scutum-Centaurus Arm
@@ -859,8 +859,12 @@ namespace BioCriterias
                 10393127859, // Chaloa PI-R d5-0 // missing Stratum Tectonicas Green, Cactoida Cortexum Amethyst & Frutexa Metallicum Grey ? 
                 7269366113697, // ICZ ZJ-Z b3
 
-                2282674557658, //Vodyakamana BC 4 missing bacterium
+                //Bio overhaul test cases
                 664470014523, //IC 2944 Sector EL-W d2-19 Body B 3 a missing tussock
+                9693069535209, //Edge case Prue Pruae RW-G b57-4 A 6 has 3.553452g
+                3922344909570,//Prua Phoe DQ-D c14 A 8: Fungoida Gelata in Inner-Scutum Centaurus, high end gravity
+                2518319061187,//Praea Aoscs NJ-O d7-73: Aleoida Laminiae in Izanami
+                2920713168209//Wregoi CJ-H b39-1: Aleoida Laminiae in outer orion spur
             };
         }
 

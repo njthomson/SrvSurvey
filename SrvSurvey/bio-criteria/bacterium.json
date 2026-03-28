@@ -650,7 +650,7 @@
                 "     body [RockyIce]",
                 "  gravity [0.23 ~ 0.34]",
                 "     temp [ ~ 142]",
-                "volcanism [Carbon Dioxide Geysers,Major Water Geysers,Major Water Magma,Minor Carbon Dioxide Geysers,Minor Nitrogen Magma,Minor Methane Magma,Water Geysers,Minor Water Magma,Water Magma,Minor Ammonia Magma]",
+                "volcanism [Carbon Dioxide Geysers,Major Rocky Magma,Major Water Geysers,Major Water Magma,Minor Carbon Dioxide Geysers,Minor Nitrogen Magma,Minor Methane Magma,Water Geysers,Minor Water Magma,Water Magma,Minor Ammonia Magma]",
                 "atmosComp [Argon >= 100]"
               ]
             }
@@ -819,7 +819,7 @@
                 "  gravity [ ~ 0.13]",
                 "     temp [78 ~ 109]",
                 " pressure [0.012 ~ ]",
-                "volcanism [Major Metallic Magma,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers,Minor Water Magma]"
+                "volcanism [Any]"
               ]
             },
             {
@@ -1013,7 +1013,6 @@
                 "     body [RockyIce]",
                 "  gravity [ ~ 0.4]",
                 " pressure [0.002 ~ ]",
-                "volcanism [None,Major Rocky Magma,Major Silicate Vapour Geysers,Major Water Geysers,Major Water Magma,Metallic Magma,Minor Carbon Dioxide Geysers,Minor Metallic Magma,Minor Silicate Vapour Geysers,Minor Water Geysers,Rocky Magma,Water Geysers]",
                 "atmosComp [SulphurDioxide >= 100]"
               ]
             },

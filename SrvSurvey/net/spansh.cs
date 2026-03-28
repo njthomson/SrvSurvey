@@ -763,11 +763,11 @@ namespace SrvSurvey.net
                     if (ratio > 5 && delta > 3)
                         matchedVolcanism.Add(volcanism);
 
-                    // just say "Some" if more than .. ?
+                    // just say "Any" if more than .. ?
                     if (false && matchedVolcanism.Count > limitVolcanismTypes)
                     {
                         matchedVolcanism.Clear();
-                        matchedVolcanism.Add("Some");
+                        matchedVolcanism.Add("Any");
                         break;
                     }
 
@@ -778,7 +778,7 @@ namespace SrvSurvey.net
                 } while (volcanism != null);
             }
 
-            if (false && countNoVolcanism > 0 && matchedVolcanism.FirstOrDefault() != "Some") // <-- what was this for again?
+            if (false && countNoVolcanism > 0 && matchedVolcanism.FirstOrDefault() != "Any") // <-- what was this for again?
             {
                 // alpha sort but add None first
                 var list = matchedVolcanism.Order().ToList();
@@ -808,7 +808,7 @@ namespace SrvSurvey.net
                 {
                     // This happens with counts too low for ratios, etc above, but there was some volcanism still
                     var allSeenVolcanism = allVolcanisms.Where(v => !potentialVolcanism.Contains(v)).Order().ToList();
-                    var clause = Clause.createIs("volcanism", allSeenVolcanism); // , "Some");
+                    var clause = Clause.createIs("volcanism", allSeenVolcanism); // , "Any");
                     return clause;
                 }
             }
