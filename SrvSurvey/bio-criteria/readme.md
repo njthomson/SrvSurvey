@@ -125,7 +125,6 @@ In this example:
     Eg: Tussock Cultro - Red has only been found in Odin's Hold, Izanami and Inner Orion Spur. The clause would be: `regions [4,7,18]`
     
     Alternatively, species can use the galactic arms corresponding to specific sets of regions:
-    TODO: Update here
     - Orion-CygnusArm: { 7, 8, 16, 17, 18, 35 }
     - OuterArm: { 5, 6, 13, 14, 27, 29, 31, 41, 37 }
     - Scutum-CentaurusArm: { 9, 10, 11, 12, 24, 25, 26, 42, 28 }
