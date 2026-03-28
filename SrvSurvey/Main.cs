@@ -1415,6 +1415,9 @@ namespace SrvSurvey
             Directory.CreateDirectory(folder);
             saveImage.Save(Path.Combine(folder, filename), ImageFormat.Png);
 
+            if (Game.settings.allowNotifications.showScreenshot)
+                PlotFloatie.showMessage($"Saved '{filename}' with{(Game.settings.addBannerToScreenshots ? " no" : "")} banner");
+
             // also save the image in Ruins specific folders, if we are aligned with the site origin
             if (isAerialScreenshot && Game.settings.useGuardianAerialScreenshotsFolder)
             {

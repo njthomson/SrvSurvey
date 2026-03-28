@@ -33,6 +33,8 @@ namespace SrvSurvey.plotters
             // exit early if this plotter is disabled
             var game = Game.activeGame;
             if (!Game.settings.autoShowFloatie_TEST || game == null) return;
+            if (Program.control.InvokeRequired)
+                Program.defer(() => showMessage(msg));
 
             var existing = messages.Find(_ => _.msg == msg);
             if (existing != null)

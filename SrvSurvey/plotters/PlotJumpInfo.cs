@@ -89,6 +89,18 @@ namespace SrvSurvey.plotters
                 this.invalidate();
             };
 
+            // if not many jumps but we have a followed route - use that instead
+            if (route.Count < 2 && game.cmdr.route.active)
+            {
+                route = game.cmdr.route.hops.Select(h => new RouteEntry()
+                {
+                    SystemAddress = h.id64!.Value,
+                    StarSystem = h.name,
+                    StarPos = h.xyz!,
+                    StarClass = h.neutron ? "N" : null!,
+                }).ToList();
+            }
+
             // proceed with either FSDTarget or status.Destination, or exit early if none
             if (game.fsdTarget != null)
             {
@@ -102,7 +114,7 @@ namespace SrvSurvey.plotters
             {
                 Game.log($"Why no next name of address?");
                 this.hide();
-                  Debugger.Break();
+                Debugger.Break();
                 return;
             }
 
@@ -195,7 +207,7 @@ namespace SrvSurvey.plotters
             if (next.StarPos != null)
             {
                 var nextRegion = EliteDangerousRegionMap.RegionMap.FindRegion(next.StarPos);
-                if (nextRegion!= null && nextRegion.Name != GalacticRegions.current)
+                if (nextRegion != null && nextRegion.Name != GalacticRegions.current)
                     netData.special.init(Res.SpecialNowEntering).Add(nextRegion.Name);
             }
         }
@@ -363,13 +375,16 @@ namespace SrvSurvey.plotters
                 if (n == nextHopIdx)
                     g.DrawLine(GameColors.Route.penNext4, x - N.one, y, x - w, y);
                 else if (n < nextHopIdx && d > game.currentShip.maxJump)
+                {
                     g.DrawLine(GameColors.Route.penNeutronBehind, x, y, x - w, y);
+                    g.DrawLine(C.Pens.blackish4, x, y, x - w, y);
+                }
                 else if (n < nextHopIdx)
                     g.DrawLine(GameColors.Route.penBehind, x, y, x - w, y);
                 else if (d > game.currentShip.maxJump && this.totalDistance <= limitExcessDistance)
                     g.DrawLine(GameColors.Route.penNeutronAhead, x - N.two, y, x - w, y);
                 else if (d > game.currentShip.maxJump && this.totalDistance > limitExcessDistance)
-                    g.DrawLine(GameColors.Route.penNeutronBehind, x - N.two, y, x - w, y);
+                    g.DrawLine(GameColors.Route.penNeutronAhead, x - N.two, y, x - w, y);
                 else if (this.totalDistance < limitExcessDistance)
                     g.DrawLine(GameColors.Route.penAhead, x, y, x - w, y);
 

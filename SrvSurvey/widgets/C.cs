@@ -86,6 +86,7 @@ namespace SrvSurvey.widgets
             public static Pen black2 = Color.Black.toPen(2);
             public static Pen black3r = Color.Black.toPen(3, LineCap.Round);
             public static Pen black4 = Color.Black.toPen(4);
+            public static Pen blackish4 = Color.FromArgb(100, C.black).toPen(4);
 
             public static Pen red1 = red.toPen(1);
             public static Pen red2 = red.toPen(2);

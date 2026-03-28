@@ -297,7 +297,7 @@ namespace SrvSurvey
                             settings.downloadCodexImageFolder = CodexRef.defaultCodexImagesFolder;
 
                         // set default key-chords if not seen before
-                        foreach(var key in KeyChords.defaultKeys.Keys)
+                        foreach (var key in KeyChords.defaultKeys.Keys)
                             if (settings.keyActions_TEST?.ContainsKey(key) == false)
                                 settings.keyActions_TEST[key] = KeyChords.defaultKeys[key];
 
@@ -372,6 +372,7 @@ namespace SrvSurvey
             public bool cargoMissionRemaining = true;
             public bool currentBoxelSearchStatus = true;
             public bool showNextBoxelToSearch = true;
+            public bool showScreenshot = true;
         }
     }
 }
