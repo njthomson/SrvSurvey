@@ -93,7 +93,7 @@ namespace SrvSurvey.canonn
             return systemPoi;
         }
 
-        public async Task<CanonnBodyBioStats> systemBioStats(long systemAddress)
+        public async Task<List<CanonnCodexBody>> systemBioStats(long systemAddress)
         {
             var cacheFilename = Path.Combine(BioPredictor.netCache, $"systemBioStats-{systemAddress}.json");
             string json;
@@ -103,13 +103,12 @@ namespace SrvSurvey.canonn
             }
             else
             {
-                json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/biostats?caller=SrvSurveyBioTests&id={systemAddress}");
+                json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/bodies/{systemAddress}");
                 if (BioPredictor.useTestCache)
                     Data.saveWithRetry(cacheFilename, json, true);
             }
 
-            var obj = JsonConvert.DeserializeObject<JObject>(json)!;
-            var stats = obj["system"]?.ToObject<CanonnBodyBioStats>()!;
+            var stats = JsonConvert.DeserializeObject<List<CanonnCodexBody>>(json)!;
             return stats;
         }
 
@@ -2089,6 +2088,12 @@ namespace SrvSurvey.canonn
         public DateTime? date;
 
         public StarPos coords;
+    }
+
+    internal class CanonnCodexBody
+    {
+        public int body_id;
+        public long entryid;
     }
 
     internal class CanonnBodyBioStatsBody

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BioCriterias;
+using Newtonsoft.Json;
 using SrvSurvey.game;
 using SrvSurvey.units;
 using System.Drawing.Imaging;
@@ -339,11 +340,6 @@ namespace SrvSurvey.canonn
             }
         }
 
-        public BioMatch matchFromEntryId1(long entryId)
-        {
-            return matchFromEntryId1(entryId.ToString());
-        }
-
         public BioMatch? matchFromEntryId2(long entryId, bool allowPartial = false)
         {
             return matchFromEntryId2(entryId.ToString(), allowPartial);
@@ -512,7 +508,8 @@ namespace SrvSurvey.canonn
         {
             if (this.allNebula != null)
             {
-                Game.log("prepNebulae: from memory ...");
+                if (!BioPredictor.runningBioTests)
+                    Game.log("prepNebulae: from memory ...");
                 return this.allNebula;
             }
             var fileExists = File.Exists(nebulaePath);
@@ -520,7 +517,8 @@ namespace SrvSurvey.canonn
             // StellarPOIs
             if (!fileExists || reset)
             {
-                Game.log($"prepNebulae: from network ... (reset: {reset})");
+                if (!BioPredictor.runningBioTests)
+                    Game.log($"prepNebulae: from network ... (reset: {reset})");
 
                 try
                 {
@@ -559,7 +557,8 @@ namespace SrvSurvey.canonn
             }
 
             // Still here, just read from disk
-            Game.log("prepNebulae: from disk ...");
+            if (!BioPredictor.runningBioTests)
+                Game.log("prepNebulae: from disk ...");
             var json = File.ReadAllText(nebulaePath);
             this.allNebula = JsonConvert.DeserializeObject<List<double[]>>(json)!;
             return this.allNebula;

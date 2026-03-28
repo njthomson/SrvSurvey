@@ -149,6 +149,7 @@ namespace SrvSurvey.forms
             {
                 Program.defer(() =>
                 {
+                    if (this.IsDisposed) return;
                     Game.log($"doImportNames: imported {count} systems");
                     lblStatus.Text = Properties.FormRouteExtras.ImportedSystems.format(count);
                     this.setChildrenEnabled(true);
@@ -237,6 +238,7 @@ namespace SrvSurvey.forms
             {
                 Program.defer(() =>
                 {
+                    if (this.IsDisposed) return;
                     Game.log($"doImportNames: imported {this.hops.Count} hops");
                     prepList();
                     lblStatus.Text = status;

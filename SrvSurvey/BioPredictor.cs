@@ -12,6 +12,9 @@ namespace BioCriterias
         public static bool useTestCache = false;
         public static string netCache = Path.Combine(Program.dataFolder, "netCache");
         public static string folderMissedReports = Path.Combine(Program.dataFolder, "missedPrediction");
+        public static bool runningBioTests = false;
+        public static List<string> bodyExcessWrong = new();
+        public static List<string> bodyMissedPredictions = new();
 
         public static List<Clause> predictTarget(SystemBody body, string? targetVariant)
         {
@@ -31,7 +34,9 @@ namespace BioCriterias
             if (body.parents == null || body.parents.Count == 0) return null;
             lock (BioCriteria.allCriteria)
             {
-                if (BioCriteria.allCriteria.Count == 0 || Debugger.IsAttached) BioCriteria.readCriteria();
+                if (BioCriteria.allCriteria.Count == 0 || (Debugger.IsAttached
+                    && !BioPredictor.runningBioTests) // *!* Comment when editing criteria files and tests SHOULD re-read every time (makes tests much slower)
+                ) BioCriteria.readCriteria();
             }
 
             // get the primary star for the system
@@ -49,7 +54,8 @@ namespace BioCriterias
                 .Where(s => s.Value > 0)
                 .OrderByDescending(s => s.Value)
                 .ToDictionary(_ => _.Key, _ => _.Value);
-            Game.log($"Radiant stars for '{body.name}': \r\n" + string.Join("\r\n", parentsByBrightness.Select(_ => $"  > {_.Key.shortName} ({_.Key.starType}) : {_.Value}")) + "\r\n");
+            if (!BioPredictor.runningBioTests || BioPredictor.logOrganism != "")
+                Game.log($"Radiant stars for '{body.name}': \r\n" + string.Join("\r\n", parentsByBrightness.Select(_ => $"  > {_.Key.shortName} ({_.Key.starType}) : {_.Value}")) + "\r\n");
 
             if (parentsByBrightness.Count == 0)
             {
@@ -527,7 +533,7 @@ namespace BioCriterias
 
         #region automated tests
 
-        private static async Task testSystem(long address)
+        private static async Task testSystem(long address, bool breakOnMissed)
         {
             var cmdr = "none";
             var fid = "F101";
@@ -541,7 +547,7 @@ namespace BioCriterias
             var systemData = SystemData.From(pendingSpanshDump.Result, fid, cmdr);
 
             // force current region to be the one for this test
-            var region = EliteDangerousRegionMap.RegionMap.FindRegion(bioStats.coords.x, bioStats.coords.y, bioStats.coords.z);
+            var region = EliteDangerousRegionMap.RegionMap.FindRegion(systemData.starPos[0], systemData.starPos[1], systemData.starPos[2]);
             GalacticRegions.currentIdxOverride = region!.Id;
 
             if (systemData.nebulaDist == 0)
@@ -550,38 +556,38 @@ namespace BioCriterias
             // predict this system
             foreach (var body in systemData.bodies.ToList())
             {
-                var realBody = bioStats.bodies.Find(b => b.bodyId == body.id);
-                if (realBody?.signals?.genuses == null || realBody.signals.genuses.Count == 0) continue; // skip bodies without known bio signals
-                if (realBody?.signals?.biology == null)
-                {
-                    Game.log($"** Missing realBody?.signals?.biology for: {body.name} (system id64: {systemData.address})");
-                    continue;
-                }
+                var bodyVariants = bioStats
+                    .Where(x => x.body_id == body.id)
+                    .Select(x => Game.codexRef.matchFromEntryId2(x.entryid)?.variant.englishName!)
+                    .Where(x => x != null)
+                    .ToList();
+                if (bodyVariants.Count == 0) continue; // skip bodies without known bio signals
 
                 BioPredictor.logOrganism = "";
                 var predictions = BioPredictor.predict(body); // <--- drag execution up to here
 
-                var countSuccess = predictions.Count(p => realBody.signals.biology.Contains(p));
-                var missed = realBody.signals.biology.Where(b => !predictions.Contains(b)).Order().ToList();
-                var wrong = predictions.Where(p => !realBody.signals.biology.Contains(p)).Order().ToList();
+                var countSuccess = predictions.Count(p => bodyVariants.Contains(p));
+                var missed = bodyVariants.Where(v => !predictions.Contains(v)).Order().ToList();
+                var wrong = predictions.Where(p => !bodyVariants.Contains(p)).Order().ToList();
                 var countWrong = predictions.Count - countSuccess;
-                var txt = $"\r\n** {body.system.address} '{body.name}' ({body.id}) - actual count: {realBody.signals.biology.Count}, success: {countSuccess}, missed: {missed.Count}, wrong: {wrong.Count} **\r\nREAL:\r\n\t" + string.Join("\r\n\t", realBody.signals.biology) + $"\r\nPREDICTED WRONG:\r\n\t" + string.Join("\r\n\t", wrong) + "\r\n";
+                var txt = $"\r\n** {body.system.address} '{body.name}' ({body.id}) - actual count: {bodyVariants.Count}, success: {countSuccess}, missed: {missed.Count}, wrong: {wrong.Count} **\r\nREAL:\r\n\t" + string.Join("\r\n\t", bodyVariants) + $"\r\nPREDICTED WRONG:\r\n\t" + string.Join("\r\n\t", wrong) + "\r\n";
 
                 if (predictions.Count > 0 && missed.Count > 0)
                 {
+                    bodyMissedPredictions.Add($"(id64: {systemData.address}) {body.name}, missed: {missed.Count}: " + string.Join(", ", missed));
                     txt += $"MISSED: \r\n\t" + string.Join("\r\n\t", missed);
                     BioPredictor.logOrganism = missed.First().Split(" ")[1]; // for legacy bio's - comment out .split(..)
                     Game.log(txt);
-                    Debugger.Break(); // When this hits. Clear the debug console and drag the execution point up to the "BioPredictor.predict(body)" line above
+                    if (breakOnMissed) Debugger.Break(); // *!* When this hits. Clear the debug console and drag the execution point up to the "BioPredictor.predict(body)" line above
                 }
                 else if (wrong.Count > 4)
                 {
-                    // TODO: write these to some file?
+                    bodyExcessWrong.Add($"{body.name}, wrong: {wrong.Count}, id64: {systemData.address}");
                     Game.log(txt);
                 }
                 else
                 {
-                    Game.log(txt);
+                    // Game.log(txt);
                 }
             }
 
@@ -622,9 +628,62 @@ namespace BioCriterias
             Game.log("All done.");
         }
 
-        public static async Task testSystemsAsync()
+        public static async Task testSystemsAsync(bool runInSeries = false, List<long>? testSystems = null)
         {
-            var testSystems = new List<long>()
+            testSystems ??= getSystemsToTest();
+            Game.log($"----------------------------------------------------------------");
+            Game.log($"Testing {testSystems.Count} systems ...");
+            var startTime = DateTime.Now;
+            runningBioTests = true;
+            useTestCache = true;
+            bodyExcessWrong.Clear();
+            bodyMissedPredictions.Clear();
+            // always force a re-read of criteria files. 
+            BioCriteria.readCriteria(false); // *!* Toggle reading dev (false) or currently published criteria (true)
+            try
+            {
+                // run tests in ...
+                if (runInSeries)
+                    foreach (var a in testSystems) await testSystem(a, true); // ... in series
+                else
+                    await Task.WhenAll(testSystems.Select(a => testSystem(a, false))); // ... in parallel
+            }
+            catch (Exception ex)
+            {
+                Game.log($"\r\n**\r\n** ERROR: {ex.Message} duration: {DateTime.Now - startTime}\r\n**\r\n:{ex.StackTrace}");
+            }
+            finally
+            {
+                runningBioTests = false;
+                useTestCache = false;
+            }
+
+            Game.log($"\r\n**\r\n** All done: everything - count: {testSystems.Count}, duration: {DateTime.Now - startTime}\r\n**");
+
+            Game.log($"** Found {bodyExcessWrong.Count} bodies with excess WRONG counts");
+            if (bodyExcessWrong.Count > 0)
+                Game.log(bodyExcessWrong.formatWithHeader("") + "\r\n\r\n");
+
+            var newTestSystems = bodyMissedPredictions
+                .Select(x => x.Substring(0, x.IndexOf(')')).Replace("(id64:", "").Trim())
+                .Select(x => long.Parse(x))
+                .ToHashSet()
+                .ToList();
+
+            Game.log($"** Found {bodyMissedPredictions.Count} bodies with MISSED counts, across {newTestSystems.Count} systems");
+            if (bodyMissedPredictions.Count > 0)
+                Game.log(bodyMissedPredictions.formatWithHeader("") + "\r\n\r\n");
+
+
+            // *!* re-run just MISSED systems in series?
+            Debugger.Break();
+            if (newTestSystems.Count > 0 && !runInSeries)
+                await testSystemsAsync(true, newTestSystems);
+        }
+
+        public static List<long> getSystemsToTest()
+        {
+            return new List<long>()
             {
                 /* these are good */
                 /*3136055823779,*/ //    Prua Phoe JR-U d3-91     - Inner Scutum-Centaurus Arm //Genus vs landmark mismatch
@@ -807,23 +866,6 @@ namespace BioCriterias
                 2770435447,//Hyuqoae AA-A h330: Aleoida Laminiae in Izanami
                 2920713168209//Wregoi CJ-H b39-1: Aleoida Laminiae in outer orion spur
             };
-
-            Game.log($"Testing {testSystems.Count} systems ...");
-            var startTime = DateTime.Now;
-            useTestCache = true;
-            try
-            {
-                // in series
-                foreach (var address in testSystems) await testSystem(address);
-
-                //// in parallel
-                //await Task.WhenAll(testSystems.Select(a => testSystem(a)));
-            }
-            finally
-            {
-                useTestCache = false;
-            }
-            Game.log($"\r\n**\r\n** All done: everything - count: {testSystems.Count}, duration: {DateTime.Now - startTime}\r\n**");
         }
 
         #endregion

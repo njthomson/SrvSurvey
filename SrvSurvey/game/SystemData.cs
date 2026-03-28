@@ -209,24 +209,6 @@ namespace SrvSurvey.game
             }
         }
 
-        public static SystemData From(EdsmSystem edsmBodies, double[] starPos, string fid, string cmdrName)
-        {
-            fid ??= Game.activeGame!.fid!;
-
-            var data = new SystemData()
-            {
-                filepath = Path.Combine(Program.dataFolder, "systems", fid, $"{edsmBodies.name}_{edsmBodies.id64}.json"),
-                name = edsmBodies.name,
-                address = edsmBodies.id64,
-                starPos = starPos,
-                commander = cmdrName,
-            };
-
-            data.onEdsmResponse(edsmBodies);
-
-            return data;
-        }
-
         public static SystemData From(ApiSystemDump.System dump, string fid, string cmdrName)
         {
             fid ??= Game.activeGame!.fid!;
@@ -463,7 +445,8 @@ namespace SrvSurvey.game
                                 body = systemBody,
                                 genus = bioMatch.genus.name,
                             };
-                            Game.log($"add organism '{bioMatch.variant.name}' ({bioMatch.entryId}) to '{systemBody.name}' ({systemBody.id})");
+                            if (!BioPredictor.runningBioTests)
+                                Game.log($"add organism '{bioMatch.variant.name}' ({bioMatch.entryId}) to '{systemBody.name}' ({systemBody.id})");
                             systemBody.organisms.Add(systemOrg);
                             systemBody.organisms = systemBody.organisms.OrderBy(_ => _.genusLocalized).ToList();
                             systemBody.bioSignalCount = Math.Max(systemBody.bioSignalCount, systemBody.organisms.Count);
@@ -597,7 +580,8 @@ namespace SrvSurvey.game
                         id = bodyId,
                     };
 
-                    Game.log($"SystemData: add body: '{body.name}' ({body.id}, {body.type})");
+                    if (!BioPredictor.runningBioTests)
+                        Game.log($"SystemData: add body: '{body.name}' ({body.id}, {body.type})");
                     this.bodies.Add(body);
                 }
                 return body;
@@ -717,7 +701,8 @@ namespace SrvSurvey.game
                     var ring = body.rings?.FirstOrDefault(_ => _.name == newRing.Name);
                     if (ring == null)
                     {
-                        Game.log($"add ring '{newRing.Name}' to '{body.name}' ({body.id})");
+                        if (!BioPredictor.runningBioTests)
+                            Game.log($"add ring '{newRing.Name}' to '{body.name}' ({body.id})");
                         body.rings ??= new List<SystemRing>();
                         body.rings.Add(new SystemRing()
                         {
@@ -919,7 +904,8 @@ namespace SrvSurvey.game
                         var organism = body.organisms.FirstOrDefault(_ => _.genus == genusEntry.Genus);
                         if (organism == null)
                         {
-                            Game.log($"add organism '{genusEntry.Genus_Localised ?? genusEntry.Genus}' to '{body.name}' ({body.id})");
+                            if (!BioPredictor.runningBioTests)
+                                Game.log($"add organism '{genusEntry.Genus_Localised ?? genusEntry.Genus}' to '{body.name}' ({body.id})");
                             body.organisms.Add(new SystemOrganism()
                             {
                                 body = body,
@@ -1035,7 +1021,8 @@ namespace SrvSurvey.game
                     genus = match.genus.name,
                     entryId = entry.EntryID,
                 };
-                Game.log($"add organism '{match.variant.name}' ({match.entryId}) to '{body.name}' ({body.id})");
+                if (!BioPredictor.runningBioTests)
+                    Game.log($"add organism '{match.variant.name}' ({match.entryId}) to '{body.name}' ({body.id})");
                 body.organisms.Add(organism);
                 body.organisms = body.organisms.OrderBy(_ => _.genusLocalized).ToList();
                 body.bioSignalCount = Math.Max(body.bioSignalCount, body.organisms.Count);
@@ -1084,7 +1071,8 @@ namespace SrvSurvey.game
                     genus = entry.Genus,
                     genusLocalized = entry.Genus_Localized,
                 };
-                Game.log($"add organism '{entry.Variant_Localised}' ({match.entryId}) to '{body.name}' ({body.id})");
+                if (!BioPredictor.runningBioTests)
+                    Game.log($"add organism '{entry.Variant_Localised}' ({match.entryId}) to '{body.name}' ({body.id})");
                 body.organisms.Add(organism);
                 body.organisms = body.organisms.OrderBy(_ => _.genusLocalized).ToList();
                 body.bioSignalCount = Math.Max(body.bioSignalCount, body.organisms.Count);
@@ -1228,7 +1216,8 @@ namespace SrvSurvey.game
                                 entryId = poi.entryid.Value,
                                 reward = match.species.reward,
                             };
-                            Game.log($"add organism '{match.variant.name}' ({match.entryId}) from Canonn POI to '{poiBody.name}' ({poiBody.id})");
+                            if (!BioPredictor.runningBioTests)
+                                Game.log($"add organism '{match.variant.name}' ({match.entryId}) from Canonn POI to '{poiBody.name}' ({poiBody.id})");
                             poiBody.organisms ??= new List<SystemOrganism>();
                             poiBody.organisms.Add(organism);
                             poiBody.organisms = poiBody.organisms.OrderBy(_ => _.genusLocalized).ToList();
@@ -1354,7 +1343,8 @@ namespace SrvSurvey.game
                         var ring = body.rings?.FirstOrDefault(_ => _.name == newRing.name);
                         if (ring == null)
                         {
-                            Game.log($"add ring '{newRing.name}' from EDSM to '{body.name}' ({body.id})");
+                            if (!BioPredictor.runningBioTests)
+                                Game.log($"add ring '{newRing.name}' from EDSM to '{body.name}' ({body.id})");
                             body.rings ??= new List<SystemRing>();
                             body.rings.Add(new SystemRing()
                             {
@@ -1422,7 +1412,7 @@ namespace SrvSurvey.game
             if (!Game.settings.useExternalData) return;
 
             // avoid threading issues by processing on the UI thread
-            if (Program.control.InvokeRequired)
+            if (Program.control.InvokeRequired && !BioPredictor.runningBioTests)
             {
                 Program.defer(() => onSpanshResponse(spanshSystem));
                 return;
@@ -1487,7 +1477,8 @@ namespace SrvSurvey.game
                         var ring = body.rings?.FirstOrDefault(_ => _.name == newRing.name);
                         if (ring == null)
                         {
-                            Game.log($"add ring '{newRing.name}' from Spansh to '{body.name}' ({body.id})");
+                            if (!BioPredictor.runningBioTests)
+                                Game.log($"add ring '{newRing.name}' from Spansh to '{body.name}' ({body.id})");
                             if (body.rings == null) body.rings = new List<SystemRing>();
                             body.rings.Add(new SystemRing()
                             {
@@ -1525,7 +1516,8 @@ namespace SrvSurvey.game
                         var organism = body.organisms?.FirstOrDefault(_ => _.genus == newGenus);
                         if (organism == null)
                         {
-                            Game.log($"add organism '{newGenus}' from Spansh to '{body.name}' ({body.id})");
+                            if (!BioPredictor.runningBioTests)
+                                Game.log($"add organism '{newGenus}' from Spansh to '{body.name}' ({body.id})");
                             if (body.organisms == null) body.organisms = new List<SystemOrganism>();
                             body.organisms.Add(new SystemOrganism()
                             {
@@ -2284,7 +2276,8 @@ namespace SrvSurvey.game
             var dist1 = this.euclidianDistance(commonParent);
             var dist2 = star.euclidianDistance(commonParent);
             var dist = Math.Pow(dist1 + dist2, 0.5);
-            Game.log($"Euclidian distance from {this.name} to {star.name}: {dist}");
+            if (!BioPredictor.runningBioTests)
+                Game.log($"Euclidian distance from {this.name} to {star.name}: {dist}");
             var temp2 = Math.Pow(star.surfaceTemperature, 2);
             var sqrtWat = (double)star.radius * temp2 / dist;
             return Math.Pow(sqrtWat, 2);
