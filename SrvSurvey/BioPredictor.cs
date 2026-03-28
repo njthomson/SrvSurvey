@@ -580,7 +580,7 @@ namespace BioCriterias
                     Game.log(txt);
                     if (breakOnMissed) Debugger.Break(); // *!* When this hits. Clear the debug console and drag the execution point up to the "BioPredictor.predict(body)" line above
                 }
-                else if (wrong.Count > 4)
+                else if (wrong.Count > 1)
                 {
                     bodyExcessWrong.Add($"{body.name}, wrong: {wrong.Count}, id64: {systemData.address}");
                     Game.log(txt);
@@ -862,8 +862,8 @@ namespace BioCriterias
                 //Bio overhaul test cases
                 664470014523, //IC 2944 Sector EL-W d2-19 Body B 3 a missing tussock
                 9693069535209, //Edge case Prue Pruae RW-G b57-4 A 6 has 3.553452g
-                11063063354930,//Blue Eaewsy US-R c5-40: Fungoida Gelata in Inner-Scutum Centaurus
-                2770435447,//Hyuqoae AA-A h330: Aleoida Laminiae in Izanami
+                3922344909570,//Prua Phoe DQ-D c14 A 8: Fungoida Gelata in Inner-Scutum Centaurus, high end gravity
+                2518319061187,//Praea Aoscs NJ-O d7-73: Aleoida Laminiae in Izanami
                 2920713168209//Wregoi CJ-H b39-1: Aleoida Laminiae in outer orion spur
             };
         }
