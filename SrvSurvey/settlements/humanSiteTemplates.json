@@ -584,7 +584,8 @@
       { "name": "P", "offset": { "X": 40.717648, "Y": 17.477427 }, "floor": 0, "level": 0 },
       { "name": "P", "offset": { "X": 73.14285, "Y": 103.57352 }, "floor": 0, "level": 0 },
       { "name": "P", "offset": { "X": -28.140564, "Y": 96.269455 }, "floor": 0, "level": 0 },
-      { "name": "P", "offset": { "X": -69.56169, "Y": 42.139797 }, "floor": 0, "level": 0 }
+      { "name": "P", "offset": { "X": -69.56169, "Y": 42.139797 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -49.341217, "Y": 163.97214 }, "floor": 0, "level": 0 }
     ],
     "buildings": [
       {
