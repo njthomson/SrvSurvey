@@ -835,36 +835,36 @@ namespace BioCriterias
                 143518344886673, // Blua Hypa PI-A b47-65 (partially useful)
 
                 /* Shards */
-                100562634522, // Aidoms MT-U c2-0 (partially useful)
+                100562634522, //  Aidoms MT-U c2-0 (partially useful)
 
                 /* Fonticulua Campestris */
-                77409424274, // Prae Drye XN-W c16-0 A 3
+                77409424274, //   Prae Drye XN-W c16-0 A 3
 
-                361481876986, //       Greae Flyao UF-D c29-1   - check 1 d
-                3650755408786, //      Prae Pruae EG-Y c16-13 // ? Why no Fonticular Campestris - Amethyst 
+                361481876986, //  Greae Flyao UF-D c29-1   - check 1 d
+                3650755408786, // Prae Pruae EG-Y c16-13 // ? Why no Fonticular Campestris - Amethyst 
                 6406178542290, // Guathiti 8 a // No Fumerola Nitris Lime
 
 
                 675416645714, // Eolls Ploe YK-L c9-2 - has root barycentre but alas no concrete bio data for comparisons
-                84431081539, // Eolls Ploe OX-L d7-2
+                84431081539, //  Eolls Ploe OX-L d7-2
 
                 353504315603, // Oochody YF-L d9-10 // consistently wrong star choice?
-                49786130467, // Eock Flyao XY-S d3-1 // single star system
+                49786130467, //  Eock Flyao XY-S d3-1 // single star system
 
-                113053059083, // Slegi AV-Y d3 // Not Predicted: Stratum Tectonicas Green / Due to a Neutron being deemed the hottest but it should have been the local M stars
+                113053059083, //  Slegi AV-Y d3 // Not Predicted: Stratum Tectonicas Green / Due to a Neutron being deemed the hottest but it should have been the local M stars
                 2282674557658, // Vodyakamana // <-- BC4 Fails because Argon is < 100% BUT there's no Nitrogen in the atmosphere (or anything else?!)
                 1050522316081, // Ihad BK-L b35-0 // <-- we are missing data about the star AND Canonn has incomplete bio data for Ihad BK-L b35-0 1 a
 
                 2519946200947, // Qiefoea KZ-D d13-73 // D4 Osseus not found or D3 Stratum not found
-                10393127859, // Chaloa PI-R d5-0 // missing Stratum Tectonicas Green, Cactoida Cortexum Amethyst & Frutexa Metallicum Grey ? 
+                10393127859, //   Chaloa PI-R d5-0 // missing Stratum Tectonicas Green, Cactoida Cortexum Amethyst & Frutexa Metallicum Grey ? 
                 7269366113697, // ICZ ZJ-Z b3
 
-                //Bio overhaul test cases
-                664470014523, //IC 2944 Sector EL-W d2-19 Body B 3 a missing tussock
-                9693069535209, //Edge case Prue Pruae RW-G b57-4 A 6 has 3.553452g
-                3922344909570,//Prua Phoe DQ-D c14 A 8: Fungoida Gelata in Inner-Scutum Centaurus, high end gravity
-                2518319061187,//Praea Aoscs NJ-O d7-73: Aleoida Laminiae in Izanami
-                2920713168209//Wregoi CJ-H b39-1: Aleoida Laminiae in outer orion spur
+                // Bio overhaul test cases
+                664470014523, //  IC 2944 Sector EL-W d2-19 Body B 3 a missing tussock
+                9693069535209, // Edge case Prue Pruae RW-G b57-4 A 6 has 3.553452g
+                3922344909570, // Prua Phoe DQ-D c14 A 8: Fungoida Gelata in Inner-Scutum Centaurus, high end gravity
+                2518319061187, // Praea Aoscs NJ-O d7-73: Aleoida Laminiae in Izanami
+                2920713168209, // Wregoi CJ-H b39-1: Aleoida Laminiae in outer orion spur
             };
         }
 
