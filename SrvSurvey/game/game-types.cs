@@ -110,7 +110,7 @@ namespace SrvSurvey.game
         public List<SystemFaction>? Factions { get; set; }
     }
 
-    interface ISystemDataStarter
+    interface ISystemDataLocator
     {
         DateTimeOffset timestamp { get; set; }
         string @event { get; set; }

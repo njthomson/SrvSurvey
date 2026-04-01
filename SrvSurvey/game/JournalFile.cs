@@ -35,6 +35,8 @@ namespace SrvSurvey
         public string? cmdrName { get; private set; }
         public string? cmdrFid { get; private set; }
         public readonly bool isOdyssey;
+        public bool? isGameOdyssey;
+        public bool? isGameHorizons;
 
         public bool isShutdown { get; private set; }
 
@@ -52,8 +54,10 @@ namespace SrvSurvey
 
             // assume Odyssey if we don't have the Fileheader line yet.
             this.isOdyssey = true;
-            if (this.Entries.Count > 0 && this.Entries[0].@event == nameof(Fileheader))
-                this.isOdyssey = ((Fileheader)this.Entries[0]).Odyssey;
+            if (this.Entries.FirstOrDefault() is Fileheader entryFileHeader)
+                this.isOdyssey = entryFileHeader.Odyssey;
+            else
+                Debugger.Break(); // Does this ever happen?
         }
 
         public void Dispose()
@@ -100,6 +104,12 @@ namespace SrvSurvey
                     var commanderEntry = (Commander)entry;
                     this.cmdrName = commanderEntry.Name;
                     this.cmdrFid = commanderEntry.FID;
+                }
+
+                if (entry is LoadGame entryLoadGame)
+                {
+                    this.isGameOdyssey = entryLoadGame.Odyssey;
+                    this.isGameHorizons = entryLoadGame.Horizons;
                 }
             }
 

@@ -161,7 +161,7 @@ namespace SrvSurvey.game
             return Load(starRef.name, starRef.id64, fid, cmdr, true)!;
         }
 
-        public static SystemData From(ISystemDataStarter entry, string fid, string cmdrName)
+        public static SystemData From(ISystemDataLocator entry, string fid, string cmdrName)
         {
             lock (cache)
             {

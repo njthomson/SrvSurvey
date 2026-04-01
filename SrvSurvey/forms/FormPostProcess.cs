@@ -282,7 +282,7 @@ namespace SrvSurvey
                             if (entry.@event == nameof(ApproachBody)) countBodies++;
                             if (entry.@event == nameof(ScanOrganic) && ((ScanOrganic)entry).ScanType == ScanType.Analyse) countOrganisms++;
 
-                            var starterEvent = entry as ISystemDataStarter;
+                            var starterEvent = entry as ISystemDataLocator;
                             if (starterEvent != null)
                             {
                                 if (sysData != null)

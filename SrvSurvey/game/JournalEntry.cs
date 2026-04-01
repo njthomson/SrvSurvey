@@ -84,7 +84,7 @@ namespace SrvSurvey
         public string build { get; set; }
     }
 
-    public class Location : LocationEntry, IFactions, ISystemAddress, ISystemDataStarter, IStarRef
+    public class Location : LocationEntry, IFactions, ISystemAddress, ISystemDataLocator, IStarRef
     {
         // { "timestamp":"2023-01-11T03:44:33Z", "event":"Location", "Latitude":-15.325527, "Longitude":6.507746, "DistFromStarLS":513.174241, "Docked":false, "InSRV":true, "StarSystem":"Col 173 Sector JX-K b24-0", "SystemAddress":684107179361, "StarPos":[993.06250,-188.18750,-173.53125], "SystemAllegiance":"Guardian", "SystemEconomy":"$economy_None;", "SystemEconomy_Localised":"None", "SystemSecondEconomy":"$economy_None;", "SystemSecondEconomy_Localised":"None", "SystemGovernment":"$government_None;", "SystemGovernment_Localised":"None", "SystemSecurity":"$GAlAXY_MAP_INFO_state_anarchy;", "SystemSecurity_Localised":"Anarchy", "Population":0, "Body":"Col 173 Sector JX-K b24-0 B 4", "BodyID":26, "BodyType":"Planet" }
         // { "timestamp":"2024-04-10T03:18:13Z", "event":"Location", "DistFromStarLS":18.841613, "Docked":true, "StationName":"Oyekan Prospecting Hub", "StationType":"OnFootSettlement", "MarketID":3888520448, "StationFaction":{ "Name":"Yaurnai Jet Hand Gang" }, "StationGovernment":"$government_Anarchy;", "StationGovernment_Localised":"Anarchy", "StationServices":[ "dock", "autodock", "blackmarket", "commodities", "contacts", "missions", "refuel", "repair", "engineer", "missionsgenerated", "facilitator", "flightcontroller", "stationoperations", "stationMenu" ], "StationEconomy":"$economy_Extraction;", "StationEconomy_Localised":"Extraction", "StationEconomies":[ { "Name":"$economy_Extraction;", "Name_Localised":"Extraction", "Proportion":1.000000 } ], "Taxi":false, "Multicrew":false, "StarSystem":"Yaurnai", "SystemAddress":669612713401, "StarPos":[-99.65625,116.56250,43.40625], "SystemAllegiance":"Independent", "SystemEconomy":"$economy_Extraction;", "SystemEconomy_Localised":"Extraction", "SystemSecondEconomy":"$economy_Industrial;", "SystemSecondEconomy_Localised":"Industrial", "SystemGovernment":"$government_Corporate;", "SystemGovernment_Localised":"Corporate", "SystemSecurity":"$SYSTEM_SECURITY_medium;", "SystemSecurity_Localised":"Medium Security", "Population":3143129, "Body":"Yaurnai 1", "BodyID":8, "BodyType":"Planet", "Factions":[ { "Name":"Yaurnai Independent Bridge", "FactionState":"None", "Government":"Patronage", "Influence":0.158052, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":2.970000 }, { "Name":"Stardreamer Systems", "FactionState":"None", "Government":"Corporate", "Influence":0.031809, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":100.000000 }, { "Name":"Yaurnai Partners", "FactionState":"None", "Government":"Corporate", "Influence":0.169980, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":1.980000 }, { "Name":"Raven Colonial Corporation", "FactionState":"Expansion", "Government":"Corporate", "Influence":0.471173, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "SquadronFaction":true, "MyReputation":100.000000, "ActiveStates":[ { "State":"Expansion" } ] }, { "Name":"Movement for Yaurnai Liberals", "FactionState":"None", "Government":"Democracy", "Influence":0.119284, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":4.620000 }, { "Name":"Yaurnai Jet Hand Gang", "FactionState":"None", "Government":"Anarchy", "Influence":0.049702, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":5.940000, "RecoveringStates":[ { "State":"PirateAttack", "Trend":0 } ] } ], "SystemFaction":{ "Name":"Raven Colonial Corporation", "FactionState":"Expansion" } }
@@ -235,6 +235,7 @@ namespace SrvSurvey
         public string Reason;
         public long MarketID;
         public string StationName;
+        public string StationType;
     }
 
     public class DockingGranted : JournalEntry
@@ -260,6 +261,7 @@ namespace SrvSurvey
     {
         // { "timestamp":"2024-04-09T06:45:51Z", "event":"Docked", "StationName":"Oyekan Prospecting Hub", "StationType":"OnFootSettlement", "Taxi":false, "Multicrew":false, "StarSystem":"Yaurnai", "SystemAddress":669612713401, "MarketID":3888520448, "StationFaction":{ "Name":"Yaurnai Jet Hand Gang" }, "StationGovernment":"$government_Anarchy;", "StationGovernment_Localised":"Anarchy", "StationServices":[ "dock", "autodock", "blackmarket", "commodities", "contacts", "missions", "refuel", "repair", "engineer", "missionsgenerated", "facilitator", "flightcontroller", "stationoperations", "stationMenu" ], "StationEconomy":"$economy_Extraction;", "StationEconomy_Localised":"Extraction", "StationEconomies":[ { "Name":"$economy_Extraction;", "Name_Localised":"Extraction", "Proportion":1.000000 } ], "DistFromStarLS":18.841609, "LandingPads":{ "Small":1, "Medium":0, "Large":0 } }
         // { "timestamp":"2024-06-28T02:10:59Z", "event":"Docked", "StationName":"Crellin Genetics Installation", "StationType":"OnFootSettlement", "Taxi":false, "Multicrew":false, "StarSystem":"Lacaille 9352", "SystemAddress":11666070709673, "MarketID":3854458880, "StationFaction":{ "Name":"Quam Singulari" }, "StationGovernment":"$government_Democracy;", "StationGovernment_Localised":"Democracy", "StationAllegiance":"Federation", "StationServices":[ "dock", "autodock", "blackmarket", "commodities", "contacts", "exploration", "missions", "refuel", "repair", "engineer", "missionsgenerated", "facilitator", "flightcontroller", "stationoperations", "searchrescue", "stationMenu" ], "StationEconomy":"$economy_HighTech;", "StationEconomy_Localised":"High Tech", "StationEconomies":[ { "Name":"$economy_HighTech;", "Name_Localised":"High Tech", "Proportion":1.000000 } ], "DistFromStarLS":1062.028204, "Wanted":true, "ActiveFine":true, "LandingPads":{ "Small":1, "Medium":0, "Large":0 } }
+        // { "timestamp":"2024-09-23T02:15:36Z", "event":"Docked", "StationName":"Rescue Ship Cornwallis", "StationType":"MegaShip", "Taxi":false, "Multicrew":false, "StarSystem":"V886 Centauri", "SystemAddress":2931071912299, "MarketID":129019775, "StationFaction":{ "Name":"Independent Rescue Coalition" }, "StationGovernment":"$government_Corporate;", "StationGovernment_Localised":"Corporate", "StationServices":["dock", "autodock", "blackmarket", "commodities", "contacts", "missions", "outfitting", "crewlounge", "rearm", "refuel", "repair", "shipyard", "tuning", "engineer", "missionsgenerated", "flightcontroller", "stationoperations", "searchrescue", "techBroker", "stationMenu", "livery"], "StationEconomy":"$economy_Rescue;", "StationEconomy_Localised":"Rescue", "StationEconomies":[ { "Name":"$economy_Rescue;", "Name_Localised":"Rescue", "Proportion":1.000000 } ], "DistFromStarLS":768.527769, "CockpitBreach":true, "LandingPads":{ "Small":4, "Medium":2, "Large":1 } }
 
         public string StationName;
         public string? StationName_Localised;
@@ -277,8 +279,9 @@ namespace SrvSurvey
         public string? StationEconomy_Localised;
         public List<StationEconomy>? StationEconomies;
         public double DistFromStarLS;
-        public bool Wanted;
-        public bool ActiveFine;
+        public bool? Wanted;
+        public bool? ActiveFine;
+        public bool? CockpitBreach;
         public LandingPads LandingPads;
 
         public override string ToString()
@@ -416,6 +419,7 @@ namespace SrvSurvey
     public class CodexEntry : LocationEntry, ISystemAddress
     {
         // { "timestamp":"2023-01-06T00:46:41Z", "event":"CodexEntry", "EntryID":3200200, "Name":"$Codex_Ent_Guardian_Data_Logs_Name;", "Name_Localised":"Guardian Codex", "SubCategory":"$Codex_SubCategory_Guardian;", "SubCategory_Localised":"Guardian objects", "Category":"$Codex_Category_Civilisations;", "Category_Localised":"Xenological", "Region":"$Codex_RegionName_18;", "Region_Localised":"Inner Orion Spur", "System":"Synuefe NL-N c23-4", "SystemAddress":1184840454858, "BodyID":18, "NearestDestination":"$Ancient:#index=3;", "NearestDestination_Localised":"Ancient Ruins (3)", "Latitude":5.613951, "Longitude":-148.100403, "IsNewEntry":true, "VoucherAmount":50000 }
+        // { "timestamp":"2026-03-09T00:45:47Z", "event":"CodexEntry", "EntryID":2100605, "Name":"$Codex_Ent_L_Cry_IcCry_Red_Name;", "Name_Localised":"Rubeum Ice Crystals", "SubCategory":"$Codex_SubCategory_Organic_Structures;", "SubCategory_Localised":"Organic structures", "Category":"$Codex_Category_Biology;", "Category_Localised":"Biological and Geological", "Region":"$Codex_RegionName_24;", "Region_Localised":"Formorian Frontier", "System":"Cliewoae VA-L d9-0", "SystemAddress":9286164819, "BodyID":0, "NearestDestination":"$Fixed_Event_Life_Cloud;", "NearestDestination_Localised":"Notable stellar phenomena", "Traits":[ "o_l_freze" ] }
 
         public long EntryID { get; set; }
         public string Name { get; set; }
@@ -437,6 +441,9 @@ namespace SrvSurvey
 
         public bool IsNewEntry { get; set; }
         public int VoucherAmount { get; set; }
+        public bool NewTraitsDiscovered { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public List<string>? Traits { get; set; }
     }
 
     public class DataScanned : JournalEntry
@@ -505,10 +512,11 @@ namespace SrvSurvey
         public string StarClass { get; set; }
     }
 
-    public class FSDJump : JournalEntry, IFactions, ISystemAddress, ISystemDataStarter, IStarRef
+    public class FSDJump : JournalEntry, IFactions, ISystemAddress, ISystemDataLocator, IStarRef
     {
         // { "timestamp":"2023-01-24T05:07:01Z", "event":"FSDJump", "Taxi":false, "Multicrew":false, "StarSystem":"Maridwyn", "SystemAddress":13866167838129, "StarPos":[90.46875,16.40625,21.62500], "SystemAllegiance":"Federation", "SystemEconomy":"$economy_Agri;", "SystemEconomy_Localised":"Agriculture", "SystemSecondEconomy":"$economy_Refinery;", "SystemSecondEconomy_Localised":"Refinery", "SystemGovernment":"$government_Corporate;", "SystemGovernment_Localised":"Corporate", "SystemSecurity":"$SYSTEM_SECURITY_high;", "SystemSecurity_Localised":"High Security", "Population":4058074576, "Body":"Maridwyn A", "BodyID":1, "BodyType":"Star", "Powers":[ "Felicia Winters" ], "PowerplayState":"Exploited", "JumpDist":8.278, "FuelUsed":0.091548, "FuelLevel":13.458453, "Factions":[ { "Name":"Social Maridwyn Green Party", "FactionState":"None", "Government":"Democracy", "Influence":0.027559, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"p Velorum Crimson Creative Int", "FactionState":"None", "Government":"Corporate", "Influence":0.059055, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":4.187500 }, { "Name":"Maridwyn Co", "FactionState":"None", "Government":"Corporate", "Influence":0.487205, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000, "RecoveringStates":[ { "State":"Boom", "Trend":0 } ] }, { "Name":"Maridwyn Constitution Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.041339, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"Maridwyn Gold Electronics Ltd", "FactionState":"None", "Government":"Corporate", "Influence":0.021654, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"United Maridwyn Law Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.040354, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"Federal Reclamation Co", "FactionState":"Expansion", "Government":"Corporate", "Influence":0.322835, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":97.425003, "ActiveStates":[ { "State":"Expansion" } ] } ], "SystemFaction":{ "Name":"Maridwyn Co" } }
         // { "timestamp":"2024-06-17T04:33:26Z", "event":"FSDJump", "Taxi":false, "Multicrew":false, "StarSystem":"HIP 82206", "SystemAddress":83651269338, "StarPos":[-111.25000,93.18750,18.21875], "SystemAllegiance":"Federation", "SystemEconomy":"$economy_Industrial;", "SystemEconomy_Localised":"Industrial", "SystemSecondEconomy":"$economy_Extraction;", "SystemSecondEconomy_Localised":"Extraction", "SystemGovernment":"$government_Corporate;", "SystemGovernment_Localised":"Corporate", "SystemSecurity":"$SYSTEM_SECURITY_medium;", "SystemSecurity_Localised":"Medium Security", "Population":4807913, "Body":"HIP 82206", "BodyID":0, "BodyType":"Star", "JumpDist":17.333, "FuelUsed":0.780109, "FuelLevel":11.299892, "Factions":[ { "Name":"HIP 82206 Transport Corporation", "FactionState":"None", "Government":"Corporate", "Influence":0.465932, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":47.840000 }, { "Name":"Ugrasin Purple Advanced Industry", "FactionState":"None", "Government":"Corporate", "Influence":0.103206, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":2.970000 }, { "Name":"Aobriguites Blue Bridge Corp", "FactionState":"Election", "Government":"Corporate", "Influence":0.065130, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":-48.794998 }, { "Name":"HIP 82206 Blue Crew", "FactionState":"None", "Government":"Anarchy", "Influence":0.063126, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"Allied HIP 82206 Defence Force", "FactionState":"None", "Government":"Dictatorship", "Influence":0.063126, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"HIP 82206 for Equality", "FactionState":"None", "Government":"Democracy", "Influence":0.092184, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"Elite Secret Service", "FactionState":"None", "Government":"Corporate", "Influence":0.147295, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":-97.620003 } ], "SystemFaction":{ "Name":"HIP 82206 Transport Corporation" } }
+        // { "timestamp":"2026-03-08T05:42:25Z", "event":"FSDJump", "Taxi":false, "Multicrew":false, "StarSystem":"Pyraea Euq ZK-P d5-0", "SystemAddress":9420415411, "StarPos":[-5036.09375,52.43750,62168.21875], "SystemAllegiance":"", "SystemEconomy":"$economy_None;", "SystemEconomy_Localised":"None", "SystemSecondEconomy":"$economy_None;", "SystemSecondEconomy_Localised":"None", "SystemGovernment":"$government_None;", "SystemGovernment_Localised":"None", "SystemSecurity":"$GAlAXY_MAP_INFO_state_anarchy;", "SystemSecurity_Localised":"Anarchy", "Population":0, "Body":"Pyraea Euq ZK-P d5-0 A", "BodyID":1, "BodyType":"Star", "JumpDist":121.963, "FuelUsed":5.028986, "FuelLevel":16.176226, "BoostUsed":2 }
 
         public bool Taxi { get; set; }
         public bool Multicrew { get; set; }
@@ -528,11 +536,15 @@ namespace SrvSurvey
         public string Body { get; set; } // "Maridwyn A",
         public int BodyID { get; set; } // 1,
         public FSDJumpBodyType BodyType { get; set; }  // "Star"
-        public List<string> Powers { get; set; } // [ "Felicia Winters" ]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public List<string>? Powers { get; set; } // [ "Felicia Winters" ]
         public string PowerplayState { get; set; } // Exploited
-        public double JumpDist { get; set; }// 8.278
+        public double JumpDist { get; set; } // 8.278
         public float FuelUsed { get; set; } // 0.091548
         public float FuelLevel { get; set; } // 13.458453
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public int? BoostUsed { get; set; } // 4
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public List<SystemFaction>? Factions { get; set; }
 
         // "Factions":[
@@ -590,7 +602,7 @@ namespace SrvSurvey
     }
 
 
-    public class CarrierJump : JournalEntry, ISystemAddress, ISystemDataStarter, IStarRef
+    public class CarrierJump : JournalEntry, ISystemAddress, ISystemDataLocator, IStarRef
     {
         // { "timestamp":"2023-12-01T04:50:10Z", "event":"CarrierJump", "Docked":true, "StationName":"H6B-5HQ", "StationType":"FleetCarrier", "MarketID":3708733696, "StationFaction":{ "Name":"FleetCarrier" }, "StationGovernment":"$government_Carrier;", "StationGovernment_Localised":"Private Ownership", "StationServices":[ "dock", "autodock", "commodities", "contacts", "exploration", "outfitting", "crewlounge", "rearm", "refuel", "repair", "shipyard", "engineer", "flightcontroller", "stationoperations", "stationMenu", "carriermanagement", "carrierfuel", "livery", "socialspace", "bartender", "vistagenomics" ], "StationEconomy":"$economy_Carrier;", "StationEconomy_Localised":"Private Enterprise", "StationEconomies":[ { "Name":"$economy_Carrier;", "Name_Localised":"Private Enterprise", "Proportion":1.000000 } ], "Taxi":false, "Multicrew":false, "StarSystem":"Wregoe VG-U b17-0", "SystemAddress":681155568793, "StarPos":[764.15625,174.68750,-675.90625], "SystemAllegiance":"", "SystemEconomy":"$economy_None;", "SystemEconomy_Localised":"None", "SystemSecondEconomy":"$economy_None;", "SystemSecondEconomy_Localised":"None", "SystemGovernment":"$government_None;", "SystemGovernment_Localised":"None", "SystemSecurity":"$GAlAXY_MAP_INFO_state_anarchy;", "SystemSecurity_Localised":"Anarchy", "Population":0, "Body":"Wregoe VG-U b17-0 A", "BodyID":1, "BodyType":"Star" }
 
@@ -847,6 +859,8 @@ namespace SrvSurvey
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public List<Ring> Rings { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public string? ReserveLevel { get; set; } // Pristine/Major/Common/Low/Depleted
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool WasDiscovered { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool WasMapped { get; set; }
@@ -856,7 +870,6 @@ namespace SrvSurvey
         // Planet specific ...
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        //public BodyParents Parents { get; set; }
         public List<Dictionary<ParentBodyType, int>> Parents { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
@@ -886,17 +899,6 @@ namespace SrvSurvey
         public List<Composition> Materials { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public Dictionary<string, float> Composition { get; set; }
-
-        /* TODO: Materials: JSON array with objects with material names and percentage occurrence
-        Composition: structure containing info on solid composition
-        Ice
-        Rock
-        Metal
-        */
-
-        /* TODO: Rings: [array of info] – if rings present
-        ReserveLevel: (Pristine/Major/Common/Low/Depleted) – if rings present
-        */
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double Axial { get; set; } // tilt If rotating:

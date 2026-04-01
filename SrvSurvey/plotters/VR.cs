@@ -47,6 +47,9 @@ namespace SrvSurvey.plotters
                 app.Dispose();
                 app = null;
             }
+
+            PlotBase2.closeAll();
+            PlotBase2.renderAll(Game.activeGame);
         }
 
         private static void loadOverlayOverrides()
@@ -317,6 +320,10 @@ namespace SrvSurvey.plotters
                 overlay.SetTexture(overlayTex);
 
                 context.Flush();
+            }
+            catch(Exception ex)
+            {
+                Game.log($"updateTextureImage: error {ex.Message}\r\n{ex.StackTrace}");
             }
             finally
             {

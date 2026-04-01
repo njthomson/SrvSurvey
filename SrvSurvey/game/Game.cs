@@ -37,6 +37,7 @@ namespace SrvSurvey.game
             edsm = new EDSM();
             git = new Git();
             rcc = new RavenColonial.RavenColonial();
+            eddn = new EDDN();
         }
 
         #region logging
@@ -110,6 +111,7 @@ namespace SrvSurvey.game
         public static EDSM edsm { get; private set; }
         public static Git git { get; private set; }
         public static RavenColonial.RavenColonial rcc { get; private set; }
+        public static EDDN eddn { get; private set; }
 
         public bool initialized { get; private set; } // TODO: reconcile with "Game.ready"
 
@@ -244,6 +246,8 @@ namespace SrvSurvey.game
         {
             if (disposing)
             {
+                EDDN.header = null;
+
                 if (this.journals != null)
                 {
                     this.journals.onJournalEntry -= Journals_onJournalEntry;
@@ -603,6 +607,13 @@ namespace SrvSurvey.game
                 Game.settings.lastCommander = this.Commander;
                 Game.settings.lastFid = this.fid;
                 log($"Game.initializeFromJournal: USING {this.Commander} (FID:{this.fid}), journals.Count:{journals?.Count}");
+
+                // set EDDN upload header
+                if (journals?.Entries.Count > 0)
+                {
+                    var gameFileHeader = (Fileheader)journals.Entries.First();
+                    EDDN.header = new UploadPayloadHeader(loadEntry.Commander, gameFileHeader.gameversion, gameFileHeader.build);
+                }
             }
 
             // exit early if we are shutdown
@@ -989,7 +1000,7 @@ namespace SrvSurvey.game
                 }
 
                 // init from FSD or Carrier jump event
-                var starterEvent = entry as ISystemDataStarter;
+                var starterEvent = entry as ISystemDataLocator;
                 if (starterEvent != null && starterEvent.@event != nameof(Location))
                 {
                     log($"Game.initSystemData: found last {starterEvent.@event}, to '{starterEvent.StarSystem}' ({starterEvent.SystemAddress})");
@@ -1092,6 +1103,10 @@ namespace SrvSurvey.game
 
                 // let any active plotters process the entry
                 PlotBase2.processJournalEntry(entry);
+
+                // upload to EDDN?
+                if (!Game.settings.eddnUpload && EDDN.header != null)
+                    eddn.onJournalEntry(this, entry);
 
                 // finally, let active quests know about this
                 cmdrPlay?.processJournalEntry(entry).justDoIt();
@@ -1210,6 +1225,8 @@ namespace SrvSurvey.game
                 this.Status_StatusChanged(false);
                 if (this.atMainMenu)
                 {
+                    this.systemBody = null;
+                    this.systemData = null;
                     this.lastDocked = null;
                     this.lastApproachSettlement = null;
                     this.lastColonisationConstructionDepot = null;
@@ -1273,6 +1290,7 @@ namespace SrvSurvey.game
             }
 
             // for either FSD type ...
+            this.lastApproachSettlement = null;
             dockTimer?.onJournalEntry(entry);
 
             // we are certainly no longer at any humanSite
@@ -1304,7 +1322,7 @@ namespace SrvSurvey.game
             // FSD Jump completed
             this.fsdJumping = false;
             this.statusBodyName = null;
-            cmdr.distanceTravelled += entry.JumpDist;
+            this.cmdr.distanceTravelled += entry.JumpDist;
 
             this.setLocations(entry);
 
@@ -2167,7 +2185,7 @@ namespace SrvSurvey.game
             Program.invalidateActivePlotters();
         }
 
-        public void setLocations(ISystemDataStarter entry)
+        public void setLocations(ISystemDataLocator entry)
         {
             Game.log($"setLocations: from FSDJump/CarrierJump: {entry.StarSystem} / {entry.Body} ({entry.BodyType})");
 

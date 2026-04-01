@@ -1091,7 +1091,6 @@ namespace SrvSurvey
             try
             {
                 btnSettings.Enabled = false;
-                if (VR.enabled) VR.shutdown();
 
                 var form = new FormSettings();
                 form.firstTab = firstTab;

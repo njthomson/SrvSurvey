@@ -489,8 +489,11 @@ namespace SrvSurvey
         {
             base.OnClosed(e);
 
-            PlotAdjustVR.force = false;
-            VR.shutdown();
+            if (!Game.settings.displayVR && VR.app != null)
+            {
+                PlotAdjustVR.force = false;
+                VR.shutdown();
+            }
 
             // ensure basic keyboard hooks are in the correct state
             var keyHookSettingsValid = Game.settings.keyActions_TEST != null && (Game.settings.keyhook_TEST || Game.settings.hookDirectX_TEST);
