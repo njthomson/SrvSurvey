@@ -721,14 +721,15 @@ namespace SrvSurvey.game
             }
 
             // add to system exploration rewards?
-            if (Game.activeGame?.systemData == this && entry.ScanType != "NavBeaconDetail" && body.hasValue)
+            var game = Game.activeGame;
+            if (game?.systemData == this && entry.ScanType != "NavBeaconDetail" && body.hasValue)
             {
                 var reward = Util.GetBodyValue(entry, false);
                 if (body.reward < reward)
                 {
                     body.reward = reward;
-                    Game.activeGame.cmdr.countScans += 1;
-                    Game.activeGame.cmdr.applyExplReward(reward, $"Scan:{entry.ScanType} of {entry.BodyName}");
+                    game.cmdr.countScans += 1;
+                    game.cmdr.applyExplReward(reward, $"Scan:{entry.ScanType} of {entry.BodyName}");
 
                     // and adjust main star value too
                     if (this.honked)
@@ -742,9 +743,9 @@ namespace SrvSurvey.game
 
             if (body.bioSignalCount > 0)
             {
-                if (Game.activeGame?.systemData == this)
+                if (game?.systemData == this)
                 {
-                    Game.activeGame.deferPredictSpecies(body);
+                    game.deferPredictSpecies(body);
                     Program.invalidateActivePlotters();
                 }
             }
@@ -752,7 +753,54 @@ namespace SrvSurvey.game
             // redraw as well, in case visual state needs to change but predictions are no different
             Program.defer(() => FormPredictions.refresh());
 
+            // upload possible GGG ?
+            if (Game.settings.uploadGGG && entry.PlanetClass?.Contains("giant", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                var tag = getTagForGGG(entry.PlanetClass, entry.SurfaceTemperature);
+                if (tag != null)
+                {
+                    Game.log($"GGG match: {tag}! body: {entry.BodyName}, temp: {entry.SurfaceTemperature}");
+                    var json = JsonConvert.SerializeObject(entry);
+                    Game.rcc.uploadGGG(this.commander, tag, json).justDoIt();
+                }
+            }
+
             return true;
+        }
+
+        private string? getTagForGGG(string planetClass, double surfaceTemp)
+        {
+            if (!File.Exists(Git.gggPath)) return null;
+            var data = JsonConvert.DeserializeObject<JsonGGG>(File.ReadAllText(Git.gggPath))!;
+
+            // do we have an exact match?
+            var knownTemps = data.knownGGGTemps.GetValueOrDefault(planetClass);
+            if (knownTemps?.Contains(surfaceTemp) == true)
+                return "likely";
+
+            // do we have an approx match?
+            var approx = knownTemps?.Any(t => surfaceTemp > t - data.delta && surfaceTemp < t + data.delta);
+            if (approx == true)
+                return "likely-approx";
+
+            // do we have a theorized match?
+            var theorizedTemps = data.theorizedGGGTemps.GetValueOrDefault(planetClass);
+            if (knownTemps?.Contains(surfaceTemp) == true)
+                return "potential";
+
+            // do we have an approx theorized match?
+            approx = theorizedTemps?.Any(t => surfaceTemp > t - data.delta && surfaceTemp < t + data.delta);
+            if (approx == true)
+                return "potential-approx";
+
+            return null;
+        }
+
+        private class JsonGGG
+        {
+            public double delta;
+            public Dictionary<string, List<double>> knownGGGTemps;
+            public Dictionary<string, List<double>> theorizedGGGTemps;
         }
 
         public bool onJournalEntry(ScanBaryCentre entry)

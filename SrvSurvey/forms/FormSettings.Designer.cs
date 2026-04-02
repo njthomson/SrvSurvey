@@ -31,10 +31,10 @@ namespace SrvSurvey
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            ListViewItem listViewItem1 = new ListViewItem("Materials count after pickup");
-            ListViewItem listViewItem2 = new ListViewItem("Mission remaining cargo count");
-            ListViewItem listViewItem3 = new ListViewItem("Boxel search status");
-            ListViewItem listViewItem4 = new ListViewItem("Next boxel to search");
+            ListViewItem listViewItem5 = new ListViewItem("Materials count after pickup");
+            ListViewItem listViewItem6 = new ListViewItem("Mission remaining cargo count");
+            ListViewItem listViewItem7 = new ListViewItem("Boxel search status");
+            ListViewItem listViewItem8 = new ListViewItem("Next boxel to search");
             panel1 = new Panel();
             btnSave = new DrawButton();
             btnCancel = new DrawButton();
@@ -274,6 +274,7 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
+            checkBox210 = new CheckBox2();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -615,6 +616,7 @@ namespace SrvSurvey
             // comboLang
             // 
             comboLang.BorderColor = SystemColors.ControlDarkDark;
+            comboLang.BorderHoverColor = Color.Empty;
             comboLang.ButtonColor = SystemColors.ControlDark;
             comboLang.ButtonHoverColor = SystemColors.AppWorkspace;
             comboLang.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -623,7 +625,7 @@ namespace SrvSurvey
             comboLang.Items.AddRange(new object[] { "Match Windows OS default" });
             comboLang.Location = new Point(78, 416);
             comboLang.Name = "comboLang";
-            comboLang.Size = new Size(226, 24);
+            comboLang.Size = new Size(226, 23);
             comboLang.TabIndex = 22;
             comboLang.Tag = "lang";
             // 
@@ -767,6 +769,10 @@ namespace SrvSurvey
             // 
             // comboOverlayScale
             // 
+            comboOverlayScale.BorderColor = Color.Empty;
+            comboOverlayScale.BorderHoverColor = Color.Empty;
+            comboOverlayScale.ButtonColor = Color.Empty;
+            comboOverlayScale.ButtonHoverColor = Color.Empty;
             comboOverlayScale.DropDownStyle = ComboBoxStyle.DropDownList;
             comboOverlayScale.FlatStyle = FlatStyle.Popup;
             comboOverlayScale.FormattingEnabled = true;
@@ -802,7 +808,12 @@ namespace SrvSurvey
             // comboCmdr
             // 
             comboCmdr.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            comboCmdr.BorderColor = Color.Empty;
+            comboCmdr.BorderHoverColor = Color.Empty;
+            comboCmdr.ButtonColor = Color.Empty;
+            comboCmdr.ButtonHoverColor = Color.Empty;
             comboCmdr.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboCmdr.FlatStyle = FlatStyle.Flat;
             comboCmdr.FormattingEnabled = true;
             comboCmdr.Location = new Point(10, 30);
             comboCmdr.Name = "comboCmdr";
@@ -1055,7 +1066,12 @@ namespace SrvSurvey
             // 
             // comboBox1
             // 
+            comboBox1.BorderColor = Color.Empty;
+            comboBox1.BorderHoverColor = Color.Empty;
+            comboBox1.ButtonColor = Color.Empty;
+            comboBox1.ButtonHoverColor = Color.Empty;
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox1.FlatStyle = FlatStyle.Flat;
             comboBox1.FormattingEnabled = true;
             comboBox1.Items.AddRange(new object[] { "Small - 250 x 400", "Skiny - 250 X 500", "Medium - 320 x 440", "Large - 380 x 500", "Huge - 440 x 600" });
             comboBox1.Location = new Point(107, 87);
@@ -1525,7 +1541,12 @@ namespace SrvSurvey
             // 
             // comboGuardianWindowSize
             // 
+            comboGuardianWindowSize.BorderColor = Color.Empty;
+            comboGuardianWindowSize.BorderHoverColor = Color.Empty;
+            comboGuardianWindowSize.ButtonColor = Color.Empty;
+            comboGuardianWindowSize.ButtonHoverColor = Color.Empty;
             comboGuardianWindowSize.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboGuardianWindowSize.FlatStyle = FlatStyle.Flat;
             comboGuardianWindowSize.FormattingEnabled = true;
             comboGuardianWindowSize.Items.AddRange(new object[] { "Small - 300 x 400", "Medium - 500 x 500", "Large - 600 x 700", "Huge - 800 x 1000", "Massive - 1200 x 1200" });
             comboGuardianWindowSize.Location = new Point(89, 252);
@@ -3291,7 +3312,12 @@ namespace SrvSurvey
             // comboDirectXDevice
             // 
             comboDirectXDevice.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            comboDirectXDevice.BorderColor = Color.Empty;
+            comboDirectXDevice.BorderHoverColor = Color.Empty;
+            comboDirectXDevice.ButtonColor = Color.Empty;
+            comboDirectXDevice.ButtonHoverColor = Color.Empty;
             comboDirectXDevice.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboDirectXDevice.FlatStyle = FlatStyle.Flat;
             comboDirectXDevice.FormattingEnabled = true;
             comboDirectXDevice.Location = new Point(309, 25);
             comboDirectXDevice.Name = "comboDirectXDevice";
@@ -3373,6 +3399,7 @@ namespace SrvSurvey
             // 
             tabPage8.BackColor = SystemColors.Control;
             tabPage8.BorderStyle = BorderStyle.Fixed3D;
+            tabPage8.Controls.Add(checkBox210);
             tabPage8.Controls.Add(checkBox53);
             tabPage8.Controls.Add(checkFancyAlphaBlending);
             tabPage8.Controls.Add(checkBox52);
@@ -3558,15 +3585,15 @@ namespace SrvSurvey
             // listView1
             // 
             listView1.CheckBoxes = true;
-            listViewItem1.StateImageIndex = 0;
-            listViewItem1.Tag = "materialCountAfterPickup";
-            listViewItem2.StateImageIndex = 0;
-            listViewItem2.Tag = "cargoMissionRemaining";
-            listViewItem3.StateImageIndex = 0;
-            listViewItem3.Tag = "currentBoxelSearchStatus";
-            listViewItem4.StateImageIndex = 0;
-            listViewItem4.Tag = "showNextBoxelToSearch";
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4 });
+            listViewItem5.StateImageIndex = 0;
+            listViewItem5.Tag = "materialCountAfterPickup";
+            listViewItem6.StateImageIndex = 0;
+            listViewItem6.Tag = "cargoMissionRemaining";
+            listViewItem7.StateImageIndex = 0;
+            listViewItem7.Tag = "currentBoxelSearchStatus";
+            listViewItem8.StateImageIndex = 0;
+            listViewItem8.Tag = "showNextBoxelToSearch";
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem5, listViewItem6, listViewItem7, listViewItem8 });
             listView1.Location = new Point(12, 331);
             listView1.Name = "listView1";
             listView1.Size = new Size(400, 107);
@@ -3677,6 +3704,19 @@ namespace SrvSurvey
             menuClearCodexCache.Text = "Clear cached images";
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
+            // 
+            // checkBox210
+            // 
+            checkBox210.AutoSize = true;
+            checkBox210.CheckColor = SystemColors.ControlText;
+            checkBox210.LineColor = SystemColors.ActiveBorder;
+            checkBox210.Location = new Point(427, 41);
+            checkBox210.Name = "checkBox210";
+            checkBox210.Size = new Size(151, 19);
+            checkBox210.TabIndex = 51;
+            checkBox210.Tag = "uploadGGG";
+            checkBox210.Text = "Upload GGG candidates";
+            checkBox210.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -4008,5 +4048,6 @@ namespace SrvSurvey
         private CheckBox2 checkBlackTheme;
         private CheckBox2 checkBox56;
         private CheckBox2 checkBox57;
+        private CheckBox2 checkBox210;
     }
 }

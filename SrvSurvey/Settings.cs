@@ -208,6 +208,7 @@ namespace SrvSurvey
         public int pubDataGuardian = 0;
         public int pubSettlements = 0;
         public int pubNicknames = 0;
+        public int pubGGG = 0;
 
         public DateTime lastCodexRefDownload = DateTime.MinValue;
         public DateTime lastCodexNotFoundDownload = DateTime.MinValue;
@@ -277,6 +278,8 @@ namespace SrvSurvey
         public bool eddnUpload = false;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string? eddnEnvironment = null;
+
+        public bool uploadGGG = false;
 
         #region loading / saving
 
