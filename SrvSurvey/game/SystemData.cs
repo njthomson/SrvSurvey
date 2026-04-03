@@ -761,7 +761,7 @@ namespace SrvSurvey.game
                 {
                     Game.log($"GGG match: {tag}! body: {entry.BodyName}, temp: {entry.SurfaceTemperature}");
                     var json = JsonConvert.SerializeObject(entry);
-                    Game.rcc.uploadGGG(this.commander, tag, json).justDoIt();
+                    Game.rcc.uploadGGG(this.commander, tag, this.starPos, json).justDoIt();
                 }
             }
 

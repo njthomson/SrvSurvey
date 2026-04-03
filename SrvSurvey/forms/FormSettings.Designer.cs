@@ -31,10 +31,11 @@ namespace SrvSurvey
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            ListViewItem listViewItem5 = new ListViewItem("Materials count after pickup");
-            ListViewItem listViewItem6 = new ListViewItem("Mission remaining cargo count");
-            ListViewItem listViewItem7 = new ListViewItem("Boxel search status");
-            ListViewItem listViewItem8 = new ListViewItem("Next boxel to search");
+            ListViewItem listViewItem1 = new ListViewItem("Materials count after pickup");
+            ListViewItem listViewItem2 = new ListViewItem("Mission remaining cargo count");
+            ListViewItem listViewItem3 = new ListViewItem("Boxel search status");
+            ListViewItem listViewItem4 = new ListViewItem("Next boxel to search");
+            ListViewItem listViewItem5 = new ListViewItem("Screenshot taken");
             panel1 = new Panel();
             btnSave = new DrawButton();
             btnCancel = new DrawButton();
@@ -250,6 +251,8 @@ namespace SrvSurvey
             label28 = new Label();
             checkKeyChords = new CheckBox2();
             tabPage8 = new TabPage();
+            linkLabel4 = new LinkLabel();
+            checkBox210 = new CheckBox2();
             checkBox53 = new CheckBox2();
             checkFancyAlphaBlending = new CheckBox2();
             checkBox52 = new CheckBox2();
@@ -274,7 +277,6 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
-            checkBox210 = new CheckBox2();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -3399,6 +3401,7 @@ namespace SrvSurvey
             // 
             tabPage8.BackColor = SystemColors.Control;
             tabPage8.BorderStyle = BorderStyle.Fixed3D;
+            tabPage8.Controls.Add(linkLabel4);
             tabPage8.Controls.Add(checkBox210);
             tabPage8.Controls.Add(checkBox53);
             tabPage8.Controls.Add(checkFancyAlphaBlending);
@@ -3421,6 +3424,32 @@ namespace SrvSurvey
             tabPage8.Size = new Size(699, 448);
             tabPage8.TabIndex = 9;
             tabPage8.Text = "More";
+            // 
+            // linkLabel4
+            // 
+            linkLabel4.AutoSize = true;
+            linkLabel4.LinkArea = new LinkArea(0, 100);
+            linkLabel4.Location = new Point(584, 43);
+            linkLabel4.Name = "linkLabel4";
+            linkLabel4.Size = new Size(48, 21);
+            linkLabel4.TabIndex = 52;
+            linkLabel4.TabStop = true;
+            linkLabel4.Text = "See wiki";
+            linkLabel4.UseCompatibleTextRendering = true;
+            linkLabel4.LinkClicked += linkLabel4_LinkClicked;
+            // 
+            // checkBox210
+            // 
+            checkBox210.AutoSize = true;
+            checkBox210.CheckColor = SystemColors.ControlText;
+            checkBox210.LineColor = SystemColors.ActiveBorder;
+            checkBox210.Location = new Point(427, 42);
+            checkBox210.Name = "checkBox210";
+            checkBox210.Size = new Size(151, 19);
+            checkBox210.TabIndex = 51;
+            checkBox210.Tag = "uploadGGG";
+            checkBox210.Text = "Upload GGG candidates";
+            checkBox210.UseVisualStyleBackColor = true;
             // 
             // checkBox53
             // 
@@ -3585,15 +3614,17 @@ namespace SrvSurvey
             // listView1
             // 
             listView1.CheckBoxes = true;
+            listViewItem1.StateImageIndex = 0;
+            listViewItem1.Tag = "materialCountAfterPickup";
+            listViewItem2.StateImageIndex = 0;
+            listViewItem2.Tag = "cargoMissionRemaining";
+            listViewItem3.StateImageIndex = 0;
+            listViewItem3.Tag = "currentBoxelSearchStatus";
+            listViewItem4.StateImageIndex = 0;
+            listViewItem4.Tag = "showNextBoxelToSearch";
             listViewItem5.StateImageIndex = 0;
-            listViewItem5.Tag = "materialCountAfterPickup";
-            listViewItem6.StateImageIndex = 0;
-            listViewItem6.Tag = "cargoMissionRemaining";
-            listViewItem7.StateImageIndex = 0;
-            listViewItem7.Tag = "currentBoxelSearchStatus";
-            listViewItem8.StateImageIndex = 0;
-            listViewItem8.Tag = "showNextBoxelToSearch";
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem5, listViewItem6, listViewItem7, listViewItem8 });
+            listViewItem5.Tag = "showScreenshot";
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5 });
             listView1.Location = new Point(12, 331);
             listView1.Name = "listView1";
             listView1.Size = new Size(400, 107);
@@ -3704,19 +3735,6 @@ namespace SrvSurvey
             menuClearCodexCache.Text = "Clear cached images";
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
-            // 
-            // checkBox210
-            // 
-            checkBox210.AutoSize = true;
-            checkBox210.CheckColor = SystemColors.ControlText;
-            checkBox210.LineColor = SystemColors.ActiveBorder;
-            checkBox210.Location = new Point(427, 41);
-            checkBox210.Name = "checkBox210";
-            checkBox210.Size = new Size(151, 19);
-            checkBox210.TabIndex = 51;
-            checkBox210.Tag = "uploadGGG";
-            checkBox210.Text = "Upload GGG candidates";
-            checkBox210.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -4049,5 +4067,6 @@ namespace SrvSurvey
         private CheckBox2 checkBox56;
         private CheckBox2 checkBox57;
         private CheckBox2 checkBox210;
+        private LinkLabel linkLabel4;
     }
 }

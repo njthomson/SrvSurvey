@@ -137,6 +137,7 @@ namespace SrvSurvey
                     case KeyAction.nextWindow: return focusNextGameWindow();
                     case KeyAction.streamOne: return toggleStreamOne();
                     case KeyAction.adjustVR: return adjustVR();
+                    case KeyAction.resetVR: return resetVR();
                     case KeyAction.toggleFF: return toggleFF();
                     case KeyAction.questShow: return questShow();
                     case KeyAction.toggleImageEmbed: return toggleImageEmbeds();
@@ -471,6 +472,13 @@ namespace SrvSurvey
             return true;
         }
 
+        private static bool resetVR()
+        {
+            if (Game.settings.displayVR && VR.app != null)
+                VR.reset();
+            return true;
+        }
+
         private static bool toggleFF()
         {
             // toggle first footfall
@@ -540,6 +548,8 @@ namespace SrvSurvey
         streamOne,
         /// <summary> Toggle VR overlay adjustment </summary>
         adjustVR,
+        /// <summary> Reset VR headset orientation </summary>
+        resetVR,
         /// <summary> Toggle First Footfall </summary>
         toggleFF,
         /// <summary> Track the current location as #1 </summary>

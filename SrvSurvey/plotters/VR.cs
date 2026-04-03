@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using OVRSharp;
 using OVRSharp.Math;
 using SharpDX;
@@ -20,6 +20,8 @@ namespace SrvSurvey.plotters
         public static VR? app;
         public static string vrMode = "";
         public static Dictionary<string, Dictionary<string, PlotPos.VR>> overrides = new();
+        public static Matrix4x4 headsetOrientationOffset = Matrix4x4.Identity;
+        public static float headsetYawOffset = 0;
 
         public static void init()
         {
@@ -29,6 +31,8 @@ namespace SrvSurvey.plotters
                 if (app != null || !VR.enabled) return;
 
                 app = new VR();
+                headsetOrientationOffset = Matrix4x4.Identity;
+                headsetYawOffset = 0;
 
                 // load any vehicle overlay position overrides
                 loadOverlayOverrides();
@@ -50,6 +54,44 @@ namespace SrvSurvey.plotters
 
             PlotBase2.closeAll();
             PlotBase2.renderAll(Game.activeGame);
+        }
+
+        public static void reset()
+        {
+            // Capture the current headset orientation and use it as an offset
+            // This compensates for when the game resets the VR headset orientation
+            if (OpenVR.System != null)
+            {
+                var poses = new TrackedDevicePose_t[OpenVR.k_unMaxTrackedDeviceCount];
+                OpenVR.System.GetDeviceToAbsoluteTrackingPose(ETrackingUniverseOrigin.TrackingUniverseStanding, 0f, poses);
+
+                // HMD is device 0
+                if (poses[0].bPoseIsValid)
+                {
+                    var hmdMatrix = poses[0].mDeviceToAbsoluteTracking;
+                    setExtractYawRotation(hmdMatrix);
+                    Game.log($"VR.reset: captured headset yaw orientation");
+
+                    PlotBase2.renderAll(Game.activeGame, true);
+                }
+            }
+        }
+
+        private static void setExtractYawRotation(HmdMatrix34_t matrix)
+        {
+            // Extract rotation matrix from the HMD matrix
+            var rotX = new Vector3(matrix.m0, matrix.m4, matrix.m8);
+            var rotY = new Vector3(matrix.m1, matrix.m5, matrix.m9);
+            var rotZ = new Vector3(matrix.m2, matrix.m6, matrix.m10);
+            
+            // Calculate yaw angle from the rotation matrix
+            // Yaw is the rotation around the Y axis
+            headsetYawOffset = MathF.Atan2(-rotX.Z, rotX.X);
+
+            //Game.log($"VR.ExtractYawRotation: {headsetYawOffset} vs {rotY}");
+
+            // Create a yaw-only rotation matrix
+            headsetOrientationOffset = Matrix4x4.CreateFromAxisAngle(Vector3.UnitY, headsetYawOffset);
         }
 
         private static void loadOverlayOverrides()
@@ -220,7 +262,7 @@ namespace SrvSurvey.plotters
             overlay.Show();
         }
 
-        public void project()
+        public void project(bool force = false)
         {
             // prevent overlapping renderings
             if (projecting) return;
@@ -250,7 +292,7 @@ namespace SrvSurvey.plotters
                 if (VR.overrides.GetValueOrDefault(vrMode)?.TryGetValue(overlay.Name, out var alternatePP) == true)
                     pp = alternatePP;
 
-                if (pp != null && pp.ToString() != lastPP?.ToString())
+                if (pp != null && (pp.ToString() != lastPP?.ToString() || force))
                     repositionOverlay(pp);
 
                 // ensure we are visible
@@ -321,7 +363,7 @@ namespace SrvSurvey.plotters
 
                 context.Flush();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Game.log($"updateTextureImage: error {ex.Message}\r\n{ex.StackTrace}");
             }
@@ -337,22 +379,33 @@ namespace SrvSurvey.plotters
 
             // yaw = Y, pitch = X, roll = Z - the Y and X really should be swapped like this
             var rot = Matrix4x4.CreateFromYawPitchRoll(
-                MathF.PI / 180 * pp.r.Y,
-                MathF.PI / 180 * pp.r.X,
-                MathF.PI / 180 * pp.r.Z
+                //MathF.PI / 180 * pp.r.Y,
+                (MathF.PI / 180 * pp.r.Y) - VR.headsetYawOffset,
+                (MathF.PI / 180 * pp.r.X),
+                (MathF.PI / 180 * pp.r.Z)
             );
 
-            // divide by 10 to avoid decimals on the fomrs
-            var pos = Matrix4x4.CreateTranslation(new Vector3(
+            /* Why does "- VR.headsetYawOffset" above work better than this?
+            // Apply inverse headset rotation to compensate for headset orientation
+            if (Matrix4x4.Invert(VR.headsetOrientationOffset, out var inverseHeadsetRot))
+                rot = Matrix4x4.Multiply(rot, inverseHeadsetRot);
+            rot = Matrix4x4.Multiply(rot, VR.headsetOrientationOffset);
+            */
+
+            // divide by 10 to avoid decimals on the forms
+            var pos = new Vector3(
                 pp.p.X / 10,
                 pp.p.Y / 10,
                 -pp.p.Z / 10
-            ));
+            );
+            // Rotate the position vector about the origin to account for headset rotation
+            var rotatedPosVector = Vector3.Transform(pos, VR.headsetOrientationOffset);
+            var rotatedPos = Matrix4x4.CreateTranslation(rotatedPosVector);
 
             var sc = Matrix4x4.CreateScale(pp.s / 10); // yes 10
 
             var tr = Matrix4x4.Multiply(rot, sc);
-            tr = Matrix4x4.Multiply(tr, pos);
+            tr = Matrix4x4.Multiply(tr, rotatedPos);
 
             overlay.Transform = tr.ToHmdMatrix34_t();
             lastPP = PlotPos.VR.parse(pp.ToString());

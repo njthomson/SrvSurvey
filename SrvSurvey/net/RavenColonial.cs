@@ -467,13 +467,14 @@ class RavenColonial
             Game.log($"RCC.publishCurrentShip: HTTP:{(int)response.StatusCode}({response.StatusCode}): failed: {json2}");
     }
 
-    public async Task uploadGGG(string cmdr, string tag, string json)
+    public async Task uploadGGG(string cmdr, string tag, double[] starPos, string json)
     {
         var json1 = JsonConvert.SerializeObject(new JObject()
         {
-            {  "cmdr", cmdr },
-            {  "tag", tag },
-            {  "json", json }
+            { "cmdr", cmdr },
+            { "tag", tag },
+            { "starPos", new JArray(starPos) },
+            { "json", json }
         });
         var body = new StringContent(json1, Encoding.Default, "application/json");
         body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);

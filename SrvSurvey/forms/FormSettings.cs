@@ -7,7 +7,6 @@ using SrvSurvey.Properties;
 using SrvSurvey.widgets;
 using System.Diagnostics;
 using System.Reflection;
-using Valve.VR;
 
 namespace SrvSurvey
 {
@@ -1049,6 +1048,11 @@ namespace SrvSurvey
         private void btnAdjustVR_Click(object sender, EventArgs e)
         {
             PlotAdjustVR.start();
+        }
+
+        private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Util.openLink("https://github.com/njthomson/SrvSurvey/wiki/Green-Gas-Giants");
         }
     }
 }

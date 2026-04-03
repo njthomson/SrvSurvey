@@ -457,7 +457,7 @@ namespace SrvSurvey.plotters
                     if (VR.enabled && VR.app != null)
                     {
                         if (def.vr == null) def.vr = new VROverlay(def);
-                        def.vr.project();
+                        def.vr.project(force);
                     }
                 }
             }
