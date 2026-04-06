@@ -2917,8 +2917,6 @@ namespace SrvSurvey.game
                     Task.Delay(500).ContinueWith(t => onDockedWhenSafe(CalcMethod.AutoDock, entry.Taxi));
                 }
             }
-
-
         }
 
         private void onDockedWhenSafe(CalcMethod calcMethod, bool inTaxi)

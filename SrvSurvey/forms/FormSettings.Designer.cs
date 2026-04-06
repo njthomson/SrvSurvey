@@ -3429,12 +3429,12 @@ namespace SrvSurvey
             // 
             linkLabel4.AutoSize = true;
             linkLabel4.LinkArea = new LinkArea(0, 100);
-            linkLabel4.Location = new Point(584, 43);
+            linkLabel4.Location = new Point(445, 58);
             linkLabel4.Name = "linkLabel4";
-            linkLabel4.Size = new Size(48, 21);
+            linkLabel4.Size = new Size(66, 21);
             linkLabel4.TabIndex = 52;
             linkLabel4.TabStop = true;
-            linkLabel4.Text = "See wiki";
+            linkLabel4.Text = "Learn more";
             linkLabel4.UseCompatibleTextRendering = true;
             linkLabel4.LinkClicked += linkLabel4_LinkClicked;
             // 

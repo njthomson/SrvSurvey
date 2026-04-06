@@ -1052,7 +1052,7 @@ namespace SrvSurvey
 
         private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Util.openLink("https://github.com/njthomson/SrvSurvey/wiki/Green-Gas-Giants");
+            Util.openLink("https://ravencolonial.com/#ggg");
         }
     }
 }
