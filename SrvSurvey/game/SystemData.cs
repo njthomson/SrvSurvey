@@ -768,7 +768,7 @@ namespace SrvSurvey.game
             return true;
         }
 
-        private string? getTagForGGG(string planetClass, double surfaceTemp)
+        public static string? getTagForGGG(string planetClass, double surfaceTemp)
         {
             if (!File.Exists(Git.gggPath)) return null;
             var data = JsonConvert.DeserializeObject<JsonGGG>(File.ReadAllText(Git.gggPath))!;

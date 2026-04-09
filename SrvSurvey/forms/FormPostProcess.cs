@@ -368,6 +368,18 @@ namespace SrvSurvey
                                 cmdrCodex.trackCodex(codexEntry.Name_Localised, codexEntry.EntryID, codexEntry.timestamp, codexEntry.SystemAddress, codexEntry.BodyID ?? lastBodyId, galacticRegionId);
                             }
 
+                            // upload possible GGG ?
+                            if (Game.settings.uploadGGG && entry is Scan scanEntry && scanEntry.PlanetClass?.Contains("giant", StringComparison.OrdinalIgnoreCase) == true)
+                            {
+                                var tag = SystemData.getTagForGGG(scanEntry.PlanetClass, scanEntry.SurfaceTemperature);
+                                if (tag != null)
+                                {
+                                    Game.log($"GGG match: {tag}! body: {scanEntry.BodyName}, temp: {scanEntry.SurfaceTemperature}");
+                                    var json = JsonConvert.SerializeObject(entry);
+                                    Game.rcc.uploadGGG(this.targetCmdrName, tag, lastStarPos, json).justDoIt();
+                                }
+                            }
+
                             // and run it through our own entry processors
                             this.Journals_onJournalEntry(entry);
                         }
