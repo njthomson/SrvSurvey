@@ -339,6 +339,15 @@
       { "name": "Atmos", "offset": { "X": 70.38786, "Y": 62.190777 }, "floor": 2, "level": 2 },
       { "name": "Power", "offset": { "X": 72.971756, "Y": 65.494865 }, "floor": 1, "level": 3 }
     ],
+    "fcz": [
+      { "name": "A", "offset": { "X": 5.2930307, "Y": 51.694775 }, "floor": 0, "level": 0 },
+      { "name": "B", "offset": { "X": 54.616978, "Y": 104.38471 }, "floor": 0, "level": 0 },
+      { "name": "C", "offset": { "X": 70.65069, "Y": 58.317764 }, "floor": 0, "level": 0 },
+      { "name": "D", "offset": { "X": 27.745085, "Y": 66.00718 }, "floor": 0, "level": 0 },
+      { "name": "E", "offset": { "X": 78.87722, "Y": 48.757324 }, "floor": 0, "level": 0 },
+      { "name": "F", "offset": { "X": 40.373978, "Y": 23.22915 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 45.66761, "Y": 56.15045 }, "floor": 0, "level": 0 }
+    ],
     "dataTerminals": [
       { "offset": { "X": 52.518204, "Y": 105.54509 }, "floor": 1, "level": 1 },
       { "offset": { "X": 16.686317, "Y": -50.425594 }, "floor": 3, "level": 2 },
