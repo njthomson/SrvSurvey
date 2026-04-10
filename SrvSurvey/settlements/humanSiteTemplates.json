@@ -944,6 +944,17 @@
       { "name": "Medkit", "offset": { "X": -137.5327, "Y": -177.00346 }, "floor": 2, "level": 0 },
       { "name": "Medkit", "offset": { "X": -153.19894, "Y": 100.863014 }, "floor": 1, "level": 0 }
     ],
+    "czPoints": [
+      { "name": "A", "offset": { "X": 45.699615, "Y": 56.55467 }, "floor": 0, "level": 0 },
+      { "name": "B", "offset": { "X": 5.3030934, "Y": -53.430187 }, "floor": 0, "level": 0 },
+      { "name": "C", "offset": { "X": -55.847584, "Y": 10.261137 }, "floor": 0, "level": 0 },
+      { "name": "D", "offset": { "X": 58.534145, "Y": -78.36151 }, "floor": 0, "level": 0 },
+      { "name": "E", "offset": { "X": 136.58131, "Y": 82.75447 }, "floor": 0, "level": 0 },
+      { "name": "F", "offset": { "X": 83.12627, "Y": 134.56073 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -20.136858, "Y": -80.73603 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 117.998566, "Y": 122.470634 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -42.4307, "Y": -14.815622 }, "floor": 0, "level": 0 }
+    ],
     "dataTerminals": [
       { "offset": { "X": -70.81573, "Y": 21.98198 }, "floor": 1, "level": 3 },
       { "offset": { "X": -161.69669, "Y": 62.422348 }, "floor": 1, "level": 0 },
