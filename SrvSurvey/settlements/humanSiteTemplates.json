@@ -339,7 +339,7 @@
       { "name": "Atmos", "offset": { "X": 70.38786, "Y": 62.190777 }, "floor": 2, "level": 2 },
       { "name": "Power", "offset": { "X": 72.971756, "Y": 65.494865 }, "floor": 1, "level": 3 }
     ],
-    "fcz": [
+    "czPoints": [
       { "name": "A", "offset": { "X": 5.2930307, "Y": 51.694775 }, "floor": 0, "level": 0 },
       { "name": "B", "offset": { "X": 54.616978, "Y": 104.38471 }, "floor": 0, "level": 0 },
       { "name": "C", "offset": { "X": 70.65069, "Y": 58.317764 }, "floor": 0, "level": 0 },
