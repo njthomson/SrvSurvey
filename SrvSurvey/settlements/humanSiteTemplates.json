@@ -226,6 +226,17 @@
       { "name": "Battery", "offset": { "X": -243.27855, "Y": 59.97087 }, "floor": 1, "level": 1 },
       { "name": "Atmos", "offset": { "X": -251.652, "Y": 62.154293 }, "floor": 1, "level": 2 }
     ],
+    "czPoints": [
+      { "name": "A", "offset": { "X": 142.67987, "Y": -65.08769 }, "floor": 0, "level": 0 },
+      { "name": "B", "offset": { "X": 127.8703, "Y": -148.7187 }, "floor": 0, "level": 0 },
+      { "name": "C", "offset": { "X": 190.78003, "Y": -171.25117 }, "floor": 0, "level": 0 },
+      { "name": "D", "offset": { "X": 218.5641, "Y": -133.57797 }, "floor": 0, "level": 0 },
+      { "name": "E", "offset": { "X": 190.47392, "Y": -95.0235 }, "floor": 0, "level": 0 },
+      { "name": "F", "offset": { "X": 253.89958, "Y": -172.5718 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 146.56094, "Y": -132.6187 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 187.22903, "Y": -144.91241 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": 177.57845, "Y": -193.47516 }, "floor": 0, "level": 0 }
+    ],
     "dataTerminals": [
       { "offset": { "X": 250.39653, "Y": -189.5035 }, "floor": 1, "level": 1 },
       { "offset": { "X": 250.40073, "Y": -147.06206 }, "floor": 1, "level": 1 },
