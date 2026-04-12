@@ -4,6 +4,7 @@ using Newtonsoft.Json.Converters;
 using SrvSurvey.canonn;
 using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
+using SrvSurvey.plotters;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.Diagnostics;
@@ -760,6 +761,7 @@ namespace SrvSurvey.game
                 if (tag != null)
                 {
                     Game.log($"GGG match: {tag}! body: {entry.BodyName}, temp: {entry.SurfaceTemperature}");
+                    PlotFloatie.showMessage($"Congrats, {tag} GGG uploaded!");
                     var json = JsonConvert.SerializeObject(entry);
                     Game.rcc.uploadGGG(this.commander, tag, this.starPos, json).justDoIt();
                 }

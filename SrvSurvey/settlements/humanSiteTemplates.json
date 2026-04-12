@@ -1199,6 +1199,15 @@
       { "name": "Medkit", "offset": { "X": 3.1251266, "Y": -8.160908 }, "floor": 1, "level": 1 },
       { "name": "Catalyst Management Unit", "offset": { "X": 14.438637, "Y": 14.138537 }, "floor": 2, "level": 2 }
     ],
+    "czPoints": [
+      { "name": "A", "offset": { "X": -8.221167, "Y": 18.813217 }, "floor": 0, "level": 0 },
+      { "name": "B", "offset": { "X": -51.831413, "Y": 83.41637 }, "floor": 0, "level": 0 },
+      { "name": "C", "offset": { "X": -65.004875, "Y": 37.58133 }, "floor": 0, "level": 0 },
+      { "name": "D", "offset": { "X": -82.30969, "Y": -26.511236 }, "floor": 0, "level": 0 },
+      { "name": "E", "offset": { "X": -119.89258, "Y": 52.49739 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -86.89199, "Y": 28.440899 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -28.240585, "Y": 46.91594 }, "floor": 0, "level": 0 }
+    ],
     "dataTerminals": [
       { "offset": { "X": -46.032543, "Y": -120.54418 }, "floor": 2, "level": 1 },
       { "offset": { "X": 1.6967765, "Y": 41.468586 }, "floor": 1, "level": 1 },
@@ -1373,6 +1382,15 @@
       { "name": "Medkit", "offset": { "X": -247.41528, "Y": 158.8785 }, "floor": 2, "level": 2 },
       { "name": "Medkit", "offset": { "X": -2.6093185, "Y": -74.23759 }, "floor": 2, "level": 0 },
       { "name": "Battery", "offset": { "X": -11.763314, "Y": -79.06282 }, "floor": 2, "level": 0 }
+    ],
+    "czPoints": [
+      { "name": "A", "offset": { "X": 41.041756, "Y": -64.0584 }, "floor": 0, "level": 0 },
+      { "name": "B", "offset": { "X": 41.11839, "Y": -64.23008 }, "floor": 0, "level": 0 },
+      { "name": "C", "offset": { "X": 46.759212, "Y": 36.602882 }, "floor": 0, "level": 0 },
+      { "name": "D", "offset": { "X": 14.929221, "Y": 23.217688 }, "floor": 0, "level": 0 },
+      { "name": "E", "offset": { "X": 3.8819523, "Y": -18.284184 }, "floor": 0, "level": 0 },
+      { "name": "F", "offset": { "X": 2.5303638, "Y": -72.0263 }, "floor": 0, "level": 0 },
+      { "name": "P", "offset": { "X": -18.421309, "Y": -44.16176 }, "floor": 0, "level": 0 }
     ],
     "dataTerminals": [
       { "offset": { "X": 46.92236, "Y": -59.04363 }, "floor": 2, "level": 3 },

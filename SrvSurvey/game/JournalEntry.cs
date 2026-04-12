@@ -489,9 +489,14 @@ namespace SrvSurvey
         public FSDJumpBodyType BodyType { get; set; }
     }
 
-    public class SupercruiseEntry : JournalEntry
+    public class SupercruiseEntry : JournalEntry, ISystemAddress
     {
+        // { "timestamp":"2025-11-27T00:47:59Z", "event":"SupercruiseEntry", "Taxi":false, "Multicrew":false, "StarSystem":"Trifid Sector BQ-Y d226", "SystemAddress":7775644027755 }
+
+        public bool Taxi { get; set; }
+        public bool Multicrew { get; set; }
         public string Starsystem { get; set; }
+        public long SystemAddress { get; set; }
     }
 
     public class Music : JournalEntry

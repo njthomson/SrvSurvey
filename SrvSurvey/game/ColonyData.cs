@@ -162,6 +162,8 @@ namespace SrvSurvey.game
 
         public List<Project> notHiddenProjects => this.projects.Where(p => !this.hiddenIDs.Contains(p.buildId)).ToList();
 
+        private static string? lastCompletedBuildId;
+
         [JsonIgnore]
         public Needs allNeeds;
 
@@ -379,6 +381,7 @@ namespace SrvSurvey.game
             var match = this.projects.Find(p => p.marketId == entry.MarketID);
             if (match?.complete == false)
             {
+                lastCompletedBuildId = match.buildId;
                 await Game.rcc.markComplete(match.buildId);
                 match.complete = true;
                 this.Save();
@@ -813,5 +816,30 @@ namespace SrvSurvey.game
             return true;
         }
 
+        public static async Task inferPrimaryPortName(Game game, SupercruiseEntry entry)
+        {
+            // only if we last docked at a construction site within this system
+            if (lastCompletedBuildId == null || game.lastEverDocked?.StationName.ToString().StartsWith(ColonyData.ExtPanelColonisationShip) != true || game.lastEverDocked.SystemAddress != entry.SystemAddress) return;
+
+            // if we see a 'FSSSignalDiscovered' between this and 'StartJump' ... assume that is a freshly completed construction
+            var signalEntries = new List<FSSSignalDiscovered>();
+            game.journals?.walk(-1, true, x =>
+            {
+                if (x is StartJump) return true;
+                if (x is FSSSignalDiscovered signalEntry) signalEntries.Add(signalEntry);
+                return false;
+            });
+
+            // only if there's a single entry
+            if (signalEntries.Count == 1)
+            {
+                var updateProj = new ProjectUpdate(lastCompletedBuildId)
+                {
+                    buildName = signalEntries[0].SignalName,
+                };
+                await Game.rcc.updateProject(updateProj);
+                lastCompletedBuildId = null;
+            }
+        }
     }
 }

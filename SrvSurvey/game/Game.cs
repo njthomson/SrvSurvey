@@ -2209,6 +2209,8 @@ namespace SrvSurvey.game
                 // steal radius from status?
                 if (this.status.BodyName == entry.Body)
                     cmdr.currentBodyRadius = this.status.PlanetRadius;
+                else if (this.systemBody?.name == entry.Body && this.systemBody.radius > 0)
+                    cmdr.currentBodyRadius = this.systemBody.radius;
                 else
                 {
                     Game.log($"Cannot find PlanetRadius from status file! Searching for last Scan event.");
@@ -2245,6 +2247,8 @@ namespace SrvSurvey.game
             // steal radius from status?
             if (this.status.BodyName == entry.Body)
                 cmdr.currentBodyRadius = this.status.PlanetRadius;
+            else if (this.systemBody?.name == entry.Body && this.systemBody.radius > 0)
+                cmdr.currentBodyRadius = this.systemBody.radius;
             else
             {
                 Game.log($"Cannot find PlanetRadius from status file! Searching for last Scan event.");
@@ -2274,6 +2278,8 @@ namespace SrvSurvey.game
                 // steal radius from status?
                 if (this.status.BodyName == entry.Body)
                     cmdr.currentBodyRadius = this.status.PlanetRadius;
+                else if (this.systemBody?.name == entry.Body && this.systemBody.radius > 0)
+                    cmdr.currentBodyRadius = this.systemBody.radius;
                 else
                 {
                     Game.log($"Cannot find PlanetRadius from status file! Searching for last Scan event.");
@@ -2319,6 +2325,8 @@ namespace SrvSurvey.game
                 // steal radius from status?
                 if (this.status.BodyName == entry.Body)
                     cmdr.currentBodyRadius = this.status.PlanetRadius;
+                else if (this.systemBody?.name == entry.Body && this.systemBody.radius > 0)
+                    cmdr.currentBodyRadius = this.systemBody.radius;
                 else
                 {
                     Game.log($"Cannot find PlanetRadius from status file! Searching for last Scan event.");
@@ -2969,6 +2977,13 @@ namespace SrvSurvey.game
 
             if (PlotBuildCommodities.allowed(this))
                 PlotBuildCommodities.showButCleanFirst(this);
+        }
+
+        private void onJournalEntry(SupercruiseEntry entry)
+        {
+            // if we last docked at a construction site ... 
+            if (lastEverDocked?.StationName.ToString().StartsWith(ColonyData.ExtPanelColonisationShip) == true && lastEverDocked.SystemAddress == entry.SystemAddress)
+                ColonyData.inferPrimaryPortName(this, entry).justDoIt();
         }
 
         public void initMats(CanonnStation station)
