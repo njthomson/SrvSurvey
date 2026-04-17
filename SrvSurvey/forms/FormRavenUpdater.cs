@@ -941,9 +941,9 @@ namespace SrvSurvey.forms
             }
         }
 
-        private void Journals_onJournalEntry(JournalEntry entry, int index)
+        private void Journals_onJournalEntry(JournalEntry? entry, JObject raw)
         {
-            if (this.IsDisposed) return;
+            if (this.IsDisposed || entry == null) return;
 
             this.onJournalEntry((dynamic)entry);
         }

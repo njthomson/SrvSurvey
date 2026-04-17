@@ -1,4 +1,5 @@
 ﻿using BioCriterias;
+using Newtonsoft.Json.Linq;
 using SrvSurvey.canonn;
 using SrvSurvey.forms;
 using SrvSurvey.game;
@@ -755,9 +756,10 @@ namespace SrvSurvey
             }
         }
 
-        private void Journals_onJournalEntry(JournalEntry entry, int index)
+        private void Journals_onJournalEntry(JournalEntry? entry, JObject raw)
         {
-            this.onJournalEntry((dynamic)entry);
+            if (entry != null)
+                this.onJournalEntry((dynamic)entry);
         }
 
         private void onJournalEntry(JournalEntry entry) { /* ignore */ }

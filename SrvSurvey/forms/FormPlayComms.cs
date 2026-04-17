@@ -56,7 +56,7 @@ namespace SrvSurvey.forms
             foreach (var btn in new DrawButton[] { btnClose, btnQuests, btnMsgs, btnWatch, btnDev })
                 btn.setGameColors();
 
-            this.Opacity = 0.9f;
+            this.Opacity = 0.95f;
 
             var newMap = parseGameKeybinds();
             if (newMap != null) mappedGameKeyBinds = newMap;
@@ -65,6 +65,9 @@ namespace SrvSurvey.forms
 
             this.Activated += (o, s) => KeyboardHook.redirect = true;
             this.Deactivate += (o, s) => KeyboardHook.redirect = false;
+
+            this.Height = 800;
+            //this.Font = GameColors.Fonts.console_16;
         }
 
         protected override void OnLoad(EventArgs e)

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SrvSurvey.canonn;
 using SrvSurvey.forms;
 using SrvSurvey.game;
@@ -337,9 +338,9 @@ namespace SrvSurvey.plotters
 
         #region journal processing
 
-        protected void Journals_onJournalEntry(JournalEntry entry, int index)
+        protected void Journals_onJournalEntry(JournalEntry? entry, JObject raw)
         {
-            if (this.IsDisposed) return;
+            if (this.IsDisposed || entry == null) return;
 
             // We need a strongly typed stub in this base class for any journal event any derived class would like to receive
             this.onJournalEntry((dynamic)entry);

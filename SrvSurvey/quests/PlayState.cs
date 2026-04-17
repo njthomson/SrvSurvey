@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.plotters;
@@ -87,7 +88,7 @@ internal class PlayState : Data
 
     public static void updateUI(PlayQuest? pq = null)
     {
-        PlotBase2.renderAll(null);
+        PlotBase2.renderAll(null, true);
         BaseForm.get<FormPlayComms>()?.onQuestChanged(pq);
         BaseForm.get<FormPlayDev>()?.onQuestChanged(pq);
     }
@@ -123,7 +124,7 @@ internal class PlayState : Data
         // import quest.json
         var newQuest = JsonConvert.DeserializeObject<DefQuest>(File.ReadAllText(Path.Combine(folder, "quest.json")))!;
 
-        // import messages from .json files
+        /*// import messages from .json files -- OLD --
         var msgFiles = Directory.GetFiles(folder, "msg*.json");
         foreach (var filepath in msgFiles)
         {
@@ -139,7 +140,24 @@ internal class PlayState : Data
             }
 
             newQuest.msgs.AddRange(msgs);
+        } // */
+        // import messages from .md files -- NEW --
+        var msgFiles2 = Directory.GetFiles(folder, "*.md");
+        foreach (var filepath in msgFiles2)
+        {
+            var msg = parseMsgMd(filepath);
+
+            // check for duplicate IDs ?
+            //var priorIDs = newQuest.msgs.Select(m => m.id);
+            //var dupeIDs = msgs.Where(m => priorIDs.Contains(m.id)).Select(m => m.id);
+            //if (dupeIDs.Any())
+            //{
+            //    Game.log($"Duplicate msg IDs: [{dupeIDs}], in: {filepath.Replace(folder, "\"")}");
+            //    continue;
+            //}
+            newQuest.msgs.Add(msg);
         }
+        // --
 
         // import strings from .json files?
         var stringsPath = Path.Combine(folder, "strings.json");
@@ -191,9 +209,10 @@ internal class PlayState : Data
         {
             // preserve state from previous PlayQuest
             foreach (var (k, v) in oldPQ.objectives) pq.objectives[k] = v;
-            //foreach (var (k, v) in oldPQ.vars) newPQ.vars[k] = v;
+            foreach (var (k, v) in oldPQ.vars) pq.vars[k] = v;
             foreach (var t in oldPQ.tags) pq.tags.Add(t);
             foreach (var (k, v) in oldPQ.bodyLocations) pq.bodyLocations[k] = v;
+            foreach (var (k, v) in oldPQ.keptLasts) pq.keptLasts[k] = v;
 
             foreach (var oc in oldPQ.chapters)
             {
@@ -215,6 +234,9 @@ internal class PlayState : Data
             }
         }
 
+        // fetch always last known's
+        setPriorKepts(pq);
+
         foreach (var pc in pq.chapters)
         {
             if (pc.active)
@@ -232,15 +254,98 @@ internal class PlayState : Data
         return pq;
     }
 
-    public async Task processJournalEntry(IJournalEntry entry)
+    private void setPriorKepts(PlayQuest pq)
+    {
+        if (!pq.keptLasts.ContainsKey(nameof(Docked)))
+        {
+            Game.activeGame?.journals?.walkDeep(true, entry =>
+            {
+                if (entry is Docked)
+                {
+                    pq.keptLasts[nameof(Docked)] = JournalEntry.toLua(entry);
+                    return true;
+                }
+                return false;
+            });
+        }
+        if (!pq.keptLasts.ContainsKey(nameof(FSDJump)))
+        {
+            Game.activeGame?.journals?.walkDeep(true, entry =>
+            {
+                if (entry is FSDJump)
+                {
+                    pq.keptLasts[nameof(FSDJump)] = JournalEntry.toLua(entry);
+                    return true;
+                }
+                return false;
+            });
+        }
+    }
+
+    private DefMsg parseMsgMd(string filepath)
+    {
+        var lines = File.ReadAllLines(filepath);
+        var body = new StringBuilder();
+        var msg = new DefMsg()
+        {
+            id = Path.GetFileNameWithoutExtension(filepath),
+            from = "",
+            body = "",
+            actions = new(),
+        };
+        var firstBlankLine = true;
+        foreach (var line in lines)
+        {
+            if (line.StartsWith("from:", StringComparison.OrdinalIgnoreCase))
+                msg.from = line.Substring("from:".Length).Trim();
+            else if (line.StartsWith("subject:", StringComparison.OrdinalIgnoreCase))
+                msg.subject = line.Substring("subject:".Length).Trim();
+            else if (line.StartsWith("action:", StringComparison.OrdinalIgnoreCase))
+            {
+                var parts = line.Substring("action:".Length).Split(':', StringSplitOptions.TrimEntries)!;
+                msg.actions.Add(parts[0], parts[1]);
+            }
+            else
+            {
+                if (line == "" && firstBlankLine)
+                    firstBlankLine = false;
+                else
+                    body.AppendLine(line);
+            }
+        }
+        msg.body = body.ToString();
+        if (msg.actions.Count == 0) msg.actions = null;
+
+        return msg;
+    }
+
+    public async Task processJournalEntry(JObject raw)
     {
         if (dirty) this.Save();
         dirty = false;
 
-        var tbl = JournalEntry.toLua(entry);
+        var eventName = raw.Value<string>("event");
+
+        // special case: replace with the relevant file contents
+        switch (eventName)
+        {
+            case nameof(Cargo): raw = JObject.FromObject(Game.activeGame!.cargoFile); break;
+            case nameof(Market): raw = JObject.FromObject(Game.activeGame!.marketFile); break;
+            case nameof(NavRoute): raw = JObject.FromObject(Game.activeGame!.navRoute); break;
+            case "Backpack":
+            case "ModulesInfo":
+            case "Outfitting":
+            case "ShipLocker":
+            case "Shipyard":
+            case "FCMaterials":
+                raw = JObject.Load(new JsonTextReader(Data.openSharedStreamReader(Path.Combine(Game.settings.watchedJournalFolder, $"{eventName}.json"))));
+                break;
+        }
+
+        var tbl = raw.toTbl();
 
         foreach (var pq in activeQuests.ToList())
-            dirty |= await pq.processJournalEntry(tbl);
+            dirty |= await pq.processJournalEntry(tbl, raw);
 
         if (dirty)
             this.Save();

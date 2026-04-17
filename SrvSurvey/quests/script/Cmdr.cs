@@ -15,6 +15,52 @@ namespace SrvSurvey.quests.script
         }
 
         [LuaMember]
+        public LuaValue name => Game.activeGame?.Commander ?? "";
+
+        [LuaMember]
+        public LuaValue last(string eventName)
+        {
+            return pc.pq.getLast(eventName);
+        }
+
+        [LuaMember]
+        public LuaValue lastDocked => pc.pq.getLast("Docked");
+
+        [LuaMember]
+        public LuaValue lastFSDJump => pc.pq.getLast("FSDJump");
+
+        [LuaMember]
+        public LuaValue getFactionRep(string factionName)
+        {
+            var match = Game.activeGame?.systemFactions?.Find(f => f.Name == factionName);
+            return match?.MyReputation ?? double.NaN;
+        }
+        [LuaMember]
+        public LuaValue getFactionInf(string factionName)
+        {
+            var match = Game.activeGame?.systemFactions?.Find(f => f.Name == factionName);
+            return match?.Influence ?? double.NaN;
+        }
+
+        [LuaMember]
+        public LuaTable getFactionStates(string factionName, string tense = "active")
+        {
+            var match = Game.activeGame?.systemFactions?.Find(f => f.Name == factionName);
+            if (match == null) return [];
+
+            if (tense == "recovering")
+                return match.RecoveringStates?.Select(s => s.State).toTbl() ?? new LuaTable();
+
+            if (tense == "pending")
+                return match.PendingStates?.Select(s => s.State).toTbl() ?? new LuaTable();
+
+            if (tense == "active")
+                return match.ActiveStates?.Select(s => s.State).toTbl() ?? new[] { match.FactionState }.toTbl();
+
+            throw new Exception($"Bad value for tense, try: active, pending, recovering");
+        }
+
+        [LuaMember]
         public LuaTable status
         {
             get
@@ -63,6 +109,5 @@ namespace SrvSurvey.quests.script
 
             return between;
         }
-
     }
 }

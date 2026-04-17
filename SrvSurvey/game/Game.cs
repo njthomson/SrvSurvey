@@ -1,5 +1,6 @@
 ﻿using BioCriterias;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SrvSurvey.canonn;
 using SrvSurvey.forms;
 using SrvSurvey.net;
@@ -136,6 +137,7 @@ namespace SrvSurvey.game
         public bool guardianMatsFull;
         public bool processDockedOnNextStatusChange = false;
         public bool dockingInProgress = false;
+        public List<SystemFaction>? systemFactions;
 
         public SystemData? systemData;
         public SystemBody? systemBody;
@@ -757,7 +759,7 @@ namespace SrvSurvey.game
             journals.walk(0, false, (entry) =>
             {
                 if (entry is MissionAbandoned || entry is MissionCompleted || entry is MissionFailed)
-                    this.Journals_onJournalEntry(entry, 0);
+                    this.Journals_onJournalEntry(entry, JObject.FromObject(entry));
 
                 return false;
             });
@@ -1086,34 +1088,38 @@ namespace SrvSurvey.game
 
         #region journal tracking for game state and modes
 
-        private void Journals_onJournalEntry(IJournalEntry entry, int index)
+        private void Journals_onJournalEntry(IJournalEntry? entry, JObject raw)
         {
+            var eventName = entry?.@event ?? raw["event"]?.ToString();
             try
             {
-                Game.log($"Game.event => {entry.@event} : {entry.tldr}");
-                // it's important that journey gets to process these first
-                if (this.journey != null)
-                    this.journey.processJournalEntry(entry, true);
+                if (entry != null)
+                {
+                    Game.log($"Game.event => {eventName} : {entry.tldr}");
+                    // it's important that journey gets to process these first
+                    if (this.journey != null)
+                        this.journey.processJournalEntry(entry, true);
 
-                if (this.systemData != null)
-                    this.systemData.Journals_onJournalEntry(entry, true);
+                    if (this.systemData != null)
+                        this.systemData.Journals_onJournalEntry(entry, true);
 
-                // do this after systemData, removing the need for async/deferring things in this file
-                this.onJournalEntry((dynamic)entry);
+                    // do this after systemData, removing the need for async/deferring things in this file
+                    this.onJournalEntry((dynamic)entry);
 
-                // let any active plotters process the entry
-                PlotBase2.processJournalEntry(entry);
+                    // let any active plotters process the entry
+                    PlotBase2.processJournalEntry(entry);
 
-                // upload to EDDN?
-                if (!Game.settings.eddnUpload && EDDN.header != null)
-                    eddn.onJournalEntry(this, entry);
+                    // upload to EDDN?
+                    if (!Game.settings.eddnUpload && EDDN.header != null)
+                        eddn.onJournalEntry(this, entry); // <-- TODO: adapt this to use raw
+                }
 
                 // finally, let active quests know about this
-                cmdrPlay?.processJournalEntry(entry).justDoIt();
+                cmdrPlay?.processJournalEntry(raw).justDoIt();
             }
             catch (Exception ex)
             {
-                Game.log($"Exception processing event '{entry.@event}':\r\n{ex}");
+                Game.log($"Exception processing event '{eventName}':\r\n{ex}");
                 FormErrorSubmit.Show(ex);
             }
         }
@@ -1162,6 +1168,7 @@ namespace SrvSurvey.game
             this.systemData = null;
             this.systemStation = null;
             this.fetchedSystemData = null;
+            this.systemFactions = null;
             this.Status_StatusChanged(false);
 
             // maybe?
@@ -1197,6 +1204,7 @@ namespace SrvSurvey.game
             this.systemData = null;
             this.systemStation = null;
             this.fetchedSystemData = null;
+            this.systemFactions = null;
 
             // forget these things
             this.lastDocked = null;
@@ -1275,6 +1283,7 @@ namespace SrvSurvey.game
                 this.systemData = null;
                 this.systemStation = null;
                 this.fetchedSystemData = null;
+                this.systemFactions = null;
                 this.Status_StatusChanged(false);
 
                 // stop force showing these any time we change systems
@@ -2201,6 +2210,7 @@ namespace SrvSurvey.game
             {
                 // would this ever happen?
                 Game.log($"setLocations: FSDJump/Carrier is a planet?!");
+                Debugger.Break();
 
                 cmdr.currentBody = entry.Body;
                 cmdr.currentBodyId = entry.BodyID;
@@ -2228,6 +2238,9 @@ namespace SrvSurvey.game
             cmdr.lastSystemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
             cmdr.Save();
             this.fireUpdate();
+
+            if (entry is IFactions factionsEntry)
+                this.systemFactions = factionsEntry.Factions;
 
             if (Game.settings.useExternalData)
                 this.fetchSystemData(entry.StarSystem, entry.SystemAddress);
@@ -2307,6 +2320,8 @@ namespace SrvSurvey.game
             if (cmdr == null) return;
 
             Game.log($"setLocations: from Location: {entry.StarSystem} / {entry.Body} ({entry.BodyType})");
+
+            this.systemFactions = entry.Factions;
 
             cmdr.currentSystem = entry.StarSystem;
             cmdr.currentSystemAddress = entry.SystemAddress;
@@ -2576,8 +2591,7 @@ namespace SrvSurvey.game
             // find cmdr's reputation with this faction
             this.journals?.walk(-1, true, entry =>
             {
-                var factionsEntry = entry as IFactions;
-                if (factionsEntry?.Factions != null)
+                if (entry is IFactions factionsEntry && factionsEntry.Factions != null)
                 {
                     if (factionsEntry.SystemAddress == systemData?.address)
                     {

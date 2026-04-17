@@ -58,7 +58,7 @@ namespace SrvSurvey.forms
             foreach (var entry in entries)
             {
                 var obj = JObject.FromObject(entry);
-                Journals_onRawJournalEntry(obj, 0);
+                Journals_onRawJournalEntry(obj);
             }
         }
 
@@ -89,7 +89,7 @@ namespace SrvSurvey.forms
             txtStatusFile.Text = str.ToString();
         }
 
-        private void Journals_onRawJournalEntry(JObject obj, int index)
+        private void Journals_onRawJournalEntry(JObject obj)
         {
             if (treeJournals.Nodes.Count >= maxCount)
                 treeJournals.Nodes.RemoveAt(treeJournals.Nodes.Count - 1);
@@ -160,11 +160,9 @@ namespace SrvSurvey.forms
 
         private void replayNode(JObject? obj)
         {
-            if (obj == null) return;
+            if (obj == null || game.cmdrPlay == null) return;
 
-            var entry = JournalFile.hydrate(obj);
-            if (entry != null)
-                game.cmdrPlay?.processJournalEntry(entry).justDoIt();
+            game.cmdrPlay.processJournalEntry(obj).justDoIt();
         }
 
         private void treeJournals_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)

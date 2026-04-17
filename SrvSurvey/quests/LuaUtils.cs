@@ -1,6 +1,5 @@
 ﻿using Lua;
 using Newtonsoft.Json.Linq;
-using SrvSurvey.game;
 
 namespace SrvSurvey.quests;
 
@@ -12,11 +11,7 @@ internal static class LuaUtils
         if (obj != null)
         {
             var raw = JObject.FromObject(obj);
-            foreach (var (name, token) in raw)
-            {
-                if (name == null || token == null) continue;
-                tbl[name] = token.toLua();
-            }
+            raw.toTbl();
         }
         return tbl;
     }
@@ -80,28 +75,48 @@ internal static class LuaUtils
             }
         }
 
-        if (raw is JObject)
+        if (raw is JObject obj)
         {
-            var obj = (JObject)raw;
-            var tbl = new LuaTable(0, obj.Count);
-
-            foreach (var child in obj)
-                tbl[child.Key] = toLua(child.Value);
-
-            return tbl;
+            return obj.toTbl();
         }
 
         if (raw is JArray)
         {
             var arr = (JArray)raw;
-            var tbl = new LuaTable(arr.Count, 0);
-
-            for (int n = 0; n < arr.Count; n++)
-                tbl[n + 1] = toLua(arr[n]);
-
-            return tbl;
+            return arr.toTbl();
         }
 
         throw new Exception($"Unexpected value: ({raw.GetType().Name}) {raw}");
     }
+
+    public static LuaTable toTbl(this JObject obj)
+    {
+        var tbl = new LuaTable(0, obj.Count);
+
+        foreach (var (name, token) in obj)
+        {
+            if (name == null || token == null) continue;
+            tbl[name] = token.toLua();
+        }
+
+        return tbl;
+    }
+
+    public static LuaTable toTbl(this IEnumerable<object> enumerable)
+    {
+        var list = enumerable.ToList();
+        var tbl = new LuaTable(list.Count(), 0);
+
+        for (int n = 0; n < list.Count(); n++)
+            tbl[n + 1] = toLua(list[n]);
+
+        return tbl;
+    }
 }
+
+public static class LuaFunc
+{    
+    public static string onStart = "onStart";
+    public static string onMsgAction = "onMsgAction";
+    public static string onEmote = "onEmote";
+};

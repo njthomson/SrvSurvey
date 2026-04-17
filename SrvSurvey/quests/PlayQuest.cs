@@ -1,8 +1,8 @@
 ﻿using Lua;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SrvSurvey;
-using SrvSurvey.forms;
-using SrvSurvey.plotters;
+using SrvSurvey.game;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SrvSurvey.quests;
@@ -13,6 +13,7 @@ public class PlayQuest
     [JsonIgnore, AllowNull] public DefQuest quest;
     [JsonIgnore] public string? watchFolder;
     [JsonIgnore] public bool dirty;
+    [JsonIgnore] public PlayChapter? invokingChapter;
 
     #region data members
 
@@ -44,6 +45,9 @@ public class PlayQuest
     /// <summary> Delivered messages </summary>
     public List<PlayMsg> msgs = [];
 
+    /// <summary> The set of actively tracked body locations </summary>
+    public Dictionary<string, LuaValue> vars = [];
+
     /// <summary> A map of last seen journal events </summary>
     //[JsonConverter(typeof(PlayQuest.KeptLastsJsonConverter))] // TODO: <<----
     [JsonIgnore] public Dictionary<string, LuaTable?> keptLasts = [];
@@ -61,7 +65,7 @@ public class PlayQuest
     }
 
     /// <summary> Called by Game.cs so chapters may process journal events as they happen </summary>
-    public async Task<bool> processJournalEntry(LuaTable entry)
+    public async Task<bool> processJournalEntry(LuaTable entry, JObject raw)
     {
         this.dirty = false;
 
@@ -69,11 +73,11 @@ public class PlayQuest
         var triggered = false;
         var activeChapters = chapters.Where(pc => pc.active).ToList();
         foreach (var pc in activeChapters)
-            triggered |= await pc.processJournalEntry(entry);
+            triggered |= await pc.processJournalEntry(entry, raw);
 
         // keep last references? (always after processing)
         var eventName = entry["event"].ToString();
-        if (keptLasts.ContainsKey(eventName))
+        if (keptLasts.ContainsKey(eventName) || eventName == "Docked" || eventName == "FSDJump")
         {
             keptLasts[eventName] = entry;
             dirty = true;
@@ -105,12 +109,14 @@ public class PlayQuest
 
     public void complete()
     {
+        Game.log($"[{this.id}] PQ.complete");
         this.endTime = DateTimeOffset.UtcNow;
         this.dirty = true;
     }
 
     public void fail()
     {
+        Game.log($"[{this.id}] PQ.fail");
         this.endTime = DateTimeOffset.UtcNow;
         this.dirty = true;
 
@@ -121,6 +127,7 @@ public class PlayQuest
 
     public async Task startChapter(string id)
     {
+        Game.log($"[{this.id}] PQ.startChapter: {id}");
         var chapter = chapters.FirstOrDefault(c => c.id == id);
         if (chapter == null) throw new Exception($"Bad chapter id: {id}");
 
@@ -132,8 +139,11 @@ public class PlayQuest
 
     public async Task stopChapter(string id)
     {
+        Game.log($"[{this.id}] PQ.stopChapter: {id}");
         var chapter = chapters.FirstOrDefault(c => c.id == id);
         if (chapter == null) throw new Exception($"Bad chapter id: {id}");
+
+        // TODO: check if this is the only running chapter?
 
         if (!chapter.active) return;
 
@@ -142,8 +152,30 @@ public class PlayQuest
         dirty = true;
     }
 
+    public void setVar(string name, LuaValue val)
+    {
+        Game.log($"[{this.id}] PQ.setVar: {name}");
+
+        if (val == LuaValue.Nil)
+        {
+            // remove if setting Nil
+            dirty |= vars.Remove(name);
+        }
+        else if (!vars.ContainsKey(name) || vars[name] != val)
+        {
+            vars[name] = val;
+            dirty = true;
+        }
+    }
+
+    public LuaValue getVar(string name)
+    {
+        return vars.GetValueOrDefault(name);
+    }
+
     public void sendMsg(PlayMsg newMsg)
     {
+        Game.log($"[{this.id}] PQ.sendMsg: {newMsg.id}");
         newMsg.parent = this;
         if (newMsg.from == null && quest.msgs.Find(m => m.id == newMsg.id) == null)
             throw new Exception($"Bad message: {newMsg.id}");
@@ -162,6 +194,7 @@ public class PlayQuest
 
     public bool deleteMsg(string id)
     {
+        Game.log($"[{this.id}] PQ.deleteMsg: {id}");
         var count = msgs.RemoveAll(m => m.id == id);
         dirty |= count > 0;
 
@@ -173,6 +206,7 @@ public class PlayQuest
     /// <summary> Called by Quest Comms when a player hit a message reply button </summary>
     public async Task invokeMessageAction(string msgId, string actionId)
     {
+        Game.log($"[{this.id}] PQ.invokeMessageAction: {msgId}");
         var pm = msgs.Find(m => m.id == msgId);
         if (pm == null) throw new Exception($"Message not found, id: {msgId}");
         var chapterId = pm.chapter!;
@@ -186,6 +220,7 @@ public class PlayQuest
 
     public void keepLast(params string?[] names)
     {
+        Game.log($"[{this.id}] PQ.keepLast: {string.Join(',', names)}");
         // confirm something is changing
         if (names.Length == keptLasts.Count && keptLasts.Keys.All(n => string.IsNullOrWhiteSpace(n) || names.Contains(n)))
             return;
@@ -199,6 +234,17 @@ public class PlayQuest
 
         this.keptLasts = newKeptLasts;
         dirty = true;
+    }
+
+    public LuaValue getLast(string eventName)
+    {
+        // TODO: check if eventName is valid?
+
+        var last = keptLasts.GetValueOrDefault(eventName);
+        if (last == null)
+            return LuaValue.Nil;
+        else
+            return new LuaValue(last);
     }
 
     /*

@@ -13,80 +13,142 @@ public partial class Objective
         this.pq = pq;
     }
 
-    private void setState(string id, PlayObjective.State newState)
+    private void setState(string[] ids, PlayObjective.State? newState, int current = -1, int total = -1)
     {
-        var obj = pq.objectives.init(id);
-        if (obj.state != newState)
+        Game.log($"[{pq.id}] SO.setState: ({newState}, {current}, {total}) => [{string.Join(", ", ids)}]");
+
+        var dirty = false;
+        foreach (var id in ids)
         {
-            obj.state = newState;
-            pq.dirty = true;
+            if (id == null) continue;
+            if (!pq.quest.objectives.ContainsKey(id)) throw new Exception($"Unknown objective ID: {id}");
+
+            var obj = pq.objectives.init(id);
+
+            if (obj.state != newState && newState.HasValue)
+            {
+                obj.state = newState.Value;
+                dirty = true;
+            }
+            if (obj.current != current && current >= 0)
+            {
+                obj.current = current;
+                dirty = true;
+            }
+            if (obj.total != total && total >= 0)
+            {
+                obj.total = total;
+                dirty = true;
+            }
         }
+        pq.dirty |= dirty;
     }
 
     [LuaMember]
-    public void complete(string id)
+    public void complete(LuaValue val)
     {
-        Game.log($"S_objective.complete [{pq.id}]: {id}");
-        setState(id, PlayObjective.State.complete);
+        var ids = val.Type == LuaValueType.Table
+            ? val.Read<LuaTable>().ToList().Select(kv => kv.Value.ToString()).ToArray()
+            : new[] { val.ToString() };
+
+        setState(ids, PlayObjective.State.complete);
     }
 
     [LuaMember]
-    public void failed(string id)
+    public void failed(LuaValue val)
     {
-        Game.log($"S_objective.complete [{pq.id}]: {id}");
-        setState(id, PlayObjective.State.complete);
+        var ids = val.Type == LuaValueType.Table
+            ? val.Read<LuaTable>().ToList().Select(kv => kv.Value.ToString()).ToArray()
+            : new[] { val.ToString() };
+
+        setState(ids, PlayObjective.State.failed);
     }
 
     [LuaMember]
-    public void hide(string id)
+    public void hide(LuaValue val)
     {
-        Game.log($"S_objective.complete [{pq.id}]: {id}");
-        setState(id, PlayObjective.State.hidden);
+        var ids = val.Type == LuaValueType.Table
+            ? val.Read<LuaTable>().ToList().Select(kv => kv.Value.ToString()).ToArray()
+            : new[] { val.ToString() };
+
+        setState(ids, PlayObjective.State.hidden);
     }
 
     [LuaMember]
-    public void show(string id, int current = -1, int total = -1)
+    public void show(LuaValue val, int current = -1, int total = -1)
     {
-        Game.log($"S_objective.show [{pq.id}]: {id}");
-        setState(id, PlayObjective.State.visible);
+        var ids = val.Type == LuaValueType.Table
+            ? val.Read<LuaTable>().ToList().Select(kv => kv.Value.ToString()).ToArray()
+            : new[] { val.ToString() };
 
-        if (current != -1 && total != -1)
-            this.progress(id, current, total);
+        setState(ids, PlayObjective.State.visible, current, total);
     }
 
     [LuaMember]
-    public void progress(string id, int current, int total)
+    public void progress(LuaValue val, int current, int total)
     {
-        Game.log($"S_objective.progress [{id}]: {id} => {current} of {total}");
+        var ids = val.Type == LuaValueType.Table
+            ? val.Read<LuaTable>().ToList().Select(kv => kv.Value.ToString()).ToArray()
+            : new[] { val.ToString() };
 
-        var obj = pq.objectives.init(id);
-
-        if (obj.current != current)
-        {
-            obj.current = current;
-            pq.dirty = true;
-        }
-
-        if (obj.total != total)
-        {
-            obj.total = total;
-            pq.dirty = true;
-        }
+        setState(ids, null, current, total);
     }
 
     [LuaMember]
-    public void remove(string id)
+    public void remove(LuaValue val)
     {
-        Game.log($"S_objective.remove[{pq.id}]: {id}");
+        var ids = val.Type == LuaValueType.Table
+            ? val.Read<LuaTable>().ToList().Select(kv => kv.Value.ToString()).ToArray()
+            : new[] { val.ToString() };
 
-        pq.dirty |= pq.objectives.Remove(id);
+        Game.log($"[{pq.id}] SO.remove: [{string.Join(", ", ids)}]");
+
+        foreach (var id in ids)
+            pq.dirty |= pq.objectives.Remove(id);
     }
 
     [LuaMember]
     public bool isActive(string id)
     {
-        Game.log($"S_objective.remove[{pq.id}]: {id}");
+        Game.log($"[{pq.id}] SO.isActive: {id}");
         var isVisible = pq.objectives.GetValueOrDefault(id)?.state == PlayObjective.State.visible;
         return isVisible;
+    }
+
+    [LuaMember]
+    public bool check(LuaValue val, string state)
+    {
+        if (!Enum.TryParse<PlayObjective.State>(state, out var isState))
+            throw new Exception($"Bad objective state: '{state}'. Try: " + string.Join(',', Enum.GetNames<PlayObjective.State>()));
+
+        var ids = val.Type == LuaValueType.Table
+            ? val.Read<LuaTable>().ToList().Select(kv => kv.Value.ToString()).ToArray()
+            : new[] { val.ToString() };
+
+        Game.log($"[{pq.id}] SO.check: [{string.Join(", ", ids)}] == {state}");
+
+        foreach (var id in ids)
+        {
+            if (!pq.quest.objectives.ContainsKey(id)) throw new Exception($"Unknown objective ID: {id}");
+
+            var objState = pq.objectives.GetValueOrDefault(id)?.state ?? default;
+            if (objState != isState)
+                return false;
+        }
+        return true;
+    }
+
+    [LuaMember]
+    public int getCurrent(string id)
+    {
+        if (!pq.quest.objectives.ContainsKey(id)) throw new Exception($"Unknown objective ID: {id}");
+        return pq.objectives.GetValueOrDefault(id)?.current ?? default;
+    }
+
+    [LuaMember]
+    public int getTotal(string id)
+    {
+        if (!pq.quest.objectives.ContainsKey(id)) throw new Exception($"Unknown objective ID: {id}");
+        return pq.objectives.GetValueOrDefault(id)?.total ?? default;
     }
 }

@@ -1,6 +1,4 @@
 ﻿using Lua;
-using SrvSurvey;
-using SrvSurvey.game;
 
 namespace SrvSurvey.quests.script;
 
@@ -17,14 +15,12 @@ public partial class Quest
     [LuaMember]
     public void complete()
     {
-        Game.log($"S_quest.complete [{pq.id}]");
         pq.complete();
     }
 
     [LuaMember]
     public void fail()
     {
-        Game.log($"S_quest.fail [{pq.id}]");
         pq.fail();
     }
 
@@ -35,36 +31,60 @@ public partial class Quest
     }
 
     [LuaMember]
+    public async Task nextChapter(string id)
+    {
+        await pq.startChapter(id);
+        await pq.stopChapter(pq.invokingChapter!.id);
+    }
+
+    [LuaMember]
     public async Task stopChapter(string id)
     {
         await pq.stopChapter(id);
     }
 
     [LuaMember]
+    public void set(string name, LuaValue val)
+    {
+        pq.setVar(name, val);
+    }
+
+    [LuaMember]
+    public LuaValue get(string name)
+    {
+        return pq.getVar(name);
+    }
+
+    [LuaMember]
     public void sendMsg(string? id = null, string? from = null, string? subject = null, string? body = null)
     {
-        // do we have a pre-published message?
-        var msg = id == null ? null : pq.quest.msgs.Find(m => m.id == id);
-
-        // TODO: msg tracking and delivery needs to be reworked
-
-        if (msg == null && id != null && from != null && body != null)
-        {
-            msg = new()
-            {
-                id = id,
-                from = "",
-                body = "",
-            };
-        }
-        if (msg?.actions != null)
-            throw new Exception($"quest.sendMsg() does not accept messages with actions");
+        // do we have a prepared message?
+        var defMsg = id == null ? null : pq.quest.msgs.Find(m => m.id == id);
 
         // create a delivered message from it, overriding strings as necessary
-        var newMsg = PlayMsg.send(msg, from, subject, body);
-        pq.sendMsg(newMsg);
+        var chapter = this.pq.invokingChapter?.id;
+        if (defMsg?.actions != null && chapter == null) throw new Exception($"Chapter must be set when using messages with actions. Id: {defMsg.id}");
 
-        Game.log($"S_quest.sendMsg [{pq.id}]: {id}: {newMsg.subject ?? newMsg.body}");
+        var playMsg = new PlayMsg()
+        {
+            id = defMsg?.id ?? DateTimeOffset.UtcNow.ToString("yyyyMMddhhmmss"),
+            from = from ?? defMsg?.from,
+            subject = subject ?? defMsg?.subject,
+            body = body ?? defMsg?.body,
+            received = DateTimeOffset.UtcNow,
+            chapter = chapter,
+            actions = defMsg?.actions?.Keys.ToArray(),
+        };
+
+        // store nothing if the following values match the template Msg
+        if (defMsg != null)
+        {
+            if (playMsg.from == defMsg.from) playMsg.from = null;
+            if (playMsg.subject == defMsg.subject) playMsg.subject = null;
+            if (playMsg.body == defMsg.body) playMsg.body = null;
+        }
+
+        pq.sendMsg(playMsg);
     }
 
     [LuaMember]
@@ -141,17 +161,5 @@ public partial class Quest
             .ToArray();
 
         pq.keepLast(names);
-    }
-
-    [LuaMember]
-    public LuaValue getLast(string eventName)
-    {
-        // TODO: check if eventName is valid?
-
-        var last = pq.keptLasts.GetValueOrDefault(eventName);
-        if (last == null)
-            return LuaValue.Nil;
-
-        return new LuaValue(last);
     }
 }

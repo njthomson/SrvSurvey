@@ -569,6 +569,7 @@ namespace SrvSurvey
         // { "Name":"Social Maridwyn Green Party", "FactionState":"None", "Government":"Democracy", "Influence":0.027559, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }
         // { "Name":"Federal Reclamation Co", "FactionState":"Expansion", "Government":"Corporate", "Influence":0.322835, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":97.425003, "ActiveStates":[ { "State":"Expansion" } ] }
         // { "Name":"Maridwyn Co", "FactionState":"None", "Government":"Corporate", "Influence":0.487205, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000, "RecoveringStates":[ { "State":"Boom", "Trend":0 } ] },
+        // { "Name":"Imperial Navy Australia", "FactionState":"None", "Government":"Dictatorship", "Influence":0.417000, "Allegiance":"Empire", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":-9.285400, "PendingStates":[ { "State":"Expansion", "Trend":0 } ] }
         public string Name;
         public string FactionState;
         public string Government;
@@ -578,6 +579,7 @@ namespace SrvSurvey
         public string Happiness_Localised;
         public double MyReputation;
         public List<SystemFactionState>? RecoveringStates;
+        public List<SystemFactionState>? PendingStates;
         public List<SystemFactionState>? ActiveStates;
     }
 
@@ -586,7 +588,7 @@ namespace SrvSurvey
         // { "State":"Expansion" }
         // { "State":"Boom", "Trend":0 }
         public string State;
-        //public double Trend;
+        public double? Trend;
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
@@ -1053,7 +1055,7 @@ namespace SrvSurvey
 
         public string Type;
         public int Threat;
-        public string? MarketID;
+        public long MarketID;
     }
 
     public class MaterialCollected : JournalEntry
@@ -1548,4 +1550,51 @@ namespace SrvSurvey
     }
 
 
+    /*
+    public class BuySuit : JournalEntry
+    {
+        // { "timestamp":"2026-04-14T03:16:49Z", "event":"BuySuit", "Name":"ExplorationSuit_Class1", "Name_Localised":"Artemis Suit", "Price":150000, "SuitID":1862414221705738, "SuitMods":[  ] }
+        public string Name;
+        public string Name_Localised;
+        public int Price;
+        public long SuitID;
+        public List<string> SuitMods;
+    }
+
+    public class SellSuit : JournalEntry
+    {
+        // { "timestamp":"2022-03-19T07:35:23Z", "event":"SellSuit", "SuitID":1717554174321294, "SuitMods":[  ], "Name":"explorationsuit_class2", "Name_Localised":"$ExplorationSuit_Class1_Name;", "Price":270000 }
+        public string Name;
+        public string Name_Localised;
+        public int Price;
+        public long SuitID;
+        public List<string> SuitMods;
+    }
+
+    public class BuyDrones : JournalEntry
+    {
+        // { "timestamp":"2026-04-14T03:39:58Z", "event":"BuyDrones", "Type":"Drones", "Count":1, "BuyPrice":101, "TotalCost":101 }
+        public string Type;
+        public int Count;
+        public int BuyPrice;
+        public int TotalCost;
+    }
+
+    public class SellDrones : JournalEntry
+    {
+        // { "timestamp":"2026-04-14T03:40:48Z", "event":"SellDrones", "Type":"Drones", "Count":1, "SellPrice":100, "TotalSale":100 }
+        public string Type;
+        public int Count;
+        public int SellPrice;
+        public int TotalSale;
+    }
+
+    public class HullDamage : JournalEntry
+    {
+        // { "timestamp":"2026-04-14T04:57:41Z", "event":"HullDamage", "Health":0.593017, "PlayerPilot":true, "Fighter":false }
+        public double Health;
+        public bool PlayerPilot;
+        public bool Fighter;
+    }
+    */
 }
