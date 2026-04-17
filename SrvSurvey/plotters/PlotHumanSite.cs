@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.net;
+using SrvSurvey.quests;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.Diagnostics;
@@ -530,7 +531,7 @@ namespace SrvSurvey.plotters
             var headerLeftSz = tt.draw(N.eight, headerTxt);
 
             // quest related?
-            if (game.cmdrPlay?.isTagged(station.name) == true)
+            if (PlayState.cmdr?.isTagged(station.name) == true)
                 PlotQuestMini.drawLogo(g, tt.dtx + N.six, N.eight, true, N.oneFour);
 
             // (one time) figure out how much space we need for the zoom headers
@@ -671,8 +672,8 @@ namespace SrvSurvey.plotters
             this.resetMiddleRotated(g);
 
             // draw any quest markers?
-            if (game.cmdrPlay?.activeQuests.Count > 0)
-                drawQuestMarkers(g);
+            if (PlayState.cmdr?.activeQuests.Count > 0)
+                drawQuestMarkers(g, PlayState.cmdr);
 
             this.drawShipAndSrvLocation(g, tt);
 
@@ -959,11 +960,9 @@ namespace SrvSurvey.plotters
             }
         }
 
-        private void drawQuestMarkers(Graphics g)
+        private void drawQuestMarkers(Graphics g, PlayState ps)
         {
-            if (game.cmdrPlay?.activeQuests == null) return;
-
-            foreach (var pq in game.cmdrPlay.activeQuests)
+            foreach (var pq in ps.activeQuests)
             {
                 if (pq.bodyLocations.Count == 0) continue;
 

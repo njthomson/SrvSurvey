@@ -10,7 +10,7 @@ using System.Xml.Linq;
 
 namespace SrvSurvey.forms
 {
-    [TrackPosition, Draggable]
+    [Draggable]
     internal partial class FormPlayComms : SizableForm
     {
         public static void toggleForm()
@@ -66,52 +66,57 @@ namespace SrvSurvey.forms
             this.Activated += (o, s) => KeyboardHook.redirect = true;
             this.Deactivate += (o, s) => KeyboardHook.redirect = false;
 
-            this.Height = 800;
+            // only show in debug builds
+            btnWatch.Visible = Debugger.IsAttached;
+            btnDev.Visible = Debugger.IsAttached;
+
+            if (PlayState.cmdr != null)
+                this.cmdrPlay = PlayState.cmdr;
+
             //this.Font = GameColors.Fonts.console_16;
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            // position ourself over the top/right quadrant of the game
+            var r = Elite.getWindowRect();
+            if (r.Width > 0)
+            {
+                this.Width = (int)(r.Width * 0.3f);
+                this.Height = (int)(r.Height * 0.5f);
+                this.Left = r.Right - this.Width - 20;
+                this.Top = r.Top + 10 + (PlotBase2.getPlotter<PlotQuestMini>()?.bottom ?? 20);
+                Application.DoEvents();
+            }
+
             this.BackgroundImage = GameGraphics.getBackgroundImage(this.ClientSize, true);
             this.Invalidate();
             Application.DoEvents();
 
-            if (cmdrPlay != null)
-            {
-                // no op
-                PlayState.updateUI();
-            }
-            else if (Game.activeGame?.cmdrPlay == null)
+            if (cmdrPlay == null)
             {
                 this.setChildrenEnabled(false);
-                PlayState.loadAsync(CommanderSettings.currentOrLastFid).continueOnMain(this, rslt =>
+                PlayState.loadAsync(CommanderSettings.currentOrLastFid).continueOnMain(this, ps =>
                 {
-                    if (rslt != null)
+                    this.cmdrPlay = ps;
+                    this.setChildrenEnabled(true, btnWatch);
+                    if (cmdrPlay.messagesUnread > 0)
                     {
-                        this.cmdrPlay = rslt;
-                        this.setChildrenEnabled(true, btnWatch);
-                        if (cmdrPlay.messagesUnread > 0)
-                        {
-                            mode = "msgs";
-                            btnMsgs.Focus();
-                            showMsgs();
-                        }
-                        else
-                        {
-                            btnQuests.Focus();
-                            showQuests();
-                        }
-                        PlayState.updateUI();
+                        mode = "msgs";
+                        btnMsgs.Focus();
+                        showMsgs();
                     }
+                    else
+                    {
+                        btnQuests.Focus();
+                        showQuests();
+                    }
+                    PlayState.updateUI();
                 });
                 return;
             }
-            else
-            {
-                this.cmdrPlay = Game.activeGame.cmdrPlay;
-            }
-
 
             PlayState.updateUI();
 

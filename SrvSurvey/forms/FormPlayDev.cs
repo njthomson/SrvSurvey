@@ -31,7 +31,6 @@ namespace SrvSurvey.forms
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
-
             menuWatch.Enabled = Game.activeGame != null;
         }
 
@@ -42,25 +41,13 @@ namespace SrvSurvey.forms
                 .ToDictionary(pq => pq.id, pq => pq.watchFolder);
 
             this.setChildrenEnabled(false);
-            if (Game.activeGame?.cmdrPlay == null)
-            {
-                var newState = await PlayState.loadAsync(CommanderSettings.currentOrLastFid);
-                if (newState != null)
-                {
-                    this.cmdrPlay = newState;
-                    this.setChildrenEnabled(true, checkWatchFolder, btnRun, txtCode);
-                    initComboQuests();
-                }
-            }
+            if (PlayState.cmdr == null || reset)
+                this.cmdrPlay = await PlayState.loadAsync(PlayState.cmdr?.fid ?? CommanderSettings.currentOrLastFid);
             else
-            {
-                if (reset)
-                    await Game.activeGame.resetCmdrPlay();
+                this.cmdrPlay = PlayState.cmdr;
 
-                this.cmdrPlay = Game.activeGame.cmdrPlay;
-                initComboQuests();
-                this.setChildrenEnabled(true, checkWatchFolder, btnRun, txtCode);
-            }
+            initComboQuests();
+            this.setChildrenEnabled(true, checkWatchFolder, btnRun, txtCode);
 
             if (folderWatches?.Count > 0 && cmdrPlay != null)
             {
@@ -437,6 +424,11 @@ namespace SrvSurvey.forms
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void btnPublish_Click(object sender, EventArgs e)
+        {
+            Game.rcc.publishQuest(pq.quest).justDoIt();
         }
     }
 }

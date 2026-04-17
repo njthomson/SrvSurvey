@@ -172,7 +172,6 @@ namespace SrvSurvey.game
         public CommanderSettings cmdr;
         public CommanderCodex cmdrCodex;
         public ColonyData cmdrColony;
-        public PlayState? cmdrPlay;
         public CommanderJourney? journey;
 
         public SystemPoi? canonnPoi = null;
@@ -640,7 +639,8 @@ namespace SrvSurvey.game
                 if (Game.settings.buildProjects_TEST)
                     this.cmdrColony.fetchLatest().justDoIt();
 
-                if (Game.settings.enableQuests) resetCmdrPlay().justDoIt();
+                if (Game.settings.enableQuests)
+                    PlayState.loadAsync(this.cmdr.fid).justDoIt();
             }
 
             // if we have MainMenu music - we know we're not actively playing
@@ -781,14 +781,6 @@ namespace SrvSurvey.game
             // do this last and a bit delayed, once initialization finished
             if (Game.settings.useExternalData && this.systemData != null)
                 Program.defer(() => this.fetchSystemData(this.systemData.name, this.systemData.address));
-        }
-
-        public async Task<PlayState?> resetCmdrPlay()
-        {
-            if (!Game.settings.enableQuests) return null;
-
-            this.cmdrPlay = await PlayState.loadAsync(this.cmdr.fid);
-            return this.cmdrPlay;
         }
 
         public void initHumanSite()
@@ -1093,9 +1085,9 @@ namespace SrvSurvey.game
             var eventName = entry?.@event ?? raw["event"]?.ToString();
             try
             {
+                Game.log($"Game.event => {eventName} : {entry?.tldr}");
                 if (entry != null)
                 {
-                    Game.log($"Game.event => {eventName} : {entry.tldr}");
                     // it's important that journey gets to process these first
                     if (this.journey != null)
                         this.journey.processJournalEntry(entry, true);
@@ -1115,7 +1107,7 @@ namespace SrvSurvey.game
                 }
 
                 // finally, let active quests know about this
-                cmdrPlay?.processJournalEntry(raw).justDoIt();
+                PlayState.cmdr?.processJournalEntry(raw).justDoIt();
             }
             catch (Exception ex)
             {

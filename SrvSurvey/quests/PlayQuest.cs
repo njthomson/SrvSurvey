@@ -12,12 +12,15 @@ public class PlayQuest
     [JsonIgnore, AllowNull] internal PlayState parent;
     [JsonIgnore, AllowNull] public DefQuest quest;
     [JsonIgnore] public string? watchFolder;
+    [JsonIgnore] public bool dev;
     [JsonIgnore] public bool dirty;
     [JsonIgnore] public PlayChapter? invokingChapter;
 
     #region data members
 
+    public required string publisher;
     public required string id;
+    public required double ver;
 
     /// <summary> The state of objectives </summary>
     public Dictionary<string, PlayObjective> objectives = [];
@@ -50,7 +53,7 @@ public class PlayQuest
 
     /// <summary> A map of last seen journal events </summary>
     //[JsonConverter(typeof(PlayQuest.KeptLastsJsonConverter))] // TODO: <<----
-    [JsonIgnore] public Dictionary<string, LuaTable?> keptLasts = [];
+    public Dictionary<string, LuaTable?> keptLasts = [];
 
     #endregion
 
@@ -244,7 +247,7 @@ public class PlayQuest
         if (last == null)
             return LuaValue.Nil;
         else
-            return new LuaValue(last);
+            return last;
     }
 
     /*

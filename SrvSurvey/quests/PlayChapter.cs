@@ -36,6 +36,13 @@ public class PlayChapter
 
     #endregion
 
+    [SetsRequiredMembers]
+    public PlayChapter(string id, PlayQuest pq)
+    {
+        this.id = id;
+        this.pq = pq;
+    }
+
     private string? src => pq.quest.chapters.GetValueOrDefault(id);
 
     /// <summary> Returns true if this chapter is currently active </summary>
@@ -151,14 +158,11 @@ end");
         if (state == null)
             state = await this.load();
 
-        if (state.Environment.ContainsKey(LuaFunc.onStart))
+        var hasOnStart = state.Environment.ContainsKey(LuaFunc.onStart);
+        Game.log($"Starting chapter: {id}, run onStart: {hasOnStart}");
+        if (hasOnStart)
         {
-            var onStartFunc = state.Environment[LuaFunc.onStart];
-            if (onStartFunc.Type != LuaValueType.Function) throw new Exception($"Bad LuaType. Expected Function, got: {onStartFunc.Type}");
-
-            Game.log($"Starting chapter: {id}, run onStart: {onStartFunc != LuaValue.Nil}");
-            await state.CallAsync(onStartFunc, new LuaValue[] { });
-
+            await invokeLuaFunc(LuaFunc.onStart, new LuaValue[] { });
             pq.dirty = true;
         }
     }

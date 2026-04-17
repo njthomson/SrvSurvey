@@ -22,7 +22,7 @@ namespace SrvSurvey.plotters
         {
             return Game.settings.enableQuests
                 // NOT suppressed by buildProjectsSuppressOtherOverlays
-                && game.cmdrPlay?.activeQuests.Count > 0
+                && PlayState.cmdr?.activeQuests.Count > 0
                 && game.isMode(GameMode.Flying, GameMode.SuperCruising, GameMode.GlideMode, GameMode.InSrv, GameMode.OnFoot, GameMode.OnFootInStation, GameMode.InTaxi, GameMode.CommsPanel, GameMode.InFighter, GameMode.Docked, GameMode.Landed, GameMode.FSDJumping, GameMode.StationServices, GameMode.ExternalPanel)
                 ;
         }
@@ -71,9 +71,11 @@ namespace SrvSurvey.plotters
         {
             drawLogo(g, N.eight, N.eight, showStripe, 16);
 
-            var pq = game.cmdrPlay?.activeQuests.FirstOrDefault();
-            var countUnread = game.cmdrPlay?.messagesUnread ?? -1;
-            var hasUnreadMsgs = countUnread > 0;
+            var ps = PlayState.cmdr;
+            if (ps == null) return this.size;
+
+            var pq = ps.activeQuests.FirstOrDefault();
+            var hasUnreadMsgs = ps.messagesUnread > 0;
             var newShowStripe = hasUnreadMsgs; // || pq?.objectives.Any() == true;
             if (newShowStripe != showStripe)
             {
@@ -98,26 +100,25 @@ namespace SrvSurvey.plotters
             {
                 tt.dty += N.six;
                 //drawEnvelope(g, N.ten, tt.dty + 1, N.twoFour, C.Pens.orange2r);
-                tt.draw(N.threeTwo, $"Unread messages: {countUnread}", C.cyan, GameColors.Fonts.gothic_9);
+                tt.draw(N.threeTwo, $"Unread messages: {ps.messagesUnread}", C.cyan, GameColors.Fonts.gothic_9);
                 tt.newLine(N.four, true);
             }
 
             hasBodyMarkers = false;
-            if (game.cmdrPlay?.activeQuests.Count > 0)
-                drawQuestMarkers(g, tt);
+            if (ps.activeQuests.Count > 0)
+                drawQuestMarkers(g, tt, ps);
 
             tt.setMinWidth(24);
             tt.setMinHeight(32);
             return tt.pad(N.ten, N.two);
         }
 
-        private void drawQuestMarkers(Graphics g, TextCursor tt)
+        private void drawQuestMarkers(Graphics g, TextCursor tt, PlayState ps)
         {
-            if (game.cmdrPlay?.activeQuests == null) return;
             var cmdr = Status.here;
             var radius = game.status.PlanetRadius;
 
-            foreach (var pq in game.cmdrPlay.activeQuests)
+            foreach (var pq in ps.activeQuests)
             {
                 if (pq.bodyLocations.Count == 0) continue;
                 hasBodyMarkers = true;
@@ -224,7 +225,7 @@ namespace SrvSurvey.plotters
 
             y += h;
             g.DrawLineR(p, x, y, h, h);
-            g.DrawLineR(p, x + h, y+ h, sz, -sz);
+            g.DrawLineR(p, x + h, y + h, sz, -sz);
         }
 
         #endregion

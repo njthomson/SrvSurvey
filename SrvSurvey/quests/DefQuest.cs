@@ -4,7 +4,7 @@
 public class DefQuest
 {
     public required string id;
-    public required float ver;
+    public required double ver;
     public required string publisher;
     public required string title;
     public string? desc;

@@ -6,7 +6,7 @@ namespace SrvSurvey.quests;
 /// <summary> A runtime/delivered message. Content fields will be null unless they are overriding statically declared values </summary>
 public class PlayMsg
 {
-    [JsonIgnore, AllowNull] public PlayQuest parent;
+    [JsonIgnore] public PlayQuest parent;
 
     public string id;
     public DateTimeOffset received;

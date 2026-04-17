@@ -7,6 +7,7 @@ using SrvSurvey.game.RavenColonial;
 using SrvSurvey.net;
 using SrvSurvey.plotters;
 using SrvSurvey.Properties;
+using SrvSurvey.quests;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.ComponentModel;
@@ -185,6 +186,7 @@ namespace SrvSurvey
 
                         this.setChildrenEnabled(true);
                         btnCodexShow.Enabled = FormShowCodex.allow;
+                        btnQuestComms.Enabled = false;
                         this.updateCommanderTexts();
 
                         this.timer1.Start();
@@ -457,10 +459,11 @@ namespace SrvSurvey
             groupCodex.Invalidate();
 
             // enable button only if this system has some bio signals
-            btnPredictions.Enabled = Game.activeGame?.systemData?.bioSignalsTotal > 0;
+            btnPredictions.Enabled = game?.systemData?.bioSignalsTotal > 0;
 
             // ShowCodex button and form
             this.btnCodexShow.Enabled = FormShowCodex.allow;
+            this.btnQuestComms.Enabled = PlayState.cmdr != null;
             if (!FormShowCodex.allow) BaseForm.close<FormShowCodex>();
 
             if (newMode == GameMode.MainMenu)
@@ -1900,23 +1903,20 @@ namespace SrvSurvey
 
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
-            BaseForm.show<FormCodexBingo>();
-            //BioPredictor.testMissedSystem().justDoIt();
-
-            //var filterMarket = new Spansh.SearchQuery.Markets();
-            //filterMarket.Add(new Spansh.SearchQuery.Market() { name = "Copper", supply = new Spansh.Query.Market.Clause(100, 10_000_000) });
-            //var filterType = new Spansh.SearchQuery.Values("Asteroid base", "Coriolis Starport", "Dockable Planet Station", "GameplayPOI", "Mega ship", "Ocellus Starport", "Orbis Starport", "Outpost", "Planetary Outpost", "Planetary Port", "Settlement", "Surface Settlement");
-            //var q = new Spansh.SearchQuery
-            //{
-            //    page = 0,
-            //    size = 10,
-            //    sort = new() { new("distance", net.SortOrder.asc) },
-            //    reference_system = "IC 2391 Sector LH-V b2-5",
-            //    filters = new() {
-            //        { "market", filterMarket },
-            //        { "type", filterType },
-            //    },
-            //};
+            if (!ModifierKeys.HasFlag(Keys.Shift) || this.game == null)
+                BaseForm.show<FormCodexBingo>();
+            else
+            {
+                // temp behaviour - need to create a more formal entry point :)
+                PlayState.enableGaltea1(this.game).justDoIt(() =>
+                {
+                    Program.defer(() =>
+                    {
+                        btnQuestComms.Visible = Game.settings.enableQuests;
+                        Elite.setFocusED();
+                    });
+                });
+            }
         }
 
         private void btnLogs_Click(object sender, EventArgs e)

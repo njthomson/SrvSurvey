@@ -12,11 +12,11 @@ namespace SrvSurvey.game
 
         private static readonly Dictionary<string, CommanderSettings> cache = new();
 
-        public static CommanderSettings Load(string fid, bool isOdyssey, string commanderName, bool noCache = false)
+        public static CommanderSettings Load(string fid, bool isOdyssey, string? commanderName, bool noCache = false)
         {
             // use cache entry if present
-            if (!noCache && cache.TryGetValue(fid, out CommanderSettings? value))
-                return value!;
+            if (cache.TryGetValue(fid, out CommanderSettings? value))
+                return value;
 
             var mode = isOdyssey ? "live" : "legacy";
             var filepath = Path.Combine(Program.dataFolder, $"{fid}-{mode}.json");
@@ -24,18 +24,21 @@ namespace SrvSurvey.game
             var data = Data.Load<CommanderSettings>(filepath) ?? new CommanderSettings()
             {
                 filepath = filepath,
-                commander = commanderName,
+                commander = commanderName!,
                 fid = fid,
                 isOdyssey = isOdyssey,
             };
 
             // save an update if Commander name has changed
-            if (data.commander != commanderName)
+            if (commanderName != null && data.commander != commanderName)
             {
                 Game.log($"Updating CommanderSettings cmdr: {data.commander} => {commanderName}");
                 data.commander = commanderName;
                 data.Save();
             }
+
+            // and cache?
+            if (!noCache && commanderName != null) cache[fid] = data;
 
             return data;
         }
@@ -57,7 +60,7 @@ namespace SrvSurvey.game
 
             // otherwise load the last active cmdr
             if (cmdr == null && Game.settings.lastCommander != null && Game.settings.lastFid != null)
-                cmdr = CommanderSettings.Load(Game.settings.lastFid, true, Game.settings.lastCommander);
+                cmdr = CommanderSettings.Load(Game.settings.lastFid, true, Game.settings.lastCommander, true);
 
             if (throwIfMissing && cmdr == null)
                 throw new Exception("You must use SrvSurvey at least once before this will work");

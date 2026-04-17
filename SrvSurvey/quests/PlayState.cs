@@ -7,20 +7,24 @@ using System.Text;
 
 namespace SrvSurvey.quests;
 
+// TODO: common code file?
+
 internal class PlayState : Data
 {
     #region static + loading code
 
     private static string folder = Path.Combine(Program.dataFolder, "quests");
 
-    public static Task<PlayState?> loadAsync(string fid)
+    public static PlayState? cmdr;
+
+    public static Task<PlayState> loadAsync(string fid)
     {
         return Task.Run(async () =>
         {
-            PlayState? newState = null;
             try
             {
-                newState = await PlayState.load(fid);
+                cmdr = await PlayState.loadInner(fid);
+                PlayState.updateUI();
             }
             catch (Exception ex)
             {
@@ -29,12 +33,13 @@ internal class PlayState : Data
                 {
                     FormErrorSubmit.Show(ex);
                 });
+                throw;
             }
-            return newState;
+            return cmdr;
         });
     }
 
-    public static async Task<PlayState> load(string fid)
+    private static async Task<PlayState> loadInner(string fid)
     {
         if (!string.IsNullOrEmpty(folder) && !Directory.Exists(folder))
             Directory.CreateDirectory(folder);
@@ -50,34 +55,30 @@ internal class PlayState : Data
                 filepath = filepath,
             };
             ps.Save();
+
+            // and store empty state on server
+            await Game.rcc.saveCmdrQuests(ps.activeQuests);
         }
         else
         {
             // parse existing state
             ps = Data.Load<PlayState>(filepath)!;
 
+            // load state for all quests
+            ps.activeQuests = await Game.rcc.loadCmdrQuests(fid);
+            // then hydrate them
             foreach (var pq in ps.activeQuests)
+                await ps.initQuest(pq, false);
+
+            // and a devQuest?
+            if (ps.devQuest != null)
             {
-                pq.parent = ps;
-
-                // TODO: use a server for this ...
-                var questPath = Path.Combine(folder, $"{pq.id}.json");
+                var questPath = Path.Combine(folder, $"dev-{ps.devQuest.id}.json");
                 if (!File.Exists(questPath)) throw new Exception($"Missing! {questPath}");
-
                 var questJson = File.ReadAllText(questPath);
-                pq.quest = JsonConvert.DeserializeObject<DefQuest>(questJson)!;
+                ps.devQuest.quest = JsonConvert.DeserializeObject<DefQuest>(questJson)!;
 
-                foreach (var pm in pq.msgs)
-                    pm.parent = pq;
-
-                foreach (var pc in pq.chapters)
-                {
-                    pc.pq = pq;
-
-                    if (pc.active)
-                        await pc.load();
-                }
-
+                await ps.initQuest(ps.devQuest, false);
             }
         }
 
@@ -97,79 +98,119 @@ internal class PlayState : Data
 
     #region data members
 
-    public string fid = "F123";
-    public List<PlayQuest> activeQuests = [];
+    public string fid = "";
+    public List<QuestRef> activeRefs = [];
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public PlayQuest? devQuest;
 
     // TODO: store cmdr level variables?
 
-    /* TODO: paused and completed quests? Maybe ...
-     * 
-     * public List<PlayQuest> quests = [];
-     * 
-     * public [JsonIgnore] List<PlayQuest> activeQuests => quests.Where(pq => pq.active).ToList();
-     */
-
     #endregion
 
+    [JsonIgnore] public List<PlayQuest> activeQuests = [];
     [JsonIgnore] public bool dirty;
     [JsonIgnore] public int messagesTotal => activeQuests.Sum(q => q.msgs.Count);
     [JsonIgnore] public int messagesUnread => activeQuests.Sum(pq => pq.unreadMessageCount);
 
+    public override void Save()
+    {
+        base.Save();
+
+        // space this out so we're not hitting the server too often
+        Util.deferAfter(5000, async () =>
+        {
+            await Game.rcc.saveCmdrQuests(this.activeQuests);
+        });
+    }
+
+    /// <summary> Onboard a cmdr to a new quest </summary>
+    public async Task<PlayQuest> activateQuest(string publisher, string id)
+    {
+        // download quest def (ver "0" guarantee's we get the latest version)
+        var q = await Game.rcc.getQuest(publisher, id, 0);
+        Game.log($"Activating NEW quest: {q.publisher} / {q.id} / {q.id}");
+
+        var pq = new PlayQuest()
+        {
+            parent = this,
+            publisher = q.publisher,
+            id = q.id,
+            ver = q.ver,
+            quest = q,
+            startTime = DateTime.UtcNow,
+            // quest must be null, so we download from the server
+        };
+        pq.chapters = q.chapters.Keys.Select(id => new PlayChapter(id, pq)).ToHashSet();
+
+        await initQuest(pq, true);
+
+
+        PlayState.updateUI(pq);
+        return pq;
+    }
+
+    private async Task initQuest(PlayQuest pq, bool startFirstChapterAndSave)
+    {
+        pq.parent = this;
+
+        // pull quest def from the server
+        if (pq.quest == null)
+            pq.quest = await Game.rcc.getQuest(pq.publisher, pq.id, pq.ver);
+
+        // fetch always last known's
+        setPriorKepts(pq);
+
+        foreach (var pm in pq.msgs)
+            pm.parent = pq;
+
+        foreach (var pc in pq.chapters)
+        {
+            pc.pq = pq;
+            if (pc.active)
+                await pc.load();
+        }
+
+        if (startFirstChapterAndSave)
+        {
+            // start first chapter?
+            var firstChapter = pq.chapters.FirstOrDefault(c => c.id == pq.quest.firstChapter);
+            if (firstChapter != null && firstChapter.endTime == null)
+                await pq.startChapter(pq.quest.firstChapter);
+
+            // remove any prior versions
+            this.activeRefs.RemoveAll(r => r.publisher == pq.publisher && r.id == pq.id);
+            this.activeRefs.Add(new QuestRef(pq.publisher, pq.id, pq.ver));
+            this.activeQuests.Add(pq);
+            this.Save();
+        }
+    }
 
     public async Task<PlayQuest> sideLoad(string folder)
     {
-        Game.log($"Begin: Importing quest from: {folder}");
-        var issues = new StringBuilder();
+        Game.log($"Begin: sideLoad quest from: {folder}");
 
         // import quest.json
-        var newQuest = JsonConvert.DeserializeObject<DefQuest>(File.ReadAllText(Path.Combine(folder, "quest.json")))!;
+        var dq = JsonConvert.DeserializeObject<DefQuest>(File.ReadAllText(Path.Combine(folder, "quest.json")))!;
 
-        /*// import messages from .json files -- OLD --
-        var msgFiles = Directory.GetFiles(folder, "msg*.json");
+        // import messages from .md files
+        var msgFiles = Directory.GetFiles(folder, "*.md");
         foreach (var filepath in msgFiles)
-        {
-            var msgs = JsonConvert.DeserializeObject<DefMsg[]>(File.ReadAllText(filepath))!;
-
-            // check for duplicate IDs
-            var priorIDs = newQuest.msgs.Select(m => m.id);
-            var dupeIDs = msgs.Where(m => priorIDs.Contains(m.id)).Select(m => m.id);
-            if (dupeIDs.Any())
-            {
-                Game.log($"Duplicate msg IDs: [{dupeIDs}], in: {filepath.Replace(folder, "\"")}");
-                continue;
-            }
-
-            newQuest.msgs.AddRange(msgs);
-        } // */
-        // import messages from .md files -- NEW --
-        var msgFiles2 = Directory.GetFiles(folder, "*.md");
-        foreach (var filepath in msgFiles2)
-        {
-            var msg = parseMsgMd(filepath);
-
-            // check for duplicate IDs ?
-            //var priorIDs = newQuest.msgs.Select(m => m.id);
-            //var dupeIDs = msgs.Where(m => priorIDs.Contains(m.id)).Select(m => m.id);
-            //if (dupeIDs.Any())
-            //{
-            //    Game.log($"Duplicate msg IDs: [{dupeIDs}], in: {filepath.Replace(folder, "\"")}");
-            //    continue;
-            //}
-            newQuest.msgs.Add(msg);
-        }
-        // --
+            dq.msgs.Add(parseMsgMd(filepath));
 
         // import strings from .json files?
         var stringsPath = Path.Combine(folder, "strings.json");
         if (File.Exists(stringsPath))
-            newQuest.strings = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(stringsPath))!;
+            dq.strings = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(stringsPath))!;
 
         // prepare states
         var pq = new PlayQuest()
         {
             parent = this,
-            quest = newQuest,
-            id = newQuest.id,
+            publisher = dq.publisher,
+            id = dq.id,
+            ver = dq.ver,
+            quest = dq, // <-- important, otherwise we will download from server
+            dev = true,
             watchFolder = folder,
             startTime = DateTime.UtcNow,
         };
@@ -180,41 +221,30 @@ internal class PlayState : Data
         {
             var filename = Path.GetFileNameWithoutExtension(filepath);
             var src = File.ReadAllText(filepath);
-            newQuest.chapters[filename] = src;
-
-            var pc = new PlayChapter()
-            {
-                id = filename,
-                pq = pq,
-            };
-
-            pq.chapters.Add(pc);
+            dq.chapters[filename] = src;
+            pq.chapters.Add(new PlayChapter(filename, pq));
         }
 
         // validate data from json
-        if (!newQuest.chapters.ContainsKey(newQuest.firstChapter))
-            throw new Exception($"First chapter script not found: {newQuest.firstChapter}.lua");
+        if (!dq.chapters.ContainsKey(dq.firstChapter))
+            throw new Exception($"First chapter script not found: {dq.firstChapter}.lua");
 
         // "publish" the quest srcs into a json file for later use
-        var questJson = JsonConvert.SerializeObject(newQuest, Formatting.Indented);
-        var questFilepath = Path.Combine(PlayState.folder, $"{newQuest.id}.json");
+        var questJson = JsonConvert.SerializeObject(dq, Formatting.Indented);
+        var questFilepath = Path.Combine(PlayState.folder, $"dev-{dq.id}.json");
         Data.saveWithRetry(questFilepath, questJson, true);
 
-        var oldPQ = activeQuests.Find(pq => pq.watchFolder == folder || pq.id == newQuest.id);
-
-        activeQuests.RemoveAll(x => x.id == pq.id);
-        activeQuests.Add(pq);
-
-        if (oldPQ != null)
+        // preserve prior values
+        if (devQuest != null)
         {
             // preserve state from previous PlayQuest
-            foreach (var (k, v) in oldPQ.objectives) pq.objectives[k] = v;
-            foreach (var (k, v) in oldPQ.vars) pq.vars[k] = v;
-            foreach (var t in oldPQ.tags) pq.tags.Add(t);
-            foreach (var (k, v) in oldPQ.bodyLocations) pq.bodyLocations[k] = v;
-            foreach (var (k, v) in oldPQ.keptLasts) pq.keptLasts[k] = v;
+            foreach (var (k, v) in devQuest.objectives) pq.objectives[k] = v;
+            foreach (var (k, v) in devQuest.vars) pq.vars[k] = v;
+            foreach (var t in devQuest.tags) pq.tags.Add(t);
+            foreach (var (k, v) in devQuest.bodyLocations) pq.bodyLocations[k] = v;
+            foreach (var (k, v) in devQuest.keptLasts) pq.keptLasts[k] = v;
 
-            foreach (var oc in oldPQ.chapters)
+            foreach (var oc in devQuest.chapters)
             {
                 var pc = pq.chapters.FirstOrDefault(c => c.id == oc.id);
                 if (pc == null) continue;
@@ -224,7 +254,7 @@ internal class PlayState : Data
                 pc.pushScriptVars();
             }
 
-            foreach (var om in oldPQ.msgs)
+            foreach (var om in devQuest.msgs)
             {
                 var idx = pq.msgs.FindIndex(m => m.id == om.id);
                 if (idx == -1)
@@ -234,27 +264,14 @@ internal class PlayState : Data
             }
         }
 
-        // fetch always last known's
-        setPriorKepts(pq);
-
-        foreach (var pc in pq.chapters)
-        {
-            if (pc.active)
-                await pc.load();
-        }
-
-        // start first chapter?
-        var firstChapter = pq.chapters.FirstOrDefault(c => c.id == newQuest.firstChapter);
-        if (firstChapter != null && firstChapter.endTime == null)
-            await pq.startChapter(newQuest.firstChapter);
-
-        this.Save();
+        await initQuest(pq, true);
+        this.devQuest = pq;
 
         PlayState.updateUI(pq);
         return pq;
     }
 
-    private void setPriorKepts(PlayQuest pq)
+    private static void setPriorKepts(PlayQuest pq)
     {
         if (!pq.keptLasts.ContainsKey(nameof(Docked)))
         {
@@ -363,5 +380,41 @@ internal class PlayState : Data
                 return true;
 
         return false;
+    }
+
+    public static async Task enableGaltea1(Game game)
+    {
+        if (game.cmdr?.rccApiKey == null)
+        {
+            MessageBox.Show("Before you can use quests, you must set your Raven Colonial api-key in settings, tab: External Data", "Activate Quest?");
+            return;
+        }
+
+        var rslt = MessageBox.Show("Confirm: (re)activate Galtea sample quest?\r\n(This will reset any prior progress)", "Activate Quest?", MessageBoxButtons.YesNo);
+        if (rslt != DialogResult.Yes) return;
+
+        if (!Game.settings.enableQuests)
+        {
+            Game.settings.enableQuests = true;
+            Game.settings.Save();
+        }
+
+        PlayState.cmdr ??= await PlayState.loadAsync(game.cmdr.fid);
+
+        await PlayState.cmdr.activateQuest("Grinning2001", "galtea1");
+    }
+}
+
+public class QuestRef
+{
+    public string publisher;
+    public string id;
+    public double ver;
+
+    public QuestRef(string publisher, string id, double ver)
+    {
+        this.publisher = publisher;
+        this.id = id;
+        this.ver = ver;
     }
 }

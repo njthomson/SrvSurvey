@@ -48,6 +48,7 @@
             btnStopChapter = new DrawButton();
             txtCode = new TextBox();
             btnRun = new DrawButton();
+            btnPublish = new DrawButton();
             statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -294,11 +295,24 @@
             btnRun.UseVisualStyleBackColor = true;
             btnRun.Click += btnRun_Click;
             // 
+            // btnPublish
+            // 
+            btnPublish.Location = new Point(12, 160);
+            btnPublish.Name = "btnPublish";
+            btnPublish.FlatStyle = FlatStyle.Flat;
+            btnPublish.DrawBorder = true;
+            btnPublish.Size = new Size(75, 23);
+            btnPublish.TabIndex = 13;
+            btnPublish.Text = "Publish";
+            btnPublish.UseVisualStyleBackColor = true;
+            btnPublish.Click += btnPublish_Click;
+            // 
             // FormPlayDev
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(833, 408);
+            Controls.Add(btnPublish);
             Controls.Add(btnRun);
             Controls.Add(txtCode);
             Controls.Add(btnStopChapter);
@@ -341,5 +355,6 @@
         private DrawButton btnStopChapter;
         private TextBox txtCode;
         private DrawButton btnRun;
+        private DrawButton btnPublish;
     }
 }

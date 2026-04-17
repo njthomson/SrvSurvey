@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.net;
+using SrvSurvey.quests;
 using SrvSurvey.widgets;
 using System.Drawing.Drawing2D;
 using Res = Loc.PlotGalMap;
@@ -166,11 +167,12 @@ namespace SrvSurvey.plotters
             // line 1: system name
             var sysName = SystemNickNames.get(netData.systemName);
             tt.draw(leftWidth, $"► {sysName}", GameColors.fontSmall2Bold);
-            // quest related?
-            if (game.cmdrPlay?.isTagged(netData.systemName) == true)
-                PlotQuestMini.drawLogo(g, tt.dtx + N.six, N.eight, true, N.oneSix);
 
             tt.newLine(true);
+
+            // quest related?
+            if (PlayState.cmdr?.isTagged(netData.systemName) == true)
+                PlotQuestMini.drawLogo(g, leftWidth - N.threeTwo, tt.dty, true, N.twoFour);
 
             var highlight = netData.discovered == false || netData.scanBodyCount < netData.totalBodyCount || (netData.totalBodyCount == 0 && netData.discovered.HasValue);
 

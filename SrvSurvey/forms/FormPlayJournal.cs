@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
+using SrvSurvey.quests;
 using SrvSurvey.units;
 using System.Text;
 
@@ -160,9 +161,9 @@ namespace SrvSurvey.forms
 
         private void replayNode(JObject? obj)
         {
-            if (obj == null || game.cmdrPlay == null) return;
+            if (obj == null || PlayState.cmdr == null) return;
 
-            game.cmdrPlay.processJournalEntry(obj).justDoIt();
+            PlayState.cmdr.processJournalEntry(obj).justDoIt();
         }
 
         private void treeJournals_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)

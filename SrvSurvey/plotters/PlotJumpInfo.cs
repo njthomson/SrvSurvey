@@ -1,6 +1,7 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.net;
 using SrvSurvey.Properties;
+using SrvSurvey.quests;
 using SrvSurvey.widgets;
 using System.Diagnostics;
 using Res = Loc.PlotJumpInfo;
@@ -254,7 +255,7 @@ namespace SrvSurvey.plotters
             var sysName = SystemNickNames.get(this.netData.systemName);
             tt.draw(" " + sysName, GameColors.fontMiddleBold);
             // quest related?
-            if (game.cmdrPlay?.isTagged(netData.systemName) == true)
+            if (PlayState.cmdr?.isTagged(netData.systemName) == true)
                 PlotQuestMini.drawLogo(g, tt.dtx + N.six, N.ten, true, N.oneSix);
 
             if (netData.starClass != null)

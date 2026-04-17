@@ -84,6 +84,7 @@ public partial class Quest
             if (playMsg.body == defMsg.body) playMsg.body = null;
         }
 
+        // TODO: delay by seconds when sending any messages? (But this messes with dirty analysis, and means things happen when invokeingChapter may be null
         pq.sendMsg(playMsg);
     }
 
