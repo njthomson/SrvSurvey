@@ -18,6 +18,8 @@ namespace SrvSurvey.game
             // read and parse file contents into tmp object
             if (File.Exists(filepath))
             {
+                // coming soon ...
+                // var json = Data.openSharedStreamReader(filepath).ReadToEnd();
                 var json = File.ReadAllText(filepath);
                 if (string.IsNullOrEmpty(json))
                 {
