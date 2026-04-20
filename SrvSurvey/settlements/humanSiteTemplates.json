@@ -797,7 +797,7 @@
     "name": "Enyo",
     "landingPads": [
       { "size": "Medium", "offset": { "X": 45.697353, "Y": -121.225655 } },
-      { "size": "Small", "offset": { "X": -82.05029, "Y": 105.92611 }, "rot": 270 }
+      { "size": "Small", "offset": { "X": -82.05029, "Y": 105.92611 }, "rot": 90 }
     ],
     "secureDoors": [
       { "offset": { "X": 63.002876, "Y": 37.397675 }, "floor": 2, "level": 0, "rot": 180 },

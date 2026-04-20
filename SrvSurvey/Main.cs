@@ -1907,9 +1907,7 @@ namespace SrvSurvey
 
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
-            if (!ModifierKeys.HasFlag(Keys.Shift))
-                BaseForm.show<FormCodexBingo>();
-            else
+            if (ModifierKeys.HasFlag(Keys.Shift) && !Program.isAppStoreBuild)
             {
                 // temp behaviour - need to create a more formal entry point :)
                 PlayState.enableGaltea1().justDoIt(() =>
@@ -1920,6 +1918,10 @@ namespace SrvSurvey
                         Elite.setFocusED();
                     });
                 });
+            }
+            else
+            {
+                BaseForm.show<FormCodexBingo>();
             }
         }
 

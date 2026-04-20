@@ -44,12 +44,6 @@ namespace SrvSurvey
             var osScaleFactor = (this.DeviceDpi / 96f * 100).ToString("0");
             this.comboOverlayScale.Items[0] = $"Match Windows OS scale ({osScaleFactor}%)";
 
-            // keep these hidden from official app-store builds for now
-            if (Program.isAppStoreBuild)
-            {
-                btnSwapCache.Hide();
-            }
-
             BaseForm.applyThemeWithCustomControls(this);
         }
 

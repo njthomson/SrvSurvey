@@ -756,22 +756,20 @@ namespace SrvSurvey.forms
 
             if (obj.total > 0)
             {
-                tt.dty -= N.three;
                 var sz = tt.draw(N.fourForty + N.ten + indent, $"{obj.current} / {obj.total}", active ? cc : c, GameColors.Fonts.arial_9);
-                tt.dty += N.three;
                 var w = N.fourHundred;
 
                 g.SmoothingMode = SmoothingMode.None;
                 var p = btn?.pen(C.Pens.orangeDark1, C.Pens.menuGold1, C.Pens.black1) ?? C.Pens.orangeDark1;
                 if (colorObjectives && active) p = C.Pens.cyanDark1;
-                g.DrawRectangle(p, x, tt.dty, w + 5, N.ten);
+                g.DrawRectangle(p, x, tt.dty+N.three, w + 5, N.ten);
 
                 w = w / obj.total * obj.current;
                 var b = btn?.brush(C.Brushes.orangeDark, C.Brushes.menuGold, C.Brushes.black) ?? C.Brushes.orangeDark;
                 if (colorObjectives && active) b = C.Brushes.cyanDark;
-                g.FillRectangle(b, x + 3, tt.dty + 3, w, N.ten - 5);
+                g.FillRectangle(b, x + 3, tt.dty + N.three + 3, w, N.ten - 5);
                 g.SmoothingMode = SmoothingMode.HighQuality;
-                tt.dty += N.oneFour;
+                //tt.dty += N.six;
                 tt.newLine(N.two, true);
             }
             tt.dty += N.four;

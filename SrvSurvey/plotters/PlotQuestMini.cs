@@ -176,6 +176,7 @@ namespace SrvSurvey.plotters
                     else
                     {
                         BaseWidget.renderBearingTo(g, tt.dtx + N.ten, tt.dty, N.eight, (double)deg, key, b, p);
+                        tt.dtx += N.threeTwo + TextRenderer.MeasureText(g, key, this.font).Width;
                     }
 
                     tt.newLine(N.oneSix, true);
