@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
 using SrvSurvey.quests;
 using SrvSurvey.units;
@@ -54,13 +55,23 @@ namespace SrvSurvey.forms
         {
             if (game.journals == null) return;
 
-            var count = Math.Min(maxCount, game.journals.Entries.Count);
-            var entries = game.journals.Entries.Slice(game.journals.Entries.Count - count, count).ToList();
-            foreach (var entry in entries)
+            // re-read the journal file as pure JObject's
+            var stream = Data.openSharedStreamReader(game.journals.filepath);
+            var json = new StringBuilder();
+            json.AppendLine("[");
+            string? line = stream.ReadLine();
+            do
             {
-                var obj = JObject.FromObject(entry);
-                Journals_onRawJournalEntry(obj);
-            }
+                json.AppendLine(line + ",");
+                line = stream.ReadLine();
+            } while (line != null);
+            json.AppendLine("]");
+            var allEntries = JsonConvert.DeserializeObject<List<JObject>>(json.ToString())!;
+
+            var count = Math.Min(maxCount, game.journals.Entries.Count);
+            var recentEntries = allEntries.TakeLast(count).ToList();
+            foreach (var entry in recentEntries)
+                Journals_onRawJournalEntry(entry);
         }
 
         private void Status_StatusChanged(bool blink)
@@ -252,6 +263,16 @@ namespace SrvSurvey.forms
         private void menuComms_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormPlayComms>();
+        }
+
+        private void txtStatusFile_DoubleClick(object sender, EventArgs e)
+        {
+            if (game.status.hasLatLong)
+            {
+                var txt = $"{game.status.Latitude}, {game.status.Longitude}";
+                if (game.status.Latitude > 0) txt = "+" + txt;
+                Clipboard.SetText(txt);
+            }
         }
     }
 }

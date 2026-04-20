@@ -186,7 +186,6 @@ namespace SrvSurvey
 
                         this.setChildrenEnabled(true);
                         btnCodexShow.Enabled = FormShowCodex.allow;
-                        btnQuestComms.Enabled = false;
                         this.updateCommanderTexts();
 
                         this.timer1.Start();
@@ -364,6 +363,8 @@ namespace SrvSurvey
         private void removeGame()
         {
             Game.log($"Main.removeGame, has old game: {this.game != null} (cmdr: {this.game?.Commander})");
+            PlayState.cmdr?.Save(false);
+            PlayState.cmdr = null;
             Program.closeAllPlotters();
             BigOverlay.close();
             PlotBase2.closeAll();
@@ -463,7 +464,6 @@ namespace SrvSurvey
 
             // ShowCodex button and form
             this.btnCodexShow.Enabled = FormShowCodex.allow;
-            this.btnQuestComms.Enabled = PlayState.cmdr != null;
             if (!FormShowCodex.allow) BaseForm.close<FormShowCodex>();
 
             if (newMode == GameMode.MainMenu)
@@ -1770,8 +1770,12 @@ namespace SrvSurvey
 
         private void btnQuestComms_MouseClick(object sender, MouseEventArgs e)
         {
+            if (CommanderSettings.currentOrLastFid == null) return;
+
             if (ModifierKeys.HasFlag(Keys.Control))
                 BaseForm.show<FormPlayDev>();
+            else if (ModifierKeys.HasFlag(Keys.Shift))
+                BaseForm.show<FormPlayJournal>();
             else
                 FormPlayComms.toggleForm();
         }
@@ -1903,12 +1907,12 @@ namespace SrvSurvey
 
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
-            if (!ModifierKeys.HasFlag(Keys.Shift) || this.game == null)
+            if (!ModifierKeys.HasFlag(Keys.Shift))
                 BaseForm.show<FormCodexBingo>();
             else
             {
                 // temp behaviour - need to create a more formal entry point :)
-                PlayState.enableGaltea1(this.game).justDoIt(() =>
+                PlayState.enableGaltea1().justDoIt(() =>
                 {
                     Program.defer(() =>
                     {

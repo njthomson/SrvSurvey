@@ -39,7 +39,7 @@ namespace SrvSurvey.plotters
 
         protected override Bitmap getBackgroundImage(Size sz)
         {
-            return GameGraphics.getBackgroundImage(sz, !showStripe);
+            return GameGraphics.getBackgroundImage(sz, true); // !showStripe);
         }
 
         public override void setPosition(Rectangle? gameRect = null, string? name = null)
@@ -56,6 +56,14 @@ namespace SrvSurvey.plotters
 
             // this removes the need to check during rendering itself
             plotDef.form?.checkLocationAndSize();
+        }
+
+        public override void setSize(int width, int height)
+        {
+            base.setSize(width, height);
+
+            var f = BaseForm.get<FormPlayComms>();
+            if (f != null) f.Top = this.bottom + 20;
         }
 
         protected override void onStatusChange(Status status)
@@ -118,6 +126,8 @@ namespace SrvSurvey.plotters
             var cmdr = Status.here;
             var radius = game.status.PlanetRadius;
 
+            if (tt.dty < N.twoFour) tt.dty = N.twoFour;
+
             foreach (var pq in ps.activeQuests)
             {
                 if (pq.bodyLocations.Count == 0) continue;
@@ -134,23 +144,41 @@ namespace SrvSurvey.plotters
 
                     var b = C.Brushes.menuGold;
                     var p = C.Pens.menuGold3r;
-                    if ((double)dist2d < ll3.size)
+                    if (!game.status.hasLatLong)
+                    {
+                        b = C.Brushes.grey;
+                        p = C.Pens.grey3;
+                    }
+                    else if ((double)dist2d < ll3.size)
                     {
                         b = C.Brushes.cyan;
                         p = C.Pens.cyan3r;
                     }
 
-                    if ((double)dist2d < ll3.size)
+                    tt.dtx = N.threeTwo;
+                    if (game.status.hasLatLong && (double)dist2d < ll3.size)
                         drawCheckMark(g, N.eight, tt.dty, 12, p);
 
-                    tt.draw(N.threeTwo, Util.metersToString(dist2d), p.Color);
+                    var distText = game.status.hasLatLong ? Util.metersToString(dist2d) : "--";
+                    tt.draw(N.threeTwo, distText, p.Color);
 
                     var deg = angle2d - game.status.Heading;
                     if (deg < 0) deg += 360;
                     if (dist2d == 0) deg += game.status.Heading;
+                    if (!game.status.hasLatLong) deg = -1000;
 
-                    BaseWidget.renderBearingTo(g, tt.dtx + N.ten, tt.dty, N.eight, (double)deg, key, b, p);
-                    tt.newLine(N.ten, true);
+                    if (game.status.Altitude > 500)
+                    {
+                        var gt = new GroundTarget(this.font);
+                        tt.dtx += gt.renderAngleOfAttack(g, tt.dtx + N.ten, tt.dty, game.status.PlanetRadius, target, Status.here, true);
+                        tt.draw(key);
+                    }
+                    else
+                    {
+                        BaseWidget.renderBearingTo(g, tt.dtx + N.ten, tt.dty, N.eight, (double)deg, key, b, p);
+                    }
+
+                    tt.newLine(N.oneSix, true);
                 }
             }
         }

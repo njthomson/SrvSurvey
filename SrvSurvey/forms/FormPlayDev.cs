@@ -12,7 +12,6 @@ namespace SrvSurvey.forms
         public PlayState cmdrPlay;
         private PlayQuest pq;
         private FileSystemWatcher? folderWatcher;
-        private string? selectedQuest;
         private string? selectedView;
         private bool importing;
 
@@ -41,12 +40,16 @@ namespace SrvSurvey.forms
                 .ToDictionary(pq => pq.id, pq => pq.watchFolder);
 
             this.setChildrenEnabled(false);
+
             if (PlayState.cmdr == null || reset)
                 this.cmdrPlay = await PlayState.loadAsync(PlayState.cmdr?.fid ?? CommanderSettings.currentOrLastFid);
             else
                 this.cmdrPlay = PlayState.cmdr;
 
-            initComboQuests();
+            if (cmdrPlay.devQuest != null)
+                this.pq = cmdrPlay.devQuest;
+
+            initComboChapter();
             this.setChildrenEnabled(true, checkWatchFolder, btnRun, txtCode);
 
             if (folderWatches?.Count > 0 && cmdrPlay != null)
@@ -71,33 +74,18 @@ namespace SrvSurvey.forms
 
         public void onQuestChanged(PlayQuest? pq = null)
         {
-            if (selectedQuest == pq?.id)
+            txtDevQuest.Text = cmdrPlay.devQuest?.quest.title ?? "(none)";
+            txtDevVer.Text = (cmdrPlay.devQuest?.quest.ver ?? 0).ToString();
+            this.pq = cmdrPlay.devQuest!;
+
+            if (pq == null || cmdrPlay.devQuest?.id == pq?.id)
                 this.showDebug();
         }
 
-        private void initComboQuests()
+        private void initComboChapter()
         {
-            var mapQuests = cmdrPlay.activeQuests.ToDictionary(pq => pq, pq => $"{pq.id} : {pq.quest.title}");
-            if (mapQuests.Count == 0)
-                return;
-
-            var match = mapQuests.Keys.FirstOrDefault(x => x.id == selectedQuest);
-            comboQuest.DataSource = new BindingSource(mapQuests, null!);
-
-            if (match != null)
-                comboQuest.SelectedValue = match;
-            else
-                comboQuest.SelectedIndex = 0;
-        }
-
-        private void comboQuest_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //if (!comboQuest.Enabled || comboQuest.SelectedItem == null) return;
-            pq = (PlayQuest)comboQuest.SelectedValue!;
-            selectedQuest = pq.id;
+            if (pq == null) return;
             selectedView = null;
-
-            //var mapView = new Dictionary<object, string>(); // cmdrPlay.activeQuests.ToDictionary(pq => pq, pq => $"{pq.id} : {pq.quest.title}");
 
             comboChapter.Items.Clear();
             comboChapter.Items.Add("Objectives");
@@ -106,9 +94,12 @@ namespace SrvSurvey.forms
             comboChapter.SelectedIndex = 0;
             comboChapter.Enabled = true;
 
-            checkWatchFolder.Enabled = false;
-            checkWatchFolder.Checked = pq.watchFolder != null && pq.watchFolder == folderWatcher?.Path;
+            //checkWatchFolder.Enabled = false;
+            //checkWatchFolder.Checked = pq.watchFolder != null && (folderWatcher == null || pq.watchFolder == folderWatcher?.Path);
             checkWatchFolder.Enabled = pq.watchFolder != null && Directory.Exists(pq.watchFolder);
+
+            txtDevQuest.Text = pq?.quest.title ?? "(none)";
+            txtDevVer.Text = (pq?.quest.ver ?? 0).ToString();
         }
 
         private PlayChapter? getSelectedChapter(string? view)
@@ -156,7 +147,7 @@ namespace SrvSurvey.forms
                 btnRun.Enabled = txtCode.Enabled = false;
             }
 
-            menuStatus.Text = $"{selectedView} (at: {DateTime.Now:T})";
+            //menuStatus.Text = $"{selectedView} (at: {DateTime.Now:T})";
         }
 
         private void btnParse_Click(object sender, EventArgs e)
@@ -178,7 +169,7 @@ namespace SrvSurvey.forms
                     });
                     if (unknownVar != null)
                     {
-                        menuStatus.Text = $"Cannot add new variable: {unknownVar} = {obj[unknownVar]}";
+                        menuStatus.Text = $"Cannot add new variable: {unknownVar} = {obj[unknownVar]} ({DateTime.Now:T})";
                         return;
                     }
                     chapter.vars = obj;
@@ -199,21 +190,21 @@ namespace SrvSurvey.forms
                     txtJson.Text = JsonConvert.SerializeObject(obj, Formatting.Indented);
                 }
 
-                menuStatus.Text = $"Parsed and updated: {view}";
-                pq.parent.Save();
+                menuStatus.Text = $"Parsed and updated: {view} ({DateTime.Now:T})";
+                pq.parent.Save(true);
 
                 PlayState.updateUI(pq);
             }
             catch (Exception ex)
             {
                 Game.log($"btnParse_Click: {ex.Message}");
-                menuStatus.Text = $"Parsing failed: {ex.Message}";
+                menuStatus.Text = $"Parsing failed: {ex.Message} ({DateTime.Now:T})";
             }
         }
 
         private void checkWatchFolder_CheckedChanged(object sender, EventArgs e)
         {
-            if (!checkWatchFolder.Enabled) return;
+            if (!checkWatchFolder.Enabled || pq == null) return;
 
             if (checkWatchFolder.Checked)
             {
@@ -226,18 +217,41 @@ namespace SrvSurvey.forms
             }
         }
 
-        private void menuImportFolder_Click(object sender, EventArgs e)
+        private void btnLoad_Click(object sender, EventArgs e)
         {
-            var picker = new FolderBrowserDialog()
-            {
-                Description = "Select folder containing quest definition files",
-                UseDescriptionForTitle = true,
-                ShowNewFolderButton = false,
-            };
+            var folder = cmdrPlay.devQuest?.watchFolder;
 
-            var rslt = picker.ShowDialog(this);
-            if (rslt == DialogResult.OK)
-                folderImport(picker.SelectedPath).justDoIt();
+            if (folder == null)
+            {
+                var picker = new FolderBrowserDialog()
+                {
+                    Description = "Select folder containing quest definition files",
+                    UseDescriptionForTitle = true,
+                    ShowNewFolderButton = false,
+                };
+
+                var rslt = picker.ShowDialog(this);
+                if (rslt == DialogResult.OK)
+                    folder = picker.SelectedPath;
+            }
+
+            if (folder != null)
+                folderImport(folder).justDoIt();
+        }
+
+        private void menuPublish_Click(object sender, EventArgs e)
+        {
+            if (pq == null) return;
+
+            var rslt = MessageBox.Show(this, "This will clobber the previously published version.\r\n\r\nAre you sure?", "Publish quest?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (rslt == DialogResult.Yes)
+            {
+                menuStatus.Text = $"Pubishing ... ({DateTime.Now:T})";
+                Game.rcc.publishQuest(pq.parent.fid, pq.quest).continueOnMain(this, status =>
+                {
+                    menuStatus.Text = $"{status} ({DateTime.Now:T})";
+                }).justDoIt();
+            }
         }
 
         private void menuWatch_Click(object sender, EventArgs e)
@@ -265,8 +279,9 @@ namespace SrvSurvey.forms
         private void stopWatching()
         {
             if (folderWatcher == null) return;
+            checkWatchFolder.Checked = false;
 
-            menuStatus.Text = $"Stop watching: {folderWatcher.Path}";
+            menuStatus.Text = $"Stop watching: {folderWatcher.Path} ({DateTime.Now:T})";
 
             folderWatcher.EnableRaisingEvents = false;
             folderWatcher.Created -= FolderWatcher_Changed;
@@ -275,8 +290,6 @@ namespace SrvSurvey.forms
             folderWatcher.Deleted -= FolderWatcher_Changed;
             folderWatcher.Dispose();
             folderWatcher = null;
-
-            checkWatchFolder.Checked = false;
         }
 
         private void startWatching(string folder)
@@ -293,7 +306,7 @@ namespace SrvSurvey.forms
             folderWatcher.Deleted += FolderWatcher_Changed;
 
             folderWatcher.EnableRaisingEvents = true;
-            menuStatus.Text = $"Watching: {folder} ...";
+            menuStatus.Text = $"Watching: {folder} ... ({DateTime.Now:T})";
 
             checkWatchFolder.Checked = true;
             checkWatchFolder.Enabled = true;
@@ -304,7 +317,7 @@ namespace SrvSurvey.forms
             if (importing) return;
 
             var folder = Path.GetDirectoryName(e.FullPath)!;
-            menuStatus.Text = $"Changes in: {folder}";
+            menuStatus.Text = $"Changes in: {folder} ({DateTime.Now:T})";
             Util.deferAfter(500, () =>
             {
                 folderImport(folder).justDoIt();
@@ -313,52 +326,31 @@ namespace SrvSurvey.forms
 
         private async Task folderImport(string folder)
         {
+            var reWatch = checkWatchFolder.Checked;
+            checkWatchFolder.Checked = false;
+
             var priorView = this.selectedView;
 
             importing = true;
-            menuStatus.Text = $"Importing folder: {folder} ...";
-            var oldPQ = cmdrPlay.activeQuests.Find(pq => pq.watchFolder == folder);
+            menuStatus.Text = $"Importing folder: {folder} ... ({DateTime.Now:T})";
+            var oldPQ = cmdrPlay.activeQuests.FirstOrDefault(pq => pq.watchFolder == folder);
 
-            var newPQ = await cmdrPlay.sideLoad(folder);
+            this.pq = await cmdrPlay.sideLoad(folder);
 
-            menuStatus.Text = newPQ == null
-                ? $"Import failed: {folder}"
-                : $"Imported: {folder}";
-
-            if (newPQ != null)
-            {
-                selectedQuest = newPQ.id;
-                if (oldPQ != null)
-                {
-                    // preserve state from previous PlayQuest
-                    foreach (var (k, v) in oldPQ.objectives) newPQ.objectives[k] = v;
-                    //foreach (var (k, v) in oldPQ.vars) newPQ.vars[k] = v;
-
-                    foreach (var oc in oldPQ.chapters)
-                    {
-                        var match = newPQ.chapters.FirstOrDefault(c => c.id == oc.id);
-                        if (match == null) continue;
-                        match.startTime = oc.startTime;
-                        match.endTime = oc.endTime;
-                        foreach (var (k, v) in oc.vars) match.vars[k] = v;
-                    }
-
-                    foreach (var om in oldPQ.msgs)
-                    {
-                        var idx = newPQ.msgs.FindIndex(m => m.id == om.id);
-                        if (idx == -1)
-                            newPQ.msgs.Add(om);
-                        else
-                            newPQ.msgs[idx] = om;
-                    }
-                    cmdrPlay.Save();
-                }
-            }
+            checkWatchFolder.Enabled = this.pq != null;
 
             Program.defer(() =>
             {
-                initComboQuests();
-                PlayState.updateUI(newPQ);
+                initComboChapter();
+
+                if (this.pq != null)
+                    checkWatchFolder.Checked = reWatch;
+
+                menuStatus.Text = this.pq == null
+                    ? $"Import failed: {folder} ({DateTime.Now:T})"
+                    : $"Imported: {folder} (watching: {reWatch}) ({DateTime.Now:T})";
+
+                PlayState.updateUI(this.pq);
 
                 if (priorView != null && comboChapter.Items.Contains(priorView))
                     comboChapter.SelectedItem = priorView;
@@ -371,7 +363,7 @@ namespace SrvSurvey.forms
             var chapter = getSelectedChapter(selectedView);
             chapter?.start().continueOnMain(this, () =>
             {
-                cmdrPlay.Save();
+                cmdrPlay.Save(true);
                 PlayState.updateUI(chapter.pq);
             });
         }
@@ -381,7 +373,7 @@ namespace SrvSurvey.forms
             var chapter = getSelectedChapter(selectedView);
             if (chapter == null) return;
             chapter.stop();
-            cmdrPlay.Save();
+            cmdrPlay.Save(true);
             PlayState.updateUI(chapter.pq);
         }
 
@@ -406,7 +398,7 @@ namespace SrvSurvey.forms
             }
             catch (Exception ex)
             {
-                menuStatus.Text = $"Error: {ex.Message}";
+                menuStatus.Text = $"Error: {ex.Message} ({DateTime.Now:T})";
             }
             finally
             {
@@ -424,11 +416,6 @@ namespace SrvSurvey.forms
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
-        }
-
-        private void btnPublish_Click(object sender, EventArgs e)
-        {
-            Game.rcc.publishQuest(pq.quest).justDoIt();
         }
     }
 }

@@ -1716,6 +1716,12 @@ internal static class ExtensionMethods
     {
         return hashSet.Any(i => items.Contains(i));
     }
+
+    public static void AddRange<T>(this HashSet<T> set, IEnumerable<T> items)
+    {
+        foreach (var item in items)
+            set.Add(item);
+    }
 }
 
 public class WatchColor

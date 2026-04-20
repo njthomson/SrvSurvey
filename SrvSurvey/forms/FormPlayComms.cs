@@ -72,8 +72,6 @@ namespace SrvSurvey.forms
 
             if (PlayState.cmdr != null)
                 this.cmdrPlay = PlayState.cmdr;
-
-            //this.Font = GameColors.Fonts.console_16;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -97,24 +95,31 @@ namespace SrvSurvey.forms
 
             if (cmdrPlay == null)
             {
-                this.setChildrenEnabled(false);
-                PlayState.loadAsync(CommanderSettings.currentOrLastFid).continueOnMain(this, ps =>
+                try
                 {
-                    this.cmdrPlay = ps;
-                    this.setChildrenEnabled(true, btnWatch);
-                    if (cmdrPlay.messagesUnread > 0)
+                    this.setChildrenEnabled(false);
+                    PlayState.loadAsync(CommanderSettings.currentOrLastFid).continueOnMain(this, ps =>
                     {
-                        mode = "msgs";
-                        btnMsgs.Focus();
-                        showMsgs();
-                    }
-                    else
-                    {
-                        btnQuests.Focus();
-                        showQuests();
-                    }
-                    PlayState.updateUI();
-                });
+                        this.cmdrPlay = ps;
+                        this.setChildrenEnabled(true, btnWatch);
+                        if (cmdrPlay.messagesUnread > 0)
+                        {
+                            mode = "msgs";
+                            btnMsgs.Focus();
+                            showMsgs();
+                        }
+                        else
+                        {
+                            btnQuests.Focus();
+                            showQuests();
+                        }
+                        PlayState.updateUI();
+                    });
+                }
+                catch
+                {
+                    Program.defer(() => this.Close());
+                }
                 return;
             }
 
@@ -159,7 +164,7 @@ namespace SrvSurvey.forms
 
             if (cmdrPlay == null)
             {
-                TextRenderer.DrawText(e.Graphics, "Loading ...", GameColors.Fonts.gothic_16B, new Point(136, 10), C.orangeDark);
+                TextRenderer.DrawText(e.Graphics, "Loading ...", GameColors.Fonts.arial_16B, new Point(136, 10), C.orangeDark);
                 return;
             }
 
@@ -172,7 +177,7 @@ namespace SrvSurvey.forms
             var txt = mode == "quests"
                 ? $"Active quests: {cmdrPlay.activeQuests.Count}"
                 : hasUnread ? $"Messages: {cmdrPlay.messagesTotal}, unread: {cmdrPlay.messagesUnread}" : $"Messages: {cmdrPlay.messagesTotal}";
-            TextRenderer.DrawText(e.Graphics, txt, GameColors.Fonts.gothic_16B, new Point(136, 10), C.orangeDark);
+            TextRenderer.DrawText(e.Graphics, txt, GameColors.Fonts.arial_16B, new Point(136, 10), C.orangeDark);
         }
 
         private void btnClose_Paint(object sender, PaintEventArgs e)
@@ -397,13 +402,13 @@ namespace SrvSurvey.forms
                     var tt = new TextCursor(e.Graphics, btn);
                     btn.Height = PanelMsg.drawCollapsed(e.Graphics, tt, btn, pm, qm);
                 };
-                btn.Click += (s, e) =>
+                btn.Click += async (s, e) =>
                 {
                     // remember this message has now been read
                     if (!pm.read)
                     {
                         pm.read = true;
-                        pm.parent.updateIfDirty(true);
+                        await pm.parent.updateIfDirty(true);
                     }
 
                     setSelectedThing(new PanelMsg(this, pm, qm));
@@ -699,11 +704,11 @@ namespace SrvSurvey.forms
         public static int drawCollapsed(Graphics g, TextCursor tt, DrawButton btn, PlayQuest pq)
         {
             tt.dty = N.six;
-            tt.font = GameColors.Fonts.gothic_10;
+            tt.font = GameColors.Fonts.arial_10;
             var c = btn.ForeColor2;
 
             // title
-            tt.draw(N.eight, pq.quest.title, c, GameColors.Fonts.gothic_12B);
+            tt.draw(N.eight, pq.quest.title, c, GameColors.Fonts.arial_12B);
             tt.newLine(N.six);
 
             // visible objectives
@@ -743,16 +748,16 @@ namespace SrvSurvey.forms
                 cc = C.red;
             }
 
-            tt.draw(N.eight + indent, prefix, cc, GameColors.Fonts.gothic_10);
+            tt.draw(N.eight + indent, prefix, cc, GameColors.Fonts.arial_10);
             var x = N.thirty + indent;
             var txt = pq.quest.strings.GetValueOrDefault(key) ?? pq.quest.objectives.GetValueOrDefault(key) ?? key;
-            tt.draw(x, txt, cc, GameColors.Fonts.gothic_10);
+            tt.draw(x, txt, cc, GameColors.Fonts.arial_10);
             tt.newLine(N.two, true);
 
             if (obj.total > 0)
             {
                 tt.dty -= N.three;
-                var sz = tt.draw(N.fourForty + N.ten + indent, $"{obj.current} / {obj.total}", active ? cc : c, GameColors.Fonts.gothic_9);
+                var sz = tt.draw(N.fourForty + N.ten + indent, $"{obj.current} / {obj.total}", active ? cc : c, GameColors.Fonts.arial_9);
                 tt.dty += N.three;
                 var w = N.fourHundred;
 
@@ -828,8 +833,7 @@ namespace SrvSurvey.forms
             var rslt = MessageBox.Show("Are you sure you want to abandon this quest?", "SrvSurvey", MessageBoxButtons.YesNo);
             if (rslt == DialogResult.Yes)
             {
-                pq.parent.activeQuests.Remove(pq);
-                pq.parent.Save();
+                pq.parent.removeQuest(pq);
                 form.clearSelection();
                 PlayState.updateUI(pq);
             }
@@ -855,11 +859,11 @@ namespace SrvSurvey.forms
         {
             var c = C.orange;
             tt.dty = N.four;
-            tt.font = GameColors.Fonts.gothic_10;
+            tt.font = GameColors.Fonts.arial_10;
 
             // ID + title
-            tt.drawRight(tt.containerWidth - N.six, $"ID: {pq.quest.id}", C.orangeDark, GameColors.Fonts.gothic_7);
-            tt.draw(N.eight, pq.quest.title, c, GameColors.Fonts.gothic_16B);
+            tt.drawRight(tt.containerWidth - N.six, $"ID: {pq.quest.id}", C.orangeDark, GameColors.Fonts.arial_7);
+            tt.draw(N.eight, pq.quest.title, c, GameColors.Fonts.arial_16B);
             tt.newLine(N.six);
 
             // top line
@@ -932,16 +936,16 @@ namespace SrvSurvey.forms
                 : pm.received.AddYears(1286).UtcDateTime.ToString("dd MMM yyyy - HH:mm");
 
             // message from
-            tt.drawRight(tt.containerWidth - N.six, time, null, GameColors.Fonts.gothic_9);
+            tt.drawRight(tt.containerWidth - N.six, time, null, GameColors.Fonts.arial_9);
             var from = pm.from ?? qm?.from;
-            tt.draw(N.forty, string.IsNullOrEmpty(from) ? "?" : from, GameColors.Fonts.gothic_9);
-            tt.newLine(-N.four);
+            tt.draw(N.forty, string.IsNullOrEmpty(from) ? "?" : from, GameColors.Fonts.arial_9);
+            tt.newLine();
 
             // subject (ellipse if too wide)
             var subject = pm.subject ?? qm?.subject ?? pm.body ?? qm?.body;
             var flags = tt.flags;
             tt.flags |= TextFormatFlags.SingleLine | TextFormatFlags.EndEllipsis;
-            tt.drawWrapped(N.forty, tt.containerWidth - (int)N.ten, subject, GameColors.Fonts.gothic_12);
+            tt.drawWrapped(N.forty, tt.containerWidth - (int)N.ten, subject, GameColors.Fonts.arial_12);
             tt.flags = flags;
             tt.newLine(N.four);
 
@@ -955,8 +959,8 @@ namespace SrvSurvey.forms
         public string bodyText;
         public List<DrawButton>? copyButtons;
         public List<DrawButton>? replyButtons;
-        private static Font btnFont = new Font("Segoe UI Emoji", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        private Font btnFont2 = new Font("Segoe UI Emoji", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        private Font btnFont = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        private Font btnFont2 = new Font("Arial", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
 
         protected override void Dispose(bool disposing)
         {
@@ -1041,12 +1045,22 @@ namespace SrvSurvey.forms
                         Tag = key,
                         Font = btnFont,
                         Anchor = AnchorStyles.Left | AnchorStyles.Bottom,
-                        Text = $"◊ {txt}",
+                        Text = $"▶ {txt}",
                         Left = 24,
                         AutoSize = true,
                         TextAlign = ContentAlignment.MiddleLeft,
                         UseCompatibleTextRendering = true,
                         TabIndex = this.Controls.Count,
+
+                        BackColor = C.cyanDarker,
+                        BackColorHover = C.cyanDark,
+                        BackColorPressed = C.cyan,
+                        BackColorDisabled = C.grey,
+
+                        ForeColor = C.cyan,
+                        ForeColorHover = Color.White,
+                        ForeColorPressed = C.black,
+                        ForeColorDisabled = C.black,
                     };
                     btn.Click += Btn_Click;
                     this.Controls.Add(btn);
@@ -1093,13 +1107,13 @@ namespace SrvSurvey.forms
             form.onQuestChanged();
         }
 
-        private void BtnD_Click(object? sender, EventArgs e)
-        {
-            pq.deleteMsg(pm.id);
-            pq.updateIfDirty();
-            form.clearSelection();
-            form.onQuestChanged(pq);
-        }
+        //private void BtnD_Click(object? sender, EventArgs e)
+        //{
+        //    pq.deleteMsg(pm.id);
+        //    await pq.updateIfDirty();
+        //    form.clearSelection();
+        //    form.onQuestChanged(pq);
+        //}
 
         private void Btn_Click(object? sender, EventArgs e)
         {
@@ -1107,9 +1121,9 @@ namespace SrvSurvey.forms
             var actionId = btn?.Tag as string;
             if (actionId == null) return;
 
-            pq.invokeMessageAction(pm.id, actionId).continueOnMain(this.form, () =>
+            pq.invokeMessageAction(pm.id, actionId).continueOnMain(this.form, async () =>
             {
-                pq.updateIfDirty();
+                await pq.updateIfDirty();
                 form.clearSelection();
                 form.onQuestChanged();
             });
@@ -1124,16 +1138,16 @@ namespace SrvSurvey.forms
             var tt = new TextCursor(e.Graphics, this);
             tt.dty = N.four;
 
-            tt.font = GameColors.Fonts.gothic_12B;
+            tt.font = GameColors.Fonts.arial_14;
             tt.color = C.orange;
 
             PlotQuestMini.drawEnvelope(g, N.ten, N.ten, N.forty, C.Pens.orange2r);
 
-            tt.draw(N.sixFour, "Sent:", GameColors.Fonts.gothic_8);
+            tt.draw(N.sixFour, "Sent:", GameColors.Fonts.arial_9);
             tt.draw(N.oneTwenty, pm.received.AddYears(1286).UtcDateTime.ToString("dd MMM yyyy - HH:mm"));
             tt.newLine();
 
-            tt.draw(N.sixFour, "From:", GameColors.Fonts.gothic_8);
+            tt.draw(N.sixFour, "From:", GameColors.Fonts.arial_9);
             var from = pm.from ?? qm?.from;
             tt.draw(N.oneTwenty, string.IsNullOrEmpty(from) ? "?" : from);
             tt.newLine();
@@ -1141,7 +1155,7 @@ namespace SrvSurvey.forms
             var subject = pm.subject ?? qm?.subject;
             if (subject != null)
             {
-                tt.draw(N.sixFour, "Subject:", GameColors.Fonts.gothic_8);
+                tt.draw(N.sixFour, "Subject:", GameColors.Fonts.arial_9);
                 tt.draw(N.oneTwenty, subject);
                 tt.newLine();
             }
@@ -1150,7 +1164,7 @@ namespace SrvSurvey.forms
             // body with lines
             g.DrawLine(C.Pens.orangeDark2, 0, tt.dty, Width - N.four, tt.dty);
             tt.dty += N.twenty;
-            tt.drawWrapped(N.oneTwo, Width - (int)N.oneTwo, this.bodyText, GameColors.Fonts.gothic_12);
+            tt.drawWrapped(N.oneTwo, Width - (int)N.oneTwo, this.bodyText, GameColors.Fonts.arial_12);
             tt.newLine();
 
             // list of things to copy to clipboard
@@ -1166,7 +1180,7 @@ namespace SrvSurvey.forms
                     x -= 4;
                 }
                 tt.dty += N.two;
-                tt.drawRight(x, "Copy:", C.orangeDark, GameColors.Fonts.gothic_9);
+                tt.drawRight(x, "Copy:", C.orangeDark, GameColors.Fonts.arial_9);
                 tt.dty += copyButtons[0].Height + N.four;
             }
             else
@@ -1185,14 +1199,17 @@ namespace SrvSurvey.forms
                 {
                     if (pm.replied != null)
                     {
-                        tt.draw(N.oneTwo, "Replied: ▶ ", C.orangeDark, GameColors.Fonts.gothic_10);
+                        tt.draw(N.oneTwo, "Replied: ▶ ", C.orangeDark, GameColors.Fonts.arial_10);
                         var txt = qm.actions.GetValueOrDefault(pm.replied, pm.replied);
-                        tt.draw(txt, GameColors.Fonts.gothic_10);
+                        tt.draw(txt, GameColors.Fonts.arial_10);
                         tt.newLine(-N.six);
                     }
                     else if (replyButtons != null)
                     {
-                        var x = 0f;
+                        tt.dty += N.ten;
+                        tt.draw(N.oneTwo, "Reply with: ", C.cyan, GameColors.Fonts.arial_12);
+                        tt.dty -= N.ten;
+                        var x = tt.dtx;
                         foreach (var btn in replyButtons)
                         {
                             btn.Left = (int)x;

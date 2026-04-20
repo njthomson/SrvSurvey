@@ -419,6 +419,9 @@ namespace SrvSurvey.game
             // tell all new plotters
             PlotBase2.processstatusChanged();
             PlotBase2.renderAll(this);
+
+            // and tell any quests
+            PlayState.cmdr?.processJournalEntry(JObject.FromObject(this.status)).justDoIt();
         }
 
         private void statusDestinationChanged()
@@ -1663,7 +1666,7 @@ namespace SrvSurvey.game
             if (lastDocked != null && fcTrackedCargo.Count > 0)
             {
                 PlotBuildCommodities.startPending(fcTrackedCargo);
-                Game.rcc.supplyFC(lastDocked.MarketID, fcTrackedCargo).continueOnMain(null, updatedCargo =>
+                Game.rcc.supplyFC(cmdr.fid, lastDocked.MarketID, fcTrackedCargo).continueOnMain(null, updatedCargo =>
                 {
                     Game.log(updatedCargo.formatWithHeader("updatedCargo after supplyFC:"));
                     if (cmdrColony == null || lastDocked == null) return;
@@ -1727,7 +1730,7 @@ namespace SrvSurvey.game
                         // invert the diff as we want it applied to the FC
                         diff = diff.ToDictionary(x => x.Key, x => x.Value * -1);
                         PlotBuildCommodities.startPending(diff);
-                        Game.rcc.supplyFC(marketId, diff).continueOnMain(null, updatedCargo =>
+                        Game.rcc.supplyFC(cmdr.fid, marketId, diff).continueOnMain(null, updatedCargo =>
                         {
                             Game.log(updatedCargo.formatWithHeader($"**** updatedCargo after supplyFC: {marketId}"));
                             if (cmdrColony == null) return;
@@ -1770,7 +1773,7 @@ namespace SrvSurvey.game
             {
                 Game.log($"Buying {entry.Count}x {entry.Type} from linked FC marketId: {entry.MarketId}");
                 PlotBuildCommodities.startPending();
-                Game.rcc.supplyFC(entry.MarketId, entry.Type, -entry.Count).continueOnMain(null, updatedCargo =>
+                Game.rcc.supplyFC(cmdr.fid, entry.MarketId, entry.Type, -entry.Count).continueOnMain(null, updatedCargo =>
                 {
                     Game.log(updatedCargo);
                     if (cmdrColony == null || lastDocked == null) return;
@@ -1795,7 +1798,7 @@ namespace SrvSurvey.game
             {
                 Game.log($"Selling {entry.Count}x {entry.Type} to linked FC marketId: {entry.MarketId}");
                 PlotBuildCommodities.startPending();
-                Game.rcc.supplyFC(entry.MarketId, entry.Type, entry.Count).continueOnMain(null, updatedCargo =>
+                Game.rcc.supplyFC(cmdr.fid, entry.MarketId, entry.Type, entry.Count).continueOnMain(null, updatedCargo =>
                 {
                     Game.log(updatedCargo);
                     if (cmdrColony == null || lastDocked == null) return;
@@ -1871,7 +1874,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(ColonisationBeaconDeployed entry)
         {
             // update the architect in RavenColonial
-            Game.rcc.updateSystem(systemData!.name, new()
+            Game.rcc.updateSystem(cmdr.fid, systemData!.name, new()
             {
                 architect = this.Commander,
             }).justDoIt();

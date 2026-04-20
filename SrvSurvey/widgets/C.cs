@@ -38,6 +38,7 @@ namespace SrvSurvey.widgets
 
         public static Color cyan = c("cyan");
         public static Color cyanDark = c("cyanDark");
+        public static Color cyanDarker = Color.FromArgb(100, c("cyanDark"));
 
         public static Color red = c("red");
         public static Color redDark = c("redDark");
@@ -103,6 +104,7 @@ namespace SrvSurvey.widgets
             public static Pen green2 = green.toPen(2);
 
             public static Pen grey1 = grey.toPen(1);
+            public static Pen grey3 = grey.toPen(3);
         }
 
         public static class Brushes
@@ -116,6 +118,7 @@ namespace SrvSurvey.widgets
             public static Brush red = C.red.toBrush();
             public static Brush yellow = C.yellow.toBrush();
             public static Brush green = C.green.toBrush();
+            public static Brush grey = C.grey.toBrush();
 
             public static Brush menuGold = C.menuGold.toBrush();
         }

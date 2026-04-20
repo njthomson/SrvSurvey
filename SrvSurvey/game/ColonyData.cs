@@ -65,6 +65,7 @@ namespace SrvSurvey.game
                 data.Save();
             }
 
+            data.fid = fid;
             return data;
         }
 
@@ -142,6 +143,7 @@ namespace SrvSurvey.game
 
         public List<Project> projects = new();
 
+        public string fid;
         public string cmdr;
         public string? primaryBuildId;
         public bool fcTracking = true;
@@ -423,7 +425,7 @@ namespace SrvSurvey.game
 
             if (newCargo.Count > 0)
             {
-                var updatedCargo = await Game.rcc.updateCargoFC(fc.marketId, newCargo);
+                var updatedCargo = await Game.rcc.updateCargoFC(this.fid, fc.marketId, newCargo);
                 if (updatedCargo != null)
                 {
                     // apply new numbers and save
@@ -550,7 +552,7 @@ namespace SrvSurvey.game
 
             Game.log($"Publishing FC: {newFC}");
 
-            var fc = await Game.rcc.publishFC(newFC);
+            var fc = await Game.rcc.publishFC(game.cmdr.fid, newFC);
 
             // if market data matches this FC, update that too
             if (fc != null && game.marketFile.MarketId == fc.marketId)
@@ -811,7 +813,7 @@ namespace SrvSurvey.game
                 cargo = game.cargoFile.Inventory.ToDictionary(_ => _.Name, _ => _.Count),
             };
 
-            await Game.rcc.publishCurrentShip(ship);
+            await Game.rcc.publishCurrentShip(game.cmdr.fid, ship);
 
             return true;
         }

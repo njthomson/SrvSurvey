@@ -20,6 +20,7 @@ public class PlayChapter
     private HashSet<string> journalFuncs = [];
     private HashSet<string> varNames = [];
     private List<Action> pending = [];
+    public string? invokingFunc;
 
     #region data members
 
@@ -217,13 +218,14 @@ end");
     public async Task<bool> processJournalEntry(LuaTable entry, JObject raw)
     {
         var eventName = entry["event"].ToString();
-        if (!active || !journalFuncs.Contains(eventName)) return false;
+        if (!active) return false;
 
+        var shouldSave = false;
         var funcName = $"on_{eventName}";
-        if (!state.Environment.ContainsKey(funcName)) throw new Exception($"Missing function: {funcName} ?");
 
-        // invoke the function
-        var shouldSave = await invokeLuaFunc(funcName, new LuaValue[] { entry });
+        // invoke the function?
+        if (state.Environment[funcName].Type == LuaValueType.Function)
+            shouldSave |=  await invokeLuaFunc(funcName, new LuaValue[] { entry });
 
         // special case for easier emote/gesture processing
         if (eventName == "ReceiveText" && state.Environment.ContainsKey(LuaFunc.onEmote))
@@ -246,19 +248,22 @@ end");
             Game.log($"[{pq.id}/{id}] Invoking: {funcName}");
             if (this.pq.invokingChapter != null) Debugger.Break();
             this.pq.invokingChapter = this;
+            this.invokingFunc = funcName;
             var rslt = await state.CallAsync(func, args);
             var shouldSave = rslt.Length > 0 && rslt[0] != LuaValue.Nil && rslt[0].ToString() != "false";
             return shouldSave;
         }
-        catch (Exception ex)
+        catch (LuaRuntimeException ex)
         {
-            Game.log($"Quest script error: {ex.Message}\r\n\t{ex.StackTrace}");
-            if (DialogResult.Yes == MessageBox.Show(ex.Message + "\r\n\r\nDebug?", "LUA Error", MessageBoxButtons.YesNo))
+            var msg = $"Script error on line {ex.LuaTraceback?.FirstLine} of {this.id}.lua: {ex.Message}";
+            Game.log(msg + "\r\n\t{ex.StackTrace}");
+            if (DialogResult.Yes == MessageBox.Show(msg + "\r\n\r\nDebug?", "LUA Error", MessageBoxButtons.YesNo))
                 Debugger.Break();
             return false;
         }
         finally
         {
+            this.invokingFunc = null;
             this.pq.invokingChapter = null;
         }
     }

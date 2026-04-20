@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using SrvSurvey;
 using SrvSurvey.game;
 using System.Diagnostics.CodeAnalysis;
+using System.Media;
 
 namespace SrvSurvey.quests;
 
@@ -15,12 +16,14 @@ public class PlayQuest
     [JsonIgnore] public bool dev;
     [JsonIgnore] public bool dirty;
     [JsonIgnore] public PlayChapter? invokingChapter;
+    [JsonIgnore] public readonly HashSet<string> chaptersToStart = [];
+    [JsonIgnore] public readonly HashSet<string> chaptersToStop = [];
 
     #region data members
 
-    public required string publisher;
-    public required string id;
-    public required double ver;
+    public string publisher => quest?.publisher!;
+    public string id => quest?.id!;
+    public double ver => quest?.ver ?? 0;
 
     /// <summary> The state of objectives </summary>
     public Dictionary<string, PlayObjective> objectives = [];
@@ -52,8 +55,10 @@ public class PlayQuest
     public Dictionary<string, LuaValue> vars = [];
 
     /// <summary> A map of last seen journal events </summary>
-    //[JsonConverter(typeof(PlayQuest.KeptLastsJsonConverter))] // TODO: <<----
-    public Dictionary<string, LuaTable?> keptLasts = [];
+    [JsonConverter(typeof(PlayQuest.KeptLastsJsonConverter))]
+    public Dictionary<string, JObject?> keptLasts = [];
+
+    public List<PlayRoute> routes = [];
 
     #endregion
 
@@ -64,7 +69,12 @@ public class PlayQuest
 
     public override string ToString()
     {
-        return $"questId: {id}";
+        return $"{publisher}|{id}|{ver}";
+    }
+
+    private void log(string msg)
+    {
+        Game.log($"[{this.id}/{this.invokingChapter?.id}/{this.invokingChapter?.invokingFunc}] {msg}");
     }
 
     /// <summary> Called by Game.cs so chapters may process journal events as they happen </summary>
@@ -82,7 +92,7 @@ public class PlayQuest
         var eventName = entry["event"].ToString();
         if (keptLasts.ContainsKey(eventName) || eventName == "Docked" || eventName == "FSDJump")
         {
-            keptLasts[eventName] = entry;
+            keptLasts[eventName] = raw;
             dirty = true;
         }
 
@@ -90,19 +100,24 @@ public class PlayQuest
         foreach (var pc in activeChapters)
             pc.doPendings();
 
-        return updateIfDirty(triggered);
+        return await updateIfDirty(triggered);
     }
 
     /// <summary> Returns true if quest states were dirty, after saving to a file </summary>
-    public bool updateIfDirty(bool force = false)
+    public async Task<bool> updateIfDirty(bool force = false)
     {
         if (!dirty && !force) return false;
+
+        if (chaptersToStop.Count > 0)
+            await stopChapters();
+        if (chaptersToStart.Count > 0)
+            await startChapters();
 
         foreach (var pc in chapters)
             if (pc.active)
                 pc.pullScriptVars();
 
-        this.parent.Save();
+        this.parent.Save(false);
 
         PlayState.updateUI(this);
 
@@ -112,14 +127,14 @@ public class PlayQuest
 
     public void complete()
     {
-        Game.log($"[{this.id}] PQ.complete");
+        this.log("PQ.complete");
         this.endTime = DateTimeOffset.UtcNow;
         this.dirty = true;
     }
 
     public void fail()
     {
-        Game.log($"[{this.id}] PQ.fail");
+        this.log("PQ.fail");
         this.endTime = DateTimeOffset.UtcNow;
         this.dirty = true;
 
@@ -128,36 +143,57 @@ public class PlayQuest
          */
     }
 
-    public async Task startChapter(string id)
+    public void startChapter(string id)
     {
-        Game.log($"[{this.id}] PQ.startChapter: {id}");
-        var chapter = chapters.FirstOrDefault(c => c.id == id);
-        if (chapter == null) throw new Exception($"Bad chapter id: {id}");
-
-        if (chapter.active) return;
-
-        await chapter.start();
+        chaptersToStart.Add(id);
         dirty = true;
     }
 
-    public async Task stopChapter(string id)
+    public async Task startChapters()
     {
-        Game.log($"[{this.id}] PQ.stopChapter: {id}");
-        var chapter = chapters.FirstOrDefault(c => c.id == id);
-        if (chapter == null) throw new Exception($"Bad chapter id: {id}");
+        var id = chaptersToStart.FirstOrDefault();
+        while (id != null)
+        {
+            this.log($"PQ.startChapter: {id}");
+            var chapter = chapters.FirstOrDefault(c => c.id == id);
+            if (chapter == null) throw new Exception($"Bad chapter id: {id}");
 
-        // TODO: check if this is the only running chapter?
+            if (!chapter.active)
+                await chapter.start();
 
-        if (!chapter.active) return;
+            chaptersToStart.Remove(id);
+            id = chaptersToStart.FirstOrDefault();
+        }
+    }
 
-        chapter.stop();
-
+    public void stopChapter(string id)
+    {
+        chaptersToStop.Add(id);
         dirty = true;
+    }
+
+    private async Task stopChapters()
+    {
+        var id = chaptersToStop.FirstOrDefault();
+        while (id != null)
+        {
+            this.log($"PQ.stopChapter: {id}");
+            var chapter = chapters.FirstOrDefault(c => c.id == id);
+            if (chapter == null) throw new Exception($"Bad chapter id: {id}");
+
+            // TODO: check if this is the only running chapter?
+
+            if (chapter.active)
+                chapter.stop();
+
+            chaptersToStop.Remove(id);
+            id = chaptersToStop.FirstOrDefault();
+        }
     }
 
     public void setVar(string name, LuaValue val)
     {
-        Game.log($"[{this.id}] PQ.setVar: {name}");
+        this.log($"PQ.setVar: {name}");
 
         if (val == LuaValue.Nil)
         {
@@ -173,12 +209,15 @@ public class PlayQuest
 
     public LuaValue getVar(string name)
     {
+        if (!vars.ContainsKey(name))
+            this.log($"PQ.getVar: NOT STORED: '{name}'");
+
         return vars.GetValueOrDefault(name);
     }
 
     public void sendMsg(PlayMsg newMsg)
     {
-        Game.log($"[{this.id}] PQ.sendMsg: {newMsg.id}");
+        this.log($"PQ.sendMsg: {newMsg.id}");
         newMsg.parent = this;
         if (newMsg.from == null && quest.msgs.Find(m => m.id == newMsg.id) == null)
             throw new Exception($"Bad message: {newMsg.id}");
@@ -188,6 +227,20 @@ public class PlayQuest
 
         msgs.Add(newMsg);
         dirty = true;
+
+        playChime();
+    }
+
+    public static void playChime()
+    {
+        var filepath = @"C:\Windows\Media\Windows Proximity Notification.wav";
+        if (File.Exists(filepath))
+        {
+            using (SoundPlayer player = new SoundPlayer(filepath))
+            {
+                player.Play();
+            }
+        }
     }
 
     public PlayMsg? getMsg(string id)
@@ -197,7 +250,7 @@ public class PlayQuest
 
     public bool deleteMsg(string id)
     {
-        Game.log($"[{this.id}] PQ.deleteMsg: {id}");
+        this.log($"PQ.deleteMsg: {id}");
         var count = msgs.RemoveAll(m => m.id == id);
         dirty |= count > 0;
 
@@ -209,7 +262,7 @@ public class PlayQuest
     /// <summary> Called by Quest Comms when a player hit a message reply button </summary>
     public async Task invokeMessageAction(string msgId, string actionId)
     {
-        Game.log($"[{this.id}] PQ.invokeMessageAction: {msgId}");
+        this.log($"PQ.invokeMessageAction: {msgId}");
         var pm = msgs.Find(m => m.id == msgId);
         if (pm == null) throw new Exception($"Message not found, id: {msgId}");
         var chapterId = pm.chapter!;
@@ -221,14 +274,17 @@ public class PlayQuest
     }
 
 
-    public void keepLast(params string?[] names)
+    public void keepLast(HashSet<string> names)
     {
-        Game.log($"[{this.id}] PQ.keepLast: {string.Join(',', names)}");
+        names.Add(nameof(Docked));
+        names.Add(nameof(FSDJump));
+
+        this.log($"PQ.keepLast: {string.Join(',', names)}");
         // confirm something is changing
-        if (names.Length == keptLasts.Count && keptLasts.Keys.All(n => string.IsNullOrWhiteSpace(n) || names.Contains(n)))
+        if (names.Count == keptLasts.Count && keptLasts.Keys.All(n => names.Contains(n)))
             return;
 
-        var newKeptLasts = new Dictionary<string, LuaTable?>();
+        var newKeptLasts = new Dictionary<string, JObject?>();
 
         // (keeping any prior references)
         foreach (var name in names)
@@ -242,31 +298,31 @@ public class PlayQuest
     public LuaValue getLast(string eventName)
     {
         // TODO: check if eventName is valid?
+        if (!keptLasts.ContainsKey(eventName))
+            this.log($"PQ.getLast: NOT TRACKING: '{eventName}'");
 
         var last = keptLasts.GetValueOrDefault(eventName);
         if (last == null)
             return LuaValue.Nil;
         else
-            return last;
+            return last.toTbl();
     }
 
-    /*
     class KeptLastsJsonConverter : Newtonsoft.Json.JsonConverter
     {
         public override bool CanConvert(Type objectType) { return false; }
 
         public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
-            var raw = serializer.Deserialize<Dictionary<string, JObject?>>(reader);
-            if (raw == null) throw new Exception($"Unexpected value: ");
+            var obj = serializer.Deserialize<Dictionary<string, JObject?>>(reader);
+            if (obj == null) throw new Exception($"Unexpected value: ");
 
-            var keptLasts = raw.ToDictionary(kv => kv.Key, kv => JournalFile.hydrate(kv.Value) as JournalEntry);
-            return keptLasts;
+            return obj;
         }
 
         public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
-            var keptLasts = value as Dictionary<string, JournalEntry?>;
+            var keptLasts = value as Dictionary<string, JObject?>;
             if (keptLasts == null) throw new Exception($"Unexpected value: {value?.GetType().Name}");
 
             // serialize each kept entry as a single line (even though we generally serialize indented)
@@ -283,5 +339,24 @@ public class PlayQuest
             writer.WriteEndObject();
         }
     }
-    */
+
+    public class PlayRoute
+    {
+        public string id;
+        public double w;
+        public List<double[]> wp;
+    }
+
+    public class Comparer : IEqualityComparer<PlayQuest>
+    {
+        public bool Equals(PlayQuest? x, PlayQuest? y)
+        {
+            return x?.ToString() == y?.ToString();
+        }
+
+        public int GetHashCode(PlayQuest pq)
+        {
+            return pq.ToString().GetHashCode();
+        }
+    }
 }

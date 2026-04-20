@@ -1182,7 +1182,7 @@ namespace SrvSurvey.net
                 public string controllingFaction;
                 public string controllingFactionState;
                 public double distanceToArrival;
-                public Dictionary<string, float>? economies;
+                public Dictionary<string, double>? economies;
                 public string government;
                 public long id;
                 public LandingPads landingPads;

@@ -631,6 +631,17 @@ namespace SrvSurvey.widgets
             public static Font gothic_14B = new Font("Century Gothic", 14F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
             public static Font gothic_16B = new Font("Century Gothic", 16F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
 
+            public static Font arial_7 = new Font("Arial", 7F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font arial_8 = new Font("Arial", 8F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font arial_9 = new Font("Arial", 9F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font arial_10 = new Font("Arial", 10F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font arial_12 = new Font("Arial", 12F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font arial_12B = new Font("Arial", 12F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+            public static Font arial_13 = new Font("Arial", 13F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font arial_14 = new Font("Arial", 14F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font arial_16 = new Font("Arial", 16F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font arial_16B = new Font("Arial", 16F * Program.fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+
             // TODO: confirm these Pixel sized fonts scale properly with large fonts
             public static Font typewriter_p4 = new Font("Lucida Console", 4F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Pixel);
             public static Font typewriter_p6 = new Font("Lucida Console", 6F * Program.fontScaleFactor, FontStyle.Regular, GraphicsUnit.Pixel);

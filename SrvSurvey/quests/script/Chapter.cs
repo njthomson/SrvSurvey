@@ -13,9 +13,9 @@ public partial class Chapter
     }
 
     [LuaMember]
-    public async Task stop()
+    public void stop()
     {
-        await pc.pq.stopChapter(pc.id);
+        pc.pq.stopChapter(pc.id);
     }
 }
 

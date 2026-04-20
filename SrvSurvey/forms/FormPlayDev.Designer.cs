@@ -31,13 +31,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPlayDev));
             txtJson = new TextBox();
             label1 = new Label();
-            comboQuest = new ComboBox();
             comboChapter = new ComboBox();
             label2 = new Label();
             btnParse = new DrawButton();
             statusStrip1 = new StatusStrip();
             menuMore = new ToolStripDropDownButton();
-            menuImportFolder2 = new ToolStripMenuItem();
+            menuPublish = new ToolStripMenuItem();
             menuReadFromFile = new ToolStripMenuItem();
             menuStatus = new ToolStripStatusLabel();
             menuWatch = new ToolStripDropDownButton();
@@ -48,7 +47,9 @@
             btnStopChapter = new DrawButton();
             txtCode = new TextBox();
             btnRun = new DrawButton();
-            btnPublish = new DrawButton();
+            txtDevQuest = new TextBox();
+            txtDevVer = new TextBox();
+            btnLoad = new DrawButton();
             statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -71,19 +72,6 @@
             label1.Size = new Size(41, 15);
             label1.TabIndex = 0;
             label1.Text = "Quest:";
-            // 
-            // comboQuest
-            // 
-            comboQuest.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            comboQuest.DisplayMember = "Value";
-            comboQuest.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboQuest.FormattingEnabled = true;
-            comboQuest.Location = new Point(93, 6);
-            comboQuest.Name = "comboQuest";
-            comboQuest.Size = new Size(628, 23);
-            comboQuest.TabIndex = 1;
-            comboQuest.ValueMember = "Key";
-            comboQuest.SelectedIndexChanged += comboQuest_SelectedIndexChanged;
             // 
             // comboChapter
             // 
@@ -138,24 +126,24 @@
             // menuMore
             // 
             menuMore.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            menuMore.DropDownItems.AddRange(new ToolStripItem[] { menuImportFolder2, menuReadFromFile });
+            menuMore.DropDownItems.AddRange(new ToolStripItem[] { menuPublish, menuReadFromFile });
             menuMore.Image = (Image)resources.GetObject("menuMore.Image");
             menuMore.ImageTransparentColor = Color.Magenta;
             menuMore.Name = "menuMore";
-            menuMore.Size = new Size(58, 20);
-            menuMore.Text = "Load ...";
+            menuMore.Size = new Size(60, 20);
+            menuMore.Text = "More ...";
             // 
-            // menuImportFolder2
+            // menuPublish
             // 
-            menuImportFolder2.Name = "menuImportFolder2";
-            menuImportFolder2.Size = new Size(185, 22);
-            menuImportFolder2.Text = "Import quest folder...";
-            menuImportFolder2.Click += menuImportFolder_Click;
+            menuPublish.Name = "menuPublish";
+            menuPublish.Size = new Size(180, 22);
+            menuPublish.Text = "Publish quest!";
+            menuPublish.Click += menuPublish_Click;
             // 
             // menuReadFromFile
             // 
             menuReadFromFile.Name = "menuReadFromFile";
-            menuReadFromFile.Size = new Size(185, 22);
+            menuReadFromFile.Size = new Size(180, 22);
             menuReadFromFile.Text = "Reset to file";
             menuReadFromFile.Click += menuReadFromFile_Click;
             // 
@@ -164,13 +152,14 @@
             menuStatus.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
             menuStatus.BorderStyle = Border3DStyle.SunkenOuter;
             menuStatus.Name = "menuStatus";
-            menuStatus.Size = new Size(638, 17);
+            menuStatus.Size = new Size(605, 17);
             menuStatus.Spring = true;
             menuStatus.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // menuWatch
             // 
             menuWatch.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            menuWatch.DoubleClickEnabled = true;
             menuWatch.ImageTransparentColor = Color.Magenta;
             menuWatch.Name = "menuWatch";
             menuWatch.ShowDropDownArrow = false;
@@ -194,7 +183,9 @@
             // 
             checkWatchFolder.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             checkWatchFolder.AutoSize = true;
-            checkWatchFolder.Location = new Point(727, 8);
+            checkWatchFolder.Checked = true;
+            checkWatchFolder.CheckState = CheckState.Checked;
+            checkWatchFolder.Location = new Point(728, 8);
             checkWatchFolder.Name = "checkWatchFolder";
             checkWatchFolder.Size = new Size(94, 19);
             checkWatchFolder.TabIndex = 2;
@@ -295,24 +286,53 @@
             btnRun.UseVisualStyleBackColor = true;
             btnRun.Click += btnRun_Click;
             // 
-            // btnPublish
+            // txtDevQuest
             // 
-            btnPublish.Location = new Point(12, 160);
-            btnPublish.Name = "btnPublish";
-            btnPublish.FlatStyle = FlatStyle.Flat;
-            btnPublish.DrawBorder = true;
-            btnPublish.Size = new Size(75, 23);
-            btnPublish.TabIndex = 13;
-            btnPublish.Text = "Publish";
-            btnPublish.UseVisualStyleBackColor = true;
-            btnPublish.Click += btnPublish_Click;
+            txtDevQuest.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtDevQuest.Location = new Point(93, 6);
+            txtDevQuest.Name = "txtDevQuest";
+            txtDevQuest.ReadOnly = true;
+            txtDevQuest.Size = new Size(383, 23);
+            txtDevQuest.TabIndex = 14;
+            // 
+            // txtDevVer
+            // 
+            txtDevVer.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            txtDevVer.Location = new Point(482, 6);
+            txtDevVer.Name = "txtDevVer";
+            txtDevVer.ReadOnly = true;
+            txtDevVer.Size = new Size(85, 23);
+            txtDevVer.TabIndex = 15;
+            // 
+            // btnLoad
+            // 
+            btnLoad.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnLoad.AnimateOnPress = false;
+            btnLoad.BackColorDisabled = Color.Empty;
+            btnLoad.BackColorHover = Color.Empty;
+            btnLoad.BackColorPressed = Color.Empty;
+            btnLoad.DrawBorder = true;
+            btnLoad.FlatStyle = FlatStyle.Flat;
+            btnLoad.ForeColor = Color.Black;
+            btnLoad.ForeColorDisabled = Color.Empty;
+            btnLoad.ForeColorHover = Color.Empty;
+            btnLoad.ForeColorPressed = Color.Empty;
+            btnLoad.Location = new Point(573, 6);
+            btnLoad.Name = "btnLoad";
+            btnLoad.Size = new Size(148, 23);
+            btnLoad.TabIndex = 16;
+            btnLoad.Text = "Import folder";
+            btnLoad.UseVisualStyleBackColor = true;
+            btnLoad.Click += btnLoad_Click;
             // 
             // FormPlayDev
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(833, 408);
-            Controls.Add(btnPublish);
+            Controls.Add(btnLoad);
+            Controls.Add(txtDevVer);
+            Controls.Add(txtDevQuest);
             Controls.Add(btnRun);
             Controls.Add(txtCode);
             Controls.Add(btnStopChapter);
@@ -323,7 +343,6 @@
             Controls.Add(btnParse);
             Controls.Add(comboChapter);
             Controls.Add(label2);
-            Controls.Add(comboQuest);
             Controls.Add(label1);
             Controls.Add(txtJson);
             Name = "FormPlayDev";
@@ -338,7 +357,6 @@
 
         private TextBox txtJson;
         private Label label1;
-        private ComboBox comboQuest;
         private ComboBox comboChapter;
         private Label label2;
         private DrawButton btnParse;
@@ -347,7 +365,6 @@
         private CheckBox checkWatchFolder;
         private DrawButton btnRefresh;
         private ToolStripDropDownButton menuMore;
-        private ToolStripMenuItem menuImportFolder2;
         private ToolStripMenuItem menuReadFromFile;
         private ToolStripDropDownButton menuWatch;
         private ToolStripDropDownButton menuComms;
@@ -355,6 +372,9 @@
         private DrawButton btnStopChapter;
         private TextBox txtCode;
         private DrawButton btnRun;
-        private DrawButton btnPublish;
+        private TextBox txtDevQuest;
+        private TextBox txtDevVer;
+        private DrawButton btnLoad;
+        private ToolStripMenuItem menuPublish;
     }
 }

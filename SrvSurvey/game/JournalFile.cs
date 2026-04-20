@@ -56,8 +56,8 @@ namespace SrvSurvey
             this.isOdyssey = true;
             if (this.Entries.FirstOrDefault() is Fileheader entryFileHeader)
                 this.isOdyssey = entryFileHeader.Odyssey;
-            else
-                Debugger.Break(); // Does this ever happen?
+            //else
+            //    Debugger.Break(); // This happens when at the main menu before loading any cmdr
         }
 
         public void Dispose()

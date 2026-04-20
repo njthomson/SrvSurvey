@@ -172,7 +172,7 @@ namespace SrvSurvey.plotters
 
             // quest related?
             if (PlayState.cmdr?.isTagged(netData.systemName) == true)
-                PlotQuestMini.drawLogo(g, leftWidth - N.threeTwo, tt.dty, true, N.twoFour);
+                PlotQuestMini.drawLogo(g, N.threeTwo, tt.dty + N.four, true, N.twoFour);
 
             var highlight = netData.discovered == false || netData.scanBodyCount < netData.totalBodyCount || (netData.totalBodyCount == 0 && netData.discovered.HasValue);
 

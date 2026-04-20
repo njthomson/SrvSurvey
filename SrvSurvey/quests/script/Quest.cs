@@ -1,4 +1,5 @@
 ﻿using Lua;
+using System.Globalization;
 
 namespace SrvSurvey.quests.script;
 
@@ -25,22 +26,22 @@ public partial class Quest
     }
 
     [LuaMember]
-    public async Task startChapter(string id)
+    public void startChapter(string id)
     {
-        await pq.startChapter(id);
+        pq.startChapter(id);
     }
 
     [LuaMember]
-    public async Task nextChapter(string id)
+    public void nextChapter(string id)
     {
-        await pq.startChapter(id);
-        await pq.stopChapter(pq.invokingChapter!.id);
+        pq.startChapter(id);
+        pq.stopChapter(pq.invokingChapter!.id);
     }
 
     [LuaMember]
-    public async Task stopChapter(string id)
+    public void stopChapter(string id)
     {
-        await pq.stopChapter(id);
+        pq.stopChapter(id);
     }
 
     [LuaMember]
@@ -95,12 +96,16 @@ public partial class Quest
     }
 
     [LuaMember]
-    public void tag(string t1, string? t2 = null, string? t3 = null, string? t4 = null, string? t5 = null, string? t6 = null, string? t7 = null, string? t8 = null)
+    public void tag(LuaValue val)
     {
-        tags(t1, t2, t3, t4, t5, t6, t7, t8);
+        var tags = val.Type == LuaValueType.Table
+            ? val.Read<LuaTable>().ToList().Select(kv => kv.Value.ToString()).ToHashSet()
+            : new() { val.ToString() };
+
+        this.tags(tags);
     }
 
-    public void tags(params string?[] tags)
+    private void tags(HashSet<string> tags)
     {
         foreach (var tag in tags)
             if (!string.IsNullOrWhiteSpace(tag))
@@ -108,12 +113,16 @@ public partial class Quest
     }
 
     [LuaMember]
-    public void untag(string t1, string? t2 = null, string? t3 = null, string? t4 = null, string? t5 = null, string? t6 = null, string? t7 = null, string? t8 = null)
+    public void untag(LuaValue val)
     {
-        untags(t1, t2, t3, t4, t5, t6, t7, t8);
+        var tags = val.Type == LuaValueType.Table
+            ? val.Read<LuaTable>().ToList().Select(kv => kv.Value.ToString()).ToHashSet()
+            : new() { val.ToString() };
+
+        untags(tags);
     }
 
-    public void untags(params string?[] tags)
+    private void untags(HashSet<string> tags)
     {
         foreach (var tag in tags)
             if (!string.IsNullOrWhiteSpace(tag))
@@ -121,10 +130,14 @@ public partial class Quest
     }
 
     [LuaMember]
-    public void setTags(string t1, string? t2 = null, string? t3 = null, string? t4 = null, string? t5 = null, string? t6 = null, string? t7 = null, string? t8 = null)
+    public void setTags(LuaValue val)
     {
+        var tags = val.Type == LuaValueType.Table
+            ? val.Read<LuaTable>().ToList().Select(kv => kv.Value.ToString()).ToHashSet()
+            : new() { val.ToString() };
+
         clearTags();
-        this.tags(t1, t2, t3, t4, t5, t6, t7, t8);
+        this.tags(tags);
     }
 
     [LuaMember]
@@ -155,12 +168,33 @@ public partial class Quest
     }
 
     [LuaMember]
-    public void keepLast(string e1, string? e2 = null, string? e3 = null, string? e4 = null, string? e5 = null, string? e6 = null, string? e7 = null, string? e8 = null)
+    public void keepLast(LuaValue val)
     {
-        var names = new string?[] { e1, e2, e3, e4, e5, e6, e7, e8 }
-            .Where(e => !string.IsNullOrWhiteSpace(e))
-            .ToArray();
+        var ids = val.Type == LuaValueType.Table
+            ? val.Read<LuaTable>().ToList().Select(kv => kv.Value.ToString()).ToHashSet()
+            : new() { val.ToString() };
 
-        pq.keepLast(names);
+        pq.keepLast(ids);
+    }
+
+    [LuaMember]
+    public void setRoute(string id, double w, LuaTable latLongs)
+    {
+        this.pq.routes.RemoveAll(pr => pr.id == id);
+        var waypoints = latLongs.ToList().Select(kv => kv.Value.ToString().Split(",", StringSplitOptions.TrimEntries).Select(t => double.Parse(t, CultureInfo.InvariantCulture)).ToArray()).ToList();
+        this.pq.routes.Add(new()
+        {
+            id = id,
+            w = w,
+            wp = waypoints,
+        });
+        this.pq.dirty = true;
+    }
+
+    [LuaMember]
+    public void clearRoute(string id)
+    {
+        this.pq.routes.RemoveAll(pr => pr.id == id);
+        this.pq.dirty = true;
     }
 }

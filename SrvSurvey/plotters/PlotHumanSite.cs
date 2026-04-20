@@ -7,6 +7,7 @@ using SrvSurvey.quests;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 using System.Globalization;
 using Res = Loc.PlotHumanSite;
 
@@ -188,7 +189,13 @@ namespace SrvSurvey.plotters
             else if (mode == GameMode.Landed || mode == GameMode.Docked || mode == GameMode.Flying)
             {
                 // zoom out if in some vehicle
-                return Game.settings.humanSiteZoomShip;
+                var dist = Util.getDistance(Status.here, siteLocation, this.radius);
+                if (dist < 2500)
+                    return Game.settings.humanSiteZoomShip;
+                else if (dist < 4000)
+                    return 0.2f;
+                else
+                    return 0.1f;
             }
 
             return 0;
@@ -197,10 +204,10 @@ namespace SrvSurvey.plotters
         public void adjustZoom(bool zoomIn)
         {
             Game.log($"PlotHumanSite adjustZoom: zoomIn: {zoomIn}");
-            const float delta = 0.5f;
+            const float delta = 0.2f;
             var newZoom = zoomIn ? this.scale + delta : this.scale - delta;
 
-            if (newZoom < 0.5f || newZoom > 15) return;
+            if (newZoom < 0.2f || newZoom > 15) return;
 
             // enable/disable auto-zooming if the new zoom level matches
             var autoZoomLevel = this.getAutoZoomLevel(game.mode);
@@ -676,6 +683,9 @@ namespace SrvSurvey.plotters
                 drawQuestMarkers(g, PlayState.cmdr);
 
             this.drawShipAndSrvLocation(g, tt);
+
+            if (PlayState.cmdr?.activeQuests.Count > 0)
+                drawRouteWayPoints(g, PlayState.cmdr);
 
             // draw relative to center of window ...
             this.resetMiddle(g);
@@ -1161,6 +1171,25 @@ namespace SrvSurvey.plotters
             tt.draw(N.eight, prefix, col, GameColors.fontMiddle);
             tt.drawWrapped(N.threeTwo, txt, col, GameColors.fontMiddle);
             tt.newLine(+N.ten, true);
+        }
+
+        private void drawRouteWayPoints(Graphics g, PlayState ps)
+        {
+            foreach (var pq in ps.activeQuests)
+            {
+                foreach (var rp in pq.routes)
+                {
+                    var pfs = rp.wp.Select(ll =>
+                    {
+                        var p = Util.getOffset(this.radius, new LatLong2(ll[0], ll[1]), 180);
+                        return new PointF((float)p.X, (float)-p.Y);
+                    }).ToArray();
+                    var gp = new GraphicsPath();
+                    gp.AddLines(pfs);
+                    gp.Widen(Color.Black.toPen((float)rp.w, LineCap.RoundAnchor));
+                    g.FillPath(C.Brushes.menuGold, gp);
+                }
+            }
         }
     }
 

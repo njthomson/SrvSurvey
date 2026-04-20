@@ -33,6 +33,15 @@ class RavenColonial
         RavenColonial.client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
     }
 
+    private string getApiKey(string fid)
+    {
+        var cmdr = CommanderSettings.LoadCurrentOrLast();
+        if (cmdr?.fid != fid)
+            cmdr = CommanderSettings.Load(fid, true, null, true);
+
+        return cmdr.rccApiKey!;
+    }
+
     public List<ColonyCost2> loadDefaultCosts()
     {
         var json = File.ReadAllText(colonizationCostsPath);
@@ -165,18 +174,18 @@ class RavenColonial
         Game.log($"RCC.contribute: HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
     }
 
-    public async Task<Dictionary<string, int>> supplyFC(long marketId, string cargo, int delta)
+    public async Task<Dictionary<string, int>> supplyFC(string fid, long marketId, string cargo, int delta)
     {
-        return await supplyFC(marketId, new Dictionary<string, int> { { cargo, delta } });
+        return await supplyFC(fid, marketId, new Dictionary<string, int> { { cargo, delta } });
     }
 
-    public async Task<Dictionary<string, int>> supplyFC(long marketId, Dictionary<string, int> diff)
+    public async Task<Dictionary<string, int>> supplyFC(string fid, long marketId, Dictionary<string, int> diff)
     {
         Game.log(diff.formatWithHeader($"RCC.supplyFC: {marketId}"));
 
         var json1 = JsonConvert.SerializeObject(diff);
         var body = new StringContent(json1, Encoding.Default, "application/json");
-        body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
+        body.Headers.addIf("rcc-key", this.getApiKey(fid));
         var url = $"{svcUri}/api/fc/{Uri.EscapeDataString(marketId.ToString())}/cargo";
         var response = await RavenColonial.client.PatchAsync(url, body);
         Game.log($"RCC.supplyFC: HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
@@ -186,13 +195,13 @@ class RavenColonial
         return obj;
     }
 
-    public async Task<Dictionary<string, int>?> updateCargoFC(long marketId, Dictionary<string, int> cargo)
+    public async Task<Dictionary<string, int>?> updateCargoFC(string fid, long marketId, Dictionary<string, int> cargo)
     {
         Game.log(cargo.formatWithHeader($"RCC.updateCargoFC: {marketId}"));
 
         var json1 = JsonConvert.SerializeObject(cargo);
         var body = new StringContent(json1, Encoding.Default, "application/json");
-        body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
+        body.Headers.addIf("rcc-key", this.getApiKey(fid));
         var url = $"{svcUri}/api/fc/{Uri.EscapeDataString(marketId.ToString())}/cargo";
         var response = await RavenColonial.client.PostAsync(url, body);
         Game.log($"HTTP:{(int)response.StatusCode}({response.StatusCode}): {response.ReasonPhrase}");
@@ -226,14 +235,13 @@ class RavenColonial
     /// <summary>
     /// Replace server FC data with this. (Cargo untouched if it is null)
     /// </summary>
-    public async Task<FleetCarrier?> publishFC(FleetCarrier fc)
+    public async Task<FleetCarrier?> publishFC(string fid, FleetCarrier fc)
     {
         Game.log($"RCC.updateFleetCarrier: {fc}");
 
         var json1 = JsonConvert.SerializeObject(fc);
         var body = new StringContent(json1, Encoding.Default, "application/json");
-        body.Headers.addIf("rcc-cmdr", Game.activeGame?.Commander);
-        body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
+        body.Headers.addIf("rcc-key", this.getApiKey(fid));
 
         var response = await RavenColonial.client.PutAsync($"{svcUri}/api/fc/{fc.marketId}", body);
         var json2 = await response.Content.ReadAsStringAsync();
@@ -356,7 +364,7 @@ class RavenColonial
         return obj;
     }
 
-    public async Task<DataRCC?> updateSystem(string nameOrNum, SitesPut data)
+    public async Task<DataRCC?> updateSystem(string fid, string nameOrNum, SitesPut data)
     {
         Game.log($"RCC.updateSystem: {nameOrNum}");
         if (Game.activeGame?.cmdr?.rccApiKey == null)
@@ -368,7 +376,7 @@ class RavenColonial
 
         var json1 = JsonConvert.SerializeObject(data);
         var body = new StringContent(json1, Encoding.Default, "application/json");
-        body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
+        body.Headers.addIf("rcc-key", this.getApiKey(fid));
 
         var response = await RavenColonial.client.PutAsync($"{svcUri}/api/v2/system/{Uri.EscapeDataString(nameOrNum)}/sites", body);
         var json = await response.Content.ReadAsStringAsync();
@@ -420,7 +428,6 @@ class RavenColonial
 
         var json1 = JsonConvert.SerializeObject(bods);
         var body = new StringContent(json1, Encoding.Default, "application/json");
-        body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
         var response = await RavenColonial.client.PutAsync($"{svcUri}/api/v2/system/{address}/bodies", body);
         var json2 = await response.Content.ReadAsStringAsync();
 
@@ -453,13 +460,13 @@ class RavenColonial
         return data.GetValueOrDefault("displayName");
     }
 
-    public async Task publishCurrentShip(CmdrCurrentShip ship)
+    public async Task publishCurrentShip(string fid, CmdrCurrentShip ship)
     {
         Game.log(ship.cargo.formatWithHeader($"RCC.publishCurrentShip: {ship.name} ({ship.type})"));
 
         var json1 = JsonConvert.SerializeObject(ship);
         var body = new StringContent(json1, Encoding.Default, "application/json");
-        body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
+        body.Headers.addIf("rcc-key", this.getApiKey(fid));
 
         var response = await RavenColonial.client.PostAsync($"{svcUri}/api/cmdr/currentShip", body);
         var json2 = await response.Content.ReadAsStringAsync();
@@ -478,7 +485,6 @@ class RavenColonial
             { "json", json }
         });
         var body = new StringContent(json1, Encoding.Default, "application/json");
-        body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
 
         var response = await RavenColonial.client.PutAsync($"{svcUri}/api/ggg/create", body);
         var json2 = await response.Content.ReadAsStringAsync();
@@ -486,41 +492,50 @@ class RavenColonial
         Game.log($"RCC.uploadGGG: HTTP:{(int)response.StatusCode}({response.StatusCode}) {response.ReasonPhrase}\r\n{json2}");
     }
 
-    public async Task publishQuest(DefQuest quest)
+    public async Task<string> publishQuest(string fid, DefQuest quest)
     {
         var json1 = JsonConvert.SerializeObject(quest);
         var body = new StringContent(json1, Encoding.Default, "application/json");
-        body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
+        body.Headers.addIf("rcc-key", this.getApiKey(fid));
 
         var response = await RavenColonial.client.PostAsync($"{svcUri}/api/quest/publish", body);
         var json2 = await response.Content.ReadAsStringAsync();
 
         Game.log($"RCC.publishQuest: HTTP:{(int)response.StatusCode}({response.StatusCode}) {response.ReasonPhrase}");
+        return response.ReasonPhrase ?? "?";
     }
 
-    public async Task<DefQuest> getQuest(string publisher, string id, double ver)
+    public async Task<DefQuest> getQuest(string fid, string publisher, string id, double ver)
     {
         Game.log($"RCC.getQuest: {publisher} / {id} / {ver}");
 
         var req = new HttpRequestMessage(HttpMethod.Get, $"{svcUri}/api/quest/{Uri.EscapeDataString(publisher)}/{Uri.EscapeDataString(id)}/{ver}/");
-        req.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
+        req.Headers.addIf("rcc-key", this.getApiKey(fid));
 
         var response = await RavenColonial.client.SendAsync(req);
+        if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return null!;
+
         var json = await response.Content.ReadAsStringAsync();
+        if (!response.IsSuccessStatusCode)
+            throw new Exception(json);
+
         var obj = JsonConvert.DeserializeObject<DefQuest>(json)!;
         Game.log($"RCC.getQuest: HTTP:{(int)response.StatusCode}({response.StatusCode}) {response.ReasonPhrase}");
 
         return obj;
     }
 
-    public async Task saveCmdrQuests(List<PlayQuest> quests)
+    public async Task saveCmdrQuests(string fid, List<PlayQuest> playQuests)
     {
-        var nonDevQuests = quests.Where(q => !q.dev).ToList();
+        var nonDevQuests = playQuests
+            .Where(pq => !pq.dev)
+            .ToDictionary(pq => QuestRef.from(pq.quest), pq => pq);
+
         Game.log($"RCC.saveCmdrQuests: {nonDevQuests.Count} quests");
 
         var json1 = JsonConvert.SerializeObject(nonDevQuests);
         var body = new StringContent(json1, Encoding.Default, "application/json");
-        body.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
+        body.Headers.addIf("rcc-key", this.getApiKey(fid));
 
         var response = await RavenColonial.client.PostAsync($"{svcUri}/api/quest/save", body);
         var json2 = await response.Content.ReadAsStringAsync();
@@ -528,17 +543,19 @@ class RavenColonial
         Game.log($"RCC.saveCmdrQuest: HTTP:{(int)response.StatusCode}({response.StatusCode}) {response.ReasonPhrase}");
     }
 
-    public async Task<List<PlayQuest>> loadCmdrQuests(string fid)
+    public async Task<Dictionary<QuestRef, PlayQuest>> loadCmdrQuests(string fid)
     {
         var req = new HttpRequestMessage(HttpMethod.Post, $"{svcUri}/api/quest/load");
-        req.Headers.addIf("rcc-key", Game.activeGame?.cmdr?.rccApiKey);
+        req.Headers.addIf("rcc-key", this.getApiKey(fid));
 
         var response = await RavenColonial.client.SendAsync(req);
+        if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return [];
+
         var json = await response.Content.ReadAsStringAsync();
-        var obj = JsonConvert.DeserializeObject<List<PlayQuest>>(json);
+        var obj = JsonConvert.DeserializeObject<Dictionary<string, PlayQuest>>(json);
 
         Game.log($"RCC.loadCmdrQuests: HTTP:{(int)response.StatusCode}({response.StatusCode}) {response.ReasonPhrase}");
-        return obj ?? [];
+        return obj?.ToDictionary(x => QuestRef.parse(x.Key), x => x.Value) ?? [];
     }
 }
 
