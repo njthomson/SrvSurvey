@@ -137,6 +137,7 @@ namespace SrvSurvey.game
         public bool guardianMatsFull;
         public bool processDockedOnNextStatusChange = false;
         public bool dockingInProgress = false;
+        private bool skipNextCargoEvent;
         public List<SystemFaction>? systemFactions;
 
         public SystemData? systemData;
@@ -1718,10 +1719,13 @@ namespace SrvSurvey.game
 
                 var onSquadFC = lastDocked?.StationServices?.Contains("squadronBank") == true;
                 var isLinkedFC = lastDocked != null && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID);
-                Game.log($"**** marketId : {lastDocked?.MarketID}, onSquadFC: {onSquadFC}, isLinkedFC: {isLinkedFC}, lastDocked?.StationType: {lastDocked?.StationType}");
-
+                Game.log($"**** marketId : {lastDocked?.MarketID}, onSquadFC: {onSquadFC}, isLinkedFC: {isLinkedFC}, lastDocked?.StationType: {lastDocked?.StationType}, skipNextCargoEvent: {skipNextCargoEvent}");
+                if (skipNextCargoEvent)
+                {
+                    skipNextCargoEvent = false;
+                }
                 // if docked on a TRACKED Squadron FC - use crude cargo diff'ing to track cargo on the thing
-                if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && onSquadFC && isLinkedFC)
+                else if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && onSquadFC && isLinkedFC)
                 {
                     var diff = cargoFile.getDiff();
                     if (diff.Count > 0)
@@ -1745,7 +1749,9 @@ namespace SrvSurvey.game
                         });
                     }
                     else
+                    {
                         Game.log("**** no diff - really?");
+                    }
                 }
             }
 
@@ -1769,7 +1775,7 @@ namespace SrvSurvey.game
             item.Count += entry.Count;
 
             // track purchases from linked FleetCarriers, but not Squadron FleetCarriers
-            if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId) && lastDocked.StationServices?.Contains("squadronBank") == false)
+            if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
             {
                 Game.log($"Buying {entry.Count}x {entry.Type} from linked FC marketId: {entry.MarketId}");
                 PlotBuildCommodities.startPending();
@@ -1786,6 +1792,9 @@ namespace SrvSurvey.game
                         PlotBuildCommodities.endPending();
                     }
                 });
+                var onSquadFC = lastDocked?.StationServices?.Contains("squadronBank") == true;
+                if (onSquadFC)
+                    skipNextCargoEvent = true;
             }
 
             PlotBase2.invalidate(nameof(PlotBuildCommodities));
@@ -1794,7 +1803,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(MarketSell entry)
         {
             // tracked sales to linked FleetCarriers, but not Squadron FleetCarriers
-            if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId) && lastDocked.StationServices?.Contains("squadronBank") == false)
+            if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
             {
                 Game.log($"Selling {entry.Count}x {entry.Type} to linked FC marketId: {entry.MarketId}");
                 PlotBuildCommodities.startPending();
@@ -1811,12 +1820,9 @@ namespace SrvSurvey.game
                         PlotBuildCommodities.endPending();
                     }
                 });
-                /*
-                cmdrColony.fcCommodities.init(entry.Type);
-                cmdrColony.fcCommodities[entry.Type] += entry.Count;
-                Game.log($"Adding {entry.Count}x {entry.Type} to colonyData.fcCommodities");
-                cmdrColony.Save();
-                */
+                var onSquadFC = lastDocked?.StationServices?.Contains("squadronBank") == true;
+                if (onSquadFC)
+                    skipNextCargoEvent = true;
 
                 PlotBase2.invalidate(nameof(PlotBuildCommodities));
             }

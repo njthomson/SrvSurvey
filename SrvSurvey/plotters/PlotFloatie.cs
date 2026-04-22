@@ -51,7 +51,8 @@ namespace SrvSurvey.plotters
             if (form != null)
             {
                 form.timer.Start();
-                Game.log($"PlotFloatie.showMessage: total messages: {messages.Count}\n\t► " + string.Join("\n\t► ", messages.Select(m => m.msg)));
+                var msgs = messages.ToList();
+                Game.log($"PlotFloatie.showMessage: total messages: {msgs.Count}\n\t► " + string.Join("\n\t► ", msgs.Select(m => m.msg)));
             }
         }
 
