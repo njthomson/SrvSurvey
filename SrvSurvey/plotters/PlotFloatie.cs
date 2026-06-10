@@ -33,6 +33,11 @@ namespace SrvSurvey.plotters
             // exit early if this plotter is disabled
             var game = Game.activeGame;
             if (!Game.settings.autoShowFloatie_TEST || game == null) return;
+            if (Program.control.InvokeRequired)
+            {
+                Program.defer(() => showMessage(msg));
+                return;
+            }
 
             var existing = messages.Find(_ => _.msg == msg);
             if (existing != null)
@@ -49,7 +54,8 @@ namespace SrvSurvey.plotters
             if (form != null)
             {
                 form.timer.Start();
-                Game.log($"PlotFloatie.showMessage: total messages: {messages.Count}\n\t► " + string.Join("\n\t► ", messages.Select(m => m.msg)));
+                var msgs = messages.ToList();
+                Game.log($"PlotFloatie.showMessage: total messages: {msgs.Count}\n\t► " + string.Join("\n\t► ", msgs.Select(m => m.msg)));
             }
         }
 

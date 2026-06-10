@@ -292,6 +292,7 @@ namespace SrvSurvey
             txtVehicle.Size = new Size(96, 20);
             txtVehicle.TabIndex = 5;
             txtVehicle.Text = "<vehicle>";
+            txtVehicle.Click += txtVehicle_Click;
             // 
             // groupBox3
             // 

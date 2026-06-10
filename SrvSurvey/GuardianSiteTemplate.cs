@@ -49,8 +49,7 @@ namespace SrvSurvey
             Game.log($"Reading {GuardianSiteTemplate.filename}: {filepath}");
             if (File.Exists(filepath))
             {
-                using var reader = Data.openSharedStreamReader(filepath);
-                var json = reader.ReadToEnd();
+                var json = Data.readToEndShared(filepath);
                 var newSites = JsonConvert.DeserializeObject<Dictionary<GuardianSiteData.SiteType, GuardianSiteTemplate>>(json)!;
                 foreach (var _ in newSites)
                 {

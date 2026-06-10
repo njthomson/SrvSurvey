@@ -109,55 +109,52 @@ namespace SrvSurvey
                 var oldFlags2 = this.Flags2;
 
                 // read the file contents ...
-                using (var sr = Data.openSharedStreamReader(Status.Filepath))
+                var json = Data.readToEndShared(Status.Filepath);
+                if (json == null || json == "") return;
+
+                // ... parse into tmp object ...
+                var obj = JsonConvert.DeserializeObject<Status>(json);
+
+                /* TODO: This is not ready ... need a way to safely initialize the credit balance
+                // to help multi-boxing ... ignore changes if credits AND GuiFocus or fire-group change at the same time
+                if (haveRead)
                 {
-                    var json = sr.ReadToEnd();
-                    if (json == null || json == "") return;
-
-                    // ... parse into tmp object ...
-                    var obj = JsonConvert.DeserializeObject<Status>(json);
-
-                    /* TODO: This is not ready ... need a way to safely initialize the credit balance
-                    // to help multi-boxing ... ignore changes if credits AND GuiFocus or fire-group change at the same time
-                    if (haveRead)
+                    if (!creditsMatched)
+                        creditsMatched = knownCredits == obj?.Balance;
+                    if (creditsMatched)
                     {
-                        if (!creditsMatched)
-                            creditsMatched = knownCredits == obj?.Balance;
-                        if (creditsMatched)
+                        var fireGroupChanged = obj?.FireGroup != this.FireGroup;
+                        //var fuelChanged = obj?.Fuel?.FuelMain != this.Fuel?.FuelMain || obj?.Fuel?.FuelReservoir != this.Fuel?.FuelReservoir;
+                        var balanceChanged = obj?.Balance != this.Balance;
+                        var guiFocusChanged = obj?.GuiFocus != this.GuiFocus;
+                        if (balanceChanged && (fireGroupChanged || guiFocusChanged))
                         {
-                            var fireGroupChanged = obj?.FireGroup != this.FireGroup;
-                            //var fuelChanged = obj?.Fuel?.FuelMain != this.Fuel?.FuelMain || obj?.Fuel?.FuelReservoir != this.Fuel?.FuelReservoir;
-                            var balanceChanged = obj?.Balance != this.Balance;
-                            var guiFocusChanged = obj?.GuiFocus != this.GuiFocus;
-                            if (balanceChanged && (fireGroupChanged || guiFocusChanged))
-                            {
-                                Game.log($"Ignoring status.json change: {knownCredits}=={this.Balance} || {obj?.FireGroup} != {this.FireGroup} || {obj?.Balance} != {this.Balance} || {obj?.GuiFocus} vs {this.GuiFocus}");
-                                return;
-                            }
-
-                            // ok to proceed
-                            Game.log($"Accept Status.json change: {knownCredits}=={this.Balance} || {obj?.FireGroup} vs {this.FireGroup} || {obj?.Balance} vs {this.Balance} || {obj?.GuiFocus} vs {this.GuiFocus}");
-                            knownCredits = obj!.Balance;
+                            Game.log($"Ignoring status.json change: {knownCredits}=={this.Balance} || {obj?.FireGroup} != {this.FireGroup} || {obj?.Balance} != {this.Balance} || {obj?.GuiFocus} vs {this.GuiFocus}");
+                            return;
                         }
+
+                        // ok to proceed
+                        Game.log($"Accept Status.json change: {knownCredits}=={this.Balance} || {obj?.FireGroup} vs {this.FireGroup} || {obj?.Balance} vs {this.Balance} || {obj?.GuiFocus} vs {this.GuiFocus}");
+                        knownCredits = obj!.Balance;
                     }
-                    //*/
+                }
+                //*/
 
-                    this.changed.Clear();
+                this.changed.Clear();
 
-                    // ... assign all property values from tmp object
-                    var allProps = typeof(Status).GetProperties(Program.InstanceProps);
-                    foreach (var prop in allProps)
+                // ... assign all property values from tmp object
+                var allProps = typeof(Status).GetProperties(Program.InstanceProps);
+                foreach (var prop in allProps)
+                {
+                    if (prop.CanWrite)
                     {
-                        if (prop.CanWrite)
-                        {
-                            var currentValue = prop.GetValue(this);
-                            var newValue = prop.GetValue(obj);
-                            var didChange = this.getChanged(prop.Name, currentValue, newValue);
-                            if (didChange)
-                                changed.Add(prop.Name);
+                        var currentValue = prop.GetValue(this);
+                        var newValue = prop.GetValue(obj);
+                        var didChange = this.getChanged(prop.Name, currentValue, newValue);
+                        if (didChange)
+                            changed.Add(prop.Name);
 
-                            prop.SetValue(this, newValue);
-                        }
+                        prop.SetValue(this, newValue);
                     }
                 }
 
@@ -412,7 +409,7 @@ namespace SrvSurvey
         TelepresenceMulticrew = 0x_0002_0000,
         PhysicalMulticrew = 0x_0004_0000,
         FsdChargingJump = 0x_0008_0000,
-        SCOverdrive= 0x_0010_0000,
+        SCOverdrive = 0x_0010_0000,
         SCAssist = 0x_0020_0000,
         Unknown = 0x_0040_0000,
     }

@@ -811,6 +811,11 @@ static class Util
             Game.log($"Ignoring HTTP:500 response");
             return true;
         }
+
+#if DEBUG
+        if ((ex?.InnerException ?? ex) is BadImageFormatException)
+            MessageBox.Show("BadImageFormatException ... time to restart");
+#endif
         return false;
     }
 
@@ -1301,9 +1306,38 @@ static class Util
     }
 
     /// <summary>
+    /// Applies a positive co-ordinate as-is, negative numbers will be applied in from the edge the frame size
+    /// </summary>
+    public static float applyOffset(float offset, float mySize, float frameSize)
+    {
+        //pt.X >= 0 ? pt.X : sz.Width - r.Width + pt.X;
+        if (offset < 0)
+            return frameSize - mySize + offset;
+        else
+            return offset;
+    }
+
+    /// <summary>
+    /// Applies a positive co-ordinate as-is, negative numbers will be applied in from the edge the frame size
+    /// </summary>
+    public static RectangleF applyOffset(RectangleF offset, SizeF frameSize)
+    {
+        var x2 = Util.applyOffset(offset.X, offset.Width, frameSize.Width);
+        var y2 = Util.applyOffset(offset.Y, offset.Height, frameSize.Height);
+        var w2 = Util.applyOffset(offset.Width, x2, frameSize.Width);
+        var h2 = Util.applyOffset(offset.Height, y2, frameSize.Height);
+        return new(x2, y2, w2, h2);
+    }
+
+    public static void deferAfter(int delayMs, Action func)
+    {
+        deferAfter(delayMs, null, func);
+    }
+
+    /// <summary>
     /// Waits to invoke the action, invoking only once should there be multiple requests during the delay time.
     /// </summary>
-    public static void deferAfter(int delayMs, Action func, string? prefix = null)
+    public static void deferAfter(int delayMs, string? prefix, Action func)
     {
         var name = $"{prefix}{func.Target}/{func.Method}";
         if (!pendingCounts.ContainsKey(name)) pendingCounts[name] = 0;
@@ -1379,6 +1413,29 @@ static class Util
         };
 
         return resilienceHandler;
+    }
+
+    /// <summary> Returns a filesystem safe name, with illegal characters, like * converted to - </summary>
+    public static string safeFilename(string name)
+    {
+        return name
+            .Replace("\\", "-")
+            .Replace("/", "-")
+            .Replace(":", "-")
+            .Replace("*", "-")
+            .Replace("?", "-")
+            .Replace("\"", "-")
+            .Replace("<", "-")
+            .Replace(">", "-")
+            .Replace("|", "-");
+    }
+
+    public static void setClipboardText(string txt)
+    {
+        if (Program.control.InvokeRequired)
+            Program.control.Invoke(() => setClipboardText(txt));
+        else
+            Clipboard.SetDataObject(new DataObject(DataFormats.UnicodeText, txt), true, 2, 50);
     }
 }
 
@@ -1715,6 +1772,17 @@ internal static class ExtensionMethods
     public static bool has<T>(this HashSet<T> hashSet, params T[] items)
     {
         return hashSet.Any(i => items.Contains(i));
+    }
+
+    public static void AddRange<T>(this HashSet<T> set, IEnumerable<T> items)
+    {
+        foreach (var item in items)
+            set.Add(item);
+    }
+
+    public static Rectangle toRectangle(this RectangleF rf)
+    {
+        return new((int)rf.X, (int)rf.Y, (int)rf.Width, (int)rf.Height);
     }
 }
 

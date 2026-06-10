@@ -40,7 +40,7 @@ namespace SrvSurvey.net.EDSM
         {
             // docs: https://www.edsm.net/en/api-system-v1
             // https://www.edsm.net/api-system-v1/traffic?systemName=Colonia
-            Game.log($"Getting system bodies by name: {systemName}");
+            Game.log($"Getting system traffic by name: {systemName}");
 
             var json = await client.GetStringAsync($"https://www.edsm.net/api-system-v1/traffic?systemName={Uri.EscapeDataString(systemName)}");
             return JsonConvert.DeserializeObject<EdsmSystemTraffic>(json)!;
@@ -50,7 +50,7 @@ namespace SrvSurvey.net.EDSM
         {
             // docs: https://www.edsm.net/en/api-system-v1
             // https://www.edsm.net/api-system-v1/stations?systemName=Colonia
-            Game.log($"Getting system bodies by name: {systemName}");
+            Game.log($"Getting system stations by name: {systemName}");
 
             var json = await client.GetStringAsync($"https://www.edsm.net/api-system-v1/stations?systemName={Uri.EscapeDataString(systemName)}");
             return JsonConvert.DeserializeObject<EdsmSystemStations>(json)!;

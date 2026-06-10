@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Diagnostics;
 using System.Text;
 
 namespace SrvSurvey.game
@@ -18,7 +19,8 @@ namespace SrvSurvey.game
             // read and parse file contents into tmp object
             if (File.Exists(filepath))
             {
-                var json = File.ReadAllText(filepath);
+                var json = Data.readToEndShared(filepath);
+                //var json = File.ReadAllText(filepath);
                 if (string.IsNullOrEmpty(json))
                 {
                     Game.log($"Why is this data file empty?\r\n{filepath}");
@@ -72,7 +74,13 @@ namespace SrvSurvey.game
 
                 // write to a temporary file, then clobber the original
                 var filepathTmp = filepath + ".tmp";
+                if (File.Exists(filepathTmp))
+                {
+                    File.Delete(filepathTmp);
+                }
+                //Game.log($"Writing: {filepathTmp}");
                 File.WriteAllText(filepathTmp, json);
+                //Game.log($"Moving: {filepathTmp} => {filepath}");
                 File.Move(filepathTmp, filepath, true);
             }
             catch (Exception ex)
@@ -80,12 +88,21 @@ namespace SrvSurvey.game
                 Game.log($"Failed to save: {filepath} (allowRetry:{allowRetry})\r\n\r\n{ex}");
                 if (allowRetry)
                     Program.defer(() => saveWithRetry(filepath, json, false, checkFolder));
+                else
+                    Debugger.Break(); // Will this keep happening?
             }
         }
 
         public static StreamReader openSharedStreamReader(string filepath)
         {
             return new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+        }
+
+        /// <summary> Read to end of file using a shared read access StreamReader </summary>
+        public static string readToEndShared(string filepath)
+        {
+            using var reader = Data.openSharedStreamReader(filepath);
+            return reader.ReadToEnd();
         }
     }
 

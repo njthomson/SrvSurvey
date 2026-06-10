@@ -231,7 +231,7 @@ namespace SrvSurvey.plotters
                     else if (plotter.fade == 0)
                     {
                         // start fading in
-                        Util.deferAfter(20, () => fadeNext2((PlotBase2)plotter, 0.1f), plotter.name);
+                        Util.deferAfter(20, plotter.name, () => fadeNext2((PlotBase2)plotter, 0.1f));
                     }
                     else
                     {
@@ -278,7 +278,7 @@ namespace SrvSurvey.plotters
 
             // until we reach 1, re-render every 20ms
             if (form.fade < 1)
-                Util.deferAfter(20, () => fadeNext2(form, delta), form.name);
+                Util.deferAfter(20, form.name, () => fadeNext2(form, delta));
             else if (form.fade > 1)
                 form.fade = 1;
 

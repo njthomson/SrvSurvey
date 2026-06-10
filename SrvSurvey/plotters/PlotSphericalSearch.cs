@@ -26,13 +26,14 @@ namespace SrvSurvey.plotters
 
         #endregion
 
-        private static bool sphereLimitActive { get => Game.activeGame?.cmdr?.sphereLimit.active == true; }
+        private static bool sphereLimitActive { get => Game.activeGame?.cmdr?.sphereLimit.active == true && Game.activeGame?.cmdr?.sphereLimit.centerStarPos != null; }
         private static bool boxelSearchActive { get => Game.activeGame?.cmdr?.boxelSearch?.active == true; }
         private static bool routeFollowActive { get => Game.activeGame?.cmdr?.route?.active == true && Game.activeGame.cmdr.route.nextHop != null; }
 
+        private bool fetching = false;
         private double distance = -1;
         private string targetSystemName = "";
-        private string? destinationName;
+        private long targetID64;
         private string? badDestination;
         private bool nextBoxelSystemCopied;
         private bool nextRouteSystemCopied;
@@ -40,11 +41,12 @@ namespace SrvSurvey.plotters
         private PlotSphericalSearch(Game game, PlotDef def) : base(game, def)
         {
             this.font = GameColors.fontSmaller;
-            this.destinationName = game.status.Destination?.Name;
 
             Program.defer(() =>
             {
-                measureDistanceToSystem();
+                // start with current system?                
+                if (game.systemData != null)
+                    measureDistanceToSystem(game.systemData.address, game.systemData.name, game.systemData.starPos).justDoIt();
             });
 
             // put next system in clipboard?
@@ -73,7 +75,10 @@ namespace SrvSurvey.plotters
                         if (text != null)
                         {
                             Game.log($"Setting next boxel search system to clipboard: {text}");
-                            Clipboard.SetDataObject(new DataObject(DataFormats.UnicodeText, text), true, 2, 50);
+                            if (Program.control.InvokeRequired)
+                                Program.control.Invoke(() => Clipboard.SetDataObject(new DataObject(DataFormats.UnicodeText, text), true, 2, 50));
+                            else
+                                Clipboard.SetDataObject(new DataObject(DataFormats.UnicodeText, text), true, 2, 50);
                             this.nextBoxelSystemCopied = true;
                             this.invalidate();
                         }
@@ -84,8 +89,19 @@ namespace SrvSurvey.plotters
 
         protected override void onJournalEntry(NavRoute entry)
         {
-            if ((sphereLimitActive && game.cmdr.sphereLimit.centerStarPos != null) || game.cmdr.boxelSearch?.active == true)
-                measureDistanceToSystem();
+            if (sphereLimitActive || boxelSearchActive)
+            {
+                var routeDestination = game.navRoute.Route.LastOrDefault();
+                if (routeDestination != null)
+                    measureDistanceToSystem(routeDestination.SystemAddress, routeDestination.StarSystem, routeDestination.StarPos).justDoIt();
+            }
+        }
+
+        protected override void onJournalEntry(FSDTarget entry)
+        {
+            var firstHop = game.navRoute.Route.Count > 2 ? game.navRoute.Route[1] : null;
+            if (sphereLimitActive || boxelSearchActive)
+                measureDistanceToSystem(entry.SystemAddress, entry.Name, null).justDoIt();
         }
 
         protected override void onJournalEntry(NavRouteClear entry)
@@ -93,36 +109,56 @@ namespace SrvSurvey.plotters
             if (!sphereLimitActive || game.cmdr.sphereLimit.centerStarPos == null) return;
 
             this.distance = -1;
-            this.targetSystemName = "N/A";
+            this.targetSystemName = "n/a";
+            this.targetID64 = 0;
             this.invalidate();
         }
 
-        private void measureDistanceToSystem()
+        private async Task measureDistanceToSystem(long id64, string name, double[]? starPos)
         {
             if (this.isClosed) return;
+            //Game.log($"PlotSphericalSearch.measureDistanceToSystem: TO: '{name}' {id64} (WAS dist: {this.distance} => '{this.targetSystemName ?? "?"} {this.targetID64})");
 
-            if (sphereLimitActive && game.cmdr.sphereLimit.centerStarPos != null)
+            if (sphereLimitActive && (this.targetID64 != id64 || starPos != null))
             {
+                this.targetSystemName = name;
+                this.targetID64 = id64;
 
-                var lastSystem = game.navRoute.Route.LastOrDefault();
-                if (lastSystem?.StarSystem == null)
+                // look-up starPos?
+                if (starPos == null)
                 {
-                    if (game.systemData == null) return;
-
-                    lastSystem = new RouteEntry()
+                    this.fetching = true;
+                    this.distance = -1;
+                    this.invalidate();
+                    try
                     {
-                        StarSystem = game.systemData.name,
-                        StarPos = game.systemData.starPos,
-                    };
+                        var data = await Game.spansh.getSystemDump(id64);
+                        starPos = data.coords;
+                    }
+                    catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        // ignore 404's
+                    }
+                    finally
+                    {
+                        this.fetching = false;
+                    }
                 }
 
-                this.targetSystemName = lastSystem.StarSystem;
-                this.distance = Util.getSystemDistance(game.cmdr.sphereLimit.centerStarPos, lastSystem.StarPos);
-                Game.log($"Measuring distance: '{game.cmdr.sphereLimit.centerSystemName}' {game.cmdr.sphereLimit.centerStarPos} => '{lastSystem.StarSystem}' {lastSystem.StarPos} = {this.distance}");
+                if (starPos == null)
+                {
+                    // system not known to Spansh
+                    this.distance = -2;
+                }
+                else
+                {
+                    this.distance = Util.getSystemDistance(game.cmdr.sphereLimit.centerStarPos, starPos);
+                    Game.log($"Measuring distance: '{game.cmdr.sphereLimit.centerSystemName}' [{string.Join(", ", game.cmdr.sphereLimit.centerStarPos ?? [])}] => '{name}' [{string.Join(", ", starPos)}] = {this.distance}");
+                }
             }
 
             // use the last entry in the route
-            if (game.cmdr.boxelSearch?.active == true && game.navRoute.Route.Count > 1)
+            if (boxelSearchActive && game.navRoute.Route.Count > 1)
             {
                 var lastHop = game.navRoute.Route.Last();
                 var bx = Boxel.parse(lastHop.SystemAddress, lastHop.StarSystem);
@@ -151,46 +187,20 @@ namespace SrvSurvey.plotters
             if (game.systemData == null) return;
             base.onStatusChange(status);
 
-            // TODO: Use: status.changed.Contains(nameof(Status.Destination)) ?
+            // exit early if destination hasn't changed
+            if (!status.changed.Contains(nameof(Status.Destination))) return;
 
             // if the destination changed ...
-            if (game.status.Destination != null && this.destinationName != game.status.Destination.Name)
+            if (game.status.Destination != null && this.targetID64 != game.status.Destination.System)
             {
-                this.destinationName = game.status.Destination.Name;
-                this.targetSystemName = game.status.Destination.Name;
                 var isFirstRouteHop = game.navRoute.Route?.Count > 2 && game.navRoute.Route[1].StarSystem == game.status.Destination.Name;
 
                 if (sphereLimitActive && !isFirstRouteHop)
                 {
-                    this.distance = -1;
-                    Game.edsm.getSystems(this.destinationName).continueOnMain(null, data =>
-                    {
-                        if (this.isClosed || game.systemData == null) return;
-
-                        if (!(data.Length > 0))
-                        {
-                            this.distance = -2;
-                            this.invalidate();
-                            return;
-                        }
-
-                        var starPos = data.FirstOrDefault()?.coords!;
-
-                        var destination = new RouteEntry()
-                        {
-                            StarSystem = this.destinationName,
-                            StarPos = starPos,
-                        };
-
-                        Game.log($"Measuring distance to: {destination.StarSystem}");
-                        this.targetSystemName = destination.StarSystem;
-                        this.distance = Util.getSystemDistance(game.cmdr.sphereLimit.centerStarPos!, destination.StarPos);
-
-                        this.invalidate();
-                    });
+                    this.measureDistanceToSystem(game.status.Destination.System, game.status.Destination.Name, null).justDoIt();
                 }
 
-                if (game.cmdr.boxelSearch?.active == true && !isFirstRouteHop && game.status.Destination.Body == 0)
+                if (boxelSearchActive && !isFirstRouteHop && game.status.Destination.Body == 0)
                 {
                     var bx = Boxel.parse(game.status.Destination.System, game.status.Destination.Name);
                     this.badDestination = this.checkBoxel(bx);
@@ -262,7 +272,7 @@ namespace SrvSurvey.plotters
 
         private void drawSphereLimit(TextCursor tt)
         {
-            var ww = N.ten + Util.maxWidth(this.font, Res.From, Res.To, Res.Distance);
+            var ww = N.oneSix + Util.maxWidth(this.font, Res.From, Res.To, Res.Distance);
 
             tt.draw(N.eight, Res.From);
             var sysName = SystemNickNames.get(game.cmdr.sphereLimit.centerSystemName);
@@ -275,7 +285,7 @@ namespace SrvSurvey.plotters
             tt.newLine(true);
 
             tt.draw(N.eight, Res.Distance);
-            if (this.distance == -1)
+            if (this.fetching)
             {
                 tt.draw(ww, "...");
             }
@@ -347,7 +357,7 @@ namespace SrvSurvey.plotters
                 tt.drawWrapped(N.eight, this.width - 4, this.badDestination, GameColors.red, GameColors.fontMiddle);
                 tt.dtx += N.ten;
             }
-            else if (this.destinationName != null)
+            else if (this.targetSystemName != null)
             {
                 tt.newLine(+N.eight, true);
                 tt.drawWrapped(N.eight, this.width - 4, $"✔️ Destination is valid", GameColors.Orange, ff);

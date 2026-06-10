@@ -12,4 +12,6 @@ public class DefMsg
     public required string body;
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
     public Dictionary<string, string>? actions;
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public HashSet<string>? tags;
 }

@@ -1,11 +1,10 @@
 ﻿using Newtonsoft.Json.Linq;
-using SrvSurvey.game;
 using SrvSurvey.plotters;
 
 namespace SrvSurvey
 {
-    delegate void OnJournalEntry(JournalEntry entry, int index);
-    delegate void OnRawJournalEntry(JObject entry, int index);
+    delegate void OnJournalEntry(JournalEntry? entry, JObject raw);
+    delegate void OnRawJournalEntry(JObject entry);
 
     class JournalWatcher : JournalFile
     {
@@ -67,31 +66,29 @@ namespace SrvSurvey
                 Program.control!.Invoke((MethodInvoker)delegate
                 {
                     if (raw != null && this.onRawJournalEntry != null && !this.disposed)
-                    {
-                        this.onRawJournalEntry(raw, this.Entries.Count - 1);
-                    }
+                        this.onRawJournalEntry(raw);
                 });
             }
 
             return raw;
         }
 
-        protected override JournalEntry? readEntry()
+        protected override (JournalEntry?, JObject?) readEntry()
         {
-            var entry = base.readEntry();
+            var (entry, raw) = base.readEntry();
 
-            if (entry != null && this.onJournalEntry != null && !this.disposed)
+            if (raw != null && this.onJournalEntry != null && !this.disposed)
             {
                 Program.control!.Invoke((MethodInvoker)delegate
                 {
-                    if (entry != null && this.onJournalEntry != null && !this.disposed)
+                    if (raw != null && this.onJournalEntry != null && !this.disposed)
                     {
-                        this.onJournalEntry(entry, this.Entries.Count - 1);
+                        this.onJournalEntry(entry, raw);
                     }
                 });
             }
 
-            return entry;
+            return (entry, raw);
         }
     }
 }

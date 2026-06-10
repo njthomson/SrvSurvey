@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using SrvSurvey.game;
+﻿using SrvSurvey.game;
 using System.Drawing.Drawing2D;
 
 namespace SrvSurvey.widgets
@@ -29,6 +28,14 @@ namespace SrvSurvey.widgets
             return theme[name];
         }
 
+        private static Color adjustRGB(Color src, float delta)
+        {
+            var r = Math.Min(255, src.R * delta);
+            var g = Math.Min(255, src.G * delta);
+            var b = Math.Min(255, src.B * delta);
+            return Color.FromArgb(src.A, (int)r, (int)g, (int)b);
+        }
+
         #region common colors
 
         public static Color orange = c("orange");
@@ -38,6 +45,7 @@ namespace SrvSurvey.widgets
 
         public static Color cyan = c("cyan");
         public static Color cyanDark = c("cyanDark");
+        public static Color cyanDarker = Color.FromArgb(100, c("cyanDark"));
 
         public static Color red = c("red");
         public static Color redDark = c("redDark");
@@ -46,9 +54,18 @@ namespace SrvSurvey.widgets
         public static Color green = c("green");
         public static Color greenDark = c("greenDark");
 
+        public static Color white = c("white");
         public static Color black = c("black");
         public static Color menuGold = c("menuGold");
         public static Color grey = c("grey");
+
+        // dynamically calculated colors that are brighter or darker than their originals
+
+        public static Color oranger => beOranger.Value;
+        private static Lazy<Color> beOranger = new Lazy<Color>(() => adjustRGB(c("orange"), 1.2f));
+
+        public static Color oranged => beOranged.Value;
+        private static Lazy<Color> beOranged = new Lazy<Color>(() => adjustRGB(c("orange"), 0.8f));
 
         #endregion
 
@@ -86,6 +103,7 @@ namespace SrvSurvey.widgets
             public static Pen black2 = Color.Black.toPen(2);
             public static Pen black3r = Color.Black.toPen(3, LineCap.Round);
             public static Pen black4 = Color.Black.toPen(4);
+            public static Pen blackish4 = Color.FromArgb(100, C.black).toPen(4);
 
             public static Pen red1 = red.toPen(1);
             public static Pen red2 = red.toPen(2);
@@ -102,12 +120,14 @@ namespace SrvSurvey.widgets
             public static Pen green2 = green.toPen(2);
 
             public static Pen grey1 = grey.toPen(1);
+            public static Pen grey3 = grey.toPen(3);
         }
 
         public static class Brushes
         {
             public static Brush orange = C.orange.toBrush();
             public static Brush orangeDark = C.orangeDark.toBrush();
+            //public static Brush orangeDarker = C.orangeDarker.toBrush();
             public static Brush cyan = C.cyan.toBrush();
             public static Brush cyanDark = C.cyanDark.toBrush();
 
@@ -115,8 +135,11 @@ namespace SrvSurvey.widgets
             public static Brush red = C.red.toBrush();
             public static Brush yellow = C.yellow.toBrush();
             public static Brush green = C.green.toBrush();
+            public static Brush grey = C.grey.toBrush();
 
             public static Brush menuGold = C.menuGold.toBrush();
+
+            public static Brush orangeDiag = new HatchBrush(HatchStyle.WideUpwardDiagonal, Color.FromArgb(199, C.orangeDarker));
         }
 
         internal class Bio

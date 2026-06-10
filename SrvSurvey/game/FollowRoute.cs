@@ -81,7 +81,10 @@ namespace SrvSurvey.game
             {
                 this.nextHop = hops.FirstOrDefault();
                 if (Game.activeGame?.systemData?.address == nextHop?.id64 && hops.Count > 1)
+                {
                     this.nextHop = hops[1];
+                    this.last = 0;
+                }
             }
             else 
                 this.nextHop = hops[last + 1];
@@ -97,7 +100,7 @@ namespace SrvSurvey.game
         }
 
         /// <summary>
-        /// Returns the next route system or null if none or not valid
+        /// Sets the next route system
         /// </summary>
         public void setNextHop(StarRef star)
         {
@@ -120,7 +123,7 @@ namespace SrvSurvey.game
                 // we reached the next hop in the route - move to the system in the route
                 this.last = idx;
                 this.nextHop = hops[idx + 1];
-                Game.log($"Route.setNextHop: #{idx + 1} in '{star}', set next: '{nextHop}'");
+                Game.log($"Route.setNextHop: from '{star}' => #{idx + 1} '{nextHop.name}'");
                 dirty = true;
             }
             else if (idx >= 0)

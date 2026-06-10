@@ -282,7 +282,7 @@ namespace SrvSurvey
                             if (entry.@event == nameof(ApproachBody)) countBodies++;
                             if (entry.@event == nameof(ScanOrganic) && ((ScanOrganic)entry).ScanType == ScanType.Analyse) countOrganisms++;
 
-                            var starterEvent = entry as ISystemDataStarter;
+                            var starterEvent = entry as ISystemDataLocator;
                             if (starterEvent != null)
                             {
                                 if (sysData != null)
@@ -366,6 +366,18 @@ namespace SrvSurvey
                                 //    Debugger.Break(); // TODO: Does this ever happen?
 
                                 cmdrCodex.trackCodex(codexEntry.Name_Localised, codexEntry.EntryID, codexEntry.timestamp, codexEntry.SystemAddress, codexEntry.BodyID ?? lastBodyId, galacticRegionId);
+                            }
+
+                            // upload possible GGG ?
+                            if (Game.settings.uploadGGG && entry is Scan scanEntry && scanEntry.PlanetClass?.Contains("giant", StringComparison.OrdinalIgnoreCase) == true)
+                            {
+                                var tag = SystemData.getTagForGGG(scanEntry.PlanetClass, scanEntry.SurfaceTemperature);
+                                if (tag != null)
+                                {
+                                    Game.log($"GGG match: {tag}! body: {scanEntry.BodyName}, temp: {scanEntry.SurfaceTemperature}");
+                                    var json = JsonConvert.SerializeObject(entry);
+                                    Game.rcc.uploadGGG(this.targetCmdrName, tag, lastStarPos, json).justDoIt();
+                                }
                             }
 
                             // and run it through our own entry processors

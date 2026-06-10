@@ -39,9 +39,9 @@ namespace SrvSurvey.widgets
             this.font = font;
         }
 
-        public void renderAngleOfAttack(Graphics g, float x, float y, decimal radius, LatLong2 target, LatLong2 cmdr, bool showBearing)
+        public float renderAngleOfAttack(Graphics g, float x, float y, decimal radius, LatLong2 target, LatLong2 cmdr, bool showBearing)
         {
-            if (game?.status == null) return;
+            if (game?.status == null) return 0;
 
             // calculate as if a 2d plane
             var angle2d = Util.getBearing(cmdr, target);
@@ -95,7 +95,10 @@ namespace SrvSurvey.widgets
             {
                 x += threeEight;
                 renderBearingTo(g, x, y, ten, (double)deg, bb.brush, bb.pen);
+                x -= twoFour;
             }
+
+            return x;
         }
     }
 }

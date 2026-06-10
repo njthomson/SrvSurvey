@@ -3,6 +3,7 @@ using SharpDX.DirectInput;
 using SrvSurvey.game;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Xml.Linq;
 
 namespace SrvSurvey
 {
@@ -570,6 +571,117 @@ namespace SrvSurvey
             { "LeftTrigger", "LT" },
             { "RightTrigger", "RT" },
         };
+
+        #region reading key-binds from the game
+
+        public static Dictionary<string, string> mappedGameKeyBinds = [];
+
+        public static Dictionary<string, string>? parseGameKeybinds()
+        {
+            // Read: .\Bindings\StartPreset.4.start to know which .binds file to open
+            var filepath = Path.Combine(Elite.keybingsFolder, "StartPreset.4.start");
+            if (!File.Exists(filepath))
+            {
+                Game.log($"File not found: {filepath}");
+                return null;
+            }
+
+            // use the first line to know which .binds file to read
+            var lines = File.ReadAllLines(filepath);
+            var bindsFiles = Directory.GetFiles(Elite.keybingsFolder, $"{lines[0]}.*.binds");
+            if (bindsFiles.Length == 0)
+            {
+                Game.log($"No .binds files found matching: {lines[0]}");
+                return null;
+            }
+            filepath = bindsFiles.Last();
+            if (!File.Exists(filepath))
+            {
+                Game.log($"File not found: {filepath}");
+                return null;
+            }
+
+            var bindsMap = new Dictionary<string, string>();
+
+            using var sr = Data.openSharedStreamReader(filepath);
+            var root = XDocument.Load(sr).Element("Root")!;
+
+            // map these game key-binds into the SendKeys equivalent
+            mapKeyBind(bindsMap, root, "UI_Up", "{UP}");
+            mapKeyBind(bindsMap, root, "UI_Down", "{DOWN}");
+            mapKeyBind(bindsMap, root, "UI_Left", "{LEFT}");
+            mapKeyBind(bindsMap, root, "UI_Right", "{RIGHT}");
+            mapKeyBind(bindsMap, root, "UI_Select", "{ENTER}");
+            mapKeyBind(bindsMap, root, "UI_Back", "{ESC}");
+
+            mappedGameKeyBinds = bindsMap;
+            return bindsMap;
+        }
+
+        private static void mapKeyBind(Dictionary<string, string> bindsMap, XElement root, string gameBind, string mapsTo)
+        {
+            var element = root.Element(gameBind);
+            if (element == null) return;
+            var binds = element.Elements().ToList();
+            if (binds.Count == 0) return;
+
+            var primaryKey = binds.First().Attribute("Key")?.Value;
+            if (primaryKey != null)
+            {
+                var primary = matchGameKeybind(primaryKey);
+                if (primary != null)
+                    bindsMap[primary] = mapsTo;
+            }
+
+            var secondaryKey = binds.Last().Attribute("Key")?.Value;
+            if (secondaryKey != null)
+            {
+                var secondary = matchGameKeybind(secondaryKey);
+                if (secondary != null)
+                    bindsMap[secondary] = mapsTo;
+            }
+        }
+
+        private static string? matchGameKeybind(string key)
+        {
+            // these work naturally 
+            if (key.StartsWith("Key_") && key.EndsWith("Arrow")) return null;
+            if (key == "Key_Enter") return null;
+            if (key == "Key_Backspace") return "Key_Back";
+
+            // these should map as they are
+            if (key.StartsWith("Key_")) return key;
+
+            if (key.StartsWith("Joy_"))
+                return "B" + key.Substring(4);
+
+            const string prefixGameDPad = "GamePad_DPad";
+            if (key.StartsWith(prefixGameDPad))
+                return "Pov" + key.Substring(prefixGameDPad.Length, 1);
+
+            // game pad buttons
+            if (key == "GamePad_FaceDown") return "B1"; //  btn A
+            if (key == "GamePad_FaceRight") return "B2"; // btn B
+            if (key == "GamePad_FaceLeft") return "B3"; //  btn X
+            if (key == "GamePad_FaceUp") return "B4"; //    btn Y
+            if (key == "GamePad_LBumper") return "B5";
+            if (key == "GamePad_RBumper") return "B6";
+            if (key == "GamePad_LThumb") return "B9";
+            if (key == "GamePad_RThumb") return "B10";
+            if (key == "GamePad_Start") return "B8"; // start
+            if (key == "GamePad_Back") return "B7"; // back
+
+            // joystick POV
+            const string prefixJoyPOV = "Joy_POV1";
+            if (key.StartsWith(prefixJoyPOV))
+                return "Pov" + key.Substring(prefixJoyPOV.Length, 1);
+
+            Game.log($"Unexpected keybind scheme: {key}");
+            Debugger.Break();
+            return null;
+        }
+
+        #endregion
 
         #region native methods
 

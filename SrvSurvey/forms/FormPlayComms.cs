@@ -10,7 +10,7 @@ using System.Xml.Linq;
 
 namespace SrvSurvey.forms
 {
-    [TrackPosition, Draggable]
+    [Draggable]
     internal partial class FormPlayComms : SizableForm
     {
         public static void toggleForm()
@@ -31,7 +31,7 @@ namespace SrvSurvey.forms
 
         public PlayState cmdrPlay;
         private Control? selectedThing;
-        private string mode = "quests";
+        private string mode = "msgs";
         private Control lastLeftBtn;
         public string? lastListName;
         private Dictionary<string, string> mappedGameKeyBinds = new();
@@ -46,8 +46,9 @@ namespace SrvSurvey.forms
             SetStyle(ControlStyles.ResizeRedraw, true);
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
+            tlist.SuspendLayout();
             tlist.Controls.Clear();
-            tlist.RowStyles.Clear();
+            tlist.ResumeLayout();
 
             lastLeftBtn = btnQuests;
 
@@ -56,37 +57,53 @@ namespace SrvSurvey.forms
             foreach (var btn in new DrawButton[] { btnClose, btnQuests, btnMsgs, btnWatch, btnDev })
                 btn.setGameColors();
 
-            this.Opacity = 0.9f;
+            this.Opacity = 0;
 
-            var newMap = parseGameKeybinds();
+            var newMap = KeyboardHook.parseGameKeybinds();
             if (newMap != null) mappedGameKeyBinds = newMap;
 
             KeyboardHook.buttonsPressed += KeyboardHook_buttonsPressed;
 
             this.Activated += (o, s) => KeyboardHook.redirect = true;
             this.Deactivate += (o, s) => KeyboardHook.redirect = false;
+
+            // only show in debug builds
+            btnWatch.Visible = Debugger.IsAttached;
+            btnDev.Visible = Debugger.IsAttached;
+
+            if (PlayState.current != null)
+                this.cmdrPlay = PlayState.current;
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            Util.deferAfter(100, () => this.Opacity = 0.95f);
+
+            // position ourself over the top/right quadrant of the game
+            var r = Elite.getWindowRect();
+            if (r.Width > 0)
+            {
+                this.Width = (int)(r.Width * 0.3f);
+                this.Height = (int)(r.Height * 0.5f);
+                this.Left = r.Right - this.Width - 20;
+                this.Top = r.Top + 10 + (PlotBase2.getPlotter<PlotQuestMini>()?.bottom ?? 20);
+                Application.DoEvents();
+            }
+
             this.BackgroundImage = GameGraphics.getBackgroundImage(this.ClientSize, true);
             this.Invalidate();
             Application.DoEvents();
 
-            if (cmdrPlay != null)
+            if (cmdrPlay == null)
             {
-                // no op
-                PlayState.updateUI();
-            }
-            else if (Game.activeGame?.cmdrPlay == null)
-            {
-                this.setChildrenEnabled(false);
-                PlayState.loadAsync(CommanderSettings.currentOrLastFid).continueOnMain(this, rslt =>
+                try
                 {
-                    if (rslt != null)
+                    this.setChildrenEnabled(false);
+                    PlayState.loadAsync(CommanderSettings.currentOrLastFid).continueOnMain(this, ps =>
                     {
-                        this.cmdrPlay = rslt;
+                        this.cmdrPlay = ps;
                         this.setChildrenEnabled(true, btnWatch);
                         if (cmdrPlay.messagesUnread > 0)
                         {
@@ -100,21 +117,20 @@ namespace SrvSurvey.forms
                             showQuests();
                         }
                         PlayState.updateUI();
-                    }
-                });
+                    });
+                }
+                catch
+                {
+                    Program.defer(() => this.Close());
+                }
                 return;
             }
-            else
-            {
-                this.cmdrPlay = Game.activeGame.cmdrPlay;
-            }
-
 
             PlayState.updateUI();
 
             Util.deferAfter(25, () =>
             {
-                if (cmdrPlay.messagesUnread > 0)
+                if (cmdrPlay.messagesTotal > 0)
                 {
                     mode = "msgs";
                     btnMsgs.Focus();
@@ -123,11 +139,21 @@ namespace SrvSurvey.forms
                 {
                     btnQuests.Focus();
                 }
+
                 if (mode == "quests")
                     showQuests();
                 else
                     showMsgs();
             });
+        }
+
+        protected override void OnDeactivate(EventArgs e)
+        {
+            base.OnDeactivate(e);
+
+            // close ourself anytime we lose focus (but not if debugging)
+            if (!Debugger.IsAttached)
+                Program.defer(() => this.Close());
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
@@ -151,7 +177,7 @@ namespace SrvSurvey.forms
 
             if (cmdrPlay == null)
             {
-                TextRenderer.DrawText(e.Graphics, "Loading ...", GameColors.Fonts.gothic_16B, new Point(136, 10), C.orangeDark);
+                TextRenderer.DrawText(e.Graphics, "Loading ...", GameColors.Fonts.arial_16B, new Point(136, 10), C.orangeDark);
                 return;
             }
 
@@ -164,7 +190,7 @@ namespace SrvSurvey.forms
             var txt = mode == "quests"
                 ? $"Active quests: {cmdrPlay.activeQuests.Count}"
                 : hasUnread ? $"Messages: {cmdrPlay.messagesTotal}, unread: {cmdrPlay.messagesUnread}" : $"Messages: {cmdrPlay.messagesTotal}";
-            TextRenderer.DrawText(e.Graphics, txt, GameColors.Fonts.gothic_16B, new Point(136, 10), C.orangeDark);
+            TextRenderer.DrawText(e.Graphics, txt, GameColors.Fonts.arial_16B, new Point(136, 10), C.orangeDark);
         }
 
         private void btnClose_Paint(object sender, PaintEventArgs e)
@@ -224,8 +250,8 @@ namespace SrvSurvey.forms
             }
             else if (this.mode != "quests")
             {
+                tlist.Hide();
                 tlist.Controls.Clear();
-                tlist.RowStyles.Clear();
                 this.mode = "quests";
                 showQuests();
             }
@@ -239,8 +265,8 @@ namespace SrvSurvey.forms
             }
             else //if (this.mode != "msgs" || selectedThing != null)
             {
+                tlist.Hide();
                 tlist.Controls.Clear();
-                tlist.RowStyles.Clear();
                 this.mode = "msgs";
                 showMsgs();
             }
@@ -312,7 +338,7 @@ namespace SrvSurvey.forms
             for (int n = 0; n < sorted.Count; n++)
             {
                 var id = sorted[n].id;
-                tlist.SetRow(tlist.Controls[id]!, n);
+                tlist.Controls.SetChildIndex(tlist.Controls[id]!, n);
             }
 
             tlist.ResumeLayout();
@@ -321,15 +347,20 @@ namespace SrvSurvey.forms
 
         private void addRow(Control ctrl)
         {
+            ctrl.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            ctrl.Left = 4;
+            ctrl.Width = tlist.Width - 8;
+            var top = tlist.Controls.last()?.Top + (int)N.fourEight;
+            ctrl.Top = top ?? 0;
+
             if (tlist.Controls[ctrl.Name] == null)
             {
-                tlist.Controls.Add(ctrl, 0, tlist.Controls.Count);
-                tlist.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                tlist.Controls.Add(ctrl);
             }
             else
             {
                 tlist.Controls.RemoveByKey(ctrl.Name);
-                tlist.Controls.Add(ctrl, 0, tlist.Controls.Count);
+                tlist.Controls.Add(ctrl);
             }
         }
 
@@ -366,7 +397,9 @@ namespace SrvSurvey.forms
                 .ToList();
             Game.log($"showing {allMsgs.Count} msgs");
 
+            tlist.Hide();
             tlist.SuspendLayout();
+            tlist.Controls.Clear();
 
             var activeNames = new HashSet<string>();
             foreach (var pm in allMsgs)
@@ -389,13 +422,14 @@ namespace SrvSurvey.forms
                     var tt = new TextCursor(e.Graphics, btn);
                     btn.Height = PanelMsg.drawCollapsed(e.Graphics, tt, btn, pm, qm);
                 };
-                btn.Click += (s, e) =>
+                btn.Click += async (s, e) =>
                 {
                     // remember this message has now been read
                     if (!pm.read)
                     {
+                        await pm.parent.onMessageRead(pm.id);
                         pm.read = true;
-                        pm.parent.updateIfDirty(true);
+                        await pm.parent.save(true);
                     }
 
                     setSelectedThing(new PanelMsg(this, pm, qm));
@@ -407,7 +441,7 @@ namespace SrvSurvey.forms
             }
 
             // Remove anything stale
-            var stale = tlist.Controls.Cast<Control>().Where(c => !activeNames.Contains(c.Name));
+            var stale = tlist.Controls.Cast<Control>().Where(c => !activeNames.Contains(c.Name)).ToList();
             foreach (var ctrl in stale) tlist.Controls.Remove(ctrl);
 
             // Enforce the order
@@ -415,10 +449,13 @@ namespace SrvSurvey.forms
             {
                 var pm = allMsgs[n];
                 var name = $"{pm.parent.id}/{pm.id}";
-                tlist.SetRow(tlist.Controls[name]!, n);
+                var ctrl = tlist.Controls[name];
+                if (ctrl != null && tlist.Controls.GetChildIndex(ctrl) != n)
+                    tlist.Controls.SetChildIndex(ctrl, n);
             }
 
             tlist.ResumeLayout();
+            tlist.Show();
             this.Invalidate(true);
         }
 
@@ -576,114 +613,6 @@ namespace SrvSurvey.forms
             btnWatch.Enabled = Game.activeGame?.journals != null;
         }
 
-
-        #region reading key-binds from the game
-
-        public static Dictionary<string, string>? parseGameKeybinds()
-        {
-            // Read: .\Bindings\StartPreset.4.start to know which .binds file to open
-            var filepath = Path.Combine(Elite.keybingsFolder, "StartPreset.4.start");
-            if (!File.Exists(filepath))
-            {
-                Game.log($"File not found: {filepath}");
-                return null;
-            }
-
-            // use the first line to know which .binds file to read
-            var lines = File.ReadAllLines(filepath);
-            var bindsFiles = Directory.GetFiles(Elite.keybingsFolder, $"{lines[0]}.*.binds");
-            if (bindsFiles.Length == 0)
-            {
-                Game.log($"No .binds files found matching: {lines[0]}");
-                return null;
-            }
-            filepath = bindsFiles.Last();
-            if (!File.Exists(filepath))
-            {
-                Game.log($"File not found: {filepath}");
-                return null;
-            }
-
-            var bindsMap = new Dictionary<string, string>();
-
-            using var sr = Data.openSharedStreamReader(filepath);
-            var root = XDocument.Load(sr).Element("Root")!;
-
-            // map these game key-binds into the SendKeys equivalent
-            mapKeyBind(bindsMap, root, "UI_Up", "{UP}");
-            mapKeyBind(bindsMap, root, "UI_Down", "{DOWN}");
-            mapKeyBind(bindsMap, root, "UI_Left", "{LEFT}");
-            mapKeyBind(bindsMap, root, "UI_Right", "{RIGHT}");
-            mapKeyBind(bindsMap, root, "UI_Select", "{ENTER}");
-            mapKeyBind(bindsMap, root, "UI_Back", "{ESC}");
-
-            return bindsMap;
-        }
-
-        private static void mapKeyBind(Dictionary<string, string> bindsMap, XElement root, string gameBind, string mapsTo)
-        {
-            var element = root.Element(gameBind);
-            if (element == null) return;
-            var binds = element.Elements().ToList();
-            if (binds.Count == 0) return;
-
-            var primaryKey = binds.First().Attribute("Key")?.Value;
-            if (primaryKey != null)
-            {
-                var primary = matchGameKeybind(primaryKey);
-                if (primary != null)
-                    bindsMap[primary] = mapsTo;
-            }
-
-            var secondaryKey = binds.Last().Attribute("Key")?.Value;
-            if (secondaryKey != null)
-            {
-                var secondary = matchGameKeybind(secondaryKey);
-                if (secondary != null)
-                    bindsMap[secondary] = mapsTo;
-            }
-        }
-
-        public static string? matchGameKeybind(string key)
-        {
-            // these work naturally 
-            if (key.StartsWith("Key_") && key.EndsWith("Arrow")) return null;
-            if (key == "Key_Enter") return null;
-            if (key == "Key_Backspace") return "Key_Back";
-
-            // these should map as they are
-            if (key.StartsWith("Key_")) return key;
-
-            if (key.StartsWith("Joy_"))
-                return "B" + key.Substring(4);
-
-            const string prefixGameDPad = "GamePad_DPad";
-            if (key.StartsWith(prefixGameDPad))
-                return "Pov" + key.Substring(prefixGameDPad.Length, 1);
-
-            // game pad buttons
-            if (key == "GamePad_FaceDown") return "B1"; //  btn A
-            if (key == "GamePad_FaceRight") return "B2"; // btn B
-            if (key == "GamePad_FaceLeft") return "B3"; //  btn X
-            if (key == "GamePad_FaceUp") return "B4"; //    btn Y
-            if (key == "GamePad_LBumper") return "B5";
-            if (key == "GamePad_RBumper") return "B6";
-            if (key == "GamePad_LThumb") return "B9";
-            if (key == "GamePad_RThumb") return "B10";
-            if (key == "GamePad_Start") return "B8"; // start
-            if (key == "GamePad_Back") return "B7"; // back
-
-            // joystick POV
-            const string prefixJoyPOV = "Joy_POV1";
-            if (key.StartsWith(prefixJoyPOV))
-                return "Pov" + key.Substring(prefixJoyPOV.Length, 1);
-
-            Game.log($"Unexpected keybind scheme: {key}");
-            Debugger.Break();
-            return null;
-        }
-
-        #endregion
     }
 
     class PanelQuest : Panel
@@ -691,11 +620,11 @@ namespace SrvSurvey.forms
         public static int drawCollapsed(Graphics g, TextCursor tt, DrawButton btn, PlayQuest pq)
         {
             tt.dty = N.six;
-            tt.font = GameColors.Fonts.gothic_10;
+            tt.font = GameColors.Fonts.arial_10;
             var c = btn.ForeColor2;
 
             // title
-            tt.draw(N.eight, pq.quest.title, c, GameColors.Fonts.gothic_12B);
+            tt.draw(N.eight, pq.quest.title, c, GameColors.Fonts.arial_12B);
             tt.newLine(N.six);
 
             // visible objectives
@@ -735,30 +664,28 @@ namespace SrvSurvey.forms
                 cc = C.red;
             }
 
-            tt.draw(N.eight + indent, prefix, cc, GameColors.Fonts.gothic_10);
+            tt.draw(N.eight + indent, prefix, cc, GameColors.Fonts.arial_10);
             var x = N.thirty + indent;
             var txt = pq.quest.strings.GetValueOrDefault(key) ?? pq.quest.objectives.GetValueOrDefault(key) ?? key;
-            tt.draw(x, txt, cc, GameColors.Fonts.gothic_10);
+            tt.draw(x, txt, cc, GameColors.Fonts.arial_10);
             tt.newLine(N.two, true);
 
             if (obj.total > 0)
             {
-                tt.dty -= N.three;
-                var sz = tt.draw(N.fourForty + N.ten + indent, $"{obj.current} / {obj.total}", active ? cc : c, GameColors.Fonts.gothic_9);
-                tt.dty += N.three;
+                var sz = tt.draw(N.fourForty + N.ten + indent, $"{obj.current} / {obj.total}", active ? cc : c, GameColors.Fonts.arial_9);
                 var w = N.fourHundred;
 
                 g.SmoothingMode = SmoothingMode.None;
                 var p = btn?.pen(C.Pens.orangeDark1, C.Pens.menuGold1, C.Pens.black1) ?? C.Pens.orangeDark1;
                 if (colorObjectives && active) p = C.Pens.cyanDark1;
-                g.DrawRectangle(p, x, tt.dty, w + 5, N.ten);
+                g.DrawRectangle(p, x, tt.dty + N.three, w + 5, N.ten);
 
                 w = w / obj.total * obj.current;
                 var b = btn?.brush(C.Brushes.orangeDark, C.Brushes.menuGold, C.Brushes.black) ?? C.Brushes.orangeDark;
                 if (colorObjectives && active) b = C.Brushes.cyanDark;
-                g.FillRectangle(b, x + 3, tt.dty + 3, w, N.ten - 5);
+                g.FillRectangle(b, x + 3, tt.dty + N.three + 3, w, N.ten - 5);
                 g.SmoothingMode = SmoothingMode.HighQuality;
-                tt.dty += N.oneFour;
+                //tt.dty += N.six;
                 tt.newLine(N.two, true);
             }
             tt.dty += N.four;
@@ -817,13 +744,19 @@ namespace SrvSurvey.forms
 
         private void BtnQ_Click(object? sender, EventArgs e)
         {
+            var btn = sender as Control;
+            if (btn == null) return;
+            btn.Enabled = false;
+
             var rslt = MessageBox.Show("Are you sure you want to abandon this quest?", "SrvSurvey", MessageBoxButtons.YesNo);
             if (rslt == DialogResult.Yes)
             {
-                pq.parent.activeQuests.Remove(pq);
-                pq.parent.Save();
-                form.clearSelection();
-                PlayState.updateUI(pq);
+                pq.parent.removeQuest(pq, game.RavenColonial.QuestState.unknown).continueOnMain(form, () =>
+                {
+                    form.clearSelection();
+                    PlayState.updateUI(null);
+                    btn.Enabled = true;
+                });
             }
         }
 
@@ -847,11 +780,11 @@ namespace SrvSurvey.forms
         {
             var c = C.orange;
             tt.dty = N.four;
-            tt.font = GameColors.Fonts.gothic_10;
+            tt.font = GameColors.Fonts.arial_10;
 
             // ID + title
-            tt.drawRight(tt.containerWidth - N.six, $"ID: {pq.quest.id}", C.orangeDark, GameColors.Fonts.gothic_7);
-            tt.draw(N.eight, pq.quest.title, c, GameColors.Fonts.gothic_16B);
+            tt.drawRight(tt.containerWidth - N.six, $"ID: {pq.quest.id}", C.orangeDark, GameColors.Fonts.arial_7);
+            tt.draw(N.eight, pq.quest.title, c, GameColors.Fonts.arial_16B);
             tt.newLine(N.six);
 
             // top line
@@ -924,16 +857,18 @@ namespace SrvSurvey.forms
                 : pm.received.AddYears(1286).UtcDateTime.ToString("dd MMM yyyy - HH:mm");
 
             // message from
-            tt.drawRight(tt.containerWidth - N.six, time, null, GameColors.Fonts.gothic_9);
+            tt.drawRight(tt.containerWidth - N.six, time, null, GameColors.Fonts.arial_9);
             var from = pm.from ?? qm?.from;
-            tt.draw(N.forty, string.IsNullOrEmpty(from) ? "?" : from, GameColors.Fonts.gothic_9);
-            tt.newLine(-N.four);
+            tt.draw(N.forty, string.IsNullOrEmpty(from) ? "?" : from, GameColors.Fonts.arial_9);
+            tt.newLine();
 
             // subject (ellipse if too wide)
-            var subject = pm.subject ?? qm?.subject ?? pm.body ?? qm?.body;
+            var subject = pm.subject ?? qm?.subject ?? pm.body ?? qm?.body ?? "";
+            subject = subject.Replace("`", "");
+
             var flags = tt.flags;
             tt.flags |= TextFormatFlags.SingleLine | TextFormatFlags.EndEllipsis;
-            tt.drawWrapped(N.forty, tt.containerWidth - (int)N.ten, subject, GameColors.Fonts.gothic_12);
+            tt.drawWrapped(N.forty, tt.containerWidth - (int)N.ten, subject, GameColors.Fonts.arial_12);
             tt.flags = flags;
             tt.newLine(N.four);
 
@@ -947,8 +882,8 @@ namespace SrvSurvey.forms
         public string bodyText;
         public List<DrawButton>? copyButtons;
         public List<DrawButton>? replyButtons;
-        private static Font btnFont = new Font("Segoe UI Emoji", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        private Font btnFont2 = new Font("Segoe UI Emoji", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        private Font btnFont = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        private Font btnFont2 = new Font("Arial", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
 
         protected override void Dispose(bool disposing)
         {
@@ -1033,12 +968,22 @@ namespace SrvSurvey.forms
                         Tag = key,
                         Font = btnFont,
                         Anchor = AnchorStyles.Left | AnchorStyles.Bottom,
-                        Text = $"◊ {txt}",
+                        Text = $"▶ {txt}",
                         Left = 24,
                         AutoSize = true,
                         TextAlign = ContentAlignment.MiddleLeft,
                         UseCompatibleTextRendering = true,
                         TabIndex = this.Controls.Count,
+
+                        BackColor = C.cyanDarker,
+                        BackColorHover = C.cyanDark,
+                        BackColorPressed = C.cyan,
+                        BackColorDisabled = C.grey,
+
+                        ForeColor = C.cyan,
+                        ForeColorHover = Color.White,
+                        ForeColorPressed = C.black,
+                        ForeColorDisabled = C.black,
                     };
                     btn.Click += Btn_Click;
                     this.Controls.Add(btn);
@@ -1085,13 +1030,13 @@ namespace SrvSurvey.forms
             form.onQuestChanged();
         }
 
-        private void BtnD_Click(object? sender, EventArgs e)
-        {
-            pq.deleteMsg(pm.id);
-            pq.updateIfDirty();
-            form.clearSelection();
-            form.onQuestChanged(pq);
-        }
+        //private void BtnD_Click(object? sender, EventArgs e)
+        //{
+        //    pq.deleteMsg(pm.id);
+        //    await pq.updateIfDirty();
+        //    form.clearSelection();
+        //    form.onQuestChanged(pq);
+        //}
 
         private void Btn_Click(object? sender, EventArgs e)
         {
@@ -1099,9 +1044,9 @@ namespace SrvSurvey.forms
             var actionId = btn?.Tag as string;
             if (actionId == null) return;
 
-            pq.invokeMessageAction(pm.id, actionId).continueOnMain(this.form, () =>
+            pq.invokeMessageAction(pm.id, actionId).continueOnMain(this.form, async () =>
             {
-                pq.updateIfDirty();
+                await pq.save();
                 form.clearSelection();
                 form.onQuestChanged();
             });
@@ -1116,16 +1061,16 @@ namespace SrvSurvey.forms
             var tt = new TextCursor(e.Graphics, this);
             tt.dty = N.four;
 
-            tt.font = GameColors.Fonts.gothic_12B;
+            tt.font = GameColors.Fonts.arial_14;
             tt.color = C.orange;
 
             PlotQuestMini.drawEnvelope(g, N.ten, N.ten, N.forty, C.Pens.orange2r);
 
-            tt.draw(N.sixFour, "Sent:", GameColors.Fonts.gothic_8);
+            tt.draw(N.sixFour, "Sent:", GameColors.Fonts.arial_9);
             tt.draw(N.oneTwenty, pm.received.AddYears(1286).UtcDateTime.ToString("dd MMM yyyy - HH:mm"));
             tt.newLine();
 
-            tt.draw(N.sixFour, "From:", GameColors.Fonts.gothic_8);
+            tt.draw(N.sixFour, "From:", GameColors.Fonts.arial_9);
             var from = pm.from ?? qm?.from;
             tt.draw(N.oneTwenty, string.IsNullOrEmpty(from) ? "?" : from);
             tt.newLine();
@@ -1133,7 +1078,7 @@ namespace SrvSurvey.forms
             var subject = pm.subject ?? qm?.subject;
             if (subject != null)
             {
-                tt.draw(N.sixFour, "Subject:", GameColors.Fonts.gothic_8);
+                tt.draw(N.sixFour, "Subject:", GameColors.Fonts.arial_9);
                 tt.draw(N.oneTwenty, subject);
                 tt.newLine();
             }
@@ -1142,7 +1087,7 @@ namespace SrvSurvey.forms
             // body with lines
             g.DrawLine(C.Pens.orangeDark2, 0, tt.dty, Width - N.four, tt.dty);
             tt.dty += N.twenty;
-            tt.drawWrapped(N.oneTwo, Width - (int)N.oneTwo, this.bodyText, GameColors.Fonts.gothic_12);
+            tt.drawWrapped(N.oneTwo, Width - (int)N.oneTwo, this.bodyText, GameColors.Fonts.arial_12);
             tt.newLine();
 
             // list of things to copy to clipboard
@@ -1158,7 +1103,7 @@ namespace SrvSurvey.forms
                     x -= 4;
                 }
                 tt.dty += N.two;
-                tt.drawRight(x, "Copy:", C.orangeDark, GameColors.Fonts.gothic_9);
+                tt.drawRight(x, "Copy:", C.orangeDark, GameColors.Fonts.arial_9);
                 tt.dty += copyButtons[0].Height + N.four;
             }
             else
@@ -1177,14 +1122,17 @@ namespace SrvSurvey.forms
                 {
                     if (pm.replied != null)
                     {
-                        tt.draw(N.oneTwo, "Replied: ▶ ", C.orangeDark, GameColors.Fonts.gothic_10);
+                        tt.draw(N.oneTwo, "Replied: ▶ ", C.orangeDark, GameColors.Fonts.arial_10);
                         var txt = qm.actions.GetValueOrDefault(pm.replied, pm.replied);
-                        tt.draw(txt, GameColors.Fonts.gothic_10);
+                        tt.draw(txt, GameColors.Fonts.arial_10);
                         tt.newLine(-N.six);
                     }
                     else if (replyButtons != null)
                     {
-                        var x = 0f;
+                        tt.dty += N.ten;
+                        tt.draw(N.oneTwo, "Reply with: ", C.cyan, GameColors.Fonts.arial_12);
+                        tt.dty -= N.ten;
+                        var x = tt.dtx;
                         foreach (var btn in replyButtons)
                         {
                             btn.Left = (int)x;

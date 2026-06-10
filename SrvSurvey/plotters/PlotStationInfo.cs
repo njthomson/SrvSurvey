@@ -1,6 +1,7 @@
 ﻿using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.net;
+using SrvSurvey.quests;
 using SrvSurvey.widgets;
 
 namespace SrvSurvey.plotters
@@ -84,7 +85,7 @@ namespace SrvSurvey.plotters
             // title
             tt.draw(N.eight, station.name, GameColors.Fonts.gothic_12B);
             // quest related?
-            if (game.cmdrPlay?.isTagged(station.name) == true)
+            if (PlayState.current?.isTagged(station.name) == true)
             {
                 PlotQuestMini.drawLogo(g, tt.dtx + N.four, N.oneOne, true, N.oneSix);
                 tt.dtx += N.twenty;
@@ -151,7 +152,7 @@ namespace SrvSurvey.plotters
                 foreach (var entry in station.economies.OrderByDescending(kv => kv.Value))
                 {
                     tt.draw(indent, $"{entry.Key}: ", GameColors.Fonts.gothic_9);
-                    tt.draw($"{entry.Value}%", count < 2 ? C.cyan : C.orange, GameColors.Fonts.gothic_9);
+                    tt.draw($"{entry.Value.ToString("F0")}%", count < 2 ? C.cyan : C.orange, GameColors.Fonts.gothic_9);
                     tt.newLine(true);
                     count++;
                 }

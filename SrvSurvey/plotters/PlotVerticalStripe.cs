@@ -436,9 +436,18 @@ namespace SrvSurvey.plotters
 
         private void drawBearTarget(Graphics g)
         {
+            var d = 25;
+
+            // horiz
+            var ey = er.Height * 0.05f;
+            drawLine(g, 100, mh + ey, this.Width - 100, mh + ey);
+
             // vert
-            var d = 100;
-            drawLine(g, mw, mh - 2 * d, mw, mh - 4 * d);
+            var ex = 48;
+            drawLine(g, mw - ex, mh - 1 * d, mw - ex, mh - 7 * d);
+            drawLine(g, mw + ex, mh - 1 * d, mw + ex, mh - 7 * d);
+
+            drawLine(g, mw, mh - 10 * d, mw, mh - 16 * d);
         }
 
         private void drawCrossroadsTarget(Graphics g)

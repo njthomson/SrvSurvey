@@ -104,6 +104,7 @@
             txtStatusFile.Size = new Size(597, 83);
             txtStatusFile.TabIndex = 2;
             txtStatusFile.Text = "Destination:\r\nFlags:\r\nFlags2:\r\nLat/Long:\r\n";
+            txtStatusFile.DoubleClick += txtStatusFile_DoubleClick;
             // 
             // treeJournals
             // 

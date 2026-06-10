@@ -302,7 +302,7 @@ namespace SrvSurvey
             var imageFilenamePrefix = $"{entry.systemName.ToUpper()} {entry.bodyName}".ToUpperInvariant();
             var imageFilenameSuffix = entry.isRuins ? $", Ruins{entry.idx}".ToUpperInvariant() : entry.siteType;
 
-            var folder = Path.Combine(Game.settings.screenshotTargetFolder!, entry.systemName);
+            var folder = Path.Combine(Game.settings.screenshotTargetFolder, entry.systemName);
             if (!Directory.Exists(folder)) return false;
 
             var files = Directory.GetFiles(folder, "*.png").Select(_ => Path.GetFileNameWithoutExtension(_));
@@ -395,7 +395,7 @@ namespace SrvSurvey
                 menuOpenDataFile.Enabled = File.Exists(entry.filepath);
                 notesToolStripMenuItem.Enabled = !string.IsNullOrEmpty(entry.notes);
 
-                var folder = Path.Combine(Game.settings.screenshotTargetFolder!, entry.systemName);
+                var folder = Path.Combine(Game.settings.screenshotTargetFolder, entry.systemName);
                 menuOpenImagesFolder.Enabled = Directory.Exists(folder);
 
                 this.contextMenu.Show(this.grid, e.X, e.Y);
@@ -655,7 +655,7 @@ namespace SrvSurvey
             if (this.grid.SelectedItems.Count == 0) return;
             var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag!;
 
-            var folder = Path.Combine(Game.settings.screenshotTargetFolder!, entry.systemName);
+            var folder = Path.Combine(Game.settings.screenshotTargetFolder, entry.systemName);
             if (Directory.Exists(folder))
                 Util.openLink(folder);
         }

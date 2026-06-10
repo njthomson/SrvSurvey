@@ -98,6 +98,22 @@ namespace SrvSurvey.net
                     {
                         Data.saveWithRetry(cacheFilename, json, true);
                     }
+
+                    /* TODO: handle 404's and just return null?
+                    try
+                    {
+                        var data = await Game.spansh.getSystemDump(id64);
+                        starPos = data.coords;
+                    }
+                    catch (HttpRequestException ex) when (ex.StatusCode != System.Net.HttpStatusCode.NotFound)
+                    {
+                        Game.log("! " + ex.Message);
+                    }
+                    finally
+                    {
+                        this.fetching = false;
+                    }
+                    */
                 }
 
                 var systemDump = JsonConvert.DeserializeObject<ApiSystemDump>(json)!;
@@ -1182,7 +1198,7 @@ namespace SrvSurvey.net
                 public string controllingFaction;
                 public string controllingFactionState;
                 public double distanceToArrival;
-                public Dictionary<string, float>? economies;
+                public Dictionary<string, double>? economies;
                 public string government;
                 public long id;
                 public LandingPads landingPads;

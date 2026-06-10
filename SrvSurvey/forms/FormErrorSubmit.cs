@@ -51,11 +51,8 @@ namespace SrvSurvey
             this.ex = ex;
             InitializeComponent();
 
-            // for privacy reasons, this must be unchecked by default
-            txtSteps.Height = txtStack.Height;
-            checkIncludeLogs.Checked = false;
-
             // capture recent logs NOW as the error presumably just happened vs later when people notice the error dialog
+            this.logLineCount = Math.Min(Game.logs.Count, 20);
             this.recentLogs = String.Join('\n', Game.logs.TakeLast(this.logLineCount));
             // and include the version of the game if possible
             var gameFileHeader = Game.activeGame?.journals?.Entries.FirstOrDefault();
@@ -69,8 +66,6 @@ namespace SrvSurvey
             // show stack information on the form
             txtStack.Text = ex.ToString();
 
-            this.logLineCount = Math.Min(Game.logs.Count, 20);
-            checkIncludeLogs.Text += $" (last {this.logLineCount})";
 
             if (!string.IsNullOrEmpty(Game.activeGame?.journals?.filepath) && File.Exists(Game.activeGame.journals.filepath))
             {
@@ -91,9 +86,6 @@ namespace SrvSurvey
             form.Add("version", Program.releaseVersion);
             form.Add("exception-message", ex.Message);
             form.Add("exception-stack", ex.StackTrace!);
-
-            if (checkIncludeLogs.Checked)
-                form.Add("logs", this.recentLogs);
 
             var query = "template=crash-report.yml&" + String.Join(
                 "&",
@@ -155,6 +147,11 @@ namespace SrvSurvey
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnCopyLastLogs_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(this.recentLogs);
         }
     }
 }

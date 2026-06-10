@@ -7,7 +7,6 @@ using SrvSurvey.Properties;
 using SrvSurvey.widgets;
 using System.Diagnostics;
 using System.Reflection;
-using Valve.VR;
 
 namespace SrvSurvey
 {
@@ -44,12 +43,6 @@ namespace SrvSurvey
 
             var osScaleFactor = (this.DeviceDpi / 96f * 100).ToString("0");
             this.comboOverlayScale.Items[0] = $"Match Windows OS scale ({osScaleFactor}%)";
-
-            // keep these hidden from official app-store builds for now
-            if (Program.isAppStoreBuild)
-            {
-                btnSwapCache.Hide();
-            }
 
             BaseForm.applyThemeWithCustomControls(this);
         }
@@ -489,8 +482,11 @@ namespace SrvSurvey
         {
             base.OnClosed(e);
 
-            PlotAdjustVR.force = false;
-            VR.shutdown();
+            if (!Game.settings.displayVR && VR.app != null)
+            {
+                PlotAdjustVR.force = false;
+                VR.shutdown();
+            }
 
             // ensure basic keyboard hooks are in the correct state
             var keyHookSettingsValid = Game.settings.keyActions_TEST != null && (Game.settings.keyhook_TEST || Game.settings.hookDirectX_TEST);
@@ -1046,6 +1042,11 @@ namespace SrvSurvey
         private void btnAdjustVR_Click(object sender, EventArgs e)
         {
             PlotAdjustVR.start();
+        }
+
+        private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Util.openLink("https://ravencolonial.com/#ggg");
         }
     }
 }

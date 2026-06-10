@@ -141,6 +141,19 @@ namespace SrvSurvey.widgets
             return this.lastTextSize;
         }
 
+        public SizeF drawCentered(Rectangle rect, string txt, Color? col = null, Font? font = null, bool fromTopLeft = false)
+        {
+            col = col ?? this.color;
+            font = font ?? this.font;
+
+            var centerFlags = flags | TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter;
+
+            this.lastTextSize = TextRenderer.MeasureText(txt, font, Size.Empty, centerFlags);
+            TextRenderer.DrawText(g, txt, font, rect, col.Value, centerFlags);
+
+            return this.lastTextSize;
+        }
+
         /// <summary> Draw bottom/center aligned </summary>
         public SizeF drawFooter(string txt, Color? col = null, Font? font = null)
         {

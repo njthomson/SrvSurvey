@@ -65,6 +65,7 @@ namespace SrvSurvey.game
                 data.Save();
             }
 
+            data.fid = fid;
             return data;
         }
 
@@ -142,6 +143,7 @@ namespace SrvSurvey.game
 
         public List<Project> projects = new();
 
+        public string fid;
         public string cmdr;
         public string? primaryBuildId;
         public bool fcTracking = true;
@@ -161,6 +163,8 @@ namespace SrvSurvey.game
         #endregion
 
         public List<Project> notHiddenProjects => this.projects.Where(p => !this.hiddenIDs.Contains(p.buildId)).ToList();
+
+        private static string? lastCompletedBuildId;
 
         [JsonIgnore]
         public Needs allNeeds;
@@ -234,13 +238,17 @@ namespace SrvSurvey.game
                 {
                     needs.commodities.init(commodity);
                     needs.commodities[commodity] += need;
-                }
 
-                // prep assignments
-                var assignment = project.commanders?.GetValueOrDefault(cmdr, StringComparison.OrdinalIgnoreCase);
-                if (assignment != null)
-                    foreach (var commodity in assignment)
-                        needs.assigned.Add(commodity);
+                    // prep assignments
+                    if (project.commanders != null)
+                    {
+                        var assignedTo = project.commanders.Keys.Where(k => project.commanders[k].Contains(commodity)).ToList();
+                        if (assignedTo.Contains(cmdr, StringComparer.OrdinalIgnoreCase))
+                            needs.assignedMe.Add(commodity);
+                        else if (assignedTo.Count > 0)
+                            needs.assignedOthers.Add(commodity);
+                    }
+                }
             }
 
             return needs;
@@ -379,6 +387,7 @@ namespace SrvSurvey.game
             var match = this.projects.Find(p => p.marketId == entry.MarketID);
             if (match?.complete == false)
             {
+                lastCompletedBuildId = match.buildId;
                 await Game.rcc.markComplete(match.buildId);
                 match.complete = true;
                 this.Save();
@@ -420,7 +429,7 @@ namespace SrvSurvey.game
 
             if (newCargo.Count > 0)
             {
-                var updatedCargo = await Game.rcc.updateCargoFC(fc.marketId, newCargo);
+                var updatedCargo = await Game.rcc.updateCargoFC(this.fid, fc.marketId, newCargo);
                 if (updatedCargo != null)
                 {
                     // apply new numbers and save
@@ -440,7 +449,8 @@ namespace SrvSurvey.game
         public class Needs
         {
             public Dictionary<string, int> commodities = new();
-            public HashSet<string> assigned = new();
+            public HashSet<string> assignedMe = new();
+            public HashSet<string> assignedOthers = new();
         }
 
         /** Prior mistakes and corrections in the cargo names:
@@ -547,7 +557,7 @@ namespace SrvSurvey.game
 
             Game.log($"Publishing FC: {newFC}");
 
-            var fc = await Game.rcc.publishFC(newFC);
+            var fc = await Game.rcc.publishFC(game.cmdr.fid, newFC);
 
             // if market data matches this FC, update that too
             if (fc != null && game.marketFile.MarketId == fc.marketId)
@@ -684,6 +694,9 @@ namespace SrvSurvey.game
                 });
             }
 
+            // re-order bodies by num
+            bods = bods.OrderBy(b => b.num).ToList();
+
             // remove and re-inject asteroid clusters based on their distLS values
             adjustAstroidBeltOrder(bods);
 
@@ -808,10 +821,35 @@ namespace SrvSurvey.game
                 cargo = game.cargoFile.Inventory.ToDictionary(_ => _.Name, _ => _.Count),
             };
 
-            await Game.rcc.publishCurrentShip(ship);
+            await Game.rcc.publishCurrentShip(game.cmdr.fid, ship);
 
             return true;
         }
 
+        public static async Task inferPrimaryPortName(Game game, SupercruiseEntry entry)
+        {
+            // only if we last docked at a construction site within this system
+            if (lastCompletedBuildId == null || game.lastEverDocked?.StationName.ToString().StartsWith(ColonyData.ExtPanelColonisationShip) != true || game.lastEverDocked.SystemAddress != entry.SystemAddress) return;
+
+            // if we see a 'FSSSignalDiscovered' between this and 'StartJump' ... assume that is a freshly completed construction
+            var signalEntries = new List<FSSSignalDiscovered>();
+            game.journals?.walk(-1, true, x =>
+            {
+                if (x is StartJump) return true;
+                if (x is FSSSignalDiscovered signalEntry) signalEntries.Add(signalEntry);
+                return false;
+            });
+
+            // only if there's a single entry
+            if (signalEntries.Count == 1)
+            {
+                var updateProj = new ProjectUpdate(lastCompletedBuildId)
+                {
+                    buildName = signalEntries[0].SignalName,
+                };
+                await Game.rcc.updateProject(updateProj);
+                lastCompletedBuildId = null;
+            }
+        }
     }
 }

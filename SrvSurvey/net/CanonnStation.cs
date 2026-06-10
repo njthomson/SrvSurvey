@@ -256,11 +256,11 @@ namespace SrvSurvey.canonn
                             Game.canonn.submitStation(station).ContinueWith(response =>
                             {
                                 Game.log("canonn.submitStation: " + response.Result);
-                                Program.invalidateActivePlotters();
+                                PlotBase2.renderAll(null, true);
                             });
                         }
 
-                        PlotBase2.invalidate(nameof(PlotHumanSite));
+                        PlotBase2.renderAll(null, true);
                         return true;
                     }
                     else
@@ -435,6 +435,15 @@ namespace SrvSurvey.canonn
             { "lakonminer", new PointM(3.2158969190817975945213579427, -30.937907691306423623692096957) }, // Type 11 Prospector
             { "explorer_nx", new PointM(-0.7820737162192071462787373979, -62.305031957744565101955170933) }, // Caspian Explorer
             { "smallcombat01_nx", new PointM(0.2085315294643370372562911854, -14.369195925926613078355322022) }, // Kestrel mk2
+            { "mediumtransport01", new PointM(-0.6075405725357383105313236452, -42.088687972303426165395062161) }, // Lynx Highliner
+
+            /* Procedure to update:
+             *  1. Land at some settlement, stay in ship
+             *  2. Send message "@"
+             *  3. Exit ship, walk to pad center (as if for .settlement)
+             *  4. Send message "@@"
+             *  5. Paste clipboard above + add ship size below
+             */
 
             { "foot", new PointM(0d, 0d) }, // No offset applied when on foot
             { "taxi", new PointM(-0.9996653405051110150258470637, -11.913859432190865089645580760) }, // Taxi is an Adder but matching seat #2
@@ -490,6 +499,7 @@ namespace SrvSurvey.canonn
             { "lakonminer", 2 }, // Type 11 Prospector
             { "explorer_nx", 3 }, // Caspian Explorer
             { "smallcombat01_nx", 1 }, // Kestrel mk2
+            { "mediumtransport01", 2 }, // Lynx Highliner
 
             { "foot", 0 },
             { "taxi", 1 },

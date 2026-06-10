@@ -351,6 +351,7 @@ namespace SrvSurvey.net
             if (primary_economy == "industrial") return Misc.NetSysData_HumanBroker; // human may be set as a default and it is not needed
             if (secondary_economy == "high tech") return Misc.NetSysData_GuardianBroker;
             if (secondary_economy != null && secondary_economy != "high tech") return Misc.NetSysData_HumanBroker; // needs a confirmation
+            if (primary_economy == "rescue") return Misc.NetSysData_HumanBroker; // human may be set as a default and it is not needed ?? Is this correct?
 
             Debugger.Break();
             return null;

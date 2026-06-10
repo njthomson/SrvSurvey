@@ -1,6 +1,5 @@
 ﻿using Lua;
-using SrvSurvey;
-using SrvSurvey.game;
+using System.Globalization;
 
 namespace SrvSurvey.quests.script;
 
@@ -17,54 +16,84 @@ public partial class Quest
     [LuaMember]
     public void complete()
     {
-        Game.log($"S_quest.complete [{pq.id}]");
-        pq.complete();
+        pq.complete().justDoIt();
     }
 
     [LuaMember]
     public void fail()
     {
-        Game.log($"S_quest.fail [{pq.id}]");
-        pq.fail();
+        pq.fail().justDoIt();
     }
 
     [LuaMember]
-    public async Task startChapter(string id)
+    public void startChapter(string id)
     {
-        await pq.startChapter(id);
+        pq.startChapter(id);
     }
 
     [LuaMember]
-    public async Task stopChapter(string id)
+    public void nextChapter(string id)
     {
-        await pq.stopChapter(id);
+        pq.startChapter(id);
+        pq.stopChapter(pq.invokingChapter!.id);
+    }
+
+    [LuaMember]
+    public void stopChapter(string id)
+    {
+        pq.stopChapter(id);
+    }
+
+    [LuaMember]
+    public void set(string name, LuaValue val)
+    {
+        pq.setVar(name, val);
+    }
+
+    [LuaMember]
+    public LuaValue get(string name)
+    {
+        return pq.getVar(name);
     }
 
     [LuaMember]
     public void sendMsg(string? id = null, string? from = null, string? subject = null, string? body = null)
     {
-        // do we have a pre-published message?
-        var msg = id == null ? null : pq.quest.msgs.Find(m => m.id == id);
-
-        // TODO: msg tracking and delivery needs to be reworked
-
-        if (msg == null && id != null && from != null && body != null)
-        {
-            msg = new()
-            {
-                id = id,
-                from = "",
-                body = "",
-            };
-        }
-        if (msg?.actions != null)
-            throw new Exception($"quest.sendMsg() does not accept messages with actions");
+        // do we have a prepared message?
+        var defMsg = id == null ? null : pq.quest.msgs.Find(m => m.id == id);
 
         // create a delivered message from it, overriding strings as necessary
-        var newMsg = PlayMsg.send(msg, from, subject, body);
-        pq.sendMsg(newMsg);
+        var chapter = this.pq.invokingChapter?.id;
+        if (defMsg?.actions != null && chapter == null) throw new Exception($"Chapter must be set when using messages with actions. Id: {defMsg.id}");
 
-        Game.log($"S_quest.sendMsg [{pq.id}]: {id}: {newMsg.subject ?? newMsg.body}");
+        var playMsg = new PlayMsg()
+        {
+            id = defMsg?.id ?? DateTimeOffset.UtcNow.ToString("yyyyMMddhhmmss"),
+            from = from ?? defMsg?.from,
+            subject = subject ?? defMsg?.subject,
+            body = body ?? defMsg?.body,
+            received = DateTimeOffset.UtcNow,
+            chapter = chapter,
+            actions = defMsg?.actions?.Keys.ToArray(),
+        };
+
+        // store nothing if the following values match the template Msg
+        if (defMsg != null)
+        {
+            if (playMsg.from == defMsg.from) playMsg.from = null;
+            if (playMsg.subject == defMsg.subject) playMsg.subject = null;
+            if (playMsg.body == defMsg.body) playMsg.body = null;
+        }
+
+        // add any tags?
+        if (defMsg?.tags?.Count > 0)
+        {
+            pq.tags.AddRange(defMsg.tags);
+            pq.dirty = true;
+        }
+
+        // TODO: delay by seconds when sending any messages? (But this messes with dirty analysis, and means things happen when invokeingChapter may be null
+        pq.sendMsg(playMsg);
     }
 
     [LuaMember]
@@ -74,12 +103,16 @@ public partial class Quest
     }
 
     [LuaMember]
-    public void tag(string t1, string? t2 = null, string? t3 = null, string? t4 = null, string? t5 = null, string? t6 = null, string? t7 = null, string? t8 = null)
+    public void tag(LuaValue val)
     {
-        tags(t1, t2, t3, t4, t5, t6, t7, t8);
+        var tags = val.Type == LuaValueType.Table
+            ? val.Read<LuaTable>().ToList().Select(kv => kv.Value.ToString()).ToHashSet()
+            : new() { val.ToString() };
+
+        this.tags(tags);
     }
 
-    public void tags(params string?[] tags)
+    private void tags(HashSet<string> tags)
     {
         foreach (var tag in tags)
             if (!string.IsNullOrWhiteSpace(tag))
@@ -87,12 +120,16 @@ public partial class Quest
     }
 
     [LuaMember]
-    public void untag(string t1, string? t2 = null, string? t3 = null, string? t4 = null, string? t5 = null, string? t6 = null, string? t7 = null, string? t8 = null)
+    public void untag(LuaValue val)
     {
-        untags(t1, t2, t3, t4, t5, t6, t7, t8);
+        var tags = val.Type == LuaValueType.Table
+            ? val.Read<LuaTable>().ToList().Select(kv => kv.Value.ToString()).ToHashSet()
+            : new() { val.ToString() };
+
+        untags(tags);
     }
 
-    public void untags(params string?[] tags)
+    private void untags(HashSet<string> tags)
     {
         foreach (var tag in tags)
             if (!string.IsNullOrWhiteSpace(tag))
@@ -100,10 +137,14 @@ public partial class Quest
     }
 
     [LuaMember]
-    public void setTags(string t1, string? t2 = null, string? t3 = null, string? t4 = null, string? t5 = null, string? t6 = null, string? t7 = null, string? t8 = null)
+    public void setTags(LuaValue val)
     {
+        var tags = val.Type == LuaValueType.Table
+            ? val.Read<LuaTable>().ToList().Select(kv => kv.Value.ToString()).ToHashSet()
+            : new() { val.ToString() };
+
         clearTags();
-        this.tags(t1, t2, t3, t4, t5, t6, t7, t8);
+        this.tags(tags);
     }
 
     [LuaMember]
@@ -134,24 +175,33 @@ public partial class Quest
     }
 
     [LuaMember]
-    public void keepLast(string e1, string? e2 = null, string? e3 = null, string? e4 = null, string? e5 = null, string? e6 = null, string? e7 = null, string? e8 = null)
+    public void keepLast(LuaValue val)
     {
-        var names = new string?[] { e1, e2, e3, e4, e5, e6, e7, e8 }
-            .Where(e => !string.IsNullOrWhiteSpace(e))
-            .ToArray();
+        var ids = val.Type == LuaValueType.Table
+            ? val.Read<LuaTable>().ToList().Select(kv => kv.Value.ToString()).ToHashSet()
+            : new() { val.ToString() };
 
-        pq.keepLast(names);
+        pq.keepLast(ids);
     }
 
     [LuaMember]
-    public LuaValue getLast(string eventName)
+    public void setRoute(string id, double w, LuaTable latLongs)
     {
-        // TODO: check if eventName is valid?
+        this.pq.routes.RemoveAll(pr => pr.id == id);
+        var waypoints = latLongs.ToList().Select(kv => kv.Value.ToString().Split(",", StringSplitOptions.TrimEntries).Select(t => double.Parse(t, CultureInfo.InvariantCulture)).ToArray()).ToList();
+        this.pq.routes.Add(new()
+        {
+            id = id,
+            w = w,
+            wp = waypoints,
+        });
+        this.pq.dirty = true;
+    }
 
-        var last = pq.keptLasts.GetValueOrDefault(eventName);
-        if (last == null)
-            return LuaValue.Nil;
-
-        return new LuaValue(last);
+    [LuaMember]
+    public void clearRoute(string id)
+    {
+        this.pq.routes.RemoveAll(pr => pr.id == id);
+        this.pq.dirty = true;
     }
 }

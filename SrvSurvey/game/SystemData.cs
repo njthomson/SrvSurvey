@@ -4,6 +4,7 @@ using Newtonsoft.Json.Converters;
 using SrvSurvey.canonn;
 using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
+using SrvSurvey.plotters;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.Diagnostics;
@@ -24,7 +25,9 @@ namespace SrvSurvey.game
         /// </summary>
         public static SystemData? Load(string systemName, long systemAddress, string fid, string? commanderName, bool skipPredictSpecies = false)
         {
-            if (systemName != "") Game.log($"Loading SystemData for: '{systemName}' ({systemAddress})");
+            var systemFileName = Util.safeFilename(systemName);
+
+            if (systemFileName != "") Game.log($"Loading SystemData for: '{systemFileName}' ({systemAddress})");
 
             // use cache entry if present
             if (systemAddress != 0 && cache.TryGetValue(systemAddress, out SystemData? value))
@@ -34,20 +37,20 @@ namespace SrvSurvey.game
             var folder = Path.Combine(Program.dataFolder, "systems", fid);
             Directory.CreateDirectory(folder);
             var files = Directory.GetFiles(folder, $"*_{systemAddress}.json");
-            if (files.Length == 0 && !string.IsNullOrEmpty(systemName))
+            if (files.Length == 0 && !string.IsNullOrEmpty(systemFileName))
             {
-                files = Directory.GetFiles(folder, $"{systemName}_*.json");
+                files = Directory.GetFiles(folder, $"{systemFileName}_*.json");
             }
 
             // create new if no matches found
             if (files.Length == 0)
             {
-                if (systemName != "") Game.log($"Nothing found for: '{systemName}' ({systemAddress})");
+                if (systemFileName != "") Game.log($"Nothing found for: '{systemFileName}' ({systemAddress})");
                 return null;
             }
             else if (files.Length > 1)
             {
-                Game.log($"Why are there {files.Length} multiple files for '{systemName}' ({systemAddress})? Using the first one.");
+                Game.log($"Why are there {files.Length} multiple files for '{systemFileName}' ({systemAddress})? Using the first one.");
             }
 
             var filepath = files[0];
@@ -161,7 +164,7 @@ namespace SrvSurvey.game
             return Load(starRef.name, starRef.id64, fid, cmdr, true)!;
         }
 
-        public static SystemData From(ISystemDataStarter entry, string fid, string cmdrName)
+        public static SystemData From(ISystemDataLocator entry, string fid, string cmdrName)
         {
             lock (cache)
             {
@@ -173,7 +176,7 @@ namespace SrvSurvey.game
                     // create a new data object with the main star populated
                     data = new SystemData()
                     {
-                        filepath = Path.Combine(Program.dataFolder, "systems", fid, $"{entry.StarSystem}_{entry.SystemAddress}.json"),
+                        filepath = Path.Combine(Program.dataFolder, "systems", fid, Util.safeFilename($"{entry.StarSystem}_{entry.SystemAddress}.json")),
                         name = entry.StarSystem,
                         address = entry.SystemAddress,
                         starPos = entry.StarPos,
@@ -215,7 +218,7 @@ namespace SrvSurvey.game
 
             var data = new SystemData()
             {
-                filepath = Path.Combine(Program.dataFolder, "systems", fid, $"{dump.name}_{dump.id64}.json"),
+                filepath = Path.Combine(Program.dataFolder, "systems", fid, Util.safeFilename($"{dump.name}_{dump.id64}.json")),
                 name = dump.name,
                 address = dump.id64,
                 starPos = new double[3] { dump.coords.x, dump.coords.y, dump.coords.z },
@@ -243,7 +246,7 @@ namespace SrvSurvey.game
                     // create a new data object with the main star populated
                     data = new SystemData()
                     {
-                        filepath = Path.Combine(Program.dataFolder, "systems", cmdr.fid, $"{bodyData.systemName}_{bodyData.systemAddress}.json"),
+                        filepath = Path.Combine(Program.dataFolder, "systems", cmdr.fid, Util.safeFilename($"{bodyData.systemName}_{bodyData.systemAddress}.json")),
                         name = bodyData.systemName,
                         address = bodyData.systemAddress,
                         starPos = null!,
@@ -721,14 +724,15 @@ namespace SrvSurvey.game
             }
 
             // add to system exploration rewards?
-            if (Game.activeGame?.systemData == this && entry.ScanType != "NavBeaconDetail" && body.hasValue)
+            var game = Game.activeGame;
+            if (game?.systemData == this && entry.ScanType != "NavBeaconDetail" && body.hasValue)
             {
                 var reward = Util.GetBodyValue(entry, false);
                 if (body.reward < reward)
                 {
                     body.reward = reward;
-                    Game.activeGame.cmdr.countScans += 1;
-                    Game.activeGame.cmdr.applyExplReward(reward, $"Scan:{entry.ScanType} of {entry.BodyName}");
+                    game.cmdr.countScans += 1;
+                    game.cmdr.applyExplReward(reward, $"Scan:{entry.ScanType} of {entry.BodyName}");
 
                     // and adjust main star value too
                     if (this.honked)
@@ -742,9 +746,9 @@ namespace SrvSurvey.game
 
             if (body.bioSignalCount > 0)
             {
-                if (Game.activeGame?.systemData == this)
+                if (game?.systemData == this)
                 {
-                    Game.activeGame.deferPredictSpecies(body);
+                    game.deferPredictSpecies(body);
                     Program.invalidateActivePlotters();
                 }
             }
@@ -752,7 +756,55 @@ namespace SrvSurvey.game
             // redraw as well, in case visual state needs to change but predictions are no different
             Program.defer(() => FormPredictions.refresh());
 
+            // upload possible GGG ?
+            if (Game.settings.uploadGGG && entry.PlanetClass?.Contains("giant", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                var tag = getTagForGGG(entry.PlanetClass, entry.SurfaceTemperature);
+                if (tag != null)
+                {
+                    Game.log($"GGG match: {tag}! body: {entry.BodyName}, temp: {entry.SurfaceTemperature}");
+                    PlotFloatie.showMessage($"Congrats, {tag} GGG uploaded!");
+                    var json = JsonConvert.SerializeObject(entry);
+                    Game.rcc.uploadGGG(this.commander, tag, this.starPos, json).justDoIt();
+                }
+            }
+
             return true;
+        }
+
+        public static string? getTagForGGG(string planetClass, double surfaceTemp)
+        {
+            if (!File.Exists(Git.gggPath)) return null;
+            var data = JsonConvert.DeserializeObject<JsonGGG>(File.ReadAllText(Git.gggPath))!;
+
+            // do we have an exact match?
+            var knownTemps = data.knownGGGTemps.GetValueOrDefault(planetClass);
+            if (knownTemps?.Contains(surfaceTemp) == true)
+                return "likely";
+
+            // do we have an approx match?
+            var approx = knownTemps?.Any(t => surfaceTemp > t - data.delta && surfaceTemp < t + data.delta);
+            if (approx == true)
+                return "likely-approx";
+
+            // do we have a theorized match?
+            var theorizedTemps = data.theorizedGGGTemps.GetValueOrDefault(planetClass);
+            if (knownTemps?.Contains(surfaceTemp) == true)
+                return "potential";
+
+            // do we have an approx theorized match?
+            approx = theorizedTemps?.Any(t => surfaceTemp > t - data.delta && surfaceTemp < t + data.delta);
+            if (approx == true)
+                return "potential-approx";
+
+            return null;
+        }
+
+        private class JsonGGG
+        {
+            public double delta;
+            public Dictionary<string, List<double>> knownGGGTemps;
+            public Dictionary<string, List<double>> theorizedGGGTemps;
         }
 
         public bool onJournalEntry(ScanBaryCentre entry)
@@ -1143,12 +1195,15 @@ namespace SrvSurvey.game
                 body.settlements[entry.Name] = entry;
 
                 var siteData = GuardianSiteData.Load(entry);
-                // always update the location of the site based on latest journal data
-                siteData.location = entry;
-                if (siteData != null && siteData.lastVisited < entry.timestamp)
+                if (siteData != null)
                 {
-                    siteData.lastVisited = entry.timestamp;
-                    siteData.Save();
+                    // always update the location of the site based on latest journal data
+                    siteData.location = entry;
+                    if (siteData.lastVisited < entry.timestamp)
+                    {
+                        siteData.lastVisited = entry.timestamp;
+                        siteData.Save();
+                    }
                 }
             }
 
@@ -1959,7 +2014,7 @@ namespace SrvSurvey.game
         public List<ApiSystemDump.System.Station>? spanshStations;
 
         [JsonIgnore]
-        public string folderImages => Path.Combine(Game.settings.screenshotTargetFolder!, this.name);
+        public string folderImages => Path.Combine(Game.settings.screenshotTargetFolder!, Util.safeFilename(this.name));
     }
 
     internal class SummaryGenus
@@ -2411,6 +2466,7 @@ namespace SrvSurvey.game
         public void predictSpecies()
         {
             if (this.bioSignalCount == 0 || Game.activeGame == null || !Game.ready || Game.codexRef.genus == null) return;
+            if (Game.settings.disableBioPredictions) return;
             Game.log($"predictSpecies: '{this.name}'...");
 
             this.predictions.Clear();

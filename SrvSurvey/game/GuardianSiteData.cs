@@ -69,10 +69,13 @@ namespace SrvSurvey.game
             return Data.Load<GuardianSiteData>(filepath);
         }
 
-        public static GuardianSiteData Load(ApproachSettlement entry)
+        public static GuardianSiteData? Load(ApproachSettlement entry, Game? game = null)
         {
-            var fid = Game.activeGame?.fid ?? Game.settings.lastFid!;
-            var folder = Path.Combine(rootFolder, fid!);
+            game ??= Game.activeGame;
+            var fid = game?.fid;
+            if (fid == null) return null;
+
+            var folder = Path.Combine(rootFolder, fid);
             if (!Util.isOdyssey) folder = Path.Combine(folder, "legacy");
 
             var filename = getFilename(entry);
@@ -85,7 +88,7 @@ namespace SrvSurvey.game
             if (data == null)
             {
                 // system name is missing on ApproachSettlement, so take the current system - assuming it's a match
-                var cmdr = Game.activeGame?.cmdr!;
+                var cmdr = game?.cmdr!;
                 var systemName = "";
 
                 // might be bad idea?
@@ -170,10 +173,7 @@ namespace SrvSurvey.game
                 }
             }
 
-            if (save)
-            {
-                data.Save();
-            }
+            if (save) data.Save();
             return data;
         }
 

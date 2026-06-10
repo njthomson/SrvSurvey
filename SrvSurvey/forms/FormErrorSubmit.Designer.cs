@@ -34,13 +34,13 @@
             txtStack = new TextBox();
             txtSteps = new TextBox();
             btnSubmit = new FlatButton();
-            checkIncludeLogs = new CheckBox();
             btnLogs = new FlatButton();
             btnClose = new FlatButton();
             linkToDiscord = new LinkLabel();
             linkJournal = new LinkLabel();
             btnCopyJournalPath = new FlatButton();
             btnCopyStack = new FlatButton();
+            btnCopyLastLogs = new FlatButton();
             SuspendLayout();
             // 
             // linkMain
@@ -78,25 +78,25 @@
             txtStack.Name = "txtStack";
             txtStack.ReadOnly = true;
             txtStack.ScrollBars = ScrollBars.Both;
-            txtStack.Size = new Size(533, 179);
+            txtStack.Size = new Size(532, 179);
             txtStack.TabIndex = 7;
             // 
             // txtSteps
             // 
-            txtSteps.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtSteps.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             txtSteps.Location = new Point(14, 263);
             txtSteps.Margin = new Padding(4, 5, 4, 5);
             txtSteps.Multiline = true;
             txtSteps.Name = "txtSteps";
             txtSteps.ScrollBars = ScrollBars.Both;
-            txtSteps.Size = new Size(533, 209);
+            txtSteps.Size = new Size(533, 148);
             txtSteps.TabIndex = 0;
             // 
             // btnSubmit
             // 
             btnSubmit.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnSubmit.AutoSize = true;
-            btnSubmit.Location = new Point(204, 593);
+            btnSubmit.Location = new Point(204, 517);
             btnSubmit.Margin = new Padding(4, 5, 4, 5);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.Size = new Size(224, 34);
@@ -105,26 +105,14 @@
             btnSubmit.UseVisualStyleBackColor = true;
             btnSubmit.Click += btnSubmit_Click;
             // 
-            // checkIncludeLogs
-            // 
-            checkIncludeLogs.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            checkIncludeLogs.AutoSize = true;
-            checkIncludeLogs.Location = new Point(15, 480);
-            checkIncludeLogs.Margin = new Padding(3, 5, 3, 5);
-            checkIncludeLogs.Name = "checkIncludeLogs";
-            checkIncludeLogs.Size = new Size(148, 21);
-            checkIncludeLogs.TabIndex = 1;
-            checkIncludeLogs.Text = "Include verbose logs";
-            checkIncludeLogs.UseVisualStyleBackColor = true;
-            // 
             // btnLogs
             // 
             btnLogs.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnLogs.AutoSize = true;
-            btnLogs.Location = new Point(15, 593);
+            btnLogs.Location = new Point(15, 517);
             btnLogs.Margin = new Padding(3, 5, 3, 5);
             btnLogs.Name = "btnLogs";
-            btnLogs.Size = new Size(110, 34);
+            btnLogs.Size = new Size(92, 34);
             btnLogs.TabIndex = 2;
             btnLogs.Text = "View logs";
             btnLogs.UseVisualStyleBackColor = true;
@@ -135,10 +123,10 @@
             btnClose.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnClose.AutoSize = true;
             btnClose.DialogResult = DialogResult.Cancel;
-            btnClose.Location = new Point(436, 593);
+            btnClose.Location = new Point(436, 517);
             btnClose.Margin = new Padding(4, 5, 4, 5);
             btnClose.Name = "btnClose";
-            btnClose.Size = new Size(112, 34);
+            btnClose.Size = new Size(111, 34);
             btnClose.TabIndex = 4;
             btnClose.Text = "Close";
             btnClose.UseVisualStyleBackColor = true;
@@ -148,7 +136,7 @@
             // 
             linkToDiscord.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             linkToDiscord.LinkArea = new LinkArea(108, 14);
-            linkToDiscord.Location = new Point(15, 535);
+            linkToDiscord.Location = new Point(15, 459);
             linkToDiscord.Margin = new Padding(4, 0, 4, 0);
             linkToDiscord.Name = "linkToDiscord";
             linkToDiscord.Size = new Size(534, 41);
@@ -163,7 +151,7 @@
             linkJournal.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             linkJournal.AutoSize = true;
             linkJournal.LinkArea = new LinkArea(22, 200);
-            linkJournal.Location = new Point(15, 506);
+            linkJournal.Location = new Point(15, 430);
             linkJournal.Margin = new Padding(4, 0, 4, 0);
             linkJournal.Name = "linkJournal";
             linkJournal.Size = new Size(325, 22);
@@ -177,7 +165,7 @@
             // 
             btnCopyJournalPath.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnCopyJournalPath.Image = (Image)resources.GetObject("btnCopyJournalPath.Image");
-            btnCopyJournalPath.Location = new Point(347, 504);
+            btnCopyJournalPath.Location = new Point(347, 428);
             btnCopyJournalPath.Margin = new Padding(3, 5, 3, 5);
             btnCopyJournalPath.Name = "btnCopyJournalPath";
             btnCopyJournalPath.Size = new Size(23, 26);
@@ -197,19 +185,32 @@
             btnCopyStack.UseVisualStyleBackColor = true;
             btnCopyStack.Click += btnCopyStack_Click;
             // 
+            // btnCopyLastLogs
+            // 
+            btnCopyLastLogs.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnCopyLastLogs.AutoSize = true;
+            btnCopyLastLogs.Location = new Point(444, 421);
+            btnCopyLastLogs.Margin = new Padding(3, 5, 3, 5);
+            btnCopyLastLogs.Name = "btnCopyLastLogs";
+            btnCopyLastLogs.Size = new Size(103, 34);
+            btnCopyLastLogs.TabIndex = 29;
+            btnCopyLastLogs.Text = "Copy last logs";
+            btnCopyLastLogs.UseVisualStyleBackColor = true;
+            btnCopyLastLogs.Click += btnCopyLastLogs_Click;
+            // 
             // FormErrorSubmit
             // 
             AcceptButton = btnSubmit;
             AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
-            ClientSize = new Size(560, 637);
+            ClientSize = new Size(560, 561);
+            Controls.Add(btnCopyLastLogs);
             Controls.Add(btnCopyStack);
             Controls.Add(btnCopyJournalPath);
             Controls.Add(linkJournal);
             Controls.Add(linkToDiscord);
             Controls.Add(btnClose);
             Controls.Add(btnLogs);
-            Controls.Add(checkIncludeLogs);
             Controls.Add(btnSubmit);
             Controls.Add(txtSteps);
             Controls.Add(txtStack);
@@ -235,12 +236,12 @@
         private TextBox txtStack;
         private TextBox txtSteps;
         private FlatButton btnSubmit;
-        private CheckBox checkIncludeLogs;
         private FlatButton btnLogs;
         private FlatButton btnClose;
         private LinkLabel linkToDiscord;
         private LinkLabel linkJournal;
         private FlatButton btnCopyJournalPath;
         private FlatButton btnCopyStack;
+        private FlatButton btnCopyLastLogs;
     }
 }

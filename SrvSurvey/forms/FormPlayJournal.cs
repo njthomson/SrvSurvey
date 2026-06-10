@@ -1,5 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SrvSurvey.forms.playComms;
 using SrvSurvey.game;
+using SrvSurvey.quests;
 using SrvSurvey.units;
 using System.Text;
 
@@ -53,13 +56,23 @@ namespace SrvSurvey.forms
         {
             if (game.journals == null) return;
 
-            var count = Math.Min(maxCount, game.journals.Entries.Count);
-            var entries = game.journals.Entries.Slice(game.journals.Entries.Count - count, count).ToList();
-            foreach (var entry in entries)
+            // re-read the journal file as pure JObject's
+            var stream = Data.openSharedStreamReader(game.journals.filepath);
+            var json = new StringBuilder();
+            json.AppendLine("[");
+            string? line = stream.ReadLine();
+            do
             {
-                var obj = JObject.FromObject(entry);
-                Journals_onRawJournalEntry(obj, 0);
-            }
+                json.AppendLine(line + ",");
+                line = stream.ReadLine();
+            } while (line != null);
+            json.AppendLine("]");
+            var allEntries = JsonConvert.DeserializeObject<List<JObject>>(json.ToString())!;
+
+            var count = Math.Min(maxCount, game.journals.Entries.Count);
+            var recentEntries = allEntries.TakeLast(count).ToList();
+            foreach (var entry in recentEntries)
+                Journals_onRawJournalEntry(entry);
         }
 
         private void Status_StatusChanged(bool blink)
@@ -89,7 +102,7 @@ namespace SrvSurvey.forms
             txtStatusFile.Text = str.ToString();
         }
 
-        private void Journals_onRawJournalEntry(JObject obj, int index)
+        private void Journals_onRawJournalEntry(JObject obj)
         {
             if (treeJournals.Nodes.Count >= maxCount)
                 treeJournals.Nodes.RemoveAt(treeJournals.Nodes.Count - 1);
@@ -160,11 +173,9 @@ namespace SrvSurvey.forms
 
         private void replayNode(JObject? obj)
         {
-            if (obj == null) return;
+            if (obj == null || PlayState.current == null) return;
 
-            var entry = JournalFile.hydrate(obj);
-            if (entry != null)
-                game.cmdrPlay?.processJournalEntry(entry).justDoIt();
+            PlayState.current.processJournalEntry(obj).justDoIt();
         }
 
         private void treeJournals_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -252,7 +263,16 @@ namespace SrvSurvey.forms
 
         private void menuComms_Click(object sender, EventArgs e)
         {
-            BaseForm.show<FormPlayComms>();
+            FormPlayComms2.toggleForm();
+        }
+
+        private void txtStatusFile_DoubleClick(object sender, EventArgs e)
+        {
+            if (game.status.hasLatLong)
+            {
+                var txt = $"{game.status.Latitude}, {game.status.Longitude}";
+                Clipboard.SetText(txt);
+            }
         }
     }
 }

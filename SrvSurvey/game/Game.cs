@@ -1,5 +1,6 @@
 ﻿using BioCriterias;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SrvSurvey.canonn;
 using SrvSurvey.forms;
 using SrvSurvey.net;
@@ -37,6 +38,7 @@ namespace SrvSurvey.game
             edsm = new EDSM();
             git = new Git();
             rcc = new RavenColonial.RavenColonial();
+            eddn = new EDDN();
         }
 
         #region logging
@@ -110,6 +112,7 @@ namespace SrvSurvey.game
         public static EDSM edsm { get; private set; }
         public static Git git { get; private set; }
         public static RavenColonial.RavenColonial rcc { get; private set; }
+        public static EDDN eddn { get; private set; }
 
         public bool initialized { get; private set; } // TODO: reconcile with "Game.ready"
 
@@ -134,6 +137,8 @@ namespace SrvSurvey.game
         public bool guardianMatsFull;
         public bool processDockedOnNextStatusChange = false;
         public bool dockingInProgress = false;
+        private bool skipNextCargoEvent;
+        public List<SystemFaction>? systemFactions;
 
         public SystemData? systemData;
         public SystemBody? systemBody;
@@ -168,7 +173,6 @@ namespace SrvSurvey.game
         public CommanderSettings cmdr;
         public CommanderCodex cmdrCodex;
         public ColonyData cmdrColony;
-        public PlayState? cmdrPlay;
         public CommanderJourney? journey;
 
         public SystemPoi? canonnPoi = null;
@@ -244,6 +248,8 @@ namespace SrvSurvey.game
         {
             if (disposing)
             {
+                EDDN.header = null;
+
                 if (this.journals != null)
                 {
                     this.journals.onJournalEntry -= Journals_onJournalEntry;
@@ -414,6 +420,9 @@ namespace SrvSurvey.game
             // tell all new plotters
             PlotBase2.processstatusChanged();
             PlotBase2.renderAll(this);
+
+            // and tell any quests
+            PlayState.current?.processJournalEntry(JObject.FromObject(this.status)).justDoIt();
         }
 
         private void statusDestinationChanged()
@@ -603,6 +612,13 @@ namespace SrvSurvey.game
                 Game.settings.lastCommander = this.Commander;
                 Game.settings.lastFid = this.fid;
                 log($"Game.initializeFromJournal: USING {this.Commander} (FID:{this.fid}), journals.Count:{journals?.Count}");
+
+                // set EDDN upload header
+                if (journals?.Entries.Count > 0)
+                {
+                    var gameFileHeader = (Fileheader)journals.Entries.First();
+                    EDDN.header = new UploadPayloadHeader(loadEntry.Commander, gameFileHeader.gameversion, gameFileHeader.build);
+                }
             }
 
             // exit early if we are shutdown
@@ -627,7 +643,8 @@ namespace SrvSurvey.game
                 if (Game.settings.buildProjects_TEST)
                     this.cmdrColony.fetchLatest().justDoIt();
 
-                if (Game.settings.enableQuests) resetCmdrPlay().justDoIt();
+                if (Game.settings.enableQuests && !string.IsNullOrEmpty(this.cmdr.rccApiKey))
+                    PlayState.loadAsync(this.cmdr.fid).justDoIt();
             }
 
             // if we have MainMenu music - we know we're not actively playing
@@ -746,7 +763,7 @@ namespace SrvSurvey.game
             journals.walk(0, false, (entry) =>
             {
                 if (entry is MissionAbandoned || entry is MissionCompleted || entry is MissionFailed)
-                    this.Journals_onJournalEntry(entry, 0);
+                    this.Journals_onJournalEntry(entry, JObject.FromObject(entry));
 
                 return false;
             });
@@ -768,14 +785,6 @@ namespace SrvSurvey.game
             // do this last and a bit delayed, once initialization finished
             if (Game.settings.useExternalData && this.systemData != null)
                 Program.defer(() => this.fetchSystemData(this.systemData.name, this.systemData.address));
-        }
-
-        public async Task<PlayState?> resetCmdrPlay()
-        {
-            if (!Game.settings.enableQuests) return null;
-
-            this.cmdrPlay = await PlayState.loadAsync(this.cmdr.fid);
-            return this.cmdrPlay;
         }
 
         public void initHumanSite()
@@ -989,7 +998,7 @@ namespace SrvSurvey.game
                 }
 
                 // init from FSD or Carrier jump event
-                var starterEvent = entry as ISystemDataStarter;
+                var starterEvent = entry as ISystemDataLocator;
                 if (starterEvent != null && starterEvent.@event != nameof(Location))
                 {
                     log($"Game.initSystemData: found last {starterEvent.@event}, to '{starterEvent.StarSystem}' ({starterEvent.SystemAddress})");
@@ -1075,30 +1084,38 @@ namespace SrvSurvey.game
 
         #region journal tracking for game state and modes
 
-        private void Journals_onJournalEntry(IJournalEntry entry, int index)
+        private void Journals_onJournalEntry(IJournalEntry? entry, JObject raw)
         {
+            var eventName = entry?.@event ?? raw["event"]?.ToString();
             try
             {
-                Game.log($"Game.event => {entry.@event} : {entry.tldr}");
-                // it's important that journey gets to process these first
-                if (this.journey != null)
-                    this.journey.processJournalEntry(entry, true);
+                Game.log($"Game.event => {eventName} : {entry?.tldr}");
+                if (entry != null)
+                {
+                    // it's important that journey gets to process these first
+                    if (this.journey != null)
+                        this.journey.processJournalEntry(entry, true);
 
-                if (this.systemData != null)
-                    this.systemData.Journals_onJournalEntry(entry, true);
+                    if (this.systemData != null)
+                        this.systemData.Journals_onJournalEntry(entry, true);
 
-                // do this after systemData, removing the need for async/deferring things in this file
-                this.onJournalEntry((dynamic)entry);
+                    // do this after systemData, removing the need for async/deferring things in this file
+                    this.onJournalEntry((dynamic)entry);
 
-                // let any active plotters process the entry
-                PlotBase2.processJournalEntry(entry);
+                    // let any active plotters process the entry
+                    PlotBase2.processJournalEntry(entry);
+
+                    // upload to EDDN?
+                    if (Game.settings.eddnUpload && EDDN.header != null)
+                        eddn.onJournalEntry(this, (dynamic)entry, raw);
+                }
 
                 // finally, let active quests know about this
-                cmdrPlay?.processJournalEntry(entry).justDoIt();
+                PlayState.current?.processJournalEntry(raw).justDoIt();
             }
             catch (Exception ex)
             {
-                Game.log($"Exception processing event '{entry.@event}':\r\n{ex}");
+                Game.log($"Exception processing event '{eventName}':\r\n{ex}");
                 FormErrorSubmit.Show(ex);
             }
         }
@@ -1147,6 +1164,7 @@ namespace SrvSurvey.game
             this.systemData = null;
             this.systemStation = null;
             this.fetchedSystemData = null;
+            this.systemFactions = null;
             this.Status_StatusChanged(false);
 
             // maybe?
@@ -1182,6 +1200,7 @@ namespace SrvSurvey.game
             this.systemData = null;
             this.systemStation = null;
             this.fetchedSystemData = null;
+            this.systemFactions = null;
 
             // forget these things
             this.lastDocked = null;
@@ -1210,6 +1229,8 @@ namespace SrvSurvey.game
                 this.Status_StatusChanged(false);
                 if (this.atMainMenu)
                 {
+                    this.systemBody = null;
+                    this.systemData = null;
                     this.lastDocked = null;
                     this.lastApproachSettlement = null;
                     this.lastColonisationConstructionDepot = null;
@@ -1258,6 +1279,7 @@ namespace SrvSurvey.game
                 this.systemData = null;
                 this.systemStation = null;
                 this.fetchedSystemData = null;
+                this.systemFactions = null;
                 this.Status_StatusChanged(false);
 
                 // stop force showing these any time we change systems
@@ -1273,6 +1295,7 @@ namespace SrvSurvey.game
             }
 
             // for either FSD type ...
+            this.lastApproachSettlement = null;
             dockTimer?.onJournalEntry(entry);
 
             // we are certainly no longer at any humanSite
@@ -1304,7 +1327,7 @@ namespace SrvSurvey.game
             // FSD Jump completed
             this.fsdJumping = false;
             this.statusBodyName = null;
-            cmdr.distanceTravelled += entry.JumpDist;
+            this.cmdr.distanceTravelled += entry.JumpDist;
 
             this.setLocations(entry);
 
@@ -1352,6 +1375,7 @@ namespace SrvSurvey.game
         public void deferPredictSpecies(SystemBody? body, bool checkForMissedPredictions = false)
         {
             if (body == null) return;
+            if (Game.settings.disableBioPredictions) return;
 
             Util.deferAfter(100, () =>
             {
@@ -1376,8 +1400,9 @@ namespace SrvSurvey.game
 
         public void predictSystemSpecies()
         {
-            Game.log("predictSystemSpecies");
             if (this.systemData == null || !Game.ready) return;
+            if (Game.settings.disableBioPredictions) return;
+            Game.log("predictSystemSpecies");
 
             // re-predict everything in the current system
             foreach (var body in this.systemData.bodies.ToList())
@@ -1644,7 +1669,7 @@ namespace SrvSurvey.game
             if (lastDocked != null && fcTrackedCargo.Count > 0)
             {
                 PlotBuildCommodities.startPending(fcTrackedCargo);
-                Game.rcc.supplyFC(lastDocked.MarketID, fcTrackedCargo).continueOnMain(null, updatedCargo =>
+                Game.rcc.supplyFC(cmdr.fid, lastDocked.MarketID, fcTrackedCargo).continueOnMain(null, updatedCargo =>
                 {
                     Game.log(updatedCargo.formatWithHeader("updatedCargo after supplyFC:"));
                     if (cmdrColony == null || lastDocked == null) return;
@@ -1696,10 +1721,13 @@ namespace SrvSurvey.game
 
                 var onSquadFC = lastDocked?.StationServices?.Contains("squadronBank") == true;
                 var isLinkedFC = lastDocked != null && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID);
-                Game.log($"**** marketId : {lastDocked?.MarketID}, onSquadFC: {onSquadFC}, isLinkedFC: {isLinkedFC}, lastDocked?.StationType: {lastDocked?.StationType}");
-
+                Game.log($"**** marketId : {lastDocked?.MarketID}, onSquadFC: {onSquadFC}, isLinkedFC: {isLinkedFC}, lastDocked?.StationType: {lastDocked?.StationType}, skipNextCargoEvent: {skipNextCargoEvent}");
+                if (skipNextCargoEvent)
+                {
+                    skipNextCargoEvent = false;
+                }
                 // if docked on a TRACKED Squadron FC - use crude cargo diff'ing to track cargo on the thing
-                if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && onSquadFC && isLinkedFC)
+                else if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && onSquadFC && isLinkedFC)
                 {
                     var diff = cargoFile.getDiff();
                     if (diff.Count > 0)
@@ -1708,7 +1736,7 @@ namespace SrvSurvey.game
                         // invert the diff as we want it applied to the FC
                         diff = diff.ToDictionary(x => x.Key, x => x.Value * -1);
                         PlotBuildCommodities.startPending(diff);
-                        Game.rcc.supplyFC(marketId, diff).continueOnMain(null, updatedCargo =>
+                        Game.rcc.supplyFC(cmdr.fid, marketId, diff).continueOnMain(null, updatedCargo =>
                         {
                             Game.log(updatedCargo.formatWithHeader($"**** updatedCargo after supplyFC: {marketId}"));
                             if (cmdrColony == null) return;
@@ -1723,7 +1751,9 @@ namespace SrvSurvey.game
                         });
                     }
                     else
+                    {
                         Game.log("**** no diff - really?");
+                    }
                 }
             }
 
@@ -1747,11 +1777,11 @@ namespace SrvSurvey.game
             item.Count += entry.Count;
 
             // track purchases from linked FleetCarriers, but not Squadron FleetCarriers
-            if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId) && lastDocked.StationServices?.Contains("squadronBank") == false)
+            if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
             {
                 Game.log($"Buying {entry.Count}x {entry.Type} from linked FC marketId: {entry.MarketId}");
                 PlotBuildCommodities.startPending();
-                Game.rcc.supplyFC(entry.MarketId, entry.Type, -entry.Count).continueOnMain(null, updatedCargo =>
+                Game.rcc.supplyFC(cmdr.fid, entry.MarketId, entry.Type, -entry.Count).continueOnMain(null, updatedCargo =>
                 {
                     Game.log(updatedCargo);
                     if (cmdrColony == null || lastDocked == null) return;
@@ -1764,6 +1794,9 @@ namespace SrvSurvey.game
                         PlotBuildCommodities.endPending();
                     }
                 });
+                var onSquadFC = lastDocked?.StationServices?.Contains("squadronBank") == true;
+                if (onSquadFC)
+                    skipNextCargoEvent = true;
             }
 
             PlotBase2.invalidate(nameof(PlotBuildCommodities));
@@ -1772,11 +1805,11 @@ namespace SrvSurvey.game
         private void onJournalEntry(MarketSell entry)
         {
             // tracked sales to linked FleetCarriers, but not Squadron FleetCarriers
-            if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId) && lastDocked.StationServices?.Contains("squadronBank") == false)
+            if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
             {
                 Game.log($"Selling {entry.Count}x {entry.Type} to linked FC marketId: {entry.MarketId}");
                 PlotBuildCommodities.startPending();
-                Game.rcc.supplyFC(entry.MarketId, entry.Type, entry.Count).continueOnMain(null, updatedCargo =>
+                Game.rcc.supplyFC(cmdr.fid, entry.MarketId, entry.Type, entry.Count).continueOnMain(null, updatedCargo =>
                 {
                     Game.log(updatedCargo);
                     if (cmdrColony == null || lastDocked == null) return;
@@ -1789,12 +1822,9 @@ namespace SrvSurvey.game
                         PlotBuildCommodities.endPending();
                     }
                 });
-                /*
-                cmdrColony.fcCommodities.init(entry.Type);
-                cmdrColony.fcCommodities[entry.Type] += entry.Count;
-                Game.log($"Adding {entry.Count}x {entry.Type} to colonyData.fcCommodities");
-                cmdrColony.Save();
-                */
+                var onSquadFC = lastDocked?.StationServices?.Contains("squadronBank") == true;
+                if (onSquadFC)
+                    skipNextCargoEvent = true;
 
                 PlotBase2.invalidate(nameof(PlotBuildCommodities));
             }
@@ -1852,7 +1882,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(ColonisationBeaconDeployed entry)
         {
             // update the architect in RavenColonial
-            Game.rcc.updateSystem(systemData!.name, new()
+            Game.rcc.updateSystem(cmdr.fid, systemData!.name, new()
             {
                 architect = this.Commander,
             }).justDoIt();
@@ -2167,7 +2197,7 @@ namespace SrvSurvey.game
             Program.invalidateActivePlotters();
         }
 
-        public void setLocations(ISystemDataStarter entry)
+        public void setLocations(ISystemDataLocator entry)
         {
             Game.log($"setLocations: from FSDJump/CarrierJump: {entry.StarSystem} / {entry.Body} ({entry.BodyType})");
 
@@ -2183,6 +2213,7 @@ namespace SrvSurvey.game
             {
                 // would this ever happen?
                 Game.log($"setLocations: FSDJump/Carrier is a planet?!");
+                Debugger.Break();
 
                 cmdr.currentBody = entry.Body;
                 cmdr.currentBodyId = entry.BodyID;
@@ -2191,6 +2222,8 @@ namespace SrvSurvey.game
                 // steal radius from status?
                 if (this.status.BodyName == entry.Body)
                     cmdr.currentBodyRadius = this.status.PlanetRadius;
+                else if (this.systemBody?.name == entry.Body && this.systemBody.radius > 0)
+                    cmdr.currentBodyRadius = this.systemBody.radius;
                 else
                 {
                     Game.log($"Cannot find PlanetRadius from status file! Searching for last Scan event.");
@@ -2208,6 +2241,9 @@ namespace SrvSurvey.game
             cmdr.lastSystemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
             cmdr.Save();
             this.fireUpdate();
+
+            if (entry is IFactions factionsEntry)
+                this.systemFactions = factionsEntry.Factions;
 
             if (Game.settings.useExternalData)
                 this.fetchSystemData(entry.StarSystem, entry.SystemAddress);
@@ -2227,6 +2263,8 @@ namespace SrvSurvey.game
             // steal radius from status?
             if (this.status.BodyName == entry.Body)
                 cmdr.currentBodyRadius = this.status.PlanetRadius;
+            else if (this.systemBody?.name == entry.Body && this.systemBody.radius > 0)
+                cmdr.currentBodyRadius = this.systemBody.radius;
             else
             {
                 Game.log($"Cannot find PlanetRadius from status file! Searching for last Scan event.");
@@ -2256,6 +2294,8 @@ namespace SrvSurvey.game
                 // steal radius from status?
                 if (this.status.BodyName == entry.Body)
                     cmdr.currentBodyRadius = this.status.PlanetRadius;
+                else if (this.systemBody?.name == entry.Body && this.systemBody.radius > 0)
+                    cmdr.currentBodyRadius = this.systemBody.radius;
                 else
                 {
                     Game.log($"Cannot find PlanetRadius from status file! Searching for last Scan event.");
@@ -2284,6 +2324,8 @@ namespace SrvSurvey.game
 
             Game.log($"setLocations: from Location: {entry.StarSystem} / {entry.Body} ({entry.BodyType})");
 
+            this.systemFactions = entry.Factions;
+
             cmdr.currentSystem = entry.StarSystem;
             cmdr.currentSystemAddress = entry.SystemAddress;
             cmdr.starPos = entry.StarPos;
@@ -2301,6 +2343,8 @@ namespace SrvSurvey.game
                 // steal radius from status?
                 if (this.status.BodyName == entry.Body)
                     cmdr.currentBodyRadius = this.status.PlanetRadius;
+                else if (this.systemBody?.name == entry.Body && this.systemBody.radius > 0)
+                    cmdr.currentBodyRadius = this.systemBody.radius;
                 else
                 {
                     Game.log($"Cannot find PlanetRadius from status file! Searching for last Scan event.");
@@ -2550,8 +2594,7 @@ namespace SrvSurvey.game
             // find cmdr's reputation with this faction
             this.journals?.walk(-1, true, entry =>
             {
-                var factionsEntry = entry as IFactions;
-                if (factionsEntry?.Factions != null)
+                if (entry is IFactions factionsEntry && factionsEntry.Factions != null)
                 {
                     if (factionsEntry.SystemAddress == systemData?.address)
                     {
@@ -2707,8 +2750,8 @@ namespace SrvSurvey.game
             if (entry.Name.StartsWith("$Ancient"))
             {
                 // Guardian site
-                PlotGuardianStatus.glideSite = GuardianSiteData.Load(entry);
-                PlotGuardianStatus.glideSite.loadPub();
+                PlotGuardianStatus.glideSite = GuardianSiteData.Load(entry, this);
+                PlotGuardianStatus.glideSite?.loadPub();
                 this.setCurrentSite();
 
                 if (systemSite != null)
@@ -2725,16 +2768,18 @@ namespace SrvSurvey.game
             if (this.systemStation != null && systemStation.marketId != entry.MarketID) Debugger.Break(); // Would this ever happen?
             if (this.systemData == null) return;
 
-            if (entry.StationServices == null
+            var knownStation = systemData.getStation(entry.MarketID);
+
+            if (knownStation == null && (entry.StationServices == null
                 || entry.StationServices.Count == 0 // horizons old settlements are not compatible
                 || entry.StationServices.Contains("socialspace") // bigger settlements (Planetary ports) are not compatible
                 || ColonyData.isConstructionSite(entry.Name, entry.StationServices) // Colonization construction sites are not compatible
                 || entry.StationGovernment == "$government_Engineer;" // Engineer's stations (with no socialspace) are also not compatible
-            )
+            ))
                 return;
 
             // use known station reference if this station is known, or start creating a new one
-            this.systemStation = systemData.getStation(entry.MarketID);
+            this.systemStation = knownStation;
             if (this.systemStation == null)
             {
                 Game.log($"Creating new CanonnStation for '{entry.Name}' ({entry.MarketID}) ");
@@ -2899,8 +2944,6 @@ namespace SrvSurvey.game
                     Task.Delay(500).ContinueWith(t => onDockedWhenSafe(CalcMethod.AutoDock, entry.Taxi));
                 }
             }
-
-
         }
 
         private void onDockedWhenSafe(CalcMethod calcMethod, bool inTaxi)
@@ -2953,6 +2996,13 @@ namespace SrvSurvey.game
 
             if (PlotBuildCommodities.allowed(this))
                 PlotBuildCommodities.showButCleanFirst(this);
+        }
+
+        private void onJournalEntry(SupercruiseEntry entry)
+        {
+            // if we last docked at a construction site ... 
+            if (lastEverDocked?.StationName.ToString().StartsWith(ColonyData.ExtPanelColonisationShip) == true && lastEverDocked.SystemAddress == entry.SystemAddress)
+                ColonyData.inferPrimaryPortName(this, entry).justDoIt();
         }
 
         public void initMats(CanonnStation station)
@@ -3631,6 +3681,43 @@ namespace SrvSurvey.game
         }
 
         #endregion
+
+        public static string? generateShipBuildJsonForSpansh()
+        {
+            // TODO: (not ready)
+            var game = Game.activeGame;
+            if (game?.journals == null) return null;
+
+            var entry = game.journals.FindEntryByType<Loadout>(-1, true);
+            if (entry == null) return null;
+
+            var data = JObject.FromObject(entry)!;
+            data["HullValue"] = data.Value<double>("HullHealth");
+            foreach (var n in new[] { "timestamp", "ShipID", "HullHealth" }) data.Remove(n);
+
+            // trim cosmetic modules
+            var modules = data.Value<JArray>("Modules");
+            //foreach(var n in moduleNames)
+            //{
+            //    if ()
+            //}
+            //Game.log(modules);
+            //Game.log("--");
+
+            var obj = JObject.FromObject(new
+            {
+                header = new
+                {
+                    appName = "EDSY",
+                    appVersion = 0,
+                    appUrl = "",
+                },
+                data = data,
+            });
+
+            var json = JsonConvert.SerializeObject(obj);
+            return json;
+        }
     }
 
     class ShipData

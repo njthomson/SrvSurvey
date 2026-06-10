@@ -2,21 +2,23 @@
 using Lua.Runtime;
 using Lua.Standard;
 using Newtonsoft.Json;
-using SrvSurvey.forms;
+using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
-using SrvSurvey.plotters;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 
 namespace SrvSurvey.quests;
 
 /// <summary> The runtime/persisted state of a chapter </summary>
 public class PlayChapter
 {
-    [JsonIgnore, AllowNull] public PlayQuest pq;
+    [JsonIgnore] public PlayQuest pq;
     [AllowNull] private LuaState state;
     [AllowNull] private LuaClosure closure;
+    [JsonIgnore] public string? invokingFunc;
 
+    private string? src;
     private HashSet<string> journalFuncs = [];
     private HashSet<string> varNames = [];
     private List<Action> pending = [];
@@ -36,7 +38,12 @@ public class PlayChapter
 
     #endregion
 
-    private string? src => pq.quest.chapters.GetValueOrDefault(id);
+    [SetsRequiredMembers]
+    public PlayChapter(string id, PlayQuest pq)
+    {
+        this.id = id;
+        this.pq = pq;
+    }
 
     /// <summary> Returns true if this chapter is currently active </summary>
     [JsonIgnore] public bool active => !endTime.HasValue && startTime.HasValue;
@@ -48,9 +55,24 @@ public class PlayChapter
 
     public async Task<LuaState> load()
     {
-        if (string.IsNullOrEmpty(src) || !active)
-            return state;
-        Game.log($"PlayChapter.load: {id}");
+        if (!active) return state;
+        Game.log($"PlayChapter.load: {id} (dev:{pq.dev})");
+
+        if (string.IsNullOrWhiteSpace(src))
+        {
+            if (pq.dev)
+            {
+                // pull from local?
+                this.src = pq.quest.chapters.GetValueOrDefault(this.id);
+            }
+            else
+            {
+                // download from server
+                var newSrc = await Game.rcc.getQuestChapter(pq.parent.fid, pq.publisher, pq.id, pq.ver, this.id);
+                this.src = newSrc!;
+            }
+        }
+        if (string.IsNullOrWhiteSpace(src)) { Debugger.Break(); throw new Exception($"No code for: '{this.id}' ?"); }
 
         // prep state
         state = LuaState.Create();
@@ -76,7 +98,6 @@ public class PlayChapter
 
             if (!name.StartsWith("on_")) continue;
             name = name.Substring(3);
-            // TODO: confirm the name matches a known journal event name
             journalFuncs.Add(name);
         }
 
@@ -152,13 +173,13 @@ end");
         if (state == null)
             state = await this.load();
 
-        var onStartFunc = state.Environment["onStart"];
-        if (onStartFunc.Type != LuaValueType.Function) throw new Exception($"Bad LuaType. Expected Function, got: {onStartFunc.Type}");
-
-        Game.log($"Starting chapter: {id}, run onStart: {onStartFunc != LuaValue.Nil}");
-        await state.CallAsync(onStartFunc, new LuaValue[] { });
-
-        pq.dirty = true;
+        var hasOnStart = state.Environment.ContainsKey(LuaFunc.onStart);
+        Game.log($"Starting chapter: {id}, run onStart: {hasOnStart}");
+        if (hasOnStart)
+        {
+            await invokeLuaFunc(LuaFunc.onStart, new LuaValue[] { });
+            pq.dirty = true;
+        }
     }
 
     public void stop()
@@ -208,46 +229,129 @@ end");
         return json;
     }
 
-    public async Task<bool> processJournalEntry(LuaTable entry)
+    public async Task<bool> processJournalEntry(LuaTable entry, JObject raw)
     {
         var eventName = entry["event"].ToString();
-        if (!active || !journalFuncs.Contains(eventName)) return false;
+        if (!active) return false;
 
+        var shouldSave = false;
         var funcName = $"on_{eventName}";
-        if (!state.Environment.ContainsKey(funcName))
-            throw new Exception($"Missing function: {funcName} ?");
 
-        var func = state.Environment[funcName].Read<LuaFunction>();
+        // invoke the function?
+        if (state.Environment[funcName].Type == LuaValueType.Function)
+            shouldSave |= await invokeLuaFunc(funcName, new LuaValue[] { entry });
+
+        // special case for easier emote/gesture processing
+        if (eventName == "ReceiveText" && state.Environment.ContainsKey(LuaFunc.onEmote))
+        {
+            var msg = entry["Message"].ToString();
+            if (msg.StartsWith("$HumanoidEmote_"))
+                shouldSave |= await processHumanoidEmoteMessage(msg);
+        }
+
+        return shouldSave;
+    }
+
+    private async Task<bool> invokeIfLuaFunc(string funcName, LuaValue[] args)
+    {
+        if (state.Environment[funcName].TryRead<LuaFunction>(out var func))
+            return await invokeLuaFunc(funcName, args);
+        else
+            return false;
+    }
+
+    private async Task<bool> invokeLuaFunc(string funcName, LuaValue[] args)
+    {
         try
         {
-            Game.log($"[{pq?.id}/{id}] Invoking: /on_{eventName}");
-            var rslt = await state.CallAsync(func, new LuaValue[] { entry });
+            if (!state.Environment[funcName].TryRead<LuaFunction>(out var func))
+                throw new Exception($"Missing function '{funcName}'\r\n\t(args: {string.Join(", ", args)})");
+
+            Game.log($"[{pq.id}/{id}] Invoking: {funcName}");
+            if (this.pq.invokingChapter != null) Debugger.Break();
+            this.pq.invokingChapter = this;
+            this.invokingFunc = funcName;
+            var rslt = await state.CallAsync(func, args);
             var shouldSave = rslt.Length > 0 && rslt[0] != LuaValue.Nil && rslt[0].ToString() != "false";
             return shouldSave;
         }
-        catch (Exception ex)
+        catch (LuaRuntimeException ex)
         {
-            Game.log($"Quest script error: {ex.Message}\r\n\t{ex.StackTrace}");
-            //Debugger.Break();
+            var msg = $"Script error on line {ex.LuaTraceback?.FirstLine} of {this.id}.lua: {ex.Message}";
+            Game.log(msg + "\r\n\t{ex.StackTrace}");
+            if (DialogResult.Yes == MessageBox.Show(msg + "\r\n\r\nDebug?", "LUA Error", MessageBoxButtons.YesNo))
+                Debugger.Break();
             return false;
+        }
+        finally
+        {
+            this.invokingFunc = null;
+            this.pq.invokingChapter = null;
         }
     }
 
-    /// <summary> Called by Quest Comms when a player hit a message reply button </summary>
-    public async Task invokeMessageAction(string msgId, string actionId)
+    private static Regex emotePart = new Regex("=(.+)$", RegexOptions.Compiled);
+    private static Regex actionPart = new Regex("_(.+?)_", RegexOptions.Compiled);
+
+    private async Task<bool> processHumanoidEmoteMessage(string msg)
     {
-        if (!active) throw new Exception($"Cannot invoke message action: {actionId}, chapter not active: {id}");
+        //msg = "$HumanoidEmote_TargetMessage:#player=$cmdr_decorate:#name=Grinning2001;:#targetedAction=$HumanoidEmote_wave_Action_Targeted;:#target=Rodger Reese;";
+        //msg = "$HumanoidEmote_TargetMessage:#player=$npc_name_decorate:#name=Connie Dodson;:#targetedAction=$HumanoidEmote_wave_Action_Targeted;:#target=$cmdr_decorate:#name=Grinning2001;;";
+        //msg = "$HumanoidEmote_TargetMessage:#player=$cmdr_decorate:#name=Grinning2001;:#targetedAction=$HumanoidEmote_agree_Action_Targeted;:#target=$npc_name_decorate:#name=Jane Christensen;;";
+        //msg = "$HumanoidEmote_DefaultMessage:#player=$npc_name_decorate:#name=Briley Hartman;:#action=$HumanoidEmote_wave_Action;;";
+
+        var parts = msg.Split([':', ';'], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.RemoveEmptyEntries);
+        /* Splits into either:
+         *      0:   $HumanoidEmote_TargetMessage
+         *      1:   #player=$npc_name_decorate
+         *      2:   #name=Connie Dodson
+         *      3:   #targetedAction=$HumanoidEmote_wave_Action_Targeted
+         *      4:   #target=$cmdr_decorate
+         *      5:   #name=Grinning2001
+         * 
+         * or into:
+         *      0:   $HumanoidEmote_DefaultMessage
+         *      1:   #player=$npc_name_decorate
+         *      2:   #name=Briley Hartman
+         *      3:   #action=$HumanoidEmote_wave_Action
+         */
+
+        var actor = emotePart.Match(parts[2]).Groups.Values.Last().Value;
+
+        var action = emotePart.Match(parts[3]).Groups.Values.Last().Value;
+        action = actionPart.Match(action).Groups.Values.Last().Value;
+
+        var target = parts.Length < 5 ? "" : emotePart.Match(parts.Last()).Groups.Values.Last().Value;
+
+        return await invokeLuaFunc(LuaFunc.onEmote, [actor, action, target]);
+    }
+
+    /// <summary> Called by Quest Comms when a player FIRST reads a message </summary>
+    public async Task onMessageRead(string msgId)
+    {
+        if (!active) throw new Exception($"Cannot invoke message read action: {msgId}, chapter not active: {id}");
 
         var pm = pq.msgs.Find(m => m.id == msgId);
         if (pm == null) throw new Exception($"Message not found, id: {msgId}");
         var chapterId = pm.chapter!;
 
         // invoke the action
-        var onMsgAction = state.Environment["onMsgAction"];
-        if (onMsgAction.Type != LuaValueType.Function) throw new Exception($"Missing function 'onMsgAction(string id)' in chapter: {chapterId}");
+        await invokeIfLuaFunc(LuaFunc.onMsgRead, new LuaValue[] { msgId });
 
-        Game.log($"Invoking msg actionId: {msgId}/{actionId} in chapter: {id}");
-        await state.CallAsync(onMsgAction, new LuaValue[] { actionId });
+        PlayState.updateUI(pq);
+    }
+
+    /// <summary> Called by Quest Comms when a player hit a message reply button </summary>
+    public async Task invokeMessageAction(string msgId, string actionId)
+    {
+        if (!active) throw new Exception($"Cannot invoke message: {msgId}, response action: {actionId}, chapter not active: {id}");
+
+        var pm = pq.msgs.Find(m => m.id == msgId);
+        if (pm == null) throw new Exception($"Message not found, id: {msgId}");
+        var chapterId = pm.chapter!;
+
+        // invoke the action
+        await invokeLuaFunc(LuaFunc.onMsgAction, new LuaValue[] { actionId, msgId });
 
         // remember which reply was used
         pm.replied = actionId;

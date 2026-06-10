@@ -18,6 +18,7 @@ namespace SrvSurvey.net
         public static string srcRootFolder = Path.Combine(Application.StartupPath, "..\\..\\..\\..\\..");
         private static string devGitDataFilepath = Path.Combine(srcRootFolder, "data.json");
         public static string boxelNamesPath = Path.Combine(pubDataFolder, "Boxel.Names.txt");
+        public static string gggPath = Path.Combine(pubDataFolder, "ggg.json");
         public static Version? nextBuild;
 
         private static HttpClient client;
@@ -141,19 +142,33 @@ namespace SrvSurvey.net
                     Game.log($"Downloading guardian.zip - complete");
                 }
 
-                if (hadNoPubFolder || pubData.nicknames > Game.settings.pubNicknames)
+                var filepathRavenNicknames = Path.Combine(Git.pubDataFolder, "nicknames.json");
+                var duration = DateTime.Now - Game.settings.lastNicknames;
+                if (duration.TotalDays > 2 || !File.Exists(filepathRavenNicknames) || pubData.nicknames > Game.settings.pubNicknames)
                 {
                     await this.updateNicknames();
 
                     // update settings to current level
                     Game.settings.pubNicknames = pubData.nicknames;
+                    Game.settings.lastNicknames = DateTime.Now;
                     Game.settings.Save();
                 }
-                var filepathRavenNicknames = Path.Combine(Git.pubDataFolder, "nicknames.json");
                 if (File.Exists(filepathRavenNicknames))
                 {
                     var json2 = await File.ReadAllTextAsync(filepathRavenNicknames);
                     SystemNickNames.ravenMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(json2) ?? new();
+                }
+
+                if (!File.Exists(Git.gggPath) || pubData.ggg > Game.settings.pubGGG)
+                {
+                    Game.log($"Downloading ggg.json ...");
+                    var json5 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/ggg.json");
+                    Data.saveWithRetry(Git.gggPath, json5);
+                    Game.log($"Downloading ggg.json - complete");
+
+                    // update settings to current level
+                    Game.settings.pubGGG = pubData.ggg;
+                    Game.settings.Save();
                 }
             }
             catch (Exception ex)
@@ -626,5 +641,6 @@ namespace SrvSurvey.net
         public int guardian;
         public int settlements;
         public int nicknames;
+        public int ggg;
     }
 }

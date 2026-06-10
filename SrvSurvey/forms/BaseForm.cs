@@ -10,6 +10,7 @@ namespace SrvSurvey.forms
     internal class BaseForm : Form
     {
         protected bool trackPosition = true;
+        protected bool skipDrag;
 
         public BaseForm()
         {
@@ -215,7 +216,7 @@ namespace SrvSurvey.forms
 
         private void onMouseMove(MouseEventArgs e)
         {
-            if (mouseDown && isDraggable)
+            if (mouseDown && isDraggable && !skipDrag)
             {
                 var delta = e.Location - startPoint;
                 this.Location = this.Location + (Size)delta;

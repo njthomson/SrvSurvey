@@ -1,11 +1,14 @@
 ﻿using BioCriterias;
+using Newtonsoft.Json.Linq;
 using SrvSurvey.canonn;
 using SrvSurvey.forms;
+using SrvSurvey.forms.playComms;
 using SrvSurvey.game;
 using SrvSurvey.game.RavenColonial;
 using SrvSurvey.net;
 using SrvSurvey.plotters;
 using SrvSurvey.Properties;
+using SrvSurvey.quests;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.ComponentModel;
@@ -361,6 +364,8 @@ namespace SrvSurvey
         private void removeGame()
         {
             Game.log($"Main.removeGame, has old game: {this.game != null} (cmdr: {this.game?.Commander})");
+            PlayState.current?.Save(true);
+            PlayState.current = null;
             Program.closeAllPlotters();
             BigOverlay.close();
             PlotBase2.closeAll();
@@ -456,7 +461,7 @@ namespace SrvSurvey
             groupCodex.Invalidate();
 
             // enable button only if this system has some bio signals
-            btnPredictions.Enabled = Game.activeGame?.systemData?.bioSignalsTotal > 0;
+            btnPredictions.Enabled = game?.systemData?.bioSignalsTotal > 0;
 
             // ShowCodex button and form
             this.btnCodexShow.Enabled = FormShowCodex.allow;
@@ -744,9 +749,10 @@ namespace SrvSurvey
                 btnRuinsMap.Enabled = false;
                 btnRuinsOrigin.Enabled = false;
             }
-            else if (Game.settings.enableGuardianSites)
+
+            if (Game.settings.enableGuardianSites)
             {
-                if (this.game.systemSite != null)
+                if (this.game?.systemSite != null)
                 {
                     var allowed = PlotGuardians.allowed(game);
                     btnRuinsMap.Enabled = game.systemSite.siteHeading != -1 && allowed;
@@ -755,9 +761,10 @@ namespace SrvSurvey
             }
         }
 
-        private void Journals_onJournalEntry(JournalEntry entry, int index)
+        private void Journals_onJournalEntry(JournalEntry? entry, JObject raw)
         {
-            this.onJournalEntry((dynamic)entry);
+            if (entry != null)
+                this.onJournalEntry((dynamic)entry);
         }
 
         private void onJournalEntry(JournalEntry entry) { /* ignore */ }
@@ -857,7 +864,7 @@ namespace SrvSurvey
                     return;
 
                 case MsgCmd.imgs:
-                    var folder = Path.Combine(Game.settings.screenshotTargetFolder!, game.cmdr.currentSystem);
+                    var folder = Path.Combine(Game.settings.screenshotTargetFolder, Util.safeFilename(game.cmdr.currentSystem));
                     if (Directory.Exists(folder))
                         Util.openLink(folder);
                     return;
@@ -1091,7 +1098,6 @@ namespace SrvSurvey
             try
             {
                 btnSettings.Enabled = false;
-                if (VR.enabled) VR.shutdown();
 
                 var form = new FormSettings();
                 form.firstTab = firstTab;
@@ -1346,7 +1352,7 @@ namespace SrvSurvey
              * {body name} Ruins{1} {Alpha} {UTC time}.png
              */
             var timestamp = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd HHmmss");
-            var filename = $"{entry.Body} ({timestamp})";
+            var filename = Util.safeFilename($"{entry.Body} ({timestamp})");
 
             var extraTxt = "";
             var isAerialScreenshot = false;
@@ -1387,7 +1393,7 @@ namespace SrvSurvey
                 sourceImage = new Bitmap(img);
 
             // bucket all screenshots into 1 folder per system
-            var folder = Path.Combine(Game.settings.screenshotTargetFolder!, entry.System);
+            var folder = Path.Combine(Game.settings.screenshotTargetFolder, Util.safeFilename(entry.System));
 
             // save final image
             var saveImage = new Bitmap(sourceImage);
@@ -1415,6 +1421,9 @@ namespace SrvSurvey
             Directory.CreateDirectory(folder);
             saveImage.Save(Path.Combine(folder, filename), ImageFormat.Png);
 
+            if (Game.settings.allowNotifications.showScreenshot)
+                PlotFloatie.showMessage($"Saved '{filename}' with{(Game.settings.addBannerToScreenshots ? "" : " no")} banner");
+
             // also save the image in Ruins specific folders, if we are aligned with the site origin
             if (isAerialScreenshot && Game.settings.useGuardianAerialScreenshotsFolder)
             {
@@ -1433,7 +1442,7 @@ namespace SrvSurvey
                 }
                 this.addBannerToScreenshot(entry, sourceImage, extraTxt);
 
-                folder = Path.Combine(Game.settings.screenshotTargetFolder!, $"Aerial {siteType}");
+                folder = Path.Combine(Game.settings.screenshotTargetFolder, $"Aerial {siteType}");
                 Game.log($"Writing screenshot '{filename}' in: {folder}");
                 Directory.CreateDirectory(folder);
                 sourceImage.Save(Path.Combine(folder, filename), ImageFormat.Png);
@@ -1763,10 +1772,18 @@ namespace SrvSurvey
 
         private void btnQuestComms_MouseClick(object sender, MouseEventArgs e)
         {
+            if (CommanderSettings.currentOrLastFid == null) return;
+
             if (ModifierKeys.HasFlag(Keys.Control))
                 BaseForm.show<FormPlayDev>();
-            else
+            else if (ModifierKeys.HasFlag(Keys.Shift))
+            {
+                if (game != null) BaseForm.show<FormPlayJournal>();
+            }
+            else if (ModifierKeys.HasFlag(Keys.Alt))
                 FormPlayComms.toggleForm();
+            else
+                FormPlayComms2.toggleForm();
         }
 
         private void menuMyProjects_Click(object sender, EventArgs e)
@@ -1776,7 +1793,10 @@ namespace SrvSurvey
 
         private void menuRavenColonial_Click(object sender, EventArgs e)
         {
-            Util.openLink($"{RavenColonial.uxUri}/");
+            if (game?.systemData != null)
+                Util.openLink($"{RavenColonial.uxUri}/#sys={game.systemData.address}");
+            else
+                Util.openLink($"{RavenColonial.uxUri}");
         }
 
         private void menuUpdateSystem_Click(object sender, EventArgs e)
@@ -1889,6 +1909,13 @@ namespace SrvSurvey
             Util.openLink("https://github.com/njthomson/SrvSurvey/wiki/Colonization");
         }
 
+        private void txtVehicle_Click(object sender, EventArgs e)
+        {
+            // generate slef for the current ship
+            // TODO: Not ready yet
+            //var json = Game.generateShipBuildJsonForSpansh();
+        }
+
         private void btnRamTah_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormRamTah>();
@@ -1896,23 +1923,28 @@ namespace SrvSurvey
 
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
-            BaseForm.show<FormCodexBingo>();
-            //BioPredictor.testMissedSystem().justDoIt();
+            if (!Program.isAppStoreBuild)
+            {
+                var questId = ModifierKeys.HasFlag(Keys.Shift)
+                    ? "galtea1" : ModifierKeys.HasFlag(Keys.Control)
+                        ? "surface1" : ModifierKeys.HasFlag(Keys.Alt)
+                            ? "simplest1" : null;
+                if (questId != null)
+                {
+                    // temp behaviour - need to create a more formal entry point :)
+                    PlayState.enableGaltea1(questId).justDoIt(() =>
+                    {
+                        Program.defer(() =>
+                        {
+                            btnQuestComms.Visible = Game.settings.enableQuests;
+                            Elite.setFocusED();
+                        });
+                    });
+                    return;
+                }
+            }
 
-            //var filterMarket = new Spansh.SearchQuery.Markets();
-            //filterMarket.Add(new Spansh.SearchQuery.Market() { name = "Copper", supply = new Spansh.Query.Market.Clause(100, 10_000_000) });
-            //var filterType = new Spansh.SearchQuery.Values("Asteroid base", "Coriolis Starport", "Dockable Planet Station", "GameplayPOI", "Mega ship", "Ocellus Starport", "Orbis Starport", "Outpost", "Planetary Outpost", "Planetary Port", "Settlement", "Surface Settlement");
-            //var q = new Spansh.SearchQuery
-            //{
-            //    page = 0,
-            //    size = 10,
-            //    sort = new() { new("distance", net.SortOrder.asc) },
-            //    reference_system = "IC 2391 Sector LH-V b2-5",
-            //    filters = new() {
-            //        { "market", filterMarket },
-            //        { "type", filterType },
-            //    },
-            //};
+            BaseForm.show<FormCodexBingo>();
         }
 
         private void btnLogs_Click(object sender, EventArgs e)

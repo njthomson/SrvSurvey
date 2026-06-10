@@ -203,7 +203,7 @@ namespace SrvSurvey.forms
             {
                 Game.log($"saveSites: '{sysData.name}' ({id64}) update: {data.update.Count}, delete: {data.delete.Count}");
                 // update, then reload everything
-                var rslt = await Game.rcc.updateSystem(id64.ToString(), data);
+                var rslt = await Game.rcc.updateSystem(game.cmdr.fid, id64.ToString(), data);
                 if (rslt == null)
                 {
                     MessageBox.Show(this, $"Failed to save updates. Check logs for more details.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -941,9 +941,9 @@ namespace SrvSurvey.forms
             }
         }
 
-        private void Journals_onJournalEntry(JournalEntry entry, int index)
+        private void Journals_onJournalEntry(JournalEntry? entry, JObject raw)
         {
-            if (this.IsDisposed) return;
+            if (this.IsDisposed || entry == null) return;
 
             this.onJournalEntry((dynamic)entry);
         }

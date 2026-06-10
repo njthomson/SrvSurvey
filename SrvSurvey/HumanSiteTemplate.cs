@@ -54,8 +54,7 @@ namespace SrvSurvey
                 Game.log($"Reading {humanSiteTemplates}: {filepath}");
                 if (File.Exists(filepath))
                 {
-                    using var reader = Data.openSharedStreamReader(filepath);
-                    var json = reader.ReadToEnd();
+                    var json = Data.readToEndShared(filepath);
                     var newSites = JsonConvert.DeserializeObject<List<HumanSiteTemplate>>(json)!;
                     templates = newSites;
 

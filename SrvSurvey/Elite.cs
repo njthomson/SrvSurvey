@@ -135,6 +135,8 @@ namespace SrvSurvey
                     }
 
                     Application.DoEvents();
+                    Application.DoEvents();
+                    Application.DoEvents();
                     // then set focus on the game window
                     SetForegroundWindow(hwnd);
                 }

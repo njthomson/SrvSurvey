@@ -47,12 +47,15 @@ namespace SrvSurvey.widgets
             // draw pointing hand
             x += r;
             y += r;
-            var pt = Util.rotateLine(deg, r * 1.8f);
-            g.DrawLine(pen, x, y, x + pt.X, y - pt.Y);
+            if (deg != -1000)
+            {
+                var pt = Util.rotateLine(deg, r * 1.8f);
+                g.DrawLine(pen, x, y, x + pt.X, y - pt.Y);
+            }
 
             if (msg != null)
             {
-                x += two + rect.Width;
+                x += four + rect.Width;
                 // center text vertically at middle of circle
                 var sz = g.MeasureString(msg, font);
                 var dy = rect.Height > sz.Height

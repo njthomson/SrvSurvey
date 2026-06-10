@@ -117,7 +117,7 @@ namespace SrvSurvey.plotters
             var systemName = undiscoveredSystem
                 ? $"⚑ {game.systemData.name}"
                 : game.systemData.name;
-            if (game.systemData.fssAllBodies) systemName += " ✔️";
+            if (game.systemData.fssAllBodies) systemName += Program.isLinux ? " ✓" : " ✔️";
             tt.draw(systemName, undiscoveredSystem ? GameColors.Cyan : null, GameColors.Fonts.gothic_12B);
             tt.newLine(+N.eight, true);
 
@@ -160,9 +160,9 @@ namespace SrvSurvey.plotters
                 var prefix = scan.body.wasDiscovered ? "" : "⚑ ";
                 var txt = $"{prefix}{scan.body.shortName} - {planetClass}"; // ◌◎◉☆★☄☼☀⛀⛃✔✨✶✪❓❔❓⛬❗❕ * ❒❱✪❍❌✋❖⟡⦁⦂⧫⇲
                 var suffixes = new List<string>();
-                if (scan.body.terraformable || scan.body.planetClass?.StartsWith("Earth") == true) suffixes.Add("🌎");
-                if (scan.body.type == SystemBodyType.LandableBody) suffixes.Add("🚀");
-                if (scan.body.firstFootFall) suffixes.Add("🦶");
+                if (scan.body.terraformable || scan.body.planetClass?.StartsWith("Earth") == true) suffixes.Add(Program.isLinux ? "(T)" : "🌎");
+                if (scan.body.type == SystemBodyType.LandableBody) suffixes.Add(Program.isLinux ? "(L)" : "🚀");
+                if (scan.body.firstFootFall) suffixes.Add(Program.isLinux ? "(ff)" : "🦶");
                 if (suffixes.Count > 0) txt += $" {string.Join(' ', suffixes)}";
                 if (scan.body.type == SystemBodyType.Star)
                     txt = $"{prefix}{scan.body.shortName} - {scan.body.starType} Star";
@@ -171,7 +171,7 @@ namespace SrvSurvey.plotters
                 tt.newLine(true);
 
                 // 2nd line: scan values
-                var reward = (scan.body.dssComplete ? "✔️ " : "") + Util.credits(scan.body.reward, true); // scan.reward ?
+                var reward = (scan.body.dssComplete ? (Program.isLinux ? "✓ " : "✔️ ") : "") + Util.credits(scan.body.reward, true); // scan.reward ?
 
                 tt.draw(N.thirty, reward, dssWorthy ? GameColors.Cyan : null);
                 if (scan.body.type != SystemBodyType.Star && !scan.body.dssComplete)
@@ -209,7 +209,10 @@ namespace SrvSurvey.plotters
 
             tt.draw(N.eight, Res.Footer1, GameColors.OrangeDim);
             tt.newLine(true);
-            tt.draw(N.eight, Res.Footer2, GameColors.OrangeDim);
+            var footer2 = Res.Footer2;
+            if (Program.isLinux)
+                footer2 = footer2.Replace("🌎", "(T)").Replace("🚀", "(L)").Replace("⚑", "*");
+            tt.draw(N.eight, footer2, GameColors.OrangeDim);
             tt.newLine(true);
 
             return tt.pad(+N.oneEight, +N.ten);

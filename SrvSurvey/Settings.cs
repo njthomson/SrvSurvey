@@ -208,6 +208,8 @@ namespace SrvSurvey
         public int pubDataGuardian = 0;
         public int pubSettlements = 0;
         public int pubNicknames = 0;
+        public DateTime lastNicknames = DateTime.MinValue;
+        public int pubGGG = 0;
 
         public DateTime lastCodexRefDownload = DateTime.MinValue;
         public DateTime lastCodexNotFoundDownload = DateTime.MinValue;
@@ -273,6 +275,16 @@ namespace SrvSurvey
 
         public bool enableQuests = false;
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool eddnUpload = false;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string? eddnEnvironment = null;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool disableBioPredictions = false;
+
+        public bool uploadGGG = false;
+
         #region loading / saving
 
         static readonly string settingsPath = Path.Combine(Program.dataFolder, "settings.json");
@@ -297,7 +309,7 @@ namespace SrvSurvey
                             settings.downloadCodexImageFolder = CodexRef.defaultCodexImagesFolder;
 
                         // set default key-chords if not seen before
-                        foreach(var key in KeyChords.defaultKeys.Keys)
+                        foreach (var key in KeyChords.defaultKeys.Keys)
                             if (settings.keyActions_TEST?.ContainsKey(key) == false)
                                 settings.keyActions_TEST[key] = KeyChords.defaultKeys[key];
 
@@ -372,6 +384,7 @@ namespace SrvSurvey
             public bool cargoMissionRemaining = true;
             public bool currentBoxelSearchStatus = true;
             public bool showNextBoxelToSearch = true;
+            public bool showScreenshot = true;
         }
     }
 }

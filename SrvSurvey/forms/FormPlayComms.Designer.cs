@@ -34,7 +34,7 @@
         {
             btnQuests = new DrawButton();
             btnMsgs = new DrawButton();
-            tlist = new TableLayoutPanel();
+            tlist = new Panel();
             panel2 = new Panel();
             bigPanel = new Panel();
             btnDev = new DrawButton();
@@ -89,17 +89,11 @@
             tlist.AutoSize = true;
             tlist.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tlist.BackColor = Color.Transparent;
-            tlist.ColumnCount = 1;
-            tlist.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tlist.Controls.Add(panel2, 0, 1);
+            tlist.Controls.Add(panel2);
             tlist.Location = new Point(0, 0);
             tlist.Name = "tlist";
-            tlist.RowCount = 4;
-            tlist.RowStyles.Add(new RowStyle());
-            tlist.RowStyles.Add(new RowStyle());
-            tlist.RowStyles.Add(new RowStyle());
-            tlist.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tlist.Size = new Size(688, 50);
+            tlist.Dock = DockStyle.Top;
             tlist.TabIndex = 0;
             // 
             // panel2
@@ -223,7 +217,7 @@
 
         private DrawButton btnQuests;
         private DrawButton btnMsgs;
-        private TableLayoutPanel tlist;
+        private Panel tlist;
         private Panel panel2;
         private Panel bigPanel;
         private DrawButton btnDev;

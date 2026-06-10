@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using SrvSurvey.forms;
+using SrvSurvey.forms.playComms;
 using SrvSurvey.game;
 using SrvSurvey.plotters;
 using System.Diagnostics;
@@ -137,6 +138,7 @@ namespace SrvSurvey
                     case KeyAction.nextWindow: return focusNextGameWindow();
                     case KeyAction.streamOne: return toggleStreamOne();
                     case KeyAction.adjustVR: return adjustVR();
+                    case KeyAction.resetVR: return resetVR();
                     case KeyAction.toggleFF: return toggleFF();
                     case KeyAction.questShow: return questShow();
                     case KeyAction.toggleImageEmbed: return toggleImageEmbeds();
@@ -199,7 +201,7 @@ namespace SrvSurvey
             if (game == null) return true;
 
             // we need a route for this to work
-            if (game.navRoute.Route.Count > 0)
+            if (game.navRoute.Route.Count > 0 || (game.cmdr.route.active && game.cmdr.route.hops.Count > 0))
             {
                 var jumpInfo = PlotBase2.getPlotter<PlotJumpInfo>();
                 if (jumpInfo == null)
@@ -272,10 +274,14 @@ namespace SrvSurvey
                 Game.log($"Paste in gal-map: {keysToSend}");
 
                 Elite.setFocusED();
+                Application.DoEvents();
+                Application.DoEvents();
                 Program.defer(() =>
                 {
                     try
                     {
+                        Application.DoEvents();
+                        Application.DoEvents();
                         SendKeys.SendWait(keysToSend);
                     }
                     catch { /* ignore */ }
@@ -471,6 +477,13 @@ namespace SrvSurvey
             return true;
         }
 
+        private static bool resetVR()
+        {
+            if (Game.settings.displayVR && VR.app != null)
+                VR.reset();
+            return true;
+        }
+
         private static bool toggleFF()
         {
             // toggle first footfall
@@ -480,7 +493,7 @@ namespace SrvSurvey
 
         private static bool questShow()
         {
-            FormPlayComms.toggleForm();
+            FormPlayComms2.toggleForm();
             return true;
         }
 
@@ -540,6 +553,8 @@ namespace SrvSurvey
         streamOne,
         /// <summary> Toggle VR overlay adjustment </summary>
         adjustVR,
+        /// <summary> Reset VR headset orientation </summary>
+        resetVR,
         /// <summary> Toggle First Footfall </summary>
         toggleFF,
         /// <summary> Track the current location as #1 </summary>

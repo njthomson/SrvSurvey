@@ -3,9 +3,11 @@ using Newtonsoft.Json;
 using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.net;
+using SrvSurvey.quests;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 using System.Globalization;
 using Res = Loc.PlotHumanSite;
 
@@ -71,7 +73,7 @@ namespace SrvSurvey.plotters
             this.station = game.systemStation;
             this.siteLocation = this.station.location;
             this.siteHeading = this.station.heading;
-            this.showCZPoints = this.station.factionState == "War";
+            this.showCZPoints = this.station.factionState == "War" || this.station.factionState == "CivilWar";
 
             if (siteLocation.Lat == 0 || siteLocation.Long == 0) Debugger.Break(); // Does this ever happen?
 
@@ -187,7 +189,13 @@ namespace SrvSurvey.plotters
             else if (mode == GameMode.Landed || mode == GameMode.Docked || mode == GameMode.Flying)
             {
                 // zoom out if in some vehicle
-                return Game.settings.humanSiteZoomShip;
+                var dist = Util.getDistance(Status.here, siteLocation, this.radius);
+                if (dist < 2500)
+                    return Game.settings.humanSiteZoomShip;
+                else if (dist < 4000)
+                    return 0.2f;
+                else
+                    return 0.1f;
             }
 
             return 0;
@@ -196,10 +204,10 @@ namespace SrvSurvey.plotters
         public void adjustZoom(bool zoomIn)
         {
             Game.log($"PlotHumanSite adjustZoom: zoomIn: {zoomIn}");
-            const float delta = 0.5f;
+            const float delta = 0.2f;
             var newZoom = zoomIn ? this.scale + delta : this.scale - delta;
 
-            if (newZoom < 0.5f || newZoom > 15) return;
+            if (newZoom < 0.2f || newZoom > 15) return;
 
             // enable/disable auto-zooming if the new zoom level matches
             var autoZoomLevel = this.getAutoZoomLevel(game.mode);
@@ -530,7 +538,7 @@ namespace SrvSurvey.plotters
             var headerLeftSz = tt.draw(N.eight, headerTxt);
 
             // quest related?
-            if (game.cmdrPlay?.isTagged(station.name) == true)
+            if (PlayState.current?.isTagged(station.name) == true)
                 PlotQuestMini.drawLogo(g, tt.dtx + N.six, N.eight, true, N.oneFour);
 
             // (one time) figure out how much space we need for the zoom headers
@@ -670,11 +678,14 @@ namespace SrvSurvey.plotters
             // draw relative to cmdr's location ...
             this.resetMiddleRotated(g);
 
-            // draw any quest markers?
-            if (game.cmdrPlay?.activeQuests.Count > 0)
-                drawQuestMarkers(g);
-
             this.drawShipAndSrvLocation(g, tt);
+
+            // draw any quest markers?
+            if (PlayState.current?.activeQuests.Count > 0)
+            {
+                drawRouteWayPoints(g, PlayState.current);
+                drawQuestMarkers(g, PlayState.current);
+            }
 
             // draw relative to center of window ...
             this.resetMiddle(g);
@@ -959,11 +970,9 @@ namespace SrvSurvey.plotters
             }
         }
 
-        private void drawQuestMarkers(Graphics g)
+        private void drawQuestMarkers(Graphics g, PlayState ps)
         {
-            if (game.cmdrPlay?.activeQuests == null) return;
-
-            foreach (var pq in game.cmdrPlay.activeQuests)
+            foreach (var pq in ps.activeQuests)
             {
                 if (pq.bodyLocations.Count == 0) continue;
 
@@ -979,7 +988,12 @@ namespace SrvSurvey.plotters
                         markSize * 2,
                         markSize * 2);
 
-                    g.DrawEllipse(C.Pens.menuGold3r, rect);
+                    var p = C.Pens.menuGold3r;
+                    var dist = (double)Util.getDistance(ll2, Status.here, this.radius);
+                    if (dist < ll3.size)
+                        p = C.Pens.cyan3r;
+
+                    g.DrawEllipse(p, rect);
                 }
             }
         }
@@ -1162,6 +1176,25 @@ namespace SrvSurvey.plotters
             tt.draw(N.eight, prefix, col, GameColors.fontMiddle);
             tt.drawWrapped(N.threeTwo, txt, col, GameColors.fontMiddle);
             tt.newLine(+N.ten, true);
+        }
+
+        private void drawRouteWayPoints(Graphics g, PlayState ps)
+        {
+            foreach (var pq in ps.activeQuests)
+            {
+                foreach (var rp in pq.routes)
+                {
+                    var pfs = rp.wp.Select(ll =>
+                    {
+                        var p = Util.getOffset(this.radius, new LatLong2(ll[0], ll[1]), 180);
+                        return new PointF((float)p.X, (float)-p.Y);
+                    }).ToArray();
+                    var gp = new GraphicsPath();
+                    gp.AddLines(pfs);
+                    gp.Widen(Color.Black.toPen((float)rp.w, LineCap.RoundAnchor));
+                    g.FillPath(C.Brushes.menuGold, gp);
+                }
+            }
         }
     }
 

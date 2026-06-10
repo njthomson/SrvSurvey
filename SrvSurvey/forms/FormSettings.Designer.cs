@@ -35,6 +35,7 @@ namespace SrvSurvey
             ListViewItem listViewItem2 = new ListViewItem("Mission remaining cargo count");
             ListViewItem listViewItem3 = new ListViewItem("Boxel search status");
             ListViewItem listViewItem4 = new ListViewItem("Next boxel to search");
+            ListViewItem listViewItem5 = new ListViewItem("Screenshot taken");
             panel1 = new Panel();
             btnSave = new DrawButton();
             btnCancel = new DrawButton();
@@ -250,6 +251,8 @@ namespace SrvSurvey
             label28 = new Label();
             checkKeyChords = new CheckBox2();
             tabPage8 = new TabPage();
+            linkLabel4 = new LinkLabel();
+            checkBox210 = new CheckBox2();
             checkBox53 = new CheckBox2();
             checkFancyAlphaBlending = new CheckBox2();
             checkBox52 = new CheckBox2();
@@ -615,6 +618,7 @@ namespace SrvSurvey
             // comboLang
             // 
             comboLang.BorderColor = SystemColors.ControlDarkDark;
+            comboLang.BorderHoverColor = Color.Empty;
             comboLang.ButtonColor = SystemColors.ControlDark;
             comboLang.ButtonHoverColor = SystemColors.AppWorkspace;
             comboLang.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -623,7 +627,7 @@ namespace SrvSurvey
             comboLang.Items.AddRange(new object[] { "Match Windows OS default" });
             comboLang.Location = new Point(78, 416);
             comboLang.Name = "comboLang";
-            comboLang.Size = new Size(226, 24);
+            comboLang.Size = new Size(226, 23);
             comboLang.TabIndex = 22;
             comboLang.Tag = "lang";
             // 
@@ -767,6 +771,10 @@ namespace SrvSurvey
             // 
             // comboOverlayScale
             // 
+            comboOverlayScale.BorderColor = Color.Empty;
+            comboOverlayScale.BorderHoverColor = Color.Empty;
+            comboOverlayScale.ButtonColor = Color.Empty;
+            comboOverlayScale.ButtonHoverColor = Color.Empty;
             comboOverlayScale.DropDownStyle = ComboBoxStyle.DropDownList;
             comboOverlayScale.FlatStyle = FlatStyle.Popup;
             comboOverlayScale.FormattingEnabled = true;
@@ -802,7 +810,12 @@ namespace SrvSurvey
             // comboCmdr
             // 
             comboCmdr.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            comboCmdr.BorderColor = Color.Empty;
+            comboCmdr.BorderHoverColor = Color.Empty;
+            comboCmdr.ButtonColor = Color.Empty;
+            comboCmdr.ButtonHoverColor = Color.Empty;
             comboCmdr.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboCmdr.FlatStyle = FlatStyle.Flat;
             comboCmdr.FormattingEnabled = true;
             comboCmdr.Location = new Point(10, 30);
             comboCmdr.Name = "comboCmdr";
@@ -1055,7 +1068,12 @@ namespace SrvSurvey
             // 
             // comboBox1
             // 
+            comboBox1.BorderColor = Color.Empty;
+            comboBox1.BorderHoverColor = Color.Empty;
+            comboBox1.ButtonColor = Color.Empty;
+            comboBox1.ButtonHoverColor = Color.Empty;
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox1.FlatStyle = FlatStyle.Flat;
             comboBox1.FormattingEnabled = true;
             comboBox1.Items.AddRange(new object[] { "Small - 250 x 400", "Skiny - 250 X 500", "Medium - 320 x 440", "Large - 380 x 500", "Huge - 440 x 600" });
             comboBox1.Location = new Point(107, 87);
@@ -1525,7 +1543,12 @@ namespace SrvSurvey
             // 
             // comboGuardianWindowSize
             // 
+            comboGuardianWindowSize.BorderColor = Color.Empty;
+            comboGuardianWindowSize.BorderHoverColor = Color.Empty;
+            comboGuardianWindowSize.ButtonColor = Color.Empty;
+            comboGuardianWindowSize.ButtonHoverColor = Color.Empty;
             comboGuardianWindowSize.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboGuardianWindowSize.FlatStyle = FlatStyle.Flat;
             comboGuardianWindowSize.FormattingEnabled = true;
             comboGuardianWindowSize.Items.AddRange(new object[] { "Small - 300 x 400", "Medium - 500 x 500", "Large - 600 x 700", "Huge - 800 x 1000", "Massive - 1200 x 1200" });
             comboGuardianWindowSize.Location = new Point(89, 252);
@@ -3291,7 +3314,12 @@ namespace SrvSurvey
             // comboDirectXDevice
             // 
             comboDirectXDevice.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            comboDirectXDevice.BorderColor = Color.Empty;
+            comboDirectXDevice.BorderHoverColor = Color.Empty;
+            comboDirectXDevice.ButtonColor = Color.Empty;
+            comboDirectXDevice.ButtonHoverColor = Color.Empty;
             comboDirectXDevice.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboDirectXDevice.FlatStyle = FlatStyle.Flat;
             comboDirectXDevice.FormattingEnabled = true;
             comboDirectXDevice.Location = new Point(309, 25);
             comboDirectXDevice.Name = "comboDirectXDevice";
@@ -3373,6 +3401,8 @@ namespace SrvSurvey
             // 
             tabPage8.BackColor = SystemColors.Control;
             tabPage8.BorderStyle = BorderStyle.Fixed3D;
+            tabPage8.Controls.Add(linkLabel4);
+            tabPage8.Controls.Add(checkBox210);
             tabPage8.Controls.Add(checkBox53);
             tabPage8.Controls.Add(checkFancyAlphaBlending);
             tabPage8.Controls.Add(checkBox52);
@@ -3394,6 +3424,32 @@ namespace SrvSurvey
             tabPage8.Size = new Size(699, 448);
             tabPage8.TabIndex = 9;
             tabPage8.Text = "More";
+            // 
+            // linkLabel4
+            // 
+            linkLabel4.AutoSize = true;
+            linkLabel4.LinkArea = new LinkArea(0, 100);
+            linkLabel4.Location = new Point(445, 58);
+            linkLabel4.Name = "linkLabel4";
+            linkLabel4.Size = new Size(66, 21);
+            linkLabel4.TabIndex = 52;
+            linkLabel4.TabStop = true;
+            linkLabel4.Text = "Learn more";
+            linkLabel4.UseCompatibleTextRendering = true;
+            linkLabel4.LinkClicked += linkLabel4_LinkClicked;
+            // 
+            // checkBox210
+            // 
+            checkBox210.AutoSize = true;
+            checkBox210.CheckColor = SystemColors.ControlText;
+            checkBox210.LineColor = SystemColors.ActiveBorder;
+            checkBox210.Location = new Point(427, 42);
+            checkBox210.Name = "checkBox210";
+            checkBox210.Size = new Size(151, 19);
+            checkBox210.TabIndex = 51;
+            checkBox210.Tag = "uploadGGG";
+            checkBox210.Text = "Upload GGG candidates";
+            checkBox210.UseVisualStyleBackColor = true;
             // 
             // checkBox53
             // 
@@ -3566,7 +3622,9 @@ namespace SrvSurvey
             listViewItem3.Tag = "currentBoxelSearchStatus";
             listViewItem4.StateImageIndex = 0;
             listViewItem4.Tag = "showNextBoxelToSearch";
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4 });
+            listViewItem5.StateImageIndex = 0;
+            listViewItem5.Tag = "showScreenshot";
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5 });
             listView1.Location = new Point(12, 331);
             listView1.Name = "listView1";
             listView1.Size = new Size(400, 107);
@@ -4008,5 +4066,7 @@ namespace SrvSurvey
         private CheckBox2 checkBlackTheme;
         private CheckBox2 checkBox56;
         private CheckBox2 checkBox57;
+        private CheckBox2 checkBox210;
+        private LinkLabel linkLabel4;
     }
 }

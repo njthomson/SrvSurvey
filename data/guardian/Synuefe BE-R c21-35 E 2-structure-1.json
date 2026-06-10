@@ -1,13 +1,16 @@
 {
   "sid": "GS092",
   "idx": 1,
-  "sh": -1,
+  "sh": 98,
   "t": "Robolobster",
   "rh": -1,
   "ll": {
     "lat": -16.195827,
     "long": -5.728627
   },
+  "pa": "p1,p12,p13,p15,p17,p18,p19,p2,p22,p23,p24,p25,p27,p3,p5,p6,p7",
+  "pp": "c1,c2,c3,c4,c5,c6,c7,p10,p11,p14,p16,p20,p21,p4,p8,p9,py1,py2,py3,py4,py5,py6,t1,t2,t3,t4,t5,t6",
+  "pe": "p26",
   "og": "ABCD",
   "ao": [
     "A07-or,ca-#19-",

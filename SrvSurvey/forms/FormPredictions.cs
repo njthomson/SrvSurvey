@@ -148,6 +148,8 @@ namespace SrvSurvey
 
         private void prepNodes()
         {
+            if (this.IsDisposed || !this.Visible) return;
+
             if (game?.systemData == null)
             {
                 txtSystem.Text = null;

@@ -35,6 +35,8 @@ namespace SrvSurvey
         public string? cmdrName { get; private set; }
         public string? cmdrFid { get; private set; }
         public readonly bool isOdyssey;
+        public bool? isGameOdyssey;
+        public bool? isGameHorizons;
 
         public bool isShutdown { get; private set; }
 
@@ -52,8 +54,10 @@ namespace SrvSurvey
 
             // assume Odyssey if we don't have the Fileheader line yet.
             this.isOdyssey = true;
-            if (this.Entries.Count > 0 && this.Entries[0].@event == nameof(Fileheader))
-                this.isOdyssey = ((Fileheader)this.Entries[0]).Odyssey;
+            if (this.Entries.FirstOrDefault() is Fileheader entryFileHeader)
+                this.isOdyssey = entryFileHeader.Odyssey;
+            //else
+            //    Debugger.Break(); // This happens when at the main menu before loading any cmdr
         }
 
         public void Dispose()
@@ -77,7 +81,7 @@ namespace SrvSurvey
         {
             while (this.reader?.EndOfStream == false)
             {
-                var entry = this.readEntry();
+                var (entry , raw)= this.readEntry();
 
                 // stop early if not target cmdr
                 if (targetFID != null && entry is Commander && ((Commander)entry).FID != targetFID)
@@ -85,10 +89,10 @@ namespace SrvSurvey
             }
         }
 
-        protected virtual JournalEntry? readEntry()
+        protected virtual (JournalEntry?, JObject?) readEntry()
         {
             // read next entry, add to list or skip if it's blank
-            var entry = this.parseNextEntry();
+            var (entry, raw) = this.parseNextEntry();
 
             if (entry != null)
             {
@@ -101,9 +105,15 @@ namespace SrvSurvey
                     this.cmdrName = commanderEntry.Name;
                     this.cmdrFid = commanderEntry.FID;
                 }
+
+                if (entry is LoadGame entryLoadGame)
+                {
+                    this.isGameOdyssey = entryLoadGame.Odyssey;
+                    this.isGameHorizons = entryLoadGame.Horizons;
+                }
             }
 
-            return entry;
+            return (entry, raw);
         }
 
         protected virtual JObject? readRaw()
@@ -113,14 +123,14 @@ namespace SrvSurvey
             return entry;
         }
 
-        private JournalEntry? parseNextEntry()
+        private (JournalEntry?, JObject?) parseNextEntry()
         {
             try
             {
                 var entry = readRaw()!;
-                if (entry == null) return null;
+                if (entry == null) return (null, null);
 
-                return hydrate(entry);
+                return (hydrate(entry), entry);
             }
             catch (Exception ex)
             {
@@ -128,7 +138,7 @@ namespace SrvSurvey
             }
 
             // ignore anything else
-            return null;
+            return (null, null);
         }
 
         public static JournalEntry? hydrate(JObject? entry)
