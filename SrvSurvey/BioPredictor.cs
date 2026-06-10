@@ -864,7 +864,9 @@ namespace BioCriterias
                 9693069535209, //Edge case Prue Pruae RW-G b57-4 A 6 has 3.553452g
                 3922344909570,//Prua Phoe DQ-D c14 A 8: Fungoida Gelata in Inner-Scutum Centaurus, high end gravity
                 2518319061187,//Praea Aoscs NJ-O d7-73: Aleoida Laminiae in Izanami
-                2920713168209//Wregoi CJ-H b39-1: Aleoida Laminiae in outer orion spur
+                2920713168209,//Wregoi CJ-H b39-1: Aleoida Laminiae in outer orion spur
+
+                5459441379232//Prieluia UC-F a108-0: Should include Bacterium Verrata
             };
         }
 
