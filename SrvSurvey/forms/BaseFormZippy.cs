@@ -54,7 +54,7 @@ internal abstract class BaseFormZippy : SizableForm, PlotterForm
         this.ForeColor = C.orange;
         this.Opacity = 0;
 
-        if (!Debugger.IsAttached)
+        if (Debugger.IsAttached)
         {
             // for the sake of debugging sanity ...
             this.FormBorderStyle = FormBorderStyle.SizableToolWindow;
