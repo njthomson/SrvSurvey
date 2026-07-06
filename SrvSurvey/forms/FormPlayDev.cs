@@ -343,9 +343,9 @@ namespace SrvSurvey.forms
             if (importing) return;
 
             var folder = Path.GetDirectoryName(e.FullPath)!;
-            menuStatus.Text = $"Changes in: {folder} ({DateTime.Now:T})";
             Util.deferAfter(500, () =>
             {
+                Program.defer(() => menuStatus.Text = $"Changes in: {folder} ({DateTime.Now:T})");
                 folderImport(folder).justDoIt();
             });
         }

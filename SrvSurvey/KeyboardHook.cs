@@ -579,6 +579,7 @@ namespace SrvSurvey
         public static Dictionary<string, string>? parseGameKeybinds()
         {
             // Read: .\Bindings\StartPreset.4.start to know which .binds file to open
+            // TODO: read many 'StartPreset.X.start' files and pick the highest
             var filepath = Path.Combine(Elite.keybingsFolder, "StartPreset.4.start");
             if (!File.Exists(filepath))
             {
@@ -589,6 +590,7 @@ namespace SrvSurvey
             // use the first line to know which .binds file to read
             var lines = File.ReadAllLines(filepath);
             var bindsFiles = Directory.GetFiles(Elite.keybingsFolder, $"{lines[0]}.*.binds");
+            // TODO: read default file if no custom one is found!
             if (bindsFiles.Length == 0)
             {
                 Game.log($"No .binds files found matching: {lines[0]}");
@@ -626,7 +628,7 @@ namespace SrvSurvey
             if (binds.Count == 0) return;
 
             var primaryKey = binds.First().Attribute("Key")?.Value;
-            if (primaryKey != null)
+            if (!string.IsNullOrEmpty(primaryKey))
             {
                 var primary = matchGameKeybind(primaryKey);
                 if (primary != null)
@@ -634,7 +636,7 @@ namespace SrvSurvey
             }
 
             var secondaryKey = binds.Last().Attribute("Key")?.Value;
-            if (secondaryKey != null)
+            if (!string.IsNullOrWhiteSpace(secondaryKey))
             {
                 var secondary = matchGameKeybind(secondaryKey);
                 if (secondary != null)
