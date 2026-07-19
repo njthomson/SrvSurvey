@@ -50,6 +50,7 @@ namespace SrvSurvey
         public bool autoShowPlotFSS = true;
         public bool autoShowPlotFSSInfo = true;
         public bool autoShowPlotFSSInfoInSystemMap = false;
+        public bool autoShowPlotFSSInfoInNavPanel = false;
         public bool autoShowGuardianSummary = true;
         public bool autoShowRamTah = true;
         public bool autoShowPlotSysStatus = true;

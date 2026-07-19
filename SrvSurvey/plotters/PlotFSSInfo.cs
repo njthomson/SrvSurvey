@@ -27,6 +27,7 @@ namespace SrvSurvey.plotters
                     game.mode == GameMode.FSS
                     || (PlotFSSInfo.forceShow && !game.fsdJumping) // or a keystroke forced it
                     || (game.mode == GameMode.SystemMap && Game.settings.autoShowPlotFSSInfoInSystemMap && (guardianSystemDisabled || !PlotGuardianSystem.allowed(game))) // hide if Guardian plotter is open
+                    || (game.mode == GameMode.ExternalPanel && Game.settings.autoShowPlotFSSInfoInNavPanel)
                 );
         }
 
