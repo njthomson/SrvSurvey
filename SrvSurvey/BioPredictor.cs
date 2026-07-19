@@ -93,7 +93,9 @@ namespace BioCriterias
             }
 
             // calc distance to nearest Guardian bubble
-            var withinGuardianBubble = Game.codexRef.isWithinGuardianBubble(body.system.starPos);
+            bool withinGuardianBubble = Game.codexRef.isWithinGuardianBubble(body.system.starPos);
+            // calc distance to nearest Tubers bubble
+            bool withinTubersBubble = Game.codexRef.isWithinTubersBubble(body.system.starPos);
 
             // when there is a single entry - force that atmosphereComposition to 100% 
             var atmosphereComposition = body.atmosphereComposition?.ToDictionary(x => x.Key, x => x.Value);
@@ -121,6 +123,7 @@ namespace BioCriterias
                 { "PrimaryStar", primaryStarType },
                 { "Nebulae", body.system.nebulaDist },
                 { "Guardian", withinGuardianBubble.ToString() },
+                { "Tubers", withinTubersBubble.ToString() },
 
             };
             var predictor = new BioPredictor(body.name, bodyProps, targetVariant);
@@ -139,7 +142,7 @@ namespace BioCriterias
                     if (org.species != null)
                     {
                         var match = Game.codexRef.matchFromSpecies2(org.species);
-                        // TODO: handle Brain Tree's
+                        // TODO: handle Brain Tree's and other Horizons bio
                         if (match != null)
                             predictor.knownSpecies[match.genus.englishName] = match.species.englishName;
                     }
@@ -193,7 +196,7 @@ namespace BioCriterias
                 if (!string.IsNullOrEmpty(genus) && this.allGenusKnown && knownGenus?.Count > 0 && !knownGenus.Contains(genus))
                     return false;
                 // or stop here if we already scanned some species from this genus
-                // TODO: handle Brain Tree's
+                // TODO: handle Brain Tree's and other Horizons bio
                 if (genus != null && species != null && knownSpecies?.Count > 0 && knownSpecies.ContainsKey(genus))
                     return false;
             }
@@ -855,7 +858,7 @@ namespace BioCriterias
                 2282674557658, // Vodyakamana // <-- BC4 Fails because Argon is < 100% BUT there's no Nitrogen in the atmosphere (or anything else?!)
                 1050522316081, // Ihad BK-L b35-0 // <-- we are missing data about the star AND Canonn has incomplete bio data for Ihad BK-L b35-0 1 a
 
-                2519946200947, // Qiefoea KZ-D d13-73 // D4 Osseus not found or D3 Stratum not found
+                2519946200947, // Qiefoea KZ-D d13-73 // Misidentifies star for D 3 as G (White-yellow) instead of M (Red Dwarf)
                 10393127859, //   Chaloa PI-R d5-0 // missing Stratum Tectonicas Green, Cactoida Cortexum Amethyst & Frutexa Metallicum Grey ? 
                 7269366113697, // ICZ ZJ-Z b3
 
@@ -867,6 +870,15 @@ namespace BioCriterias
                 2920713168209, // Wregoi CJ-H b39-1: Aleoida Laminiae in outer orion spur
 
                 5459441379232, // Prieluia UC-F a108-0: Should include Bacterium Verrata
+
+                3035510119723, //Tyroewry SO-R d4-88: should predict crystalline shards, and not tubers/anemones etc
+                //183697605120891, //Byoomao SK-C d14-5346: should predict Sinuous Tubers. Incomplete system data on Spansh
+                7431576882227, //Lysoosms KL-P d5-216: should predict Sinuous Tubers
+                212215802073659, //Agnainks HI-Q d6-6176: should predict Sinuous Tubers
+                979198957068914, //Ogairy FI-B c13-3562: should predict Sinuous Tubers
+                12180091181338, //NGC 6357 Sector AV-Y c44: should not predict Sinuous Tubers
+
+
             };
         }
 
