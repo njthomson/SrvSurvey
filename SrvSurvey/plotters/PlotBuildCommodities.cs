@@ -305,7 +305,7 @@ namespace SrvSurvey.plotters
             }
 
             // show warning if docked at an untracked FC
-            if (game.lastDocked?.StationEconomy == "$economy_Carrier;" && !game.cmdrColony.linkedFCs.ContainsKey(game.lastDocked.MarketID))
+            if (game.lastDocked?.StationType == StationType.FleetCarrier && !game.cmdrColony.linkedFCs.ContainsKey(game.lastDocked.MarketID))
             {
                 tt.draw(N.ten, wc + " Untracked Fleet Carrier", C.Colonise.highlight, GameColors.Fonts.gothic_10);
                 tt.newLine(+N.ten, true);
