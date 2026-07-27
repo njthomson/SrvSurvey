@@ -2761,7 +2761,22 @@ namespace SrvSurvey.game
         /// Returns true if this is a regional or cmdr first discovery
         /// </summary>
         [JsonIgnore]
-        public bool isFirst => (this.isNewEntry && Game.settings.highlightRegionalFirsts) || this.isCmdrFirst;
+        public bool isFirst
+        {
+            get
+            {
+                // look-up entryId if we don't already know it
+                if (this.entryId == 0 && this.variant != null)
+                {
+                    var match = Game.codexRef.matchFromVariant(this.variant);
+                    if (match != null)
+                        this.entryId = long.Parse(match.variant.entryId, CultureInfo.InvariantCulture);
+                }
+                bool discoveredInRegion = Game.activeGame?.cmdrCodex?.isDiscoveredInRegion(this.entryId, Game.activeGame.cmdr.galacticRegion) ?? false;
+                bool isFirstDiscovered = Game.activeGame?.cmdrCodex?.isPersonalFirstDiscovery(this.entryId, this.body.system.address, this.body.id) ?? false;
+                return (!discoveredInRegion && Game.settings.highlightRegionalFirsts) || isFirstDiscovered;
+            }
+        }
 
         [JsonIgnore]
         public string prefix
