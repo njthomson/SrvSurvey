@@ -3181,6 +3181,12 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(ScanOrganic entry)
         {
+            if (this.systemData == null) throw new Exception($"Why no this.systemData?");
+            if (this.systemBody == null)
+            {
+                this.systemBody = this.systemData.bodies.FirstOrDefault(_ => _.id == entry.Body);
+                Game.log($"Why was no this.systemBody? Found: {this.systemBody?.name}");
+            }
             if (this.systemBody == null) throw new Exception($"Why no this.systemBody?");
 
             // are we changing organism before the 3rd scan?
