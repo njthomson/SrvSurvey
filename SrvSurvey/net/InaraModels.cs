@@ -14,7 +14,7 @@ namespace SrvSurvey.net
         long? ShipId,
         string? ShipName,
         string? ShipIdent,
-        bool IsTaxi);
+        bool? IsTaxi);
 
     internal sealed record InaraEvent(
         string Name,

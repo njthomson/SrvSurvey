@@ -40,6 +40,7 @@ namespace SrvSurvey.net
         {
             mapper.Reset();
             currentGame = game;
+            var multiboxing = isMultiboxing();
 
             var filepath = game.journals?.filepath;
             if (string.IsNullOrWhiteSpace(filepath)) return;
@@ -48,12 +49,19 @@ namespace SrvSurvey.net
             {
                 using var reader = Data.openSharedStreamReader(filepath);
                 var entries = ReadCurrentSession(reader);
-                var cargoFile = game.cargoFile;
-                var cargoInventory = string.Equals(cargoFile.Vessel, "Ship", StringComparison.OrdinalIgnoreCase)
-                    ? JArray.FromObject(cargoFile.Inventory ?? [])
-                    : null;
-                var seededCount = SeedState(mapper, entries, createContext(game), cargoInventory);
+                JArray? cargoInventory = null;
+                if (!multiboxing)
+                {
+                    var cargoFile = game.cargoFile;
+                    cargoInventory = string.Equals(cargoFile.Vessel, "Ship", StringComparison.OrdinalIgnoreCase)
+                        ? JArray.FromObject(cargoFile.Inventory ?? [])
+                        : null;
+                }
+
+                var seededCount = SeedState(mapper, entries, createContext(game, !multiboxing), cargoInventory);
                 Game.log($"Inara seeded current state from {seededCount} journal event(s).");
+                if (multiboxing)
+                    Game.log("Inara multi-box mode: shared Cargo.json, ShipLocker.json, and Status.json data is suppressed.");
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException)
             {
@@ -72,7 +80,8 @@ namespace SrvSurvey.net
                 currentGame = game;
             }
 
-            raw = addSidecarData(game, raw);
+            var multiboxing = isMultiboxing();
+            raw = addSidecarData(game, raw, !multiboxing);
 
             var credentials = getCredentials(game);
             var canCollect = CanUpload(
@@ -82,7 +91,7 @@ namespace SrvSurvey.net
                 IsBetaVersion(getGameVersion(game)),
                 mapper.InMulticrew);
 
-            var context = createContext(game);
+            var context = createContext(game, !multiboxing);
 
             var events = mapper.Process(raw, context, canCollect);
             if (credentials != null && events.Count > 0)
@@ -150,17 +159,31 @@ namespace SrvSurvey.net
             return count;
         }
 
-        private static InaraContext createContext(Game game) => new(
+        private static InaraContext createContext(Game game, bool allowSharedStatus) => new(
             game.Commander,
             game.fid,
             game.systemData?.name ?? game.cmdr?.currentSystem,
             game.systemStation?.name ?? game.lastDocked?.StationName,
-            game.systemBody?.name,
+            allowSharedStatus ? game.systemBody?.name : null,
             game.currentShip?.type,
             game.currentShip?.id,
             game.currentShip?.name,
             game.currentShip?.ident,
-            game.status?.InTaxi == true);
+            allowSharedStatus ? game.status?.InTaxi == true : null);
+
+        private static bool isMultiboxing()
+        {
+            var gameProcesses = Elite.GetGameProcs();
+            try
+            {
+                return Elite.hadManyGameProcs || gameProcesses.Length > 1;
+            }
+            finally
+            {
+                foreach (var process in gameProcesses)
+                    process.Dispose();
+            }
+        }
 
         internal static bool CanUpload(bool optedIn, string? apiKey, bool isLive, bool isBeta, bool inMulticrew) =>
             optedIn
@@ -200,20 +223,30 @@ namespace SrvSurvey.net
             return new InaraCredentials(commander, frontierId ?? string.Empty, apiKey);
         }
 
-        private static JObject addSidecarData(Game game, JObject raw)
+        private static JObject addSidecarData(Game game, JObject raw, bool allowSharedSidecars)
         {
             var eventName = raw.Value<string>("event");
-            if (eventName == "Cargo"
+            var needsCargoSidecar = eventName == "Cargo"
                 && raw.Value<string>("Vessel") == "Ship"
-                && raw["Inventory"] is not JArray)
+                && raw["Inventory"] is not JArray;
+            var needsLockerSidecar = eventName == "ShipLocker"
+                && new[] { "Items", "Components", "Data", "Consumables" }
+                    .Any(type => raw[type] is not JArray);
+
+            if (!allowSharedSidecars && (needsCargoSidecar || needsLockerSidecar))
+            {
+                Game.log($"Inara ignored shared {eventName} sidecar data while multi-boxing.");
+                return raw;
+            }
+
+            if (needsCargoSidecar)
             {
                 var augmented = (JObject)raw.DeepClone();
                 augmented["Inventory"] = JArray.FromObject(game.cargoFile.Inventory ?? []);
                 return augmented;
             }
 
-            if (eventName == "ShipLocker"
-                && new[] { "Items", "Components", "Data", "Consumables" }.Any(type => raw[type] is not JArray))
+            if (needsLockerSidecar)
             {
                 try
                 {

@@ -434,7 +434,7 @@ namespace SrvSurvey.net
                 ("starsystemName", entry["StarSystem"] ?? context.SystemName),
                 ("stationName", entry["StationName"] ?? context.StationName),
                 ("marketID", entry["MarketID"]));
-            addShipIdentity(data, context, entry.Value<bool?>("Taxi") == true || context.IsTaxi);
+            addShipIdentity(data, context, entry.Value<bool?>("Taxi") ?? context.IsTaxi);
             addRequired(events, "addCommanderTravelDock", timestamp, data);
         }
 
@@ -446,7 +446,7 @@ namespace SrvSurvey.net
                 ("jumpDistance", entry["JumpDist"]),
                 ("stationName", entry["StationName"]),
                 ("marketID", entry["MarketID"]));
-            addShipIdentity(data, context, entry.Value<bool?>("Taxi") == true || context.IsTaxi);
+            addShipIdentity(data, context, entry.Value<bool?>("Taxi") ?? context.IsTaxi);
             addRequired(events, eventName, timestamp, data);
         }
 
@@ -495,7 +495,7 @@ namespace SrvSurvey.net
                 ("starsystemBodyName", entry["Body"] ?? context.BodyName));
             if (entry["Latitude"] != null && entry["Longitude"] != null)
                 data["starsystemBodyCoords"] = new JArray(entry["Latitude"]!.DeepClone(), entry["Longitude"]!.DeepClone());
-            addShipIdentity(data, context, entry.Value<bool?>("Taxi") == true || context.IsTaxi);
+            addShipIdentity(data, context, entry.Value<bool?>("Taxi") ?? context.IsTaxi);
             addRequired(events, "addCommanderTravelLand", timestamp, data);
         }
 
@@ -805,13 +805,18 @@ namespace SrvSurvey.net
                 ("isCurrentShip", true));
         }
 
-        private static void addShipIdentity(JObject data, InaraContext context, bool isTaxi)
+        private static void addShipIdentity(JObject data, InaraContext context, bool? isTaxi)
         {
-            if (isTaxi)
+            if (isTaxi == true)
             {
                 data["isTaxiShuttle"] = true;
                 return;
             }
+
+            // Shared Status.json cannot be associated with a commander while multi-boxing.
+            // An unknown taxi state must not claim that a travel event used the commander's ship.
+            if (isTaxi == null) return;
+
             if (!string.IsNullOrWhiteSpace(context.ShipType)) data["shipType"] = context.ShipType;
             if (context.ShipId is >= 0) data["shipGameID"] = context.ShipId;
         }

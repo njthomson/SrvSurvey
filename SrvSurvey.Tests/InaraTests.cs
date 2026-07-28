@@ -154,6 +154,51 @@ public sealed class InaraTests
     }
 
     [Fact]
+    public void UnknownTaxiStateDoesNotClaimTheCommandersShipWhileMultiboxing()
+    {
+        var mapper = new InaraEventMapper();
+        var journal = JObject.Parse("""
+            {
+              "timestamp": "2026-07-28T12:00:00Z",
+              "event": "FSDJump",
+              "StarSystem": "Alpha Centauri",
+              "StarPos": [3.03125, -0.09375, 3.15625],
+              "JumpDist": 4.37
+            }
+            """);
+
+        var mapped = mapper.Process(journal, context with { IsTaxi = null }, true);
+        var jump = Assert.Single(mapped, item => item.Name == "addCommanderTravelFSDJump");
+
+        Assert.Null(jump.Data["isTaxiShuttle"]);
+        Assert.Null(jump.Data["shipGameID"]);
+        Assert.Null(jump.Data["shipType"]);
+    }
+
+    [Fact]
+    public void JournalTaxiFlagRemainsAuthoritativeWhileSharedStatusIsSuppressed()
+    {
+        var mapper = new InaraEventMapper();
+        var journal = JObject.Parse("""
+            {
+              "timestamp": "2026-07-28T12:00:00Z",
+              "event": "FSDJump",
+              "StarSystem": "Alpha Centauri",
+              "StarPos": [3.03125, -0.09375, 3.15625],
+              "JumpDist": 4.37,
+              "Taxi": true
+            }
+            """);
+
+        var mapped = mapper.Process(journal, context with { IsTaxi = null }, true);
+        var jump = Assert.Single(mapped, item => item.Name == "addCommanderTravelFSDJump");
+
+        Assert.True(jump.Data.Value<bool>("isTaxiShuttle"));
+        Assert.Null(jump.Data["shipGameID"]);
+        Assert.Null(jump.Data["shipType"]);
+    }
+
+    [Fact]
     public void RankAndProgressAreCombinedLikeEdmc()
     {
         var mapper = new InaraEventMapper();
@@ -235,6 +280,30 @@ public sealed class InaraTests
         var queued = Assert.Single(queue.TakeAll());
         var cargo = Assert.IsType<JArray>(queued.Event.Data);
         Assert.Equal(5, Assert.Single(cargo.OfType<JObject>()).Value<int>("itemCount"));
+    }
+
+    [Fact]
+    public void IncompleteSidecarEventsDoNotResetInventoriesWhileMultiboxing()
+    {
+        var mapper = new InaraEventMapper();
+        mapper.Process(JObject.Parse("""
+            {
+              "timestamp": "2026-07-28T12:00:00Z",
+              "event": "Cargo",
+              "Vessel": "Ship",
+              "Inventory": [{ "Name": "tea", "Count": 2 }]
+            }
+            """), context, true);
+
+        var cargo = mapper.Process(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:01:00Z", "event": "Cargo", "Vessel": "Ship", "Count": 9 }
+            """), context, true);
+        var locker = mapper.Process(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:02:00Z", "event": "ShipLocker" }
+            """), context, true);
+
+        Assert.DoesNotContain(cargo, item => item.Name == "setCommanderInventoryCargo");
+        Assert.DoesNotContain(locker, item => item.Name is "resetCommanderInventory" or "setCommanderInventory");
     }
 
     [Fact]
@@ -353,6 +422,28 @@ public sealed class InaraTests
             firstLiveEvents,
             item => item.Name == "setCommanderInventoryMaterials").Data);
         Assert.Equal(3, Assert.Single(materials.OfType<JObject>()).Value<int>("itemCount"));
+    }
+
+    [Fact]
+    public void MultiboxStartupDoesNotTreatSharedCargoAsAuthoritative()
+    {
+        var entries = new[]
+        {
+            JObject.Parse("""
+                { "timestamp": "2026-07-28T12:00:00Z", "event": "LoadGame", "Commander": "Test Commander", "Credits": 1000 }
+                """),
+            JObject.Parse("""
+                { "timestamp": "2026-07-28T12:00:01Z", "event": "Cargo", "Vessel": "Ship", "Count": 7 }
+                """),
+        };
+        var mapper = new InaraEventMapper();
+
+        Inara.SeedState(mapper, entries, context with { IsTaxi = null }, null);
+        var firstLiveEvents = mapper.Process(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:00:02Z", "event": "Music", "MusicTrack": "Exploration" }
+            """), context with { IsTaxi = null }, true);
+
+        Assert.DoesNotContain(firstLiveEvents, item => item.Name == "setCommanderInventoryCargo");
     }
 
     [Fact]
