@@ -28,6 +28,7 @@ namespace SrvSurvey
         {
             // TODO: Load images dynamically - to speed up form initial load times?
             InitializeComponent();
+            initializeEddnControls();
             this.Icon = Icons.spanner;
             comboLang.SelectedIndex = 0;
             comboLang.Items.AddRange(Localize.supportedLanguages.Keys.ToArray());
@@ -537,7 +538,10 @@ namespace SrvSurvey
             if (senderCheckbox?.Parent == null) return;
 
             foreach (Control ctrl in senderCheckbox.Parent!.Controls)
-                if (ctrl != senderCheckbox && !except.Contains(ctrl))
+                if (ctrl != senderCheckbox
+                    && ctrl != checkEddnUpload
+                    && ctrl != groupRaven
+                    && !except.Contains(ctrl))
                     ctrl.Enabled = senderCheckbox.Checked;
 
             checkGalMapPlotter.Enabled = senderCheckbox.Checked;

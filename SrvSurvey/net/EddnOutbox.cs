@@ -25,7 +25,7 @@ namespace SrvSurvey.net
         private readonly CancellationTokenSource shutdown = new();
         private List<EddnQueuedMessage> pending;
         private bool enabled;
-        private bool disposed;
+        private volatile bool disposed;
 
         internal EddnOutbox(
             string filepath,
@@ -60,6 +60,8 @@ namespace SrvSurvey.net
         internal void setEnabled(bool value, bool discardPendingWhenDisabled)
         {
             var changed = false;
+            string? persistenceLog = null;
+            string? sharingLog = null;
             lock (sync)
             {
                 changed = enabled != value;
@@ -68,30 +70,39 @@ namespace SrvSurvey.net
                 {
                     var count = pending.Count;
                     pending.Clear();
-                    deleteStore();
-                    log($"EDDN discarded {count:N0} pending upload(s) because sharing was disabled.");
+                    persistenceLog = deleteStore();
+                    sharingLog = $"EDDN discarded {count:N0} pending upload(s) because sharing was disabled.";
                 }
             }
+
+            writeLog(persistenceLog);
+            writeLog(sharingLog);
 
             if (value && changed && automaticProcessing)
                 schedule(startupDelay);
             else if (!value)
-                timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+                stopTimer();
         }
 
         internal bool enqueue(EddnQueuedMessage message)
         {
             ArgumentNullException.ThrowIfNull(message);
+            string? persistenceLog = null;
+            var queued = false;
             lock (sync)
             {
                 if (!enabled || disposed) return false;
                 pending.Add(message);
-                if (!save())
+                if (!save(out persistenceLog))
                 {
                     pending.Remove(message);
-                    return false;
                 }
+                else
+                    queued = true;
             }
+
+            writeLog(persistenceLog);
+            if (!queued) return false;
 
             if (automaticProcessing) schedule(TimeSpan.Zero);
             return true;
@@ -99,7 +110,7 @@ namespace SrvSurvey.net
 
         internal async Task processDue(CancellationToken cancellationToken = default)
         {
-            if (!await processing.WaitAsync(0, cancellationToken)) return;
+            if (!await processing.WaitAsync(0, cancellationToken).ConfigureAwait(false)) return;
             try
             {
                 while (true)
@@ -127,7 +138,7 @@ namespace SrvSurvey.net
                         using var combined = CancellationTokenSource.CreateLinkedTokenSource(
                             shutdown.Token,
                             cancellationToken);
-                        result = await transport.upload(next, combined.Token);
+                        result = await transport.upload(next, combined.Token).ConfigureAwait(false);
                     }
                     catch (Exception ex) when (ex is HttpRequestException or IOException or OperationCanceledException)
                     {
@@ -135,6 +146,9 @@ namespace SrvSurvey.net
                     }
 
                     var retry = failure != null || result?.isRetryable == true;
+                    string? persistenceLog = null;
+                    string? resultLog = null;
+                    var stopAfterResult = false;
                     lock (sync)
                     {
                         if (!pending.Any(item => item.id == next.id)) continue;
@@ -144,37 +158,45 @@ namespace SrvSurvey.net
                             var retryAt = utcNow() + getRetryDelay(next.attempts);
                             foreach (var item in pending)
                                 if (item.nextAttempt < retryAt) item.nextAttempt = retryAt;
-                            save();
+                            save(out persistenceLog);
                             var detail = failure?.Message
                                 ?? result?.responseDetail
                                 ?? result?.reasonPhrase
                                 ?? "request failed";
-                            log($"EDDN upload for {eventName(next)} will retry after {retryAt:u}: {singleLine(detail)}");
+                            resultLog = $"EDDN upload for {eventName(next)} will retry after {retryAt:u}: {singleLine(detail)}";
                             scheduleNextLocked(utcNow());
-                            return;
-                        }
-
-                        pending.RemoveAll(item => item.id == next.id);
-                        if (pending.Count == 0)
-                            deleteStore();
-                        else
-                            save();
-
-                        if (result?.isSuccess == true)
-                        {
-                            log($"EDDN uploaded {eventName(next)} to {next.environment}.");
+                            stopAfterResult = true;
                         }
                         else
                         {
-                            var detail = result?.skipReason
-                                ?? result?.responseDetail
-                                ?? result?.reasonPhrase
-                                ?? "request was rejected";
-                            log($"EDDN dropped {eventName(next)} without retry: {singleLine(detail)}");
+                            pending.RemoveAll(item => item.id == next.id);
+                            if (pending.Count == 0)
+                                persistenceLog = deleteStore();
+                            else
+                                save(out persistenceLog);
+
+                            if (result?.isSuccess == true)
+                            {
+                                resultLog = $"EDDN uploaded {eventName(next)} to {next.environment}.";
+                            }
+                            else
+                            {
+                                var detail = result?.skipReason
+                                    ?? result?.responseDetail
+                                    ?? result?.reasonPhrase
+                                    ?? "request was rejected";
+                                resultLog = $"EDDN dropped {eventName(next)} without retry: {singleLine(detail)}";
+                            }
                         }
                     }
 
-                    await Task.Delay(sendSpacing, cancellationToken);
+                    // Logging can ultimately marshal to the UI. Never invoke it while
+                    // holding the queue lock or Settings can deadlock against this worker.
+                    writeLog(persistenceLog);
+                    writeLog(resultLog);
+                    if (stopAfterResult) return;
+
+                    await Task.Delay(sendSpacing, cancellationToken).ConfigureAwait(false);
                 }
             }
             finally
@@ -185,28 +207,36 @@ namespace SrvSurvey.net
 
         internal void clear()
         {
+            string? persistenceLog;
             lock (sync)
             {
                 pending.Clear();
-                deleteStore();
+                persistenceLog = deleteStore();
             }
+            writeLog(persistenceLog);
         }
 
         public void Dispose()
         {
-            if (disposed) return;
-            disposed = true;
+            lock (sync)
+            {
+                if (disposed) return;
+                disposed = true;
+                enabled = false;
+            }
             shutdown.Cancel();
             timer.Dispose();
-            shutdown.Dispose();
-            processing.Dispose();
+
+            // processDue may still be between its disposed check and WaitAsync, or
+            // may still need to release the semaphore. These primitives own no native
+            // resources in this usage, so allowing GC to reclaim them avoids a dispose race.
         }
 
         private void triggerProcessing()
         {
             if (disposed) return;
             processDue().ContinueWith(
-                task => log($"EDDN queue processing failed: {singleLine(task.Exception?.GetBaseException().Message)}"),
+                task => writeLog($"EDDN queue processing failed: {singleLine(task.Exception?.GetBaseException().Message)}"),
                 CancellationToken.None,
                 TaskContinuationOptions.OnlyOnFaulted,
                 TaskScheduler.Default);
@@ -216,14 +246,21 @@ namespace SrvSurvey.net
         {
             if (disposed || !automaticProcessing) return;
             if (delay < TimeSpan.Zero) delay = TimeSpan.Zero;
-            timer.Change(delay, Timeout.InfiniteTimeSpan);
+            try
+            {
+                timer.Change(delay, Timeout.InfiniteTimeSpan);
+            }
+            catch (ObjectDisposedException) when (disposed)
+            {
+                // Dispose won the race after the check above.
+            }
         }
 
         private void scheduleNextLocked(DateTimeOffset now)
         {
             if (!enabled || pending.Count == 0)
             {
-                timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+                stopTimer();
                 return;
             }
 
@@ -245,19 +282,32 @@ namespace SrvSurvey.net
                 try
                 {
                     File.Move(filepath, backup);
-                    log($"EDDN moved an unreadable queue to: {backup}");
+                    writeLog($"EDDN moved an unreadable queue to: {backup}");
                 }
                 catch (Exception moveError) when (moveError is IOException or UnauthorizedAccessException)
                 {
-                    log($"EDDN could not preserve its unreadable queue: {moveError.Message}");
+                    writeLog($"EDDN could not preserve its unreadable queue: {moveError.Message}");
                 }
-                log($"EDDN could not load its pending uploads: {ex.Message}");
+                writeLog($"EDDN could not load its pending uploads: {ex.Message}");
                 return [];
             }
         }
 
-        private bool save()
+        private void stopTimer()
         {
+            try
+            {
+                timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+            }
+            catch (ObjectDisposedException) when (disposed)
+            {
+                // Dispose won the race after the caller checked the queue state.
+            }
+        }
+
+        private bool save(out string? errorLog)
+        {
+            errorLog = null;
             try
             {
                 var folder = Path.GetDirectoryName(filepath);
@@ -271,22 +321,36 @@ namespace SrvSurvey.net
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {
-                log($"EDDN could not persist a pending upload: {ex.Message}");
+                errorLog = $"EDDN could not persist a pending upload: {ex.Message}";
                 return false;
             }
         }
 
-        private void deleteStore()
+        private string? deleteStore()
         {
             try
             {
                 if (File.Exists(filepath)) File.Delete(filepath);
                 var temporary = filepath + ".tmp";
                 if (File.Exists(temporary)) File.Delete(temporary);
+                return null;
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {
-                log($"EDDN could not remove its empty queue: {ex.Message}");
+                return $"EDDN could not remove its empty queue: {ex.Message}";
+            }
+        }
+
+        private void writeLog(string? message)
+        {
+            if (string.IsNullOrWhiteSpace(message)) return;
+            try
+            {
+                log(message);
+            }
+            catch
+            {
+                // Diagnostics must never stop or poison the durable upload queue.
             }
         }
 

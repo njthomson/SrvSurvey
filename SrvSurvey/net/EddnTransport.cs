@@ -69,7 +69,7 @@ namespace SrvSurvey.net
         {
             return await upload(
                 prepare(message, schemaRef, header, environment),
-                cancellationToken);
+                cancellationToken).ConfigureAwait(false);
         }
 
         internal async Task<EddnUploadResult> upload(
@@ -116,10 +116,10 @@ namespace SrvSurvey.net
             using var response = await client.SendAsync(
                 request,
                 HttpCompletionOption.ResponseHeadersRead,
-                cancellationToken);
+                cancellationToken).ConfigureAwait(false);
             var detail = response.IsSuccessStatusCode
                 ? string.Empty
-                : await readBoundedResponse(response.Content, cancellationToken);
+                : await readBoundedResponse(response.Content, cancellationToken).ConfigureAwait(false);
 
             return new EddnUploadResult(
                 queued.environment,
@@ -162,14 +162,14 @@ namespace SrvSurvey.net
             HttpContent content,
             CancellationToken cancellationToken)
         {
-            using var stream = await content.ReadAsStreamAsync(cancellationToken);
+            using var stream = await content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
             var buffer = new byte[MaximumResponseDetailBytes];
             var total = 0;
             while (total < buffer.Length)
             {
                 var read = await stream.ReadAsync(
                     buffer.AsMemory(total, buffer.Length - total),
-                    cancellationToken);
+                    cancellationToken).ConfigureAwait(false);
                 if (read == 0) break;
                 total += read;
             }

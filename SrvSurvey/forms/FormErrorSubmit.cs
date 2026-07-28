@@ -52,8 +52,9 @@ namespace SrvSurvey
             InitializeComponent();
 
             // capture recent logs NOW as the error presumably just happened vs later when people notice the error dialog
-            this.logLineCount = Math.Min(Game.logs.Count, 20);
-            this.recentLogs = String.Join('\n', Game.logs.TakeLast(this.logLineCount));
+            var logs = Game.getLogSnapshot();
+            this.logLineCount = Math.Min(logs.Length, 20);
+            this.recentLogs = String.Join('\n', logs.TakeLast(this.logLineCount));
             // and include the version of the game if possible
             var gameFileHeader = Game.activeGame?.journals?.Entries.FirstOrDefault();
             if (gameFileHeader != null) this.recentLogs = JsonConvert.SerializeObject(gameFileHeader) + "\r\n" + this.recentLogs;

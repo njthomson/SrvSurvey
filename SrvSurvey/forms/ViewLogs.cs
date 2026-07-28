@@ -12,29 +12,42 @@ namespace SrvSurvey
         /// </summary>
         public static void append(string txt)
         {
-            if (BaseForm.get<ViewLogs>() != null)
+            var control = Program.control;
+            if (control == null || control.IsDisposed || !control.IsHandleCreated) return;
+
+            if (control.InvokeRequired)
             {
-                Program.control!.Invoke((MethodInvoker)delegate
+                try
                 {
-                    try
-                    {
-                        var activeForm = BaseForm.get<ViewLogs>();
-                        if (activeForm != null)
-                        {
-                            activeForm.txtLogs.Text += "\r\n" + txt;
-                            activeForm.scrollToEnd();
-                        }
-                    }
-                    catch { }
-                });
+                    control.BeginInvoke((MethodInvoker)(() => appendOnMainThread(txt)));
+                }
+                catch (Exception ex) when (ex is InvalidOperationException or ObjectDisposedException)
+                {
+                    // The application is shutting down or the UI handle was recreated.
+                }
+                return;
+            }
+
+            appendOnMainThread(txt);
+        }
+
+        private static void appendOnMainThread(string txt)
+        {
+            try
+            {
+                var activeForm = BaseForm.get<ViewLogs>();
+                if (activeForm == null || activeForm.IsDisposed) return;
+                activeForm.txtLogs.AppendText("\r\n" + txt);
+                activeForm.scrollToEnd();
+            }
+            catch
+            {
+                // The log viewer is diagnostic-only and can close at any time.
             }
         }
 
-        public List<string> logs;
-
         public ViewLogs()
         {
-            this.logs = Game.logs;
             InitializeComponent();
             this.Icon = Icons.page;
 
@@ -48,7 +61,7 @@ namespace SrvSurvey
 
         private void btnClear_Click(object sender, EventArgs e)
         {
-            this.logs.Clear();
+            Game.clearLogs();
 
             txtLogs.Text = "";
             Game.log("Logs reset");
@@ -56,7 +69,7 @@ namespace SrvSurvey
 
         private void ViewLogs_Load(object sender, EventArgs e)
         {
-            txtLogs.Text = String.Join("\r\n", this.logs);
+            txtLogs.Text = String.Join("\r\n", Game.getLogSnapshot());
             txtLogs.SelectionStart = txtLogs.Text.Length;
         }
 

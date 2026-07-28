@@ -17,13 +17,15 @@ namespace SrvSurvey.game
     /// </summary>
     class Game : IDisposable
     {
+        private static readonly object logSync = new();
+        private static readonly List<string> logs = [];
+
         static Game()
         {
 #if DEBUG
             // This stops logging code from starting up when custom controls are created in Visual Studio designer
             if (Process.GetCurrentProcess().ProcessName != "SrvSurvey") return;
 #endif
-            Game.logs = new List<string>();
             Game.logPath = prepLogFile();
             Game.log($"SrvSurvey version: {Program.releaseVersion}, isAppStoreBuild: {Program.isAppStoreBuild}");
             Game.log($"New log file: {Game.logPath}");
@@ -49,7 +51,7 @@ namespace SrvSurvey.game
             Directory.CreateDirectory(Game.logFolder);
             var datepart = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             var filepath = Path.Combine(Game.logFolder, $"srvs-{datepart}.txt")!;
-            File.WriteAllLines(filepath, Game.logs);
+            File.WriteAllLines(filepath, getLogSnapshot());
 
             return filepath;
         }
@@ -60,27 +62,32 @@ namespace SrvSurvey.game
 
             Debug.WriteLine(txt);
 
-            Game.logs.Add(txt);
-
-            ViewLogs.append(txt);
-
-            try
+            lock (logSync)
             {
-                File.AppendAllText(Game.logPath, txt + "\r\n");
-            }
-            catch
-            {
-                // try one more shortly afterwards
-                Application.DoEvents();
                 try
                 {
+                    Game.logs.Add(txt);
                     File.AppendAllText(Game.logPath, txt + "\r\n");
                 }
                 catch
                 {
-                    // and give up if the 2nd attempt fails too
+                    // Logging must never interfere with journal processing or uploaders.
                 }
             }
+
+            // The viewer marshals asynchronously, so background uploaders never wait
+            // for the UI while holding one of their own locks.
+            ViewLogs.append(txt);
+        }
+
+        internal static string[] getLogSnapshot()
+        {
+            lock (logSync) return logs.ToArray();
+        }
+
+        internal static void clearLogs()
+        {
+            lock (logSync) logs.Clear();
         }
 
         private static void removeExcessLogFiles()
@@ -98,7 +105,6 @@ namespace SrvSurvey.game
             }
         }
 
-        public static readonly List<string> logs;
         private static readonly string logPath;
         public static string logFolder = Path.Combine(Program.dataFolder, "logs", "");
 
@@ -248,7 +254,7 @@ namespace SrvSurvey.game
         {
             if (disposing)
             {
-                EDDN.header = null;
+                Game.eddn.endSession(this);
 
                 if (this.journals != null)
                 {
@@ -599,6 +605,7 @@ namespace SrvSurvey.game
         private void initializeFromJournal(LoadGame? loadEntry = null)
         {
             log($"Game.initializeFromJournal: BEGIN {this.Commander} (FID:{this.fid}), journals.Count:{journals?.Count}");
+            UploadPayloadHeader? eddnHeader = null;
 
             if (loadEntry == null)
                 loadEntry = this.journals!.FindEntryByType<LoadGame>(-1, true);
@@ -615,7 +622,7 @@ namespace SrvSurvey.game
 
                 // set EDDN upload header
                 var gameFileHeader = journals?.Entries.OfType<Fileheader>().FirstOrDefault();
-                EDDN.header = new UploadPayloadHeader(
+                eddnHeader = new UploadPayloadHeader(
                     loadEntry.Commander,
                     gameFileHeader?.gameversion ?? loadEntry.gameversion,
                     gameFileHeader?.build ?? loadEntry.build,
@@ -779,7 +786,7 @@ namespace SrvSurvey.game
                 this.cargoFile.Inventory.Clear();
             }
 
-            Game.eddn.beginSession(this);
+            Game.eddn.beginSession(this, eddnHeader);
             log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{cmdr?.currentSystem}, systemLocation:{cmdr?.lastSystemLocation}, systemBody:{this.systemBody}, journals.Count:{journals.Count}");
             this.initialized = Game.activeGame == this && this.Commander != null;
             this.checkModeChange();
@@ -1111,7 +1118,14 @@ namespace SrvSurvey.game
 
                 // EDDN also needs raw events that SrvSurvey does not otherwise hydrate,
                 // such as Outfitting, Shipyard and FCMaterials file notifications.
-                eddn.onJournalEntry(this, raw);
+                try
+                {
+                    eddn.onJournalEntry(this, raw);
+                }
+                catch (Exception ex)
+                {
+                    Game.log($"EDDN ignored an exception processing '{eventName}' so other journal consumers can continue:\r\n{ex}");
+                }
 
                 // finally, let active quests know about this
                 PlayState.current?.processJournalEntry(raw).justDoIt();

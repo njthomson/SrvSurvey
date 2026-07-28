@@ -56,7 +56,7 @@ namespace SrvSurvey.net
                         using var jsonReader = new JsonTextReader(reader);
                         var content = await JObject.LoadAsync(
                             jsonReader,
-                            cancellationToken);
+                            cancellationToken).ConfigureAwait(false);
                         if (content.Value<string>("event") != eventName)
                         {
                             lastError = $"{eventName}.json contained a different event";
@@ -81,7 +81,7 @@ namespace SrvSurvey.net
                 }
 
                 if (attempt < delays.Count)
-                    await Task.Delay(delays[attempt], cancellationToken);
+                    await Task.Delay(delays[attempt], cancellationToken).ConfigureAwait(false);
             }
 
             return new EddnCompanionReadResult(
