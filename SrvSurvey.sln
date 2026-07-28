@@ -24,6 +24,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SrvSurvey", "SrvSurvey\SrvS
 EndProject
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "SrvSurvey.Package", "SrvSurvey.Package\SrvSurvey.Package.wapproj", "{7ACA3CF3-6EFD-4484-848A-FF3372C7FB31}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SrvSurvey.Tests", "SrvSurvey.Tests\SrvSurvey.Tests.csproj", "{5B23C7FA-C590-442A-8EE8-9CFEFB5A7DA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -48,6 +50,14 @@ Global
 		{7ACA3CF3-6EFD-4484-848A-FF3372C7FB31}.Release|x64.Build.0 = Release|x64
 		{7ACA3CF3-6EFD-4484-848A-FF3372C7FB31}.Release|x64.Deploy.0 = Release|x64
 		{7ACA3CF3-6EFD-4484-848A-FF3372C7FB31}.ReleaseOnce|x64.ActiveCfg = ReleaseOnce|x64
+		{5B23C7FA-C590-442A-8EE8-9CFEFB5A7DA0}.Debug|x64.ActiveCfg = Debug|x64
+		{5B23C7FA-C590-442A-8EE8-9CFEFB5A7DA0}.Debug|x64.Build.0 = Debug|x64
+		{5B23C7FA-C590-442A-8EE8-9CFEFB5A7DA0}.DebugNoPS|x64.ActiveCfg = DebugNoPS|x64
+		{5B23C7FA-C590-442A-8EE8-9CFEFB5A7DA0}.DebugNoPS|x64.Build.0 = DebugNoPS|x64
+		{5B23C7FA-C590-442A-8EE8-9CFEFB5A7DA0}.Release|x64.ActiveCfg = Release|x64
+		{5B23C7FA-C590-442A-8EE8-9CFEFB5A7DA0}.Release|x64.Build.0 = Release|x64
+		{5B23C7FA-C590-442A-8EE8-9CFEFB5A7DA0}.ReleaseOnce|x64.ActiveCfg = ReleaseOnce|x64
+		{5B23C7FA-C590-442A-8EE8-9CFEFB5A7DA0}.ReleaseOnce|x64.Build.0 = ReleaseOnce|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

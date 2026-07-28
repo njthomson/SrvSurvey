@@ -135,6 +135,8 @@ namespace SrvSurvey.game
         public string commander;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string? rccApiKey;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public string? inaraApiKey;
         public bool isOdyssey;
 
         /// <summary> The filename of the active journey </summary>

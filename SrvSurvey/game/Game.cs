@@ -39,6 +39,7 @@ namespace SrvSurvey.game
             git = new Git();
             rcc = new RavenColonial.RavenColonial();
             eddn = new EDDN();
+            inara = new Inara();
         }
 
         #region logging
@@ -113,6 +114,7 @@ namespace SrvSurvey.game
         public static Git git { get; private set; }
         public static RavenColonial.RavenColonial rcc { get; private set; }
         public static EDDN eddn { get; private set; }
+        public static Inara inara { get; private set; }
 
         public bool initialized { get; private set; } // TODO: reconcile with "Game.ready"
 
@@ -1109,6 +1111,9 @@ namespace SrvSurvey.game
                     if (Game.settings.eddnUpload && EDDN.header != null)
                         eddn.onJournalEntry(this, (dynamic)entry, raw);
                 }
+
+                // Inara also understands selected journal events that SrvSurvey has no typed class for.
+                inara.onJournalEntry(this, raw);
 
                 // finally, let active quests know about this
                 PlayState.current?.processJournalEntry(raw).justDoIt();

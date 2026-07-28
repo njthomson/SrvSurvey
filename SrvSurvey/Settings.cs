@@ -281,6 +281,10 @@ namespace SrvSurvey
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string? eddnEnvironment = null;
 
+        /// <summary>Whether the user has explicitly opted in to Inara commander updates.</summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool inaraUpload = false;
+
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool disableBioPredictions = false;
 
