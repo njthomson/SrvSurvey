@@ -36,12 +36,16 @@
             These features are disabled unless you explicitly enable them in Settings.
         </p>
         <p>
-            If you enable EDDN sharing, SrvSurvey sends supported new journal events to the
+            If you enable EDDN sharing, SrvSurvey sends public game-world data from supported new journal events and
+            the Market, Outfitting, Shipyard, Fleet Carrier Materials, and navigation-route companion files to the
             <a href="https://github.com/EDCD/EDDN" target="eddn">Elite Dangerous Data Network</a>.
             Each upload includes your Commander name as EDDN's uploader identifier, the game and SrvSurvey versions,
             and public game-world data from the event. EDDN obfuscates the uploader identifier before relaying the data.
             SrvSurvey removes localized and Commander-specific event fields required to be excluded by the EDDN schemas,
-            and it does not upload journal history read during startup.
+            and it does not upload journal history read during startup. Uploads are sent without an EDDN account,
+            API key, or access token. If EDDN is temporarily unavailable, unsent messages are stored in a local retry
+            queue under SrvSurvey's application-data folder. They are removed after successful delivery, after a
+            permanent rejection, or when you disable EDDN sharing.
         </p>
     </div>
 

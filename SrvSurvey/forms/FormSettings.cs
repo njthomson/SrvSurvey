@@ -429,6 +429,7 @@ namespace SrvSurvey
             }
 
             Game.settings.Save();
+            Game.eddn.setEnabled(Game.settings.eddnUploadEnabled);
 
             this.DialogResult = DialogResult.OK;
 
