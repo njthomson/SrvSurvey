@@ -30,7 +30,19 @@
 <body>
     <div>
         <h1>Privacy policy for SrvSurvey</h1>
-        SrvSurvey does not collect any or transmit personal data.
+        <p>SrvSurvey does not collect personal data for its developer.</p>
+        <p>
+            Optional data-sharing features can transmit Elite Dangerous game data to third-party community services.
+            These features are disabled unless you explicitly enable them in Settings.
+        </p>
+        <p>
+            If you enable EDDN sharing, SrvSurvey sends supported new journal events to the
+            <a href="https://github.com/EDCD/EDDN" target="eddn">Elite Dangerous Data Network</a>.
+            Each upload includes your Commander name as EDDN's uploader identifier, the game and SrvSurvey versions,
+            and public game-world data from the event. EDDN obfuscates the uploader identifier before relaying the data.
+            SrvSurvey removes localized and Commander-specific event fields required to be excluded by the EDDN schemas,
+            and it does not upload journal history read during startup.
+        </p>
     </div>
 
     <div class="footer">

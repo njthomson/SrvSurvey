@@ -103,6 +103,7 @@ namespace SrvSurvey
             // pre-select a tab?
             if (firstTab != null && tabControl.TabPages.ContainsKey(firstTab))
                 tabControl.SelectedTab = tabControl.TabPages[firstTab];
+
         }
 
         /// <summary>
@@ -942,11 +943,6 @@ namespace SrvSurvey
             checkBox46.Enabled = checkColonization.Checked && checkBox49.Checked && checkBox43.Checked;
             checkBox47.Enabled = checkColonization.Checked && checkBox49.Checked && checkBox43.Checked;
             checkBox48.Enabled = checkColonization.Checked && checkBox49.Checked && checkBox43.Checked;
-        }
-
-        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Util.openLink("https://ravencolonial.com/user");
         }
 
         private void checkEnableVR_CheckedChanged(object sender, EventArgs e)
