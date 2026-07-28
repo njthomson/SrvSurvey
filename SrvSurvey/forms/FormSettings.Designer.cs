@@ -188,6 +188,7 @@ namespace SrvSurvey
             checkBox4 = new CheckBox2();
             tabExternalData = new TabPage();
             checkInaraUpload = new CheckBox2();
+            checkInaraDeveloperTestMode = new CheckBox2();
             labelInaraApiKey = new Label();
             txtInaraApiKey = new TextBox();
             linkInaraApiKey = new LinkLabel();
@@ -2555,6 +2556,7 @@ namespace SrvSurvey
             // tabExternalData
             // 
             tabExternalData.BorderStyle = BorderStyle.Fixed3D;
+            tabExternalData.Controls.Add(checkInaraDeveloperTestMode);
             tabExternalData.Controls.Add(linkInaraApiKey);
             tabExternalData.Controls.Add(txtInaraApiKey);
             tabExternalData.Controls.Add(labelInaraApiKey);
@@ -2597,6 +2599,21 @@ namespace SrvSurvey
             checkInaraUpload.UseVisualStyleBackColor = true;
             checkInaraUpload.CheckedChanged += checkInaraUpload_CheckedChanged;
             //
+            // checkInaraDeveloperTestMode
+            //
+            checkInaraDeveloperTestMode.AutoSize = true;
+            checkInaraDeveloperTestMode.CheckAlign = ContentAlignment.TopLeft;
+            checkInaraDeveloperTestMode.CheckColor = SystemColors.ControlText;
+            checkInaraDeveloperTestMode.LineColor = SystemColors.ActiveBorder;
+            checkInaraDeveloperTestMode.Location = new Point(522, 57);
+            checkInaraDeveloperTestMode.Name = "checkInaraDeveloperTestMode";
+            checkInaraDeveloperTestMode.Size = new Size(162, 19);
+            checkInaraDeveloperTestMode.TabIndex = 39;
+            checkInaraDeveloperTestMode.Tag = "inaraDeveloperTestMode";
+            checkInaraDeveloperTestMode.Text = "Inara developer test mode";
+            checkInaraDeveloperTestMode.TextAlign = ContentAlignment.TopLeft;
+            checkInaraDeveloperTestMode.UseVisualStyleBackColor = true;
+            //
             // labelInaraApiKey
             //
             labelInaraApiKey.AutoSize = true;
@@ -2617,10 +2634,10 @@ namespace SrvSurvey
             // linkInaraApiKey
             //
             linkInaraApiKey.AutoSize = true;
-            linkInaraApiKey.Location = new Point(465, 57);
+            linkInaraApiKey.Location = new Point(375, 57);
             linkInaraApiKey.Name = "linkInaraApiKey";
             linkInaraApiKey.Size = new Size(143, 15);
-            linkInaraApiKey.TabIndex = 39;
+            linkInaraApiKey.TabIndex = 40;
             linkInaraApiKey.TabStop = true;
             linkInaraApiKey.Text = "Get your API key at Inara";
             linkInaraApiKey.LinkClicked += linkInaraApiKey_LinkClicked;
@@ -4121,6 +4138,7 @@ namespace SrvSurvey
         private CheckBox2 checkBox210;
         private LinkLabel linkLabel4;
         private CheckBox2 checkInaraUpload;
+        private CheckBox2 checkInaraDeveloperTestMode;
         private Label labelInaraApiKey;
         private TextBox txtInaraApiKey;
         private LinkLabel linkInaraApiKey;

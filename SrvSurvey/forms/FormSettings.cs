@@ -548,6 +548,7 @@ namespace SrvSurvey
                 sender as CheckBox,
                 groupColonization,
                 checkInaraUpload,
+                checkInaraDeveloperTestMode,
                 labelInaraApiKey,
                 txtInaraApiKey,
                 linkInaraApiKey);
@@ -564,6 +565,7 @@ namespace SrvSurvey
             this.labelInaraApiKey.Enabled = enabled;
             this.txtInaraApiKey.Enabled = enabled;
             this.linkInaraApiKey.Enabled = enabled;
+            this.checkInaraDeveloperTestMode.Enabled = enabled;
         }
 
         private void linkInaraApiKey_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

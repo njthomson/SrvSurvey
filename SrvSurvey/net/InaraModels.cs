@@ -29,14 +29,14 @@ namespace SrvSurvey.net
         public static JObject Build(
             string appVersion,
             InaraCredentials credentials,
-            IReadOnlyCollection<InaraEvent> events)
+            IReadOnlyCollection<InaraEvent> events,
+            bool isBeingDeveloped)
         {
             var header = new JObject
             {
                 ["appName"] = "SrvSurvey",
                 ["appVersion"] = appVersion,
-                // The registered Inara application is currently in development mode.
-                ["isBeingDeveloped"] = true,
+                ["isBeingDeveloped"] = isBeingDeveloped,
                 ["APIkey"] = credentials.ApiKey,
                 ["commanderName"] = credentials.Commander,
             };

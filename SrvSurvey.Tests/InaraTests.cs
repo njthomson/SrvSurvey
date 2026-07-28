@@ -25,7 +25,9 @@ public sealed class InaraTests
         var loadedExistingSettings = new JObject().ToObject<Settings>();
 
         Assert.False(settings.inaraUpload);
+        Assert.False(settings.inaraDeveloperTestMode);
         Assert.False(loadedExistingSettings!.inaraUpload);
+        Assert.False(loadedExistingSettings.inaraDeveloperTestMode);
     }
 
     [Fact]
@@ -41,16 +43,28 @@ public sealed class InaraTests
         var credentials = new InaraCredentials("Test Commander", "F123456", "personal-key");
         var events = new[] { new InaraEvent("getCommanderProfile", "2026-07-28T12:00:00Z", new JObject()) };
 
-        var payload = InaraPayloadBuilder.Build("2.0.95.0", credentials, events);
+        var payload = InaraPayloadBuilder.Build("2.0.95.0", credentials, events, false);
         var header = Assert.IsType<JObject>(payload["header"]);
 
         Assert.Equal("SrvSurvey", header.Value<string>("appName"));
         Assert.Equal("personal-key", header.Value<string>("APIkey"));
         Assert.Equal("Test Commander", header.Value<string>("commanderName"));
         Assert.Equal("F123456", header.Value<string>("commanderFrontierID"));
-        Assert.True(header.Value<bool>("isBeingDeveloped"));
+        Assert.False(header.Value<bool>("isBeingDeveloped"));
         Assert.Null(header["applicationKey"]);
         Assert.Null(header["applicationAccessToken"]);
+    }
+
+    [Fact]
+    public void DeveloperTestModeIsSentOnlyWhenEnabled()
+    {
+        var credentials = new InaraCredentials("Test Commander", "F123456", "personal-key");
+        var events = new[] { new InaraEvent("getCommanderProfile", "2026-07-28T12:00:00Z", new JObject()) };
+
+        var payload = InaraPayloadBuilder.Build("2.0.95.0", credentials, events, true);
+        var header = Assert.IsType<JObject>(payload["header"]);
+
+        Assert.True(header.Value<bool>("isBeingDeveloped"));
     }
 
     [Theory]

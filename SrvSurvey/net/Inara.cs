@@ -262,7 +262,11 @@ namespace SrvSurvey.net
 
                     try
                     {
-                        var payload = InaraPayloadBuilder.Build(Program.releaseVersion, group.Key, batch.Select(item => item.Event).ToList());
+                        var payload = InaraPayloadBuilder.Build(
+                            Program.releaseVersion,
+                            group.Key,
+                            batch.Select(item => item.Event).ToList(),
+                            Game.settings.inaraDeveloperTestMode);
                         using var content = new StringContent(payload.ToString(Formatting.None), Encoding.UTF8, "application/json");
                         using var response = await client.PostAsync(Endpoint, content);
 
