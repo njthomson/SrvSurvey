@@ -67,6 +67,7 @@ namespace SrvSurvey
             checkGalMapPlotter.Enabled = checkUseSystemData.Checked;
             checkPlotJumpInfo.Enabled = checkUseSystemData.Checked;
             checkHideMyOwnCanonnSignals.Enabled = checkUseSystemData.Checked;
+            this.updateInaraControls();
 
             checkBodyInfoMap.Enabled = checkBodyInfoOrbit.Enabled = checkBodyInfo.Checked;
 
@@ -273,10 +274,12 @@ namespace SrvSurvey
                 this.txtRavenCmdr.Text = cmdrSettings.commander + " ?";
                 this.validApiKey = cmdrSettings.rccApiKey;
                 this.txtRavenApiKey.Text = cmdrSettings.rccApiKey;
+                this.txtInaraApiKey.Text = cmdrSettings.inaraApiKey ?? string.Empty;
             }
             else
             {
                 groupRaven.setChildrenEnabled(false);
+                txtInaraApiKey.Text = string.Empty;
             }
 
             this.prepKeyChords();
@@ -447,6 +450,9 @@ namespace SrvSurvey
             if (cmdrSettings != null)
             {
                 cmdrSettings.rccApiKey = this.validApiKey;
+                cmdrSettings.inaraApiKey = string.IsNullOrWhiteSpace(this.txtInaraApiKey.Text)
+                    ? null
+                    : this.txtInaraApiKey.Text.Trim();
                 cmdrSettings.Save();
             }
 
@@ -538,7 +544,31 @@ namespace SrvSurvey
 
         private void disableEverythingElse_CheckedChanged(object sender, EventArgs e)
         {
-            disableEverythingElse(sender as CheckBox, groupColonization);
+            disableEverythingElse(
+                sender as CheckBox,
+                groupColonization,
+                checkInaraUpload,
+                labelInaraApiKey,
+                txtInaraApiKey,
+                linkInaraApiKey);
+        }
+
+        private void checkInaraUpload_CheckedChanged(object sender, EventArgs e)
+        {
+            this.updateInaraControls();
+        }
+
+        private void updateInaraControls()
+        {
+            var enabled = this.cmdrSettings != null && this.checkInaraUpload.Checked;
+            this.labelInaraApiKey.Enabled = enabled;
+            this.txtInaraApiKey.Enabled = enabled;
+            this.linkInaraApiKey.Enabled = enabled;
+        }
+
+        private void linkInaraApiKey_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Util.openLink("https://inara.cz/settings-api");
         }
 
         private void disableEverythingGuardian_CheckedChanged(object sender, EventArgs e)

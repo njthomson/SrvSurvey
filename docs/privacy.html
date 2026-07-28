@@ -13,11 +13,9 @@
         }
 
         .footer {
-            position: absolute;
-            padding: 0;
+            padding-top: 2rem;
             margin: 0;
             width: 99%;
-            bottom: 4px;
             text-align: center;
             font-size: 10px;
         }
@@ -30,7 +28,14 @@
 <body>
     <div>
         <h1>Privacy policy for SrvSurvey</h1>
-        SrvSurvey does not collect any or transmit personal data.
+        <p>SrvSurvey reads Elite Dangerous journal and companion files on your computer to provide its features. SrvSurvey's developer does not operate a service that collects this data.</p>
+
+        <h2>Optional Inara uploads</h2>
+        <p>Inara uploads are disabled by default. If you explicitly enable <em>Upload data to Inara</em> and provide your personal Inara API key, SrvSurvey sends supported commander updates directly to Inara. These updates may include your commander name and Frontier ID, ranks and reputation, current location and travel, inventories and statistics, ships and loadouts, missions, combat events, suits, community goals, and friends.</p>
+        <p>Your personal Inara API key is stored locally in the settings file for that commander and is sent only to Inara as part of authenticated API requests. SrvSurvey does not write the key or complete upload payloads to its log. You can stop new uploads at any time by clearing the checkbox.</p>
+        <p>Data sent to Inara is handled under <a href="https://inara.cz/elite/policies/" target="inara">Inara's privacy policy</a>. You can obtain or manage your personal API key in your <a href="https://inara.cz/settings-api" target="inara">Inara API settings</a>.</p>
+
+        <p>Last updated: July 28, 2026.</p>
     </div>
 
     <div class="footer">

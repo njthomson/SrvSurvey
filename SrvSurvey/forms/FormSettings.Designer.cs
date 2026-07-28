@@ -187,6 +187,10 @@ namespace SrvSurvey
             checkBox8 = new CheckBox2();
             checkBox4 = new CheckBox2();
             tabExternalData = new TabPage();
+            checkInaraUpload = new CheckBox2();
+            labelInaraApiKey = new Label();
+            txtInaraApiKey = new TextBox();
+            linkInaraApiKey = new LinkLabel();
             groupRaven = new GroupBox2();
             txtRavenApiKey = new TextBox2();
             txtRavenCmdr = new TextBox();
@@ -2551,6 +2555,10 @@ namespace SrvSurvey
             // tabExternalData
             // 
             tabExternalData.BorderStyle = BorderStyle.Fixed3D;
+            tabExternalData.Controls.Add(linkInaraApiKey);
+            tabExternalData.Controls.Add(txtInaraApiKey);
+            tabExternalData.Controls.Add(labelInaraApiKey);
+            tabExternalData.Controls.Add(checkInaraUpload);
             tabExternalData.Controls.Add(groupRaven);
             tabExternalData.Controls.Add(groupColonization);
             tabExternalData.Controls.Add(numPriorScanMinValue);
@@ -2572,6 +2580,50 @@ namespace SrvSurvey
             tabExternalData.Size = new Size(699, 448);
             tabExternalData.TabIndex = 6;
             tabExternalData.Text = "External Data";
+            //
+            // checkInaraUpload
+            //
+            checkInaraUpload.AutoSize = true;
+            checkInaraUpload.CheckAlign = ContentAlignment.TopLeft;
+            checkInaraUpload.CheckColor = SystemColors.ControlText;
+            checkInaraUpload.LineColor = SystemColors.ActiveBorder;
+            checkInaraUpload.Location = new Point(505, 6);
+            checkInaraUpload.Name = "checkInaraUpload";
+            checkInaraUpload.Size = new Size(139, 19);
+            checkInaraUpload.TabIndex = 36;
+            checkInaraUpload.Tag = "inaraUpload";
+            checkInaraUpload.Text = "Upload data to Inara";
+            checkInaraUpload.TextAlign = ContentAlignment.TopLeft;
+            checkInaraUpload.UseVisualStyleBackColor = true;
+            checkInaraUpload.CheckedChanged += checkInaraUpload_CheckedChanged;
+            //
+            // labelInaraApiKey
+            //
+            labelInaraApiKey.AutoSize = true;
+            labelInaraApiKey.Location = new Point(375, 34);
+            labelInaraApiKey.Name = "labelInaraApiKey";
+            labelInaraApiKey.Size = new Size(84, 15);
+            labelInaraApiKey.TabIndex = 37;
+            labelInaraApiKey.Text = "Inara API Key:";
+            //
+            // txtInaraApiKey
+            //
+            txtInaraApiKey.Location = new Point(465, 30);
+            txtInaraApiKey.Name = "txtInaraApiKey";
+            txtInaraApiKey.Size = new Size(221, 23);
+            txtInaraApiKey.TabIndex = 38;
+            txtInaraApiKey.UseSystemPasswordChar = true;
+            //
+            // linkInaraApiKey
+            //
+            linkInaraApiKey.AutoSize = true;
+            linkInaraApiKey.Location = new Point(465, 57);
+            linkInaraApiKey.Name = "linkInaraApiKey";
+            linkInaraApiKey.Size = new Size(143, 15);
+            linkInaraApiKey.TabIndex = 39;
+            linkInaraApiKey.TabStop = true;
+            linkInaraApiKey.Text = "Get your API key at Inara";
+            linkInaraApiKey.LinkClicked += linkInaraApiKey_LinkClicked;
             // 
             // groupRaven
             // 
@@ -2843,9 +2895,9 @@ namespace SrvSurvey
             // 
             pictureBox7.BackgroundImage = (Image)resources.GetObject("pictureBox7.BackgroundImage");
             pictureBox7.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox7.Location = new Point(375, 22);
+            pictureBox7.Location = new Point(375, 78);
             pictureBox7.Name = "pictureBox7";
-            pictureBox7.Size = new Size(228, 131);
+            pictureBox7.Size = new Size(228, 75);
             pictureBox7.TabIndex = 28;
             pictureBox7.TabStop = false;
             // 
@@ -4068,5 +4120,9 @@ namespace SrvSurvey
         private CheckBox2 checkBox57;
         private CheckBox2 checkBox210;
         private LinkLabel linkLabel4;
+        private CheckBox2 checkInaraUpload;
+        private Label labelInaraApiKey;
+        private TextBox txtInaraApiKey;
+        private LinkLabel linkInaraApiKey;
     }
 }
