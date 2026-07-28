@@ -617,7 +617,11 @@ namespace SrvSurvey.game
                 if (journals?.Entries.Count > 0)
                 {
                     var gameFileHeader = (Fileheader)journals.Entries.First();
-                    EDDN.header = new UploadPayloadHeader(loadEntry.Commander, gameFileHeader.gameversion, gameFileHeader.build);
+                    EDDN.header = new UploadPayloadHeader(
+                        loadEntry.Commander,
+                        gameFileHeader.gameversion,
+                        gameFileHeader.build,
+                        Program.releaseVersion);
                 }
             }
 
@@ -1106,7 +1110,7 @@ namespace SrvSurvey.game
                     PlotBase2.processJournalEntry(entry);
 
                     // upload to EDDN?
-                    if (Game.settings.eddnUpload && EDDN.header != null)
+                    if (Game.settings.eddnUploadEnabled && EDDN.header != null)
                         eddn.onJournalEntry(this, (dynamic)entry, raw);
                 }
 

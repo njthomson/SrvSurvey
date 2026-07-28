@@ -11,54 +11,53 @@ namespace SrvSurvey.net
     internal class EDDN
     {
         public static UploadPayloadHeader? header;
-        private static HttpClient client;
-        private static string useEnv = "dev";
+        private readonly EddnTransport transport;
         private static bool logAllUploads;
-        private static Dictionary<string, string> urls = new()
-        {
-            { "dev", "https://dev.eddn.edcd.io:4432/upload/" },
-            { "beta", "https://beta.eddn.edcd.io:4431/upload/" },
-            { "live", "https://eddn.edcd.io:4430/upload/" }
-        };
 
-        static EDDN()
+        internal EDDN()
         {
-            client = new HttpClient(); // Not yet --> Util.getResilienceHandler());
-            client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
+            transport = new EddnTransport(userAgent: Program.userAgent);
         }
 
         private async Task upload(JObject message, string schemaRef)
         {
-            if (!Game.settings.eddnUpload || EDDN.header == null) return;
+            if (!Game.settings.eddnUploadEnabled || EDDN.header == null) return;
 
             if (logAllUploads)
             {
-                Game.log($"Send to EDDN: {message.Value<string>("event")}\r\n" + JsonConvert.SerializeObject(new JObject
-                {
-                    ["$schemaRef"] = schemaRef,
-                    ["header"] = JObject.FromObject(EDDN.header!),
-                    ["message"] = message,
-                }, Formatting.Indented));
+                Game.log($"Send to EDDN: {message.Value<string>("event")} ({schemaRef})");
             }
 
-            var payload = JsonConvert.SerializeObject(new JObject
+            try
             {
-                ["$schemaRef"] = schemaRef,
-                ["header"] = JObject.FromObject(EDDN.header!),
-                ["message"] = message,
-            });
-            var url = urls[Game.settings.eddnEnvironment ?? useEnv];
-            if (url != urls["live"]) schemaRef += "/test";
-
-            if (DateTime.Now.Year > 3000)
+                var result = await transport.upload(
+                    message,
+                    schemaRef,
+                    EDDN.header,
+                    Game.settings.eddnEnvironment);
+                if (result.skipReason != null)
+                {
+                    Game.log($"EDDN skipped {message.Value<string>("event")}: {result.skipReason}");
+                }
+                else if (!result.isSuccess)
+                {
+                    var detail = string.IsNullOrWhiteSpace(result.responseDetail)
+                        ? result.reasonPhrase
+                        : result.responseDetail.Replace('\r', ' ').Replace('\n', ' ').Trim();
+                    Game.log($"EDDN upload failed for {message.Value<string>("event")}: HTTP {(int?)result.statusCode} ({detail})");
+                }
+                else if (logAllUploads)
+                {
+                    Game.log($"EDDN uploaded {message.Value<string>("event")} to {result.environment}");
+                }
+            }
+            catch (OperationCanceledException)
             {
-                var response = await client.PostAsync(url, new StringContent(payload, Encoding.UTF8, "application/json"));
-
-                Game.log($"EDDN upload response: {response.StatusCode} : {response.ReasonPhrase}");
-
-                var body = await response.Content.ReadAsStringAsync();
-                if (!response.IsSuccessStatusCode)
-                    Game.log($"EDDN.upload: failed: payload:\r\n{payload}\r\nbody:\r\n{body}");
+                Game.log($"EDDN upload timed out for {message.Value<string>("event")}");
+            }
+            catch (Exception ex) when (ex is HttpRequestException or IOException)
+            {
+                Game.log($"EDDN upload failed for {message.Value<string>("event")}: {ex.Message}");
             }
         }
 
@@ -101,27 +100,14 @@ namespace SrvSurvey.net
         {
             if (raw.Value<long>("SystemAddress") != game.systemData?.address || game.journals == null) return;
 
-            // serialize
-            var message = new JObject(raw);
-
-            // trim (BodyID will be put back below if conditions are met)
-            trim(message, "*_Localised", nameof(CodexEntry.BodyID), nameof(CodexEntry.IsNewEntry), nameof(CodexEntry.NewTraitsDiscovered));
-
-            // augment
-            message["StarSystem"] = raw.Value<string>("System");
-            message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey.HasValue) message["odyssey"] = game.journals.isGameOdyssey.Value;
-            if (game.journals.isGameHorizons.HasValue) message["horizons"] = game.journals.isGameHorizons.Value;
-
-            // Only set body name/ID if status.json has a BodyName and it matches the body we are tracking ...
-            if (game.status.BodyName != null && game.systemBody != null && game.status.BodyName == game.systemBody.name)
-            {
-                message["BodyName"] = game.status.BodyName;
-
-                // Set BodyID only if it matches our tracked body and that name matches status.json
-                if (raw.Value<int>("BodyID") == game.systemBody.id)
-                    message["BodyID"] = game.systemBody.id;
-            }
+            var message = EddnMessageSanitizer.codexEntry(
+                raw,
+                game.systemData.starPos,
+                game.journals.isGameOdyssey,
+                game.journals.isGameHorizons,
+                game.status.BodyName,
+                game.systemBody?.name,
+                game.systemBody?.id);
 
             upload(message, "https://eddn.edcd.io/schemas/codexentry/1").justDoIt();
         }
@@ -431,22 +417,4 @@ namespace SrvSurvey.net
         }
     }
 
-    class UploadPayloadHeader
-    {
-        public string uploaderID;
-        public string softwareName;
-        public string softwareVersion;
-        public string gameVersion;
-        public string gamebuild;
-
-        public UploadPayloadHeader(string uploaderID, string gameVersion, string gameBuild)
-        {
-            this.uploaderID = uploaderID;
-            this.gameVersion = gameVersion;
-            this.gamebuild = gameBuild;
-
-            this.softwareName = "SrvSurvey";
-            this.softwareVersion = Program.releaseVersion;
-        }
-    }
 }
