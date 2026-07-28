@@ -1,5 +1,8 @@
 using Newtonsoft.Json.Linq;
+using System.IO.Compression;
 using System.Net;
+using System.Security.Cryptography;
+using System.Text;
 using Xunit;
 
 namespace SrvSurvey.net;
@@ -7,59 +10,7 @@ namespace SrvSurvey.net;
 public sealed class EddnTransportTests
 {
     [Fact]
-    public void CodexMessageMatchesTheSchemaSurface()
-    {
-        var raw = JObject.Parse(
-            """
-            {"timestamp":"2026-07-28T12:00:00Z","event":"CodexEntry","System":"Test A","SystemAddress":123,"EntryID":10,"Name":"$Codex_Ent_Bacterial_01_Name;","Name_Localised":"Bacterium","BodyID":4,"IsNewEntry":true,"NewTraitsDiscovered":true}
-            """);
-
-        var message = EddnMessageSanitizer.codexEntry(
-            raw,
-            [1.5, -2, 3],
-            odyssey: true,
-            horizons: true,
-            statusBodyName: "Test A 1",
-            trackedBodyName: "Test A 1",
-            trackedBodyId: 4);
-
-        Assert.Equal("Test A", message.Value<string>("System"));
-        Assert.Null(message["StarSystem"]);
-        Assert.Null(message["Name_Localised"]);
-        Assert.Null(message["IsNewEntry"]);
-        Assert.Null(message["NewTraitsDiscovered"]);
-        Assert.Equal("Test A 1", message.Value<string>("BodyName"));
-        Assert.Equal(4, message.Value<int>("BodyID"));
-        Assert.Equal([1.5, -2, 3], message["StarPos"]!.Values<double>());
-        Assert.True(message.Value<bool>("odyssey"));
-        Assert.True(message.Value<bool>("horizons"));
-    }
-
-    [Fact]
-    public void CodexBodyIdRequiresStatusAndJournalAgreement()
-    {
-        var raw = JObject.Parse(
-            """
-            {"timestamp":"2026-07-28T12:00:00Z","event":"CodexEntry","System":"Test A","SystemAddress":123,"EntryID":10,"BodyID":4}
-            """);
-
-        var message = EddnMessageSanitizer.codexEntry(
-            raw,
-            [1.5, -2, 3],
-            odyssey: null,
-            horizons: null,
-            statusBodyName: "Test A 2",
-            trackedBodyName: "Test A 1",
-            trackedBodyId: 4);
-
-        Assert.Null(message["BodyName"]);
-        Assert.Null(message["BodyID"]);
-        Assert.Null(message["odyssey"]);
-        Assert.Null(message["horizons"]);
-    }
-
-    [Fact]
-    public async Task LiveUploadUsesExactHttp11AndCanonicalHeaderNames()
+    public async Task UploadUsesGzipExactHttp11AndNoAuthentication()
     {
         RecordedRequest? recorded = null;
         var transport = createTransport(async request =>
@@ -79,21 +30,27 @@ public sealed class EddnTransportTests
         Assert.NotNull(recorded);
         Assert.Equal("https://live.example.test/upload/", recorded.uri.ToString());
         Assert.Equal(HttpVersion.Version11, recorded.version);
+        Assert.Equal(HttpVersionPolicy.RequestVersionExact, recorded.versionPolicy);
         Assert.Equal(HttpMethod.Post, recorded.method);
         Assert.StartsWith("application/json", recorded.contentType);
+        Assert.Equal("gzip", recorded.contentEncoding);
+        Assert.Null(recorded.authorization);
 
         var payload = JObject.Parse(recorded.content);
         Assert.Equal(
             "https://eddn.edcd.io/schemas/dockinggranted/1",
             payload.Value<string>("$schemaRef"));
         var payloadHeader = Assert.IsType<JObject>(payload["header"]);
+        Assert.Equal("Test Cmdr", payloadHeader.Value<string>("uploaderID"));
         Assert.Equal("4.1.2.3", payloadHeader.Value<string>("gameversion"));
         Assert.Equal("r123/r0 ", payloadHeader.Value<string>("gamebuild"));
         Assert.Null(payloadHeader["gameVersion"]);
     }
 
-    [Fact]
-    public async Task DevelopmentUploadSerializesTheTestSchemaReference()
+    [Theory]
+    [InlineData("dev")]
+    [InlineData("beta")]
+    public async Task NonLiveUploadSerializesTheTestSchemaReference(string environment)
     {
         RecordedRequest? recorded = null;
         var transport = createTransport(async request =>
@@ -106,19 +63,20 @@ public sealed class EddnTransportTests
             message(),
             "https://eddn.edcd.io/schemas/dockinggranted/1",
             header(),
-            "dev");
+            environment);
 
         Assert.True(result.isSuccess);
-        Assert.Equal("dev", result.environment);
         Assert.NotNull(recorded);
-        Assert.Equal("https://dev.example.test/upload/", recorded.uri.ToString());
+        Assert.Equal(
+            $"https://{environment}.example.test/upload/",
+            recorded.uri.ToString());
         Assert.Equal(
             "https://eddn.edcd.io/schemas/dockinggranted/1/test",
             JObject.Parse(recorded.content).Value<string>("$schemaRef"));
     }
 
     [Fact]
-    public async Task OversizedPayloadIsSkippedWithoutARequest()
+    public async Task OversizedUncompressedPayloadIsSkippedWithoutARequest()
     {
         var calls = 0;
         var transport = createTransport(request =>
@@ -127,7 +85,9 @@ public sealed class EddnTransportTests
             return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK));
         });
         var oversized = message();
-        oversized["detail"] = new string('x', EddnTransport.MaximumPayloadBytes);
+        oversized["detail"] = new string(
+            'x',
+            EddnTransport.MaximumUncompressedPayloadBytes);
 
         var result = await transport.upload(
             oversized,
@@ -138,7 +98,54 @@ public sealed class EddnTransportTests
         Assert.Equal(0, calls);
         Assert.False(result.isSuccess);
         Assert.Null(result.statusCode);
-        Assert.Contains("exceeded", result.skipReason);
+        Assert.Contains("uncompressed", result.skipReason);
+    }
+
+    [Fact]
+    public async Task OversizedCompressedPayloadIsSkippedWithoutARequest()
+    {
+        var calls = 0;
+        var transport = createTransport(request =>
+        {
+            calls++;
+            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK));
+        });
+        var oversized = message();
+        oversized["detail"] = Convert.ToBase64String(
+            RandomNumberGenerator.GetBytes(EddnTransport.MaximumPayloadBytes + 64_000));
+
+        var result = await transport.upload(
+            oversized,
+            "https://eddn.edcd.io/schemas/dockinggranted/1",
+            header(),
+            "live");
+
+        Assert.Equal(0, calls);
+        Assert.False(result.isSuccess);
+        Assert.Null(result.statusCode);
+        Assert.Contains("compressed", result.skipReason);
+    }
+
+    [Theory]
+    [InlineData(HttpStatusCode.BadRequest, false)]
+    [InlineData(HttpStatusCode.RequestEntityTooLarge, false)]
+    [InlineData(HttpStatusCode.UpgradeRequired, false)]
+    [InlineData(HttpStatusCode.TooManyRequests, true)]
+    [InlineData(HttpStatusCode.InternalServerError, true)]
+    public async Task RetryClassificationMatchesTheGatewayContract(
+        HttpStatusCode statusCode,
+        bool expectedRetryable)
+    {
+        var transport = createTransport(_ => Task.FromResult(
+            new HttpResponseMessage(statusCode)));
+
+        var result = await transport.upload(
+            message(),
+            "https://eddn.edcd.io/schemas/dockinggranted/1",
+            header(),
+            "live");
+
+        Assert.Equal(expectedRetryable, result.isRetryable);
     }
 
     [Fact]
@@ -174,7 +181,7 @@ public sealed class EddnTransportTests
         Assert.Equal(expected, EddnTransport.normalizeEnvironment(value));
     }
 
-    private static EddnTransport createTransport(
+    internal static EddnTransport createTransport(
         Func<HttpRequestMessage, Task<HttpResponseMessage>> response)
     {
         return new EddnTransport(
@@ -187,7 +194,7 @@ public sealed class EddnTransportTests
             });
     }
 
-    private static UploadPayloadHeader header()
+    internal static UploadPayloadHeader header()
     {
         return new UploadPayloadHeader(
             "Test Cmdr",
@@ -196,7 +203,7 @@ public sealed class EddnTransportTests
             "2.0.95.0");
     }
 
-    private static JObject message()
+    internal static JObject message()
     {
         return JObject.Parse(
             """
@@ -206,19 +213,29 @@ public sealed class EddnTransportTests
 
     private static async Task<RecordedRequest> record(HttpRequestMessage request)
     {
+        var compressed = await request.Content!.ReadAsByteArrayAsync();
+        using var input = new MemoryStream(compressed);
+        using var gzip = new GZipStream(input, CompressionMode.Decompress);
+        using var reader = new StreamReader(gzip, Encoding.UTF8);
         return new RecordedRequest(
             request.Method,
             request.RequestUri!,
             request.Version,
-            request.Content?.Headers.ContentType?.ToString() ?? string.Empty,
-            await request.Content!.ReadAsStringAsync());
+            request.VersionPolicy,
+            request.Content.Headers.ContentType?.ToString() ?? string.Empty,
+            string.Join(',', request.Content.Headers.ContentEncoding),
+            request.Headers.Authorization?.ToString(),
+            await reader.ReadToEndAsync());
     }
 
     private sealed record RecordedRequest(
         HttpMethod method,
         Uri uri,
         Version version,
+        HttpVersionPolicy versionPolicy,
         string contentType,
+        string contentEncoding,
+        string? authorization,
         string content);
 
     private sealed class StubHandler(

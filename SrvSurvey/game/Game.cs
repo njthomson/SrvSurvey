@@ -614,15 +614,12 @@ namespace SrvSurvey.game
                 log($"Game.initializeFromJournal: USING {this.Commander} (FID:{this.fid}), journals.Count:{journals?.Count}");
 
                 // set EDDN upload header
-                if (journals?.Entries.Count > 0)
-                {
-                    var gameFileHeader = (Fileheader)journals.Entries.First();
-                    EDDN.header = new UploadPayloadHeader(
-                        loadEntry.Commander,
-                        gameFileHeader.gameversion,
-                        gameFileHeader.build,
-                        Program.releaseVersion);
-                }
+                var gameFileHeader = journals?.Entries.OfType<Fileheader>().FirstOrDefault();
+                EDDN.header = new UploadPayloadHeader(
+                    loadEntry.Commander,
+                    gameFileHeader?.gameversion ?? loadEntry.gameversion,
+                    gameFileHeader?.build ?? loadEntry.build,
+                    Program.releaseVersion);
             }
 
             // exit early if we are shutdown
@@ -782,6 +779,7 @@ namespace SrvSurvey.game
                 this.cargoFile.Inventory.Clear();
             }
 
+            Game.eddn.beginSession(this);
             log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{cmdr?.currentSystem}, systemLocation:{cmdr?.lastSystemLocation}, systemBody:{this.systemBody}, journals.Count:{journals.Count}");
             this.initialized = Game.activeGame == this && this.Commander != null;
             this.checkModeChange();
@@ -1109,10 +1107,11 @@ namespace SrvSurvey.game
                     // let any active plotters process the entry
                     PlotBase2.processJournalEntry(entry);
 
-                    // upload to EDDN?
-                    if (Game.settings.eddnUploadEnabled && EDDN.header != null)
-                        eddn.onJournalEntry(this, (dynamic)entry, raw);
                 }
+
+                // EDDN also needs raw events that SrvSurvey does not otherwise hydrate,
+                // such as Outfitting, Shipyard and FCMaterials file notifications.
+                eddn.onJournalEntry(this, raw);
 
                 // finally, let active quests know about this
                 PlayState.current?.processJournalEntry(raw).justDoIt();

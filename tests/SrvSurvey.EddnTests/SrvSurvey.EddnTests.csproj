@@ -22,6 +22,10 @@
   <ItemGroup>
     <Compile Include="..\..\SrvSurvey\net\EddnMessageSanitizer.cs"
              Link="EddnMessageSanitizer.cs" />
+    <Compile Include="..\..\SrvSurvey\net\EddnCompanionFileReader.cs"
+             Link="EddnCompanionFileReader.cs" />
+    <Compile Include="..\..\SrvSurvey\net\EddnOutbox.cs"
+             Link="EddnOutbox.cs" />
     <Compile Include="..\..\SrvSurvey\net\EddnTransport.cs"
              Link="EddnTransport.cs" />
   </ItemGroup>
