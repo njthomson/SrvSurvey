@@ -106,11 +106,14 @@ namespace SrvSurvey.plotters
                 tt.newLine(true);
             }
 
+            if (Game.settings.showDssVisitRoute)
+            {
 #if DEBUG
-            this.drawRouteDebug(g, tt);
+                this.drawRouteDebug(g, tt);
 #else
-            this.drawVisitRoute(g, tt, destinationBody);
+                this.drawVisitRoute(g, tt, destinationBody);
 #endif
+            }
 
             return tt.pad(N.six, N.eight);
         }

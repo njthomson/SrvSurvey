@@ -679,6 +679,7 @@ namespace SrvSurvey.game
             body.absoluteMagnitude = entry.AbsoluteMagnitude;
             body.radius = entry.Radius;
             body.parents = entry.Parents;
+            this.invalidateOptimalRoute();
             body.wasDiscovered = entry.WasDiscovered;
             if (!body.wasMapped && entry.WasMapped) body.wasMapped = true;
             if (entry.WasFootfalled.HasValue && entry.WasFootfalled.Value)
@@ -830,6 +831,7 @@ namespace SrvSurvey.game
             body.orbitalPeriod = entry.OrbitalPeriod;
             body.ascendingNode = entry.AscendingNode;
             body.orbitalEpoch = entry.timestamp;
+            this.invalidateOptimalRoute();
 
             return true;
         }
@@ -1661,58 +1663,49 @@ namespace SrvSurvey.game
         public bool suppressBioOverlays;
 
         public List<string> getDssRemainingNames()
+            => this.getDssRemainingTargets().Select(target => target.name).ToList();
+
+        public List<int> getDssRemainingBodyIds()
+            => this.getDssRemainingTargets().Select(target => target.bodyId).Distinct().ToList();
+
+        private List<(int bodyId, string name)> getDssRemainingTargets()
         {
-            var names = new List<string>();
-            var ordered = this.bodies.OrderBy(_ => _.id);
-            foreach (var _ in ordered)
+            var targets = new List<(int bodyId, string name)>();
+            var ordered = this.bodies.OrderBy(body => body.id).ToList();
+            foreach (var body in ordered)
             {
                 // skip things already scanned
-                if (_.dssComplete) continue;
+                if (body.dssComplete) continue;
 
                 // skip anything except Scannable planets
-                if (_.type != SystemBodyType.Giant && _.type != SystemBodyType.SolidBody && _.type != SystemBodyType.LandableBody) continue;
+                if (body.type != SystemBodyType.Giant && body.type != SystemBodyType.SolidBody && body.type != SystemBodyType.LandableBody) continue;
 
-                // inject rings
-                if (!Game.settings.skipRingsDSS && _.hasRings)
+                // Rings use their parent body as the route destination and remain eligible
+                // even when the parent body itself is excluded by a body-specific filter.
+                if (!Game.settings.skipRingsDSS && body.hasRings)
                 {
-                    for (int n = 0; n < _.rings.Count; n++)
+                    for (int n = 0; n < body.rings.Count; n++)
                     {
-                        var ringNotScanned = ordered.FirstOrDefault(b => b.name == _.rings[n].name)?.dssComplete != true;
+                        var ringNotScanned = ordered.FirstOrDefault(candidate => candidate.name == body.rings[n].name)?.dssComplete != true;
                         if (ringNotScanned)
-                            names.Add(_.shortName + $"r{(char)(n + 'A')}");
+                            targets.Add((body.id, body.shortName + $"r{(char)(n + 'A')}"));
                     }
                 }
 
                 // optionally skip gas giants
-                if (Game.settings.skipGasGiantDSS && _.type == SystemBodyType.Giant) continue;
+                if (Game.settings.skipGasGiantDSS && body.type == SystemBodyType.Giant) continue;
 
                 // optionally skip low value bodies
-                if (Game.settings.skipLowValueDSS && _.rewardEstimate < Game.settings.skipLowValueAmount) continue;
+                if (Game.settings.skipLowValueDSS && body.rewardEstimate < Game.settings.skipLowValueAmount) continue;
 
                 // optionally skip anything too far away
-                if (Game.settings.skipHighDistanceDSS && _.distanceFromArrivalLS > Game.settings.skipHighDistanceDSSValue)
+                if (Game.settings.skipHighDistanceDSS && body.distanceFromArrivalLS > Game.settings.skipHighDistanceDSSValue)
                     continue;
 
-                names.Add(_.shortName);
+                targets.Add((body.id, body.shortName));
             }
 
-            return names;
-        }
-
-        public List<int> getDssRemainingBodyIds()
-        {
-            var ids = new List<int>();
-            var ordered = this.bodies.OrderBy(_ => _.id);
-            foreach (var _ in ordered)
-            {
-                if (_.dssComplete) continue;
-                if (_.type != SystemBodyType.Giant && _.type != SystemBodyType.SolidBody && _.type != SystemBodyType.LandableBody) continue;
-                if (Game.settings.skipGasGiantDSS && _.type == SystemBodyType.Giant) continue;
-                if (Game.settings.skipLowValueDSS && _.rewardEstimate < Game.settings.skipLowValueAmount) continue;
-                if (Game.settings.skipHighDistanceDSS && _.distanceFromArrivalLS > Game.settings.skipHighDistanceDSSValue) continue;
-                ids.Add(_.id);
-            }
-            return ids;
+            return targets;
         }
 
         public List<string> getBioRemainingNames()
@@ -2054,6 +2047,13 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public OrbitalCalculator? lastCalculator;
 
+        private static readonly TimeSpan optimalRouteCacheDuration = TimeSpan.FromSeconds(30);
+        private readonly List<int> optimalRouteCache = new();
+        private string? optimalRouteCacheKey;
+        private DateTime optimalRouteCachedAt;
+        private OrbitalCalculator? optimalRouteCacheCalculator;
+        private int orbitalRouteVersion;
+
         public void CalculateOptimalRoute(List<int> targetBodyIds)
         {
             try
@@ -2062,74 +2062,95 @@ namespace SrvSurvey.game
                 foreach (var body in bodies)
                     body.visitOrder = 0;
 
-                lastCalculator = null;
-
-                if (targetBodyIds.Count == 0)
+                var targets = targetBodyIds.Distinct().OrderBy(id => id).ToList();
+                if (targets.Count == 0)
                     return;
 
-                // Build orbital calculator with all bodies (including root bodies at origin)
+                // Start from player's current body if known, otherwise main star.
+                int startBodyId = Game.activeGame?.cmdr?.currentBodyId ?? -1;
+                if (startBodyId < 0 || bodies.All(body => body.id != startBodyId))
+                    startBodyId = bodies.FirstOrDefault(body => body.isMainStar)?.id ?? 0;
+
+                string cacheKey = $"{orbitalRouteVersion}:{startBodyId}:{string.Join(',', targets)}";
+                if (cacheKey == optimalRouteCacheKey && DateTime.UtcNow - optimalRouteCachedAt < optimalRouteCacheDuration)
+                {
+                    applyVisitOrder(optimalRouteCache);
+                    lastCalculator = optimalRouteCacheCalculator;
+                    return;
+                }
+
+                // Parent chains on ordinary Scan events let us infer parents for
+                // ScanBaryCentre bodies, whose journal event has no Parents field.
+                var parentIds = inferOrbitalParentIds();
                 var calculator = new OrbitalCalculator();
                 foreach (var body in bodies)
                 {
-                    // Immediate parent is the first entry in the Parents list
-                    int parentId = body.parents?.FirstOrDefault()?.id ?? -1;
-
-                    if (body.semiMajorAxis > 0 && body.orbitalPeriod > 0 && body.orbitalEpoch.HasValue)
+                    int parentId = parentIds.GetValueOrDefault(body.id, -1);
+                    bool hasOrbitalElements = body.semiMajorAxis > 0 && body.orbitalPeriod > 0 && body.orbitalEpoch.HasValue;
+                    calculator.AddBody(new OrbitalCalculator.OrbitalBody
                     {
-                        calculator.AddBody(new OrbitalCalculator.OrbitalBody
-                        {
-                            BodyId = body.id,
-                            Name = body.name,
-                            SemiMajorAxis = body.semiMajorAxis,
-                            Eccentricity = body.eccentricity,
-                            Inclination = body.orbitalInclination,
-                            ArgumentOfPeriapsis = body.periapsis,
-                            LongitudeAscendingNode = body.ascendingNode,
-                            MeanAnomalyAtEpoch = body.meanAnomaly,
-                            Epoch = body.orbitalEpoch.Value.UtcDateTime,
-                            OrbitalPeriod = body.orbitalPeriod,
-                            Radius = (double)body.radius,
-                            ParentId = parentId,
-                        });
-                    }
-                    else
-                    {
-                        // Root bodies (main star, barycentres with no orbit) placed at origin
-                        calculator.AddBody(new OrbitalCalculator.OrbitalBody
-                        {
-                            BodyId = body.id,
-                            Name = body.name,
-                            ParentId = parentId,
-                        });
-                    }
+                        BodyId = body.id,
+                        Name = body.name,
+                        SemiMajorAxis = body.semiMajorAxis,
+                        Eccentricity = body.eccentricity,
+                        Inclination = body.orbitalInclination,
+                        ArgumentOfPeriapsis = body.periapsis,
+                        LongitudeAscendingNode = body.ascendingNode,
+                        MeanAnomalyAtEpoch = body.meanAnomaly,
+                        Epoch = body.orbitalEpoch?.UtcDateTime ?? default,
+                        OrbitalPeriod = body.orbitalPeriod,
+                        Radius = (double)body.radius,
+                        ParentId = parentId,
+                        IsRoot = OrbitalHierarchy.IsSystemRoot(parentId, body.isMainStar, body.type == SystemBodyType.Barycentre),
+                        HasOrbitalElements = hasOrbitalElements,
+                    });
                 }
 
-                // Calculate current positions
                 calculator.UpdatePositions(DateTime.UtcNow);
+                var route = RouteOptimizer.OptimizeRoute(startBodyId, targets, calculator);
 
-                // Start from player's current body if known, otherwise main star
-                int startBodyId = Game.activeGame?.cmdr?.currentBodyId ?? -1;
-                if (startBodyId < 0 || !calculator.HasBody(startBodyId))
-                    startBodyId = bodies.FirstOrDefault(b => b.isMainStar)?.id ?? 0;
+                optimalRouteCacheKey = cacheKey;
+                optimalRouteCachedAt = DateTime.UtcNow;
+                optimalRouteCache.Clear();
+                optimalRouteCache.AddRange(route);
+                optimalRouteCacheCalculator = calculator;
+                lastCalculator = calculator;
 
-                // Optimize route
-                var route = RouteOptimizer.OptimizeRoute(startBodyId, targetBodyIds, calculator);
-
-                // Set visit orders (skip first as it's the starting position)
-                for (int i = 1; i < route.Count; i++)
+                if (route.Count == 0)
                 {
-                    var body = bodies.FirstOrDefault(b => b.id == route[i]);
-                    if (body != null)
-                        body.visitOrder = i;
+                    Game.log($"Cannot calculate an optimized route for {this.name}: orbital data or parent relationships are incomplete.");
+                    return;
                 }
 
-                lastCalculator = calculator;
-                Game.log($"Calculated optimal route for {targetBodyIds.Count} bodies in {this.name}");
+                applyVisitOrder(route);
+                Game.log($"Calculated optimal route for {targets.Count} bodies in {this.name}");
             }
             catch (Exception ex)
             {
-                Game.log($"Error calculating optimal route: {ex.Message}");
+                Game.log($"Error calculating optimal route: {ex.Message}\r\n\t{ex.StackTrace}");
             }
+        }
+
+        private void applyVisitOrder(IReadOnlyList<int> route)
+        {
+            for (int i = 1; i < route.Count; i++)
+            {
+                var body = bodies.FirstOrDefault(candidate => candidate.id == route[i]);
+                if (body != null)
+                    body.visitOrder = i;
+            }
+        }
+
+        private Dictionary<int, int> inferOrbitalParentIds()
+            => OrbitalHierarchy.InferParentIds(bodies.OrderBy(body => body.id).Select(body =>
+                (body.id, (IReadOnlyList<int>)(body.parents?.Select(parent => parent.id).ToList() ?? new List<int>()))));
+
+        private void invalidateOptimalRoute()
+        {
+            orbitalRouteVersion++;
+            optimalRouteCacheKey = null;
+            optimalRouteCache.Clear();
+            optimalRouteCacheCalculator = null;
         }
 
         #endregion
@@ -2301,7 +2322,7 @@ namespace SrvSurvey.game
         public DateTimeOffset? orbitalEpoch;
 
         /// <summary> Visit order for route optimization (0 = not in route, 1+ = order to visit) </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore]
         public int visitOrder;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
@@ -2437,38 +2458,6 @@ namespace SrvSurvey.game
 
         [JsonIgnore]
         public bool isMainStar => type == SystemBodyType.Star && (this.id == 0 || this.name.EndsWith("A"));
-
-        /// <summary>
-        /// Determine if this body is worth visiting for mapping/exploration
-        /// </summary>
-        [JsonIgnore]
-        public bool shouldVisit
-        {
-            get
-            {
-                // Skip if already mapped
-                if (this.wasMapped || this.dssComplete)
-                    return false;
-
-                // Skip non-valuable types
-                if (!this.hasValue)
-                    return false;
-
-                // Include bodies with biological signals
-                if (this.bioSignalCount > 0)
-                    return true;
-
-                // Include high-value bodies (terraformable, water worlds, ELW, etc.)
-                if (this.reward > 500000) // Configurable threshold
-                    return true;
-
-                // Include landable bodies with materials
-                if (this.type == SystemBodyType.LandableBody && this.materials?.Count > 0)
-                    return true;
-
-                return false;
-            }
-        }
 
         public bool hasParent(int targetBodyId)
         {

@@ -110,6 +110,7 @@ namespace SrvSurvey
         public int hideFssLowValueAmount = 10_000;
         public bool skipHighDistanceDSS = false;
         public int skipHighDistanceDSSValue = 100_000;
+        public bool showDssVisitRoute = false;
         public bool showNonBodySignals = false;
         public bool autoTrackCompBioScans = true;
         public bool skipAnalyzedCompBioScans = true;

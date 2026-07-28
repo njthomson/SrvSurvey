@@ -184,6 +184,7 @@ namespace SrvSurvey
             checkBox11 = new CheckBox2();
             checkBox10 = new CheckBox2();
             checkBox9 = new CheckBox2();
+            checkDssVisitRoute = new CheckBox2();
             checkBox8 = new CheckBox2();
             checkBox4 = new CheckBox2();
             tabExternalData = new TabPage();
@@ -2092,6 +2093,7 @@ namespace SrvSurvey
             tabPage6.Controls.Add(checkBox11);
             tabPage6.Controls.Add(checkBox10);
             tabPage6.Controls.Add(checkBox9);
+            tabPage6.Controls.Add(checkDssVisitRoute);
             tabPage6.Controls.Add(checkBox8);
             tabPage6.Controls.Add(checkBox4);
             tabPage6.Location = new Point(4, 24);
@@ -2515,6 +2517,19 @@ namespace SrvSurvey
             checkBox9.Tag = "skipGasGiantDSS";
             checkBox9.Text = "Skip DSS of gas giants";
             checkBox9.UseVisualStyleBackColor = true;
+            //
+            // checkDssVisitRoute
+            //
+            checkDssVisitRoute.AutoSize = true;
+            checkDssVisitRoute.CheckColor = SystemColors.ControlText;
+            checkDssVisitRoute.LineColor = SystemColors.ActiveBorder;
+            checkDssVisitRoute.Location = new Point(508, 127);
+            checkDssVisitRoute.Name = "checkDssVisitRoute";
+            checkDssVisitRoute.Size = new Size(179, 19);
+            checkDssVisitRoute.TabIndex = 36;
+            checkDssVisitRoute.Tag = "showDssVisitRoute";
+            checkDssVisitRoute.Text = "Show optimized DSS route";
+            checkDssVisitRoute.UseVisualStyleBackColor = true;
             // 
             // checkBox8
             // 
@@ -3885,6 +3900,7 @@ namespace SrvSurvey
         private PictureBox pictureBox5;
         private CheckBox2 checkBox8;
         private CheckBox2 checkBox9;
+        private CheckBox2 checkDssVisitRoute;
         private CheckBox2 checkBox10;
         private CheckBox2 checkBox11;
         private NumericUpDown numMinScanValue;
