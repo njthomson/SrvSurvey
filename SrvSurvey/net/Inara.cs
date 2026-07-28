@@ -36,6 +36,31 @@ namespace SrvSurvey.net
             client.Dispose();
         }
 
+        public void onGameInitialized(Game game)
+        {
+            mapper.Reset();
+            currentGame = game;
+
+            var filepath = game.journals?.filepath;
+            if (string.IsNullOrWhiteSpace(filepath)) return;
+
+            try
+            {
+                using var reader = Data.openSharedStreamReader(filepath);
+                var entries = ReadCurrentSession(reader);
+                var cargoFile = game.cargoFile;
+                var cargoInventory = string.Equals(cargoFile.Vessel, "Ship", StringComparison.OrdinalIgnoreCase)
+                    ? JArray.FromObject(cargoFile.Inventory ?? [])
+                    : null;
+                var seededCount = SeedState(mapper, entries, createContext(game), cargoInventory);
+                Game.log($"Inara seeded current state from {seededCount} journal event(s).");
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException)
+            {
+                Game.log($"Inara could not seed current journal state ({ex.GetType().Name}).");
+            }
+        }
+
         public void onJournalEntry(Game game, JObject raw)
         {
             // Manual calls made while Game reconstructs state from journal history must never upload.
@@ -57,17 +82,7 @@ namespace SrvSurvey.net
                 IsBetaVersion(getGameVersion(game)),
                 mapper.InMulticrew);
 
-            var context = new InaraContext(
-                game.Commander,
-                game.fid,
-                game.systemData?.name ?? game.cmdr?.currentSystem,
-                game.systemStation?.name ?? game.lastDocked?.StationName,
-                game.systemBody?.name,
-                game.currentShip?.type,
-                game.currentShip?.id,
-                game.currentShip?.name,
-                game.currentShip?.ident,
-                game.status?.InTaxi == true);
+            var context = createContext(game);
 
             var events = mapper.Process(raw, context, canCollect);
             if (credentials != null && events.Count > 0)
@@ -79,6 +94,73 @@ namespace SrvSurvey.net
             if (raw.Value<string>("event") == "Shutdown")
                 sendPendingAsync().justDoIt();
         }
+
+        internal static IReadOnlyList<JObject> ReadCurrentSession(TextReader reader)
+        {
+            var entries = new List<JObject>();
+            string? line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                JObject entry;
+                try
+                {
+                    entry = JObject.Parse(line);
+                }
+                catch (JsonException)
+                {
+                    continue;
+                }
+
+                if (entry.Value<string>("event") == "LoadGame")
+                    entries.Clear();
+                entries.Add(entry);
+            }
+
+            return entries;
+        }
+
+        internal static int SeedState(
+            InaraEventMapper mapper,
+            IEnumerable<JObject> entries,
+            InaraContext context,
+            JArray? cargoInventory)
+        {
+            var count = 0;
+            var timestamp = DateTime.UtcNow.ToString("O");
+            foreach (var entry in entries)
+            {
+                mapper.Process(entry, context, false);
+                timestamp = entry.Value<string>("timestamp") ?? timestamp;
+                count++;
+            }
+
+            if (cargoInventory != null)
+            {
+                mapper.Process(new JObject
+                {
+                    ["timestamp"] = timestamp,
+                    ["event"] = "Cargo",
+                    ["Vessel"] = "Ship",
+                    ["Inventory"] = cargoInventory.DeepClone(),
+                }, context, false);
+            }
+
+            return count;
+        }
+
+        private static InaraContext createContext(Game game) => new(
+            game.Commander,
+            game.fid,
+            game.systemData?.name ?? game.cmdr?.currentSystem,
+            game.systemStation?.name ?? game.lastDocked?.StationName,
+            game.systemBody?.name,
+            game.currentShip?.type,
+            game.currentShip?.id,
+            game.currentShip?.name,
+            game.currentShip?.ident,
+            game.status?.InTaxi == true);
 
         internal static bool CanUpload(bool optedIn, string? apiKey, bool isLive, bool isBeta, bool inMulticrew) =>
             optedIn

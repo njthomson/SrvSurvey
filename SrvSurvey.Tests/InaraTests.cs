@@ -297,6 +297,51 @@ public sealed class InaraTests
     }
 
     [Fact]
+    public void StartupReplaySeedsCurrentStateWithoutUploadingJournalHistory()
+    {
+        using var reader = new StringReader("""
+            { "timestamp": "2026-07-28T11:00:00Z", "event": "LoadGame", "Commander": "Old Commander", "Credits": 10 }
+            { "timestamp": "2026-07-28T11:05:00Z", "event": "FSDJump", "StarSystem": "Old System", "StarPos": [0, 0, 0] }
+            { "timestamp": "2026-07-28T12:00:00Z", "event": "LoadGame", "Commander": "Test Commander", "Credits": 1000, "Loan": 25 }
+            { "timestamp": "2026-07-28T12:00:01Z", "event": "Cargo", "Vessel": "Ship", "Inventory": [{ "Name": "tea", "Count": 2 }] }
+            { "timestamp": "2026-07-28T12:00:02Z", "event": "Materials", "Raw": [{ "Name": "iron", "Count": 3 }], "Manufactured": [], "Encoded": [] }
+            { "timestamp": "2026-07-28T12:10:00Z", "event": "MarketBuy", "Type": "tea", "Count": 1, "TotalCost": 100 }
+            { "timestamp": "2026-07-28T12:11:00Z", "event": "Docked", "StationName": "Galileo", "StarSystem": "Sol" }
+            """);
+        var entries = Inara.ReadCurrentSession(reader);
+        var mapper = new InaraEventMapper();
+
+        Assert.Equal(5, entries.Count);
+        Assert.Equal("Test Commander", entries[0].Value<string>("Commander"));
+
+        var seededCount = Inara.SeedState(
+            mapper,
+            entries,
+            context,
+            JArray.Parse("""[{ "Name": "tea", "Count": 7 }]"""));
+        var firstLiveEvents = mapper.Process(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:12:00Z", "event": "Music", "MusicTrack": "Exploration" }
+            """), context, true);
+
+        Assert.Equal(5, seededCount);
+        Assert.DoesNotContain(firstLiveEvents, item => item.Name.StartsWith("addCommanderTravel"));
+
+        var credits = Assert.Single(firstLiveEvents, item => item.Name == "setCommanderCredits");
+        Assert.Equal(900, credits.Data.Value<long>("commanderCredits"));
+        Assert.Equal(25, credits.Data.Value<long>("commanderLoan"));
+
+        var cargo = Assert.IsType<JArray>(Assert.Single(
+            firstLiveEvents,
+            item => item.Name == "setCommanderInventoryCargo").Data);
+        Assert.Equal(7, Assert.Single(cargo.OfType<JObject>()).Value<int>("itemCount"));
+
+        var materials = Assert.IsType<JArray>(Assert.Single(
+            firstLiveEvents,
+            item => item.Name == "setCommanderInventoryMaterials").Data);
+        Assert.Equal(3, Assert.Single(materials.OfType<JObject>()).Value<int>("itemCount"));
+    }
+
+    [Fact]
     public void CreditTransactionsAreCoalescedToTheDocumentedHourlyCadence()
     {
         var mapper = new InaraEventMapper();

@@ -230,6 +230,11 @@ namespace SrvSurvey.game
 
             log($"Cmdr loaded: {this.Commander != null}");
 
+            // Reconstruct Inara's current-session state without uploading journal history.
+            // This must happen before live journal callbacks begin so credits and inventory
+            // have an authoritative baseline when the first new event is processed.
+            inara.onGameInitialized(this);
+
             // now listen for changes
             this.journals.onJournalEntry += Journals_onJournalEntry;
             this.status.StatusChanged += Status_StatusChanged;
