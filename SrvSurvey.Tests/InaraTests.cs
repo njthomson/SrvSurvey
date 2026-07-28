@@ -247,4 +247,159 @@ public sealed class InaraTests
         Assert.False(mapper.InMulticrew);
         Assert.Contains(resumed, item => item.Name == "addCommanderTravelFSDJump");
     }
+
+    [Fact]
+    public void CreditsLoanAndAssetsComeFromJournalSnapshots()
+    {
+        var mapper = new InaraEventMapper();
+        mapper.Process(JObject.Parse("""
+            {
+              "timestamp": "2026-07-28T12:00:00Z",
+              "event": "LoadGame",
+              "Credits": 1250000,
+              "Loan": 25000
+            }
+            """), context, false);
+
+        var mapped = mapper.Process(JObject.Parse("""
+            {
+              "timestamp": "2026-07-28T12:00:05Z",
+              "event": "Statistics",
+              "Bank_Account": { "Current_Wealth": 8400000 },
+              "Combat": { "Bounties_Claimed": 12 }
+            }
+            """), context, true);
+        var credits = Assert.Single(mapped, item => item.Name == "setCommanderCredits");
+
+        Assert.Equal(1250000, credits.Data.Value<long>("commanderCredits"));
+        Assert.Equal(25000, credits.Data.Value<long>("commanderLoan"));
+        Assert.Equal(8400000, credits.Data.Value<long>("commanderAssets"));
+        Assert.Equal("credits", credits.ReplaceKey);
+
+        var repeatedStatistics = mapper.Process(JObject.Parse("""
+            {
+              "timestamp": "2026-07-28T12:00:10Z",
+              "event": "Statistics",
+              "Bank_Account": { "Current_Wealth": 8400000 }
+            }
+            """), context, true);
+        Assert.DoesNotContain(repeatedStatistics, item => item.Name == "setCommanderCredits");
+
+        mapper.Process(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:10:00Z", "event": "MarketSell", "TotalSale": 250 }
+            """), context, true);
+        var hourly = mapper.Process(JObject.Parse("""
+            { "timestamp": "2026-07-28T13:00:05Z", "event": "Music", "MusicTrack": "Exploration" }
+            """), context, true);
+        var hourlyCredits = Assert.Single(hourly, item => item.Name == "setCommanderCredits");
+        Assert.Equal(1250250, hourlyCredits.Data.Value<long>("commanderCredits"));
+        Assert.Null(hourlyCredits.Data["commanderAssets"]);
+    }
+
+    [Fact]
+    public void CreditTransactionsAreCoalescedToTheDocumentedHourlyCadence()
+    {
+        var mapper = new InaraEventMapper();
+        var startup = mapper.Process(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:00:00Z", "event": "LoadGame", "Credits": 1000, "Loan": 0 }
+            """), context, true);
+        Assert.Single(startup, item => item.Name == "setCommanderCredits");
+
+        var purchase = mapper.Process(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:10:00Z", "event": "MarketBuy", "Type": "tea", "Count": 1, "TotalCost": 100 }
+            """), context, true);
+        Assert.DoesNotContain(purchase, item => item.Name == "setCommanderCredits");
+
+        var crewWage = mapper.Process(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:30:00Z", "event": "NpcCrewPaidWage", "Amount": 25 }
+            """), context, true);
+        Assert.DoesNotContain(crewWage, item => item.Name == "setCommanderCredits");
+
+        var voucher = mapper.Process(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:59:00Z", "event": "RedeemVoucher", "Amount": 50 }
+            """), context, true);
+        Assert.DoesNotContain(voucher, item => item.Name == "setCommanderCredits");
+
+        var hourly = mapper.Process(JObject.Parse("""
+            { "timestamp": "2026-07-28T13:00:00Z", "event": "Music", "MusicTrack": "Exploration" }
+            """), context, true);
+        var report = Assert.Single(hourly, item => item.Name == "setCommanderCredits");
+        Assert.Equal(925, report.Data.Value<long>("commanderCredits"));
+    }
+
+    [Fact]
+    public void ShutdownFlushesAChangedBalanceBeforeTheHourlyWindow()
+    {
+        var mapper = new InaraEventMapper();
+        mapper.Process(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:00:00Z", "event": "LoadGame", "Credits": 1000, "Loan": 0 }
+            """), context, true);
+
+        var sale = mapper.Process(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:05:00Z", "event": "MarketSell", "Type": "tea", "Count": 1, "TotalSale": 250 }
+            """), context, true);
+        Assert.DoesNotContain(sale, item => item.Name == "setCommanderCredits");
+
+        var shutdown = mapper.Process(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:06:00Z", "event": "Shutdown" }
+            """), context, true);
+        var report = Assert.Single(shutdown, item => item.Name == "setCommanderCredits");
+        Assert.Equal(1250, report.Data.Value<long>("commanderCredits"));
+    }
+
+    [Fact]
+    public void MulticrewTransactionsDoNotChangeTheTrackedCommanderBalance()
+    {
+        var tracker = new InaraCreditTracker();
+        tracker.Observe(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:00:00Z", "event": "LoadGame", "Credits": 1000, "Loan": 0 }
+            """), false);
+        Assert.NotNull(tracker.CreateReport("2026-07-28T12:00:00Z", true));
+
+        tracker.Observe(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:05:00Z", "event": "MarketBuy", "TotalCost": 400 }
+            """), true);
+        Assert.False(tracker.HasUnreportedChanges);
+        Assert.Null(tracker.CreateReport("2026-07-28T13:05:00Z", false));
+    }
+
+    [Fact]
+    public void CarrierBankTransferUsesTheExactJournalBalance()
+    {
+        var tracker = new InaraCreditTracker();
+        tracker.Observe(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:00:00Z", "event": "LoadGame", "Credits": 1000, "Loan": 0 }
+            """), false);
+        Assert.NotNull(tracker.CreateReport("2026-07-28T12:00:00Z", true));
+
+        tracker.Observe(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:10:00Z", "event": "CarrierBankTransfer", "PlayerBalance": 375 }
+            """), false);
+        var report = tracker.CreateReport("2026-07-28T12:11:00Z", true);
+
+        Assert.NotNull(report);
+        Assert.Equal(375, report.Data.Value<long>("commanderCredits"));
+    }
+
+    [Fact]
+    public void ImpossibleJournalBalanceIsNotUploadedUntilAnExactValueArrives()
+    {
+        var tracker = new InaraCreditTracker();
+        tracker.Observe(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:00:00Z", "event": "LoadGame", "Credits": 100, "Loan": 0 }
+            """), false);
+        Assert.NotNull(tracker.CreateReport("2026-07-28T12:00:00Z", true));
+
+        tracker.Observe(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:05:00Z", "event": "MarketBuy", "TotalCost": 500 }
+            """), false);
+        Assert.Null(tracker.CreateReport("2026-07-28T13:05:00Z", true));
+
+        tracker.Observe(JObject.Parse("""
+            { "timestamp": "2026-07-28T13:10:00Z", "event": "CarrierBankTransfer", "PlayerBalance": 20 }
+            """), false);
+        var recovered = tracker.CreateReport("2026-07-28T13:10:00Z", true);
+        Assert.NotNull(recovered);
+        Assert.Equal(20, recovered.Data.Value<long>("commanderCredits"));
+    }
 }

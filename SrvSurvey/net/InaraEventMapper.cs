@@ -16,6 +16,7 @@ namespace SrvSurvey.net
         private readonly Dictionary<string, int> cargo = new(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, int> materials = new(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, int> ranks = new(StringComparer.OrdinalIgnoreCase);
+        private readonly InaraCreditTracker creditTracker = new();
         private bool hasCargoSnapshot;
         private bool hasMaterialsSnapshot;
         private bool sessionStarted;
@@ -28,6 +29,7 @@ namespace SrvSurvey.net
             cargo.Clear();
             materials.Clear();
             ranks.Clear();
+            creditTracker.Reset();
             hasCargoSnapshot = false;
             hasMaterialsSnapshot = false;
             sessionStarted = false;
@@ -45,6 +47,7 @@ namespace SrvSurvey.net
                 Reset();
 
             updateMulticrewState(name, entry);
+            creditTracker.Observe(entry, InMulticrew);
             var inventoryChanged = updateInventoryState(name, entry);
             updateRankState(name, entry);
 
@@ -56,8 +59,10 @@ namespace SrvSurvey.net
 
             var timestamp = entry.Value<string>("timestamp") ?? DateTime.UtcNow.ToString("O");
             var events = new List<InaraEvent>();
+            var sessionStarting = !sessionStarted
+                || !string.Equals(sessionCommander, context.Commander, StringComparison.OrdinalIgnoreCase);
 
-            if (!sessionStarted || !string.Equals(sessionCommander, context.Commander, StringComparison.OrdinalIgnoreCase))
+            if (sessionStarting)
             {
                 sessionStarted = true;
                 sessionCommander = context.Commander;
@@ -72,6 +77,15 @@ namespace SrvSurvey.net
 
             mapEvent(name, timestamp, entry, context, events);
             addInventorySnapshots(events, timestamp, inventoryChanged.cargo, inventoryChanged.materials);
+
+            // The common Statistics event supplies the authoritative assets value.
+            // Otherwise, coalesce transaction deltas to Inara's recommended hourly
+            // cadence and flush any remaining change at session shutdown.
+            var forceCreditReport = sessionStarting
+                || (name == "Statistics" && creditTracker.HasUnreportedChanges)
+                || (name == "Shutdown" && creditTracker.HasUnreportedChanges);
+            var creditReport = creditTracker.CreateReport(timestamp, forceCreditReport, name == "Statistics");
+            if (creditReport != null) events.Add(creditReport);
             return events;
         }
 
