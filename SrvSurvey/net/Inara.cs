@@ -13,34 +13,70 @@ namespace SrvSurvey.net
     {
         internal const string Endpoint = "https://inara.cz/inapi/v1/";
         private static readonly TimeSpan sendInterval = TimeSpan.FromSeconds(35);
-        private readonly HttpClient client;
+        private readonly HttpClient? client;
         private readonly InaraEventMapper mapper = new();
         private readonly InaraEventQueue queue = new();
-        private readonly System.Threading.Timer timer;
+        private readonly System.Threading.Timer? timer;
         private Game? currentGame;
         private int sending;
 
         public Inara()
         {
-            client = new HttpClient(Util.getResilienceHandler())
+            HttpClient? configuredClient = null;
+            System.Threading.Timer? configuredTimer = null;
+            try
             {
-                Timeout = TimeSpan.FromSeconds(20),
-            };
-            client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
-            timer = new System.Threading.Timer(_ => sendPendingAsync().justDoIt(), null, sendInterval, sendInterval);
+                configuredClient = new HttpClient(Util.getResilienceHandler())
+                {
+                    Timeout = TimeSpan.FromSeconds(20),
+                };
+                configuredClient.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
+                configuredTimer = new System.Threading.Timer(_ => sendPendingAsync().justDoIt(), null, sendInterval, sendInterval);
+            }
+            catch (Exception ex)
+            {
+                configuredTimer?.Dispose();
+                configuredClient?.Dispose();
+                configuredTimer = null;
+                configuredClient = null;
+                RunIsolated(() => Game.log($"Inara initialization was disabled without affecting SrvSurvey ({ex.GetType().Name})."));
+            }
+
+            client = configuredClient;
+            timer = configuredTimer;
         }
 
         public void Dispose()
         {
-            timer.Dispose();
-            client.Dispose();
+            RunIsolated(() => timer?.Dispose());
+            RunIsolated(() => client?.Dispose());
         }
 
         public void onGameInitialized(Game game)
         {
+            if (client == null) return;
+
+            RunIsolated(
+                () => onGameInitializedCore(game),
+                ex =>
+                {
+                    mapper.Reset();
+                    currentGame = game;
+                    Game.log($"Inara startup seeding was skipped without affecting SrvSurvey ({ex.GetType().Name}).");
+                });
+        }
+
+        private void onGameInitializedCore(Game game)
+        {
             mapper.Reset();
             currentGame = game;
-            var multiboxing = isMultiboxing();
+            var credentials = getCredentials(game);
+            var canPrepareUpload = CanPrepareUpload(
+                Game.settings.inaraUpload,
+                credentials?.ApiKey,
+                IsLiveVersion(getGameVersion(game), game.journals?.isOdyssey == true),
+                IsBetaVersion(getGameVersion(game)));
+            var multiboxing = canPrepareUpload && isMultiboxing();
 
             var filepath = game.journals?.filepath;
             if (string.IsNullOrWhiteSpace(filepath)) return;
@@ -50,7 +86,7 @@ namespace SrvSurvey.net
                 using var reader = Data.openSharedStreamReader(filepath);
                 var entries = ReadCurrentSession(reader);
                 JArray? cargoInventory = null;
-                if (!multiboxing)
+                if (canPrepareUpload && !multiboxing)
                 {
                     var cargoFile = game.cargoFile;
                     cargoInventory = string.Equals(cargoFile.Vessel, "Ship", StringComparison.OrdinalIgnoreCase)
@@ -58,7 +94,11 @@ namespace SrvSurvey.net
                         : null;
                 }
 
-                var seededCount = SeedState(mapper, entries, createContext(game, !multiboxing), cargoInventory);
+                var seededCount = SeedState(
+                    mapper,
+                    entries,
+                    createContext(game, canPrepareUpload && !multiboxing),
+                    cargoInventory);
                 Game.log($"Inara seeded current state from {seededCount} journal event(s).");
                 if (multiboxing)
                     Game.log("Inara multi-box mode: shared Cargo.json, ShipLocker.json, and Status.json data is suppressed.");
@@ -71,6 +111,15 @@ namespace SrvSurvey.net
 
         public void onJournalEntry(Game game, JObject raw)
         {
+            if (client == null) return;
+
+            RunIsolated(
+                () => onJournalEntryCore(game, raw),
+                ex => Game.log($"Inara ignored {raw["event"]?.ToString() ?? "unknown"} without affecting other journal processing ({ex.GetType().Name})."));
+        }
+
+        private void onJournalEntryCore(Game game, JObject raw)
+        {
             // Manual calls made while Game reconstructs state from journal history must never upload.
             if (!Game.ready || Game.activeGame != game) return;
 
@@ -80,15 +129,32 @@ namespace SrvSurvey.net
                 currentGame = game;
             }
 
+            var credentials = getCredentials(game);
+            var gameVersion = getGameVersion(game);
+            var isLive = IsLiveVersion(gameVersion, game.journals?.isOdyssey == true);
+            var isBeta = IsBetaVersion(gameVersion);
+            var canPrepareUpload = CanPrepareUpload(
+                Game.settings.inaraUpload,
+                credentials?.ApiKey,
+                isLive,
+                isBeta);
+
+            if (!canPrepareUpload)
+            {
+                // Keep journal-derived state warm so enabling Inara mid-session is safe,
+                // without reading shared sidecars/status or enumerating game processes.
+                mapper.Process(raw, createContext(game, false), false);
+                return;
+            }
+
             var multiboxing = isMultiboxing();
             raw = addSidecarData(game, raw, !multiboxing);
 
-            var credentials = getCredentials(game);
             var canCollect = CanUpload(
                 Game.settings.inaraUpload,
                 credentials?.ApiKey,
-                IsLiveVersion(getGameVersion(game), game.journals?.isOdyssey == true),
-                IsBetaVersion(getGameVersion(game)),
+                isLive,
+                isBeta,
                 mapper.InMulticrew);
 
             var context = createContext(game, !multiboxing);
@@ -171,25 +237,70 @@ namespace SrvSurvey.net
             game.currentShip?.ident,
             allowSharedStatus ? game.status?.InTaxi == true : null);
 
-        private static bool isMultiboxing()
+        private static bool isMultiboxing() => DetectMultiboxing(
+            Elite.hadManyGameProcs,
+            countGameProcesses,
+            ex => Game.log($"Inara could not count Elite processes and conservatively enabled multi-box suppression ({ex.GetType().Name})."));
+
+        private static int countGameProcesses()
         {
             var gameProcesses = Elite.GetGameProcs();
             try
             {
-                return Elite.hadManyGameProcs || gameProcesses.Length > 1;
+                return gameProcesses.Length;
             }
             finally
             {
                 foreach (var process in gameProcesses)
-                    process.Dispose();
+                {
+                    try { process.Dispose(); }
+                    catch { /* best effort only */ }
+                }
             }
         }
 
-        internal static bool CanUpload(bool optedIn, string? apiKey, bool isLive, bool isBeta, bool inMulticrew) =>
+        internal static bool DetectMultiboxing(
+            bool alreadyDetected,
+            Func<int> countGameProcesses,
+            Action<Exception>? onError = null)
+        {
+            if (alreadyDetected) return true;
+
+            try
+            {
+                return countGameProcesses() > 1;
+            }
+            catch (Exception ex)
+            {
+                try { onError?.Invoke(ex); }
+                catch { /* optional diagnostics must not escape */ }
+                return true;
+            }
+        }
+
+        internal static bool RunIsolated(Action action, Action<Exception>? onError = null)
+        {
+            try
+            {
+                action();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                try { onError?.Invoke(ex); }
+                catch { /* optional diagnostics must not escape */ }
+                return false;
+            }
+        }
+
+        internal static bool CanPrepareUpload(bool optedIn, string? apiKey, bool isLive, bool isBeta) =>
             optedIn
             && !string.IsNullOrWhiteSpace(apiKey)
             && isLive
-            && !isBeta
+            && !isBeta;
+
+        internal static bool CanUpload(bool optedIn, string? apiKey, bool isLive, bool isBeta, bool inMulticrew) =>
+            CanPrepareUpload(optedIn, apiKey, isLive, isBeta)
             && !inMulticrew;
 
         internal static bool IsBetaVersion(string? gameVersion)
@@ -272,6 +383,9 @@ namespace SrvSurvey.net
 
         private async Task sendPendingAsync()
         {
+            var uploadClient = client;
+            if (uploadClient == null) return;
+
             if (Interlocked.Exchange(ref sending, 1) != 0) return;
             try
             {
@@ -301,7 +415,7 @@ namespace SrvSurvey.net
                             batch.Select(item => item.Event).ToList(),
                             Game.settings.inaraDeveloperTestMode);
                         using var content = new StringContent(payload.ToString(Formatting.None), Encoding.UTF8, "application/json");
-                        using var response = await client.PostAsync(Endpoint, content);
+                        using var response = await uploadClient.PostAsync(Endpoint, content);
 
                         if (isTransient(response.StatusCode))
                         {

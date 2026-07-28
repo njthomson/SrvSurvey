@@ -86,6 +86,64 @@ public sealed class InaraTests
     }
 
     [Theory]
+    [InlineData(true, "key", true, false, true)]
+    [InlineData(false, "key", true, false, false)]
+    [InlineData(true, null, true, false, false)]
+    [InlineData(true, "key", false, false, false)]
+    [InlineData(true, "key", true, true, false)]
+    public void UploadPreparationSkipsInactiveIntegrations(
+        bool optedIn,
+        string? apiKey,
+        bool live,
+        bool beta,
+        bool expected)
+    {
+        Assert.Equal(expected, Inara.CanPrepareUpload(optedIn, apiKey, live, beta));
+    }
+
+    [Fact]
+    public void OptionalIntegrationFailuresAreContained()
+    {
+        var reported = false;
+
+        var succeeded = Inara.RunIsolated(
+            () => throw new InvalidOperationException("test failure"),
+            _ =>
+            {
+                reported = true;
+                throw new Exception("diagnostic failure");
+            });
+
+        Assert.False(succeeded);
+        Assert.True(reported);
+    }
+
+    [Fact]
+    public void KnownMultiboxStateAvoidsAnotherProcessEnumeration()
+    {
+        var enumerated = false;
+
+        var multiboxing = Inara.DetectMultiboxing(true, () =>
+        {
+            enumerated = true;
+            return 1;
+        });
+
+        Assert.True(multiboxing);
+        Assert.False(enumerated);
+    }
+
+    [Fact]
+    public void FailedProcessDetectionUsesConservativeSuppression()
+    {
+        var multiboxing = Inara.DetectMultiboxing(
+            false,
+            () => throw new InvalidOperationException("process query failed"));
+
+        Assert.True(multiboxing);
+    }
+
+    [Theory]
     [InlineData("4.0.0.1900", false, true)]
     [InlineData("4.1.0.100", false, true)]
     [InlineData("3.8.0.0", false, false)]
