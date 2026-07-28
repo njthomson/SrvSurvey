@@ -35,7 +35,7 @@ public sealed class EddnMessageBuilderTests
     }
 
     [Fact]
-    public void CodexBodyIdRequiresStatusAndJournalAgreement()
+    public void CodexBodyContextRequiresStatusAndTrackedBodyAgreement()
     {
         var raw = JObject.Parse(
             """
@@ -49,7 +49,45 @@ public sealed class EddnMessageBuilderTests
             out var reason);
 
         Assert.True(built, reason);
-        Assert.Equal("Test A 2", prepared!.message.Value<string>("BodyName"));
+        Assert.Null(prepared!.message["BodyName"]);
+        Assert.Null(prepared.message["BodyID"]);
+    }
+
+    [Fact]
+    public void CodexMessagePreservesJournalBodyIdentityOverCurrentContext()
+    {
+        var raw = JObject.Parse(
+            """
+            {"timestamp":"2026-07-28T12:00:00Z","event":"CodexEntry","System":"Test A","SystemAddress":123,"EntryID":10,"BodyName":"Test A 9","BodyID":9}
+            """);
+
+        var built = EddnMessageSanitizer.tryBuildJournal(
+            raw,
+            context(statusBody: "Test A 1", trackedBody: "Test A 1", trackedBodyId: 4),
+            out var prepared,
+            out var reason);
+
+        Assert.True(built, reason);
+        Assert.Equal("Test A 9", prepared!.message.Value<string>("BodyName"));
+        Assert.Equal(9, prepared.message.Value<int>("BodyID"));
+    }
+
+    [Fact]
+    public void CodexMessageDoesNotCombineConflictingJournalAndContextBodyIdentity()
+    {
+        var raw = JObject.Parse(
+            """
+            {"timestamp":"2026-07-28T12:00:00Z","event":"CodexEntry","System":"Test A","SystemAddress":123,"EntryID":10,"BodyName":"Test A 9"}
+            """);
+
+        var built = EddnMessageSanitizer.tryBuildJournal(
+            raw,
+            context(statusBody: "Test A 1", trackedBody: "Test A 1", trackedBodyId: 4),
+            out var prepared,
+            out var reason);
+
+        Assert.True(built, reason);
+        Assert.Equal("Test A 9", prepared!.message.Value<string>("BodyName"));
         Assert.Null(prepared.message["BodyID"]);
     }
 
@@ -138,6 +176,25 @@ public sealed class EddnMessageBuilderTests
         Assert.Null(faction["Name_Localised"]);
         Assert.Null(faction["MyReputation"]);
         Assert.Null(faction["HomeSystem"]);
+    }
+
+    [Fact]
+    public void UnknownExpansionFlagsAreOmittedFromTheMessage()
+    {
+        var raw = JObject.Parse(
+            """
+            {"timestamp":"2026-07-28T12:00:00Z","event":"Location","StarSystem":"Test A","StarPos":[1.5,-2,3],"SystemAddress":123}
+            """);
+
+        var built = EddnMessageSanitizer.tryBuildJournal(
+            raw,
+            new EddnMessageContext(location(), horizons: true, odyssey: null),
+            out var prepared,
+            out var reason);
+
+        Assert.True(built, reason);
+        Assert.True(prepared!.message.Value<bool>("horizons"));
+        Assert.Null(prepared.message["odyssey"]);
     }
 
     public static TheoryData<string, string, string> DedicatedJournalEvents => new()

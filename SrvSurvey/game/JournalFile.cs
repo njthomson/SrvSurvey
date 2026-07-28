@@ -106,10 +106,11 @@ namespace SrvSurvey
                     this.cmdrFid = commanderEntry.FID;
                 }
 
-                if (entry is LoadGame entryLoadGame)
+                if (entry is LoadGame)
                 {
-                    this.isGameOdyssey = entryLoadGame.Odyssey;
-                    this.isGameHorizons = entryLoadGame.Horizons;
+                    var expansionFlags = JournalExpansionFlags.fromLoadGame(raw);
+                    this.isGameOdyssey = expansionFlags.odyssey;
+                    this.isGameHorizons = expansionFlags.horizons;
                 }
             }
 

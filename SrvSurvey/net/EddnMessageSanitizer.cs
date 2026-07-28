@@ -119,20 +119,32 @@ namespace SrvSurvey.net
                     message = select(raw,
                         "timestamp", "event", "System", "SystemAddress", "EntryID", "Name",
                         "Region", "Category", "Latitude", "Longitude", "SubCategory",
-                        "NearestDestination", "VoucherAmount", "Traits");
+                        "NearestDestination", "VoucherAmount", "Traits", "BodyID", "BodyName");
                     message["StarPos"] = position(context.location!);
                     addFlags(message, context);
-                    if (!string.IsNullOrWhiteSpace(context.statusBodyName))
+
+                    var bodyNamesAgree = !string.IsNullOrWhiteSpace(context.statusBodyName)
+                        && string.Equals(
+                            context.statusBodyName,
+                            context.trackedBodyName,
+                            StringComparison.Ordinal);
+                    if (!message.ContainsKey("BodyName")
+                        && bodyNamesAgree
+                        && (!message.ContainsKey("BodyID")
+                            || message.Value<int?>("BodyID") == context.trackedBodyId))
                     {
                         message["BodyName"] = context.statusBodyName;
-                        if (context.trackedBodyId.HasValue
-                            && string.Equals(
+                    }
+                    if (!message.ContainsKey("BodyID")
+                        && context.trackedBodyId.HasValue
+                        && bodyNamesAgree
+                        && (!message.ContainsKey("BodyName")
+                            || string.Equals(
+                                message.Value<string>("BodyName"),
                                 context.statusBodyName,
-                                context.trackedBodyName,
-                                StringComparison.Ordinal))
-                        {
-                            message["BodyID"] = context.trackedBodyId.Value;
-                        }
+                                StringComparison.Ordinal)))
+                    {
+                        message["BodyID"] = context.trackedBodyId.Value;
                     }
                     break;
 
