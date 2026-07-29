@@ -1,4 +1,6 @@
 using Newtonsoft.Json;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace SrvSurvey.net
 {
@@ -13,18 +15,26 @@ namespace SrvSurvey.net
         private static readonly TimeSpan sendSpacing = TimeSpan.FromMilliseconds(400);
         private static readonly TimeSpan minimumRetryDelay = TimeSpan.FromMinutes(1);
         private static readonly TimeSpan maximumRetryDelay = TimeSpan.FromMinutes(30);
+        private const int maximumPendingMessages = 4096;
+        private const long maximumStoreBytes = 64L * 1024 * 1024;
 
         private readonly string filepath;
+        private readonly string ownershipPath;
         private readonly EddnTransport transport;
         private readonly Action<string> log;
         private readonly Func<DateTimeOffset> utcNow;
         private readonly bool automaticProcessing;
+        private readonly Func<bool> runtimeUploadAllowed;
         private readonly object sync = new();
         private readonly SemaphoreSlim processing = new(1, 1);
         private readonly System.Threading.Timer timer;
         private readonly CancellationTokenSource shutdown = new();
+        private CancellationTokenSource activityCancellation = new();
         private List<EddnQueuedMessage> pending;
+        private FileStream? ownershipLease;
         private bool enabled;
+        private bool suspended;
+        private bool ownershipWarningReported;
         private volatile bool disposed;
 
         internal EddnOutbox(
@@ -32,21 +42,32 @@ namespace SrvSurvey.net
             EddnTransport transport,
             Action<string>? log = null,
             Func<DateTimeOffset>? utcNow = null,
-            bool automaticProcessing = true)
+            bool automaticProcessing = true,
+            Func<bool>? runtimeUploadAllowed = null)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(filepath);
             ArgumentNullException.ThrowIfNull(transport);
             this.filepath = filepath;
+            ownershipPath = getOwnershipPath(filepath);
             this.transport = transport;
             this.log = log ?? (_ => { });
             this.utcNow = utcNow ?? (() => DateTimeOffset.UtcNow);
             this.automaticProcessing = automaticProcessing;
-            pending = load();
+            this.runtimeUploadAllowed = runtimeUploadAllowed ?? (() => true);
+            pending = [];
             timer = new System.Threading.Timer(
                 _ => triggerProcessing(),
                 null,
                 Timeout.InfiniteTimeSpan,
                 Timeout.InfiniteTimeSpan);
+
+            List<string> ownershipLogs = [];
+            lock (sync)
+            {
+                tryAcquireOwnershipLocked(ownershipLogs);
+            }
+
+            writeLogs(ownershipLogs);
         }
 
         internal int pendingCount
@@ -57,31 +78,104 @@ namespace SrvSurvey.net
             }
         }
 
+        internal bool hasExclusiveOwnership
+        {
+            get
+            {
+                lock (sync) return ownershipLease is not null;
+            }
+        }
+
         internal void setEnabled(bool value, bool discardPendingWhenDisabled)
         {
             var changed = false;
             string? persistenceLog = null;
             string? sharingLog = null;
+            CancellationTokenSource? cancellation = null;
+            List<string> ownershipLogs = [];
+            var canSchedule = false;
+            var acquiredOwnership = false;
             lock (sync)
             {
+                if (disposed) return;
+                if (value || discardPendingWhenDisabled)
+                {
+                    var hadOwnership = ownershipLease is not null;
+                    tryAcquireOwnershipLocked(ownershipLogs);
+                    acquiredOwnership = !hadOwnership
+                        && ownershipLease is not null;
+                }
+
                 changed = enabled != value;
                 enabled = value;
-                if (!enabled && discardPendingWhenDisabled && pending.Count > 0)
+                if (!enabled)
                 {
-                    var count = pending.Count;
-                    pending.Clear();
-                    persistenceLog = deleteStore();
-                    sharingLog = $"EDDN discarded {count:N0} pending upload(s) because sharing was disabled.";
+                    cancellation = replaceActivityCancellationLocked();
+                    if (discardPendingWhenDisabled
+                        && ownershipLease is not null
+                        && pending.Count > 0)
+                    {
+                        var count = pending.Count;
+                        pending.Clear();
+                        persistenceLog = deleteStore();
+                        sharingLog = $"EDDN discarded {count:N0} pending upload(s) because sharing was disabled.";
+                    }
+
+                }
+
+                canSchedule = enabled
+                    && !suspended
+                    && ownershipLease is not null;
+                if (canSchedule
+                    && (changed || acquiredOwnership)
+                    && automaticProcessing)
+                {
+                    schedule(startupDelay);
+                }
+                else if (!canSchedule)
+                {
+                    stopTimer();
                 }
             }
 
+            cancellation?.Cancel();
+            if (!value) releaseOwnershipIfIdle();
+            writeLogs(ownershipLogs);
             writeLog(persistenceLog);
             writeLog(sharingLog);
+        }
 
-            if (value && changed && automaticProcessing)
-                schedule(startupDelay);
-            else if (!value)
-                stopTimer();
+        internal void setSuspended(bool value)
+        {
+            CancellationTokenSource? cancellation = null;
+            List<string> ownershipLogs = [];
+            var shouldSchedule = false;
+            lock (sync)
+            {
+                if (disposed || suspended == value) return;
+                suspended = value;
+                if (suspended)
+                {
+                    cancellation = replaceActivityCancellationLocked();
+                }
+                else if (enabled)
+                {
+                    tryAcquireOwnershipLocked(ownershipLogs);
+                    shouldSchedule = ownershipLease is not null;
+                }
+
+                if (suspended)
+                {
+                    stopTimer();
+                }
+                else if (shouldSchedule && automaticProcessing)
+                {
+                    schedule(TimeSpan.Zero);
+                }
+            }
+
+            cancellation?.Cancel();
+            writeLogs(ownershipLogs);
         }
 
         internal bool enqueue(EddnQueuedMessage message)
@@ -91,14 +185,29 @@ namespace SrvSurvey.net
             var queued = false;
             lock (sync)
             {
-                if (!enabled || disposed) return false;
-                pending.Add(message);
-                if (!save(out persistenceLog))
+                if (!enabled
+                    || suspended
+                    || disposed
+                    || ownershipLease is null)
                 {
-                    pending.Remove(message);
+                    return false;
+                }
+
+                if (pending.Count >= maximumPendingMessages)
+                {
+                    persistenceLog =
+                        $"EDDN did not queue {eventName(message)} because the local backlog reached {maximumPendingMessages:N0} messages.";
                 }
                 else
-                    queued = true;
+                {
+                    pending.Add(message);
+                    if (!save(out persistenceLog))
+                    {
+                        pending.Remove(message);
+                    }
+                    else
+                        queued = true;
+                }
             }
 
             writeLog(persistenceLog);
@@ -115,20 +224,59 @@ namespace SrvSurvey.net
             {
                 while (true)
                 {
+                    bool mayUpload;
+                    try
+                    {
+                        mayUpload = runtimeUploadAllowed();
+                    }
+                    catch
+                    {
+                        // Runtime attribution and consent checks fail closed.
+                        mayUpload = false;
+                    }
+
+                    if (!mayUpload)
+                    {
+                        lock (sync)
+                        {
+                            if (enabled
+                                && !suspended
+                                && !disposed
+                                && ownershipLease is not null)
+                            {
+                                schedule(startupDelay);
+                            }
+                        }
+                        return;
+                    }
+
                     EddnQueuedMessage? next;
+                    CancellationToken activityToken;
                     lock (sync)
                     {
-                        if (!enabled || disposed) return;
+                        if (!enabled
+                            || suspended
+                            || disposed
+                            || ownershipLease is null)
+                        {
+                            return;
+                        }
+
                         var now = utcNow();
-                        next = pending
-                            .Where(item => item.nextAttempt <= now)
-                            .OrderBy(item => item.created)
-                            .FirstOrDefault();
+                        next = pending.FirstOrDefault();
                         if (next == null)
                         {
                             scheduleNextLocked(now);
                             return;
                         }
+
+                        if (next.nextAttempt > now)
+                        {
+                            schedule(next.nextAttempt - now);
+                            return;
+                        }
+
+                        activityToken = activityCancellation.Token;
                     }
 
                     EddnUploadResult? result = null;
@@ -137,8 +285,14 @@ namespace SrvSurvey.net
                     {
                         using var combined = CancellationTokenSource.CreateLinkedTokenSource(
                             shutdown.Token,
+                            activityToken,
                             cancellationToken);
                         result = await transport.upload(next, combined.Token).ConfigureAwait(false);
+                    }
+                    catch (OperationCanceledException) when (
+                        cancellationToken.IsCancellationRequested)
+                    {
+                        throw;
                     }
                     catch (Exception ex) when (ex is HttpRequestException or IOException or OperationCanceledException)
                     {
@@ -151,13 +305,17 @@ namespace SrvSurvey.net
                     var stopAfterResult = false;
                     lock (sync)
                     {
+                        if (!enabled || suspended || disposed)
+                        {
+                            return;
+                        }
+
                         if (!pending.Any(item => item.id == next.id)) continue;
                         if (retry)
                         {
                             next.attempts++;
                             var retryAt = utcNow() + getRetryDelay(next.attempts);
-                            foreach (var item in pending)
-                                if (item.nextAttempt < retryAt) item.nextAttempt = retryAt;
+                            next.nextAttempt = retryAt;
                             save(out persistenceLog);
                             var detail = failure?.Message
                                 ?? result?.responseDetail
@@ -201,6 +359,7 @@ namespace SrvSurvey.net
             }
             finally
             {
+                releaseOwnershipIfInactive();
                 processing.Release();
             }
         }
@@ -210,6 +369,7 @@ namespace SrvSurvey.net
             string? persistenceLog;
             lock (sync)
             {
+                if (ownershipLease is null) return;
                 pending.Clear();
                 persistenceLog = deleteStore();
             }
@@ -218,18 +378,34 @@ namespace SrvSurvey.net
 
         public void Dispose()
         {
+            CancellationTokenSource? cancellation;
             lock (sync)
             {
                 if (disposed) return;
                 disposed = true;
                 enabled = false;
+                suspended = true;
+                cancellation = replaceActivityCancellationLocked();
             }
+            cancellation.Cancel();
             shutdown.Cancel();
             timer.Dispose();
 
+            if (processing.Wait(0))
+            {
+                try
+                {
+                    releaseOwnershipIfInactive();
+                }
+                finally
+                {
+                    processing.Release();
+                }
+            }
+
             // processDue may still be between its disposed check and WaitAsync, or
-            // may still need to release the semaphore. These primitives own no native
-            // resources in this usage, so allowing GC to reclaim them avoids a dispose race.
+            // may still need to release the semaphore. The active worker releases
+            // the store lease from its finally block before another process can use it.
         }
 
         private void triggerProcessing()
@@ -258,37 +434,57 @@ namespace SrvSurvey.net
 
         private void scheduleNextLocked(DateTimeOffset now)
         {
-            if (!enabled || pending.Count == 0)
+            if (!enabled
+                || suspended
+                || ownershipLease is null
+                || pending.Count == 0)
             {
                 stopTimer();
                 return;
             }
 
-            var next = pending.Min(item => item.nextAttempt);
-            schedule(next - now);
+            schedule(pending[0].nextAttempt - now);
         }
 
-        private List<EddnQueuedMessage> load()
+        private List<EddnQueuedMessage> load(List<string> messages)
         {
             if (!File.Exists(filepath)) return [];
             try
             {
+                if (new FileInfo(filepath).Length > maximumStoreBytes)
+                {
+                    throw new InvalidDataException(
+                        $"the queue exceeded {maximumStoreBytes / 1024 / 1024:N0} MiB");
+                }
+
                 var json = File.ReadAllText(filepath);
-                return JsonConvert.DeserializeObject<List<EddnQueuedMessage>>(json) ?? [];
+                var loaded = JsonConvert.DeserializeObject<List<EddnQueuedMessage>>(json) ?? [];
+                if (loaded.Count > maximumPendingMessages
+                    || loaded.Any(item => !isValid(item)))
+                {
+                    throw new InvalidDataException(
+                        "the queue contained invalid or excessive entries");
+                }
+
+                return loaded;
             }
-            catch (Exception ex) when (ex is IOException or JsonException)
+            catch (Exception ex) when (
+                ex is IOException
+                    or JsonException
+                    or UnauthorizedAccessException
+                    or InvalidDataException)
             {
                 var backup = filepath + ".bad-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmss");
                 try
                 {
                     File.Move(filepath, backup);
-                    writeLog($"EDDN moved an unreadable queue to: {backup}");
+                    messages.Add($"EDDN moved an unreadable queue to: {backup}");
                 }
                 catch (Exception moveError) when (moveError is IOException or UnauthorizedAccessException)
                 {
-                    writeLog($"EDDN could not preserve its unreadable queue: {moveError.Message}");
+                    messages.Add($"EDDN could not preserve its unreadable queue: {moveError.Message}");
                 }
-                writeLog($"EDDN could not load its pending uploads: {ex.Message}");
+                messages.Add($"EDDN could not load its pending uploads: {ex.Message}");
                 return [];
             }
         }
@@ -313,9 +509,17 @@ namespace SrvSurvey.net
                 var folder = Path.GetDirectoryName(filepath);
                 if (!string.IsNullOrEmpty(folder)) Directory.CreateDirectory(folder);
                 var temporary = filepath + ".tmp";
+                var json = JsonConvert.SerializeObject(pending, Formatting.Indented);
+                if (Encoding.UTF8.GetByteCount(json) > maximumStoreBytes)
+                {
+                    errorLog =
+                        $"EDDN did not grow its local queue beyond {maximumStoreBytes / 1024 / 1024:N0} MiB.";
+                    return false;
+                }
+
                 File.WriteAllText(
                     temporary,
-                    JsonConvert.SerializeObject(pending, Formatting.Indented));
+                    json);
                 File.Move(temporary, filepath, true);
                 return true;
             }
@@ -352,6 +556,116 @@ namespace SrvSurvey.net
             {
                 // Diagnostics must never stop or poison the durable upload queue.
             }
+        }
+
+        private void writeLogs(IEnumerable<string> messages)
+        {
+            foreach (var message in messages)
+            {
+                writeLog(message);
+            }
+        }
+
+        private bool tryAcquireOwnershipLocked(List<string> messages)
+        {
+            if (ownershipLease is not null) return true;
+            try
+            {
+                var folder = Path.GetDirectoryName(ownershipPath);
+                if (!string.IsNullOrEmpty(folder)) Directory.CreateDirectory(folder);
+                ownershipLease = new FileStream(
+                    ownershipPath,
+                    FileMode.OpenOrCreate,
+                    FileAccess.ReadWrite,
+                    FileShare.None);
+                pending = load(messages);
+                if (ownershipWarningReported)
+                {
+                    messages.Add(
+                        "EDDN acquired the local outbox after the other SrvSurvey instance released it.");
+                    ownershipWarningReported = false;
+                }
+
+                return true;
+            }
+            catch (Exception exception) when (
+                exception is IOException or UnauthorizedAccessException)
+            {
+                if (!ownershipWarningReported)
+                {
+                    messages.Add(
+                        "EDDN uploads are paused because another SrvSurvey instance owns the local outbox.");
+                    ownershipWarningReported = true;
+                }
+
+                return false;
+            }
+        }
+
+        private CancellationTokenSource replaceActivityCancellationLocked()
+        {
+            var previous = activityCancellation;
+            activityCancellation = new CancellationTokenSource();
+            return previous;
+        }
+
+        private void releaseOwnershipIfIdle()
+        {
+            if (!processing.Wait(0)) return;
+            try
+            {
+                releaseOwnershipIfInactive();
+            }
+            finally
+            {
+                processing.Release();
+            }
+        }
+
+        private void releaseOwnershipIfInactive()
+        {
+            lock (sync)
+            {
+                if (enabled && !disposed) return;
+                ownershipLease?.Dispose();
+                ownershipLease = null;
+            }
+        }
+
+        private static bool isValid(EddnQueuedMessage? message)
+        {
+            return message is not null
+                && message.id != Guid.Empty
+                && message.created != default
+                && message.nextAttempt != default
+                && message.attempts >= 0
+                && message.environment is "live" or "beta" or "dev"
+                && !string.IsNullOrWhiteSpace(message.schemaRef)
+                && message.schemaRef.StartsWith(
+                    "https://eddn.edcd.io/schemas/",
+                    StringComparison.Ordinal)
+                && message.header is not null
+                && !string.IsNullOrWhiteSpace(message.header.uploaderID)
+                && message.message is not null
+                && !string.IsNullOrWhiteSpace(
+                    message.message.Value<string>("event"));
+        }
+
+        private static string getOwnershipPath(string filepath)
+        {
+            var normalizedPath = Path.GetFullPath(filepath);
+            if (OperatingSystem.IsWindows())
+            {
+                normalizedPath = normalizedPath.ToUpperInvariant();
+            }
+
+            var hash = Convert.ToHexString(
+                SHA256.HashData(Encoding.UTF8.GetBytes(normalizedPath)));
+            return Path.Combine(
+                Path.GetTempPath(),
+                "SrvSurvey",
+                "eddn-outbox-locks",
+                hash + ".lock");
         }
 
         private static TimeSpan getRetryDelay(int attempts)

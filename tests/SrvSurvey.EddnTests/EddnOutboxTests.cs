@@ -73,13 +73,300 @@ public sealed class EddnOutboxTests
         var saved = JsonConvert.DeserializeObject<List<EddnQueuedMessage>>(
             await File.ReadAllTextAsync(path));
         Assert.NotNull(saved);
-        Assert.All(saved, item => Assert.True(item.nextAttempt >= now.AddMinutes(1)));
+        Assert.True(saved[0].nextAttempt >= now.AddMinutes(1));
+        Assert.Equal(now.AddSeconds(1), saved[1].nextAttempt);
         Assert.Equal(1, saved[0].attempts);
         Assert.Equal(0, saved[1].attempts);
         Assert.Contains(logs, line => line.Contains("will retry", StringComparison.Ordinal));
 
         await queue.processDue();
         Assert.Equal(1, calls);
+    }
+
+    [Fact]
+    public async Task NewlyQueuedMessageCannotOvertakeRetriedHead()
+    {
+        using var folder = new TemporaryFolder();
+        var path = Path.Combine(folder.path, "eddn-outbox-v1.json");
+        var now = DateTimeOffset.Parse("2026-07-28T12:00:00Z");
+        var calls = 0;
+        using var queue = outbox(
+            path,
+            EddnTransportTests.createTransport(_ =>
+            {
+                calls++;
+                return Task.FromResult(new HttpResponseMessage(
+                    calls == 1
+                        ? HttpStatusCode.ServiceUnavailable
+                        : HttpStatusCode.OK));
+            }),
+            () => now);
+        queue.setEnabled(true, discardPendingWhenDisabled: false);
+        Assert.True(queue.enqueue(queued(now, "First Port")));
+
+        await queue.processDue();
+        Assert.Equal(1, calls);
+        Assert.True(queue.enqueue(queued(now, "Second Port")));
+
+        await queue.processDue();
+        Assert.Equal(1, calls);
+
+        now = now.AddMinutes(1);
+        await queue.processDue();
+
+        Assert.Equal(3, calls);
+        Assert.Equal(0, queue.pendingCount);
+    }
+
+    [Fact]
+    public async Task SuspensionPreservesPendingMessagesUntilResumed()
+    {
+        using var folder = new TemporaryFolder();
+        var path = Path.Combine(folder.path, "eddn-outbox-v1.json");
+        var now = DateTimeOffset.Parse("2026-07-28T12:00:00Z");
+        var calls = 0;
+        using var queue = outbox(
+            path,
+            EddnTransportTests.createTransport(_ =>
+            {
+                calls++;
+                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK));
+            }),
+            () => now);
+        queue.setEnabled(true, discardPendingWhenDisabled: false);
+        Assert.True(queue.enqueue(queued(now)));
+
+        queue.setSuspended(true);
+        await queue.processDue();
+
+        Assert.Equal(0, calls);
+        Assert.Equal(1, queue.pendingCount);
+        Assert.True(File.Exists(path));
+        Assert.False(queue.enqueue(queued(now, "Blocked Port")));
+
+        queue.setSuspended(false);
+        await queue.processDue();
+
+        Assert.Equal(1, calls);
+        Assert.Equal(0, queue.pendingCount);
+        Assert.False(File.Exists(path));
+    }
+
+    [Fact]
+    public async Task SuspensionCancelsActiveUploadWithoutMutatingRetryState()
+    {
+        using var folder = new TemporaryFolder();
+        var path = Path.Combine(folder.path, "eddn-outbox-v1.json");
+        var now = DateTimeOffset.Parse("2026-07-28T12:00:00Z");
+        var handler = new CancelThenSucceedHandler();
+        using var client = new HttpClient(handler);
+        var transport = new EddnTransport(
+            client,
+            new Dictionary<string, Uri>(StringComparer.Ordinal)
+            {
+                ["dev"] = new("https://dev.example.test/upload/"),
+                ["beta"] = new("https://beta.example.test/upload/"),
+                ["live"] = new("https://live.example.test/upload/"),
+            });
+        using var queue = outbox(path, transport, () => now);
+        queue.setEnabled(true, discardPendingWhenDisabled: false);
+        Assert.True(queue.enqueue(queued(now)));
+        var processing = queue.processDue();
+        await handler.Entered.WaitAsync(TimeSpan.FromSeconds(2));
+
+        queue.setSuspended(true);
+        await processing.WaitAsync(TimeSpan.FromSeconds(2));
+
+        var saved = Assert.Single(
+            JsonConvert.DeserializeObject<List<EddnQueuedMessage>>(
+                await File.ReadAllTextAsync(path))!);
+        Assert.Equal(0, saved.attempts);
+        Assert.Equal(now, saved.nextAttempt);
+
+        queue.setSuspended(false);
+        await queue.processDue();
+
+        Assert.Equal(2, handler.Calls);
+        Assert.Equal(0, queue.pendingCount);
+    }
+
+    [Fact]
+    public async Task RuntimeGateBlocksDeliveryWithoutDroppingTheQueue()
+    {
+        using var folder = new TemporaryFolder();
+        var path = Path.Combine(folder.path, "eddn-outbox-v1.json");
+        var now = DateTimeOffset.Parse("2026-07-28T12:00:00Z");
+        var mayUpload = false;
+        var calls = 0;
+        using var queue = new EddnOutbox(
+            path,
+            EddnTransportTests.createTransport(_ =>
+            {
+                calls++;
+                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK));
+            }),
+            utcNow: () => now,
+            automaticProcessing: false,
+            runtimeUploadAllowed: () => mayUpload);
+        queue.setEnabled(true, discardPendingWhenDisabled: false);
+        Assert.True(queue.enqueue(queued(now)));
+
+        await queue.processDue();
+
+        Assert.Equal(0, calls);
+        Assert.Equal(1, queue.pendingCount);
+        Assert.True(File.Exists(path));
+
+        mayUpload = true;
+        await queue.processDue();
+
+        Assert.Equal(1, calls);
+        Assert.Equal(0, queue.pendingCount);
+    }
+
+    [Fact]
+    public async Task RuntimeGateNeverRunsWhileTheQueueLockIsHeld()
+    {
+        using var folder = new TemporaryFolder();
+        var path = Path.Combine(folder.path, "eddn-outbox-v1.json");
+        var now = DateTimeOffset.Parse("2026-07-28T12:00:00Z");
+        var callbackCouldInspectQueue = false;
+        EddnOutbox? queue = null;
+        queue = new EddnOutbox(
+            path,
+            EddnTransportTests.createTransport(_ =>
+                Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK))),
+            utcNow: () => now,
+            automaticProcessing: false,
+            runtimeUploadAllowed: () =>
+            {
+                var inspection = Task.Run(() => queue!.pendingCount);
+                callbackCouldInspectQueue = inspection.Wait(TimeSpan.FromSeconds(1));
+                return true;
+            });
+        using (queue)
+        {
+            queue.setEnabled(true, discardPendingWhenDisabled: false);
+            Assert.True(queue.enqueue(queued(now)));
+
+            await queue.processDue();
+
+            Assert.True(callbackCouldInspectQueue);
+        }
+    }
+
+    [Fact]
+    public void OnlyOneProcessCanOwnAndRewriteAnOutbox()
+    {
+        using var folder = new TemporaryFolder();
+        var path = Path.Combine(folder.path, "eddn-outbox-v1.json");
+        var now = DateTimeOffset.Parse("2026-07-28T12:00:00Z");
+        var transport = EddnTransportTests.createTransport(_ =>
+            Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)));
+        var first = outbox(path, transport, () => now);
+        var second = outbox(path, transport, () => now);
+        try
+        {
+            first.setEnabled(true, discardPendingWhenDisabled: false);
+            second.setEnabled(true, discardPendingWhenDisabled: false);
+            Assert.True(first.hasExclusiveOwnership);
+            Assert.False(second.hasExclusiveOwnership);
+            Assert.True(first.enqueue(queued(now, "First Port")));
+            Assert.False(second.enqueue(queued(now, "Second Port")));
+            Assert.Single(JsonConvert.DeserializeObject<List<EddnQueuedMessage>>(
+                File.ReadAllText(path))!);
+
+            first.Dispose();
+            second.setEnabled(true, discardPendingWhenDisabled: false);
+
+            Assert.True(second.hasExclusiveOwnership);
+            Assert.Equal(1, second.pendingCount);
+            Assert.True(second.enqueue(queued(now, "Second Port")));
+            Assert.Equal(
+                2,
+                JsonConvert.DeserializeObject<List<EddnQueuedMessage>>(
+                    File.ReadAllText(path))!.Count);
+        }
+        finally
+        {
+            second.Dispose();
+            first.Dispose();
+        }
+    }
+
+    [Fact]
+    public async Task DisabledOwnerKeepsLeaseUntilActiveUploadStops()
+    {
+        using var folder = new TemporaryFolder();
+        var path = Path.Combine(folder.path, "eddn-outbox-v1.json");
+        var now = DateTimeOffset.Parse("2026-07-28T12:00:00Z");
+        var handler = new HoldAfterCancellationHandler();
+        using var client = new HttpClient(handler);
+        var transport = new EddnTransport(
+            client,
+            new Dictionary<string, Uri>(StringComparer.Ordinal)
+            {
+                ["dev"] = new("https://dev.example.test/upload/"),
+                ["beta"] = new("https://beta.example.test/upload/"),
+                ["live"] = new("https://live.example.test/upload/"),
+            });
+        var first = outbox(path, transport, () => now);
+        EddnOutbox? second = null;
+        try
+        {
+            first.setEnabled(true, discardPendingWhenDisabled: false);
+            Assert.True(first.enqueue(queued(now)));
+            var processing = first.processDue();
+            await handler.Entered.WaitAsync(TimeSpan.FromSeconds(2));
+
+            first.setEnabled(false, discardPendingWhenDisabled: false);
+            await handler.Cancelled.WaitAsync(TimeSpan.FromSeconds(2));
+            second = outbox(
+                path,
+                EddnTransportTests.createTransport(_ =>
+                    Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK))),
+                () => now);
+
+            Assert.False(second.hasExclusiveOwnership);
+
+            handler.Release();
+            await processing.WaitAsync(TimeSpan.FromSeconds(2));
+            second.setEnabled(true, discardPendingWhenDisabled: false);
+
+            Assert.True(second.hasExclusiveOwnership);
+            Assert.Equal(1, second.pendingCount);
+        }
+        finally
+        {
+            handler.Release();
+            second?.Dispose();
+            first.Dispose();
+        }
+    }
+
+    [Fact]
+    public void InvalidPersistedQueueIsQuarantinedWithoutThrowing()
+    {
+        using var folder = new TemporaryFolder();
+        var path = Path.Combine(folder.path, "eddn-outbox-v1.json");
+        File.WriteAllText(
+            path,
+            "[{\"id\":\"00000000-0000-0000-0000-000000000000\",\"schemaRef\":null}]");
+        var logs = new List<string>();
+
+        using var queue = new EddnOutbox(
+            path,
+            EddnTransportTests.createTransport(_ =>
+                Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK))),
+            logs.Add,
+            automaticProcessing: false);
+
+        Assert.Equal(0, queue.pendingCount);
+        Assert.False(File.Exists(path));
+        Assert.Single(Directory.GetFiles(folder.path, "eddn-outbox-v1.json.bad-*"));
+        Assert.Contains(logs, line => line.Contains(
+            "invalid or excessive entries",
+            StringComparison.Ordinal));
     }
 
     [Theory]
@@ -262,6 +549,68 @@ public sealed class EddnOutboxTests
         public void Dispose()
         {
             if (Directory.Exists(path)) Directory.Delete(path, recursive: true);
+        }
+    }
+
+    private sealed class CancelThenSucceedHandler : HttpMessageHandler
+    {
+        private int calls;
+
+        internal Task Entered => entered.Task;
+
+        internal int Calls => calls;
+
+        private readonly TaskCompletionSource entered = new(
+            TaskCreationOptions.RunContinuationsAsynchronously);
+
+        protected override async Task<HttpResponseMessage> SendAsync(
+            HttpRequestMessage request,
+            CancellationToken cancellationToken)
+        {
+            if (Interlocked.Increment(ref calls) == 1)
+            {
+                entered.TrySetResult();
+                await Task.Delay(
+                    Timeout.InfiniteTimeSpan,
+                    cancellationToken);
+            }
+
+            return new HttpResponseMessage(HttpStatusCode.OK);
+        }
+    }
+
+    private sealed class HoldAfterCancellationHandler : HttpMessageHandler
+    {
+        private readonly TaskCompletionSource entered = new(
+            TaskCreationOptions.RunContinuationsAsynchronously);
+        private readonly TaskCompletionSource cancelled = new(
+            TaskCreationOptions.RunContinuationsAsynchronously);
+        private readonly TaskCompletionSource release = new(
+            TaskCreationOptions.RunContinuationsAsynchronously);
+
+        internal Task Entered => entered.Task;
+
+        internal Task Cancelled => cancelled.Task;
+
+        internal void Release() => release.TrySetResult();
+
+        protected override async Task<HttpResponseMessage> SendAsync(
+            HttpRequestMessage request,
+            CancellationToken cancellationToken)
+        {
+            entered.TrySetResult();
+            try
+            {
+                await Task.Delay(Timeout.InfiniteTimeSpan, cancellationToken);
+            }
+            catch (OperationCanceledException)
+            {
+                cancelled.TrySetResult();
+                await release.Task;
+                throw;
+            }
+
+            throw new InvalidOperationException("The cancellation test transport completed unexpectedly.");
         }
     }
 }
