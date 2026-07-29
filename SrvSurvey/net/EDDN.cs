@@ -41,6 +41,9 @@ namespace SrvSurvey.net
         private UploadPayloadHeader? header;
         private EddnLocationContext? location;
         private bool isCrewMember;
+        private bool publishingSuspended;
+        private bool processDetectionWarningReported;
+        private bool consentReadWarningReported;
         private long sessionGeneration;
 
         internal EDDN()
@@ -53,7 +56,8 @@ namespace SrvSurvey.net
                 {
                     if (logAllUploads || !message.Contains(" uploaded ", StringComparison.Ordinal))
                         Game.log(message);
-                });
+                },
+                runtimeUploadAllowed: isRuntimeUploadAllowed);
             outbox.setEnabled(
                 Game.settings.eddnUploadEnabled,
                 discardPendingWhenDisabled: !Game.settings.eddnUploadEnabled);
@@ -78,6 +82,8 @@ namespace SrvSurvey.net
                     : null;
             }
 
+            if (Game.settings.eddnUploadEnabled)
+                refreshRuntimeSafety();
             outbox.setEnabled(
                 Game.settings.eddnUploadEnabled,
                 discardPendingWhenDisabled: !Game.settings.eddnUploadEnabled);
@@ -94,7 +100,131 @@ namespace SrvSurvey.net
                     stationSignatures.Clear();
                 }
             }
+            if (enabled)
+            {
+                refreshRuntimeSafety();
+                enabled = Game.settings.eddnUploadEnabled;
+            }
             outbox.setEnabled(enabled, discardPendingWhenDisabled: !enabled);
+        }
+
+        internal void refreshRuntimeSafety()
+        {
+            if (!Game.settings.eddnUploadEnabled) return;
+
+            var settingsPath = Path.Combine(Program.dataFolder, "settings.json");
+            if (!EddnConsentFile.tryRead(
+                settingsPath,
+                out var persistedEnabled,
+                out var consentError))
+            {
+                bool shouldLog;
+                lock (sync)
+                {
+                    shouldLog = !consentReadWarningReported;
+                    consentReadWarningReported = true;
+                }
+
+                // A transient settings read must not destroy the queue, but it
+                // also must not allow uploads without confirmed current consent.
+                var changed = setSuspended(
+                    true,
+                    "EDDN sharing is paused because current consent could not be read; pending uploads were preserved.");
+                if (shouldLog && !changed)
+                    Game.log($"EDDN sharing is paused because current consent could not be read: {consentError}");
+                return;
+            }
+
+            lock (sync) consentReadWarningReported = false;
+            if (!persistedEnabled)
+            {
+                Game.settings.eddnUploadEnabled = false;
+                setEnabled(false);
+                Game.log("EDDN sharing was disabled by another SrvSurvey instance; pending uploads were discarded.");
+                return;
+            }
+
+            refreshGameProcessSafety();
+        }
+
+        private void refreshGameProcessSafety()
+        {
+            try
+            {
+                var suspended = Elite.refreshManyGameProcs();
+                lock (sync) processDetectionWarningReported = false;
+                setSuspended(suspended);
+            }
+            catch (Exception ex)
+            {
+                bool shouldLog;
+                lock (sync)
+                {
+                    shouldLog = !processDetectionWarningReported;
+                    processDetectionWarningReported = true;
+                }
+
+                // Fail closed: if process attribution cannot be checked, neither
+                // shared Status.json nor companion files are safe to publish.
+                var changed = setSuspended(
+                    true,
+                    "EDDN sharing is paused because running Elite instances could not be checked; pending uploads were preserved.");
+                if (shouldLog && !changed)
+                    Game.log($"EDDN sharing is paused because running Elite instances could not be checked: {ex.Message}");
+            }
+        }
+
+        private bool isRuntimeUploadAllowed()
+        {
+            lock (sync)
+            {
+                if (publishingSuspended || !Game.settings.eddnUploadEnabled)
+                    return false;
+            }
+
+            if (!EddnConsentFile.tryRead(
+                Path.Combine(Program.dataFolder, "settings.json"),
+                out var persistedEnabled,
+                out _)
+                || !persistedEnabled)
+            {
+                return false;
+            }
+
+            try
+            {
+                return !Elite.refreshManyGameProcs();
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        internal bool setSuspended(bool suspended, string? pauseMessage = null)
+        {
+            bool changed;
+            lock (sync)
+            {
+                changed = publishingSuspended != suspended;
+                if (!changed) return false;
+                publishingSuspended = suspended;
+                if (suspended)
+                {
+                    sessionGeneration++;
+                    pendingSignals.Clear();
+                    stationSignatures.Clear();
+                }
+            }
+
+            // Suspension is operational rather than consent. Keep the durable
+            // queue intact, but cancel any active request and block new work.
+            outbox.setSuspended(suspended);
+            Game.log(suspended
+                ? pauseMessage
+                    ?? "EDDN sharing is paused while multiple Elite instances are active; pending uploads were preserved."
+                : "EDDN sharing resumed after runtime attribution and consent checks passed.");
+            return true;
         }
 
         internal void endSession(Game game)
@@ -121,6 +251,7 @@ namespace SrvSurvey.net
             var eventName = raw.Value<string>("event");
             if (string.IsNullOrWhiteSpace(eventName)) return;
 
+            if (Game.settings.eddnUploadEnabled) refreshRuntimeSafety();
             var enabled = Game.settings.eddnUploadEnabled;
             outbox.setEnabled(enabled, discardPendingWhenDisabled: false);
 
@@ -132,10 +263,12 @@ namespace SrvSurvey.net
             bool suppressBatchForCrew;
             UploadPayloadHeader? uploadHeader;
             long generation;
+            bool suspended;
             lock (sync)
             {
                 if (!ReferenceEquals(currentGame, game)) return;
                 generation = sessionGeneration;
+                suspended = publishingSuspended;
                 updateHeader(raw);
                 var eventLocation = EddnMessageSanitizer.getLocation(raw);
                 suppressBatchForCrew = isCrewMember;
@@ -162,13 +295,17 @@ namespace SrvSurvey.net
                 uploadHeader = header?.clone();
                 if (eventName == "FSSSignalDiscovered")
                 {
-                    if (enabled && !suppressForCrew && header != null)
+                    if (enabled && !suspended && !suppressForCrew && header != null)
                         pendingSignals.Add(new JObject(raw));
                     return;
                 }
             }
 
-            if (signalBatch != null && batchHeader != null && enabled && !suppressBatchForCrew)
+            if (signalBatch != null
+                && batchHeader != null
+                && enabled
+                && !suspended
+                && !suppressBatchForCrew)
                 enqueueForSession(
                     signalBatch,
                     batchHeader,
@@ -177,7 +314,7 @@ namespace SrvSurvey.net
             else if (batchReason != null && batchReason != "no public signals remained after filtering")
                 Game.log($"EDDN skipped FSSSignalDiscovered batch: {batchReason}");
 
-            if (!enabled || uploadHeader == null || suppressForCrew) return;
+            if (!enabled || suspended || uploadHeader == null || suppressForCrew) return;
 
             if (EddnMessageSanitizer.isCompanionEvent(eventName))
             {
@@ -351,6 +488,7 @@ namespace SrvSurvey.net
         {
             return currentGame != null
                 && sessionGeneration == generation
+                && !publishingSuspended
                 && Game.settings.eddnUploadEnabled;
         }
 

@@ -45,7 +45,11 @@
             and it does not upload journal history read during startup. Uploads are sent without an EDDN account,
             API key, or access token. If EDDN is temporarily unavailable, unsent messages are stored in a local retry
             queue under SrvSurvey's application-data folder. They are removed after successful delivery, after a
-            permanent rejection, or when you disable EDDN sharing.
+            permanent rejection, or when you disable EDDN sharing. Only one running SrvSurvey process can own and
+            rewrite that queue. Uploads pause, active requests are cancelled, and pending messages remain local while
+            multiple Elite Dangerous clients are running, because their shared status and companion files cannot be
+            attributed safely. SrvSurvey also rechecks the shared on-disk consent before each network request so an
+            opt-out from another SrvSurvey process stops delivery.
         </p>
     </div>
 

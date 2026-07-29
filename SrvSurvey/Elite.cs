@@ -54,6 +54,26 @@ namespace SrvSurvey
             return Process.GetProcessesByName("EliteDangerous64");
         }
 
+        /// <summary>
+        /// Refreshes the shared multiple-game flag without retaining process handles.
+        /// EDDN uses this immediately before accepting journal data so shared sidecar
+        /// files cannot be attributed while more than one Elite client is active.
+        /// </summary>
+        public static bool refreshManyGameProcs()
+        {
+            var processes = GetGameProcs();
+            try
+            {
+                hadManyGameProcs = processes.Length > 1;
+                return hadManyGameProcs;
+            }
+            finally
+            {
+                foreach (var process in processes)
+                    process.Dispose();
+            }
+        }
+
         private static Process? getGameProc()
         {
             // clear reference if that process died

@@ -26,6 +26,8 @@
              Link="EddnMessageSanitizer.cs" />
     <Compile Include="..\..\SrvSurvey\net\EddnCompanionFileReader.cs"
              Link="EddnCompanionFileReader.cs" />
+    <Compile Include="..\..\SrvSurvey\net\EddnConsentFile.cs"
+             Link="EddnConsentFile.cs" />
     <Compile Include="..\..\SrvSurvey\net\EddnOutbox.cs"
              Link="EddnOutbox.cs" />
     <Compile Include="..\..\SrvSurvey\net\EddnTransport.cs"
