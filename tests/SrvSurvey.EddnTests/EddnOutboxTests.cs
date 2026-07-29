@@ -44,6 +44,39 @@ public sealed class EddnOutboxTests
     }
 
     [Fact]
+    public async Task LegacyDevQueueRetainsTestSchemaButMigratesToLiveGateway()
+    {
+        using var folder = new TemporaryFolder();
+        var path = Path.Combine(folder.path, "eddn-outbox-v1.json");
+        var now = DateTimeOffset.Parse("2026-07-28T12:00:00Z");
+        var legacy = queued(now);
+        legacy.environment = "dev";
+        await File.WriteAllTextAsync(
+            path,
+            JsonConvert.SerializeObject(new[] { legacy }));
+        Uri? requestedUri = null;
+        using var queue = outbox(
+            path,
+            EddnTransportTests.createTransport(request =>
+            {
+                requestedUri = request.RequestUri;
+                return Task.FromResult(new HttpResponseMessage(
+                    HttpStatusCode.ServiceUnavailable));
+            }),
+            () => now);
+        queue.setEnabled(true, discardPendingWhenDisabled: false);
+
+        await queue.processDue();
+
+        Assert.Equal("https://live.example.test/upload/", requestedUri?.ToString());
+        var saved = Assert.Single(
+            JsonConvert.DeserializeObject<List<EddnQueuedMessage>>(
+                await File.ReadAllTextAsync(path))!);
+        Assert.Equal("live", saved.environment);
+        Assert.EndsWith("/test", saved.schemaRef, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public async Task TransientFailureWaitsAtLeastOneMinuteAndPreservesOrder()
     {
         using var folder = new TemporaryFolder();
@@ -162,12 +195,7 @@ public sealed class EddnOutboxTests
         using var client = new HttpClient(handler);
         var transport = new EddnTransport(
             client,
-            new Dictionary<string, Uri>(StringComparer.Ordinal)
-            {
-                ["dev"] = new("https://dev.example.test/upload/"),
-                ["beta"] = new("https://beta.example.test/upload/"),
-                ["live"] = new("https://live.example.test/upload/"),
-            });
+            new Uri("https://live.example.test/upload/"));
         using var queue = outbox(path, transport, () => now);
         queue.setEnabled(true, discardPendingWhenDisabled: false);
         Assert.True(queue.enqueue(queued(now)));
@@ -304,12 +332,7 @@ public sealed class EddnOutboxTests
         using var client = new HttpClient(handler);
         var transport = new EddnTransport(
             client,
-            new Dictionary<string, Uri>(StringComparer.Ordinal)
-            {
-                ["dev"] = new("https://dev.example.test/upload/"),
-                ["beta"] = new("https://beta.example.test/upload/"),
-                ["live"] = new("https://live.example.test/upload/"),
-            });
+            new Uri("https://live.example.test/upload/"));
         var first = outbox(path, transport, () => now);
         EddnOutbox? second = null;
         try

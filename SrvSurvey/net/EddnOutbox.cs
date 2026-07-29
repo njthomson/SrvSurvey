@@ -335,7 +335,7 @@ namespace SrvSurvey.net
 
                             if (result?.isSuccess == true)
                             {
-                                resultLog = $"EDDN uploaded {eventName(next)} to {next.environment}.";
+                                resultLog = $"EDDN uploaded {eventName(next)} to the live gateway.";
                             }
                             else
                             {
@@ -464,6 +464,22 @@ namespace SrvSurvey.net
                 {
                     throw new InvalidDataException(
                         "the queue contained invalid or excessive entries");
+                }
+
+                // Earlier PR builds persisted beta/dev as destinations.
+                // Preserve their test intent while normalizing delivery to the
+                // documented, always-available Live gateway.
+                foreach (var item in loaded)
+                {
+                    if (item.environment is "beta" or "dev"
+                        && !item.schemaRef.EndsWith(
+                            "/test",
+                            StringComparison.Ordinal))
+                    {
+                        item.schemaRef += "/test";
+                    }
+
+                    item.environment = "live";
                 }
 
                 return loaded;

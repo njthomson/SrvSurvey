@@ -309,7 +309,7 @@ namespace SrvSurvey.net
                 enqueueForSession(
                     signalBatch,
                     batchHeader,
-                    Game.settings.eddnEnvironment,
+                    Game.settings.eddnUseTestSchemas,
                     generation);
             else if (batchReason != null && batchReason != "no public signals remained after filtering")
                 Game.log($"EDDN skipped FSSSignalDiscovered batch: {batchReason}");
@@ -322,7 +322,7 @@ namespace SrvSurvey.net
                     new JObject(raw),
                     context,
                     uploadHeader,
-                    Game.settings.eddnEnvironment,
+                    Game.settings.eddnUseTestSchemas,
                     generation).justDoIt();
                 return;
             }
@@ -337,7 +337,7 @@ namespace SrvSurvey.net
                 enqueueForSession(
                     prepared!,
                     uploadHeader,
-                    Game.settings.eddnEnvironment,
+                    Game.settings.eddnUseTestSchemas,
                     generation);
             }
             else
@@ -350,7 +350,7 @@ namespace SrvSurvey.net
             JObject journalEvent,
             EddnMessageContext context,
             UploadPayloadHeader uploadHeader,
-            string? environment,
+            bool useTestSchemas,
             long generation)
         {
             var eventName = journalEvent.Value<string>("event") ?? "companion file";
@@ -380,7 +380,7 @@ namespace SrvSurvey.net
                 var queueResult = enqueueCompanionForSession(
                     prepared!,
                     uploadHeader,
-                    environment,
+                    useTestSchemas,
                     generation);
                 if (queueResult == CompanionQueueResult.Duplicate)
                 {
@@ -404,14 +404,14 @@ namespace SrvSurvey.net
         private CompanionQueueResult enqueueCompanionForSession(
             EddnPreparedMessage prepared,
             UploadPayloadHeader uploadHeader,
-            string? environment,
+            bool useTestSchemas,
             long generation)
         {
             lock (sync)
             {
                 if (!isCurrentSessionLocked(generation)) return CompanionQueueResult.Stale;
                 if (prepared.eventName == "NavRoute")
-                    return enqueueLocked(prepared, uploadHeader, environment)
+                    return enqueueLocked(prepared, uploadHeader, useTestSchemas)
                         ? CompanionQueueResult.Queued
                         : CompanionQueueResult.Failed;
 
@@ -424,7 +424,7 @@ namespace SrvSurvey.net
                 var signature = comparable.ToString(Formatting.None);
                 if (stationSignatures.GetValueOrDefault(key) == signature)
                     return CompanionQueueResult.Duplicate;
-                if (!enqueueLocked(prepared, uploadHeader, environment))
+                if (!enqueueLocked(prepared, uploadHeader, useTestSchemas))
                     return CompanionQueueResult.Failed;
 
                 stationSignatures[key] = signature;
@@ -451,7 +451,7 @@ namespace SrvSurvey.net
         private void enqueueForSession(
             EddnPreparedMessage prepared,
             UploadPayloadHeader uploadHeader,
-            string? environment,
+            bool useTestSchemas,
             long generation)
         {
             bool active;
@@ -459,7 +459,7 @@ namespace SrvSurvey.net
             lock (sync)
             {
                 active = isCurrentSessionLocked(generation);
-                queued = active && enqueueLocked(prepared, uploadHeader, environment);
+                queued = active && enqueueLocked(prepared, uploadHeader, useTestSchemas);
             }
 
             if (active && !queued)
@@ -469,13 +469,13 @@ namespace SrvSurvey.net
         private bool enqueueLocked(
             EddnPreparedMessage prepared,
             UploadPayloadHeader uploadHeader,
-            string? environment)
+            bool useTestSchemas)
         {
             var queued = transport.prepare(
                 prepared.message,
                 prepared.schemaRef,
                 uploadHeader,
-                environment);
+                useTestSchemas);
             return outbox.enqueue(queued);
         }
 

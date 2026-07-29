@@ -13,47 +13,47 @@ namespace SrvSurvey.net
         internal const int MaximumUncompressedPayloadBytes = 10 * 1024 * 1024;
         internal const int MaximumResponseDetailBytes = 2048;
 
-        private static readonly IReadOnlyDictionary<string, Uri> defaultEndpoints =
-            new Dictionary<string, Uri>(StringComparer.Ordinal)
-            {
-                ["dev"] = new("https://dev.eddn.edcd.io:4432/upload/"),
-                ["beta"] = new("https://beta.eddn.edcd.io:4431/upload/"),
-                ["live"] = new("https://eddn.edcd.io:4430/upload/"),
-            };
+        private static readonly Uri defaultEndpoint =
+            new("https://eddn.edcd.io:4430/upload/");
 
         private readonly HttpClient client;
-        private readonly IReadOnlyDictionary<string, Uri> endpoints;
+        private readonly Uri endpoint;
 
         internal EddnTransport(
             HttpClient? client = null,
-            IReadOnlyDictionary<string, Uri>? endpoints = null,
+            Uri? endpoint = null,
             string? userAgent = null)
         {
             this.client = client ?? createClient(userAgent ?? "SrvSurvey");
-            this.endpoints = endpoints ?? defaultEndpoints;
-            validateEndpoints(this.endpoints);
+            this.endpoint = endpoint ?? defaultEndpoint;
+            validateEndpoint(this.endpoint);
         }
 
         internal EddnQueuedMessage prepare(
             JObject message,
             string schemaRef,
             UploadPayloadHeader header,
-            string? environment)
+            bool useTestSchemas)
         {
             ArgumentNullException.ThrowIfNull(message);
             ArgumentException.ThrowIfNullOrWhiteSpace(schemaRef);
             ArgumentNullException.ThrowIfNull(header);
 
-            var normalizedEnvironment = normalizeEnvironment(environment);
-            if (normalizedEnvironment != "live" && !schemaRef.EndsWith("/test", StringComparison.Ordinal))
-                schemaRef += "/test";
+            var liveSchemaRef = schemaRef.EndsWith("/test", StringComparison.Ordinal)
+                ? schemaRef[..^"/test".Length]
+                : schemaRef;
+            schemaRef = useTestSchemas
+                ? liveSchemaRef + "/test"
+                : liveSchemaRef;
 
             return new EddnQueuedMessage
             {
                 id = Guid.NewGuid(),
                 created = DateTimeOffset.UtcNow,
                 nextAttempt = DateTimeOffset.UtcNow,
-                environment = normalizedEnvironment,
+                // Retained in the durable format so queues written by earlier
+                // releases can be loaded safely. Delivery is always Live.
+                environment = "live",
                 schemaRef = schemaRef,
                 header = header.clone(),
                 message = new JObject(message),
@@ -64,11 +64,11 @@ namespace SrvSurvey.net
             JObject message,
             string schemaRef,
             UploadPayloadHeader header,
-            string? environment,
+            bool useTestSchemas,
             CancellationToken cancellationToken = default)
         {
             return await upload(
-                prepare(message, schemaRef, header, environment),
+                prepare(message, schemaRef, header, useTestSchemas),
                 cancellationToken).ConfigureAwait(false);
         }
 
@@ -85,7 +85,7 @@ namespace SrvSurvey.net
             if (payloadBytes.Length > MaximumUncompressedPayloadBytes)
             {
                 return EddnUploadResult.skipped(
-                    queued.environment,
+                    "live",
                     queued.schemaRef,
                     $"the encoded message exceeded {MaximumUncompressedPayloadBytes:N0} uncompressed bytes");
             }
@@ -94,14 +94,14 @@ namespace SrvSurvey.net
             if (compressed.Length > MaximumPayloadBytes)
             {
                 return EddnUploadResult.skipped(
-                    queued.environment,
+                    "live",
                     queued.schemaRef,
                     $"the compressed message exceeded {MaximumPayloadBytes:N0} bytes");
             }
 
             using var request = new HttpRequestMessage(
                 HttpMethod.Post,
-                endpoints[queued.environment])
+                endpoint)
             {
                 Version = HttpVersion.Version11,
                 VersionPolicy = HttpVersionPolicy.RequestVersionExact,
@@ -122,22 +122,12 @@ namespace SrvSurvey.net
                 : await readBoundedResponse(response.Content, cancellationToken).ConfigureAwait(false);
 
             return new EddnUploadResult(
-                queued.environment,
+                "live",
                 queued.schemaRef,
                 response.StatusCode,
                 response.ReasonPhrase ?? string.Empty,
                 detail,
                 null);
-        }
-
-        internal static string normalizeEnvironment(string? value)
-        {
-            return value?.Trim().ToLowerInvariant() switch
-            {
-                "dev" => "dev",
-                "beta" => "beta",
-                _ => "live",
-            };
         }
 
         private static byte[] compress(byte[] payload)
@@ -177,19 +167,15 @@ namespace SrvSurvey.net
             return Encoding.UTF8.GetString(buffer, 0, total);
         }
 
-        private static void validateEndpoints(IReadOnlyDictionary<string, Uri> endpoints)
+        private static void validateEndpoint(Uri endpoint)
         {
-            ArgumentNullException.ThrowIfNull(endpoints);
-            foreach (var environment in new[] { "dev", "beta", "live" })
+            ArgumentNullException.ThrowIfNull(endpoint);
+            if (!endpoint.IsAbsoluteUri
+                || endpoint.Scheme != Uri.UriSchemeHttps)
             {
-                if (!endpoints.TryGetValue(environment, out var endpoint)
-                    || !endpoint.IsAbsoluteUri
-                    || endpoint.Scheme != Uri.UriSchemeHttps)
-                {
-                    throw new ArgumentException(
-                        $"The EDDN {environment} endpoint must be an absolute HTTPS URI.",
-                        nameof(endpoints));
-                }
+                throw new ArgumentException(
+                    "The EDDN live endpoint must be an absolute HTTPS URI.",
+                    nameof(endpoint));
             }
         }
     }
