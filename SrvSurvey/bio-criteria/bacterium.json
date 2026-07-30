@@ -336,7 +336,7 @@
             "  gravity [ ~ 0.56]",
             "     temp [ ~ 150]",
             "volcanism [None]",
-            "atmosComp [Nitrogen >= 100] | SulphurDioxide >= 28 | Argon >= 0.06]"
+            "atmosComp [Nitrogen >= 100 | SulphurDioxide >= 28 | Argon >= 0.06]"
           ]
         },
         {
