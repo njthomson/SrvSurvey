@@ -26,15 +26,22 @@ namespace SrvSurvey.game
             var diffs = new Dictionary<string, int>();
             var inventory = after ?? Array.Empty<InventoryItem>();
 
+            // O(after) name set so removed-commodity detection is O(before), not O(before×after).
+            // This runs under CargoFile2.SyncRoot via getDiff — keep it linear.
+            var afterNames = new HashSet<string>(inventory.Count, StringComparer.Ordinal);
             foreach (var entry in inventory)
             {
+                afterNames.Add(entry.Name);
                 var delta = entry.Count - before.GetValueOrDefault(entry.Name);
                 if (delta != 0)
                     diffs[entry.Name] = delta;
             }
 
-            foreach (var entry in before.Where(b => !inventory.Any(i => i.Name == b.Key)))
-                diffs[entry.Key] = -entry.Value;
+            foreach (var entry in before)
+            {
+                if (!afterNames.Contains(entry.Key))
+                    diffs[entry.Key] = -entry.Value;
+            }
 
             return diffs;
         }
