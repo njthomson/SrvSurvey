@@ -80,8 +80,9 @@ namespace SrvSurvey.game
                     }
                     else if (!value && this._watching && this.watcher != null)
                     {
-                        // stop watching
+                        // stop watching — same cleanup order as Dispose(bool)
                         this.watcher.Changed -= fileWatcher_Changed;
+                        this.watcher.Dispose();
                         this.watcher = null;
                     }
 
@@ -251,7 +252,7 @@ namespace SrvSurvey.game
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public List<InventoryItem> Inventory = new();
 
-        private static Dictionary<string, int> lastInventory = new();
+        private static Dictionary<string, int> lastInventory = CargoInventoryDiff.CreateCountMap();
 
         /// <summary>
         /// When true, <see cref="preRead"/> will not overwrite <see cref="lastInventory"/>.
@@ -343,8 +344,8 @@ namespace SrvSurvey.game
             int afterCount;
             var includeFullDump = Debugger.IsAttached;
             // Non-null locals avoid unreachable null-coalescing when dumps are only filled under includeFullDump.
-            var beforeForLog = new Dictionary<string, int>();
-            var afterForLog = new Dictionary<string, int>();
+            var beforeForLog = CargoInventoryDiff.CreateCountMap();
+            var afterForLog = CargoInventoryDiff.CreateCountMap();
 
             lock (SyncRoot)
             {
@@ -356,7 +357,7 @@ namespace SrvSurvey.game
                 // Full dumps only while debugging — keeps the lock short and avoids heavy logs in normal play.
                 if (includeFullDump)
                 {
-                    beforeForLog = new Dictionary<string, int>(lastInventory);
+                    beforeForLog = new Dictionary<string, int>(lastInventory, CargoInventoryDiff.NameComparer);
                     afterForLog = CargoInventoryDiff.ToCountMap(inventory);
                 }
 
@@ -364,16 +365,18 @@ namespace SrvSurvey.game
             }
 
             // Logging is outside the lock: Game.log can synchronously Invoke the UI thread.
+            // Quiet when there is no delta unless a debugger is attached.
             if (includeFullDump)
             {
                 Game.log(beforeForLog.formatWithHeader($"**** getDiff before (lastInventory.Count: {beforeCount})", "\r\n\t"));
                 Game.log(afterForLog.formatWithHeader($"**** getDiff after (Inventory.Count: {afterCount})", "\r\n\t"));
+                Game.log(diffs.formatWithHeader("**** getDiff:", "\r\n\t"));
             }
-            else
+            else if (diffs.Count > 0)
             {
                 Game.log($"**** getDiff summary: beforeEntries={beforeCount}, afterEntries={afterCount}, diffEntries={diffs.Count}");
+                Game.log(diffs.formatWithHeader("**** getDiff:", "\r\n\t"));
             }
-            Game.log(diffs.formatWithHeader("**** getDiff:", "\r\n\t"));
 
             return diffs;
         }

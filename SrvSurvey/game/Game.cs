@@ -1634,15 +1634,29 @@ namespace SrvSurvey.game
             Program.invalidateActivePlotters();
         }
 
+        /// <summary>
+        /// True when docked station services explicitly list squadron bank.
+        /// Missing/null StationServices is treated as non-squadron (not a nullable Contains result).
+        /// </summary>
+        private bool isDockedOnSquadronFleetCarrier()
+        {
+            var services = lastDocked?.StationServices;
+            return services != null && services.Contains(StationServiceSquadronBank);
+        }
+
         private void onJournalEntry(CargoTransfer entry)
         {
             Game.log($"Updating inventory from cargo transfer");
 
-            var onSquadFC = lastDocked?.StationServices?.Contains(StationServiceSquadronBank) == true;
+            var isFleetCarrier = lastDocked?.StationType == StationType.FleetCarrier;
             var isLinkedFC = lastDocked != null && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID);
+            var onSquadFC = isDockedOnSquadronFleetCarrier();
+            // Personal/linked FC tracking (not squadron — those use Cargo event getDiff path)
+            var trackLinkedFC = Game.settings.buildProjects_TEST && isFleetCarrier && isLinkedFC && !onSquadFC;
+
             // Squadron linked FCs rely on Cargo.getDiff() after this event. Freeze the true before-state
             // before any live inventory mutation so preRead/CargoTransfer cannot collapse the delta to zero.
-            if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && onSquadFC && isLinkedFC)
+            if (Game.settings.buildProjects_TEST && isFleetCarrier && onSquadFC && isLinkedFC)
                 this.cargoFile.captureBeforeSnapshot();
 
             var fcTrackedCargo = new Dictionary<string, int>();
@@ -1665,10 +1679,9 @@ namespace SrvSurvey.game
                     {
                         inventoryItem.Count -= delta;
 
-                        // update linked FC? (but not squadron FC — those use Cargo event getDiff path)
-                        if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID) && lastDocked.StationServices?.Contains(StationServiceSquadronBank) == false)
+                        if (trackLinkedFC)
                         {
-                            transferLogs.Add($"Transferring {delta}x {transferItem.Type} to tracked marketId: {lastDocked.MarketID}");
+                            transferLogs.Add($"Transferring {delta}x {transferItem.Type} to tracked marketId: {lastDocked!.MarketID}");
                             fcTrackedCargo.init(transferItem.Type);
                             fcTrackedCargo[transferItem.Type] += delta;
                         }
@@ -1678,10 +1691,9 @@ namespace SrvSurvey.game
                         // update ship in-memory data
                         inventoryItem.Count += delta;
 
-                        // update linked FC? (but not squadron FC — those use Cargo event getDiff path)
-                        if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID) && lastDocked.StationServices?.Contains(StationServiceSquadronBank) == false)
+                        if (trackLinkedFC)
                         {
-                            transferLogs.Add($"Transferring {delta}x {transferItem.Type} from tracked marketId: {lastDocked.MarketID}");
+                            transferLogs.Add($"Transferring {delta}x {transferItem.Type} from tracked marketId: {lastDocked!.MarketID}");
                             fcTrackedCargo.init(transferItem.Type);
                             fcTrackedCargo[transferItem.Type] -= delta;
                         }
@@ -1749,7 +1761,7 @@ namespace SrvSurvey.game
 
             // Squadron FC diff path: runs after either inventory update. getDiff holds the lock only
             // for in-memory arithmetic; supplyFC runs after release.
-            var onSquadFC = lastDocked?.StationServices?.Contains(StationServiceSquadronBank) == true;
+            var onSquadFC = isDockedOnSquadronFleetCarrier();
             var isLinkedFC = lastDocked != null && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID);
             Game.log($"**** marketId : {lastDocked?.MarketID}, onSquadFC: {onSquadFC}, isLinkedFC: {isLinkedFC}, lastDocked?.StationType: {lastDocked?.StationType}, skipNextCargoEvent: {skipNextCargoEvent}, hasPreservedSnapshot: {CargoFile2.HasPreservedSnapshot}");
             if (skipNextCargoEvent)
@@ -1762,12 +1774,13 @@ namespace SrvSurvey.game
             else if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && onSquadFC && isLinkedFC)
             {
                 // Compute diff while locked (inside getDiff); network call must stay outside the lock.
+                // getDiff also clears any preserved snapshot.
                 var diff = cargoFile.getDiff();
                 if (diff.Count > 0)
                 {
                     var marketId = lastDocked.MarketID;
                     // invert the diff as we want it applied to the FC
-                    diff = diff.ToDictionary(x => x.Key, x => x.Value * -1);
+                    diff = diff.ToDictionary(x => x.Key, x => x.Value * -1, CargoInventoryDiff.NameComparer);
                     PlotBuildCommodities.startPending(diff);
                     Game.rcc.supplyFC(cmdr.fid, marketId, diff).continueOnMain(null, updatedCargo =>
                     {
@@ -1787,6 +1800,11 @@ namespace SrvSurvey.game
                 {
                     Game.log("**** no diff - really?");
                 }
+            }
+            else if (CargoFile2.HasPreservedSnapshot)
+            {
+                // Snapshot was not consumed (undocked, unlinked, non-squad, settings off, etc.)
+                CargoFile2.clearPreservedSnapshot();
             }
 
             // track revised cargo online
@@ -1829,8 +1847,7 @@ namespace SrvSurvey.game
                         PlotBuildCommodities.endPending();
                     }
                 });
-                // lastDocked is non-null: outer condition already required FleetCarrier station type.
-                if (lastDocked.StationServices?.Contains(StationServiceSquadronBank) == true)
+                if (isDockedOnSquadronFleetCarrier())
                     skipNextCargoEvent = true;
             }
 
@@ -1857,8 +1874,7 @@ namespace SrvSurvey.game
                         PlotBuildCommodities.endPending();
                     }
                 });
-                // lastDocked is non-null: outer condition already required FleetCarrier station type.
-                if (lastDocked.StationServices?.Contains(StationServiceSquadronBank) == true)
+                if (isDockedOnSquadronFleetCarrier())
                     skipNextCargoEvent = true;
 
                 PlotBase2.invalidate(nameof(PlotBuildCommodities));

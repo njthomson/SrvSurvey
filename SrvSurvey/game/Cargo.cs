@@ -17,28 +17,15 @@ namespace SrvSurvey
 
         public Dictionary<string, int> getDiff()
         {
-            var diffs = new Dictionary<string, int>();
-            if (lastInventory.Count > 0)
-            {
-                foreach (var entry in this.Inventory)
-                {
-                    var delta = entry.Count - lastInventory.GetValueOrDefault(entry.Name);
-                    if (delta != 0) diffs[entry.Name] = delta;
-                }
+            // Legacy path — keep case-insensitive behaviour aligned with CargoFile2 / Game mutations.
+            if (lastInventory.Count == 0)
+                return CargoInventoryDiff.CreateCountMap();
 
-                foreach (var entry in this.lastInventory)
-                {
-                    if (!this.Inventory.Any(_ => _.Name == entry.Key))
-                        diffs[entry.Key] = -entry.Value;
-                }
-
-            }
-
-            return diffs;
+            return CargoInventoryDiff.Compute(lastInventory, this.Inventory);
         }
 
         [JsonIgnore]
-        public Dictionary<string, int> lastInventory = new();
+        public Dictionary<string, int> lastInventory = CargoInventoryDiff.CreateCountMap();
 
         #region deserializing + file watching
 
