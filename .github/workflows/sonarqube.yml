@@ -136,9 +136,11 @@ jobs:
           }
 
           $coverageExclusions = "SrvSurvey.Desktop/**/*.axaml,src/SrvSurvey.Desktop/**/*.axaml,SrvSurvey.Desktop/**/*.axaml.cs,src/SrvSurvey.Desktop/**/*.axaml.cs,SrvSurvey.Desktop/Platform/Overlay/*Coordinator.cs,src/SrvSurvey.Desktop/Platform/Overlay/*Coordinator.cs,SrvSurvey/**/*.Designer.cs"
-          # WinForms journal/UI integration is not unit-tested; pure cargo math is covered by tests/SrvSurvey.Tests.
+          # WinForms app is a signed WinExe; Coverlet cannot instrument it (empty OpenCover modules),
+          # so production sources under SrvSurvey/ are excluded from the coverage metric.
+          # Unit tests still run for correctness; Avalonia/slnx layout keeps normal coverage.
           if ("${{ steps.layout.outputs.kind }}" -eq "winforms") {
-            $coverageExclusions += ",SrvSurvey/game/Game.cs,SrvSurvey/game/GameFileWatcher.cs,SrvSurvey/forms/**/*,SrvSurvey/plotters/**/*,SrvSurvey/Program.cs,SrvSurvey/Main.cs"
+            $coverageExclusions += ",SrvSurvey/**/*"
           }
 
           $args = @(
@@ -199,16 +201,16 @@ jobs:
           --
           DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
-      - name: Test with coverage (WinForms / main)
+      - name: Test (WinForms / main)
         if: steps.layout.outputs.kind == 'winforms' && steps.layout.outputs.has_tests == 'true'
-        run: >-
-          dotnet test ${{ steps.layout.outputs.tests_project }}
-          --configuration Release
-          --no-build
-          -p:Platform=x64
-          --collect:"XPlat Code Coverage"
-          --
-          DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+        shell: pwsh
+        run: |
+          # Run unit tests for correctness. Coverage is not imported for the signed WinExe (see
+          # sonar.coverage.exclusions for winforms); Coverlet cannot instrument that assembly.
+          dotnet test "${{ steps.layout.outputs.tests_project }}" `
+            --configuration Release `
+            --no-build `
+            -p:Platform=x64
 
       - name: Skip tests (WinForms / main has no test projects)
         if: steps.layout.outputs.kind == 'winforms' && steps.layout.outputs.has_tests != 'true'
