@@ -45,11 +45,8 @@ namespace SrvSurvey.game
                     diffs[entry.Name] = delta;
             }
 
-            foreach (var entry in before)
-            {
-                if (!afterNames.Contains(entry.Key))
-                    diffs[entry.Key] = -entry.Value;
-            }
+            foreach (var entry in before.Where(b => !afterNames.Contains(b.Key)))
+                diffs[entry.Key] = -entry.Value;
 
             return diffs;
         }

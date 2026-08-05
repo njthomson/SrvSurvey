@@ -82,14 +82,11 @@ namespace SrvSurvey
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if (disposing && this.fileWatcher != null)
             {
-                if (this.fileWatcher != null)
-                {
-                    this.fileWatcher.Changed -= fileWatcher_Changed;
-                    this.fileWatcher.Dispose();
-                    this.fileWatcher = null;
-                }
+                this.fileWatcher.Changed -= fileWatcher_Changed;
+                this.fileWatcher.Dispose();
+                this.fileWatcher = null;
             }
         }
 
