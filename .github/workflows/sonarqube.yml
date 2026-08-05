@@ -4,12 +4,16 @@
 #
 # PR events are limited to those two bases so feature-branch noise stays low,
 # while each codebase still builds with the right SDK and solution layout.
+#
+# Push triggers for a branch only fire when THIS file exists on that branch.
+# Keep this workflow in sync on both main and SrvSurvey-Avalonia.
 name: SonarQube analysis
 
 on:
   push:
     branches:
       - main
+      # Requires the same workflow file on SrvSurvey-Avalonia (see companion PR / cherry-pick).
       - SrvSurvey-Avalonia
   pull_request:
     branches:
@@ -19,6 +23,8 @@ on:
       - opened
       - synchronize
       - reopened
+      # Draft → Ready for review without a new push would otherwise skip Sonar.
+      - ready_for_review
   workflow_dispatch:
 
 permissions:
@@ -32,6 +38,8 @@ env:
   SONAR_SCANNER_VERSION: "11.2.1" # Bump this value to invalidate the scanner cache.
   SONAR_PROJECT_KEY: "Fenris159_SrvSurvey"
   SONAR_ORGANIZATION: "fenris159"
+  # Point the scanner at the directory we cache (SONAR_USER_HOME/cache).
+  SONAR_USER_HOME: ${{ github.workspace }}/.sonar
 
 jobs:
   analyze:
@@ -86,7 +94,8 @@ jobs:
       - name: Cache SonarQube packages
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
-          path: ~\sonar\cache
+          # Must match SONAR_USER_HOME/cache so the scanner reuses analyzer packages.
+          path: ${{ env.SONAR_USER_HOME }}/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
