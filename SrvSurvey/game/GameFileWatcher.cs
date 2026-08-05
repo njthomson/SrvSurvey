@@ -341,9 +341,10 @@ namespace SrvSurvey.game
             Dictionary<string, int> diffs;
             int beforeCount;
             int afterCount;
-            Dictionary<string, int>? beforeForLog = null;
-            Dictionary<string, int>? afterForLog = null;
             var includeFullDump = Debugger.IsAttached;
+            // Non-null locals avoid unreachable null-coalescing when dumps are only filled under includeFullDump.
+            var beforeForLog = new Dictionary<string, int>();
+            var afterForLog = new Dictionary<string, int>();
 
             lock (SyncRoot)
             {
@@ -365,8 +366,8 @@ namespace SrvSurvey.game
             // Logging is outside the lock: Game.log can synchronously Invoke the UI thread.
             if (includeFullDump)
             {
-                Game.log((beforeForLog ?? new Dictionary<string, int>()).formatWithHeader($"**** getDiff before (lastInventory.Count: {beforeCount})", "\r\n\t"));
-                Game.log((afterForLog ?? new Dictionary<string, int>()).formatWithHeader($"**** getDiff after (Inventory.Count: {afterCount})", "\r\n\t"));
+                Game.log(beforeForLog.formatWithHeader($"**** getDiff before (lastInventory.Count: {beforeCount})", "\r\n\t"));
+                Game.log(afterForLog.formatWithHeader($"**** getDiff after (Inventory.Count: {afterCount})", "\r\n\t"));
             }
             else
             {
@@ -427,7 +428,7 @@ namespace SrvSurvey.game
         /// <summary> A map of real system names to alternate nick-names </summary>
         public Dictionary<string, string> map = [];
 
-        /// <summary> Online nick-name map supplied by Raven Colonial. </summary>
-        public static readonly Dictionary<string, string> ravenMap = [];
+        /// <summary> Online nick-name map supplied by Raven Colonial (replaced as a whole when refreshed). </summary>
+        public static Dictionary<string, string> ravenMap { get; set; } = new();
     }
 }

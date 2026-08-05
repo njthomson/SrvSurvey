@@ -138,7 +138,7 @@ jobs:
           $coverageExclusions = "SrvSurvey.Desktop/**/*.axaml,src/SrvSurvey.Desktop/**/*.axaml,SrvSurvey.Desktop/**/*.axaml.cs,src/SrvSurvey.Desktop/**/*.axaml.cs,SrvSurvey.Desktop/Platform/Overlay/*Coordinator.cs,src/SrvSurvey.Desktop/Platform/Overlay/*Coordinator.cs,SrvSurvey/**/*.Designer.cs"
           # WinForms journal/UI integration is not unit-tested; pure cargo math is covered by tests/SrvSurvey.Tests.
           if ("${{ steps.layout.outputs.kind }}" -eq "winforms") {
-            $coverageExclusions += ",SrvSurvey/game/Game.cs,SrvSurvey/game/GameFileWatcher.cs,SrvSurvey/net/Git.cs,SrvSurvey/forms/**/*,SrvSurvey/plotters/**/*,SrvSurvey/Program.cs,SrvSurvey/Main.cs"
+            $coverageExclusions += ",SrvSurvey/game/Game.cs,SrvSurvey/game/GameFileWatcher.cs,SrvSurvey/forms/**/*,SrvSurvey/plotters/**/*,SrvSurvey/Program.cs,SrvSurvey/Main.cs"
           }
 
           $args = @(

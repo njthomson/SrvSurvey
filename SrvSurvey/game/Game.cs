@@ -1829,8 +1829,8 @@ namespace SrvSurvey.game
                         PlotBuildCommodities.endPending();
                     }
                 });
-                var onSquadFC = lastDocked?.StationServices?.Contains(StationServiceSquadronBank) == true;
-                if (onSquadFC)
+                // lastDocked is non-null: outer condition already required FleetCarrier station type.
+                if (lastDocked.StationServices?.Contains(StationServiceSquadronBank) == true)
                     skipNextCargoEvent = true;
             }
 
@@ -1857,8 +1857,8 @@ namespace SrvSurvey.game
                         PlotBuildCommodities.endPending();
                     }
                 });
-                var onSquadFC = lastDocked?.StationServices?.Contains(StationServiceSquadronBank) == true;
-                if (onSquadFC)
+                // lastDocked is non-null: outer condition already required FleetCarrier station type.
+                if (lastDocked.StationServices?.Contains(StationServiceSquadronBank) == true)
                     skipNextCargoEvent = true;
 
                 PlotBase2.invalidate(nameof(PlotBuildCommodities));

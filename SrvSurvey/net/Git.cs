@@ -156,10 +156,7 @@ namespace SrvSurvey.net
                 if (File.Exists(filepathRavenNicknames))
                 {
                     var json2 = await File.ReadAllTextAsync(filepathRavenNicknames);
-                    var nickMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(json2) ?? new();
-                    SystemNickNames.ravenMap.Clear();
-                    foreach (var pair in nickMap)
-                        SystemNickNames.ravenMap[pair.Key] = pair.Value;
+                    SystemNickNames.ravenMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(json2) ?? new();
                 }
 
                 if (!File.Exists(Git.gggPath) || pubData.ggg > Game.settings.pubGGG)
