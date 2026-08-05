@@ -1610,21 +1610,25 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(EjectCargo entry)
         {
+            string? logMsg = null;
             lock (CargoFile2.SyncRoot)
             {
                 var inventoryItem = this.cargoFile.Inventory.FirstOrDefault(_ => _.Name.Equals(entry.Type, StringComparison.OrdinalIgnoreCase));
                 if (inventoryItem == null)
                 {
-                    Game.log($"EjectCargo: How can we eject cargo we do not have? {entry.Type_Localised} ({entry.Type})");
+                    logMsg = $"EjectCargo: How can we eject cargo we do not have? {entry.Type_Localised} ({entry.Type})";
                 }
                 else
                 {
                     inventoryItem.Count -= entry.Count;
-                    Game.log($"EjectCargo: {entry.Count} x {entry.Type_Localised} ({entry.Type}), new count: {inventoryItem.Count}");
+                    logMsg = $"EjectCargo: {entry.Count} x {entry.Type_Localised} ({entry.Type}), new count: {inventoryItem.Count}";
                     if (inventoryItem.Count == 0)
                         this.cargoFile.Inventory.Remove(inventoryItem);
                 }
             }
+            // Never Game.log while holding SyncRoot — ViewLogs.append can Invoke the UI thread.
+            if (logMsg != null)
+                Game.log(logMsg);
             Program.invalidateActivePlotters();
         }
 
@@ -1640,6 +1644,8 @@ namespace SrvSurvey.game
                 this.cargoFile.captureBeforeSnapshot();
 
             var fcTrackedCargo = new Dictionary<string, int>();
+            var transferLogs = new List<string>();
+            string cargoSnapshotLog;
             lock (CargoFile2.SyncRoot)
             {
                 foreach (var transferItem in entry.Transfers)
@@ -1660,7 +1666,7 @@ namespace SrvSurvey.game
                         // update linked FC? (but not squadron FC — those use Cargo event getDiff path)
                         if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID) && lastDocked.StationServices?.Contains("squadronBank") == false)
                         {
-                            Game.log($"Transferring {delta}x {transferItem.Type} to tracked marketId: {lastDocked.MarketID}");
+                            transferLogs.Add($"Transferring {delta}x {transferItem.Type} to tracked marketId: {lastDocked.MarketID}");
                             fcTrackedCargo.init(transferItem.Type);
                             fcTrackedCargo[transferItem.Type] += delta;
                         }
@@ -1673,17 +1679,21 @@ namespace SrvSurvey.game
                         // update linked FC? (but not squadron FC — those use Cargo event getDiff path)
                         if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID) && lastDocked.StationServices?.Contains("squadronBank") == false)
                         {
-                            Game.log($"Transferring {delta}x {transferItem.Type} from tracked marketId: {lastDocked.MarketID}");
+                            transferLogs.Add($"Transferring {delta}x {transferItem.Type} from tracked marketId: {lastDocked.MarketID}");
                             fcTrackedCargo.init(transferItem.Type);
                             fcTrackedCargo[transferItem.Type] -= delta;
                         }
                     }
                 }
+
+                cargoSnapshotLog = "Game.CargoTransfer: Current cargo:\r\n  " + string.Join("\r\n  ", this.cargoFile.Inventory);
             }
 
+            foreach (var msg in transferLogs)
+                Game.log(msg);
+            log(cargoSnapshotLog);
+
             Program.invalidateActivePlotters();
-            lock (CargoFile2.SyncRoot)
-                log($"Game.CargoTransfer: Current cargo:\r\n  " + string.Join("\r\n  ", this.cargoFile.Inventory));
 
             // Network I/O outside the cargo lock
             if (lastDocked != null && fcTrackedCargo.Count > 0)

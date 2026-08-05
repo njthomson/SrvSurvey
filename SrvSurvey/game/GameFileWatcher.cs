@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.plotters;
+using System.Diagnostics;
 
 namespace SrvSurvey.game
 {
@@ -115,13 +116,17 @@ namespace SrvSurvey.game
                 {
                     // For cargo, hold SyncRoot across snapshot + replace so lastInventory and
                     // the live instance cannot race with CargoTransfer / journal mutations.
+                    // Never call Game.log while SyncRoot is held (UI Invoke deadlock risk).
                     if (typeof(T) == typeof(CargoFile2))
                     {
+                        string? preReadLog;
                         lock (CargoFile2.SyncRoot)
                         {
-                            this.value.preRead();
+                            preReadLog = ((CargoFile2)(object)this.value).preReadUnlocked();
                             this.value = obj;
                         }
+                        if (preReadLog != null)
+                            Game.log(preReadLog);
                     }
                     else
                     {
@@ -275,12 +280,15 @@ namespace SrvSurvey.game
         /// </summary>
         public void captureBeforeSnapshot()
         {
+            string logMsg;
             lock (SyncRoot)
             {
                 copyInventoryToLastUnlocked();
                 preserveLastInventory = true;
-                Game.log(lastInventory.formatWithHeader($"**** captureBeforeSnapshot: (lastInventory.Count: {lastInventory.Count})", "\r\n\t"));
+                // Build log text under the lock; emit after release (Game.log may Invoke UI).
+                logMsg = lastInventory.formatWithHeader($"**** captureBeforeSnapshot: (lastInventory.Count: {lastInventory.Count})", "\r\n\t");
             }
+            Game.log(logMsg);
         }
 
         /// <summary>
@@ -289,42 +297,63 @@ namespace SrvSurvey.game
         /// </summary>
         public void clearPreservedSnapshot()
         {
+            var dropped = false;
             lock (SyncRoot)
             {
                 if (preserveLastInventory)
                 {
                     preserveLastInventory = false;
-                    Game.log("**** clearPreservedSnapshot: dropped held lastInventory");
+                    dropped = true;
                 }
             }
+            if (dropped)
+                Game.log("**** clearPreservedSnapshot: dropped held lastInventory");
         }
 
         public override void preRead()
         {
-            lock (SyncRoot)
-            {
-                if (preserveLastInventory)
-                {
-                    Game.log($"**** preRead: preserving lastInventory ({lastInventory.Count} entries) for pending squadron/diff snapshot");
-                    return;
-                }
+            // Log only after SyncRoot is released — Game.log can block on the UI thread.
+            var logMsg = preReadWithLock();
+            if (logMsg != null)
+                Game.log(logMsg);
+        }
 
-                // clone current inventory before the watcher replaces this instance
-                copyInventoryToLastUnlocked();
-                Game.log(lastInventory.formatWithHeader($"**** preRead: (lastInventory.Count: {lastInventory.Count})", "\r\n\t"));
-            }
+        /// <summary>
+        /// Snapshot-before-replace work for callers that already hold <see cref="SyncRoot"/>.
+        /// Returns a log line to emit after the lock is released (never log while locked).
+        /// </summary>
+        internal string? preReadUnlocked()
+        {
+            if (preserveLastInventory)
+                return $"**** preRead: preserving lastInventory ({lastInventory.Count} entries) for pending squadron/diff snapshot";
+
+            // clone current inventory before the watcher replaces this instance
+            copyInventoryToLastUnlocked();
+            return lastInventory.formatWithHeader($"**** preRead: (lastInventory.Count: {lastInventory.Count})", "\r\n\t");
+        }
+
+        private string? preReadWithLock()
+        {
+            lock (SyncRoot)
+                return preReadUnlocked();
         }
 
         /// <summary>
         /// Ship cargo delta: current Inventory − lastInventory (non-zero entries only).
         /// Clears any preserved snapshot. Call while the new inventory is already applied;
-        /// release SyncRoot before network I/O.
+        /// release SyncRoot before network I/O or logging.
         /// </summary>
         public Dictionary<string, int> getDiff()
         {
+            Dictionary<string, int> diffs;
+            int beforeCount;
+            int afterCount;
+            Dictionary<string, int>? beforeDump = null;
+            Dictionary<string, int>? afterDump = null;
+
             lock (SyncRoot)
             {
-                var diffs = new Dictionary<string, int>();
+                diffs = new Dictionary<string, int>();
                 var inventory = this.Inventory ?? new List<InventoryItem>();
 
                 foreach (var entry in inventory)
@@ -337,14 +366,32 @@ namespace SrvSurvey.game
                     if (!inventory.Any(_ => _.Name == entry.Key))
                         diffs[entry.Key] = -entry.Value;
 
-                // Debug: before/after counts help diagnose future zero-diff issues
-                Game.log(lastInventory.formatWithHeader($"**** getDiff before (lastInventory.Count: {lastInventory.Count})", "\r\n\t"));
-                Game.log(inventory.ToDictionary(i => i.Name, i => i.Count).formatWithHeader($"**** getDiff after (Inventory.Count: {inventory.Count})", "\r\n\t"));
-                Game.log(diffs.formatWithHeader("**** getDiff:", "\r\n\t"));
+                beforeCount = lastInventory.Count;
+                afterCount = inventory.Count;
+
+                // Full dumps only while debugging — keeps the lock short and avoids heavy logs in normal play.
+                if (Debugger.IsAttached)
+                {
+                    beforeDump = new Dictionary<string, int>(lastInventory);
+                    afterDump = inventory.ToDictionary(i => i.Name, i => i.Count);
+                }
 
                 preserveLastInventory = false;
-                return diffs;
             }
+
+            // Logging is outside the lock: Game.log can synchronously Invoke the UI thread.
+            if (beforeDump != null && afterDump != null)
+            {
+                Game.log(beforeDump.formatWithHeader($"**** getDiff before (lastInventory.Count: {beforeCount})", "\r\n\t"));
+                Game.log(afterDump.formatWithHeader($"**** getDiff after (Inventory.Count: {afterCount})", "\r\n\t"));
+            }
+            else
+            {
+                Game.log($"**** getDiff summary: beforeEntries={beforeCount}, afterEntries={afterCount}, diffEntries={diffs.Count}");
+            }
+            Game.log(diffs.formatWithHeader("**** getDiff:", "\r\n\t"));
+
+            return diffs;
         }
 
         /// <summary>Apply a journal Cargo event's inventory fields under the shared lock.</summary>
