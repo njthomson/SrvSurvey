@@ -774,8 +774,11 @@ namespace SrvSurvey.game
             if (Elite.hadManyGameProcs)
             {
                 Game.log("**** Ignoring CargoFile contents as there are many game processes running");
-                this.cargoFile.Count = 0;
-                this.cargoFile.Inventory.Clear();
+                lock (CargoFile2.SyncRoot)
+                {
+                    this.cargoFile.Count = 0;
+                    this.cargoFile.Inventory.Clear();
+                }
             }
 
             log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{cmdr?.currentSystem}, systemLocation:{cmdr?.lastSystemLocation}, systemBody:{this.systemBody}, journals.Count:{journals.Count}");
@@ -1591,30 +1594,36 @@ namespace SrvSurvey.game
         {
             Game.log($"CollectCargo: {entry.Type_Localised} ({entry.Type})");
 
-            var inventoryItem = this.cargoFile.Inventory.FirstOrDefault(_ => _.Name.Equals(entry.Type, StringComparison.OrdinalIgnoreCase));
-            if (inventoryItem == null)
+            lock (CargoFile2.SyncRoot)
             {
-                inventoryItem = new InventoryItem(entry.Type, entry.Type_Localised);
-                this.cargoFile.Inventory.Add(inventoryItem);
-            }
+                var inventoryItem = this.cargoFile.Inventory.FirstOrDefault(_ => _.Name.Equals(entry.Type, StringComparison.OrdinalIgnoreCase));
+                if (inventoryItem == null)
+                {
+                    inventoryItem = new InventoryItem(entry.Type, entry.Type_Localised);
+                    this.cargoFile.Inventory.Add(inventoryItem);
+                }
 
-            inventoryItem.Count++;
+                inventoryItem.Count++;
+            }
             Program.invalidateActivePlotters();
         }
 
         private void onJournalEntry(EjectCargo entry)
         {
-            var inventoryItem = this.cargoFile.Inventory.FirstOrDefault(_ => _.Name.Equals(entry.Type, StringComparison.OrdinalIgnoreCase));
-            if (inventoryItem == null)
+            lock (CargoFile2.SyncRoot)
             {
-                Game.log($"EjectCargo: How can we eject cargo we do not have? {entry.Type_Localised} ({entry.Type})");
-            }
-            else
-            {
-                inventoryItem.Count -= entry.Count;
-                Game.log($"EjectCargo: {entry.Count} x {entry.Type_Localised} ({entry.Type}), new count: {inventoryItem.Count}");
-                if (inventoryItem.Count == 0)
-                    this.cargoFile.Inventory.Remove(inventoryItem);
+                var inventoryItem = this.cargoFile.Inventory.FirstOrDefault(_ => _.Name.Equals(entry.Type, StringComparison.OrdinalIgnoreCase));
+                if (inventoryItem == null)
+                {
+                    Game.log($"EjectCargo: How can we eject cargo we do not have? {entry.Type_Localised} ({entry.Type})");
+                }
+                else
+                {
+                    inventoryItem.Count -= entry.Count;
+                    Game.log($"EjectCargo: {entry.Count} x {entry.Type_Localised} ({entry.Type}), new count: {inventoryItem.Count}");
+                    if (inventoryItem.Count == 0)
+                        this.cargoFile.Inventory.Remove(inventoryItem);
+                }
             }
             Program.invalidateActivePlotters();
         }
@@ -1623,49 +1632,60 @@ namespace SrvSurvey.game
         {
             Game.log($"Updating inventory from cargo transfer");
 
+            var onSquadFC = lastDocked?.StationServices?.Contains("squadronBank") == true;
+            var isLinkedFC = lastDocked != null && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID);
+            // Squadron linked FCs rely on Cargo.getDiff() after this event. Freeze the true before-state
+            // before any live inventory mutation so preRead/CargoTransfer cannot collapse the delta to zero.
+            if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && onSquadFC && isLinkedFC)
+                this.cargoFile.captureBeforeSnapshot();
+
             var fcTrackedCargo = new Dictionary<string, int>();
-            foreach (var transferItem in entry.Transfers)
+            lock (CargoFile2.SyncRoot)
             {
-                // TODO: check to / from ship?
-                var inventoryItem = this.cargoFile.Inventory.FirstOrDefault(_ => _.Name.Equals(transferItem.Type, StringComparison.OrdinalIgnoreCase));
-                if (inventoryItem == null)
+                foreach (var transferItem in entry.Transfers)
                 {
-                    inventoryItem = new InventoryItem(transferItem.Type, transferItem.Type_Localised);
-                    this.cargoFile.Inventory.Add(inventoryItem);
-                }
-
-                var delta = transferItem.Count;
-                if ((this.vehicle == ActiveVehicle.SRV && transferItem.Direction == "toship") || (this.vehicle == ActiveVehicle.MainShip && transferItem.Direction == "tocarrier"))
-                {
-                    inventoryItem.Count -= delta;
-
-                    // update linked FC? (but not squadron FC)
-                    if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID) && lastDocked.StationServices?.Contains("squadronBank") == false)
+                    // TODO: check to / from ship?
+                    var inventoryItem = this.cargoFile.Inventory.FirstOrDefault(_ => _.Name.Equals(transferItem.Type, StringComparison.OrdinalIgnoreCase));
+                    if (inventoryItem == null)
                     {
-                        Game.log($"Transferring {delta}x {transferItem.Type} to tracked marketId: {lastDocked.MarketID}");
-                        fcTrackedCargo.init(transferItem.Type);
-                        fcTrackedCargo[transferItem.Type] += delta;
+                        inventoryItem = new InventoryItem(transferItem.Type, transferItem.Type_Localised);
+                        this.cargoFile.Inventory.Add(inventoryItem);
                     }
-                }
-                else if ((this.vehicle == ActiveVehicle.SRV && transferItem.Direction == "tosrv") || (this.vehicle == ActiveVehicle.MainShip && transferItem.Direction == "toship"))
-                {
-                    // update ship in-memory data
-                    inventoryItem.Count += delta;
 
-                    // update linked FC?
-                    if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID))
+                    var delta = transferItem.Count;
+                    if ((this.vehicle == ActiveVehicle.SRV && transferItem.Direction == "toship") || (this.vehicle == ActiveVehicle.MainShip && transferItem.Direction == "tocarrier"))
                     {
-                        Game.log($"Transferring {delta}x {transferItem.Type} from tracked marketId: {lastDocked.MarketID}");
-                        fcTrackedCargo.init(transferItem.Type);
-                        fcTrackedCargo[transferItem.Type] -= delta;
+                        inventoryItem.Count -= delta;
+
+                        // update linked FC? (but not squadron FC — those use Cargo event getDiff path)
+                        if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID) && lastDocked.StationServices?.Contains("squadronBank") == false)
+                        {
+                            Game.log($"Transferring {delta}x {transferItem.Type} to tracked marketId: {lastDocked.MarketID}");
+                            fcTrackedCargo.init(transferItem.Type);
+                            fcTrackedCargo[transferItem.Type] += delta;
+                        }
+                    }
+                    else if ((this.vehicle == ActiveVehicle.SRV && transferItem.Direction == "tosrv") || (this.vehicle == ActiveVehicle.MainShip && transferItem.Direction == "toship"))
+                    {
+                        // update ship in-memory data
+                        inventoryItem.Count += delta;
+
+                        // update linked FC? (but not squadron FC — those use Cargo event getDiff path)
+                        if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID) && lastDocked.StationServices?.Contains("squadronBank") == false)
+                        {
+                            Game.log($"Transferring {delta}x {transferItem.Type} from tracked marketId: {lastDocked.MarketID}");
+                            fcTrackedCargo.init(transferItem.Type);
+                            fcTrackedCargo[transferItem.Type] -= delta;
+                        }
                     }
                 }
             }
 
             Program.invalidateActivePlotters();
-            log($"Game.CargoTransfer: Current cargo:\r\n  " + string.Join("\r\n  ", this.cargoFile.Inventory));
+            lock (CargoFile2.SyncRoot)
+                log($"Game.CargoTransfer: Current cargo:\r\n  " + string.Join("\r\n  ", this.cargoFile.Inventory));
 
-
+            // Network I/O outside the cargo lock
             if (lastDocked != null && fcTrackedCargo.Count > 0)
             {
                 PlotBuildCommodities.startPending(fcTrackedCargo);
@@ -1702,58 +1722,58 @@ namespace SrvSurvey.game
 
             if (entry.Count > 0 && entry.Inventory?.Count > 0)
             {
-                // use the inventory contained in this event
-                this.cargoFile.timestamp = entry.timestamp;
-                this.cargoFile.Vessel = entry.Vessel;
-                this.cargoFile.Count = entry.Count;
-                this.cargoFile.Inventory = entry.Inventory;
+                // Apply inventory from the journal under the shared lock (lastInventory may already
+                // be held from CargoTransfer.captureBeforeSnapshot for squadron FC transfers).
+                this.cargoFile.applyJournalInventory(entry.timestamp, entry.Vessel, entry.Count, entry.Inventory);
 
                 // also read so we initialize things (which skips if the times do not match)
                 CargoFile2.read(true, entry.timestamp);
             }
             else
             {
-                // force re-read the cargo file
+                // force re-read the cargo file (preRead snapshots under lock, or preserves held snapshot)
                 CargoFile2.read(true, entry.timestamp);
+            }
 
-                // TODO: Remove with confirmation that diff tracking behaves
-                //Game.log(this.cargoFile.Inventory.formatWithHeader($"AFTER read: {cargoFile.timestamp} | {cargoFile.Count}", "\r\n\t"));
-
-                var onSquadFC = lastDocked?.StationServices?.Contains("squadronBank") == true;
-                var isLinkedFC = lastDocked != null && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID);
-                Game.log($"**** marketId : {lastDocked?.MarketID}, onSquadFC: {onSquadFC}, isLinkedFC: {isLinkedFC}, lastDocked?.StationType: {lastDocked?.StationType}, skipNextCargoEvent: {skipNextCargoEvent}");
-                if (skipNextCargoEvent)
+            // Squadron FC diff path: runs after either inventory update. getDiff holds the lock only
+            // for in-memory arithmetic; supplyFC runs after release.
+            var onSquadFC = lastDocked?.StationServices?.Contains("squadronBank") == true;
+            var isLinkedFC = lastDocked != null && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID);
+            Game.log($"**** marketId : {lastDocked?.MarketID}, onSquadFC: {onSquadFC}, isLinkedFC: {isLinkedFC}, lastDocked?.StationType: {lastDocked?.StationType}, skipNextCargoEvent: {skipNextCargoEvent}, hasPreservedSnapshot: {CargoFile2.HasPreservedSnapshot}");
+            if (skipNextCargoEvent)
+            {
+                skipNextCargoEvent = false;
+                // Do not leave a held snapshot that would freeze lastInventory forever
+                this.cargoFile.clearPreservedSnapshot();
+            }
+            // if docked on a TRACKED Squadron FC - use crude cargo diff'ing to track cargo on the thing
+            else if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && onSquadFC && isLinkedFC)
+            {
+                // Compute diff while locked (inside getDiff); network call must stay outside the lock.
+                var diff = cargoFile.getDiff();
+                if (diff.Count > 0)
                 {
-                    skipNextCargoEvent = false;
-                }
-                // if docked on a TRACKED Squadron FC - use crude cargo diff'ing to track cargo on the thing
-                else if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && onSquadFC && isLinkedFC)
-                {
-                    var diff = cargoFile.getDiff();
-                    if (diff.Count > 0)
+                    var marketId = lastDocked.MarketID;
+                    // invert the diff as we want it applied to the FC
+                    diff = diff.ToDictionary(x => x.Key, x => x.Value * -1);
+                    PlotBuildCommodities.startPending(diff);
+                    Game.rcc.supplyFC(cmdr.fid, marketId, diff).continueOnMain(null, updatedCargo =>
                     {
-                        var marketId = lastDocked.MarketID;
-                        // invert the diff as we want it applied to the FC
-                        diff = diff.ToDictionary(x => x.Key, x => x.Value * -1);
-                        PlotBuildCommodities.startPending(diff);
-                        Game.rcc.supplyFC(cmdr.fid, marketId, diff).continueOnMain(null, updatedCargo =>
+                        Game.log(updatedCargo.formatWithHeader($"**** updatedCargo after supplyFC: {marketId}"));
+                        if (cmdrColony == null) return;
+                        var fc = cmdrColony.linkedFCs.GetValueOrDefault(marketId);
+                        if (fc != null)
                         {
-                            Game.log(updatedCargo.formatWithHeader($"**** updatedCargo after supplyFC: {marketId}"));
-                            if (cmdrColony == null) return;
-                            var fc = cmdrColony.linkedFCs.GetValueOrDefault(marketId);
-                            if (fc != null)
-                            {
-                                fc.cargo = updatedCargo;
-                                cmdrColony.sumCargoLinkedFCs = ColonyData.getSumCargoFC(cmdrColony.linkedFCs.Values);
-                                cmdrColony.Save();
-                                PlotBuildCommodities.endPending();
-                            }
-                        });
-                    }
-                    else
-                    {
-                        Game.log("**** no diff - really?");
-                    }
+                            fc.cargo = updatedCargo;
+                            cmdrColony.sumCargoLinkedFCs = ColonyData.getSumCargoFC(cmdrColony.linkedFCs.Values);
+                            cmdrColony.Save();
+                            PlotBuildCommodities.endPending();
+                        }
+                    });
+                }
+                else
+                {
+                    Game.log("**** no diff - really?");
                 }
             }
 
@@ -1767,14 +1787,17 @@ namespace SrvSurvey.game
         private void onJournalEntry(MarketBuy entry)
         {
             // add to cargo counts tracked in memory
-            var item = cargoFile.Inventory.Find(i => i.Name == entry.Type);
-            if (item == null)
+            lock (CargoFile2.SyncRoot)
             {
-                // add if missing
-                item = new InventoryItem(entry.Type, entry.Type_Localised);
-                cargoFile.Inventory.Add(item);
+                var item = cargoFile.Inventory.Find(i => i.Name == entry.Type);
+                if (item == null)
+                {
+                    // add if missing
+                    item = new InventoryItem(entry.Type, entry.Type_Localised);
+                    cargoFile.Inventory.Add(item);
+                }
+                item.Count += entry.Count;
             }
-            item.Count += entry.Count;
 
             // track purchases from linked FleetCarriers, but not Squadron FleetCarriers
             if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(entry.MarketId))
@@ -1868,11 +1891,14 @@ namespace SrvSurvey.game
                     _ => _.Amount);
 
                 // update cargo ahead of cargo event
-                foreach (var name in diff.Keys)
+                lock (CargoFile2.SyncRoot)
                 {
-                    var item = cargoFile.Inventory.Find(i => i.Name == name);
-                    if (item != null)
-                        item.Count -= diff[name];
+                    foreach (var name in diff.Keys)
+                    {
+                        var item = cargoFile.Inventory.Find(i => i.Name == name);
+                        if (item != null)
+                            item.Count -= diff[name];
+                    }
                 }
 
                 this.cmdrColony.contributeNeeds(lastDocked.SystemAddress, lastDocked.MarketID, diff);
@@ -1944,8 +1970,10 @@ namespace SrvSurvey.game
             if (inventoryItemNameMap.ContainsKey(itemName))
                 itemName = inventoryItemNameMap[itemName];
 
-            var inventoryItem = this.cargoFile.Inventory.FirstOrDefault(_ => _.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
-            return inventoryItem;
+            lock (CargoFile2.SyncRoot)
+            {
+                return this.cargoFile.Inventory.FirstOrDefault(_ => _.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+            }
         }
 
         private void onJournalEntry(Materials entry)

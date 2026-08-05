@@ -102,6 +102,7 @@ namespace SrvSurvey.game
 
             public void readFile(DateTimeOffset? timestamp = null)
             {
+                // File I/O stays outside any cargo lock
                 var obj = this.parseFile();
                 Game.log($"**** Reading: {this.filename}");
 
@@ -112,8 +113,21 @@ namespace SrvSurvey.game
                 // only update our value if we got a new one
                 if (obj != null)
                 {
-                    this.value.preRead();
-                    this.value = obj;
+                    // For cargo, hold SyncRoot across snapshot + replace so lastInventory and
+                    // the live instance cannot race with CargoTransfer / journal mutations.
+                    if (typeof(T) == typeof(CargoFile2))
+                    {
+                        lock (CargoFile2.SyncRoot)
+                        {
+                            this.value.preRead();
+                            this.value = obj;
+                        }
+                    }
+                    else
+                    {
+                        this.value.preRead();
+                        this.value = obj;
+                    }
                 }
             }
 
@@ -217,10 +231,17 @@ namespace SrvSurvey.game
         }
     }
 
-    // not needed after all?
+    /// <summary>
+    /// In-memory cargo state backed by Cargo.json.
+    /// Inventory / lastInventory updates are serialized with <see cref="SyncRoot"/> so squadron-FC
+    /// diff tracking cannot race with CargoTransfer mutations or FileSystemWatcher reloads.
+    /// </summary>
     class CargoFile2 : WatchedFile
     {
         public static string filepath { get => Path.Combine(Game.settings.watchedJournalFolder, "Cargo.json"); }
+
+        /// <summary>Shared lock for all Inventory / lastInventory readers and writers.</summary>
+        public static object SyncRoot { get; } = new object();
 
         public static CargoFile2 read(bool force, DateTimeOffset? timestamp = null)
         {
@@ -234,39 +255,124 @@ namespace SrvSurvey.game
 
         private static Dictionary<string, int> lastInventory = new();
 
-        public override void preRead()
-        {
-            // clone current inventory before reading
-            lastInventory.Clear();
-            if (this.Inventory != null)
-                foreach (var entry in this.Inventory)
-                    lastInventory[entry.Name] = entry.Count;
+        /// <summary>
+        /// When true, <see cref="preRead"/> will not overwrite <see cref="lastInventory"/>.
+        /// Set by <see cref="captureBeforeSnapshot"/> so CargoTransfer can freeze the true before-state
+        /// before it mutates live inventory for the UI; cleared by <see cref="getDiff"/>.
+        /// </summary>
+        private static bool preserveLastInventory;
 
-            // TODO: Remove with confirmation that diff tracking behaves
-            Game.log(lastInventory.formatWithHeader($"**** preRead: (lastInventory.Count: {lastInventory.Count})", "\r\n\t"));
+        /// <summary>True when a transfer path has frozen lastInventory until getDiff consumes it.</summary>
+        public static bool HasPreservedSnapshot
+        {
+            get { lock (SyncRoot) return preserveLastInventory; }
         }
 
+        /// <summary>
+        /// Capture the current inventory as the "before" snapshot for a later getDiff, and hold it
+        /// across subsequent preRead/file reloads. Call this under or outside the lock before any
+        /// mutation that would otherwise corrupt the before-state (e.g. CargoTransfer on a squadron FC).
+        /// </summary>
+        public void captureBeforeSnapshot()
+        {
+            lock (SyncRoot)
+            {
+                copyInventoryToLastUnlocked();
+                preserveLastInventory = true;
+                Game.log(lastInventory.formatWithHeader($"**** captureBeforeSnapshot: (lastInventory.Count: {lastInventory.Count})", "\r\n\t"));
+            }
+        }
+
+        /// <summary>
+        /// Drop a held before-snapshot without computing a diff (e.g. when skipNextCargoEvent
+        /// intentionally suppresses squadron supplyFC processing).
+        /// </summary>
+        public void clearPreservedSnapshot()
+        {
+            lock (SyncRoot)
+            {
+                if (preserveLastInventory)
+                {
+                    preserveLastInventory = false;
+                    Game.log("**** clearPreservedSnapshot: dropped held lastInventory");
+                }
+            }
+        }
+
+        public override void preRead()
+        {
+            lock (SyncRoot)
+            {
+                if (preserveLastInventory)
+                {
+                    Game.log($"**** preRead: preserving lastInventory ({lastInventory.Count} entries) for pending squadron/diff snapshot");
+                    return;
+                }
+
+                // clone current inventory before the watcher replaces this instance
+                copyInventoryToLastUnlocked();
+                Game.log(lastInventory.formatWithHeader($"**** preRead: (lastInventory.Count: {lastInventory.Count})", "\r\n\t"));
+            }
+        }
+
+        /// <summary>
+        /// Ship cargo delta: current Inventory − lastInventory (non-zero entries only).
+        /// Clears any preserved snapshot. Call while the new inventory is already applied;
+        /// release SyncRoot before network I/O.
+        /// </summary>
         public Dictionary<string, int> getDiff()
         {
-            var diffs = new Dictionary<string, int>();
-            foreach (var entry in this.Inventory)
+            lock (SyncRoot)
             {
-                var delta = entry.Count - lastInventory.GetValueOrDefault(entry.Name);
-                if (delta != 0) diffs[entry.Name] = delta;
+                var diffs = new Dictionary<string, int>();
+                var inventory = this.Inventory ?? new List<InventoryItem>();
+
+                foreach (var entry in inventory)
+                {
+                    var delta = entry.Count - lastInventory.GetValueOrDefault(entry.Name);
+                    if (delta != 0) diffs[entry.Name] = delta;
+                }
+
+                foreach (var entry in lastInventory)
+                    if (!inventory.Any(_ => _.Name == entry.Key))
+                        diffs[entry.Key] = -entry.Value;
+
+                // Debug: before/after counts help diagnose future zero-diff issues
+                Game.log(lastInventory.formatWithHeader($"**** getDiff before (lastInventory.Count: {lastInventory.Count})", "\r\n\t"));
+                Game.log(inventory.ToDictionary(i => i.Name, i => i.Count).formatWithHeader($"**** getDiff after (Inventory.Count: {inventory.Count})", "\r\n\t"));
+                Game.log(diffs.formatWithHeader("**** getDiff:", "\r\n\t"));
+
+                preserveLastInventory = false;
+                return diffs;
             }
+        }
 
-            foreach (var entry in lastInventory)
-                if (!this.Inventory.Any(_ => _.Name == entry.Key))
-                    diffs[entry.Key] = -entry.Value;
-
-            // TODO: Remove with confirmation that diff tracking behaves
-            Game.log(diffs.formatWithHeader("**** getDiff:", "\r\n\t"));
-            return diffs;
+        /// <summary>Apply a journal Cargo event's inventory fields under the shared lock.</summary>
+        public void applyJournalInventory(DateTimeOffset timestamp, string vessel, int count, List<InventoryItem>? inventory)
+        {
+            lock (SyncRoot)
+            {
+                this.timestamp = timestamp;
+                this.Vessel = vessel;
+                this.Count = count;
+                this.Inventory = inventory ?? new List<InventoryItem>();
+            }
         }
 
         public int getCount(string commodity)
         {
-            return this.Inventory.FirstOrDefault(i => i.Name == commodity)?.Count ?? 0;
+            lock (SyncRoot)
+            {
+                return this.Inventory.FirstOrDefault(i => i.Name == commodity)?.Count ?? 0;
+            }
+        }
+
+        private void copyInventoryToLastUnlocked()
+        {
+            lastInventory.Clear();
+            if (this.Inventory != null)
+                foreach (var entry in this.Inventory)
+                    lastInventory[entry.Name] = entry.Count;
         }
     }
 
