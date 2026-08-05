@@ -70,7 +70,13 @@ jobs:
             # Build the app project only — the .sln also pulls in the WAP packaging project.
             "kind=winforms" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
             "project=SrvSurvey/SrvSurvey.csproj" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-            "has_tests=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            if (Test-Path -LiteralPath "tests/SrvSurvey.Tests/SrvSurvey.Tests.csproj") {
+              "has_tests=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+              "tests_project=tests/SrvSurvey.Tests/SrvSurvey.Tests.csproj" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            }
+            else {
+              "has_tests=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            }
             Write-Host "Detected WinForms / main layout (SrvSurvey/SrvSurvey.csproj)"
           }
           else {
@@ -129,13 +135,19 @@ jobs:
             $scanner = Join-Path "${{ runner.temp }}\sonar-scanner" "dotnet-sonarscanner"
           }
 
+          $coverageExclusions = "SrvSurvey.Desktop/**/*.axaml,src/SrvSurvey.Desktop/**/*.axaml,SrvSurvey.Desktop/**/*.axaml.cs,src/SrvSurvey.Desktop/**/*.axaml.cs,SrvSurvey.Desktop/Platform/Overlay/*Coordinator.cs,src/SrvSurvey.Desktop/Platform/Overlay/*Coordinator.cs,SrvSurvey/**/*.Designer.cs"
+          # WinForms journal/UI integration is not unit-tested; pure cargo math is covered by tests/SrvSurvey.Tests.
+          if ("${{ steps.layout.outputs.kind }}" -eq "winforms") {
+            $coverageExclusions += ",SrvSurvey/game/Game.cs,SrvSurvey/game/GameFileWatcher.cs,SrvSurvey/net/Git.cs,SrvSurvey/forms/**/*,SrvSurvey/plotters/**/*,SrvSurvey/Program.cs,SrvSurvey/Main.cs"
+          }
+
           $args = @(
             "begin",
             "/k:$env:SONAR_PROJECT_KEY",
             "/o:$env:SONAR_ORGANIZATION",
             '/d:sonar.host.url=https://sonarcloud.io',
             '/d:sonar.cs.opencover.reportsPaths=**/TestResults/**/coverage.opencover.xml',
-            '/d:sonar.coverage.exclusions=SrvSurvey.Desktop/**/*.axaml,src/SrvSurvey.Desktop/**/*.axaml,SrvSurvey.Desktop/**/*.axaml.cs,src/SrvSurvey.Desktop/**/*.axaml.cs,SrvSurvey.Desktop/Platform/Overlay/*Coordinator.cs,src/SrvSurvey.Desktop/Platform/Overlay/*Coordinator.cs,SrvSurvey/**/*.Designer.cs',
+            "/d:sonar.coverage.exclusions=$coverageExclusions",
             "/d:sonar.token=$env:SONAR_TOKEN"
           )
 
@@ -156,7 +168,12 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Restore
-        run: dotnet restore "${{ steps.layout.outputs.project }}"
+        shell: pwsh
+        run: |
+          dotnet restore "${{ steps.layout.outputs.project }}"
+          if ("${{ steps.layout.outputs.has_tests }}" -eq "true" -and "${{ steps.layout.outputs.kind }}" -eq "winforms") {
+            dotnet restore "${{ steps.layout.outputs.tests_project }}"
+          }
 
       - name: Build (Avalonia / XP)
         if: steps.layout.outputs.kind == 'avalonia'
@@ -164,11 +181,12 @@ jobs:
 
       - name: Build (WinForms / main)
         if: steps.layout.outputs.kind == 'winforms'
-        run: >-
-          dotnet build SrvSurvey/SrvSurvey.csproj
-          --configuration Release
-          --no-restore
-          -p:Platform=x64
+        shell: pwsh
+        run: |
+          dotnet build SrvSurvey/SrvSurvey.csproj --configuration Release --no-restore -p:Platform=x64
+          if ("${{ steps.layout.outputs.has_tests }}" -eq "true") {
+            dotnet build "${{ steps.layout.outputs.tests_project }}" --configuration Release -p:Platform=x64
+          }
 
       - name: Test with coverage (Avalonia / XP)
         if: steps.layout.outputs.kind == 'avalonia'
@@ -181,8 +199,19 @@ jobs:
           --
           DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
+      - name: Test with coverage (WinForms / main)
+        if: steps.layout.outputs.kind == 'winforms' && steps.layout.outputs.has_tests == 'true'
+        run: >-
+          dotnet test ${{ steps.layout.outputs.tests_project }}
+          --configuration Release
+          --no-build
+          -p:Platform=x64
+          --collect:"XPlat Code Coverage"
+          --
+          DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+
       - name: Skip tests (WinForms / main has no test projects)
-        if: steps.layout.outputs.kind == 'winforms'
+        if: steps.layout.outputs.kind == 'winforms' && steps.layout.outputs.has_tests != 'true'
         shell: pwsh
         run: Write-Host "No test projects in the WinForms layout; analyzing build only."
 

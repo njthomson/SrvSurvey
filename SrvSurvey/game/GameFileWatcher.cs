@@ -11,7 +11,7 @@ namespace SrvSurvey.game
         /// <summary>
         /// Returns the last read/parsed content of the given file, watching for future changes
         /// </summary>
-        public static Q watch<Q>(string filepath) where Q : IWatchedFile
+        public static Q watch<Q>(string filepath) where Q : class, IWatchedFile
         {
             if (!mapWatchers.ContainsKey(filepath))
                 mapWatchers[filepath] = new JsonFileWatcher<Q>(filepath, true);
@@ -26,7 +26,7 @@ namespace SrvSurvey.game
         /// <summary>
         /// Returns the content of the given file, re-reading if forced
         /// </summary>
-        public static Q read<Q>(string filepath, bool force = false, DateTimeOffset? timestamp = null) where Q : IWatchedFile
+        public static Q read<Q>(string filepath, bool force = false, DateTimeOffset? timestamp = null) where Q : class, IWatchedFile
         {
             if (!mapWatchers.ContainsKey(filepath))
                 mapWatchers[filepath] = new JsonFileWatcher<Q>(filepath, false);
@@ -40,7 +40,7 @@ namespace SrvSurvey.game
             return watcher.value;
         }
 
-        class JsonFileWatcher<T> : IDisposable where T : IWatchedFile
+        class JsonFileWatcher<T> : IDisposable where T : class, IWatchedFile
         {
             private readonly string filename;
             private readonly string filepath;
@@ -78,14 +78,11 @@ namespace SrvSurvey.game
                         this.watcher.Changed += this.fileWatcher_Changed;
                         this.watcher.EnableRaisingEvents = true;
                     }
-                    else if (!value && this._watching)
+                    else if (!value && this._watching && this.watcher != null)
                     {
                         // stop watching
-                        if (this.watcher != null)
-                        {
-                            this.watcher.Changed -= fileWatcher_Changed;
-                            this.watcher = null;
-                        }
+                        this.watcher.Changed -= fileWatcher_Changed;
+                        this.watcher = null;
                     }
 
                     this._watching = value;
@@ -112,27 +109,27 @@ namespace SrvSurvey.game
                     return;
 
                 // only update our value if we got a new one
-                if (obj != null)
+                if (obj is null)
+                    return;
+
+                // For cargo, hold SyncRoot across snapshot + replace so lastInventory and
+                // the live instance cannot race with CargoTransfer / journal mutations.
+                // Never call Game.log while SyncRoot is held (UI Invoke deadlock risk).
+                if (typeof(T) == typeof(CargoFile2))
                 {
-                    // For cargo, hold SyncRoot across snapshot + replace so lastInventory and
-                    // the live instance cannot race with CargoTransfer / journal mutations.
-                    // Never call Game.log while SyncRoot is held (UI Invoke deadlock risk).
-                    if (typeof(T) == typeof(CargoFile2))
+                    string? preReadLog;
+                    lock (CargoFile2.SyncRoot)
                     {
-                        string? preReadLog;
-                        lock (CargoFile2.SyncRoot)
-                        {
-                            preReadLog = ((CargoFile2)(object)this.value).preReadUnlocked();
-                            this.value = obj;
-                        }
-                        if (preReadLog != null)
-                            Game.log(preReadLog);
-                    }
-                    else
-                    {
-                        this.value.preRead();
+                        preReadLog = ((CargoFile2)(object)this.value).preReadUnlocked();
                         this.value = obj;
                     }
+                    if (preReadLog != null)
+                        Game.log(preReadLog);
+                }
+                else
+                {
+                    this.value.preRead();
+                    this.value = obj;
                 }
             }
 
@@ -141,7 +138,7 @@ namespace SrvSurvey.game
                 if (!File.Exists(this.filepath))
                 {
                     Game.log($"Check watched journal folder setting!\r\nCannot find file: {this.filepath}");
-                    return default(T);
+                    return null;
                 }
 
                 try
@@ -149,16 +146,15 @@ namespace SrvSurvey.game
                     // read the file contents ...
                     using var sr = Data.openSharedStreamReader(this.filepath);
                     var json = sr.ReadToEnd();
-                    if (json == null || json == "") return default(T);
+                    if (string.IsNullOrEmpty(json)) return null;
 
                     // ... and parse
-                    var obj = JsonConvert.DeserializeObject<T>(json);
-                    return obj;
+                    return JsonConvert.DeserializeObject<T>(json);
                 }
                 catch (Exception ex)
                 {
                     Game.log($"Error reading/parsing file: {this.filepath}\r\n{ex}");
-                    return default(T);
+                    return null;
                 }
             }
 
@@ -170,14 +166,11 @@ namespace SrvSurvey.game
 
             protected virtual void Dispose(bool disposing)
             {
-                if (disposing)
+                if (disposing && this.watcher != null)
                 {
-                    if (this.watcher != null)
-                    {
-                        this.watcher.Changed -= fileWatcher_Changed;
-                        this.watcher.Dispose();
-                        this.watcher = null;
-                    }
+                    this.watcher.Changed -= fileWatcher_Changed;
+                    this.watcher.Dispose();
+                    this.watcher = null;
                 }
             }
         }
@@ -283,8 +276,8 @@ namespace SrvSurvey.game
             string logMsg;
             lock (SyncRoot)
             {
-                copyInventoryToLastUnlocked();
-                preserveLastInventory = true;
+                CargoInventoryDiff.CopyFromInventory(lastInventory, this.Inventory);
+                setPreserveLastInventory(true);
                 // Build log text under the lock; emit after release (Game.log may Invoke UI).
                 logMsg = lastInventory.formatWithHeader($"**** captureBeforeSnapshot: (lastInventory.Count: {lastInventory.Count})", "\r\n\t");
             }
@@ -295,14 +288,14 @@ namespace SrvSurvey.game
         /// Drop a held before-snapshot without computing a diff (e.g. when skipNextCargoEvent
         /// intentionally suppresses squadron supplyFC processing).
         /// </summary>
-        public void clearPreservedSnapshot()
+        public static void clearPreservedSnapshot()
         {
             var dropped = false;
             lock (SyncRoot)
             {
                 if (preserveLastInventory)
                 {
-                    preserveLastInventory = false;
+                    setPreserveLastInventory(false);
                     dropped = true;
                 }
             }
@@ -328,7 +321,7 @@ namespace SrvSurvey.game
                 return $"**** preRead: preserving lastInventory ({lastInventory.Count} entries) for pending squadron/diff snapshot";
 
             // clone current inventory before the watcher replaces this instance
-            copyInventoryToLastUnlocked();
+            CargoInventoryDiff.CopyFromInventory(lastInventory, this.Inventory);
             return lastInventory.formatWithHeader($"**** preRead: (lastInventory.Count: {lastInventory.Count})", "\r\n\t");
         }
 
@@ -348,42 +341,32 @@ namespace SrvSurvey.game
             Dictionary<string, int> diffs;
             int beforeCount;
             int afterCount;
-            Dictionary<string, int>? beforeDump = null;
-            Dictionary<string, int>? afterDump = null;
+            Dictionary<string, int>? beforeForLog = null;
+            Dictionary<string, int>? afterForLog = null;
+            var includeFullDump = Debugger.IsAttached;
 
             lock (SyncRoot)
             {
-                diffs = new Dictionary<string, int>();
                 var inventory = this.Inventory ?? new List<InventoryItem>();
-
-                foreach (var entry in inventory)
-                {
-                    var delta = entry.Count - lastInventory.GetValueOrDefault(entry.Name);
-                    if (delta != 0) diffs[entry.Name] = delta;
-                }
-
-                foreach (var entry in lastInventory)
-                    if (!inventory.Any(_ => _.Name == entry.Key))
-                        diffs[entry.Key] = -entry.Value;
-
+                diffs = CargoInventoryDiff.Compute(lastInventory, inventory);
                 beforeCount = lastInventory.Count;
                 afterCount = inventory.Count;
 
                 // Full dumps only while debugging — keeps the lock short and avoids heavy logs in normal play.
-                if (Debugger.IsAttached)
+                if (includeFullDump)
                 {
-                    beforeDump = new Dictionary<string, int>(lastInventory);
-                    afterDump = inventory.ToDictionary(i => i.Name, i => i.Count);
+                    beforeForLog = new Dictionary<string, int>(lastInventory);
+                    afterForLog = CargoInventoryDiff.ToCountMap(inventory);
                 }
 
-                preserveLastInventory = false;
+                setPreserveLastInventory(false);
             }
 
             // Logging is outside the lock: Game.log can synchronously Invoke the UI thread.
-            if (beforeDump != null && afterDump != null)
+            if (includeFullDump)
             {
-                Game.log(beforeDump.formatWithHeader($"**** getDiff before (lastInventory.Count: {beforeCount})", "\r\n\t"));
-                Game.log(afterDump.formatWithHeader($"**** getDiff after (Inventory.Count: {afterCount})", "\r\n\t"));
+                Game.log((beforeForLog ?? new Dictionary<string, int>()).formatWithHeader($"**** getDiff before (lastInventory.Count: {beforeCount})", "\r\n\t"));
+                Game.log((afterForLog ?? new Dictionary<string, int>()).formatWithHeader($"**** getDiff after (Inventory.Count: {afterCount})", "\r\n\t"));
             }
             else
             {
@@ -414,27 +397,14 @@ namespace SrvSurvey.game
             }
         }
 
-        private void copyInventoryToLastUnlocked()
-        {
-            lastInventory.Clear();
-            if (this.Inventory != null)
-                foreach (var entry in this.Inventory)
-                    lastInventory[entry.Name] = entry.Count;
-        }
+        /// <summary>Static setter so instance methods do not assign static fields directly (S2696).</summary>
+        private static void setPreserveLastInventory(bool value) => preserveLastInventory = value;
     }
 
     internal class SystemNickNames : WatchedFile
     {
-        /* A sample .json file
-{
-  "timestamp": "2026-01-01T00:00:00Z",
-  "event": "SystemNickNames",
-  "map": {
-    "Sol": "Birthplace of Humanity",
-    "abc": "xyz"
-  }
-}
-        */
+        // Sample system-nick-names.json shape:
+        // { "timestamp":"2026-01-01T00:00:00Z", "event":"SystemNickNames", "map": { "Sol":"Birthplace of Humanity" } }
 
         private static readonly string filepath = Path.Combine(Program.dataFolder, "system-nick-names.json");
 
@@ -456,6 +426,8 @@ namespace SrvSurvey.game
 
         /// <summary> A map of real system names to alternate nick-names </summary>
         public Dictionary<string, string> map = [];
-        public static Dictionary<string, string> ravenMap = [];
+
+        /// <summary> Online nick-name map supplied by Raven Colonial. </summary>
+        public static readonly Dictionary<string, string> ravenMap = [];
     }
 }

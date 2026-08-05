@@ -138,6 +138,8 @@ namespace SrvSurvey.game
         public bool processDockedOnNextStatusChange = false;
         public bool dockingInProgress = false;
         private bool skipNextCargoEvent;
+        /// <summary>StationServices flag used to detect squadron fleet carriers.</summary>
+        private const string StationServiceSquadronBank = "squadronBank";
         public List<SystemFaction>? systemFactions;
 
         public SystemData? systemData;
@@ -1636,7 +1638,7 @@ namespace SrvSurvey.game
         {
             Game.log($"Updating inventory from cargo transfer");
 
-            var onSquadFC = lastDocked?.StationServices?.Contains("squadronBank") == true;
+            var onSquadFC = lastDocked?.StationServices?.Contains(StationServiceSquadronBank) == true;
             var isLinkedFC = lastDocked != null && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID);
             // Squadron linked FCs rely on Cargo.getDiff() after this event. Freeze the true before-state
             // before any live inventory mutation so preRead/CargoTransfer cannot collapse the delta to zero.
@@ -1664,7 +1666,7 @@ namespace SrvSurvey.game
                         inventoryItem.Count -= delta;
 
                         // update linked FC? (but not squadron FC — those use Cargo event getDiff path)
-                        if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID) && lastDocked.StationServices?.Contains("squadronBank") == false)
+                        if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID) && lastDocked.StationServices?.Contains(StationServiceSquadronBank) == false)
                         {
                             transferLogs.Add($"Transferring {delta}x {transferItem.Type} to tracked marketId: {lastDocked.MarketID}");
                             fcTrackedCargo.init(transferItem.Type);
@@ -1677,7 +1679,7 @@ namespace SrvSurvey.game
                         inventoryItem.Count += delta;
 
                         // update linked FC? (but not squadron FC — those use Cargo event getDiff path)
-                        if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID) && lastDocked.StationServices?.Contains("squadronBank") == false)
+                        if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID) && lastDocked.StationServices?.Contains(StationServiceSquadronBank) == false)
                         {
                             transferLogs.Add($"Transferring {delta}x {transferItem.Type} from tracked marketId: {lastDocked.MarketID}");
                             fcTrackedCargo.init(transferItem.Type);
@@ -1747,14 +1749,14 @@ namespace SrvSurvey.game
 
             // Squadron FC diff path: runs after either inventory update. getDiff holds the lock only
             // for in-memory arithmetic; supplyFC runs after release.
-            var onSquadFC = lastDocked?.StationServices?.Contains("squadronBank") == true;
+            var onSquadFC = lastDocked?.StationServices?.Contains(StationServiceSquadronBank) == true;
             var isLinkedFC = lastDocked != null && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID);
             Game.log($"**** marketId : {lastDocked?.MarketID}, onSquadFC: {onSquadFC}, isLinkedFC: {isLinkedFC}, lastDocked?.StationType: {lastDocked?.StationType}, skipNextCargoEvent: {skipNextCargoEvent}, hasPreservedSnapshot: {CargoFile2.HasPreservedSnapshot}");
             if (skipNextCargoEvent)
             {
                 skipNextCargoEvent = false;
                 // Do not leave a held snapshot that would freeze lastInventory forever
-                this.cargoFile.clearPreservedSnapshot();
+                CargoFile2.clearPreservedSnapshot();
             }
             // if docked on a TRACKED Squadron FC - use crude cargo diff'ing to track cargo on the thing
             else if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && onSquadFC && isLinkedFC)
@@ -1827,7 +1829,7 @@ namespace SrvSurvey.game
                         PlotBuildCommodities.endPending();
                     }
                 });
-                var onSquadFC = lastDocked?.StationServices?.Contains("squadronBank") == true;
+                var onSquadFC = lastDocked?.StationServices?.Contains(StationServiceSquadronBank) == true;
                 if (onSquadFC)
                     skipNextCargoEvent = true;
             }
@@ -1855,7 +1857,7 @@ namespace SrvSurvey.game
                         PlotBuildCommodities.endPending();
                     }
                 });
-                var onSquadFC = lastDocked?.StationServices?.Contains("squadronBank") == true;
+                var onSquadFC = lastDocked?.StationServices?.Contains(StationServiceSquadronBank) == true;
                 if (onSquadFC)
                     skipNextCargoEvent = true;
 
