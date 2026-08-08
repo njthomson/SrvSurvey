@@ -1110,6 +1110,21 @@ namespace SrvSurvey.game
                         eddn.onJournalEntry(this, (dynamic)entry, raw);
                 }
 
+                // Frontier emits these only after a Cartographics page has finished selling.
+                // Reconcile the local estimate independently of optional upload integrations.
+                if (entry is SellExplorationData sellExplorationData)
+                {
+                    var soldSystems = (sellExplorationData.Systems ?? new List<string>())
+                        .Concat(sellExplorationData.Discovered ?? new List<string>());
+                    this.cmdr.removeSoldExplorationData(soldSystems, sellExplorationData.@event);
+                }
+                else if (entry is MultiSellExplorationData multiSellExplorationData)
+                {
+                    var soldSystems = multiSellExplorationData.Discovered?
+                        .Select(system => system.SystemName) ?? Enumerable.Empty<string>();
+                    this.cmdr.removeSoldExplorationData(soldSystems, multiSellExplorationData.@event);
+                }
+
                 // finally, let active quests know about this
                 PlayState.current?.processJournalEntry(raw).justDoIt();
             }

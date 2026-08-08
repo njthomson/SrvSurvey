@@ -160,6 +160,8 @@ namespace SrvSurvey.game
         public long organicRewards;
 
         public long explRewards;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public Dictionary<string, long>? explRewardsBySystem;
         public double distanceTravelled;
         public int countJumps;
         public int countScans;
@@ -203,13 +205,61 @@ namespace SrvSurvey.game
 
         #endregion
 
-        public void applyExplReward(long reward, string reason)
+        public void applyExplReward(long reward, string reason, string systemName)
         {
             Game.log($"Gained: +{reward.ToString("N0")} for {reason}");
             this.explRewards += reward;
 
+            if (!string.IsNullOrWhiteSpace(systemName))
+            {
+                this.explRewardsBySystem ??= new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase);
+                var trackedName = this.explRewardsBySystem.Keys.FirstOrDefault(name =>
+                    name.Equals(systemName, StringComparison.OrdinalIgnoreCase)) ?? systemName;
+                this.explRewardsBySystem[trackedName] = this.explRewardsBySystem.GetValueOrDefault(trackedName) + reward;
+            }
+
             PlotBase2.renderAll(Game.activeGame);
             this.Save();
+        }
+
+        public void removeSoldExplorationData(IEnumerable<string> systemNames, string eventName)
+        {
+            if (this.explRewardsBySystem == null || this.explRewardsBySystem.Count == 0)
+                return;
+
+            var soldSystemNames = systemNames
+                .Where(name => !string.IsNullOrWhiteSpace(name))
+                .Select(name => name.Trim())
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+            if (soldSystemNames.Count == 0)
+                return;
+
+            long removedRewards = 0;
+            var matchedSystems = 0;
+            foreach (var soldSystemName in soldSystemNames)
+            {
+                var trackedName = this.explRewardsBySystem.Keys.FirstOrDefault(name =>
+                    name.Equals(soldSystemName, StringComparison.OrdinalIgnoreCase));
+                if (trackedName == null || !this.explRewardsBySystem.Remove(trackedName, out var systemRewards))
+                    continue;
+
+                removedRewards += systemRewards;
+                matchedSystems++;
+            }
+
+            if (matchedSystems == 0)
+                return;
+
+            var deductedRewards = Math.Min(this.explRewards, removedRewards);
+            this.explRewards -= deductedRewards;
+            if (this.explRewardsBySystem.Count == 0)
+                this.explRewardsBySystem = null;
+
+            Game.log($"{eventName}: removed {deductedRewards.ToString("N0")} estimated exploration credits for {matchedSystems} sold system(s).");
+            PlotBase2.renderAll(Game.activeGame);
+            this.Save();
+            Game.activeGame?.fireUpdate(true);
         }
 
         public void setMarketId(long newMarketId, string text)
