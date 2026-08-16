@@ -1383,7 +1383,8 @@ namespace SrvSurvey
             }
 
             // maybe HighRes? and file type
-            if (entry.Width > Screen.PrimaryScreen!.WorkingArea.Width) filename += " (HighRes)";
+            var gameRect = Elite.getWindowRect();
+            if (entry.Width > gameRect.Width) filename += " (HighRes)";
             filename += ".png";
 
 

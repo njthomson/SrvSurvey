@@ -1324,7 +1324,7 @@
       { "name": "t6", "type": "relic", "angle": 202.0, "dist": 176.0 },
       { "name": "t7", "type": "relic", "angle": 10.4, "dist": 601.0 },
       { "name": "t8", "type": "relic", "angle": 323.8, "dist": 456.0 },
-      { "name": "t9", "type": "relic", "angle": 45.2413149429353, "dist": 626.05188775317586889398850991, "rot": 331 }
+      { "name": "t9", "type": "relic", "angle": 44.2413149429353, "dist": 626.05188775317586889398850991, "rot": 331 }
     ],
     "obeliskGroupNameLocations": {
       "A": {
