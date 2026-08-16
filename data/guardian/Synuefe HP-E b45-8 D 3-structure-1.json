@@ -8,8 +8,8 @@
     "lat": 43.729572,
     "long": -98.208046
   },
-  "pa": "p1,p2,p4",
-  "pp": "p3,py1,py2,py3,py4,py5,py6,t1,t2,t3,t4,t5",
+  "pa": "p1,p2,p4,p6,p7,p9",
+  "pp": "c1,c2,c3,c4,c5,c6,p10,p11,p12,p24,p3,p5,p8,py1,py2,py3,py4,py5,py6,t1,t2,t3,t4,t5",
   "og": "ABCDEFGH",
   "ao": [
     "A03-re,ca-#15-",

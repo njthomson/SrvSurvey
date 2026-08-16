@@ -1,16 +1,15 @@
 {
   "sid": "GS075",
   "idx": 1,
-  "sh": 274,
+  "sh": 271,
   "t": "Stickyhand",
   "rh": -1,
   "ll": {
     "lat": -2.251864,
     "long": 117.278419
   },
-  "pa": "p11,p4",
+  "pa": "p1,p10,p11,p12,p4,p5,p6",
   "pp": "c1,c2,c3,c4,c5,c6,p2,p3,p7,p8,p9,py1,py2,py3,py4,py5,py6,t1,t2,t3,t4,t5",
-  "pe": "p1,p10,p12,p5,p6",
   "og": "ABCDEFGH",
   "ao": [
     "A05-or,ur-#21-",
