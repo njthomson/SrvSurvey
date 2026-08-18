@@ -1800,6 +1800,12 @@ namespace SrvSurvey
                 Util.openLink($"{RavenColonial.uxUri}");
         }
 
+        private void setApikeyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var child = new FormApiKeyRCC();
+            child.ShowDialog(this);
+        }
+
         private void menuUpdateSystem_Click(object sender, EventArgs e)
         {
 

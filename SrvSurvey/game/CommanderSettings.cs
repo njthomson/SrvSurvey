@@ -58,6 +58,13 @@ namespace SrvSurvey.game
             // use cmdr from active game if possible
             var cmdr = Game.activeGame?.cmdr;
 
+            // honour the preferred cmdr setting?
+            if (cmdr == null && !string.IsNullOrEmpty(Game.settings.preferredCommander))
+            {
+                var fid = CommanderSettings.getAllCmdrs().FirstOrDefault(_ => _.Value == Game.settings.preferredCommander).Key;
+                cmdr = CommanderSettings.Load(fid, true, Game.settings.preferredCommander, true);
+            }
+
             // otherwise load the last active cmdr
             if (cmdr == null && Game.settings.lastCommander != null && Game.settings.lastFid != null)
                 cmdr = CommanderSettings.Load(Game.settings.lastFid, true, Game.settings.lastCommander, true);
