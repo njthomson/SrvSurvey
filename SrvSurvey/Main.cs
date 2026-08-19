@@ -1140,6 +1140,7 @@ namespace SrvSurvey
             BaseForm.applyThemeWithCustomControls(this);
 
             btnQuestComms.Visible = Game.settings.enableQuests;
+            menuHideNonColonisationOverlays.Checked = Game.settings.buildProjectsSuppressOtherOverlays;
 
             this.Invalidate(true);
         }
@@ -1804,6 +1805,19 @@ namespace SrvSurvey
         {
             var child = new FormApiKeyRCC();
             child.ShowDialog(this);
+        }
+
+        private void hideNonColonisationOverlaysToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Game.settings.buildProjectsSuppressOtherOverlays = !Game.settings.buildProjectsSuppressOtherOverlays;
+            Game.settings.Save();
+            this.menuHideNonColonisationOverlays.Checked = Game.settings.buildProjectsSuppressOtherOverlays;
+            PlotBase2.renderAll(this.game, true);
+
+            var msg = Game.settings.buildProjectsSuppressOtherOverlays
+                ? "Non-colonisation overlays will now be mostly hidden"
+                : "Non-colonisation overlays will now be visible";
+            MessageBox.Show(this, msg, "SrvSurvey");
         }
 
         private void menuUpdateSystem_Click(object sender, EventArgs e)
