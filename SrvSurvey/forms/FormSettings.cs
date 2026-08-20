@@ -23,8 +23,6 @@ namespace SrvSurvey
         private int codexImageCount;
         private string codexImageSize;
         private Dictionary<Guid, string> devices = new();
-        private CommanderSettings? cmdrSettings;
-        private string? validApiKey;
 
         public FormSettings()
         {
@@ -67,8 +65,6 @@ namespace SrvSurvey
             checkGalMapPlotter.Enabled = checkUseSystemData.Checked;
             checkPlotJumpInfo.Enabled = checkUseSystemData.Checked;
             checkHideMyOwnCanonnSignals.Enabled = checkUseSystemData.Checked;
-            this.updateInaraControls();
-
             checkBodyInfoMap.Enabled = checkBodyInfoOrbit.Enabled = checkBodyInfo.Checked;
 
             this.numGravityWarningLevel.Enabled = label12.Enabled = checkBox13.Checked;
@@ -268,20 +264,6 @@ namespace SrvSurvey
                 ? new()
                 : new(Game.settings.keyActions_TEST);
 
-            this.cmdrSettings = CommanderSettings.LoadCurrentOrLast();
-            if (this.cmdrSettings != null)
-            {
-                this.txtRavenCmdr.Text = cmdrSettings.commander + " ?";
-                this.validApiKey = cmdrSettings.rccApiKey;
-                this.txtRavenApiKey.Text = cmdrSettings.rccApiKey;
-                this.txtInaraApiKey.Text = cmdrSettings.inaraApiKey ?? string.Empty;
-            }
-            else
-            {
-                groupRaven.setChildrenEnabled(false);
-                txtInaraApiKey.Text = string.Empty;
-            }
-
             this.prepKeyChords();
         }
 
@@ -446,16 +428,6 @@ namespace SrvSurvey
 
             Game.settings.Save();
 
-            // and save the API key for the current commander, assuming it is valid
-            if (cmdrSettings != null)
-            {
-                cmdrSettings.rccApiKey = this.validApiKey;
-                cmdrSettings.inaraApiKey = string.IsNullOrWhiteSpace(this.txtInaraApiKey.Text)
-                    ? null
-                    : this.txtInaraApiKey.Text.Trim();
-                cmdrSettings.Save();
-            }
-
             this.DialogResult = DialogResult.OK;
 
             // kill current process and reload
@@ -544,33 +516,7 @@ namespace SrvSurvey
 
         private void disableEverythingElse_CheckedChanged(object sender, EventArgs e)
         {
-            disableEverythingElse(
-                sender as CheckBox,
-                groupColonization,
-                checkInaraUpload,
-                checkInaraDeveloperTestMode,
-                labelInaraApiKey,
-                txtInaraApiKey,
-                linkInaraApiKey);
-        }
-
-        private void checkInaraUpload_CheckedChanged(object sender, EventArgs e)
-        {
-            this.updateInaraControls();
-        }
-
-        private void updateInaraControls()
-        {
-            var enabled = this.cmdrSettings != null && this.checkInaraUpload.Checked;
-            this.labelInaraApiKey.Enabled = enabled;
-            this.txtInaraApiKey.Enabled = enabled;
-            this.linkInaraApiKey.Enabled = enabled;
-            this.checkInaraDeveloperTestMode.Enabled = enabled;
-        }
-
-        private void linkInaraApiKey_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Util.openLink("https://inara.cz/settings-api");
+            disableEverythingElse(sender as CheckBox, groupColonization);
         }
 
         private void disableEverythingGuardian_CheckedChanged(object sender, EventArgs e)
@@ -997,75 +943,6 @@ namespace SrvSurvey
             checkBox48.Enabled = checkColonization.Checked && checkBox49.Checked && checkBox43.Checked;
         }
 
-        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Util.openLink("https://ravencolonial.com/user");
-        }
-
-        private void txtRavenApiKey_TextChanged2(object sender, EventArgs e)
-        {
-            checkApiKey();
-        }
-
-        private void checkApiKey()
-        {
-            if (!txtRavenApiKey.Enabled) return;
-            checkTrackAndPublishShipCargo.Enabled = false;
-
-            var apiKey = txtRavenApiKey.Text;
-            if (string.IsNullOrWhiteSpace(apiKey))
-            {
-                // clear current value
-                this.validApiKey = null;
-            }
-            else
-            {
-                txtRavenCmdr.Text = "...";
-                txtRavenCmdr.BackColor = SystemColors.Control;
-                txtRavenCmdr.ForeColor = SystemColors.ControlText;
-
-                Util.deferAfter(500, async () =>
-                {
-                    var cmdr = await Game.rcc.getCmdrByApiKey(apiKey);
-                    if (string.IsNullOrEmpty(cmdr))
-                    {
-                        txtRavenCmdr.Text = "(invalid key)";
-                        validApiKey = null;
-                        txtRavenCmdr.BackColor = Color.Yellow;
-                        txtRavenCmdr.ForeColor = Color.Black;
-                    }
-                    else
-                    {
-                        txtRavenCmdr.Text = cmdr;
-                        validApiKey = apiKey;
-
-                        if (!string.IsNullOrWhiteSpace(this.cmdrSettings?.commander))
-                        {
-                            if (this.cmdrSettings.commander.Equals(cmdr, StringComparison.OrdinalIgnoreCase))
-                            {
-                                txtRavenCmdr.Text += " ✔️";
-                                txtRavenCmdr.BackColor = Color.Lime;
-                                checkTrackAndPublishShipCargo.Enabled = true;
-                            }
-                            else
-                            {
-                                txtRavenCmdr.Text += $" ✖️";
-                            }
-                        }
-                    }
-                });
-            }
-        }
-
-        private void tabControl_Selected(object sender, TabControlEventArgs e)
-        {
-            if (e.TabPage == tabExternalData && e.Action == TabControlAction.Selected && !txtRavenApiKey.Enabled)
-            {
-                txtRavenApiKey.Enabled = this.cmdrSettings != null;
-                checkApiKey();
-            }
-        }
-
         private void checkEnableVR_CheckedChanged(object sender, EventArgs e)
         {
             btnAdjustVR.Enabled = checkEnableVR.Checked;
@@ -1074,6 +951,18 @@ namespace SrvSurvey
         private void btnAdjustVR_Click(object sender, EventArgs e)
         {
             PlotAdjustVR.start();
+        }
+
+        private void btnSetApiKeyRCC_Click(object sender, EventArgs e)
+        {
+            var child = new FormApiKeyRCC();
+            child.ShowDialog(this);
+        }
+
+        private void btnSetApiKeyInara_Click(object sender, EventArgs e)
+        {
+            var child = new FormInaraIntegration();
+            child.ShowDialog(this);
         }
 
         private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

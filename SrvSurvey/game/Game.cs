@@ -1650,7 +1650,7 @@ namespace SrvSurvey.game
                     inventoryItem.Count -= delta;
 
                     // update linked FC? (but not squadron FC)
-                    if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID) && lastDocked.StationServices?.Contains("squadronBank") == false)
+                    if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID)) // TODO: confirm this is no longer needed: && lastDocked.StationServices?.Contains("squadronBank") == false)
                     {
                         Game.log($"Transferring {delta}x {transferItem.Type} to tracked marketId: {lastDocked.MarketID}");
                         fcTrackedCargo.init(transferItem.Type);

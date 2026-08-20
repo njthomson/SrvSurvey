@@ -327,11 +327,17 @@ namespace SrvSurvey.net
 
         private static InaraCredentials? getCredentials(Game game)
         {
-            var commander = game.Commander;
+            var commander = resolveCommanderName(game.cmdr?.inaraCommanderName, game.Commander);
             var frontierId = game.fid;
             var apiKey = game.cmdr?.inaraApiKey?.Trim();
             if (string.IsNullOrWhiteSpace(commander) || string.IsNullOrWhiteSpace(apiKey)) return null;
             return new InaraCredentials(commander, frontierId ?? string.Empty, apiKey);
+        }
+
+        internal static string? resolveCommanderName(string? configuredName, string? journalName)
+        {
+            var commander = string.IsNullOrWhiteSpace(configuredName) ? journalName : configuredName;
+            return commander?.Trim();
         }
 
         private static JObject addSidecarData(Game game, JObject raw, bool allowSharedSidecars)

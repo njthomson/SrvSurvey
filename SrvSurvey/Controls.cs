@@ -327,6 +327,14 @@ namespace SrvSurvey
             return tb.GetPreferredSize(proposedSize);
         }
 
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public char PasswordChar
+        {
+            get => tb.PasswordChar;
+            set => tb.PasswordChar = value;
+        }
+
         #endregion
 
         #region Clear text code

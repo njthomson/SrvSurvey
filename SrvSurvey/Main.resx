@@ -150,6 +150,19 @@
   <metadata name="menuColonize.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>330, 17</value>
   </metadata>
+  <data name="setApikeyToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wgAADsIBFShKgAAAAYdJREFUWEe1ljFyxCAMRTlpTrL38DUyrlKmTMOkS5nS1yD6BMHHaO1dr9DMG4Ms
+        80EGW8G0t/c0hVOzHpqBaVbgTDqzAl5l+Uph+0kh/f5fo/Rvu5hq7PQgFmEV30obLB8tbor48l2EacU3
+        aesEkkyIM1EbLsjq8mplEurrxAvxs92vDQ9UrArItQpj5WWCyI4+UxseaPpXes8r9oOm3chQbbyKivPg
+        AyUj7hlg8f1Rq8jqI2KEhfx90AUOxWXFq6w2aozAGxB0nWc5E+fzj33Ae0MZHI/yqDhE774WwXSe8Yx4
+        d8/AdB7hKQ5M5z28xYHptJghDkznnlniwHQyM8WB6czFRBl4pjgYHFxM4AtmVTJe4qDraLr5ZzHgKA5a
+        RwbLA8skOKDDWRy0jgye0y5X9FFcoJ7jGk7/Zl7ioHVoAlxG8evIEzjK0AVaR18Bo5UMKBM83B8X6Crj
+        eub34jK5KelXY2eu4YrYhmPIx7LsDy864xvDh2i3GT0wzQqcwalZD3kwWAh/0MZK7uUlsOQAAAAASUVO
+        RK5CYII=
+</value>
+  </data>
   <metadata name="menuGuardians.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>450, 18</value>
   </metadata>

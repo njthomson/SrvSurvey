@@ -19,15 +19,20 @@ public sealed class InaraTests
         false);
 
     [Fact]
-    public void UploadIsOptInByDefault()
+    public void UploadIsOptInAndDeveloperModeDefaultsOn()
     {
         var settings = new Settings();
         var loadedExistingSettings = new JObject().ToObject<Settings>();
+        var manuallyDisabled = JObject.Parse("{ 'inaraDeveloperTestMode': false }").ToObject<Settings>();
 
         Assert.False(settings.inaraUpload);
-        Assert.False(settings.inaraDeveloperTestMode);
+        Assert.True(settings.inaraDeveloperTestMode);
         Assert.False(loadedExistingSettings!.inaraUpload);
-        Assert.False(loadedExistingSettings.inaraDeveloperTestMode);
+        Assert.True(loadedExistingSettings.inaraDeveloperTestMode);
+        Assert.False(manuallyDisabled!.inaraDeveloperTestMode);
+        var serialized = JObject.FromObject(manuallyDisabled);
+        Assert.NotNull(serialized["inaraDeveloperTestMode"]);
+        Assert.False(serialized.Value<bool>("inaraDeveloperTestMode"));
     }
 
     [Fact]
@@ -35,6 +40,16 @@ public sealed class InaraTests
     {
         Assert.Null(typeof(Settings).GetField("inaraApiKey"));
         Assert.NotNull(typeof(SrvSurvey.game.CommanderSettings).GetField("inaraApiKey"));
+        Assert.NotNull(typeof(SrvSurvey.game.CommanderSettings).GetField("inaraCommanderName"));
+    }
+
+    [Theory]
+    [InlineData(null, "Journal Commander", "Journal Commander")]
+    [InlineData("", "Journal Commander", "Journal Commander")]
+    [InlineData("  Corrected Commander  ", "Journal Commander", "Corrected Commander")]
+    public void CommanderNameCanBeOverriddenPerCommander(string? configuredName, string journalName, string expected)
+    {
+        Assert.Equal(expected, Inara.resolveCommanderName(configuredName, journalName));
     }
 
     [Fact]

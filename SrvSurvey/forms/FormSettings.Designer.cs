@@ -187,17 +187,8 @@ namespace SrvSurvey
             checkBox8 = new CheckBox2();
             checkBox4 = new CheckBox2();
             tabExternalData = new TabPage();
-            checkInaraUpload = new CheckBox2();
-            checkInaraDeveloperTestMode = new CheckBox2();
-            labelInaraApiKey = new Label();
-            txtInaraApiKey = new TextBox();
-            linkInaraApiKey = new LinkLabel();
-            groupRaven = new GroupBox2();
-            txtRavenApiKey = new TextBox2();
-            txtRavenCmdr = new TextBox();
-            label31 = new Label();
-            label30 = new Label();
-            linkLabel3 = new LinkLabel();
+            btnSetApiKeyInara = new DrawButton();
+            btnSetApiKeyRCC = new DrawButton();
             groupColonization = new GroupBox2();
             checkTrackAndPublishShipCargo = new CheckBox2();
             checkSuppressNonColonise = new CheckBox2();
@@ -317,7 +308,6 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             tabExternalData.SuspendLayout();
-            groupRaven.SuspendLayout();
             groupColonization.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numPriorScanMinValue).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
@@ -1003,7 +993,6 @@ namespace SrvSurvey
             tabControl.SelectedIndex = 0;
             tabControl.Size = new Size(707, 476);
             tabControl.TabIndex = 0;
-            tabControl.Selected += tabControl_Selected;
             // 
             // tabPage4
             // 
@@ -2556,12 +2545,8 @@ namespace SrvSurvey
             // tabExternalData
             // 
             tabExternalData.BorderStyle = BorderStyle.Fixed3D;
-            tabExternalData.Controls.Add(checkInaraDeveloperTestMode);
-            tabExternalData.Controls.Add(linkInaraApiKey);
-            tabExternalData.Controls.Add(txtInaraApiKey);
-            tabExternalData.Controls.Add(labelInaraApiKey);
-            tabExternalData.Controls.Add(checkInaraUpload);
-            tabExternalData.Controls.Add(groupRaven);
+            tabExternalData.Controls.Add(btnSetApiKeyInara);
+            tabExternalData.Controls.Add(btnSetApiKeyRCC);
             tabExternalData.Controls.Add(groupColonization);
             tabExternalData.Controls.Add(numPriorScanMinValue);
             tabExternalData.Controls.Add(pictureBox7);
@@ -2582,141 +2567,50 @@ namespace SrvSurvey
             tabExternalData.Size = new Size(699, 448);
             tabExternalData.TabIndex = 6;
             tabExternalData.Text = "External Data";
-            //
-            // checkInaraUpload
-            //
-            checkInaraUpload.AutoSize = true;
-            checkInaraUpload.CheckAlign = ContentAlignment.TopLeft;
-            checkInaraUpload.CheckColor = SystemColors.ControlText;
-            checkInaraUpload.LineColor = SystemColors.ActiveBorder;
-            checkInaraUpload.Location = new Point(505, 6);
-            checkInaraUpload.Name = "checkInaraUpload";
-            checkInaraUpload.Size = new Size(139, 19);
-            checkInaraUpload.TabIndex = 36;
-            checkInaraUpload.Tag = "inaraUpload";
-            checkInaraUpload.Text = "Upload data to Inara";
-            checkInaraUpload.TextAlign = ContentAlignment.TopLeft;
-            checkInaraUpload.UseVisualStyleBackColor = true;
-            checkInaraUpload.CheckedChanged += checkInaraUpload_CheckedChanged;
-            //
-            // checkInaraDeveloperTestMode
-            //
-            checkInaraDeveloperTestMode.AutoSize = true;
-            checkInaraDeveloperTestMode.CheckAlign = ContentAlignment.TopLeft;
-            checkInaraDeveloperTestMode.CheckColor = SystemColors.ControlText;
-            checkInaraDeveloperTestMode.LineColor = SystemColors.ActiveBorder;
-            checkInaraDeveloperTestMode.Location = new Point(522, 57);
-            checkInaraDeveloperTestMode.Name = "checkInaraDeveloperTestMode";
-            checkInaraDeveloperTestMode.Size = new Size(162, 19);
-            checkInaraDeveloperTestMode.TabIndex = 39;
-            checkInaraDeveloperTestMode.Tag = "inaraDeveloperTestMode";
-            checkInaraDeveloperTestMode.Text = "Inara developer test mode";
-            checkInaraDeveloperTestMode.TextAlign = ContentAlignment.TopLeft;
-            checkInaraDeveloperTestMode.UseVisualStyleBackColor = true;
-            //
-            // labelInaraApiKey
-            //
-            labelInaraApiKey.AutoSize = true;
-            labelInaraApiKey.Location = new Point(375, 34);
-            labelInaraApiKey.Name = "labelInaraApiKey";
-            labelInaraApiKey.Size = new Size(84, 15);
-            labelInaraApiKey.TabIndex = 37;
-            labelInaraApiKey.Text = "Inara API Key:";
-            //
-            // txtInaraApiKey
-            //
-            txtInaraApiKey.Location = new Point(465, 30);
-            txtInaraApiKey.Name = "txtInaraApiKey";
-            txtInaraApiKey.Size = new Size(221, 23);
-            txtInaraApiKey.TabIndex = 38;
-            txtInaraApiKey.UseSystemPasswordChar = true;
-            //
-            // linkInaraApiKey
-            //
-            linkInaraApiKey.AutoSize = true;
-            linkInaraApiKey.Location = new Point(375, 57);
-            linkInaraApiKey.Name = "linkInaraApiKey";
-            linkInaraApiKey.Size = new Size(143, 15);
-            linkInaraApiKey.TabIndex = 40;
-            linkInaraApiKey.TabStop = true;
-            linkInaraApiKey.Text = "Get your API key at Inara";
-            linkInaraApiKey.LinkClicked += linkInaraApiKey_LinkClicked;
             // 
-            // groupRaven
+            // btnSetApiKeyInara
             // 
-            groupRaven.Controls.Add(txtRavenApiKey);
-            groupRaven.Controls.Add(txtRavenCmdr);
-            groupRaven.Controls.Add(label31);
-            groupRaven.Controls.Add(label30);
-            groupRaven.Controls.Add(linkLabel3);
-            groupRaven.LineColor = SystemColors.ActiveBorder;
-            groupRaven.Location = new Point(8, 345);
-            groupRaven.Name = "groupRaven";
-            groupRaven.Size = new Size(348, 92);
-            groupRaven.TabIndex = 35;
-            groupRaven.TabStop = false;
-            groupRaven.Text = "Raven Colonial:";
+            btnSetApiKeyInara.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnSetApiKeyInara.AnimateOnPress = false;
+            btnSetApiKeyInara.BackColorDisabled = Color.Empty;
+            btnSetApiKeyInara.BackColorHover = Color.Empty;
+            btnSetApiKeyInara.BackColorPressed = Color.Empty;
+            btnSetApiKeyInara.DrawBorder = true;
+            btnSetApiKeyInara.FlatStyle = FlatStyle.Flat;
+            btnSetApiKeyInara.ForeColor = Color.Black;
+            btnSetApiKeyInara.ForeColorDisabled = Color.Empty;
+            btnSetApiKeyInara.ForeColorHover = Color.Empty;
+            btnSetApiKeyInara.ForeColorPressed = Color.Empty;
+            btnSetApiKeyInara.Location = new Point(8, 404);
+            btnSetApiKeyInara.Margin = new Padding(4, 3, 4, 3);
+            btnSetApiKeyInara.Name = "btnSetApiKeyInara";
+            btnSetApiKeyInara.Size = new Size(151, 27);
+            btnSetApiKeyInara.TabIndex = 36;
+            btnSetApiKeyInara.Text = "Set Inara API Key";
+            btnSetApiKeyInara.UseVisualStyleBackColor = true;
+            btnSetApiKeyInara.Click += btnSetApiKeyInara_Click;
             // 
-            // txtRavenApiKey
+            // btnSetApiKeyRCC
             // 
-            txtRavenApiKey.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtRavenApiKey.BackColor = SystemColors.Window;
-            txtRavenApiKey.BorderColor = SystemColors.ActiveBorder;
-            txtRavenApiKey.BorderStyle = BorderStyle.FixedSingle;
-            txtRavenApiKey.Enabled = false;
-            txtRavenApiKey.ForeColor = SystemColors.WindowText;
-            txtRavenApiKey.Location = new Point(89, 46);
-            txtRavenApiKey.Multiline = false;
-            txtRavenApiKey.Name = "txtRavenApiKey";
-            txtRavenApiKey.Padding = new Padding(3);
-            txtRavenApiKey.ScrollBars = ScrollBars.None;
-            txtRavenApiKey.SelectionStart = 0;
-            txtRavenApiKey.Size = new Size(253, 23);
-            txtRavenApiKey.TabIndex = 3;
-            txtRavenApiKey.UseEdgeButton = TextBox2.EdgeButton.Paste;
-            txtRavenApiKey.TextChanged2 += txtRavenApiKey_TextChanged2;
-            // 
-            // txtRavenCmdr
-            // 
-            txtRavenCmdr.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtRavenCmdr.Location = new Point(89, 17);
-            txtRavenCmdr.Name = "txtRavenCmdr";
-            txtRavenCmdr.ReadOnly = true;
-            txtRavenCmdr.Size = new Size(253, 23);
-            txtRavenCmdr.TabIndex = 2;
-            // 
-            // label31
-            // 
-            label31.AutoSize = true;
-            label31.Location = new Point(6, 20);
-            label31.Name = "label31";
-            label31.Size = new Size(77, 15);
-            label31.TabIndex = 1;
-            label31.Text = "Commander:";
-            // 
-            // label30
-            // 
-            label30.AutoSize = true;
-            label30.Location = new Point(33, 49);
-            label30.Name = "label30";
-            label30.Size = new Size(50, 15);
-            label30.TabIndex = 0;
-            label30.Text = "API Key:";
-            // 
-            // linkLabel3
-            // 
-            linkLabel3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            linkLabel3.BackColor = Color.Transparent;
-            linkLabel3.LinkArea = new LinkArea(21, 100);
-            linkLabel3.Location = new Point(6, 71);
-            linkLabel3.Name = "linkLabel3";
-            linkLabel3.Size = new Size(336, 21);
-            linkLabel3.TabIndex = 41;
-            linkLabel3.TabStop = true;
-            linkLabel3.Text = "Get your API Key at: https://ravencolonial.com/user";
-            linkLabel3.TextAlign = ContentAlignment.TopRight;
-            linkLabel3.UseCompatibleTextRendering = true;
-            linkLabel3.LinkClicked += linkLabel3_LinkClicked;
+            btnSetApiKeyRCC.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnSetApiKeyRCC.AnimateOnPress = false;
+            btnSetApiKeyRCC.BackColorDisabled = Color.Empty;
+            btnSetApiKeyRCC.BackColorHover = Color.Empty;
+            btnSetApiKeyRCC.BackColorPressed = Color.Empty;
+            btnSetApiKeyRCC.DrawBorder = true;
+            btnSetApiKeyRCC.FlatStyle = FlatStyle.Flat;
+            btnSetApiKeyRCC.ForeColor = Color.Black;
+            btnSetApiKeyRCC.ForeColorDisabled = Color.Empty;
+            btnSetApiKeyRCC.ForeColorHover = Color.Empty;
+            btnSetApiKeyRCC.ForeColorPressed = Color.Empty;
+            btnSetApiKeyRCC.Location = new Point(176, 404);
+            btnSetApiKeyRCC.Margin = new Padding(4, 3, 4, 3);
+            btnSetApiKeyRCC.Name = "btnSetApiKeyRCC";
+            btnSetApiKeyRCC.Size = new Size(179, 27);
+            btnSetApiKeyRCC.TabIndex = 35;
+            btnSetApiKeyRCC.Text = "Set Raven Colonial API Key";
+            btnSetApiKeyRCC.UseVisualStyleBackColor = true;
+            btnSetApiKeyRCC.Click += btnSetApiKeyRCC_Click;
             // 
             // groupColonization
             // 
@@ -3864,8 +3758,6 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             tabExternalData.ResumeLayout(false);
             tabExternalData.PerformLayout();
-            groupRaven.ResumeLayout(false);
-            groupRaven.PerformLayout();
             groupColonization.ResumeLayout(false);
             groupColonization.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numPriorScanMinValue).EndInit();
@@ -4118,12 +4010,6 @@ namespace SrvSurvey
         private CheckBox2 checkShowInRightPanel;
         private CheckBox2 checkSuppressNonColonise;
         private CheckBox2 checkBox39;
-        private GroupBox2 groupRaven;
-        private TextBox2 txtRavenApiKey;
-        private TextBox txtRavenCmdr;
-        private Label label31;
-        private Label label30;
-        private LinkLabel linkLabel3;
         private CheckBox2 checkBox52;
         private CheckBox2 checkFancyAlphaBlending;
         private CheckBox2 checkEnableVR;
@@ -4137,10 +4023,7 @@ namespace SrvSurvey
         private CheckBox2 checkBox57;
         private CheckBox2 checkBox210;
         private LinkLabel linkLabel4;
-        private CheckBox2 checkInaraUpload;
-        private CheckBox2 checkInaraDeveloperTestMode;
-        private Label labelInaraApiKey;
-        private TextBox txtInaraApiKey;
-        private LinkLabel linkInaraApiKey;
+        private DrawButton btnSetApiKeyRCC;
+        private DrawButton btnSetApiKeyInara;
     }
 }

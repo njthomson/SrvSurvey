@@ -1383,7 +1383,8 @@ namespace SrvSurvey
             }
 
             // maybe HighRes? and file type
-            if (entry.Width > Screen.PrimaryScreen!.WorkingArea.Width) filename += " (HighRes)";
+            var gameRect = Elite.getWindowRect();
+            if (entry.Width > gameRect.Width) filename += " (HighRes)";
             filename += ".png";
 
 
@@ -1797,6 +1798,12 @@ namespace SrvSurvey
                 Util.openLink($"{RavenColonial.uxUri}/#sys={game.systemData.address}");
             else
                 Util.openLink($"{RavenColonial.uxUri}");
+        }
+
+        private void setApikeyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var child = new FormApiKeyRCC();
+            child.ShowDialog(this);
         }
 
         private void menuUpdateSystem_Click(object sender, EventArgs e)

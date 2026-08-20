@@ -2536,7 +2536,7 @@ namespace SrvSurvey.game
             // bucket by genus // here!
             var game = Game.activeGame;
             this.genusPredictions.Clear();
-            foreach (var variant in this.predictions.Values)
+            foreach (var variant in this.predictions.Values.ToList())
             {
                 var genusPrediction = genusPredictions.Find(g => g.genus == variant.species.genus);
                 if (genusPrediction == null)
@@ -2614,7 +2614,7 @@ namespace SrvSurvey.game
             // otherwise figure it out from the predictions
             var reward = minNotMax ? 50_000_000 : -1L;
 
-            foreach (var bioRef in this.predictions.Values)
+            foreach (var bioRef in this.predictions.Values.ToList())
             {
                 if (bioRef.species.genus.name != org.genus) continue;
 
