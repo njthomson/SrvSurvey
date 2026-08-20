@@ -71,6 +71,19 @@ public sealed class InaraTests
     }
 
     [Fact]
+    public void DiagnosticRepresentationsDoNotExposeThePersonalKey()
+    {
+        var credentials = new InaraCredentials("Test Commander", "F123456", "personal-key");
+        var queued = new InaraQueuedEvent(credentials,
+            new InaraEvent("getCommanderProfile", "2026-07-28T12:00:00Z", new JObject()));
+
+        Assert.DoesNotContain("personal-key", credentials.ToString());
+        Assert.DoesNotContain("personal-key", queued.ToString());
+        Assert.Contains("Test Commander", credentials.ToString());
+        Assert.Contains("F123456", credentials.ToString());
+    }
+
+    [Fact]
     public void DeveloperTestModeIsSentOnlyWhenEnabled()
     {
         var credentials = new InaraCredentials("Test Commander", "F123456", "personal-key");
@@ -291,6 +304,29 @@ public sealed class InaraTests
     }
 
     [Fact]
+    public void RankProgressAndPromotionSkipNonIntegerProperties()
+    {
+        var mapper = new InaraEventMapper();
+        mapper.Process(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:00:00Z", "event": "Rank", "Combat": 5 }
+            """), context, false);
+
+        var progressEvents = mapper.Process(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:00:01Z", "event": "Progress", "Combat": 37, "Exploration": "invalid", "CQC": 12.5 }
+            """), context, true);
+        var progress = Assert.IsType<JArray>(Assert.Single(
+            progressEvents, item => item.Name == "setCommanderRankPilot").Data);
+        Assert.Equal("combat", Assert.Single(progress.OfType<JObject>()).Value<string>("rankName"));
+
+        var promotionEvents = mapper.Process(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:00:02Z", "event": "Promotion", "Combat": 6, "Exploration": "invalid", "CQC": 7.5 }
+            """), context, true);
+        var promotion = Assert.Single(promotionEvents, item => item.Name == "setCommanderRankPilot");
+        Assert.Equal("combat", promotion.Data.Value<string>("rankName"));
+        Assert.Equal(6, promotion.Data.Value<int>("rankValue"));
+    }
+
+    [Fact]
     public void MissionAndCombatEventsAreMapped()
     {
         var mapper = new InaraEventMapper();
@@ -353,6 +389,48 @@ public sealed class InaraTests
         var queued = Assert.Single(queue.TakeAll());
         var cargo = Assert.IsType<JArray>(queued.Event.Data);
         Assert.Equal(5, Assert.Single(cargo.OfType<JObject>()).Value<int>("itemCount"));
+    }
+
+    [Fact]
+    public void PendingQueueDropsOldestEventsAboveItsCapacity()
+    {
+        var credentials = new InaraCredentials("Test Commander", "F123456", "personal-key");
+        var queue = new InaraEventQueue();
+        var events = Enumerable.Range(0, InaraEventQueue.MaxPendingEvents + 5)
+            .Select(index => new InaraEvent($"event-{index}", "2026-07-28T12:00:00Z", new JObject()));
+
+        queue.Enqueue(credentials, events);
+        var pending = queue.TakeAll();
+
+        Assert.Equal(InaraEventQueue.MaxPendingEvents, pending.Count);
+        Assert.Equal("event-5", pending[0].Event.Name);
+        Assert.Equal($"event-{InaraEventQueue.MaxPendingEvents + 4}", pending[^1].Event.Name);
+    }
+
+    [Fact]
+    public void RequeueRetainsDeduplicationAndDropsTheOldestEventsAboveCapacity()
+    {
+        var credentials = new InaraCredentials("Test Commander", "F123456", "personal-key");
+        var queue = new InaraEventQueue();
+        queue.Enqueue(credentials, Enumerable.Range(0, InaraEventQueue.MaxPendingEvents - 5)
+            .Select(index => new InaraEvent($"new-{index}", "2026-07-28T12:00:00Z", new JObject(),
+                index == 0 ? "dedupe" : null)));
+        var retained = new[]
+            {
+                new InaraQueuedEvent(credentials,
+                    new InaraEvent("old-duplicate", "2026-07-28T11:00:00Z", new JObject(), "dedupe")),
+            }
+            .Concat(Enumerable.Range(0, 10)
+            .Select(index => new InaraQueuedEvent(credentials,
+                new InaraEvent($"old-{index}", "2026-07-28T11:00:00Z", new JObject()))));
+
+        queue.Requeue(retained);
+        var pending = queue.TakeAll();
+
+        Assert.Equal(InaraEventQueue.MaxPendingEvents, pending.Count);
+        Assert.Equal("old-5", pending[0].Event.Name);
+        Assert.Equal($"new-{InaraEventQueue.MaxPendingEvents - 6}", pending[^1].Event.Name);
+        Assert.DoesNotContain(pending, item => item.Event.Name == "old-duplicate");
     }
 
     [Fact]
@@ -568,6 +646,24 @@ public sealed class InaraTests
             """), context, true);
         var report = Assert.Single(shutdown, item => item.Name == "setCommanderCredits");
         Assert.Equal(1250, report.Data.Value<long>("commanderCredits"));
+    }
+
+    [Fact]
+    public void MissionDonationIsSubtractedFromTheReconstructedBalance()
+    {
+        var tracker = new InaraCreditTracker();
+        tracker.Observe(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:00:00Z", "event": "LoadGame", "Credits": 1000, "Loan": 0 }
+            """), false);
+        Assert.NotNull(tracker.CreateReport("2026-07-28T12:00:00Z", true));
+
+        tracker.Observe(JObject.Parse("""
+            { "timestamp": "2026-07-28T12:05:00Z", "event": "MissionCompleted", "Reward": 100, "Donation": 300 }
+            """), false);
+        var report = tracker.CreateReport("2026-07-28T12:05:00Z", true);
+
+        Assert.NotNull(report);
+        Assert.Equal(800, report.Data.Value<long>("commanderCredits"));
     }
 
     [Fact]

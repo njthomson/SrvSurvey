@@ -96,7 +96,7 @@
             // linkApiKey
             // 
             linkApiKey.BackColor = Color.Transparent;
-            linkApiKey.LinkArea = new LinkArea(21, 49);
+            linkApiKey.LinkArea = new LinkArea(21, 41);
             linkApiKey.Location = new Point(100, 132);
             linkApiKey.Name = "linkApiKey";
             linkApiKey.Size = new Size(498, 21);

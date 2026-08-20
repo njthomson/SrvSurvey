@@ -387,7 +387,8 @@ namespace SrvSurvey.net
         private void mapProgress(string timestamp, JObject entry, List<InaraEvent> events)
         {
             var values = new JArray();
-            foreach (var property in entry.Properties().Where(p => p.Name is not "timestamp" and not "event"))
+            foreach (var property in entry.Properties().Where(p =>
+                p.Name is not "timestamp" and not "event" && p.Value.Type == JTokenType.Integer))
             {
                 var rankName = normalizeRank(property.Name);
                 var data = obj(("rankName", rankName), ("rankProgress", property.Value.Value<double>() / 100d));
@@ -399,7 +400,8 @@ namespace SrvSurvey.net
 
         private void mapPromotion(string timestamp, JObject entry, List<InaraEvent> events)
         {
-            foreach (var property in entry.Properties().Where(p => p.Name is not "timestamp" and not "event"))
+            foreach (var property in entry.Properties().Where(p =>
+                p.Name is not "timestamp" and not "event" && p.Value.Type == JTokenType.Integer))
             {
                 var value = property.Value.Value<int>();
                 ranks[property.Name] = value;

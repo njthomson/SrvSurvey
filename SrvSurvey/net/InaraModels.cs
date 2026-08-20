@@ -2,7 +2,10 @@ using Newtonsoft.Json.Linq;
 
 namespace SrvSurvey.net
 {
-    internal sealed record InaraCredentials(string Commander, string FrontierId, string ApiKey);
+    internal sealed record InaraCredentials(string Commander, string FrontierId, string ApiKey)
+    {
+        public override string ToString() => $"InaraCredentials {{ Commander = {Commander}, FrontierId = {FrontierId} }}";
+    }
 
     internal sealed record InaraContext(
         string? Commander,
@@ -59,6 +62,7 @@ namespace SrvSurvey.net
 
     internal sealed class InaraEventQueue
     {
+        internal const int MaxPendingEvents = 1000;
         private readonly object sync = new();
         private readonly List<InaraQueuedEvent> pending = new();
 
@@ -86,6 +90,8 @@ namespace SrvSurvey.net
 
                     pending.Add(new InaraQueuedEvent(credentials, entry));
                 }
+
+                trimToCapacity();
             }
         }
 
@@ -109,7 +115,15 @@ namespace SrvSurvey.net
                             && current.Event.ReplaceKey == item.Event.ReplaceKey))
                     .ToList();
                 pending.InsertRange(0, retained);
+                trimToCapacity();
             }
+        }
+
+        private void trimToCapacity()
+        {
+            var overflow = pending.Count - MaxPendingEvents;
+            if (overflow > 0)
+                pending.RemoveRange(0, overflow);
         }
     }
 }

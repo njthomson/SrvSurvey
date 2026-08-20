@@ -87,7 +87,8 @@ namespace SrvSurvey.net
 
                 "BuyDrones" or "MarketBuy" => -valueOrZero(entry, "TotalCost"),
                 "MarketSell" or "SellDrones" => valueOrZero(entry, "TotalSale"),
-                "MissionCompleted" or "CommunityGoalReward" => valueOrZero(entry, "Reward"),
+                "MissionCompleted" => valueOrZero(entry, "Reward") - valueOrZero(entry, "Donation"),
+                "CommunityGoalReward" => valueOrZero(entry, "Reward"),
                 "MultiSellExplorationData" or "SellExplorationData" => valueOrZero(entry, "TotalEarnings"),
                 "BuyExplorationData" or "BuyTradeData" or "BuyAmmo" or "CrewHire" => -valueOrZero(entry, "Cost"),
                 "FetchRemoteModule" => -valueOrZero(entry, "TransferCost"),

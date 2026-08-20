@@ -71,6 +71,13 @@ namespace SrvSurvey.forms
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (this.checkUpload.Checked && string.IsNullOrWhiteSpace(this.txtApiKey.Text))
+            {
+                MessageBox.Show(this, "Enter your Inara API key before enabling uploads.", "Inara Integration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.txtApiKey.Focus();
+                return;
+            }
+
             Game.settings.inaraUpload = this.checkUpload.Checked;
             Game.settings.Save();
 

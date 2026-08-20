@@ -235,7 +235,7 @@ namespace SrvSurvey.net
             game.currentShip?.id,
             game.currentShip?.name,
             game.currentShip?.ident,
-            allowSharedStatus ? game.status?.InTaxi == true : null);
+            allowSharedStatus ? game.status?.InTaxi : null);
 
         private static bool isMultiboxing() => DetectMultiboxing(
             Elite.hadManyGameProcs,
@@ -480,7 +480,7 @@ namespace SrvSurvey.net
                             Game.log($"Inara accepted {batch.Count} event(s).");
                         }
                     }
-                    catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException)
+                    catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException or ObjectDisposedException)
                     {
                         queue.Requeue(batch);
                         Game.log($"Inara upload deferred ({ex.GetType().Name}); {batch.Count} event(s) retained.");
