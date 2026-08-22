@@ -26,6 +26,8 @@ namespace SrvSurvey
 
                 if (this.game != null)
                     this.removeGame();
+
+                this.eddn.Dispose();
             }
             base.Dispose(disposing);
         }

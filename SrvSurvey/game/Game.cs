@@ -17,15 +17,13 @@ namespace SrvSurvey.game
     /// </summary>
     class Game : IDisposable
     {
-        private static readonly object logSync = new();
-        private static readonly List<string> logs = [];
-
         static Game()
         {
 #if DEBUG
             // This stops logging code from starting up when custom controls are created in Visual Studio designer
             if (Process.GetCurrentProcess().ProcessName != "SrvSurvey") return;
 #endif
+            Game.logs = new List<string>();
             Game.logPath = prepLogFile();
             Game.log($"SrvSurvey version: {Program.releaseVersion}, isAppStoreBuild: {Program.isAppStoreBuild}");
             Game.log($"New log file: {Game.logPath}");
@@ -40,7 +38,6 @@ namespace SrvSurvey.game
             edsm = new EDSM();
             git = new Git();
             rcc = new RavenColonial.RavenColonial();
-            eddn = new EDDN();
         }
 
         #region logging
@@ -51,7 +48,7 @@ namespace SrvSurvey.game
             Directory.CreateDirectory(Game.logFolder);
             var datepart = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             var filepath = Path.Combine(Game.logFolder, $"srvs-{datepart}.txt")!;
-            File.WriteAllLines(filepath, getLogSnapshot());
+            File.WriteAllLines(filepath, Game.logs);
 
             return filepath;
         }
@@ -62,32 +59,27 @@ namespace SrvSurvey.game
 
             Debug.WriteLine(txt);
 
-            lock (logSync)
+            Game.logs.Add(txt);
+
+            ViewLogs.append(txt);
+
+            try
             {
+                File.AppendAllText(Game.logPath, txt + "\r\n");
+            }
+            catch
+            {
+                // try one more shortly afterwards
+                Application.DoEvents();
                 try
                 {
-                    Game.logs.Add(txt);
                     File.AppendAllText(Game.logPath, txt + "\r\n");
                 }
                 catch
                 {
-                    // Logging must never interfere with journal processing or uploaders.
+                    // and give up if the 2nd attempt fails too
                 }
             }
-
-            // The viewer marshals asynchronously, so background uploaders never wait
-            // for the UI while holding one of their own locks.
-            ViewLogs.append(txt);
-        }
-
-        internal static string[] getLogSnapshot()
-        {
-            lock (logSync) return logs.ToArray();
-        }
-
-        internal static void clearLogs()
-        {
-            lock (logSync) logs.Clear();
         }
 
         private static void removeExcessLogFiles()
@@ -105,6 +97,7 @@ namespace SrvSurvey.game
             }
         }
 
+        public static readonly List<string> logs;
         private static readonly string logPath;
         public static string logFolder = Path.Combine(Program.dataFolder, "logs", "");
 
@@ -118,7 +111,8 @@ namespace SrvSurvey.game
         public static EDSM edsm { get; private set; }
         public static Git git { get; private set; }
         public static RavenColonial.RavenColonial rcc { get; private set; }
-        public static EDDN eddn { get; private set; }
+        private readonly EDDN eddnService;
+        private EddnSessionPublisher? eddnSession;
 
         public bool initialized { get; private set; } // TODO: reconcile with "Game.ready"
 
@@ -189,8 +183,11 @@ namespace SrvSurvey.game
         /// </summary>
         public static bool ready { get; private set; } = false;
 
-        public Game(string? cmdr)
+        public Game(string? cmdr, EDDN eddnService)
         {
+            ArgumentNullException.ThrowIfNull(eddnService);
+            this.eddnService = eddnService;
+
             string? fid = null;
             if (Program.forceFid != null)
             {
@@ -254,7 +251,8 @@ namespace SrvSurvey.game
         {
             if (disposing)
             {
-                Game.eddn.endSession(this);
+                this.eddnSession?.Dispose();
+                this.eddnSession = null;
 
                 if (this.journals != null)
                 {
@@ -786,7 +784,20 @@ namespace SrvSurvey.game
                 this.cargoFile.Inventory.Clear();
             }
 
-            Game.eddn.beginSession(this, eddnHeader);
+            this.eddnSession?.Dispose();
+            this.eddnSession = eddnHeader == null
+                ? null
+                : new EddnSessionPublisher(
+                    eddnService,
+                    eddnHeader,
+                    Game.settings.watchedJournalFolder,
+                    this.systemData is { address: > 0, starPos.Length: 3 }
+                        ? new EddnLocationContext(
+                            this.systemData.name,
+                            this.systemData.address,
+                            this.systemData.starPos.ToArray())
+                        : null,
+                    Game.log);
             log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{cmdr?.currentSystem}, systemLocation:{cmdr?.lastSystemLocation}, systemBody:{this.systemBody}, journals.Count:{journals.Count}");
             this.initialized = Game.activeGame == this && this.Commander != null;
             this.checkModeChange();
@@ -1120,7 +1131,20 @@ namespace SrvSurvey.game
                 // such as Outfitting, Shipyard and FCMaterials file notifications.
                 try
                 {
-                    eddn.onJournalEntry(this, raw);
+                    this.eddnSession?.onJournalEntry(
+                        raw,
+                        new EddnMessageContext(
+                            null,
+                            this.journals?.isGameHorizons,
+                            this.journals?.isGameOdyssey,
+                            this.status?.BodyName,
+                            this.systemBody?.name,
+                            this.systemBody?.id,
+                            this.systemBody?.type is SystemBodyType.Giant
+                                or SystemBodyType.SolidBody
+                                or SystemBodyType.LandableBody
+                                ? "Planet"
+                                : null));
                 }
                 catch (Exception ex)
                 {

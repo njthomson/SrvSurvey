@@ -25,6 +25,7 @@ namespace SrvSurvey
         private FileSystemWatcher? logFolderWatcher;
         private FileSystemWatcher? settingsFolderWatcher;
         private FileSystemWatcher? screenshotWatcher;
+        internal readonly EDDN eddn;
 
         private Rectangle lastWindowRect;
         private List<Control> bioCtrls;
@@ -41,6 +42,7 @@ namespace SrvSurvey
         public Main()
         {
             Game.log("Starting main form...");
+            eddn = new EDDN();
             form = this;
             InitializeComponent();
             btnSearch.Font = GameColors.Fonts.segoeEmoji_16_ns;
@@ -318,7 +320,7 @@ namespace SrvSurvey
                     lastProcCheck = DateTime.Now;
                     Elite.refreshManyGameProcs();
                     if (Game.settings.eddnUploadEnabled)
-                        Game.eddn.refreshRuntimeSafety();
+                        eddn.refreshRuntimeSafety();
 
                     // handle single/multiple processes
                     btnNextWindow.Visible = Elite.hadManyGameProcs;
@@ -333,7 +335,7 @@ namespace SrvSurvey
                     // EDDN must fail closed when shared file attribution cannot
                     // be established. Other game/process handling remains live.
                     if (Game.settings.eddnUploadEnabled)
-                        Game.eddn.setSuspended(
+                        eddn.setSuspended(
                             true,
                             "EDDN sharing is paused because running Elite instances could not be checked; pending uploads were preserved.");
                     // report but ignore any errors here
@@ -403,7 +405,7 @@ namespace SrvSurvey
                 Application.DoEvents();
             }
 
-            var newGame = new Game(Game.settings.preferredCommander);
+            var newGame = new Game(Game.settings.preferredCommander, eddn);
             if (newGame.isShutdown || !Elite.isGameRunning)
             {
                 newGame.Dispose();

@@ -7,23 +7,26 @@ using System.Text;
 
 namespace SrvSurvey.net
 {
-    internal sealed class EddnTransport
+    internal sealed class EddnTransport : IDisposable
     {
         internal const int MaximumPayloadBytes = 1024 * 1024;
         internal const int MaximumUncompressedPayloadBytes = 10 * 1024 * 1024;
         internal const int MaximumResponseDetailBytes = 2048;
+        internal const bool testSchemasEnabled = true;
 
         private static readonly Uri defaultEndpoint =
             new("https://eddn.edcd.io:4430/upload/");
 
         private readonly HttpClient client;
         private readonly Uri endpoint;
+        private readonly bool ownsClient;
 
         internal EddnTransport(
             HttpClient? client = null,
             Uri? endpoint = null,
             string? userAgent = null)
         {
+            ownsClient = client == null;
             this.client = client ?? createClient(userAgent ?? "SrvSurvey");
             this.endpoint = endpoint ?? defaultEndpoint;
             validateEndpoint(this.endpoint);
@@ -32,28 +35,22 @@ namespace SrvSurvey.net
         internal EddnQueuedMessage prepare(
             JObject message,
             string schemaRef,
-            UploadPayloadHeader header,
-            bool useTestSchemas)
+            UploadPayloadHeader header)
         {
             ArgumentNullException.ThrowIfNull(message);
             ArgumentException.ThrowIfNullOrWhiteSpace(schemaRef);
             ArgumentNullException.ThrowIfNull(header);
 
-            var liveSchemaRef = schemaRef.EndsWith("/test", StringComparison.Ordinal)
+            schemaRef = schemaRef.EndsWith("/test", StringComparison.Ordinal)
                 ? schemaRef[..^"/test".Length]
                 : schemaRef;
-            schemaRef = useTestSchemas
-                ? liveSchemaRef + "/test"
-                : liveSchemaRef;
+            if (testSchemasEnabled) schemaRef += "/test";
 
             return new EddnQueuedMessage
             {
                 id = Guid.NewGuid(),
                 created = DateTimeOffset.UtcNow,
                 nextAttempt = DateTimeOffset.UtcNow,
-                // Retained in the durable format so queues written by earlier
-                // releases can be loaded safely. Delivery is always Live.
-                environment = "live",
                 schemaRef = schemaRef,
                 header = header.clone(),
                 message = new JObject(message),
@@ -64,11 +61,10 @@ namespace SrvSurvey.net
             JObject message,
             string schemaRef,
             UploadPayloadHeader header,
-            bool useTestSchemas,
             CancellationToken cancellationToken = default)
         {
             return await upload(
-                prepare(message, schemaRef, header, useTestSchemas),
+                prepare(message, schemaRef, header),
                 cancellationToken).ConfigureAwait(false);
         }
 
@@ -85,7 +81,6 @@ namespace SrvSurvey.net
             if (payloadBytes.Length > MaximumUncompressedPayloadBytes)
             {
                 return EddnUploadResult.skipped(
-                    "live",
                     queued.schemaRef,
                     $"the encoded message exceeded {MaximumUncompressedPayloadBytes:N0} uncompressed bytes");
             }
@@ -94,7 +89,6 @@ namespace SrvSurvey.net
             if (compressed.Length > MaximumPayloadBytes)
             {
                 return EddnUploadResult.skipped(
-                    "live",
                     queued.schemaRef,
                     $"the compressed message exceeded {MaximumPayloadBytes:N0} bytes");
             }
@@ -122,7 +116,6 @@ namespace SrvSurvey.net
                 : await readBoundedResponse(response.Content, cancellationToken).ConfigureAwait(false);
 
             return new EddnUploadResult(
-                "live",
                 queued.schemaRef,
                 response.StatusCode,
                 response.ReasonPhrase ?? string.Empty,
@@ -178,10 +171,14 @@ namespace SrvSurvey.net
                     nameof(endpoint));
             }
         }
+
+        public void Dispose()
+        {
+            if (ownsClient) client.Dispose();
+        }
     }
 
     internal sealed record EddnUploadResult(
-        string environment,
         string schemaRef,
         HttpStatusCode? statusCode,
         string reasonPhrase,
@@ -198,12 +195,10 @@ namespace SrvSurvey.net
                 or HttpStatusCode.UpgradeRequired);
 
         internal static EddnUploadResult skipped(
-            string environment,
             string schemaRef,
             string reason)
         {
             return new EddnUploadResult(
-                environment,
                 schemaRef,
                 null,
                 string.Empty,
@@ -218,7 +213,6 @@ namespace SrvSurvey.net
         public DateTimeOffset created;
         public DateTimeOffset nextAttempt;
         public int attempts;
-        public string environment = "live";
         public string schemaRef = string.Empty;
         public UploadPayloadHeader header = new();
         public JObject message = new();

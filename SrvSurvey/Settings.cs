@@ -278,8 +278,6 @@ namespace SrvSurvey
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool eddnUploadEnabled = false;
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public bool eddnUseTestSchemas = false;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool disableBioPredictions = false;
@@ -301,14 +299,7 @@ namespace SrvSurvey
                 {
                     try
                     {
-                        var root = JObject.Parse(json);
-                        var settings = root.ToObject<Settings>()!;
-
-                        // PR builds previously accepted beta/dev as endpoint
-                        // choices. Preserve that safe test intent only when the
-                        // replacement setting has not already been written.
-                        settings.eddnUseTestSchemas =
-                            net.EddnSettingsMigration.useTestSchemas(root);
+                        var settings = JsonConvert.DeserializeObject<Settings>(json)!;
 
                         Game.log($"Loaded settings: {json}");
 
