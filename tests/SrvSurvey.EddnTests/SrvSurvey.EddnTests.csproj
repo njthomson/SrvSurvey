@@ -1,18 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <PlatformTarget>x64</PlatformTarget>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -20,20 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\SrvSurvey\game\JournalExpansionFlags.cs"
-             Link="JournalExpansionFlags.cs" />
-    <Compile Include="..\..\SrvSurvey\net\EddnMessageSanitizer.cs"
-             Link="EddnMessageSanitizer.cs" />
-    <Compile Include="..\..\SrvSurvey\net\EddnCompanionFileReader.cs"
-             Link="EddnCompanionFileReader.cs" />
-    <Compile Include="..\..\SrvSurvey\net\EddnConsentFile.cs"
-             Link="EddnConsentFile.cs" />
-    <Compile Include="..\..\SrvSurvey\net\EddnSettingsMigration.cs"
-             Link="EddnSettingsMigration.cs" />
-    <Compile Include="..\..\SrvSurvey\net\EddnOutbox.cs"
-             Link="EddnOutbox.cs" />
-    <Compile Include="..\..\SrvSurvey\net\EddnTransport.cs"
-             Link="EddnTransport.cs" />
+    <ProjectReference Include="..\..\SrvSurvey\SrvSurvey.csproj" />
   </ItemGroup>
 
 </Project>
