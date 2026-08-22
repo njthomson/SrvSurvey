@@ -39,7 +39,6 @@ namespace SrvSurvey.game
             git = new Git();
             rcc = new RavenColonial.RavenColonial();
             eddn = new EDDN();
-            inara = new Inara();
         }
 
         #region logging
@@ -114,7 +113,7 @@ namespace SrvSurvey.game
         public static Git git { get; private set; }
         public static RavenColonial.RavenColonial rcc { get; private set; }
         public static EDDN eddn { get; private set; }
-        public static Inara inara { get; private set; }
+        private Inara? inara;
 
         public bool initialized { get; private set; } // TODO: reconcile with "Game.ready"
 
@@ -233,7 +232,7 @@ namespace SrvSurvey.game
             // Reconstruct Inara's current-session state without uploading journal history.
             // This must happen before live journal callbacks begin so credits and inventory
             // have an authoritative baseline when the first new event is processed.
-            inara.onGameInitialized(this);
+            this.inara = Inara.Create(this);
 
             // now listen for changes
             this.journals.onJournalEntry += Journals_onJournalEntry;
@@ -260,6 +259,8 @@ namespace SrvSurvey.game
                 if (this.journals != null)
                 {
                     this.journals.onJournalEntry -= Journals_onJournalEntry;
+                    this.inara?.Dispose();
+                    this.inara = null;
                     this.journals.Dispose();
                     this.journals = null;
                 }
@@ -280,6 +281,12 @@ namespace SrvSurvey.game
 
             if (Game.activeGame == this)
                 Game.activeGame = null;
+        }
+
+        internal void onInaraApiKeyChanged(CommanderSettings settings)
+        {
+            if (ReferenceEquals(this.cmdr, settings))
+                this.inara?.onApiKeyChanged();
         }
 
         #region modes
@@ -1118,7 +1125,7 @@ namespace SrvSurvey.game
                 }
 
                 // Inara also understands selected journal events that SrvSurvey has no typed class for.
-                inara.onJournalEntry(this, raw);
+                this.inara?.onJournalEntry(raw);
 
                 // finally, let active quests know about this
                 PlayState.current?.processJournalEntry(raw).justDoIt();

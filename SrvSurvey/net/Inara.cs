@@ -4,91 +4,121 @@ using SrvSurvey.game;
 using System.Net;
 using System.Text;
 
+// Behavioral reference:
+// https://github.com/EDCD/EDMarketConnector/blob/2b6a0ce1ee3ba60c21f3f4e9fa093046da8825e4/plugins/inara.py
+// Copyright (c) EDCD, licensed under GNU GPL v2 or later.
+
 namespace SrvSurvey.net
 {
     /// <summary>
-    /// Collects and batches opted-in commander updates for Inara.
+    /// Collects and batches Inara updates for exactly one initialized game session.
     /// </summary>
     internal sealed class Inara : IDisposable
     {
         internal const string Endpoint = "https://inara.cz/inapi/v1/";
         private static readonly TimeSpan sendInterval = TimeSpan.FromSeconds(35);
-        private readonly HttpClient? client;
+        private readonly Game? game;
+        private readonly InaraSession session;
+        private readonly HttpClient client;
+        private readonly InaraContext? testContext;
+        private readonly Action<string> log;
         private readonly InaraEventMapper mapper = new();
         private readonly InaraEventQueue queue = new();
-        private readonly System.Threading.Timer? timer;
-        private Game? currentGame;
-        private int sending;
+        private readonly SemaphoreSlim sendGate = new(1, 1);
+        private readonly object ingestionSync = new();
+        private readonly object stopSync = new();
+        private System.Threading.Timer? timer;
+        private Task? stopTask;
+        private long retryNotBeforeUtcTicks;
+        private int retryAttempt;
+        private int stopping;
+        private int disposed;
 
-        public Inara()
+        private Inara(
+            Game? game,
+            InaraSession session,
+            HttpClient client,
+            InaraContext? testContext = null,
+            Action<string>? log = null)
         {
-            HttpClient? configuredClient = null;
-            System.Threading.Timer? configuredTimer = null;
+            this.game = game;
+            this.session = session;
+            this.client = client;
+            this.testContext = testContext;
+            this.log = log ?? (message => Game.log(message));
+        }
+
+        internal static Inara CreateForTests(
+            InaraSession session,
+            HttpMessageHandler handler,
+            InaraContext context,
+            Action<string>? log = null,
+            bool disposeHandler = false) =>
+            new(null, session, new HttpClient(handler, disposeHandler)
+            {
+                Timeout = TimeSpan.FromSeconds(20),
+            }, context, log ?? (_ => { }));
+
+        public static Inara? Create(Game game)
+        {
+            HttpClient? client = null;
+            Inara? inara = null;
             try
             {
-                configuredClient = new HttpClient(Util.getResilienceHandler())
+                var filepath = game.journals?.filepath;
+                if (string.IsNullOrWhiteSpace(filepath))
+                    throw new InvalidOperationException("The initialized game has no journal filepath.");
+
+                var fileheader = game.journals?.Entries.FirstOrDefault() as Fileheader;
+                if (fileheader == null)
+                    throw new InvalidOperationException("The initialized game journal does not start with Fileheader.");
+
+                var session = InaraSession.Create(game.cmdr, fileheader.gameversion, game.journals?.isOdyssey == true);
+                if (session == null)
+                    throw new InvalidOperationException("The initialized game has no commander name, Frontier ID, or game version.");
+
+                client = new HttpClient(Util.getResilienceHandler())
                 {
                     Timeout = TimeSpan.FromSeconds(20),
                 };
-                configuredClient.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
-                configuredTimer = new System.Threading.Timer(_ => sendPendingAsync().justDoIt(), null, sendInterval, sendInterval);
+                client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
+
+                inara = new Inara(game, session, client);
+                inara.seedCurrentSession(filepath);
+                inara.timer = new System.Threading.Timer(
+                    _ => inara.sendPendingAsync().justDoIt(),
+                    null,
+                    sendInterval,
+                    sendInterval);
+                return inara;
             }
             catch (Exception ex)
             {
-                configuredTimer?.Dispose();
-                configuredClient?.Dispose();
-                configuredTimer = null;
-                configuredClient = null;
-                RunIsolated(() => Game.log($"Inara initialization was disabled without affecting SrvSurvey ({ex.GetType().Name})."));
+                try { inara?.StopAsync(InaraStopReason.KeyCleared).GetAwaiter().GetResult(); }
+                catch (Exception cleanupEx) { Game.log($"Inara initialization cleanup failed:\r\n{cleanupEx}"); }
+                try { client?.Dispose(); }
+                catch (Exception cleanupEx) { Game.log($"Inara HTTP cleanup failed:\r\n{cleanupEx}"); }
+                Game.log($"Inara initialization was disabled without affecting SrvSurvey:\r\n{ex}");
+                return null;
             }
-
-            client = configuredClient;
-            timer = configuredTimer;
         }
 
-        public void Dispose()
+        private void seedCurrentSession(string filepath)
         {
-            RunIsolated(() => timer?.Dispose());
-            RunIsolated(() => client?.Dispose());
-        }
-
-        public void onGameInitialized(Game game)
-        {
-            if (client == null) return;
-
-            RunIsolated(
-                () => onGameInitializedCore(game),
-                ex =>
-                {
-                    mapper.Reset();
-                    currentGame = game;
-                    Game.log($"Inara startup seeding was skipped without affecting SrvSurvey ({ex.GetType().Name}).");
-                });
-        }
-
-        private void onGameInitializedCore(Game game)
-        {
-            mapper.Reset();
-            currentGame = game;
-            var credentials = getCredentials(game);
-            var canPrepareUpload = CanPrepareUpload(
-                Game.settings.inaraUpload,
-                credentials?.ApiKey,
-                IsLiveVersion(getGameVersion(game), game.journals?.isOdyssey == true),
-                IsBetaVersion(getGameVersion(game)));
-            var multiboxing = canPrepareUpload && isMultiboxing();
-
-            var filepath = game.journals?.filepath;
-            if (string.IsNullOrWhiteSpace(filepath)) return;
-
             try
             {
                 using var reader = Data.openSharedStreamReader(filepath);
-                var entries = ReadCurrentSession(reader);
+                var entries = ReadCurrentSession(reader, out var malformedCount);
+                if (malformedCount > 0)
+                    log($"Inara skipped {malformedCount} malformed journal entr{(malformedCount == 1 ? "y" : "ies")} while seeding.");
+
+                var credentials = session.GetCredentials();
+                var canPrepareUpload = CanPrepareUpload(credentials?.ApiKey, session.IsLive, session.IsBeta);
+                var multiboxing = canPrepareUpload && Elite.hadManyGameProcs;
                 JArray? cargoInventory = null;
                 if (canPrepareUpload && !multiboxing)
                 {
-                    var cargoFile = game.cargoFile;
+                    var cargoFile = game!.cargoFile;
                     cargoInventory = string.Equals(cargoFile.Vessel, "Ship", StringComparison.OrdinalIgnoreCase)
                         ? JArray.FromObject(cargoFile.Inventory ?? [])
                         : null;
@@ -97,100 +127,95 @@ namespace SrvSurvey.net
                 var seededCount = SeedState(
                     mapper,
                     entries,
-                    createContext(game, canPrepareUpload && !multiboxing),
+                    createContext(canPrepareUpload && !multiboxing),
                     cargoInventory);
-                Game.log($"Inara seeded current state from {seededCount} journal event(s).");
+                log($"Inara seeded current state from {seededCount} journal event(s).");
                 if (multiboxing)
-                    Game.log("Inara multi-box mode: shared Cargo.json, ShipLocker.json, and Status.json data is suppressed.");
+                    log("Inara multi-box mode: shared Cargo.json, ShipLocker.json, and Status.json data is suppressed.");
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException)
             {
-                Game.log($"Inara could not seed current journal state ({ex.GetType().Name}).");
-            }
-        }
-
-        public void onJournalEntry(Game game, JObject raw)
-        {
-            if (client == null) return;
-
-            RunIsolated(
-                () => onJournalEntryCore(game, raw),
-                ex => Game.log($"Inara ignored {raw["event"]?.ToString() ?? "unknown"} without affecting other journal processing ({ex.GetType().Name})."));
-        }
-
-        private void onJournalEntryCore(Game game, JObject raw)
-        {
-            // Manual calls made while Game reconstructs state from journal history must never upload.
-            if (!Game.ready || Game.activeGame != game) return;
-
-            if (!ReferenceEquals(currentGame, game))
-            {
                 mapper.Reset();
-                currentGame = game;
+                log($"Inara could not seed current journal state without affecting SrvSurvey:\r\n{ex}");
             }
+        }
 
-            var credentials = getCredentials(game);
-            var gameVersion = getGameVersion(game);
-            var isLive = IsLiveVersion(gameVersion, game.journals?.isOdyssey == true);
-            var isBeta = IsBetaVersion(gameVersion);
-            var canPrepareUpload = CanPrepareUpload(
-                Game.settings.inaraUpload,
-                credentials?.ApiKey,
-                isLive,
-                isBeta);
+        public void onJournalEntry(JObject raw)
+        {
+            if (Volatile.Read(ref stopping) != 0) return;
 
+            lock (ingestionSync)
+            {
+                if (Volatile.Read(ref stopping) != 0) return;
+                try
+                {
+                    onJournalEntryCore(raw);
+                }
+                catch (Exception ex)
+                {
+                    var eventName = raw["event"]?.ToString() ?? "unknown";
+                    log($"Inara ignored {eventName} without affecting other journal processing:\r\n{ex}");
+                }
+            }
+        }
+
+        public void onApiKeyChanged()
+        {
+            resetRetryDelay();
+            var discarded = queue.DiscardNotCurrent(session);
+            if (discarded > 0)
+                log($"Inara discarded {discarded} queued event(s) after the commander API key changed or was cleared.");
+        }
+
+        private void onJournalEntryCore(JObject raw)
+        {
+            var credentials = session.GetCredentials();
+            var canPrepareUpload = CanPrepareUpload(credentials?.ApiKey, session.IsLive, session.IsBeta);
             if (!canPrepareUpload)
             {
-                // Keep journal-derived state warm so enabling Inara mid-session is safe,
-                // without reading shared sidecars/status or enumerating game processes.
-                mapper.Process(raw, createContext(game, false), false);
+                // Keep journal-derived state warm so adding a key mid-session is safe.
+                mapper.Process(raw, createContext(false), false);
                 return;
             }
 
-            var multiboxing = isMultiboxing();
-            raw = addSidecarData(game, raw, !multiboxing);
-
+            var multiboxing = Elite.hadManyGameProcs;
+            raw = addSidecarData(raw, !multiboxing);
             var canCollect = CanUpload(
-                Game.settings.inaraUpload,
                 credentials?.ApiKey,
-                isLive,
-                isBeta,
+                session.IsLive,
+                session.IsBeta,
                 mapper.InMulticrew);
-
-            var context = createContext(game, !multiboxing);
-
-            var events = mapper.Process(raw, context, canCollect);
+            var events = mapper.Process(raw, createContext(!multiboxing), canCollect);
             if (credentials != null && events.Count > 0)
             {
                 queue.Enqueue(credentials, events);
-                Game.log($"Inara queued {events.Count} event(s): {string.Join(", ", events.Select(e => e.Name).Distinct())}");
+                log($"Inara queued {events.Count} event(s): {string.Join(", ", events.Select(e => e.Name).Distinct())}");
             }
 
             if (raw.Value<string>("event") == "Shutdown")
                 sendPendingAsync().justDoIt();
         }
 
-        internal static IReadOnlyList<JObject> ReadCurrentSession(TextReader reader)
+        internal static IReadOnlyList<JObject> ReadCurrentSession(TextReader reader) =>
+            ReadCurrentSession(reader, out _);
+
+        internal static IReadOnlyList<JObject> ReadCurrentSession(TextReader reader, out int malformedCount)
         {
             var entries = new List<JObject>();
+            malformedCount = 0;
             string? line;
             while ((line = reader.ReadLine()) != null)
             {
                 if (string.IsNullOrWhiteSpace(line)) continue;
 
-                JObject entry;
                 try
                 {
-                    entry = JObject.Parse(line);
+                    entries.Add(JObject.Parse(line));
                 }
                 catch (JsonException)
                 {
-                    continue;
+                    malformedCount++;
                 }
-
-                if (entry.Value<string>("event") == "LoadGame")
-                    entries.Clear();
-                entries.Add(entry);
             }
 
             return entries;
@@ -225,82 +250,31 @@ namespace SrvSurvey.net
             return count;
         }
 
-        private static InaraContext createContext(Game game, bool allowSharedStatus) => new(
-            game.Commander,
-            game.fid,
-            game.systemData?.name ?? game.cmdr?.currentSystem,
-            game.systemStation?.name ?? game.lastDocked?.StationName,
-            allowSharedStatus ? game.systemBody?.name : null,
-            game.currentShip?.type,
-            game.currentShip?.id,
-            game.currentShip?.name,
-            game.currentShip?.ident,
-            allowSharedStatus ? game.status?.InTaxi : null);
-
-        private static bool isMultiboxing() => DetectMultiboxing(
-            Elite.hadManyGameProcs,
-            countGameProcesses,
-            ex => Game.log($"Inara could not count Elite processes and conservatively enabled multi-box suppression ({ex.GetType().Name})."));
-
-        private static int countGameProcesses()
+        private InaraContext createContext(bool allowSharedStatus)
         {
-            var gameProcesses = Elite.GetGameProcs();
-            try
-            {
-                return gameProcesses.Length;
-            }
-            finally
-            {
-                foreach (var process in gameProcesses)
-                {
-                    try { process.Dispose(); }
-                    catch { /* best effort only */ }
-                }
-            }
+            if (testContext != null)
+                return testContext with { IsTaxi = allowSharedStatus ? testContext.IsTaxi : null };
+
+            return new(
+                session.Commander,
+                session.FrontierId,
+                game!.systemData?.name ?? game.cmdr.currentSystem,
+                game.systemStation?.name ?? game.lastDocked?.StationName,
+                allowSharedStatus ? game.systemBody?.name : null,
+                game.currentShip?.type,
+                game.currentShip?.id,
+                game.currentShip?.name,
+                game.currentShip?.ident,
+                allowSharedStatus ? game.status?.InTaxi : null);
         }
 
-        internal static bool DetectMultiboxing(
-            bool alreadyDetected,
-            Func<int> countGameProcesses,
-            Action<Exception>? onError = null)
-        {
-            if (alreadyDetected) return true;
-
-            try
-            {
-                return countGameProcesses() > 1;
-            }
-            catch (Exception ex)
-            {
-                try { onError?.Invoke(ex); }
-                catch { /* optional diagnostics must not escape */ }
-                return true;
-            }
-        }
-
-        internal static bool RunIsolated(Action action, Action<Exception>? onError = null)
-        {
-            try
-            {
-                action();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                try { onError?.Invoke(ex); }
-                catch { /* optional diagnostics must not escape */ }
-                return false;
-            }
-        }
-
-        internal static bool CanPrepareUpload(bool optedIn, string? apiKey, bool isLive, bool isBeta) =>
-            optedIn
-            && !string.IsNullOrWhiteSpace(apiKey)
+        internal static bool CanPrepareUpload(string? apiKey, bool isLive, bool isBeta) =>
+            !string.IsNullOrWhiteSpace(apiKey)
             && isLive
             && !isBeta;
 
-        internal static bool CanUpload(bool optedIn, string? apiKey, bool isLive, bool isBeta, bool inMulticrew) =>
-            CanPrepareUpload(optedIn, apiKey, isLive, isBeta)
+        internal static bool CanUpload(string? apiKey, bool isLive, bool isBeta, bool inMulticrew) =>
+            CanPrepareUpload(apiKey, isLive, isBeta)
             && !inMulticrew;
 
         internal static bool IsBetaVersion(string? gameVersion)
@@ -319,29 +293,25 @@ namespace SrvSurvey.net
             return Version.TryParse(numeric.TrimEnd('.'), out var version) && version.Major >= 4;
         }
 
-        internal async Task flushAsync() => await sendPendingAsync();
-
-        private static string? getGameVersion(Game game) =>
-            game.journals?.Entries.OfType<Fileheader>().FirstOrDefault()?.gameversion
-            ?? game.journals?.Entries.OfType<LoadGame>().LastOrDefault()?.gameversion;
-
-        private static InaraCredentials? getCredentials(Game game)
+        internal async Task flushAsync()
         {
-            var commander = resolveCommanderName(game.cmdr?.inaraCommanderName, game.Commander);
-            var frontierId = game.fid;
-            var apiKey = game.cmdr?.inaraApiKey?.Trim();
-            if (string.IsNullOrWhiteSpace(commander) || string.IsNullOrWhiteSpace(apiKey)) return null;
-            return new InaraCredentials(commander, frontierId ?? string.Empty, apiKey);
+            if (Volatile.Read(ref stopping) != 0 || Volatile.Read(ref disposed) != 0) return;
+            await sendGate.WaitAsync();
+            try
+            {
+                if (Volatile.Read(ref disposed) == 0)
+                    await sendPendingCoreAsync();
+            }
+            finally
+            {
+                sendGate.Release();
+            }
         }
 
-        internal static string? resolveCommanderName(string? configuredName, string? journalName)
+        private JObject addSidecarData(JObject raw, bool allowSharedSidecars)
         {
-            var commander = string.IsNullOrWhiteSpace(configuredName) ? journalName : configuredName;
-            return commander?.Trim();
-        }
+            if (game == null) return raw;
 
-        private static JObject addSidecarData(Game game, JObject raw, bool allowSharedSidecars)
-        {
             var eventName = raw.Value<string>("event");
             var needsCargoSidecar = eventName == "Cargo"
                 && raw.Value<string>("Vessel") == "Ship"
@@ -352,7 +322,7 @@ namespace SrvSurvey.net
 
             if (!allowSharedSidecars && (needsCargoSidecar || needsLockerSidecar))
             {
-                Game.log($"Inara ignored shared {eventName} sidecar data while multi-boxing.");
+                log($"Inara ignored shared {eventName} sidecar data while multi-boxing.");
                 return raw;
             }
 
@@ -380,7 +350,7 @@ namespace SrvSurvey.net
                 }
                 catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException)
                 {
-                    Game.log($"Inara could not read ShipLocker.json ({ex.GetType().Name}).");
+                    log($"Inara could not read ShipLocker.json:\r\n{ex}");
                 }
             }
 
@@ -389,113 +359,222 @@ namespace SrvSurvey.net
 
         private async Task sendPendingAsync()
         {
-            var uploadClient = client;
-            if (uploadClient == null) return;
-
-            if (Interlocked.Exchange(ref sending, 1) != 0) return;
+            if (Volatile.Read(ref stopping) != 0 || Volatile.Read(ref disposed) != 0) return;
+            if (DateTime.UtcNow.Ticks < Interlocked.Read(ref retryNotBeforeUtcTicks)) return;
+            if (!await sendGate.WaitAsync(0)) return;
             try
             {
-                var pending = queue.TakeAll();
-                if (pending.Count == 0) return;
-
-                foreach (var group in pending.GroupBy(item => item.Credentials))
-                {
-                    var batch = group.ToList();
-                    if (!Game.settings.inaraUpload)
-                        continue;
-
-                    var activeGame = Game.activeGame;
-                    if (activeGame != null
-                        && string.Equals(activeGame.Commander, group.Key.Commander, StringComparison.OrdinalIgnoreCase)
-                        && !string.Equals(activeGame.cmdr?.inaraApiKey?.Trim(), group.Key.ApiKey, StringComparison.Ordinal))
-                    {
-                        Game.log($"Inara discarded {batch.Count} queued event(s) after the commander API key changed.");
-                        continue;
-                    }
-
-                    try
-                    {
-                        var payload = InaraPayloadBuilder.Build(
-                            Program.releaseVersion,
-                            group.Key,
-                            batch.Select(item => item.Event).ToList(),
-                            Game.settings.inaraDeveloperTestMode);
-                        using var content = new StringContent(payload.ToString(Formatting.None), Encoding.UTF8, "application/json");
-                        using var response = await uploadClient.PostAsync(Endpoint, content);
-
-                        if (isTransient(response.StatusCode))
-                        {
-                            queue.Requeue(batch);
-                            Game.log($"Inara upload deferred after HTTP {(int)response.StatusCode}; {batch.Count} event(s) retained.");
-                            continue;
-                        }
-
-                        if (!response.IsSuccessStatusCode)
-                        {
-                            Game.log($"Inara rejected {batch.Count} event(s) with HTTP {(int)response.StatusCode}.");
-                            continue;
-                        }
-
-                        var body = await response.Content.ReadAsStringAsync();
-                        if (string.IsNullOrWhiteSpace(body))
-                        {
-                            queue.Requeue(batch);
-                            Game.log($"Inara returned an empty response; {batch.Count} event(s) retained.");
-                            continue;
-                        }
-
-                        var result = JObject.Parse(body);
-                        var headerStatus = result.SelectToken("header.eventStatus")?.Value<int?>();
-                        var responseEvents = result["events"] as JArray;
-                        var responseIsComplete = headerStatus != null
-                            && responseEvents?.Count == batch.Count
-                            && responseEvents.OfType<JObject>().All(eventResult => eventResult["eventStatus"] != null);
-                        if (!responseIsComplete)
-                        {
-                            queue.Requeue(batch);
-                            Game.log($"Inara returned an incomplete response; {batch.Count} event(s) retained.");
-                            continue;
-                        }
-
-                        if (headerStatus is >= 400)
-                        {
-                            Game.log($"Inara rejected a batch of {batch.Count} event(s) with API status {headerStatus}.");
-                            continue;
-                        }
-
-                        var failedEvents = responseEvents!.OfType<JObject>()
-                            .Select((eventResult, index) => new { index, status = eventResult.Value<int?>("eventStatus") })
-                            .Where(item => item.status is >= 400)
-                            .ToList();
-                        if (failedEvents.Count > 0)
-                        {
-                            var names = failedEvents
-                                .Where(item => item.index < batch.Count)
-                                .Select(item => batch[item.index].Event.Name)
-                                .Distinct();
-                            Game.log($"Inara rejected {failedEvents.Count} event(s): {string.Join(", ", names)}.");
-                        }
-                        else
-                        {
-                            Game.log($"Inara accepted {batch.Count} event(s).");
-                        }
-                    }
-                    catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException or ObjectDisposedException)
-                    {
-                        queue.Requeue(batch);
-                        Game.log($"Inara upload deferred ({ex.GetType().Name}); {batch.Count} event(s) retained.");
-                    }
-                }
+                await sendPendingCoreAsync();
             }
             finally
             {
-                Interlocked.Exchange(ref sending, 0);
+                sendGate.Release();
             }
+        }
+
+        private async Task sendPendingCoreAsync()
+        {
+            var pending = queue.TakeCurrent(session, out var discarded);
+            if (discarded > 0)
+                log($"Inara discarded {discarded} queued event(s) after the commander API key changed or was cleared.");
+            if (pending.Count == 0) return;
+
+            foreach (var group in pending.GroupBy(item => item.Credentials))
+            {
+                var batch = group.ToList();
+                if (!session.Matches(group.Key))
+                {
+                    log($"Inara discarded {batch.Count} queued event(s) after the commander API key changed.");
+                    continue;
+                }
+
+                try
+                {
+                    var payload = InaraPayloadBuilder.Build(
+                        Program.releaseVersion,
+                        group.Key,
+                        batch.Select(item => item.Event).ToList());
+                    using var content = new StringContent(payload.ToString(Formatting.None), Encoding.UTF8, "application/json");
+                    using var response = await client.PostAsync(Endpoint, content);
+
+                    if (isTransient(response.StatusCode))
+                    {
+                        queue.Requeue(batch);
+                        scheduleRetry();
+                        log($"Inara upload deferred after HTTP {(int)response.StatusCode} {response.ReasonPhrase}; {batch.Count} event(s) retained.");
+                        continue;
+                    }
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        resetRetryDelay();
+                        log($"Inara rejected {batch.Count} event(s) with HTTP {(int)response.StatusCode} {response.ReasonPhrase}.");
+                        continue;
+                    }
+
+                    var body = await response.Content.ReadAsStringAsync();
+                    if (string.IsNullOrWhiteSpace(body))
+                    {
+                        queue.Requeue(batch);
+                        scheduleRetry();
+                        log($"Inara returned an empty response; {batch.Count} event(s) retained.");
+                        continue;
+                    }
+
+                    var result = JObject.Parse(body);
+                    var headerStatus = result.SelectToken("header.eventStatus")?.Value<int?>();
+                    var responseEvents = result["events"] as JArray;
+                    var responseIsComplete = headerStatus != null
+                        && responseEvents?.Count == batch.Count
+                        && responseEvents.All(token => token is JObject eventResult && eventResult["eventStatus"] != null);
+                    if (!responseIsComplete)
+                    {
+                        queue.Requeue(batch);
+                        scheduleRetry();
+                        log($"Inara returned an incomplete response; {batch.Count} event(s) retained.");
+                        continue;
+                    }
+
+                    resetRetryDelay();
+                    var headerText = safeStatusText(result.SelectToken("header.eventStatusText")?.Value<string>());
+                    if (headerStatus is >= 400)
+                    {
+                        log($"Inara rejected a batch of {batch.Count} event(s) with API status {headerStatus}: {headerText}");
+                        continue;
+                    }
+
+                    var typedEvents = responseEvents!.Cast<JObject>().ToList();
+                    var failedEvents = typedEvents
+                        .Select((eventResult, index) => new
+                        {
+                            index,
+                            status = eventResult.Value<int?>("eventStatus"),
+                            text = safeStatusText(eventResult.Value<string>("eventStatusText")),
+                        })
+                        .Where(item => item.status is >= 400)
+                        .ToList();
+                    if (failedEvents.Count > 0)
+                    {
+                        var failures = failedEvents
+                            .Where(item => item.index < batch.Count)
+                            .Select(item => $"{batch[item.index].Event.Name} ({item.status}: {item.text})")
+                            .Distinct();
+                        log($"Inara rejected {failedEvents.Count} event(s): {string.Join(", ", failures)}.");
+                    }
+                    else
+                    {
+                        log($"Inara accepted {batch.Count} event(s).");
+                    }
+                }
+                catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException or ObjectDisposedException)
+                {
+                    queue.Requeue(batch);
+                    scheduleRetry();
+                    log($"Inara upload deferred; {batch.Count} event(s) retained:\r\n{ex}");
+                }
+            }
+        }
+
+        internal static TimeSpan CalculateRetryDelay(int attempt, int jitterMilliseconds)
+        {
+            var boundedAttempt = Math.Clamp(attempt, 1, 5);
+            var baseSeconds = Math.Min(35 * (1 << (boundedAttempt - 1)), 300);
+            var boundedJitter = Math.Clamp(jitterMilliseconds, 0, 5_000);
+            return TimeSpan.FromSeconds(baseSeconds) + TimeSpan.FromMilliseconds(boundedJitter);
+        }
+
+        private void scheduleRetry()
+        {
+            var attempt = Math.Min(Interlocked.Increment(ref retryAttempt), 5);
+            var delay = CalculateRetryDelay(attempt, Random.Shared.Next(0, 5_001));
+            Interlocked.Exchange(ref retryNotBeforeUtcTicks, DateTime.UtcNow.Add(delay).Ticks);
+            try { timer?.Change(delay, sendInterval); }
+            catch (ObjectDisposedException) { /* shutdown owns the disposed timer */ }
+        }
+
+        private void resetRetryDelay()
+        {
+            Interlocked.Exchange(ref retryAttempt, 0);
+            Interlocked.Exchange(ref retryNotBeforeUtcTicks, 0);
+        }
+
+        private static string safeStatusText(string? value)
+        {
+            var normalized = value?.Replace('\r', ' ').Replace('\n', ' ').Trim();
+            if (string.IsNullOrWhiteSpace(normalized)) return "no status text";
+            return normalized.Length <= 300 ? normalized : normalized[..300];
         }
 
         private static bool isTransient(HttpStatusCode status) =>
             status == HttpStatusCode.RequestTimeout
             || status == HttpStatusCode.TooManyRequests
             || (int)status >= 500;
+
+        public Task StopAsync(InaraStopReason reason)
+        {
+            lock (stopSync)
+                return stopTask ??= stopCoreAsync(reason);
+        }
+
+        private async Task stopCoreAsync(InaraStopReason reason)
+        {
+            Volatile.Write(ref stopping, 1);
+            timer?.Dispose();
+            timer = null;
+
+            // An entry that passed the initial stopping check must finish before the
+            // final queue snapshot and flush are taken.
+            lock (ingestionSync) { }
+
+            await sendGate.WaitAsync();
+            try
+            {
+                if (reason == InaraStopReason.Normal)
+                {
+                    var credentials = session.GetCredentials();
+                    if (credentials != null && CanUpload(
+                        credentials.ApiKey,
+                        session.IsLive,
+                        session.IsBeta,
+                        mapper.InMulticrew))
+                    {
+                        var finalEvents = mapper.Process(new JObject
+                        {
+                            ["timestamp"] = DateTime.UtcNow.ToString("O"),
+                            ["event"] = "Shutdown",
+                        }, createContext(!Elite.hadManyGameProcs), true);
+                        if (finalEvents.Count > 0)
+                            queue.Enqueue(credentials, finalEvents);
+                    }
+                }
+
+                await sendPendingCoreAsync();
+            }
+            catch (Exception ex)
+            {
+                try { log($"Inara shutdown did not complete cleanly:\r\n{ex}"); }
+                catch { /* shutdown diagnostics must not escape */ }
+            }
+            finally
+            {
+                Interlocked.Exchange(ref disposed, 1);
+                try { client.Dispose(); }
+                catch { /* best-effort cleanup */ }
+                sendGate.Release();
+            }
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+                StopAsync(InaraStopReason.Normal).GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+                try { log($"Inara shutdown did not complete cleanly:\r\n{ex}"); }
+                catch { /* disposal must not escape */ }
+            }
+        }
     }
 }

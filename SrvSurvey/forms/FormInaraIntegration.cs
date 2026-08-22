@@ -1,4 +1,4 @@
-﻿using SrvSurvey.game;
+using SrvSurvey.game;
 using SrvSurvey.Properties;
 
 namespace SrvSurvey.forms
@@ -12,51 +12,43 @@ namespace SrvSurvey.forms
         private readonly CommanderSettings? cmdrSettings;
 
         public FormInaraIntegration()
+            : this(CommanderSettings.LoadCurrentOrLast())
+        {
+        }
+
+        internal FormInaraIntegration(CommanderSettings? cmdrSettings)
         {
             InitializeComponent();
             this.Icon = Icons.set_square;
             BaseForm.applyThemeWithCustomControls(this);
 
-            this.cmdrSettings = CommanderSettings.LoadCurrentOrLast();
-            this.checkUpload.Checked = Game.settings.inaraUpload;
-
-            if (this.cmdrSettings != null)
+            // Keep this exact FID-keyed profile for the lifetime of the dialog. If the
+            // active game changes while the dialog is open, Save still targets this one.
+            this.cmdrSettings = cmdrSettings;
+            if (cmdrSettings != null)
             {
-                this.txtCommander.Text = string.IsNullOrWhiteSpace(this.cmdrSettings.inaraCommanderName)
-                    ? this.cmdrSettings.commander
-                    : this.cmdrSettings.inaraCommanderName;
-                this.txtApiKey.Text = this.cmdrSettings.inaraApiKey ?? string.Empty;
+                this.txtCommander.Text = cmdrSettings.commander;
+                this.txtApiKey.Text = cmdrSettings.inaraApiKey ?? string.Empty;
             }
             else
             {
                 this.txtCommander.Text = CommanderSettings.currentOrLastCmdrName ?? string.Empty;
-                this.checkUpload.Enabled = false;
-                this.btnSave.Enabled = false;
+                this.txtApiKey.Enabled = false;
+                this.btnOk.Enabled = false;
+                this.btnClear.Enabled = false;
             }
+        }
 
-            this.updateControlState();
+        internal static void ApplyApiKey(CommanderSettings settings, string? apiKey)
+        {
+            var trimmed = apiKey?.Trim();
+            settings.inaraApiKey = string.IsNullOrWhiteSpace(trimmed) ? null : trimmed;
         }
 
         private void FormInaraIntegration_Load(object sender, EventArgs e)
         {
-            if (this.txtCommander.Enabled && string.IsNullOrWhiteSpace(this.txtCommander.Text))
-                this.txtCommander.Focus();
-            else if (this.txtApiKey.Enabled)
+            if (this.txtApiKey.Enabled)
                 this.txtApiKey.Focus();
-        }
-
-        private void checkUpload_CheckedChanged(object sender, EventArgs e)
-        {
-            this.updateControlState();
-        }
-
-        private void updateControlState()
-        {
-            var enabled = this.cmdrSettings != null && this.checkUpload.Checked;
-            this.labelCommander.Enabled = enabled;
-            this.txtCommander.Enabled = enabled;
-            this.labelApiKey.Enabled = enabled;
-            this.txtApiKey.Enabled = enabled;
         }
 
         private void linkApiKey_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -69,31 +61,41 @@ namespace SrvSurvey.forms
             Util.openLink(TermsUrl);
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void btnOk_Click(object sender, EventArgs e)
         {
-            if (this.checkUpload.Checked && string.IsNullOrWhiteSpace(this.txtApiKey.Text))
+            if (this.cmdrSettings == null) return;
+            if (string.IsNullOrWhiteSpace(this.txtApiKey.Text))
             {
-                MessageBox.Show(this, "Enter your Inara API key before enabling uploads.", "Inara Integration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this,
+                    "Enter this commander's Inara API key, or use Clear Key to disable uploads.",
+                    "Inara Integration",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 this.txtApiKey.Focus();
                 return;
             }
 
-            Game.settings.inaraUpload = this.checkUpload.Checked;
-            Game.settings.Save();
+            ApplyApiKey(this.cmdrSettings, this.txtApiKey.Text);
+            this.cmdrSettings.Save();
+            Game.activeGame?.onInaraApiKeyChanged(this.cmdrSettings);
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
 
-            if (this.cmdrSettings != null)
-            {
-                var commanderName = this.txtCommander.Text.Trim();
-                this.cmdrSettings.inaraCommanderName = string.IsNullOrWhiteSpace(commanderName)
-                    || string.Equals(commanderName, this.cmdrSettings.commander, StringComparison.Ordinal)
-                    ? null
-                    : commanderName;
-                this.cmdrSettings.inaraApiKey = string.IsNullOrWhiteSpace(this.txtApiKey.Text)
-                    ? null
-                    : this.txtApiKey.Text.Trim();
-                this.cmdrSettings.Save();
-            }
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            if (this.cmdrSettings == null) return;
+            var answer = MessageBox.Show(this,
+                $"Clear the Inara API key for {this.cmdrSettings.commander} and discard pending Inara uploads for this session?",
+                "Clear Inara API Key",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning,
+                MessageBoxDefaultButton.Button2);
+            if (answer != DialogResult.Yes) return;
 
+            ApplyApiKey(this.cmdrSettings, null);
+            this.cmdrSettings.Save();
+            Game.activeGame?.onInaraApiKeyChanged(this.cmdrSettings);
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

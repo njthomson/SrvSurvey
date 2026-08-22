@@ -1,5 +1,11 @@
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SrvSurvey.game;
+using SrvSurvey.forms;
 using SrvSurvey.net;
+using System.Net;
+using System.Reflection;
+using System.Text;
 using Xunit;
 
 namespace SrvSurvey.Tests;
@@ -19,20 +25,30 @@ public sealed class InaraTests
         false);
 
     [Fact]
-    public void UploadIsOptInAndDeveloperModeDefaultsOn()
+    public void InaraLifetimeBelongsToOneGameInstance()
+    {
+        Assert.Null(typeof(Game).GetProperty("inara", BindingFlags.Public | BindingFlags.Static));
+        Assert.NotNull(typeof(Game).GetField("inara", BindingFlags.Instance | BindingFlags.NonPublic));
+        Assert.Empty(typeof(Inara).GetConstructors(BindingFlags.Public | BindingFlags.Instance));
+
+        var journalMethod = Assert.Single(typeof(Inara).GetMethods(BindingFlags.Public | BindingFlags.Instance),
+            method => method.Name == "onJournalEntry");
+        Assert.Equal([typeof(JObject)], journalMethod.GetParameters().Select(parameter => parameter.ParameterType));
+    }
+
+    [Fact]
+    public void ApiKeyPresenceIsPerCommanderOptInAndDevelopmentModeIsHardCoded()
     {
         var settings = new Settings();
-        var loadedExistingSettings = new JObject().ToObject<Settings>();
-        var manuallyDisabled = JObject.Parse("{ 'inaraDeveloperTestMode': false }").ToObject<Settings>();
+        var credentials = new InaraCredentials("Test Commander", "F123456", "personal-key");
+        var payload = InaraPayloadBuilder.Build("2.0.95.0", credentials,
+            [new InaraEvent("getCommanderProfile", "2026-07-28T12:00:00Z", new JObject())]);
 
-        Assert.False(settings.inaraUpload);
-        Assert.True(settings.inaraDeveloperTestMode);
-        Assert.False(loadedExistingSettings!.inaraUpload);
-        Assert.True(loadedExistingSettings.inaraDeveloperTestMode);
-        Assert.False(manuallyDisabled!.inaraDeveloperTestMode);
-        var serialized = JObject.FromObject(manuallyDisabled);
-        Assert.NotNull(serialized["inaraDeveloperTestMode"]);
-        Assert.False(serialized.Value<bool>("inaraDeveloperTestMode"));
+        Assert.Null(typeof(Settings).GetField("inaraUpload"));
+        Assert.Null(typeof(Settings).GetField("inaraDeveloperTestMode"));
+        Assert.True(payload.SelectToken("header.isBeingDeveloped")!.Value<bool>());
+        Assert.DoesNotContain(JObject.FromObject(settings).Properties(),
+            property => property.Name.StartsWith("inara", StringComparison.OrdinalIgnoreCase));
     }
 
     [Fact]
@@ -40,16 +56,488 @@ public sealed class InaraTests
     {
         Assert.Null(typeof(Settings).GetField("inaraApiKey"));
         Assert.NotNull(typeof(SrvSurvey.game.CommanderSettings).GetField("inaraApiKey"));
-        Assert.NotNull(typeof(SrvSurvey.game.CommanderSettings).GetField("inaraCommanderName"));
+        Assert.Null(typeof(SrvSurvey.game.CommanderSettings).GetField("inaraCommanderName"));
+    }
+
+    [Fact]
+    public void SettingsEditStaysPinnedToTheCapturedCommanderProfile()
+    {
+        var alpha = commander("Commander Alpha", "F-ALPHA", "alpha-key");
+        var beta = commander("Commander Beta", "F-BETA", "beta-key");
+
+        FormInaraIntegration.ApplyApiKey(alpha, " replacement-alpha-key ");
+
+        Assert.Equal("replacement-alpha-key", alpha.inaraApiKey);
+        Assert.Equal("beta-key", beta.inaraApiKey);
+        Assert.Equal("Commander Alpha", alpha.commander);
+        Assert.Equal("F-ALPHA", alpha.fid);
+
+        FormInaraIntegration.ApplyApiKey(alpha, null);
+        Assert.Null(alpha.inaraApiKey);
+        Assert.Equal("beta-key", beta.inaraApiKey);
+    }
+
+    [Fact]
+    public void SessionCredentialsStayBoundToTheCapturedCommanderProfile()
+    {
+        var alpha = new SrvSurvey.game.CommanderSettings
+        {
+            commander = "Commander Alpha",
+            fid = "F-ALPHA",
+            inaraApiKey = "alpha-key",
+        };
+        var beta = new SrvSurvey.game.CommanderSettings
+        {
+            commander = "Commander Beta",
+            fid = "F-BETA",
+            inaraApiKey = "beta-key",
+        };
+
+        var session = Assert.IsType<InaraSession>(InaraSession.Create(alpha, "4.0.0.1900", true));
+        beta.inaraApiKey = "changed-beta-key";
+
+        Assert.Equal(new InaraCredentials("Commander Alpha", "F-ALPHA", "alpha-key"), session.GetCredentials());
+        Assert.Equal("4.0.0.1900", session.GameVersion);
+
+        alpha.inaraApiKey = "replacement-alpha-key";
+        Assert.Equal(new InaraCredentials("Commander Alpha", "F-ALPHA", "replacement-alpha-key"), session.GetCredentials());
     }
 
     [Theory]
-    [InlineData(null, "Journal Commander", "Journal Commander")]
-    [InlineData("", "Journal Commander", "Journal Commander")]
-    [InlineData("  Corrected Commander  ", "Journal Commander", "Corrected Commander")]
-    public void CommanderNameCanBeOverriddenPerCommander(string? configuredName, string journalName, string expected)
+    [InlineData(null, "F-ALPHA")]
+    [InlineData("", "F-ALPHA")]
+    [InlineData("Commander Alpha", null)]
+    [InlineData("Commander Alpha", "")]
+    public void MissingSessionIdentityCannotStartUploader(string? name, string? fid)
     {
-        Assert.Equal(expected, Inara.resolveCommanderName(configuredName, journalName));
+        var settings = new CommanderSettings
+        {
+            commander = name!,
+            fid = fid!,
+            inaraApiKey = "alpha-key",
+        };
+
+        Assert.Null(InaraSession.Create(settings, "4.0.0.1900", true));
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("   ")]
+    public void MissingGameVersionCannotStartUploader(string? gameVersion)
+    {
+        var settings = commander("Commander Alpha", "F-ALPHA", "alpha-key");
+
+        Assert.Null(InaraSession.Create(settings, gameVersion, true));
+    }
+
+    [Fact]
+    public void KeyReplacementDiscardsEventsQueuedUnderTheOldKey()
+    {
+        var settings = new CommanderSettings
+        {
+            commander = "Commander Alpha",
+            fid = "F-ALPHA",
+            inaraApiKey = "alpha-key-1",
+        };
+        var session = Assert.IsType<InaraSession>(InaraSession.Create(settings, "4.0.0.1900", true));
+        var queue = new InaraEventQueue();
+        queue.Enqueue(session.GetCredentials()!,
+            [new InaraEvent("addCommanderTravelFSDJump", "2026-07-28T12:00:00Z", new JObject())]);
+
+        settings.inaraApiKey = "alpha-key-2";
+        var pending = queue.TakeCurrent(session, out var discarded);
+
+        Assert.Empty(pending);
+        Assert.Equal(1, discarded);
+    }
+
+    [Fact]
+    public void ClearingAKeyDiscardsAllPendingEventsForThatSession()
+    {
+        var settings = new CommanderSettings
+        {
+            commander = "Commander Alpha",
+            fid = "F-ALPHA",
+            inaraApiKey = "alpha-key",
+        };
+        var session = Assert.IsType<InaraSession>(InaraSession.Create(settings, "4.0.0.1900", true));
+        var queue = new InaraEventQueue();
+        queue.Enqueue(session.GetCredentials()!,
+            [new InaraEvent("setCommanderCredits", "2026-07-28T12:00:00Z", new JObject())]);
+
+        settings.inaraApiKey = null;
+        var pending = queue.TakeCurrent(session, out var discarded);
+
+        Assert.Empty(pending);
+        Assert.Equal(1, discarded);
+        Assert.Equal(0, queue.Count);
+    }
+
+    [Fact]
+    public void AnotherCommanderSessionCannotTakeQueuedEvents()
+    {
+        var alphaSettings = new CommanderSettings
+        {
+            commander = "Commander Alpha",
+            fid = "F-ALPHA",
+            inaraApiKey = "alpha-key",
+        };
+        var betaSettings = new CommanderSettings
+        {
+            commander = "Commander Beta",
+            fid = "F-BETA",
+            inaraApiKey = "beta-key",
+        };
+        var alpha = Assert.IsType<InaraSession>(InaraSession.Create(alphaSettings, "4.0.0.1900", true));
+        var beta = Assert.IsType<InaraSession>(InaraSession.Create(betaSettings, "4.0.0.1900", true));
+        var queue = new InaraEventQueue();
+        queue.Enqueue(alpha.GetCredentials()!,
+            [new InaraEvent("setCommanderCredits", "2026-07-28T12:00:00Z", new JObject())]);
+
+        var pending = queue.TakeCurrent(beta, out var discarded);
+
+        Assert.Empty(pending);
+        Assert.Equal(1, discarded);
+    }
+
+    [Fact]
+    public async Task SequentialSessionInstancesNeverCrossCommanderPayloads()
+    {
+        var handler = new RecordingHandler((request, _) => successfulResponse(request));
+        var alphaSettings = commander("Commander Alpha", "F-ALPHA", "alpha-key");
+        var betaSettings = commander("Commander Beta", "F-BETA", "beta-key");
+
+        using (var alpha = Inara.CreateForTests(
+            InaraSession.Create(alphaSettings, "4.0.0.1900", true)!, handler, context with
+            {
+                Commander = "Commander Alpha",
+                FrontierId = "F-ALPHA",
+            }))
+        {
+            alpha.onJournalEntry(loadGame("Commander Alpha", "F-ALPHA", 1000));
+            await alpha.flushAsync();
+        }
+
+        using (var beta = Inara.CreateForTests(
+            InaraSession.Create(betaSettings, "4.0.0.1900", true)!, handler, context with
+            {
+                Commander = "Commander Beta",
+                FrontierId = "F-BETA",
+            }))
+        {
+            beta.onJournalEntry(loadGame("Commander Beta", "F-BETA", 2000));
+            await beta.flushAsync();
+        }
+
+        Assert.Equal(2, handler.Bodies.Count);
+        assertPayloadIdentity(handler.Bodies[0], "Commander Alpha", "F-ALPHA", "alpha-key");
+        assertPayloadIdentity(handler.Bodies[1], "Commander Beta", "F-BETA", "beta-key");
+        var betaPayload = handler.Bodies[1].ToString(Formatting.None);
+        Assert.DoesNotContain("Commander Alpha", betaPayload, StringComparison.Ordinal);
+        Assert.DoesNotContain("alpha-key", betaPayload, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task AddingAKeyMidSessionUploadsOnlyTheCapturedCommanderWithWarmedState()
+    {
+        var handler = new RecordingHandler((request, _) => successfulResponse(request));
+        var settings = commander("Commander Alpha", "F-ALPHA", "");
+        using var inara = Inara.CreateForTests(
+            InaraSession.Create(settings, "4.0.0.1900", true)!, handler, context with
+            {
+                Commander = "Commander Alpha",
+                FrontierId = "F-ALPHA",
+            });
+
+        inara.onJournalEntry(loadGame("Commander Alpha", "F-ALPHA", 1234));
+        Assert.Empty(handler.Bodies);
+
+        settings.inaraApiKey = "new-alpha-key";
+        inara.onJournalEntry(new JObject
+        {
+            ["timestamp"] = "2026-07-28T12:01:00Z",
+            ["event"] = "Music",
+            ["MusicTrack"] = "MainMenu",
+        });
+        await inara.flushAsync();
+
+        var payload = Assert.Single(handler.Bodies);
+        assertPayloadIdentity(payload, "Commander Alpha", "F-ALPHA", "new-alpha-key");
+        Assert.Contains(Assert.IsType<JArray>(payload["events"]),
+            entry => entry?["eventName"]?.Value<string>() == "setCommanderCredits"
+                && entry.SelectToken("eventData.commanderCredits")?.Value<long>() == 1234);
+    }
+
+    [Fact]
+    public async Task ReplacingAKeyNeverSendsOldQueuedEventsUnderTheNewKey()
+    {
+        var handler = new RecordingHandler((request, _) => successfulResponse(request));
+        var settings = commander("Commander Alpha", "F-ALPHA", "alpha-key-1");
+        using var inara = Inara.CreateForTests(
+            InaraSession.Create(settings, "4.0.0.1900", true)!, handler, context);
+        inara.onJournalEntry(loadGame("Commander Alpha", "F-ALPHA", 1000));
+
+        settings.inaraApiKey = "alpha-key-2";
+        inara.onApiKeyChanged();
+        inara.onJournalEntry(new JObject
+        {
+            ["timestamp"] = "2026-07-28T12:02:00Z",
+            ["event"] = "FSDJump",
+            ["StarSystem"] = "Achenar",
+            ["StarPos"] = new JArray(1, 2, 3),
+            ["JumpDist"] = 8.5,
+        });
+        await inara.flushAsync();
+
+        var payload = Assert.Single(handler.Bodies);
+        assertPayloadIdentity(payload, "Commander Alpha", "F-ALPHA", "alpha-key-2");
+        var serialized = payload.ToString(Formatting.None);
+        Assert.DoesNotContain("alpha-key-1", serialized, StringComparison.Ordinal);
+        Assert.DoesNotContain("setCommanderCredits", serialized, StringComparison.Ordinal);
+        Assert.Contains("addCommanderTravelFSDJump", serialized, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task ClearingAKeyDiscardsPendingEventsAndSkipsFinalUpload()
+    {
+        var handler = new RecordingHandler((request, _) => successfulResponse(request));
+        var settings = commander("Commander Alpha", "F-ALPHA", "alpha-key");
+        using var inara = Inara.CreateForTests(
+            InaraSession.Create(settings, "4.0.0.1900", true)!, handler, context);
+        inara.onJournalEntry(loadGame("Commander Alpha", "F-ALPHA", 1000));
+
+        settings.inaraApiKey = null;
+        inara.onApiKeyChanged();
+        await inara.StopAsync(InaraStopReason.KeyCleared);
+
+        Assert.Empty(handler.Bodies);
+    }
+
+    [Fact]
+    public async Task NormalStopFlushesOneFinalCreditReportBeforeDisposingTransport()
+    {
+        var handler = new RecordingHandler((request, _) => successfulResponse(request));
+        var settings = commander("Commander Alpha", "F-ALPHA", "alpha-key");
+        var inara = Inara.CreateForTests(
+            InaraSession.Create(settings, "4.0.0.1900", true)!, handler, context,
+            disposeHandler: true);
+        inara.onJournalEntry(loadGame("Commander Alpha", "F-ALPHA", 1000));
+        await inara.flushAsync();
+        inara.onJournalEntry(new JObject
+        {
+            ["timestamp"] = "2026-07-28T12:03:00Z",
+            ["event"] = "BuyAmmo",
+            ["Cost"] = 50,
+        });
+
+        var stopping = inara.StopAsync(InaraStopReason.Normal);
+        await stopping;
+        await inara.StopAsync(InaraStopReason.Normal);
+
+        Assert.Equal(2, handler.Bodies.Count);
+        var finalEvents = Assert.IsType<JArray>(handler.Bodies[1]["events"]);
+        var credits = Assert.Single(finalEvents,
+            entry => entry?["eventName"]?.Value<string>() == "setCommanderCredits");
+        Assert.Equal(950, credits.SelectToken("eventData.commanderCredits")!.Value<long>());
+        Assert.True(handler.IsDisposed);
+    }
+
+    [Fact]
+    public async Task StopWaitsForAnActiveSendAndDoesNotDuplicateFinalData()
+    {
+        var requestStarted = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var releaseRequest = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var handler = new RecordingHandler(async (request, _) =>
+        {
+            requestStarted.TrySetResult();
+            await releaseRequest.Task;
+            return await successfulResponse(request);
+        });
+        var settings = commander("Commander Alpha", "F-ALPHA", "alpha-key");
+        var inara = Inara.CreateForTests(
+            InaraSession.Create(settings, "4.0.0.1900", true)!, handler, context);
+        inara.onJournalEntry(loadGame("Commander Alpha", "F-ALPHA", 1000));
+
+        var activeSend = inara.flushAsync();
+        await requestStarted.Task;
+        inara.onJournalEntry(new JObject
+        {
+            ["timestamp"] = "2026-07-28T12:04:00Z",
+            ["event"] = "Shutdown",
+        });
+        var stopping = inara.StopAsync(InaraStopReason.Normal);
+        var stoppingAgain = inara.StopAsync(InaraStopReason.Normal);
+
+        Assert.False(stopping.IsCompleted);
+        Assert.Same(stopping, stoppingAgain);
+        releaseRequest.TrySetResult();
+        await Task.WhenAll(activeSend, stopping);
+
+        Assert.Single(handler.Bodies);
+        await inara.StopAsync(InaraStopReason.Normal);
+        Assert.Single(handler.Bodies);
+    }
+
+    [Fact]
+    public async Task EmptyAndMalformedResponsesRetainTheBatchForRetry()
+    {
+        var handler = new RecordingHandler((request, requestNumber) => requestNumber switch
+        {
+            1 => Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) }),
+            2 => Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{ 'header': { 'eventStatus': 200 } }") }),
+            3 => Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent("{ 'header': { 'eventStatus': 200 }, 'events': [ 'not-an-event-result' ] }")
+            }),
+            _ => successfulResponse(request),
+        });
+        var settings = commander("Commander Alpha", "F-ALPHA", "alpha-key");
+        using var inara = Inara.CreateForTests(
+            InaraSession.Create(settings, "4.0.0.1900", true)!, handler, context);
+        inara.onJournalEntry(loadGame("Commander Alpha", "F-ALPHA", 1000));
+
+        await inara.flushAsync();
+        await inara.flushAsync();
+        await inara.flushAsync();
+        await inara.flushAsync();
+
+        Assert.Equal(4, handler.Bodies.Count);
+        Assert.Equal(
+            handler.Bodies[0].SelectToken("events")!.ToString(),
+            handler.Bodies[3].SelectToken("events")!.ToString());
+    }
+
+    [Fact]
+    public async Task UploadDiagnosticsIncludeSafeStatusWithoutLeakingCredentials()
+    {
+        var logs = new List<string>();
+        var handler = new RecordingHandler((request, requestNumber) => requestNumber == 1
+            ? Task.FromResult(new HttpResponseMessage(HttpStatusCode.TooManyRequests)
+            {
+                ReasonPhrase = "Back off now",
+            })
+            : successfulResponse(request));
+        var settings = commander("Commander Alpha", "F-ALPHA", "secret-alpha-key");
+        using var inara = Inara.CreateForTests(
+            InaraSession.Create(settings, "4.0.0.1900", true)!, handler, context, logs.Add);
+        inara.onJournalEntry(loadGame("Commander Alpha", "F-ALPHA", 1000));
+
+        await inara.flushAsync();
+        await inara.flushAsync();
+
+        var log = Assert.Single(logs, entry => entry.Contains("HTTP 429", StringComparison.Ordinal));
+        Assert.Contains("Back off now", log, StringComparison.Ordinal);
+        Assert.DoesNotContain("secret-alpha-key", string.Join(Environment.NewLine, logs), StringComparison.Ordinal);
+        Assert.Equal(2, handler.Bodies.Count);
+    }
+
+    [Fact]
+    public void RetryBackoffIncreasesAndRemainsBoundedWithJitter()
+    {
+        Assert.Equal(TimeSpan.FromSeconds(35), Inara.CalculateRetryDelay(1, 0));
+        Assert.Equal(TimeSpan.FromSeconds(70), Inara.CalculateRetryDelay(2, 0));
+        Assert.Equal(TimeSpan.FromSeconds(305), Inara.CalculateRetryDelay(99, 10_000));
+    }
+
+    [Fact]
+    public async Task RejectedEventDiagnosticsAreNamedSanitizedAndTruncated()
+    {
+        var logs = new List<string>();
+        var unsafeText = "rejected\r\n" + new string('x', 400);
+        var handler = new RecordingHandler(async (request, _) =>
+        {
+            var requestBody = JObject.Parse(await request.Content!.ReadAsStringAsync());
+            var requestEvents = Assert.IsType<JArray>(requestBody["events"]);
+            var responseEvents = new JArray(requestEvents.Select((_, index) => index == 0
+                ? new JObject { ["eventStatus"] = 500, ["eventStatusText"] = unsafeText }
+                : new JObject { ["eventStatus"] = 200 }));
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(new JObject
+                {
+                    ["header"] = new JObject { ["eventStatus"] = 200 },
+                    ["events"] = responseEvents,
+                }.ToString(), Encoding.UTF8, "application/json"),
+            };
+        });
+        var settings = commander("Commander Alpha", "F-ALPHA", "secret-alpha-key");
+        using var inara = Inara.CreateForTests(
+            InaraSession.Create(settings, "4.0.0.1900", true)!, handler, context, logs.Add);
+        inara.onJournalEntry(loadGame("Commander Alpha", "F-ALPHA", 1000));
+
+        await inara.flushAsync();
+
+        var rejection = Assert.Single(logs,
+            entry => entry.Contains("Inara rejected 1 event", StringComparison.Ordinal));
+        Assert.Contains("getCommanderProfile", rejection, StringComparison.Ordinal);
+        Assert.Contains("rejected  ", rejection, StringComparison.Ordinal);
+        Assert.DoesNotContain('\r', rejection);
+        Assert.DoesNotContain('\n', rejection);
+        Assert.DoesNotContain(new string('x', 301), rejection, StringComparison.Ordinal);
+        Assert.DoesNotContain("secret-alpha-key", string.Join(Environment.NewLine, logs), StringComparison.Ordinal);
+    }
+
+    private static CommanderSettings commander(string name, string fid, string key) => new()
+    {
+        commander = name,
+        fid = fid,
+        inaraApiKey = key,
+    };
+
+    private static JObject loadGame(string name, string fid, long credits) => new()
+    {
+        ["timestamp"] = "2026-07-28T12:00:00Z",
+        ["event"] = "LoadGame",
+        ["Commander"] = name,
+        ["FID"] = fid,
+        ["Credits"] = credits,
+        ["Loan"] = 0,
+    };
+
+    private static async Task<HttpResponseMessage> successfulResponse(HttpRequestMessage request)
+    {
+        var requestBody = JObject.Parse(await request.Content!.ReadAsStringAsync());
+        var eventCount = Assert.IsType<JArray>(requestBody["events"]).Count;
+        var response = new JObject
+        {
+            ["header"] = new JObject { ["eventStatus"] = 200 },
+            ["events"] = new JArray(Enumerable.Range(0, eventCount)
+                .Select(_ => new JObject { ["eventStatus"] = 200 })),
+        };
+        return new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(response.ToString(), Encoding.UTF8, "application/json"),
+        };
+    }
+
+    private static void assertPayloadIdentity(JObject payload, string name, string fid, string key)
+    {
+        Assert.Equal(name, payload.SelectToken("header.commanderName")!.Value<string>());
+        Assert.Equal(fid, payload.SelectToken("header.commanderFrontierID")!.Value<string>());
+        Assert.Equal(key, payload.SelectToken("header.APIkey")!.Value<string>());
+    }
+
+    private sealed class RecordingHandler(
+        Func<HttpRequestMessage, int, Task<HttpResponseMessage>> respond) : HttpMessageHandler
+    {
+        public List<JObject> Bodies { get; } = [];
+        public bool IsDisposed { get; private set; }
+
+        protected override async Task<HttpResponseMessage> SendAsync(
+            HttpRequestMessage request,
+            CancellationToken cancellationToken)
+        {
+            var body = JObject.Parse(await request.Content!.ReadAsStringAsync(cancellationToken));
+            Bodies.Add(body);
+            return await respond(request, Bodies.Count);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            IsDisposed = true;
+            base.Dispose(disposing);
+        }
     }
 
     [Fact]
@@ -58,14 +546,14 @@ public sealed class InaraTests
         var credentials = new InaraCredentials("Test Commander", "F123456", "personal-key");
         var events = new[] { new InaraEvent("getCommanderProfile", "2026-07-28T12:00:00Z", new JObject()) };
 
-        var payload = InaraPayloadBuilder.Build("2.0.95.0", credentials, events, false);
+        var payload = InaraPayloadBuilder.Build("2.0.95.0", credentials, events);
         var header = Assert.IsType<JObject>(payload["header"]);
 
         Assert.Equal("SrvSurvey", header.Value<string>("appName"));
         Assert.Equal("personal-key", header.Value<string>("APIkey"));
         Assert.Equal("Test Commander", header.Value<string>("commanderName"));
         Assert.Equal("F123456", header.Value<string>("commanderFrontierID"));
-        Assert.False(header.Value<bool>("isBeingDeveloped"));
+        Assert.True(header.Value<bool>("isBeingDeveloped"));
         Assert.Null(header["applicationKey"]);
         Assert.Null(header["applicationAccessToken"]);
     }
@@ -83,92 +571,34 @@ public sealed class InaraTests
         Assert.Contains("F123456", credentials.ToString());
     }
 
-    [Fact]
-    public void DeveloperTestModeIsSentOnlyWhenEnabled()
-    {
-        var credentials = new InaraCredentials("Test Commander", "F123456", "personal-key");
-        var events = new[] { new InaraEvent("getCommanderProfile", "2026-07-28T12:00:00Z", new JObject()) };
-
-        var payload = InaraPayloadBuilder.Build("2.0.95.0", credentials, events, true);
-        var header = Assert.IsType<JObject>(payload["header"]);
-
-        Assert.True(header.Value<bool>("isBeingDeveloped"));
-    }
-
     [Theory]
-    [InlineData(true, "key", true, false, false, true)]
-    [InlineData(false, "key", true, false, false, false)]
-    [InlineData(true, null, true, false, false, false)]
-    [InlineData(true, "key", false, false, false, false)]
-    [InlineData(true, "key", true, true, false, false)]
-    [InlineData(true, "key", true, false, true, false)]
-    public void UploadPolicyRequiresExplicitSafeConditions(
-        bool optedIn,
+    [InlineData("key", true, false, false, true)]
+    [InlineData(null, true, false, false, false)]
+    [InlineData("key", false, false, false, false)]
+    [InlineData("key", true, true, false, false)]
+    [InlineData("key", true, false, true, false)]
+    public void UploadPolicyRequiresAKeyAndSafeSessionConditions(
         string? apiKey,
         bool live,
         bool beta,
         bool multicrew,
         bool expected)
     {
-        Assert.Equal(expected, Inara.CanUpload(optedIn, apiKey, live, beta, multicrew));
+        Assert.Equal(expected, Inara.CanUpload(apiKey, live, beta, multicrew));
     }
 
     [Theory]
-    [InlineData(true, "key", true, false, true)]
-    [InlineData(false, "key", true, false, false)]
-    [InlineData(true, null, true, false, false)]
-    [InlineData(true, "key", false, false, false)]
-    [InlineData(true, "key", true, true, false)]
+    [InlineData("key", true, false, true)]
+    [InlineData(null, true, false, false)]
+    [InlineData("key", false, false, false)]
+    [InlineData("key", true, true, false)]
     public void UploadPreparationSkipsInactiveIntegrations(
-        bool optedIn,
         string? apiKey,
         bool live,
         bool beta,
         bool expected)
     {
-        Assert.Equal(expected, Inara.CanPrepareUpload(optedIn, apiKey, live, beta));
-    }
-
-    [Fact]
-    public void OptionalIntegrationFailuresAreContained()
-    {
-        var reported = false;
-
-        var succeeded = Inara.RunIsolated(
-            () => throw new InvalidOperationException("test failure"),
-            _ =>
-            {
-                reported = true;
-                throw new Exception("diagnostic failure");
-            });
-
-        Assert.False(succeeded);
-        Assert.True(reported);
-    }
-
-    [Fact]
-    public void KnownMultiboxStateAvoidsAnotherProcessEnumeration()
-    {
-        var enumerated = false;
-
-        var multiboxing = Inara.DetectMultiboxing(true, () =>
-        {
-            enumerated = true;
-            return 1;
-        });
-
-        Assert.True(multiboxing);
-        Assert.False(enumerated);
-    }
-
-    [Fact]
-    public void FailedProcessDetectionUsesConservativeSuppression()
-    {
-        var multiboxing = Inara.DetectMultiboxing(
-            false,
-            () => throw new InvalidOperationException("process query failed"));
-
-        Assert.True(multiboxing);
+        Assert.Equal(expected, Inara.CanPrepareUpload(apiKey, live, beta));
     }
 
     [Theory]
@@ -534,8 +964,7 @@ public sealed class InaraTests
     public void StartupReplaySeedsCurrentStateWithoutUploadingJournalHistory()
     {
         using var reader = new StringReader("""
-            { "timestamp": "2026-07-28T11:00:00Z", "event": "LoadGame", "Commander": "Old Commander", "Credits": 10 }
-            { "timestamp": "2026-07-28T11:05:00Z", "event": "FSDJump", "StarSystem": "Old System", "StarPos": [0, 0, 0] }
+            { "timestamp": "2026-07-28T11:59:59Z", "event": "Fileheader", "gameversion": "4.0.0.1900", "build": "r123" }
             { "timestamp": "2026-07-28T12:00:00Z", "event": "LoadGame", "Commander": "Test Commander", "Credits": 1000, "Loan": 25 }
             { "timestamp": "2026-07-28T12:00:01Z", "event": "Cargo", "Vessel": "Ship", "Inventory": [{ "Name": "tea", "Count": 2 }] }
             { "timestamp": "2026-07-28T12:00:02Z", "event": "Materials", "Raw": [{ "Name": "iron", "Count": 3 }], "Manufactured": [], "Encoded": [] }
@@ -545,8 +974,9 @@ public sealed class InaraTests
         var entries = Inara.ReadCurrentSession(reader);
         var mapper = new InaraEventMapper();
 
-        Assert.Equal(5, entries.Count);
-        Assert.Equal("Test Commander", entries[0].Value<string>("Commander"));
+        Assert.Equal(6, entries.Count);
+        Assert.Equal("Fileheader", entries[0].Value<string>("event"));
+        Assert.Equal("Test Commander", entries[1].Value<string>("Commander"));
 
         var seededCount = Inara.SeedState(
             mapper,
@@ -557,7 +987,7 @@ public sealed class InaraTests
             { "timestamp": "2026-07-28T12:12:00Z", "event": "Music", "MusicTrack": "Exploration" }
             """), context, true);
 
-        Assert.Equal(5, seededCount);
+        Assert.Equal(6, seededCount);
         Assert.DoesNotContain(firstLiveEvents, item => item.Name.StartsWith("addCommanderTravel"));
 
         var credits = Assert.Single(firstLiveEvents, item => item.Name == "setCommanderCredits");
@@ -573,6 +1003,22 @@ public sealed class InaraTests
             firstLiveEvents,
             item => item.Name == "setCommanderInventoryMaterials").Data);
         Assert.Equal(3, Assert.Single(materials.OfType<JObject>()).Value<int>("itemCount"));
+    }
+
+    [Fact]
+    public void StartupReplayCountsMalformedLinesWithoutRetainingTheirContents()
+    {
+        using var reader = new StringReader("""
+            { "timestamp": "2026-07-28T11:59:59Z", "event": "Fileheader" }
+            this is not journal JSON and must not be logged
+
+            { "timestamp": "2026-07-28T12:00:00Z", "event": "LoadGame" }
+            """);
+
+        var entries = Inara.ReadCurrentSession(reader, out var malformedCount);
+
+        Assert.Equal(2, entries.Count);
+        Assert.Equal(1, malformedCount);
     }
 
     [Fact]

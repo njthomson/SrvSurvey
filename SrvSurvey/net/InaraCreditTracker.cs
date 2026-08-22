@@ -1,6 +1,8 @@
 using Newtonsoft.Json.Linq;
 
-// Behavioral reference: EDMarketConnector's monitor.py and plugins/inara.py.
+// Behavioral references:
+// https://github.com/EDCD/EDMarketConnector/blob/2b6a0ce1ee3ba60c21f3f4e9fa093046da8825e4/monitor.py
+// https://github.com/EDCD/EDMarketConnector/blob/2b6a0ce1ee3ba60c21f3f4e9fa093046da8825e4/plugins/inara.py
 // Copyright (c) EDCD, licensed under GNU GPL v2 or later.
 // API guidance: https://inara.cz/elite/inara-api-docs/
 
