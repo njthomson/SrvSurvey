@@ -52,9 +52,8 @@ namespace SrvSurvey.net
             InaraSession session,
             HttpMessageHandler handler,
             InaraContext context,
-            Action<string>? log = null,
-            bool disposeHandler = false) =>
-            new(null, session, new HttpClient(handler, disposeHandler)
+            Action<string>? log = null) =>
+            new(null, session, new HttpClient(handler, true)
             {
                 Timeout = TimeSpan.FromSeconds(20),
             }, context, log ?? (_ => { }));
@@ -62,7 +61,6 @@ namespace SrvSurvey.net
         public static Inara? Create(Game game)
         {
             HttpClient? client = null;
-            Inara? inara = null;
             try
             {
                 var filepath = game.journals?.filepath;
@@ -77,13 +75,15 @@ namespace SrvSurvey.net
                 if (session == null)
                     throw new InvalidOperationException("The initialized game has no commander name, Frontier ID, or game version.");
 
-                client = new HttpClient(Util.getResilienceHandler())
+                // Inara owns retry scheduling. Retrying POST requests in the shared
+                // transport pipeline as well could submit the same batch twice.
+                client = new HttpClient()
                 {
                     Timeout = TimeSpan.FromSeconds(20),
                 };
                 client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
 
-                inara = new Inara(game, session, client);
+                var inara = new Inara(game, session, client);
                 inara.seedCurrentSession(filepath);
                 inara.timer = new System.Threading.Timer(
                     _ => inara.sendPendingAsync().justDoIt(),
@@ -94,8 +94,6 @@ namespace SrvSurvey.net
             }
             catch (Exception ex)
             {
-                try { inara?.StopAsync(InaraStopReason.KeyCleared).GetAwaiter().GetResult(); }
-                catch (Exception cleanupEx) { Game.log($"Inara initialization cleanup failed:\r\n{cleanupEx}"); }
                 try { client?.Dispose(); }
                 catch (Exception cleanupEx) { Game.log($"Inara HTTP cleanup failed:\r\n{cleanupEx}"); }
                 Game.log($"Inara initialization was disabled without affecting SrvSurvey:\r\n{ex}");
@@ -162,7 +160,7 @@ namespace SrvSurvey.net
         public void onApiKeyChanged()
         {
             resetRetryDelay();
-            var discarded = queue.DiscardNotCurrent(session);
+            var discarded = queue.DiscardExcept(session.GetCredentials()?.ApiKey);
             if (discarded > 0)
                 log($"Inara discarded {discarded} queued event(s) after the commander API key changed or was cleared.");
         }
@@ -188,7 +186,7 @@ namespace SrvSurvey.net
             var events = mapper.Process(raw, createContext(!multiboxing), canCollect);
             if (credentials != null && events.Count > 0)
             {
-                queue.Enqueue(credentials, events);
+                queue.Enqueue(credentials.ApiKey, events);
                 log($"Inara queued {events.Count} event(s): {string.Join(", ", events.Select(e => e.Name).Distinct())}");
             }
 
@@ -374,108 +372,109 @@ namespace SrvSurvey.net
 
         private async Task sendPendingCoreAsync()
         {
-            var pending = queue.TakeCurrent(session, out var discarded);
+            var credentials = session.GetCredentials();
+            var batch = queue.TakeFor(credentials?.ApiKey, out var discarded);
             if (discarded > 0)
                 log($"Inara discarded {discarded} queued event(s) after the commander API key changed or was cleared.");
-            if (pending.Count == 0) return;
+            if (batch.Count == 0 || credentials == null) return;
 
-            foreach (var group in pending.GroupBy(item => item.Credentials))
+            if (session.GetCredentials() != credentials)
             {
-                var batch = group.ToList();
-                if (!session.Matches(group.Key))
-                {
-                    log($"Inara discarded {batch.Count} queued event(s) after the commander API key changed.");
-                    continue;
-                }
+                log($"Inara discarded {batch.Count} queued event(s) after the commander API key changed.");
+                return;
+            }
 
-                try
-                {
-                    var payload = InaraPayloadBuilder.Build(
-                        Program.releaseVersion,
-                        group.Key,
-                        batch.Select(item => item.Event).ToList());
-                    using var content = new StringContent(payload.ToString(Formatting.None), Encoding.UTF8, "application/json");
-                    using var response = await client.PostAsync(Endpoint, content);
+            try
+            {
+                var payload = InaraPayloadBuilder.Build(
+                    Program.releaseVersion,
+                    credentials,
+                    batch.Select(item => item.Event).ToList());
+                using var content = new StringContent(payload.ToString(Formatting.None), Encoding.UTF8, "application/json");
+                using var response = await client.PostAsync(Endpoint, content);
 
-                    if (isTransient(response.StatusCode))
-                    {
-                        queue.Requeue(batch);
-                        scheduleRetry();
-                        log($"Inara upload deferred after HTTP {(int)response.StatusCode} {response.ReasonPhrase}; {batch.Count} event(s) retained.");
-                        continue;
-                    }
-
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        resetRetryDelay();
-                        log($"Inara rejected {batch.Count} event(s) with HTTP {(int)response.StatusCode} {response.ReasonPhrase}.");
-                        continue;
-                    }
-
-                    var body = await response.Content.ReadAsStringAsync();
-                    if (string.IsNullOrWhiteSpace(body))
-                    {
-                        queue.Requeue(batch);
-                        scheduleRetry();
-                        log($"Inara returned an empty response; {batch.Count} event(s) retained.");
-                        continue;
-                    }
-
-                    var result = JObject.Parse(body);
-                    var headerStatus = result.SelectToken("header.eventStatus")?.Value<int?>();
-                    var responseEvents = result["events"] as JArray;
-                    var responseIsComplete = headerStatus != null
-                        && responseEvents?.Count == batch.Count
-                        && responseEvents.All(token => token is JObject eventResult && eventResult["eventStatus"] != null);
-                    if (!responseIsComplete)
-                    {
-                        queue.Requeue(batch);
-                        scheduleRetry();
-                        log($"Inara returned an incomplete response; {batch.Count} event(s) retained.");
-                        continue;
-                    }
-
-                    resetRetryDelay();
-                    var headerText = safeStatusText(result.SelectToken("header.eventStatusText")?.Value<string>());
-                    if (headerStatus is >= 400)
-                    {
-                        log($"Inara rejected a batch of {batch.Count} event(s) with API status {headerStatus}: {headerText}");
-                        continue;
-                    }
-
-                    var typedEvents = responseEvents!.Cast<JObject>().ToList();
-                    var failedEvents = typedEvents
-                        .Select((eventResult, index) => new
-                        {
-                            index,
-                            status = eventResult.Value<int?>("eventStatus"),
-                            text = safeStatusText(eventResult.Value<string>("eventStatusText")),
-                        })
-                        .Where(item => item.status is >= 400)
-                        .ToList();
-                    if (failedEvents.Count > 0)
-                    {
-                        var failures = failedEvents
-                            .Where(item => item.index < batch.Count)
-                            .Select(item => $"{batch[item.index].Event.Name} ({item.status}: {item.text})")
-                            .Distinct();
-                        log($"Inara rejected {failedEvents.Count} event(s): {string.Join(", ", failures)}.");
-                    }
-                    else
-                    {
-                        log($"Inara accepted {batch.Count} event(s).");
-                    }
-                }
-                catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException or ObjectDisposedException)
+                if (isTransient(response.StatusCode))
                 {
                     queue.Requeue(batch);
                     scheduleRetry();
-                    log($"Inara upload deferred; {batch.Count} event(s) retained:\r\n{ex}");
+                    log($"Inara upload deferred after HTTP {(int)response.StatusCode} {response.ReasonPhrase}; {batch.Count} event(s) retained.");
+                    return;
                 }
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    resetRetryDelay();
+                    log($"Inara rejected {batch.Count} event(s) with HTTP {(int)response.StatusCode} {response.ReasonPhrase}.");
+                    return;
+                }
+
+                var body = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrWhiteSpace(body))
+                {
+                    queue.Requeue(batch);
+                    scheduleRetry();
+                    log($"Inara returned an empty response; {batch.Count} event(s) retained.");
+                    return;
+                }
+
+                var result = JObject.Parse(body);
+                var headerStatus = result.SelectToken("header.eventStatus")?.Value<int?>();
+                var responseEvents = result["events"] as JArray;
+                var responseIsComplete = headerStatus != null
+                    && responseEvents?.Count == batch.Count
+                    && responseEvents.All(token => token is JObject eventResult && eventResult["eventStatus"] != null);
+                if (!responseIsComplete)
+                {
+                    queue.Requeue(batch);
+                    scheduleRetry();
+                    log($"Inara returned an incomplete response; {batch.Count} event(s) retained.");
+                    return;
+                }
+
+                resetRetryDelay();
+                var headerText = safeStatusText(result.SelectToken("header.eventStatusText")?.Value<string>());
+                if (headerStatus is >= 400)
+                {
+                    log($"Inara rejected a batch of {batch.Count} event(s) with API status {headerStatus}: {headerText}");
+                    return;
+                }
+
+                var failedEvents = responseEvents!
+                    .Cast<JObject>()
+                    .Select((eventResult, index) => new
+                    {
+                        index,
+                        status = eventResult.Value<int?>("eventStatus"),
+                        text = safeStatusText(eventResult.Value<string>("eventStatusText")),
+                    })
+                    .Where(item => item.status is >= 400)
+                    .ToList();
+                if (failedEvents.Count > 0)
+                {
+                    const int maxLoggedFailures = 10;
+                    var failures = failedEvents
+                        .Take(maxLoggedFailures)
+                        .Select(item => $"{batch[item.index].Event.Name} ({item.status}: {item.text})")
+                        .Distinct()
+                        .ToList();
+                    var remaining = failedEvents.Count - Math.Min(failedEvents.Count, maxLoggedFailures);
+                    var suffix = remaining > 0 ? $", and {remaining} more" : "";
+                    log($"Inara rejected {failedEvents.Count} event(s): {string.Join(", ", failures)}{suffix}.");
+                }
+                else
+                {
+                    log($"Inara accepted {batch.Count} event(s).");
+                }
+            }
+            catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException or ObjectDisposedException)
+            {
+                queue.Requeue(batch);
+                scheduleRetry();
+                log($"Inara upload deferred; {batch.Count} event(s) retained:\r\n{ex}");
             }
         }
 
-        internal static TimeSpan CalculateRetryDelay(int attempt, int jitterMilliseconds)
+        private static TimeSpan CalculateRetryDelay(int attempt, int jitterMilliseconds)
         {
             var boundedAttempt = Math.Clamp(attempt, 1, 5);
             var baseSeconds = Math.Min(35 * (1 << (boundedAttempt - 1)), 300);
@@ -510,13 +509,13 @@ namespace SrvSurvey.net
             || status == HttpStatusCode.TooManyRequests
             || (int)status >= 500;
 
-        public Task StopAsync(InaraStopReason reason)
+        public Task StopAsync()
         {
             lock (stopSync)
-                return stopTask ??= stopCoreAsync(reason);
+                return stopTask ??= stopCoreAsync();
         }
 
-        private async Task stopCoreAsync(InaraStopReason reason)
+        private async Task stopCoreAsync()
         {
             Volatile.Write(ref stopping, 1);
             timer?.Dispose();
@@ -529,23 +528,20 @@ namespace SrvSurvey.net
             await sendGate.WaitAsync();
             try
             {
-                if (reason == InaraStopReason.Normal)
+                var credentials = session.GetCredentials();
+                if (credentials != null && CanUpload(
+                    credentials.ApiKey,
+                    session.IsLive,
+                    session.IsBeta,
+                    mapper.InMulticrew))
                 {
-                    var credentials = session.GetCredentials();
-                    if (credentials != null && CanUpload(
-                        credentials.ApiKey,
-                        session.IsLive,
-                        session.IsBeta,
-                        mapper.InMulticrew))
+                    var finalEvents = mapper.Process(new JObject
                     {
-                        var finalEvents = mapper.Process(new JObject
-                        {
-                            ["timestamp"] = DateTime.UtcNow.ToString("O"),
-                            ["event"] = "Shutdown",
-                        }, createContext(!Elite.hadManyGameProcs), true);
-                        if (finalEvents.Count > 0)
-                            queue.Enqueue(credentials, finalEvents);
-                    }
+                        ["timestamp"] = DateTime.UtcNow.ToString("O"),
+                        ["event"] = "Shutdown",
+                    }, createContext(!Elite.hadManyGameProcs), true);
+                    if (finalEvents.Count > 0)
+                        queue.Enqueue(credentials.ApiKey, finalEvents);
                 }
 
                 await sendPendingCoreAsync();
@@ -568,7 +564,7 @@ namespace SrvSurvey.net
         {
             try
             {
-                StopAsync(InaraStopReason.Normal).GetAwaiter().GetResult();
+                StopAsync().GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {

@@ -33,8 +33,8 @@ These invariants are mandatory:
 2. `Inara` is created only after `Game` has established its journal, first `Fileheader`, commander settings, commander name, and FID.
 3. The payload commander name is the bound `CommanderSettings.commander`. It is not editable independently and is never taken from global last/current-commander state.
 4. The API key is read only from the same bound `CommanderSettings` object. Each configured key therefore belongs to one FID-keyed commander profile.
-5. Stable session values are captured at creation: commander name, FID, game version, and Live/beta eligibility. The API key remains dynamically readable from the bound settings object because the user may add, replace, or clear it during the session.
-6. Every queued event carries the bound session identity and the API-key snapshot under which it was accepted. A key replacement or clear must discard events associated with the old key; they must never be sent under a replacement key.
+5. Stable session values are captured at creation: commander name, FID, and Live/beta eligibility derived from the validated game version. The API key remains dynamically readable from the bound settings object because the user may add, replace, or clear it during the session.
+6. Every queued event carries the API-key snapshot under which it was accepted. The queue and mapper are already owned by one fixed-identity session, so repeating commander name and FID on each item is unnecessary. A key replacement or clear must discard events associated with the old key; they must never be sent under a replacement key.
 7. Changing commanders disposes and finalizes the old `Game` and its Inara module before constructing the new session module. No queue, mapper, timer, task, or credentials survive that boundary.
 8. No code path may fall back to `Settings.lastCommander`, `Settings.lastFid`, `Game.Commander`, or another active `Game` to resolve upload identity.
 
@@ -49,7 +49,7 @@ internal sealed class Inara : IDisposable
 {
     public static Inara? Create(Game game);
     public void OnJournalEntry(JObject entry);
-    public Task StopAsync(InaraStopReason reason);
+    public Task StopAsync();
     public void Dispose();
 }
 ```
@@ -80,9 +80,9 @@ The established `Game` invariant that the first journal entry is `Fileheader` is
 - Feed eligible live journal entries to the bound mapper even when no API key is configured. This keeps derived state warm if the user opts in during the session.
 - API-key presence is the per-commander opt-in for collecting and uploading mapped events. Remove the global `Settings.inaraUpload` switch.
 - When the key is added, newly mapped uploadable events use that key snapshot.
-- When the key changes, discard queued groups carrying the old key before any send under the new key.
+- When the key changes, discard queued events carrying the old key before any send under the new key.
 - When the key is cleared, stop collection for upload and explicitly discard pending events. Continue warming local mapper state.
-- Grouping by credential snapshot may remain to make mid-session key transitions explicit, although a single Inara instance can never contain multiple commander identities.
+- Drain at most one batch for the current API-key snapshot. A session-scoped queue never needs to group events by commander identity.
 
 ### Commander switch and normal session end
 
@@ -95,6 +95,8 @@ The established `Game` invariant that the first journal entry is `Fileheader` is
 7. Only then allow the old `Game` to finish teardown and a new `Game`/Inara session to be created.
 
 Clearing a key is an explicit opt-out and discards pending data; it is not equivalent to a normal session end. A commander switch must never consult the newly active game while finalizing the old one.
+
+Key clearing is handled when the bound settings change, not through a separate shutdown-reason abstraction. By the time normal shutdown runs, the missing key naturally prevents a final upload.
 
 Use a `SemaphoreSlim`, a tracked active-send task, or an equivalent awaitable mechanism. An `Interlocked` skip flag alone is insufficient because shutdown must wait for an in-progress send and then make an exactly-once final-flush decision.
 
@@ -129,6 +131,7 @@ For the current Inara application-validation phase, set `isBeingDeveloped = true
 ## Transport, retry, and response handling
 
 - Preserve EDMC-compatible constants: a 20-second HTTP request timeout and a 35-second batching cadence. They represent different concerns and intentionally differ.
+- Use one Inara-owned retry policy. The HTTP transport must not automatically retry POST requests underneath the queue because that can duplicate a batch before the module can validate the response.
 - On HTTP failure, log the numeric status and `ReasonPhrase` without logging credential-bearing headers or request bodies.
 - An empty successful response is incomplete according to the Inara integration guidance. Retain the batch and retry after a bounded delay with backoff/jitter.
 - A missing `events` property is malformed/incomplete, not an empty successful event list. It follows the retry/requeue path.
@@ -158,7 +161,7 @@ For the current Inara application-validation phase, set `isBeingDeveloped = true
   - remove active-game/process-form dependencies and `RunIsolated`;
   - implement awaited send/finalization ordering.
 - `SrvSurvey/net/InaraModels.cs`
-  - retain explicit session/key snapshots on queued events as needed;
+  - retain the API-key snapshot on queued events while relying on module ownership for commander identity;
   - make malformed response distinctions testable.
 - `SrvSurvey/net/InaraEventMapper.cs` and `SrvSurvey/net/InaraCreditTracker.cs`
   - keep state instance-owned and ensure reset/replay never crosses a `Game` boundary.

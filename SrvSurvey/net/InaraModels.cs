@@ -7,12 +7,6 @@ using SrvSurvey.game;
 
 namespace SrvSurvey.net
 {
-    internal enum InaraStopReason
-    {
-        Normal,
-        KeyCleared,
-    }
-
     internal sealed record InaraCredentials(string Commander, string FrontierId, string ApiKey)
     {
         public override string ToString() => $"InaraCredentials {{ Commander = {Commander}, FrontierId = {FrontierId} }}";
@@ -29,21 +23,18 @@ namespace SrvSurvey.net
             CommanderSettings settings,
             string commander,
             string frontierId,
-            string gameVersion,
             bool isLive,
             bool isBeta)
         {
             this.settings = settings;
             Commander = commander;
             FrontierId = frontierId;
-            GameVersion = gameVersion;
             IsLive = isLive;
             IsBeta = isBeta;
         }
 
         public string Commander { get; }
         public string FrontierId { get; }
-        public string GameVersion { get; }
         public bool IsLive { get; }
         public bool IsBeta { get; }
 
@@ -62,7 +53,6 @@ namespace SrvSurvey.net
                 settings,
                 commander,
                 frontierId,
-                version,
                 Inara.IsLiveVersion(version, odyssey),
                 Inara.IsBetaVersion(version));
         }
@@ -74,8 +64,6 @@ namespace SrvSurvey.net
                 ? null
                 : new InaraCredentials(Commander, FrontierId, apiKey);
         }
-
-        public bool Matches(InaraCredentials credentials) => GetCredentials() == credentials;
     }
 
     internal sealed record InaraContext(
@@ -96,7 +84,10 @@ namespace SrvSurvey.net
         JToken Data,
         string? ReplaceKey = null);
 
-    internal sealed record InaraQueuedEvent(InaraCredentials Credentials, InaraEvent Event);
+    internal sealed record InaraQueuedEvent(string ApiKey, InaraEvent Event)
+    {
+        public override string ToString() => $"InaraQueuedEvent {{ Event = {Event.Name} }}";
+    }
 
     internal static class InaraPayloadBuilder
     {
@@ -146,7 +137,7 @@ namespace SrvSurvey.net
             }
         }
 
-        public void Enqueue(InaraCredentials credentials, IEnumerable<InaraEvent> events)
+        public void Enqueue(string apiKey, IEnumerable<InaraEvent> events)
         {
             lock (sync)
             {
@@ -155,11 +146,11 @@ namespace SrvSurvey.net
                     if (!string.IsNullOrWhiteSpace(entry.ReplaceKey))
                     {
                         pending.RemoveAll(item =>
-                            item.Credentials == credentials
+                            item.ApiKey == apiKey
                             && item.Event.ReplaceKey == entry.ReplaceKey);
                     }
 
-                    pending.Add(new InaraQueuedEvent(credentials, entry));
+                    pending.Add(new InaraQueuedEvent(apiKey, entry));
                 }
 
                 trimToCapacity();
@@ -182,7 +173,7 @@ namespace SrvSurvey.net
             {
                 var retained = events
                     .Where(item => string.IsNullOrWhiteSpace(item.Event.ReplaceKey)
-                        || !pending.Any(current => current.Credentials == item.Credentials
+                        || !pending.Any(current => current.ApiKey == item.ApiKey
                             && current.Event.ReplaceKey == item.Event.ReplaceKey))
                     .ToList();
                 pending.InsertRange(0, retained);
@@ -190,24 +181,22 @@ namespace SrvSurvey.net
             }
         }
 
-        public List<InaraQueuedEvent> TakeCurrent(InaraSession session, out int discarded)
+        public List<InaraQueuedEvent> TakeFor(string? apiKey, out int discarded)
         {
             lock (sync)
             {
-                var credentials = session.GetCredentials();
-                var current = pending.Where(item => item.Credentials == credentials).ToList();
+                var current = pending.Where(item => item.ApiKey == apiKey).ToList();
                 discarded = pending.Count - current.Count;
                 pending.Clear();
                 return current;
             }
         }
 
-        public int DiscardNotCurrent(InaraSession session)
+        public int DiscardExcept(string? apiKey)
         {
             lock (sync)
             {
-                var credentials = session.GetCredentials();
-                return pending.RemoveAll(item => item.Credentials != credentials);
+                return pending.RemoveAll(item => item.ApiKey != apiKey);
             }
         }
 
