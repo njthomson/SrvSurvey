@@ -28,7 +28,6 @@ namespace SrvSurvey
         {
             // TODO: Load images dynamically - to speed up form initial load times?
             InitializeComponent();
-            initializeEddnControls();
             this.Icon = Icons.spanner;
             comboLang.SelectedIndex = 0;
             comboLang.Items.AddRange(Localize.supportedLanguages.Keys.ToArray());
@@ -104,7 +103,6 @@ namespace SrvSurvey
             // pre-select a tab?
             if (firstTab != null && tabControl.TabPages.ContainsKey(firstTab))
                 tabControl.SelectedTab = tabControl.TabPages[firstTab];
-
         }
 
         /// <summary>
@@ -430,7 +428,6 @@ namespace SrvSurvey
             }
 
             Game.settings.Save();
-            Game.eddn.setEnabled(Game.settings.eddnUploadEnabled);
 
             this.DialogResult = DialogResult.OK;
 
@@ -538,10 +535,7 @@ namespace SrvSurvey
             if (senderCheckbox?.Parent == null) return;
 
             foreach (Control ctrl in senderCheckbox.Parent!.Controls)
-                if (ctrl != senderCheckbox
-                    && ctrl != checkEddnUpload
-                    && ctrl != groupRaven
-                    && !except.Contains(ctrl))
+                if (ctrl != senderCheckbox && !except.Contains(ctrl))
                     ctrl.Enabled = senderCheckbox.Checked;
 
             checkGalMapPlotter.Enabled = senderCheckbox.Checked;
@@ -950,6 +944,11 @@ namespace SrvSurvey
             checkBox48.Enabled = checkColonization.Checked && checkBox49.Checked && checkBox43.Checked;
         }
 
+        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Util.openLink("https://ravencolonial.com/user");
+        }
+
         private void checkEnableVR_CheckedChanged(object sender, EventArgs e)
         {
             btnAdjustVR.Enabled = checkEnableVR.Checked;
@@ -963,6 +962,12 @@ namespace SrvSurvey
         private void btnSetApiKeyRCC_Click(object sender, EventArgs e)
         {
             var child = new FormApiKeyRCC();
+            child.ShowDialog(this);
+        }
+
+        private void btnConfigureEddn_Click(object sender, EventArgs e)
+        {
+            var child = new FormEddnIntegration(Main.form.eddn);
             child.ShowDialog(this);
         }
 

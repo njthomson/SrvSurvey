@@ -49,8 +49,9 @@
             rewrite that queue. Uploads pause, active requests are cancelled, and pending messages remain local while
             multiple Elite Dangerous clients are running, because their shared status and companion files cannot be
             attributed safely. SrvSurvey also rechecks the shared on-disk consent before each network request so an
-            opt-out from another SrvSurvey process stops delivery. Uploads always use EDDN's Live gateway. A
-            developer-only setting can append <code>/test</code> to schema references without changing that gateway.
+            opt-out from another SrvSurvey process stops delivery. Uploads use EDDN's Live gateway with the integration's
+            test schema references until a future SrvSurvey release promotes them. To avoid duplicate submissions,
+            enable EDDN uploads in only one application at a time&mdash;for example, SrvSurvey or EDMC.
         </p>
     </div>
 
