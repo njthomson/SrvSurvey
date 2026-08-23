@@ -17,10 +17,9 @@ namespace SrvSurvey.net
     {
         internal const string Endpoint = "https://inara.cz/inapi/v1/";
         private static readonly TimeSpan sendInterval = TimeSpan.FromSeconds(35);
-        private readonly Game? game;
+        private readonly IInaraGameState game;
         private readonly InaraSession session;
         private readonly HttpClient client;
-        private readonly InaraContext? testContext;
         private readonly Action<string> log;
         private readonly InaraEventMapper mapper = new();
         private readonly InaraEventQueue queue = new();
@@ -35,16 +34,14 @@ namespace SrvSurvey.net
         private int disposed;
 
         private Inara(
-            Game? game,
+            IInaraGameState game,
             InaraSession session,
             HttpClient client,
-            InaraContext? testContext = null,
             Action<string>? log = null)
         {
             this.game = game;
             this.session = session;
             this.client = client;
-            this.testContext = testContext;
             this.log = log ?? (message => Game.log(message));
         }
 
@@ -53,16 +50,19 @@ namespace SrvSurvey.net
             HttpMessageHandler handler,
             InaraContext context,
             Action<string>? log = null) =>
-            new(null, session, new HttpClient(handler, true)
+            new(new TestGameState(context), session, new HttpClient(handler, true)
             {
                 Timeout = TimeSpan.FromSeconds(20),
-            }, context, log ?? (_ => { }));
+            }, log ?? (_ => { }));
 
-        public static Inara? Create(Game game)
+        public static Inara? Create(Game? game)
         {
             HttpClient? client = null;
             try
             {
+                if (game == null)
+                    throw new InvalidOperationException("The initialized game session is missing.");
+
                 var filepath = game.journals?.filepath;
                 if (string.IsNullOrWhiteSpace(filepath))
                     throw new InvalidOperationException("The initialized game has no journal filepath.");
@@ -83,7 +83,7 @@ namespace SrvSurvey.net
                 };
                 client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
 
-                var inara = new Inara(game, session, client);
+                var inara = new Inara(new LiveGameState(game, session), session, client);
                 inara.seedCurrentSession(filepath);
                 inara.timer = new System.Threading.Timer(
                     _ => inara.sendPendingAsync().justDoIt(),
@@ -116,10 +116,7 @@ namespace SrvSurvey.net
                 JArray? cargoInventory = null;
                 if (canPrepareUpload && !multiboxing)
                 {
-                    var cargoFile = game!.cargoFile;
-                    cargoInventory = string.Equals(cargoFile.Vessel, "Ship", StringComparison.OrdinalIgnoreCase)
-                        ? JArray.FromObject(cargoFile.Inventory ?? [])
-                        : null;
+                    cargoInventory = game.GetShipCargoInventory();
                 }
 
                 var seededCount = SeedState(
@@ -250,20 +247,7 @@ namespace SrvSurvey.net
 
         private InaraContext createContext(bool allowSharedStatus)
         {
-            if (testContext != null)
-                return testContext with { IsTaxi = allowSharedStatus ? testContext.IsTaxi : null };
-
-            return new(
-                session.Commander,
-                session.FrontierId,
-                game!.systemData?.name ?? game.cmdr.currentSystem,
-                game.systemStation?.name ?? game.lastDocked?.StationName,
-                allowSharedStatus ? game.systemBody?.name : null,
-                game.currentShip?.type,
-                game.currentShip?.id,
-                game.currentShip?.name,
-                game.currentShip?.ident,
-                allowSharedStatus ? game.status?.InTaxi : null);
+            return game.CreateContext(allowSharedStatus);
         }
 
         internal static bool CanPrepareUpload(string? apiKey, bool isLive, bool isBeta) =>
@@ -294,11 +278,11 @@ namespace SrvSurvey.net
         internal async Task flushAsync()
         {
             if (Volatile.Read(ref stopping) != 0 || Volatile.Read(ref disposed) != 0) return;
-            await sendGate.WaitAsync();
+            await sendGate.WaitAsync().ConfigureAwait(false);
             try
             {
                 if (Volatile.Read(ref disposed) == 0)
-                    await sendPendingCoreAsync();
+                    await sendPendingCoreAsync().ConfigureAwait(false);
             }
             finally
             {
@@ -308,8 +292,6 @@ namespace SrvSurvey.net
 
         private JObject addSidecarData(JObject raw, bool allowSharedSidecars)
         {
-            if (game == null) return raw;
-
             var eventName = raw.Value<string>("event");
             var needsCargoSidecar = eventName == "Cargo"
                 && raw.Value<string>("Vessel") == "Ship"
@@ -327,7 +309,7 @@ namespace SrvSurvey.net
             if (needsCargoSidecar)
             {
                 var augmented = (JObject)raw.DeepClone();
-                augmented["Inventory"] = JArray.FromObject(game.cargoFile.Inventory ?? []);
+                augmented["Inventory"] = game.GetCargoInventory();
                 return augmented;
             }
 
@@ -335,7 +317,7 @@ namespace SrvSurvey.net
             {
                 try
                 {
-                    var journalFolder = Path.GetDirectoryName(game.journals?.filepath);
+                    var journalFolder = Path.GetDirectoryName(game.JournalFilepath);
                     var filepath = journalFolder == null ? null : Path.Combine(journalFolder, "ShipLocker.json");
                     if (filepath != null && File.Exists(filepath))
                     {
@@ -359,10 +341,10 @@ namespace SrvSurvey.net
         {
             if (Volatile.Read(ref stopping) != 0 || Volatile.Read(ref disposed) != 0) return;
             if (DateTime.UtcNow.Ticks < Interlocked.Read(ref retryNotBeforeUtcTicks)) return;
-            if (!await sendGate.WaitAsync(0)) return;
+            if (!await sendGate.WaitAsync(0).ConfigureAwait(false)) return;
             try
             {
-                await sendPendingCoreAsync();
+                await sendPendingCoreAsync().ConfigureAwait(false);
             }
             finally
             {
@@ -391,7 +373,7 @@ namespace SrvSurvey.net
                     credentials,
                     batch.Select(item => item.Event).ToList());
                 using var content = new StringContent(payload.ToString(Formatting.None), Encoding.UTF8, "application/json");
-                using var response = await client.PostAsync(Endpoint, content);
+                using var response = await client.PostAsync(Endpoint, content).ConfigureAwait(false);
 
                 if (isTransient(response.StatusCode))
                 {
@@ -408,7 +390,7 @@ namespace SrvSurvey.net
                     return;
                 }
 
-                var body = await response.Content.ReadAsStringAsync();
+                var body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 if (string.IsNullOrWhiteSpace(body))
                 {
                     queue.Requeue(batch);
@@ -525,7 +507,7 @@ namespace SrvSurvey.net
             // final queue snapshot and flush are taken.
             lock (ingestionSync) { }
 
-            await sendGate.WaitAsync();
+            await sendGate.WaitAsync().ConfigureAwait(false);
             try
             {
                 var credentials = session.GetCredentials();
@@ -544,7 +526,7 @@ namespace SrvSurvey.net
                         queue.Enqueue(credentials.ApiKey, finalEvents);
                 }
 
-                await sendPendingCoreAsync();
+                await sendPendingCoreAsync().ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -571,6 +553,75 @@ namespace SrvSurvey.net
                 try { log($"Inara shutdown did not complete cleanly:\r\n{ex}"); }
                 catch { /* disposal must not escape */ }
             }
+        }
+
+        private interface IInaraGameState
+        {
+            string? JournalFilepath { get; }
+            InaraContext CreateContext(bool allowSharedStatus);
+            JArray GetCargoInventory();
+            JArray? GetShipCargoInventory();
+        }
+
+        private sealed class LiveGameState : IInaraGameState
+        {
+            private readonly Game game;
+            private readonly InaraSession session;
+
+            public LiveGameState(Game game, InaraSession session)
+            {
+                this.game = game;
+                this.session = session;
+            }
+
+            public string? JournalFilepath => game.journals?.filepath;
+
+            public InaraContext CreateContext(bool allowSharedStatus)
+            {
+                return new(
+                    session.Commander,
+                    session.FrontierId,
+                    game.systemData?.name ?? game.cmdr.currentSystem,
+                    game.systemStation?.name ?? game.lastDocked?.StationName,
+                    allowSharedStatus ? game.systemBody?.name : null,
+                    game.currentShip?.type,
+                    game.currentShip?.id,
+                    game.currentShip?.name,
+                    game.currentShip?.ident,
+                    allowSharedStatus ? game.status?.InTaxi : null);
+            }
+
+            public JArray GetCargoInventory()
+            {
+                return JArray.FromObject(game.cargoFile.Inventory ?? []);
+            }
+
+            public JArray? GetShipCargoInventory()
+            {
+                var cargoFile = game.cargoFile;
+                return string.Equals(cargoFile.Vessel, "Ship", StringComparison.OrdinalIgnoreCase)
+                    ? GetCargoInventory()
+                    : null;
+            }
+        }
+
+        private sealed class TestGameState : IInaraGameState
+        {
+            private readonly InaraContext context;
+
+            public TestGameState(InaraContext context)
+            {
+                this.context = context;
+            }
+
+            public string? JournalFilepath => null;
+
+            public InaraContext CreateContext(bool allowSharedStatus) =>
+                context with { IsTaxi = allowSharedStatus ? context.IsTaxi : null };
+
+            public JArray GetCargoInventory() => new();
+
+            public JArray? GetShipCargoInventory() => null;
         }
     }
 }

@@ -113,7 +113,7 @@ namespace SrvSurvey.game
         public static Git git { get; private set; }
         public static RavenColonial.RavenColonial rcc { get; private set; }
         public static EDDN eddn { get; private set; }
-        private Inara? inara;
+        internal Inara? inara;
 
         public bool initialized { get; private set; } // TODO: reconcile with "Game.ready"
 
@@ -257,10 +257,13 @@ namespace SrvSurvey.game
                 EDDN.header = null;
 
                 if (this.journals != null)
-                {
                     this.journals.onJournalEntry -= Journals_onJournalEntry;
-                    this.inara?.Dispose();
-                    this.inara = null;
+
+                this.inara?.Dispose();
+                this.inara = null;
+
+                if (this.journals != null)
+                {
                     this.journals.Dispose();
                     this.journals = null;
                 }
@@ -281,12 +284,6 @@ namespace SrvSurvey.game
 
             if (Game.activeGame == this)
                 Game.activeGame = null;
-        }
-
-        internal void onInaraApiKeyChanged(CommanderSettings settings)
-        {
-            if (ReferenceEquals(this.cmdr, settings))
-                this.inara?.onApiKeyChanged();
         }
 
         #region modes

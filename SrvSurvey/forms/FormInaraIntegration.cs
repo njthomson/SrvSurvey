@@ -77,7 +77,7 @@ namespace SrvSurvey.forms
 
             ApplyApiKey(this.cmdrSettings, this.txtApiKey.Text);
             this.cmdrSettings.Save();
-            Game.activeGame?.onInaraApiKeyChanged(this.cmdrSettings);
+            notifyActiveSession();
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
@@ -95,9 +95,16 @@ namespace SrvSurvey.forms
 
             ApplyApiKey(this.cmdrSettings, null);
             this.cmdrSettings.Save();
-            Game.activeGame?.onInaraApiKeyChanged(this.cmdrSettings);
+            notifyActiveSession();
             this.DialogResult = DialogResult.OK;
             this.Close();
+        }
+
+        private void notifyActiveSession()
+        {
+            var game = Game.activeGame;
+            if (game != null && ReferenceEquals(game.cmdr, this.cmdrSettings))
+                game.inara?.onApiKeyChanged();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

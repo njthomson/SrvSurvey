@@ -335,6 +335,45 @@ public sealed class InaraTests
     }
 
     [Fact]
+    public async Task DisposeCompletesWithoutPumpingTheCallersSynchronizationContext()
+    {
+        var handler = new RecordingHandler(async (request, _) =>
+        {
+            await Task.Delay(25).ConfigureAwait(false);
+            return await successfulResponse(request).ConfigureAwait(false);
+        });
+        var settings = commander("Commander Alpha", "F-ALPHA", "alpha-key");
+        var inara = Inara.CreateForTests(
+            InaraSession.Create(settings, "4.0.0.1900", true)!, handler, context);
+        inara.onJournalEntry(loadGame("Commander Alpha", "F-ALPHA", 1000));
+        var completed = new TaskCompletionSource<Exception?>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var thread = new Thread(() =>
+        {
+            SynchronizationContext.SetSynchronizationContext(new NonPumpingSynchronizationContext());
+            try
+            {
+                inara.Dispose();
+                completed.TrySetResult(null);
+            }
+            catch (Exception ex)
+            {
+                completed.TrySetResult(ex);
+            }
+        })
+        {
+            IsBackground = true,
+        };
+
+        thread.Start();
+        var exception = await completed.Task.WaitAsync(
+            TimeSpan.FromSeconds(5),
+            TestContext.Current.CancellationToken);
+
+        Assert.Null(exception);
+        Assert.True(handler.IsDisposed);
+    }
+
+    [Fact]
     public async Task EmptyAndMalformedResponsesRetainTheBatchForRetry()
     {
         var handler = new RecordingHandler((request, requestNumber) => requestNumber switch
@@ -486,15 +525,22 @@ public sealed class InaraTests
             HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            var body = JObject.Parse(await request.Content!.ReadAsStringAsync(cancellationToken));
+            var body = JObject.Parse(await request.Content!.ReadAsStringAsync(cancellationToken).ConfigureAwait(false));
             Bodies.Add(body);
-            return await respond(request, Bodies.Count);
+            return await respond(request, Bodies.Count).ConfigureAwait(false);
         }
 
         protected override void Dispose(bool disposing)
         {
             IsDisposed = true;
             base.Dispose(disposing);
+        }
+    }
+
+    private sealed class NonPumpingSynchronizationContext : SynchronizationContext
+    {
+        public override void Post(SendOrPostCallback callback, object? state)
+        {
         }
     }
 
