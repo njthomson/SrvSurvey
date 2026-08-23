@@ -89,6 +89,21 @@ public sealed class EddnTransportTests
             JObject.Parse(recorded.content).Value<string>("$schemaRef"));
     }
 
+    [Theory]
+    [InlineData("https://eddn.edcd.io/schemas/dockinggranted/1", false, "https://eddn.edcd.io/schemas/dockinggranted/1")]
+    [InlineData("https://eddn.edcd.io/schemas/dockinggranted/1/test", false, "https://eddn.edcd.io/schemas/dockinggranted/1")]
+    [InlineData("https://eddn.edcd.io/schemas/dockinggranted/1", true, "https://eddn.edcd.io/schemas/dockinggranted/1/test")]
+    [InlineData("https://eddn.edcd.io/schemas/dockinggranted/1/test", true, "https://eddn.edcd.io/schemas/dockinggranted/1/test")]
+    public void SchemaPolicyNormalizesLiveAndTestReferences(
+        string schemaRef,
+        bool useTestSchemas,
+        string expected)
+    {
+        Assert.Equal(
+            expected,
+            EddnTransport.applySchemaPolicy(schemaRef, useTestSchemas));
+    }
+
     [Fact]
     public async Task QueuedMessageCannotSelectAnotherGateway()
     {

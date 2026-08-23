@@ -15,8 +15,8 @@ namespace SrvSurvey.net
         private static readonly TimeSpan sendSpacing = TimeSpan.FromMilliseconds(400);
         private static readonly TimeSpan minimumRetryDelay = TimeSpan.FromMinutes(1);
         private static readonly TimeSpan maximumRetryDelay = TimeSpan.FromMinutes(30);
-        private const int maximumPendingMessages = 4096;
-        private const long maximumStoreBytes = 64L * 1024 * 1024;
+        private const int defaultMaximumPendingMessages = 4096;
+        private const long defaultMaximumStoreBytes = 64L * 1024 * 1024;
 
         private readonly string filepath;
         private readonly string storeFolder;
@@ -26,6 +26,8 @@ namespace SrvSurvey.net
         private readonly Func<DateTimeOffset> utcNow;
         private readonly bool automaticProcessing;
         private readonly Func<bool> runtimeUploadAllowed;
+        private readonly int maximumPendingMessages;
+        private readonly long maximumStoreBytes;
         private readonly object sync = new();
         private readonly SemaphoreSlim processing = new(1, 1);
         private readonly System.Threading.Timer timer;
@@ -33,10 +35,12 @@ namespace SrvSurvey.net
         private CancellationTokenSource activityCancellation = new();
         private List<EddnQueuedMessage> pending;
         private readonly Dictionary<Guid, long> persistedBytes = [];
+        private readonly HashSet<Guid> loadCycleIds = [];
         private long storeBytes;
         private FileStream? ownershipLease;
         private bool enabled;
         private bool suspended;
+        private bool loadingTruncated;
         private bool ownershipWarningReported;
         private volatile bool disposed;
 
@@ -46,10 +50,16 @@ namespace SrvSurvey.net
             Action<string>? log = null,
             Func<DateTimeOffset>? utcNow = null,
             bool automaticProcessing = true,
-            Func<bool>? runtimeUploadAllowed = null)
+            Func<bool>? runtimeUploadAllowed = null,
+            int maximumPendingMessages = defaultMaximumPendingMessages,
+            long maximumStoreBytes = defaultMaximumStoreBytes)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(filepath);
             ArgumentNullException.ThrowIfNull(transport);
+            if (maximumPendingMessages <= 0)
+                throw new ArgumentOutOfRangeException(nameof(maximumPendingMessages));
+            if (maximumStoreBytes <= 0)
+                throw new ArgumentOutOfRangeException(nameof(maximumStoreBytes));
             this.filepath = filepath;
             storeFolder = filepath + ".d";
             ownershipPath = getOwnershipPath(filepath);
@@ -58,6 +68,8 @@ namespace SrvSurvey.net
             this.utcNow = utcNow ?? (() => DateTimeOffset.UtcNow);
             this.automaticProcessing = automaticProcessing;
             this.runtimeUploadAllowed = runtimeUploadAllowed ?? (() => true);
+            this.maximumPendingMessages = maximumPendingMessages;
+            this.maximumStoreBytes = maximumStoreBytes;
             pending = [];
             timer = new System.Threading.Timer(
                 _ => triggerProcessing(),
@@ -117,14 +129,19 @@ namespace SrvSurvey.net
                     cancellation = replaceActivityCancellationLocked();
                     if (discardPendingWhenDisabled
                         && ownershipLease is not null
-                        && pending.Count > 0)
+                        && (pending.Count > 0 || loadingTruncated))
                     {
                         var count = pending.Count;
+                        var includedUnloadedFiles = loadingTruncated;
                         pending.Clear();
                         persistedBytes.Clear();
+                        loadCycleIds.Clear();
                         storeBytes = 0;
+                        loadingTruncated = false;
                         persistenceLog = deleteStore();
-                        sharingLog = $"EDDN discarded {count:N0} pending upload(s) because sharing was disabled.";
+                        sharingLog = includedUnloadedFiles
+                            ? "EDDN discarded all pending uploads because sharing was disabled."
+                            : $"EDDN discarded {count:N0} pending upload(s) because sharing was disabled.";
                     }
 
                 }
@@ -302,6 +319,7 @@ namespace SrvSurvey.net
                     var retry = failure != null || result?.isRetryable == true;
                     string? persistenceLog = null;
                     string? resultLog = null;
+                    List<string> reloadLogs = [];
                     lock (sync)
                     {
                         if (!enabled || suspended || disposed)
@@ -328,7 +346,14 @@ namespace SrvSurvey.net
                             pending.RemoveAll(item => item.id == next.id);
                             persistenceLog = deleteMessage(next);
                             if (pending.Count == 0)
-                                persistenceLog ??= deleteStore();
+                            {
+                                if (loadingTruncated)
+                                    pending = load(
+                                        reloadLogs,
+                                        continueTruncatedLoad: true);
+                                else
+                                    persistenceLog ??= deleteStore();
+                            }
 
                             if (result?.isSuccess == true)
                             {
@@ -349,6 +374,7 @@ namespace SrvSurvey.net
                     // holding the queue lock or Settings can deadlock against this worker.
                     writeLog(persistenceLog);
                     writeLog(resultLog);
+                    writeLogs(reloadLogs);
 
                     await Task.Delay(sendSpacing, cancellationToken).ConfigureAwait(false);
                 }
@@ -368,7 +394,9 @@ namespace SrvSurvey.net
                 if (ownershipLease is null) return;
                 pending.Clear();
                 persistedBytes.Clear();
+                loadCycleIds.Clear();
                 storeBytes = 0;
+                loadingTruncated = false;
                 persistenceLog = deleteStore();
             }
             writeLog(persistenceLog);
@@ -457,12 +485,18 @@ namespace SrvSurvey.net
                 .FirstOrDefault();
         }
 
-        private List<EddnQueuedMessage> load(List<string> messages)
+        private List<EddnQueuedMessage> load(
+            List<string> messages,
+            bool continueTruncatedLoad = false)
         {
+            if (!continueTruncatedLoad) loadCycleIds.Clear();
             persistedBytes.Clear();
             storeBytes = 0;
-            var loaded = loadMessageFiles(messages);
+            loadingTruncated = false;
+            var loaded = loadMessageFiles(messages, loadCycleIds);
             migrateLegacyStore(loaded, messages);
+            foreach (var item in loaded) loadCycleIds.Add(item.id);
+            if (!loadingTruncated) loadCycleIds.Clear();
             return loaded
                 .OrderBy(item => item.created)
                 .ToList();
@@ -480,22 +514,37 @@ namespace SrvSurvey.net
             }
         }
 
-        private List<EddnQueuedMessage> loadMessageFiles(List<string> messages)
+        private List<EddnQueuedMessage> loadMessageFiles(
+            List<string> messages,
+            HashSet<Guid> ids)
         {
             if (!Directory.Exists(storeFolder)) return [];
             List<EddnQueuedMessage> loaded = [];
-            var ids = new HashSet<Guid>();
             foreach (var path in Directory.EnumerateFiles(storeFolder, "*.json"))
             {
+                if (loaded.Count >= maximumPendingMessages)
+                {
+                    loadingTruncated = true;
+                    messages.Add(
+                        $"EDDN stopped loading pending uploads after reaching the {maximumPendingMessages:N0}-message limit; remaining files were left unchanged.");
+                    break;
+                }
+
                 try
                 {
                     var length = new FileInfo(path).Length;
-                    if (loaded.Count >= maximumPendingMessages
-                        || length <= 0
-                        || storeBytes + length > maximumStoreBytes)
+                    if (length > maximumStoreBytes - storeBytes)
+                    {
+                        loadingTruncated = true;
+                        messages.Add(
+                            $"EDDN stopped loading pending uploads after reaching the {maximumStoreBytes / 1024 / 1024:N0} MiB storage limit; remaining files were left unchanged.");
+                        break;
+                    }
+
+                    if (length <= 0)
                     {
                         throw new InvalidDataException(
-                            "the queue contained invalid or excessive entries");
+                            "the queue contained an empty entry");
                     }
 
                     var item = JsonConvert.DeserializeObject<EddnQueuedMessage>(
@@ -642,9 +691,10 @@ namespace SrvSurvey.net
         private static void normalize(EddnQueuedMessage? item)
         {
             if (item == null) return;
-            if (!string.IsNullOrWhiteSpace(item.schemaRef)
-                && !item.schemaRef.EndsWith("/test", StringComparison.Ordinal))
-                item.schemaRef += "/test";
+            if (string.IsNullOrWhiteSpace(item.schemaRef)) return;
+            item.schemaRef = EddnTransport.applySchemaPolicy(
+                item.schemaRef,
+                EddnTransport.testSchemasEnabled);
         }
 
         private static void quarantine(string path, List<string> messages)

@@ -42,20 +42,21 @@ namespace SrvSurvey.net
                     ingestionGeneration++;
             }
 
+            var runtimePublishingAllowed = enabled;
             if (enabled)
             {
                 refreshRuntimeSafety();
                 lock (sync)
-                    enabled = !disposed
+                    runtimePublishingAllowed = !disposed
                         && !publishingSuspended
                         && Game.settings.eddnUploadEnabled;
             }
 
             outbox.setEnabled(
-                Game.settings.eddnUploadEnabled,
-                discardPendingWhenDisabled: !Game.settings.eddnUploadEnabled);
-            if (Game.settings.eddnUploadEnabled)
-                outbox.setSuspended(!enabled);
+                enabled,
+                discardPendingWhenDisabled: !enabled);
+            if (enabled)
+                outbox.setSuspended(!runtimePublishingAllowed);
         }
 
         internal void refreshRuntimeSafety()
@@ -116,7 +117,6 @@ namespace SrvSurvey.net
 
         bool IEddnSessionSink.tryBeginIngestion(out long generation)
         {
-            refreshRuntimeSafety();
             lock (sync)
             {
                 generation = ingestionGeneration;
@@ -134,7 +134,6 @@ namespace SrvSurvey.net
             ArgumentNullException.ThrowIfNull(prepared);
             ArgumentNullException.ThrowIfNull(header);
 
-            refreshRuntimeSafety();
             lock (sync)
             {
                 if (disposed

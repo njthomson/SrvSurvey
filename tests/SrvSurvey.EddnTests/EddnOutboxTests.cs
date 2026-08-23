@@ -101,6 +101,79 @@ public sealed class EddnOutboxTests
     }
 
     [Fact]
+    public async Task MessageLimitLoadsRemainingValidFilesInLaterBatches()
+    {
+        using var folder = new TemporaryFolder();
+        var path = Path.Combine(folder.path, "eddn-outbox-v1.json");
+        var store = storePath(path);
+        Directory.CreateDirectory(store);
+        var now = DateTimeOffset.UtcNow;
+        writeQueued(store, queued(now.AddSeconds(-2), "First Port"));
+        writeQueued(store, queued(now.AddSeconds(-1), "Second Port"));
+        var logs = new List<string>();
+        var calls = 0;
+
+        using var queue = new EddnOutbox(
+            path,
+            EddnTransportTests.createTransport(_ =>
+            {
+                calls++;
+                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK));
+            }),
+            logs.Add,
+            () => now,
+            automaticProcessing: false,
+            maximumPendingMessages: 1);
+
+        Assert.Equal(1, queue.pendingCount);
+        Assert.Equal(2, Directory.GetFiles(store, "*.json").Length);
+        Assert.Empty(Directory.GetFiles(store, "*.bad-*"));
+        queue.setEnabled(true, discardPendingWhenDisabled: false);
+        await queue.processDue();
+
+        Assert.Equal(2, calls);
+        Assert.Equal(0, queue.pendingCount);
+        Assert.False(Directory.Exists(store));
+        Assert.Contains(logs, line => line.Contains(
+            "stopped loading pending uploads",
+            StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public async Task StorageLimitLeavesOversizedValidFileUnchanged()
+    {
+        using var folder = new TemporaryFolder();
+        var path = Path.Combine(folder.path, "eddn-outbox-v1.json");
+        var store = storePath(path);
+        Directory.CreateDirectory(store);
+        writeQueued(store, queued(DateTimeOffset.UtcNow));
+        var logs = new List<string>();
+        var calls = 0;
+
+        using var queue = new EddnOutbox(
+            path,
+            EddnTransportTests.createTransport(_ =>
+            {
+                calls++;
+                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK));
+            }),
+            logs.Add,
+            automaticProcessing: false,
+            maximumStoreBytes: 1);
+
+        Assert.Equal(0, queue.pendingCount);
+        queue.setEnabled(true, discardPendingWhenDisabled: false);
+        await queue.processDue();
+
+        Assert.Equal(0, calls);
+        Assert.Single(Directory.GetFiles(store, "*.json"));
+        Assert.Empty(Directory.GetFiles(store, "*.bad-*"));
+        Assert.Contains(logs, line => line.Contains(
+            "stopped loading pending uploads",
+            StringComparison.Ordinal));
+    }
+
+    [Fact]
     public async Task LegacyArrayQueueMigratesToPerMessageTestSchemaStore()
     {
         using var folder = new TemporaryFolder();
@@ -593,6 +666,13 @@ public sealed class EddnOutboxTests
                 File.ReadAllText(path))!)
             .OrderBy(message => message.created)
             .ToList();
+    }
+
+    private static void writeQueued(string store, EddnQueuedMessage message)
+    {
+        File.WriteAllText(
+            Path.Combine(store, message.id.ToString("N") + ".json"),
+            JsonConvert.SerializeObject(message));
     }
 
     private static EddnQueuedMessage queued(

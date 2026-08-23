@@ -40,6 +40,19 @@ public sealed class EddnConsentFileTests
         Assert.False(string.IsNullOrWhiteSpace(error));
     }
 
+    [Theory]
+    [InlineData("{\"eddnUploadEnabled\":\"yes\"}")]
+    [InlineData("{\"eddnUploadEnabled\":{}}")]
+    [InlineData("{\"eddnUploadEnabled\":null}")]
+    public void NonBooleanConsentFailsClosedWithoutThrowing(string json)
+    {
+        using var file = new TemporarySettingsFile(json);
+
+        Assert.False(EddnConsentFile.tryRead(file.path, out var enabled, out var error));
+        Assert.False(enabled);
+        Assert.False(string.IsNullOrWhiteSpace(error));
+    }
+
     private sealed class TemporarySettingsFile : IDisposable
     {
         internal readonly string path = Path.Combine(

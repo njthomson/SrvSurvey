@@ -32,7 +32,7 @@ namespace SrvSurvey.net
         };
 
         private readonly object sync = new();
-        private readonly SemaphoreSlim enqueueGate = new(1, 1);
+        private readonly object enqueueSync = new();
         private readonly IEddnSessionSink sink;
         private readonly UploadPayloadHeader header;
         private readonly string journalFolder;
@@ -98,6 +98,7 @@ namespace SrvSurvey.net
             SignalBatch? batch = null;
             EddnMessageContext context;
             bool suppressForCrew;
+            CancellationToken sessionToken;
             lock (sync)
             {
                 if (disposed || !accepting) return;
@@ -112,9 +113,10 @@ namespace SrvSurvey.net
                 if (eventName is "QuitACrew" or "LoadGame") isCrewMember = false;
                 suppressForCrew = isCrewMember;
                 context = gameContext with { location = location };
+                sessionToken = disposal.Token;
             }
 
-            if (batch != null) publishSignalBatch(batch);
+            if (batch != null) publishSignalBatch(batch, sessionToken);
 
             if (eventName == "FSSSignalDiscovered")
             {
@@ -137,7 +139,7 @@ namespace SrvSurvey.net
                     new JObject(raw),
                     context,
                     generation,
-                    disposal.Token).justDoIt();
+                    sessionToken).justDoIt();
                 return;
             }
 
@@ -147,7 +149,7 @@ namespace SrvSurvey.net
                 out var prepared,
                 out var reason))
             {
-                if (!tryEnqueue(prepared!, generation))
+                if (!tryEnqueue(prepared!, generation, sessionToken))
                     log($"EDDN could not queue {prepared!.eventName} for upload.");
             }
             else
@@ -190,7 +192,9 @@ namespace SrvSurvey.net
             }
         }
 
-        private void publishSignalBatch(SignalBatch batch)
+        private void publishSignalBatch(
+            SignalBatch batch,
+            CancellationToken cancellationToken)
         {
             if (!EddnMessageSanitizer.tryBuildSignalBatch(
                 batch.signals,
@@ -205,7 +209,10 @@ namespace SrvSurvey.net
                 return;
             }
 
-            if (!tryEnqueue(prepared!, batch.context.generation))
+            if (!tryEnqueue(
+                prepared!,
+                batch.context.generation,
+                cancellationToken))
                 log("EDDN could not queue FSSSignalDiscovered for upload.");
         }
 
@@ -243,7 +250,10 @@ namespace SrvSurvey.net
                 var signature = getCompanionSignature(prepared!);
                 if (signature != null && !reserveSignature(signature.Value)) return;
 
-                var queued = tryEnqueue(prepared!, generation);
+                var queued = tryEnqueue(
+                    prepared!,
+                    generation,
+                    cancellationToken);
                 if (!queued && signature != null) releaseSignature(signature.Value);
                 if (!queued) log($"EDDN could not queue {eventName} for upload.");
             }
@@ -296,11 +306,13 @@ namespace SrvSurvey.net
         private bool tryEnqueue(
             EddnPreparedMessage prepared,
             long generation,
+            CancellationToken cancellationToken,
             bool allowDisposedBatch = false)
         {
-            enqueueGate.Wait();
-            try
+            lock (enqueueSync)
             {
+                if (!allowDisposedBatch && cancellationToken.IsCancellationRequested)
+                    return false;
                 lock (sync)
                 {
                     if (!allowDisposedBatch && (disposed || !accepting))
@@ -308,10 +320,6 @@ namespace SrvSurvey.net
                 }
 
                 return sink.tryEnqueue(prepared, header, generation);
-            }
-            finally
-            {
-                enqueueGate.Release();
             }
         }
 
@@ -337,8 +345,7 @@ namespace SrvSurvey.net
 
         private void stopForCommanderChange(string eventCommander)
         {
-            enqueueGate.Wait();
-            try
+            lock (enqueueSync)
             {
                 lock (sync)
                 {
@@ -351,10 +358,6 @@ namespace SrvSurvey.net
 
                 disposal.Cancel();
             }
-            finally
-            {
-                enqueueGate.Release();
-            }
 
             log(
                 $"EDDN stopped session '{header.uploaderID}' after LoadGame identified Commander '{eventCommander}'; "
@@ -364,8 +367,7 @@ namespace SrvSurvey.net
         public void Dispose()
         {
             SignalBatch? batch;
-            enqueueGate.Wait();
-            try
+            lock (enqueueSync)
             {
                 lock (sync)
                 {
@@ -377,10 +379,6 @@ namespace SrvSurvey.net
                 }
 
                 disposal.Cancel();
-            }
-            finally
-            {
-                enqueueGate.Release();
             }
 
             if (batch != null)
@@ -396,11 +394,11 @@ namespace SrvSurvey.net
                     tryEnqueue(
                         prepared!,
                         batch.context.generation,
+                        CancellationToken.None,
                         allowDisposedBatch: true);
                 }
             }
             disposal.Dispose();
-            enqueueGate.Dispose();
         }
 
         private sealed record EddnSignalBatchContext(

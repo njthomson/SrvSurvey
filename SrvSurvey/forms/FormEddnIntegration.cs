@@ -144,8 +144,32 @@ namespace SrvSurvey.forms
             catch (Exception ex)
             {
                 Game.settings.eddnUploadEnabled = previous;
+                List<string> rollbackErrors = [];
+                try
+                {
+                    Game.settings.Save();
+                }
+                catch (Exception rollbackError)
+                {
+                    rollbackErrors.Add($"Consent rollback could not be saved: {rollbackError.Message}");
+                }
+
+                try
+                {
+                    eddn.setEnabled(previous);
+                }
+                catch (Exception rollbackError)
+                {
+                    rollbackErrors.Add($"EDDN runtime rollback failed: {rollbackError.Message}");
+                }
+
+                var detail = rollbackErrors.Count == 0
+                    ? $"The previous sharing choice was restored.\r\n\r\n{ex.Message}"
+                    : $"The previous sharing choice could not be fully restored.\r\n\r\n"
+                        + $"Original error: {ex.Message}\r\n"
+                        + string.Join("\r\n", rollbackErrors);
                 MessageBox.Show(
-                    $"SrvSurvey could not save the EDDN sharing choice. Nothing was changed.\r\n\r\n{ex.Message}",
+                    $"SrvSurvey could not save the EDDN sharing choice. {detail}",
                     "EDDN sharing",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);

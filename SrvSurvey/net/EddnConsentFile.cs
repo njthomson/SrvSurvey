@@ -31,7 +31,15 @@ namespace SrvSurvey.net
                 using var reader = new StreamReader(stream);
                 using var jsonReader = new JsonTextReader(reader);
                 var settings = JObject.Load(jsonReader);
-                enabled = settings.Value<bool?>("eddnUploadEnabled") == true;
+                var value = settings["eddnUploadEnabled"];
+                if (value == null) return true;
+                if (value.Type != JTokenType.Boolean)
+                {
+                    error = "eddnUploadEnabled must be a boolean value";
+                    return false;
+                }
+
+                enabled = value.Value<bool>();
                 return true;
             }
             catch (Exception ex) when (

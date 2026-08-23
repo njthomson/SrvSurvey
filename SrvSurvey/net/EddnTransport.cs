@@ -41,10 +41,7 @@ namespace SrvSurvey.net
             ArgumentException.ThrowIfNullOrWhiteSpace(schemaRef);
             ArgumentNullException.ThrowIfNull(header);
 
-            schemaRef = schemaRef.EndsWith("/test", StringComparison.Ordinal)
-                ? schemaRef[..^"/test".Length]
-                : schemaRef;
-            if (testSchemasEnabled) schemaRef += "/test";
+            schemaRef = applySchemaPolicy(schemaRef, testSchemasEnabled);
 
             return new EddnQueuedMessage
             {
@@ -55,6 +52,17 @@ namespace SrvSurvey.net
                 header = header.clone(),
                 message = new JObject(message),
             };
+        }
+
+        internal static string applySchemaPolicy(
+            string schemaRef,
+            bool useTestSchemas)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(schemaRef);
+            var liveSchemaRef = schemaRef.EndsWith("/test", StringComparison.Ordinal)
+                ? schemaRef[..^"/test".Length]
+                : schemaRef;
+            return useTestSchemas ? liveSchemaRef + "/test" : liveSchemaRef;
         }
 
         internal async Task<EddnUploadResult> upload(

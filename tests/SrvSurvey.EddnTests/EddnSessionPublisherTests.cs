@@ -130,6 +130,22 @@ public sealed class EddnSessionPublisherTests
         Assert.Empty(sink.messages);
     }
 
+    [Fact]
+    public async Task JournalCallbackFinishingAfterDisposeDoesNotTouchDisposedState()
+    {
+        var sink = new BlockingBeginSink();
+        var session = createSession(sink, "Commander A", location("System A", 123));
+        var publishing = Task.Run(() =>
+            session.onJournalEntry(jump("System A", 123), context()));
+        await sink.entered.Task.WaitAsync(TimeSpan.FromSeconds(2));
+
+        session.Dispose();
+        sink.release.TrySetResult();
+
+        await publishing.WaitAsync(TimeSpan.FromSeconds(2));
+        Assert.Equal(0, sink.enqueueAttempts);
+    }
+
     private static EddnSessionPublisher createSession(
         IEddnSessionSink sink,
         string commander,
@@ -209,6 +225,32 @@ public sealed class EddnSessionPublisherTests
         {
             generation++;
             enabled = false;
+        }
+    }
+
+    private sealed class BlockingBeginSink : IEddnSessionSink
+    {
+        internal readonly TaskCompletionSource entered = new(
+            TaskCreationOptions.RunContinuationsAsynchronously);
+        internal readonly TaskCompletionSource release = new(
+            TaskCreationOptions.RunContinuationsAsynchronously);
+        internal int enqueueAttempts;
+
+        public bool tryBeginIngestion(out long generation)
+        {
+            generation = 1;
+            entered.TrySetResult();
+            release.Task.GetAwaiter().GetResult();
+            return true;
+        }
+
+        public bool tryEnqueue(
+            EddnPreparedMessage prepared,
+            UploadPayloadHeader header,
+            long expectedGeneration)
+        {
+            enqueueAttempts++;
+            return true;
         }
     }
 }
