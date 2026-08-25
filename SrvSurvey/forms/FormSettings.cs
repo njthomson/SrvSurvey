@@ -65,7 +65,6 @@ namespace SrvSurvey
             checkGalMapPlotter.Enabled = checkUseSystemData.Checked;
             checkPlotJumpInfo.Enabled = checkUseSystemData.Checked;
             checkHideMyOwnCanonnSignals.Enabled = checkUseSystemData.Checked;
-
             checkBodyInfoMap.Enabled = checkBodyInfoOrbit.Enabled = checkBodyInfo.Checked;
 
             this.numGravityWarningLevel.Enabled = label12.Enabled = checkBox13.Checked;
@@ -944,11 +943,6 @@ namespace SrvSurvey
             checkBox48.Enabled = checkColonization.Checked && checkBox49.Checked && checkBox43.Checked;
         }
 
-        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Util.openLink("https://ravencolonial.com/user");
-        }
-
         private void checkEnableVR_CheckedChanged(object sender, EventArgs e)
         {
             btnAdjustVR.Enabled = checkEnableVR.Checked;
@@ -962,6 +956,12 @@ namespace SrvSurvey
         private void btnSetApiKeyRCC_Click(object sender, EventArgs e)
         {
             var child = new FormApiKeyRCC();
+            child.ShowDialog(this);
+        }
+
+        private void btnSetApiKeyInara_Click(object sender, EventArgs e)
+        {
+            var child = new FormInaraIntegration();
             child.ShowDialog(this);
         }
 

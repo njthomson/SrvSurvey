@@ -474,6 +474,10 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="SrvSurvey.Tests" />
+  </ItemGroup>
+
   <UsingTask TaskName="SortResxFiles" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
       <ProjectDir Required="true" ParameterType="System.String" />

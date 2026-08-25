@@ -2588,7 +2588,7 @@ namespace SrvSurvey
             btnSetApiKeyInara.TabIndex = 36;
             btnSetApiKeyInara.Text = "Set Inara API Key";
             btnSetApiKeyInara.UseVisualStyleBackColor = true;
-            btnSetApiKeyInara.Visible = false;
+            btnSetApiKeyInara.Click += btnSetApiKeyInara_Click;
             // 
             // btnSetApiKeyRCC
             // 
@@ -2806,9 +2806,9 @@ namespace SrvSurvey
             // 
             pictureBox7.BackgroundImage = (Image)resources.GetObject("pictureBox7.BackgroundImage");
             pictureBox7.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox7.Location = new Point(375, 22);
+            pictureBox7.Location = new Point(375, 78);
             pictureBox7.Name = "pictureBox7";
-            pictureBox7.Size = new Size(228, 131);
+            pictureBox7.Size = new Size(228, 75);
             pictureBox7.TabIndex = 28;
             pictureBox7.TabStop = false;
             // 
