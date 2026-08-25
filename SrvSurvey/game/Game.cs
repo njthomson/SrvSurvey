@@ -113,6 +113,7 @@ namespace SrvSurvey.game
         public static Git git { get; private set; }
         public static RavenColonial.RavenColonial rcc { get; private set; }
         public static EDDN eddn { get; private set; }
+        internal Inara? inara;
 
         public bool initialized { get; private set; } // TODO: reconcile with "Game.ready"
 
@@ -228,6 +229,11 @@ namespace SrvSurvey.game
 
             log($"Cmdr loaded: {this.Commander != null}");
 
+            // Reconstruct Inara's current-session state without uploading journal history.
+            // This must happen before live journal callbacks begin so credits and inventory
+            // have an authoritative baseline when the first new event is processed.
+            this.inara = Inara.Create(this);
+
             // now listen for changes
             this.journals.onJournalEntry += Journals_onJournalEntry;
             this.status.StatusChanged += Status_StatusChanged;
@@ -251,8 +257,13 @@ namespace SrvSurvey.game
                 EDDN.header = null;
 
                 if (this.journals != null)
-                {
                     this.journals.onJournalEntry -= Journals_onJournalEntry;
+
+                this.inara?.Dispose();
+                this.inara = null;
+
+                if (this.journals != null)
+                {
                     this.journals.Dispose();
                     this.journals = null;
                 }
@@ -1109,6 +1120,9 @@ namespace SrvSurvey.game
                     if (Game.settings.eddnUpload && EDDN.header != null)
                         eddn.onJournalEntry(this, (dynamic)entry, raw);
                 }
+
+                // Inara also understands selected journal events that SrvSurvey has no typed class for.
+                this.inara?.onJournalEntry(raw);
 
                 // finally, let active quests know about this
                 PlayState.current?.processJournalEntry(raw).justDoIt();
