@@ -67,11 +67,11 @@ namespace SrvSurvey.net
                 if (string.IsNullOrWhiteSpace(filepath))
                     throw new InvalidOperationException("The initialized game has no journal filepath.");
 
-                var fileheader = game.journals?.Entries.FirstOrDefault() as Fileheader;
+                var fileheader = game.journals?.fileheader;
                 if (fileheader == null)
                     throw new InvalidOperationException("The initialized game journal does not start with Fileheader.");
 
-                var session = InaraSession.Create(game.cmdr, fileheader.gameversion, game.journals?.isOdyssey == true);
+                var session = InaraSession.Create(game.cmdr, fileheader.gameversion, fileheader.Odyssey);
                 if (session == null)
                     throw new InvalidOperationException("The initialized game has no commander name, Frontier ID, or game version.");
 
