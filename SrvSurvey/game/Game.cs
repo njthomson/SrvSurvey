@@ -229,11 +229,6 @@ namespace SrvSurvey.game
 
             log($"Cmdr loaded: {this.Commander != null}");
 
-            // Reconstruct Inara's current-session state without uploading journal history.
-            // This must happen before live journal callbacks begin so credits and inventory
-            // have an authoritative baseline when the first new event is processed.
-            this.inara = Inara.Create(this);
-
             // now listen for changes
             this.journals.onJournalEntry += Journals_onJournalEntry;
             this.status.StatusChanged += Status_StatusChanged;
@@ -625,11 +620,7 @@ namespace SrvSurvey.game
                 log($"Game.initializeFromJournal: USING {this.Commander} (FID:{this.fid}), journals.Count:{journals?.Count}");
 
                 // set EDDN upload header
-                if (journals?.Entries.Count > 0)
-                {
-                    var gameFileHeader = (Fileheader)journals.Entries.First();
-                    EDDN.header = new UploadPayloadHeader(loadEntry.Commander, gameFileHeader.gameversion, gameFileHeader.build);
-                }
+                EDDN.header = new UploadPayloadHeader(loadEntry.Commander, journals!.fileheader!.gameversion, journals.fileheader.build);
             }
 
             // exit early if we are shutdown
@@ -644,7 +635,7 @@ namespace SrvSurvey.game
             if (loadEntry != null)
             {
                 // How much does it matter that v4-live/Horizons acts just like Odyssey?
-                this.cmdr = CommanderSettings.Load(loadEntry.FID, journals.isOdyssey, loadEntry.Commander);
+                this.cmdr = CommanderSettings.Load(loadEntry.FID, !journals.isLegacy, loadEntry.Commander);
                 this.cmdrCodex = cmdr.loadCodex();
                 this.cmdrColony = ColonyData.Load(loadEntry.FID, loadEntry.Commander);
                 // Maybe? Game.ready = true;
@@ -729,6 +720,15 @@ namespace SrvSurvey.game
 
                 if (this.status.PlanetRadius > 0 && this.status.PlanetRadius != cmdr.currentBodyRadius)
                     log($"Oops - bad systemBody ?!");
+
+                // do not upload non-Live data to Inara
+                if (!journals.isLegacy)
+                {
+                    // Reconstruct Inara's current-session state without uploading journal history.
+                    // This must happen before live journal callbacks begin so credits and inventory
+                    // have an authoritative baseline when the first new event is processed.
+                    this.inara = Inara.Create(this);
+                }
 
                 log($"Game.initializeFromJournal: system: '{cmdr.currentSystem}' (id:{cmdr.currentSystemAddress}), body: '{this.systemBody?.name}' (id:{this.systemBody?.id}, r: {Util.metersToString(this.systemBody?.radius ?? -1)})");
             }

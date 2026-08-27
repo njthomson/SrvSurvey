@@ -246,7 +246,7 @@ namespace SrvSurvey.net
                 InMulticrew = false;
             else if (name is "JoinACrew" or "ChangeCrewRole")
                 InMulticrew = true;
-            else if (entry.Value<bool?>("Multicrew") == true)
+            else if (entry["Multicrew"]?.Type == JTokenType.Boolean && entry["Multicrew"]?.Value<bool?>() == true)
                 InMulticrew = true;
             else if (name == "LoadGame")
                 InMulticrew = false;

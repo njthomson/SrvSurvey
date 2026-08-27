@@ -123,10 +123,10 @@ namespace SrvSurvey.game
             journalFiles.Find((filepath) =>
             {
                 var journal = new JournalFile(filepath);
-                if (journal.isOdyssey && !string.IsNullOrEmpty(journal.cmdrName) && !string.IsNullOrEmpty(journal.cmdrFid))
+                if (!journal.isLegacy && !string.IsNullOrEmpty(journal.cmdrName) && !string.IsNullOrEmpty(journal.cmdrFid))
                 {
                     // create and save settings for this Cmdr
-                    var cmdrSettings = CommanderSettings.Load(journal.cmdrFid, journal.isOdyssey, journal.cmdrName);
+                    var cmdrSettings = CommanderSettings.Load(journal.cmdrFid, !journal.isLegacy, journal.cmdrName);
                     cmdrSettings.Save();
                     return true;
                 }

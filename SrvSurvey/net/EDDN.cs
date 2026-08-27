@@ -110,8 +110,8 @@ namespace SrvSurvey.net
             // augment
             message["StarSystem"] = raw.Value<string>("System");
             message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey.HasValue) message["odyssey"] = game.journals.isGameOdyssey.Value;
-            if (game.journals.isGameHorizons.HasValue) message["horizons"] = game.journals.isGameHorizons.Value;
+            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
+            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
 
             // Only set body name/ID if status.json has a BodyName and it matches the body we are tracking ...
             if (game.status.BodyName != null && game.systemBody != null && game.status.BodyName == game.systemBody.name)
@@ -139,8 +139,8 @@ namespace SrvSurvey.net
             // augment
             message["StarSystem"] = game.systemData.name;
             message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey.HasValue) message["odyssey"] = game.journals.isGameOdyssey.Value;
-            if (game.journals.isGameHorizons.HasValue) message["horizons"] = game.journals.isGameHorizons.Value;
+            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
+            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
 
             upload(message, "https://eddn.edcd.io/schemas/approachsettlement/1").justDoIt();
         }
@@ -180,8 +180,8 @@ namespace SrvSurvey.net
             var message = new JObject(raw);
 
             // augment
-            if (game.journals.isGameOdyssey.HasValue) message["odyssey"] = game.journals.isGameOdyssey.Value;
-            if (game.journals.isGameHorizons.HasValue) message["horizons"] = game.journals.isGameHorizons.Value;
+            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
+            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
 
             upload(message, "https://eddn.edcd.io/schemas/dockinggranted/1").justDoIt();
         }
@@ -194,8 +194,8 @@ namespace SrvSurvey.net
             var message = new JObject(raw);
 
             // augment
-            if (game.journals.isGameOdyssey.HasValue) message["odyssey"] = game.journals.isGameOdyssey.Value;
-            if (game.journals.isGameHorizons.HasValue) message["horizons"] = game.journals.isGameHorizons.Value;
+            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
+            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
 
             upload(message, "https://eddn.edcd.io/schemas/dockingdenied/1").justDoIt();
         }
@@ -209,8 +209,8 @@ namespace SrvSurvey.net
 
             // augment
             message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey.HasValue) message["odyssey"] = game.journals.isGameOdyssey.Value;
-            if (game.journals.isGameHorizons.HasValue) message["horizons"] = game.journals.isGameHorizons.Value;
+            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
+            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
 
             upload(message, "https://eddn.edcd.io/schemas/fssallbodiesfound/1").justDoIt();
         }
@@ -228,8 +228,8 @@ namespace SrvSurvey.net
             // augment
             message["StarSystem"] = game.systemData.name;
             message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey.HasValue) message["odyssey"] = game.journals.isGameOdyssey.Value;
-            if (game.journals.isGameHorizons.HasValue) message["horizons"] = game.journals.isGameHorizons.Value;
+            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
+            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
 
             upload(message, "https://eddn.edcd.io/schemas/fssbodysignals/1").justDoIt();
         }
@@ -246,8 +246,8 @@ namespace SrvSurvey.net
 
             // augment
             message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey.HasValue) message["odyssey"] = game.journals.isGameOdyssey.Value;
-            if (game.journals.isGameHorizons.HasValue) message["horizons"] = game.journals.isGameHorizons.Value;
+            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
+            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
 
             upload(message, "https://eddn.edcd.io/schemas/fssdiscoveryscan/1").justDoIt();
         }
@@ -282,8 +282,8 @@ namespace SrvSurvey.net
             // augment
             message["StarSystem"] = game.systemData.name;
             message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey.HasValue) message["odyssey"] = game.journals.isGameOdyssey.Value;
-            if (game.journals.isGameHorizons.HasValue) message["horizons"] = game.journals.isGameHorizons.Value;
+            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
+            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
 
             upload(message, "https://eddn.edcd.io/schemas/navbeaconscan/1").justDoIt();
         }
@@ -296,8 +296,8 @@ namespace SrvSurvey.net
             var message = new JObject(raw);
 
             // augment
-            if (game.journals.isGameOdyssey.HasValue) message["odyssey"] = game.journals.isGameOdyssey.Value;
-            if (game.journals.isGameHorizons.HasValue) message["horizons"] = game.journals.isGameHorizons.Value;
+            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
+            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
 
             upload(message, "https://eddn.edcd.io/schemas/navroute/1").justDoIt();
         }
@@ -315,8 +315,8 @@ namespace SrvSurvey.net
 
             // augment
             message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey.HasValue) message["odyssey"] = game.journals.isGameOdyssey.Value;
-            if (game.journals.isGameHorizons.HasValue) message["horizons"] = game.journals.isGameHorizons.Value;
+            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
+            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
 
             upload(message, "https://eddn.edcd.io/schemas/scanbarycentre/1").justDoIt();
         }
@@ -336,8 +336,8 @@ namespace SrvSurvey.net
 
             // augment
             message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey.HasValue) message["odyssey"] = game.journals.isGameOdyssey.Value;
-            if (game.journals.isGameHorizons.HasValue) message["horizons"] = game.journals.isGameHorizons.Value;
+            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
+            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
 
             upload(message, "https://eddn.edcd.io/schemas/journal/1").justDoIt();
         }
@@ -353,8 +353,8 @@ namespace SrvSurvey.net
             trim(message, "*_Localised", "Wanted", nameof(FSDJump.BoostUsed), nameof(FSDJump.FuelLevel), nameof(FSDJump.FuelUsed), nameof(FSDJump.JumpDist), "HappiestSystem", "HomeSystem", nameof(SystemFaction.MyReputation), "SquadronFaction");
 
             // augment
-            if (game.journals.isGameOdyssey.HasValue) message["odyssey"] = game.journals.isGameOdyssey.Value;
-            if (game.journals.isGameHorizons.HasValue) message["horizons"] = game.journals.isGameHorizons.Value;
+            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
+            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
 
             upload(message, "https://eddn.edcd.io/schemas/journal/1").justDoIt();
         }
@@ -370,8 +370,8 @@ namespace SrvSurvey.net
             trim(message, "*_Localised", "Wanted", nameof(FSDJump.BoostUsed), nameof(FSDJump.FuelLevel), nameof(FSDJump.FuelUsed), nameof(FSDJump.JumpDist), "HappiestSystem", "HomeSystem", nameof(SystemFaction.MyReputation), "SquadronFaction");
 
             // augment
-            if (game.journals.isGameOdyssey.HasValue) message["odyssey"] = game.journals.isGameOdyssey.Value;
-            if (game.journals.isGameHorizons.HasValue) message["horizons"] = game.journals.isGameHorizons.Value;
+            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
+            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
 
             upload(message, "https://eddn.edcd.io/schemas/journal/1").justDoIt();
         }
@@ -388,8 +388,8 @@ namespace SrvSurvey.net
 
             // augment
             message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey.HasValue) message["odyssey"] = game.journals.isGameOdyssey.Value;
-            if (game.journals.isGameHorizons.HasValue) message["horizons"] = game.journals.isGameHorizons.Value;
+            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
+            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
 
             upload(message, "https://eddn.edcd.io/schemas/journal/1").justDoIt();
         }
@@ -405,8 +405,8 @@ namespace SrvSurvey.net
             trim(message, "*_Localised", "Wanted", nameof(Location.Latitude), nameof(Location.Longitude), "HappiestSystem", "HomeSystem", nameof(SystemFaction.MyReputation), "SquadronFaction");
 
             // augment
-            if (game.journals.isGameOdyssey.HasValue) message["odyssey"] = game.journals.isGameOdyssey.Value;
-            if (game.journals.isGameHorizons.HasValue) message["horizons"] = game.journals.isGameHorizons.Value;
+            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
+            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
 
             upload(message, "https://eddn.edcd.io/schemas/journal/1").justDoIt();
         }
@@ -424,8 +424,8 @@ namespace SrvSurvey.net
             // augment
             message["StarSystem"] = game.systemData.name;
             message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey.HasValue) message["odyssey"] = game.journals.isGameOdyssey.Value;
-            if (game.journals.isGameHorizons.HasValue) message["horizons"] = game.journals.isGameHorizons.Value;
+            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
+            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
 
             upload(message, "https://eddn.edcd.io/schemas/journal/1").justDoIt();
         }
