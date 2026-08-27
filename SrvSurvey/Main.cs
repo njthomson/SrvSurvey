@@ -534,6 +534,7 @@ namespace SrvSurvey
             if (rslt == DialogResult.Yes)
             {
                 game.cmdr.explRewards = 0;
+                game.cmdr.explRewardsBySystem = null;
                 game.cmdr.countJumps = 0;
                 game.cmdr.distanceTravelled = 0;
                 game.cmdr.countScans = 0;

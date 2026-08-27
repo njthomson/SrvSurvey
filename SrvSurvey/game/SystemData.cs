@@ -732,7 +732,7 @@ namespace SrvSurvey.game
                 {
                     body.reward = reward;
                     game.cmdr.countScans += 1;
-                    game.cmdr.applyExplReward(reward, $"Scan:{entry.ScanType} of {entry.BodyName}");
+                    game.cmdr.applyExplReward(reward, $"Scan:{entry.ScanType} of {entry.BodyName}", this.name);
 
                     // and adjust main star value too
                     if (this.honked)
@@ -880,7 +880,7 @@ namespace SrvSurvey.game
                 {
                     body.reward = reward;
                     Game.activeGame.cmdr.countDSS += 1;
-                    Game.activeGame.cmdr.applyExplReward(reward, $"DSS of {body.name}");
+                    Game.activeGame.cmdr.applyExplReward(reward, $"DSS of {body.name}", this.name);
                 }
             }
 
@@ -892,7 +892,7 @@ namespace SrvSurvey.game
                 if (Game.activeGame?.systemData == this)
                 {
                     var bonus = countMappableBodies * 10_000;
-                    Game.activeGame.cmdr.applyExplReward(bonus, $"DSS mapped all valid bodies");
+                    Game.activeGame.cmdr.applyExplReward(bonus, $"DSS mapped all valid bodies", this.name);
                 }
             }
 

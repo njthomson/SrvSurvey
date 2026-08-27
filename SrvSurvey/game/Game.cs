@@ -3322,6 +3322,20 @@ namespace SrvSurvey.game
             //PlotBase2.renderAll(this);
         }
 
+        private void onJournalEntry(SellExplorationData entry)
+        {
+            var soldSystems = (entry.Systems ?? new List<string>())
+                .Concat(entry.Discovered ?? new List<string>());
+            this.cmdr.removeSoldExplorationData(soldSystems, entry.@event);
+        }
+
+        private void onJournalEntry(MultiSellExplorationData entry)
+        {
+            var soldSystems = entry.Discovered?
+                .Select(system => system.SystemName) ?? Enumerable.Empty<string>();
+            this.cmdr.removeSoldExplorationData(soldSystems, entry.@event);
+        }
+
         private void onJournalEntry(SellOrganicData entry)
         {
             // match and remove sold items from running totals
