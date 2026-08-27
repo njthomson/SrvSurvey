@@ -160,8 +160,6 @@ namespace SrvSurvey.game
         public long organicRewards;
 
         public long explRewards;
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public Dictionary<string, long>? explRewardsBySystem;
         public double distanceTravelled;
         public int countJumps;
         public int countScans;
@@ -203,6 +201,9 @@ namespace SrvSurvey.game
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int countRadicoidaUnica;
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public Dictionary<string, long>? explRewardsBySystem;
+
         #endregion
 
         public void applyExplReward(long reward, string reason, string systemName)
@@ -214,7 +215,7 @@ namespace SrvSurvey.game
             {
                 this.explRewardsBySystem ??= new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase);
                 var trackedName = this.explRewardsBySystem.Keys.FirstOrDefault(name =>
-                    name.Equals(systemName, StringComparison.OrdinalIgnoreCase)) ?? systemName;
+                    name.like(systemName)) ?? systemName;
                 this.explRewardsBySystem[trackedName] = this.explRewardsBySystem.GetValueOrDefault(trackedName) + reward;
             }
 
@@ -240,7 +241,7 @@ namespace SrvSurvey.game
             foreach (var soldSystemName in soldSystemNames)
             {
                 var trackedName = this.explRewardsBySystem.Keys.FirstOrDefault(name =>
-                    name.Equals(soldSystemName, StringComparison.OrdinalIgnoreCase));
+                    name.like(soldSystemName));
                 if (trackedName == null || !this.explRewardsBySystem.Remove(trackedName, out var systemRewards))
                     continue;
 
@@ -257,7 +258,6 @@ namespace SrvSurvey.game
                 this.explRewardsBySystem = null;
 
             Game.log($"{eventName}: removed {deductedRewards.ToString("N0")} estimated exploration credits for {matchedSystems} sold system(s).");
-            PlotBase2.renderAll(Game.activeGame);
             this.Save();
             Game.activeGame?.fireUpdate(true);
         }

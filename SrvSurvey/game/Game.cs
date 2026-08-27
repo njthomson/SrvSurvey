@@ -1110,21 +1110,6 @@ namespace SrvSurvey.game
                         eddn.onJournalEntry(this, (dynamic)entry, raw);
                 }
 
-                // Frontier emits these only after a Cartographics page has finished selling.
-                // Reconcile the local estimate independently of optional upload integrations.
-                if (entry is SellExplorationData sellExplorationData)
-                {
-                    var soldSystems = (sellExplorationData.Systems ?? new List<string>())
-                        .Concat(sellExplorationData.Discovered ?? new List<string>());
-                    this.cmdr.removeSoldExplorationData(soldSystems, sellExplorationData.@event);
-                }
-                else if (entry is MultiSellExplorationData multiSellExplorationData)
-                {
-                    var soldSystems = multiSellExplorationData.Discovered?
-                        .Select(system => system.SystemName) ?? Enumerable.Empty<string>();
-                    this.cmdr.removeSoldExplorationData(soldSystems, multiSellExplorationData.@event);
-                }
-
                 // finally, let active quests know about this
                 PlayState.current?.processJournalEntry(raw).justDoIt();
             }
@@ -3321,6 +3306,20 @@ namespace SrvSurvey.game
             // TODO: with new UX code, this should be just
             //// overlays may want to appear or render at this time
             //PlotBase2.renderAll(this);
+        }
+
+        private void onJournalEntry(SellExplorationData entry)
+        {
+            var soldSystems = (entry.Systems ?? new List<string>())
+                .Concat(entry.Discovered ?? new List<string>());
+            this.cmdr.removeSoldExplorationData(soldSystems, entry.@event);
+        }
+
+        private void onJournalEntry(MultiSellExplorationData entry)
+        {
+            var soldSystems = entry.Discovered?
+                .Select(system => system.SystemName) ?? Enumerable.Empty<string>();
+            this.cmdr.removeSoldExplorationData(soldSystems, entry.@event);
         }
 
         private void onJournalEntry(SellOrganicData entry)
