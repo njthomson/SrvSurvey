@@ -214,7 +214,7 @@ namespace SrvSurvey.plotters
                     var highlight = !organism.analyzed && ((game.cmdr.scanOne?.genus == organism.genus && game.cmdr.scanOne.body == body.name) || game.cmdr.scanOne?.genus == null);
                     var col = highlight ? C.cyan : C.orange;
 
-                    var predictions = body.predictions.Values.Where(p => p.species.genus.name == organism.genus).ToList();
+                    var predictions = body.predictions.Values.ToList().Where(p => p.species.genus.name == organism.genus).ToList();
                     var potentialFirstDiscovery = predictions.Any(p => !game.cmdrCodex.isDiscovered(p.entryId));
 
                     // do we already know if this is a first discovery?

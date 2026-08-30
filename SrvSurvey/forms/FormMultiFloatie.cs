@@ -84,6 +84,14 @@ namespace SrvSurvey.forms
             current = null;
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (current == this) 
+                current = null;
+
+            base.Dispose(disposing);
+        }
+
         public override Size GetPreferredSize(Size proposedSize)
         {
             var sz = TextRenderer.MeasureText(this.Text, this.Font);

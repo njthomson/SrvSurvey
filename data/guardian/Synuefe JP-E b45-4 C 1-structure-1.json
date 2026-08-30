@@ -1,18 +1,21 @@
 {
   "sid": "GS084",
   "idx": 1,
-  "sh": -1,
+  "sh": 220,
   "t": "Stickyhand",
   "rh": -1,
   "ll": {
     "lat": -11.561507,
     "long": -144.114349
   },
+  "pa": "p1,p10,p12,p2,p3,p6,p8,p9",
+  "pp": "c1,c2,c3,c4,c5,c6,p11,p25,p26,p4,p5,p7,py1,py2,py3,py4,py5,py6,t1,t2,t3,t4,t5,t6",
   "og": "ABCDEFGH",
   "ao": [
     "A11-or,or-#12-",
     "B08-se,cy-#1-",
     "D02-or,ca-#19-",
     "G06-or,or-#12-"
-  ]
+  ],
+  "rth": "t1:96,t2:131,t3:71,t4:311,t5:70,t6:70"
 }

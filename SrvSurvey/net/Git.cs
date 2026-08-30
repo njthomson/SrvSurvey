@@ -388,6 +388,7 @@ namespace SrvSurvey.net
                 var sumSitePoi = poiPresent.Count + poiAbsent.Count + poiEmpty.Count;
                 if (sumSitePoi > template.poiSurvey.Count)
                 {
+                    //var checkThese = new HashSet<string>(poiPresent.Concat(poiAbsent).Concat(poiEmpty));
                     Game.log($"Skipping poiStatus due suspicious counts\r\n\tsumSitePoi:{sumSitePoi} vs sumPubDataPoi:{template.poiSurvey.Count}, {template.name}, {Path.GetFileName(site.filepath)}");
                     Debugger.Break();
                 }
