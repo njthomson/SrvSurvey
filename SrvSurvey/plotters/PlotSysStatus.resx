@@ -91,4 +91,8 @@
     <value>► {0} non-body signals</value>
     <comment>{0} int, count of non body signals</comment>
   </data>
+  <data name="VisitRoute" xml:space="preserve">
+    <value>Visit route:</value>
+    <comment>Header for optimal visit order section</comment>
+  </data>
 </root>
