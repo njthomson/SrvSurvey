@@ -126,6 +126,7 @@ namespace SrvSurvey
             toolStripSeparator5 = new ToolStripSeparator();
             btnRuinsMap = new ToolStripMenuItem();
             btnRuinsOrigin = new ToolStripMenuItem();
+            btnCorrectGuardianMap = new ToolStripMenuItem();
             toolTip1 = new ToolTip(components);
             btnQuestComms = new DrawButton();
             notifyIcon = new NotifyIcon(components);
@@ -1144,10 +1145,10 @@ namespace SrvSurvey
             // 
             menuGuardians.BackColor = SystemColors.ControlLight;
             menuGuardians.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            menuGuardians.Items.AddRange(new ToolStripItem[] { btnGuardianThings, btnRuins, btnRamTah, toolStripSeparator5, btnRuinsMap, btnRuinsOrigin });
+            menuGuardians.Items.AddRange(new ToolStripItem[] { btnGuardianThings, btnRuins, btnRamTah, toolStripSeparator5, btnRuinsMap, btnRuinsOrigin, btnCorrectGuardianMap });
             menuGuardians.Name = "menuGuardians";
             menuGuardians.RenderMode = ToolStripRenderMode.System;
-            menuGuardians.Size = new Size(242, 200);
+            menuGuardians.Size = new Size(279, 238);
             menuGuardians.targetButton = btnGuardian;
             // 
             // btnGuardianThings
@@ -1195,6 +1196,14 @@ namespace SrvSurvey
             btnRuinsOrigin.Size = new Size(241, 38);
             btnRuinsOrigin.Text = "Aerial Assist";
             btnRuinsOrigin.Click += btnRuinsOrigin_Click;
+            //
+            // btnCorrectGuardianMap
+            //
+            btnCorrectGuardianMap.Name = "btnCorrectGuardianMap";
+            btnCorrectGuardianMap.Size = new Size(278, 38);
+            btnCorrectGuardianMap.Text = "Correct Map Alignment Here";
+            btnCorrectGuardianMap.ToolTipText = "Use the current latitude and longitude as the corrected site origin and shift the saved survey markers to match.";
+            btnCorrectGuardianMap.Click += btnCorrectGuardianMap_Click;
             // 
             // btnQuestComms
             // 
@@ -1424,6 +1433,7 @@ namespace SrvSurvey
         private ToolStripSeparator toolStripSeparator5;
         private ToolStripMenuItem btnRuinsMap;
         private ToolStripMenuItem btnRuinsOrigin;
+        private ToolStripMenuItem btnCorrectGuardianMap;
         private Button btnNextWindow;
         private ToolTip toolTip1;
         private ToolStripMenuItem menuPrimaryProject;
