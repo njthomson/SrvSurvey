@@ -519,28 +519,13 @@ namespace SrvSurvey.net
             HashSet<Guid> ids)
         {
             if (!Directory.Exists(storeFolder)) return [];
-            List<EddnQueuedMessage> loaded = [];
+            List<(EddnQueuedMessage item, long length)> candidates = [];
+            var seenIds = new HashSet<Guid>(ids);
             foreach (var path in Directory.EnumerateFiles(storeFolder, "*.json"))
             {
-                if (loaded.Count >= maximumPendingMessages)
-                {
-                    loadingTruncated = true;
-                    messages.Add(
-                        $"EDDN stopped loading pending uploads after reaching the {maximumPendingMessages:N0}-message limit; remaining files were left unchanged.");
-                    break;
-                }
-
                 try
                 {
                     var length = new FileInfo(path).Length;
-                    if (length > maximumStoreBytes - storeBytes)
-                    {
-                        loadingTruncated = true;
-                        messages.Add(
-                            $"EDDN stopped loading pending uploads after reaching the {maximumStoreBytes / 1024 / 1024:N0} MiB storage limit; remaining files were left unchanged.");
-                        break;
-                    }
-
                     if (length <= 0)
                     {
                         throw new InvalidDataException(
@@ -550,12 +535,10 @@ namespace SrvSurvey.net
                     var item = JsonConvert.DeserializeObject<EddnQueuedMessage>(
                         File.ReadAllText(path));
                     normalize(item);
-                    if (!isValid(item) || !ids.Add(item!.id))
+                    if (!isValid(item) || !seenIds.Add(item!.id))
                         throw new InvalidDataException("the queue contained an invalid or duplicate entry");
 
-                    loaded.Add(item);
-                    persistedBytes[item.id] = length;
-                    storeBytes += length;
+                    candidates.Add((item, length));
                 }
                 catch (Exception ex) when (
                     ex is IOException
@@ -566,6 +549,30 @@ namespace SrvSurvey.net
                     quarantine(path, messages);
                     messages.Add($"EDDN could not load a pending upload: {ex.Message}");
                 }
+            }
+
+            List<EddnQueuedMessage> loaded = [];
+            foreach (var candidate in candidates.OrderBy(candidate => candidate.item.created))
+            {
+                if (loaded.Count >= maximumPendingMessages)
+                {
+                    loadingTruncated = true;
+                    messages.Add(
+                        $"EDDN stopped loading pending uploads after reaching the {maximumPendingMessages:N0}-message limit; remaining files were left unchanged.");
+                    break;
+                }
+
+                if (candidate.length > maximumStoreBytes - storeBytes)
+                {
+                    loadingTruncated = true;
+                    messages.Add(
+                        $"EDDN stopped loading pending uploads after reaching the {maximumStoreBytes / 1024 / 1024:N0} MiB storage limit; remaining files were left unchanged.");
+                    break;
+                }
+
+                loaded.Add(candidate.item);
+                persistedBytes[candidate.item.id] = candidate.length;
+                storeBytes += candidate.length;
             }
 
             return loaded;

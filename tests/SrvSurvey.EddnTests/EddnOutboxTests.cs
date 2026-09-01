@@ -1,5 +1,7 @@
 using Newtonsoft.Json;
+using System.IO.Compression;
 using System.Net;
+using System.Text;
 using Xunit;
 
 namespace SrvSurvey.net;
@@ -101,24 +103,28 @@ public sealed class EddnOutboxTests
     }
 
     [Fact]
-    public async Task MessageLimitLoadsRemainingValidFilesInLaterBatches()
+    public async Task MessageLimitLoadsOldestValidFilesFirstAndContinuesInLaterBatches()
     {
         using var folder = new TemporaryFolder();
         var path = Path.Combine(folder.path, "eddn-outbox-v1.json");
         var store = storePath(path);
         Directory.CreateDirectory(store);
         var now = DateTimeOffset.UtcNow;
-        writeQueued(store, queued(now.AddSeconds(-2), "First Port"));
-        writeQueued(store, queued(now.AddSeconds(-1), "Second Port"));
+        var newest = queued(now.AddSeconds(-1), "Newest Port");
+        newest.id = Guid.Parse("00000000-0000-0000-0000-000000000001");
+        writeQueued(store, newest);
+        var oldest = queued(now.AddSeconds(-2), "Oldest Port");
+        oldest.id = Guid.Parse("ffffffff-ffff-ffff-ffff-ffffffffffff");
+        writeQueued(store, oldest);
         var logs = new List<string>();
-        var calls = 0;
+        var deliveredStations = new List<string?>();
 
         using var queue = new EddnOutbox(
             path,
-            EddnTransportTests.createTransport(_ =>
+            EddnTransportTests.createTransport(async request =>
             {
-                calls++;
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK));
+                deliveredStations.Add(await readStationName(request));
+                return new HttpResponseMessage(HttpStatusCode.OK);
             }),
             logs.Add,
             () => now,
@@ -131,7 +137,7 @@ public sealed class EddnOutboxTests
         queue.setEnabled(true, discardPendingWhenDisabled: false);
         await queue.processDue();
 
-        Assert.Equal(2, calls);
+        Assert.Equal(new[] { "Oldest Port", "Newest Port" }, deliveredStations);
         Assert.Equal(0, queue.pendingCount);
         Assert.False(Directory.Exists(store));
         Assert.Contains(logs, line => line.Contains(
@@ -673,6 +679,17 @@ public sealed class EddnOutboxTests
         File.WriteAllText(
             Path.Combine(store, message.id.ToString("N") + ".json"),
             JsonConvert.SerializeObject(message));
+    }
+
+    private static async Task<string?> readStationName(HttpRequestMessage request)
+    {
+        var compressed = await request.Content!.ReadAsByteArrayAsync();
+        using var input = new MemoryStream(compressed);
+        using var gzip = new GZipStream(input, CompressionMode.Decompress);
+        using var reader = new StreamReader(gzip, Encoding.UTF8);
+        var payload = Newtonsoft.Json.Linq.JObject.Parse(
+            await reader.ReadToEndAsync());
+        return payload["message"]?["StationName"]?.ToObject<string>();
     }
 
     private static EddnQueuedMessage queued(
