@@ -135,7 +135,7 @@ namespace SrvSurvey.plotters
                 // we need to know the site type before anything else
                 this.setMode(Mode.siteType);
             }
-            else if (siteData.siteHeading == -1 || siteData.siteHeading == 0)
+            else if (siteData.siteHeading == -1)
             {
                 // then we need to know the site heading
                 this.setMode(Mode.heading);

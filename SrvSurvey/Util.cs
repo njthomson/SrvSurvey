@@ -640,7 +640,8 @@ static class Util
         Program.defer(() => fadeNext(form, targetOpacity, lastTick, delta));
     }
 
-    public static bool isOdyssey = Game.activeGame?.journals == null || Game.activeGame.journals.isOdyssey;
+    /// <summary> Returns true if we are operating from a Live/Odyssey journal, or false if this from a Legacy journal </summary>
+    public static bool isOdyssey = Game.activeGame?.journals == null || !Game.activeGame.journals.isLegacy;
 
     public static int GetBodyValue(Scan scan, bool cmdrMapped)
     {

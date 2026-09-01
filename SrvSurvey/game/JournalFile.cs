@@ -32,11 +32,16 @@ namespace SrvSurvey
         protected StreamReader reader;
         public readonly string filepath;
         public readonly DateTime timestamp;
+        public Fileheader? fileheader { get; private set; }
+        public LoadGame? lastLoadGame { get; private set; }
         public string? cmdrName { get; private set; }
         public string? cmdrFid { get; private set; }
-        public readonly bool isOdyssey;
-        public bool? isGameOdyssey;
-        public bool? isGameHorizons;
+        /// <summary> Returns true if this is from a Legacy journal, or false if this from a Live/Odyssey journal. Assumes NOT legacy if we don't have the Fileheader line yet. </summary>
+        public bool isLegacy => this.fileheader?.Odyssey == false;
+        /// <summary> Returns whether the player paid for the Odyssey DLC, or null when the journal omitted the flag. </summary>
+        public bool? isGameOdyssey => this.lastLoadGame?.Odyssey;
+        /// <summary> Returns whether the player has Horizons, or null when the journal omitted the flag. </summary>
+        public bool? isGameHorizons => this.lastLoadGame?.Horizons;
 
         public bool isShutdown { get; private set; }
 
@@ -50,14 +55,6 @@ namespace SrvSurvey
             this.reader = Data.openSharedStreamReader(filepath);
 
             this.readEntries(targetFID);
-
-
-            // assume Odyssey if we don't have the Fileheader line yet.
-            this.isOdyssey = true;
-            if (this.Entries.FirstOrDefault() is Fileheader entryFileHeader)
-                this.isOdyssey = entryFileHeader.Odyssey;
-            //else
-            //    Debugger.Break(); // This happens when at the main menu before loading any cmdr
         }
 
         public void Dispose()
@@ -81,7 +78,7 @@ namespace SrvSurvey
         {
             while (this.reader?.EndOfStream == false)
             {
-                var (entry , raw)= this.readEntry();
+                var (entry, raw) = this.readEntry();
 
                 // stop early if not target cmdr
                 if (targetFID != null && entry is Commander && ((Commander)entry).FID != targetFID)
@@ -97,6 +94,18 @@ namespace SrvSurvey
             if (entry != null)
             {
                 this.Entries.Add(entry);
+
+                // keep hold of this for future reference
+                if (entry is Fileheader entryFileheader)
+                {
+                    if (this.fileheader != null)
+                    {
+                        Game.log("Why is there another Fileheader?");
+                        Debugger.Break();
+                    }
+                    this.fileheader = entryFileheader;
+                }
+
                 if (entry.@event == nameof(Shutdown) && !Program.useLastIfShutdown) this.isShutdown = true;
 
                 if (this.cmdrName == null && entry.@event == nameof(Commander))
@@ -106,12 +115,9 @@ namespace SrvSurvey
                     this.cmdrFid = commanderEntry.FID;
                 }
 
-                if (entry is LoadGame)
-                {
-                    var expansionFlags = JournalExpansionFlags.fromLoadGame(raw);
-                    this.isGameOdyssey = expansionFlags.odyssey;
-                    this.isGameHorizons = expansionFlags.horizons;
-                }
+                // keep hold of this for future reference
+                if (entry is LoadGame entryLoadGame)
+                    this.lastLoadGame = entryLoadGame;
             }
 
             return (entry, raw);
@@ -213,7 +219,7 @@ namespace SrvSurvey
                     if (finished) break;
                 }
 
-                var priorFilepath = JournalFile.getSiblingCommanderJournal(this.cmdrName, this.isOdyssey, journal.timestamp, this.cmdrFid);
+                var priorFilepath = JournalFile.getSiblingCommanderJournal(this.cmdrName, !this.isLegacy, journal.timestamp, this.cmdrFid);
                 journal = priorFilepath == null ? null : new JournalFile(priorFilepath);
             }
             ;
@@ -244,7 +250,7 @@ namespace SrvSurvey
                     if (finished) break;
                 }
 
-                priorFilepath = JournalFile.getSiblingCommanderJournal(this.cmdrName, this.isOdyssey, journal.timestamp, this.cmdrFid, searchUp);
+                priorFilepath = JournalFile.getSiblingCommanderJournal(this.cmdrName, !this.isLegacy, journal.timestamp, this.cmdrFid, searchUp);
                 if (priorFilepath != null)
                     journal = new JournalFile(priorFilepath);
 

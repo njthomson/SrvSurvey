@@ -8,13 +8,21 @@ namespace SrvSurvey.net;
 public sealed class EddnSessionPublisherTests
 {
     [Fact]
-    public void GameStaticInitializationDoesNotConstructAnEddnService()
+    public void GameOwnsOnlyTheApplicationLifetimeEddnService()
     {
         var staticEddnFields = typeof(Game)
             .GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
             .Where(field => field.FieldType == typeof(EDDN));
+        var instanceEddnFields = typeof(Game)
+            .GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            .Where(field => field.FieldType == typeof(EDDN));
+        var mainEddnFields = typeof(Main)
+            .GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            .Where(field => field.FieldType == typeof(EDDN));
 
-        Assert.Empty(staticEddnFields);
+        Assert.Single(staticEddnFields);
+        Assert.Empty(instanceEddnFields);
+        Assert.Empty(mainEddnFields);
     }
 
     [Fact]

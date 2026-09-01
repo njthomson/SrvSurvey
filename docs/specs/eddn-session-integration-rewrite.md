@@ -9,9 +9,10 @@ temporary network failures, and application restarts.
 
 ## Lifetime model
 
-- `Main` owns one application-lifetime EDDN service. It is created only after
-  `Settings.Load()` and owns consent checks, runtime safety, transport, the
-  exclusive queue lease, and durable retry delivery.
+- `Game` exposes one application-lifetime EDDN service as a static singleton.
+  It is explicitly created only after `Settings.Load()` and owns consent checks,
+  runtime safety, transport, the exclusive queue lease, and durable retry
+  delivery.
 - Each initialized `Game` owns one session publisher. It captures an immutable
   EDDN header containing that session's Commander and version values, and owns
   location, crew, signal-batch, companion-read, and deduplication state.
@@ -65,5 +66,5 @@ temporary network failures, and application restarts.
 - Regressions cover startup ordering, Commander A-to-B isolation, captured
   signal-batch location, retry fairness, consent deletion, companion-read
   invalidation, fixed `/test` schemas, queue restart, and exclusive ownership.
-- Release x64 build, the full test project, and a synthetic merge with the live
-  Inara PR must pass before the branch is published.
+- Release x64 build and the full test projects must pass against current `main`,
+  including the merged Inara integration, before the branch is published.

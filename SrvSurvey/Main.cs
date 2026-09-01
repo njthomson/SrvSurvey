@@ -25,7 +25,6 @@ namespace SrvSurvey
         private FileSystemWatcher? logFolderWatcher;
         private FileSystemWatcher? settingsFolderWatcher;
         private FileSystemWatcher? screenshotWatcher;
-        internal readonly EDDN eddn;
 
         private Rectangle lastWindowRect;
         private List<Control> bioCtrls;
@@ -42,7 +41,6 @@ namespace SrvSurvey
         public Main()
         {
             Game.log("Starting main form...");
-            eddn = new EDDN();
             form = this;
             InitializeComponent();
             btnSearch.Font = GameColors.Fonts.segoeEmoji_16_ns;
@@ -319,8 +317,6 @@ namespace SrvSurvey
                 {
                     lastProcCheck = DateTime.Now;
                     Elite.refreshManyGameProcs();
-                    if (Game.settings.eddnUploadEnabled)
-                        eddn.refreshRuntimeSafety();
 
                     // handle single/multiple processes
                     btnNextWindow.Visible = Elite.hadManyGameProcs;
@@ -329,13 +325,16 @@ namespace SrvSurvey
                         if (this.multiFloatie == null && Elite.hadManyGameProcs) FormMultiFloatie.create();
                         if (this.multiFloatie != null && !Elite.hadManyGameProcs && !multiFloatie.IsDisposed) multiFloatie.Close();
                     }
+
+                    if (Game.settings.eddnUploadEnabled)
+                        Game.eddn.refreshRuntimeSafety(Elite.hadManyGameProcs);
                 }
                 catch (Exception ex)
                 {
                     // EDDN must fail closed when shared file attribution cannot
                     // be established. Other game/process handling remains live.
                     if (Game.settings.eddnUploadEnabled)
-                        eddn.setSuspended(
+                        Game.eddn.setSuspended(
                             true,
                             "EDDN sharing is paused because running Elite instances could not be checked; pending uploads were preserved.");
                     // report but ignore any errors here
@@ -405,7 +404,7 @@ namespace SrvSurvey
                 Application.DoEvents();
             }
 
-            var newGame = new Game(Game.settings.preferredCommander, eddn);
+            var newGame = new Game(Game.settings.preferredCommander);
             if (newGame.isShutdown || !Elite.isGameRunning)
             {
                 newGame.Dispose();
@@ -543,6 +542,7 @@ namespace SrvSurvey
             if (rslt == DialogResult.Yes)
             {
                 game.cmdr.explRewards = 0;
+                game.cmdr.explRewardsBySystem = null;
                 game.cmdr.countJumps = 0;
                 game.cmdr.distanceTravelled = 0;
                 game.cmdr.countScans = 0;
@@ -1149,6 +1149,7 @@ namespace SrvSurvey
             BaseForm.applyThemeWithCustomControls(this);
 
             btnQuestComms.Visible = Game.settings.enableQuests;
+            menuHideNonColonisationOverlays.Checked = Game.settings.buildProjectsSuppressOtherOverlays;
 
             this.Invalidate(true);
         }
@@ -1813,6 +1814,19 @@ namespace SrvSurvey
         {
             var child = new FormApiKeyRCC();
             child.ShowDialog(this);
+        }
+
+        private void hideNonColonisationOverlaysToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Game.settings.buildProjectsSuppressOtherOverlays = !Game.settings.buildProjectsSuppressOtherOverlays;
+            Game.settings.Save();
+            this.menuHideNonColonisationOverlays.Checked = Game.settings.buildProjectsSuppressOtherOverlays;
+            PlotBase2.renderAll(this.game, true);
+
+            var msg = Game.settings.buildProjectsSuppressOtherOverlays
+                ? "Non-colonisation overlays will now be mostly hidden"
+                : "Non-colonisation overlays will now be visible";
+            MessageBox.Show(this, msg, "SrvSurvey");
         }
 
         private void menuUpdateSystem_Click(object sender, EventArgs e)

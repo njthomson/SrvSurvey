@@ -40,6 +40,17 @@ namespace SrvSurvey.game
             rcc = new RavenColonial.RavenColonial();
         }
 
+        internal static void initializeEddn()
+        {
+            eddnService ??= new EDDN();
+        }
+
+        internal static void disposeEddn()
+        {
+            eddnService?.Dispose();
+            eddnService = null;
+        }
+
         #region logging
 
         private static string prepLogFile()
@@ -111,8 +122,11 @@ namespace SrvSurvey.game
         public static EDSM edsm { get; private set; }
         public static Git git { get; private set; }
         public static RavenColonial.RavenColonial rcc { get; private set; }
-        private readonly EDDN eddnService;
+        private static EDDN? eddnService;
+        public static EDDN eddn => eddnService
+            ?? throw new InvalidOperationException("EDDN was accessed before application services were initialized.");
         private EddnSessionPublisher? eddnSession;
+        internal Inara? inara;
 
         public bool initialized { get; private set; } // TODO: reconcile with "Game.ready"
 
@@ -183,11 +197,8 @@ namespace SrvSurvey.game
         /// </summary>
         public static bool ready { get; private set; } = false;
 
-        public Game(string? cmdr, EDDN eddnService)
+        public Game(string? cmdr)
         {
-            ArgumentNullException.ThrowIfNull(eddnService);
-            this.eddnService = eddnService;
-
             string? fid = null;
             if (Program.forceFid != null)
             {
@@ -255,8 +266,13 @@ namespace SrvSurvey.game
                 this.eddnSession = null;
 
                 if (this.journals != null)
-                {
                     this.journals.onJournalEntry -= Journals_onJournalEntry;
+
+                this.inara?.Dispose();
+                this.inara = null;
+
+                if (this.journals != null)
+                {
                     this.journals.Dispose();
                     this.journals = null;
                 }
@@ -606,7 +622,7 @@ namespace SrvSurvey.game
             UploadPayloadHeader? eddnHeader = null;
 
             if (loadEntry == null)
-                loadEntry = this.journals!.FindEntryByType<LoadGame>(-1, true);
+                loadEntry = this.journals!.lastLoadGame;
 
             // read cmdr info
             if (loadEntry != null)
@@ -618,12 +634,12 @@ namespace SrvSurvey.game
                 Game.settings.lastFid = this.fid;
                 log($"Game.initializeFromJournal: USING {this.Commander} (FID:{this.fid}), journals.Count:{journals?.Count}");
 
-                // set EDDN upload header
-                var gameFileHeader = journals?.Entries.OfType<Fileheader>().FirstOrDefault();
+                // Capture the session-owned EDDN identity from the journal metadata.
+                var fileheader = journals!.fileheader;
                 eddnHeader = new UploadPayloadHeader(
                     loadEntry.Commander,
-                    gameFileHeader?.gameversion ?? loadEntry.gameversion,
-                    gameFileHeader?.build ?? loadEntry.build,
+                    fileheader?.gameversion ?? loadEntry.gameversion,
+                    fileheader?.build ?? loadEntry.build,
                     Program.releaseVersion);
             }
 
@@ -639,7 +655,7 @@ namespace SrvSurvey.game
             if (loadEntry != null)
             {
                 // How much does it matter that v4-live/Horizons acts just like Odyssey?
-                this.cmdr = CommanderSettings.Load(loadEntry.FID, journals.isOdyssey, loadEntry.Commander);
+                this.cmdr = CommanderSettings.Load(loadEntry.FID, !journals.isLegacy, loadEntry.Commander);
                 this.cmdrCodex = cmdr.loadCodex();
                 this.cmdrColony = ColonyData.Load(loadEntry.FID, loadEntry.Commander);
                 // Maybe? Game.ready = true;
@@ -725,6 +741,15 @@ namespace SrvSurvey.game
                 if (this.status.PlanetRadius > 0 && this.status.PlanetRadius != cmdr.currentBodyRadius)
                     log($"Oops - bad systemBody ?!");
 
+                // do not upload non-Live data to Inara
+                if (!journals.isLegacy)
+                {
+                    // Reconstruct Inara's current-session state without uploading journal history.
+                    // This must happen before live journal callbacks begin so credits and inventory
+                    // have an authoritative baseline when the first new event is processed.
+                    this.inara = Inara.Create(this);
+                }
+
                 log($"Game.initializeFromJournal: system: '{cmdr.currentSystem}' (id:{cmdr.currentSystemAddress}), body: '{this.systemBody?.name}' (id:{this.systemBody?.id}, r: {Util.metersToString(this.systemBody?.radius ?? -1)})");
             }
 
@@ -788,7 +813,7 @@ namespace SrvSurvey.game
             this.eddnSession = eddnHeader == null
                 ? null
                 : new EddnSessionPublisher(
-                    eddnService,
+                    Game.eddn,
                     eddnHeader,
                     Game.settings.watchedJournalFolder,
                     this.systemData is { address: > 0, starPos.Length: 3 }
@@ -798,6 +823,7 @@ namespace SrvSurvey.game
                             this.systemData.starPos.ToArray())
                         : null,
                     Game.log);
+
             log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{cmdr?.currentSystem}, systemLocation:{cmdr?.lastSystemLocation}, systemBody:{this.systemBody}, journals.Count:{journals.Count}");
             this.initialized = Game.activeGame == this && this.Commander != null;
             this.checkModeChange();
@@ -1150,6 +1176,9 @@ namespace SrvSurvey.game
                 {
                     Game.log($"EDDN ignored an exception processing '{eventName}' so other journal consumers can continue:\r\n{ex}");
                 }
+
+                // Inara also understands selected journal events that SrvSurvey has no typed class for.
+                this.inara?.onJournalEntry(raw);
 
                 // finally, let active quests know about this
                 PlayState.current?.processJournalEntry(raw).justDoIt();
@@ -3347,6 +3376,20 @@ namespace SrvSurvey.game
             // TODO: with new UX code, this should be just
             //// overlays may want to appear or render at this time
             //PlotBase2.renderAll(this);
+        }
+
+        private void onJournalEntry(SellExplorationData entry)
+        {
+            var soldSystems = (entry.Systems ?? new List<string>())
+                .Concat(entry.Discovered ?? new List<string>());
+            this.cmdr.removeSoldExplorationData(soldSystems, entry.@event);
+        }
+
+        private void onJournalEntry(MultiSellExplorationData entry)
+        {
+            var soldSystems = entry.Discovered?
+                .Select(system => system.SystemName) ?? Enumerable.Empty<string>();
+            this.cmdr.removeSoldExplorationData(soldSystems, entry.@event);
         }
 
         private void onJournalEntry(SellOrganicData entry)

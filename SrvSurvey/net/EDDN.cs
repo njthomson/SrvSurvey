@@ -59,7 +59,7 @@ namespace SrvSurvey.net
                 outbox.setSuspended(!runtimePublishingAllowed);
         }
 
-        internal void refreshRuntimeSafety()
+        internal void refreshRuntimeSafety(bool? hasMultipleEliteProcesses = null)
         {
             lock (sync)
             {
@@ -95,7 +95,7 @@ namespace SrvSurvey.net
                 return;
             }
 
-            refreshGameProcessSafety();
+            refreshGameProcessSafety(hasMultipleEliteProcesses);
         }
 
         internal bool setSuspended(bool suspended, string? pauseMessage = null)
@@ -152,11 +152,11 @@ namespace SrvSurvey.net
             return outbox.enqueue(queued);
         }
 
-        private void refreshGameProcessSafety()
+        private void refreshGameProcessSafety(bool? hasMultipleEliteProcesses)
         {
             try
             {
-                var suspended = Elite.refreshManyGameProcs();
+                var suspended = hasMultipleEliteProcesses ?? Elite.refreshManyGameProcs();
                 lock (sync) processDetectionWarningReported = false;
                 setSuspended(suspended);
             }

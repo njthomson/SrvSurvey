@@ -116,7 +116,6 @@
     <source>Pressure: {0}</source>
   </data>
   <data name="PressureValue">
-    <!--Machine translated-->
     <value>{0}(ATM)</value>
     <comment>The atmospheric pressure value
 {0} decimal, 4 places</comment>
