@@ -232,6 +232,11 @@ namespace SrvSurvey.game
                 };
             }
 
+            public static Hop from(Spansh.FleetCarrierRoute.Result.Jump jump)
+            {
+                return new Hop(jump.name, jump.id64, jump.x, jump.y, jump.z);
+            }
+
             public static implicit operator Hop(StarRef pos)
             {
                 return new Hop()

@@ -842,7 +842,8 @@ public class SystemSite
     {
         plan,
         build,
-        complete
+        complete,
+        demolish,
     }
 
     public override string ToString()

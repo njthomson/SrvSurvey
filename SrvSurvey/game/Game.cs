@@ -1375,6 +1375,10 @@ namespace SrvSurvey.game
             this.fsdJumping = false;
             this.statusBodyName = null;
 
+            // update route progress?
+            if (cmdr.route?.active == true)
+                cmdr.route.setNextHop(StarRef.from(entry));
+
             this.setLocations(entry);
         }
 

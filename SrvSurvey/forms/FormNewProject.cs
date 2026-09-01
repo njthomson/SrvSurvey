@@ -63,7 +63,7 @@ namespace SrvSurvey.forms
                 // pre-select if there is only one, drop the combo if there are choices
                 if (mapSites.Count == 2)
                     comboSystemSite.SelectedIndex = 1;
-                if (systemSites.Any(s => s.status != SystemSite.Status.complete))
+                if (systemSites.Any(s => s.status != SystemSite.Status.complete && s.status != SystemSite.Status.demolish))
                     comboSystemSite.DroppedDown = true;
             });
 

@@ -183,6 +183,8 @@ namespace SrvSurvey.forms
                 routeType = "neutron";
             else if (parts.Contains("exact-plotter"))
                 routeType = "galaxy";
+            else if (parts.Contains("fleet-carrier"))
+                routeType = "fc";
 
             Game.log($"Importing {routeType} route: '{routeId}' ...");
             lblStatus.Text = Properties.FormRouteExtras.ImportingSpansh.format(routeId);
@@ -210,6 +212,11 @@ namespace SrvSurvey.forms
                 {
                     var response = await Game.spansh.getRoute<NeutronRoute>(routeId);
                     parsedHops = response?.result?.system_jumps.Select(j => FollowRoute.Hop.from(j)).ToList()!;
+                }
+                else if (routeType == "fc")
+                {
+                    var response = await Game.spansh.getRoute<FleetCarrierRoute>(routeId);
+                    parsedHops = response?.result?.jumps.Select(j => FollowRoute.Hop.from(j)).ToList()!;
                 }
                 else
                 {
