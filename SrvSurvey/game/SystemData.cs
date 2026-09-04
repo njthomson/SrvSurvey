@@ -2772,9 +2772,9 @@ namespace SrvSurvey.game
                     if (match != null)
                         this.entryId = long.Parse(match.variant.entryId, CultureInfo.InvariantCulture);
                 }
-                bool discoveredInRegion = Game.activeGame?.cmdrCodex?.isDiscoveredInRegion(this.entryId, Game.activeGame.cmdr.galacticRegion) ?? false;
+                bool discoveredInRegion = this.entryId == 0 ? false : Game.activeGame?.cmdrCodex?.isDiscoveredInRegion(this.entryId, Game.activeGame.cmdr.galacticRegion) ?? false;
                 bool isFirstDiscovered = Game.activeGame?.cmdrCodex?.isPersonalFirstDiscovery(this.entryId, this.body.system.address, this.body.id) ?? false;
-                return (!discoveredInRegion && Game.settings.highlightRegionalFirsts) || isFirstDiscovered;
+                return (!discoveredInRegion && Game.settings.highlightRegionalFirsts) || this.isNewEntry || isFirstDiscovered;
             }
         }
 
