@@ -266,7 +266,7 @@ namespace SrvSurvey
                         countCargoTransferredTB = countCargoTransferred;
                     }
 
-                    if (journal.isOdyssey)
+                    if (!journal.isLegacy)
                     {
                         // if Odyssey ... process all exploration events
                         SystemData? sysData = null;

@@ -720,7 +720,7 @@ namespace SrvSurvey
 
         private void drawCommander(Graphics g)
         {
-            if (game?.systemSite == null || game?.status == null || game.isShutdown || this.siteData == null) return;
+            if (game?.systemSite == null || game?.status == null || game.isShutdown || this.siteData == null || game?.systemBody == null) return;
 
             g.ResetTransform();
 
@@ -732,7 +732,7 @@ namespace SrvSurvey
             g.TranslateTransform(mapCenter.X - dragOffset.X, mapCenter.Y - dragOffset.Y);
             g.ScaleTransform(this.scale, this.scale);
 
-            var cd = Util.getDistance(Status.here, this.siteData.location, (decimal)this.game.systemBody!.radius);
+            var cd = Util.getDistance(Status.here, this.siteData.location, (decimal)this.game.systemBody.radius);
             var cA = DecimalEx.PiHalf + Util.getBearingRad(siteData.location, Status.here) - (decimal)Util.degToRad(siteData.siteHeading);
 
             var cp = new PointF(

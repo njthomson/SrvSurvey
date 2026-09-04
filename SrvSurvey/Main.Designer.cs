@@ -111,6 +111,8 @@ namespace SrvSurvey
             menuNewProject = new ToolStripMenuItem();
             menuColonizeLine3 = new ToolStripSeparator();
             menuRavenColonial = new ToolStripMenuItem();
+            setApikeyToolStripMenuItem = new ToolStripMenuItem();
+            menuHideNonColonisationOverlays = new ToolStripMenuItem();
             menuColonizeWiki = new ToolStripMenuItem();
             menuColonizeLine4 = new ToolStripSeparator();
             menuUpdateHeader = new ToolStripMenuItem();
@@ -984,18 +986,18 @@ namespace SrvSurvey
             // menuColonize
             // 
             menuColonize.BackColor = SystemColors.ControlLight;
-            menuColonize.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            menuColonize.Items.AddRange(new ToolStripItem[] { menuRefreshProjects, menuColonizeLine1, menuMyProjects, menuCurrentProject, menuPrimaryProject, menuColonizeLine2, menuNewProject, menuColonizeLine3, menuRavenColonial, menuColonizeWiki, menuColonizeLine4, menuUpdateHeader, menuPublishFC, menuUpdateSystem, menuUpdateStations });
+            menuColonize.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            menuColonize.Items.AddRange(new ToolStripItem[] { menuRefreshProjects, menuColonizeLine1, menuMyProjects, menuCurrentProject, menuPrimaryProject, menuColonizeLine2, menuNewProject, menuColonizeLine3, menuRavenColonial, setApikeyToolStripMenuItem, menuColonizeWiki, menuHideNonColonisationOverlays, menuColonizeLine4, menuUpdateHeader, menuPublishFC, menuUpdateSystem, menuUpdateStations });
             menuColonize.Name = "menuColonize";
             menuColonize.RenderMode = ToolStripRenderMode.System;
-            menuColonize.Size = new Size(245, 436);
+            menuColonize.Size = new Size(260, 534);
             menuColonize.targetButton = btnColonize;
             // 
             // menuRefreshProjects
             // 
             menuRefreshProjects.Font = new Font("Segoe UI", 12F);
             menuRefreshProjects.Name = "menuRefreshProjects";
-            menuRefreshProjects.Size = new Size(244, 38);
+            menuRefreshProjects.Size = new Size(259, 38);
             menuRefreshProjects.Text = "Refresh data";
             menuRefreshProjects.ToolTipText = "Re-fetch colonisation data";
             menuRefreshProjects.Click += menuRefreshProjects_Click;
@@ -1003,14 +1005,15 @@ namespace SrvSurvey
             // menuColonizeLine1
             // 
             menuColonizeLine1.Name = "menuColonizeLine1";
-            menuColonizeLine1.Size = new Size(241, 6);
+            menuColonizeLine1.Size = new Size(256, 6);
             // 
             // menuMyProjects
             // 
             menuMyProjects.Font = new Font("Segoe UI", 12F);
             menuMyProjects.Name = "menuMyProjects";
-            menuMyProjects.Size = new Size(244, 38);
+            menuMyProjects.Size = new Size(259, 38);
             menuMyProjects.Text = "My projects ...";
+            menuMyProjects.ToolTipText = "View all your current projects";
             menuMyProjects.Click += menuMyProjects_Click;
             // 
             // menuCurrentProject
@@ -1019,7 +1022,7 @@ namespace SrvSurvey
             menuCurrentProject.Image = Properties.ImageResources.ruler;
             menuCurrentProject.ImageScaling = ToolStripItemImageScaling.None;
             menuCurrentProject.Name = "menuCurrentProject";
-            menuCurrentProject.Size = new Size(244, 38);
+            menuCurrentProject.Size = new Size(259, 38);
             menuCurrentProject.Text = "Local project";
             menuCurrentProject.ToolTipText = "View the local or your primary project";
             menuCurrentProject.Click += menuCurrentProject_Click;
@@ -1028,14 +1031,15 @@ namespace SrvSurvey
             // 
             menuPrimaryProject.Font = new Font("Segoe UI", 12F);
             menuPrimaryProject.Name = "menuPrimaryProject";
-            menuPrimaryProject.Size = new Size(244, 38);
+            menuPrimaryProject.Size = new Size(259, 38);
             menuPrimaryProject.Text = "Set primary";
+            menuPrimaryProject.ToolTipText = "Set current construction site as your primary.";
             menuPrimaryProject.Click += menuPrimaryProject_Click;
             // 
             // menuColonizeLine2
             // 
             menuColonizeLine2.Name = "menuColonizeLine2";
-            menuColonizeLine2.Size = new Size(241, 6);
+            menuColonizeLine2.Size = new Size(256, 6);
             // 
             // menuNewProject
             // 
@@ -1043,7 +1047,7 @@ namespace SrvSurvey
             menuNewProject.Image = Properties.ImageResources.ruler;
             menuNewProject.ImageScaling = ToolStripItemImageScaling.None;
             menuNewProject.Name = "menuNewProject";
-            menuNewProject.Size = new Size(244, 38);
+            menuNewProject.Size = new Size(259, 38);
             menuNewProject.Text = "New project ...";
             menuNewProject.ToolTipText = "Create a new build project";
             menuNewProject.Click += menuNewProject_Click;
@@ -1051,7 +1055,7 @@ namespace SrvSurvey
             // menuColonizeLine3
             // 
             menuColonizeLine3.Name = "menuColonizeLine3";
-            menuColonizeLine3.Size = new Size(241, 6);
+            menuColonizeLine3.Size = new Size(256, 6);
             // 
             // menuRavenColonial
             // 
@@ -1059,23 +1063,42 @@ namespace SrvSurvey
             menuRavenColonial.Image = Properties.ImageResources.rcc_32;
             menuRavenColonial.ImageScaling = ToolStripItemImageScaling.None;
             menuRavenColonial.Name = "menuRavenColonial";
-            menuRavenColonial.Size = new Size(244, 38);
+            menuRavenColonial.Size = new Size(259, 38);
             menuRavenColonial.Text = "Raven Colonial";
-            menuRavenColonial.ToolTipText = "View all your current projects";
+            menuRavenColonial.ToolTipText = "Open Raven Colonial in a browser";
             menuRavenColonial.Click += menuRavenColonial_Click;
+            // 
+            // setApikeyToolStripMenuItem
+            // 
+            setApikeyToolStripMenuItem.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            setApikeyToolStripMenuItem.Image = (Image)resources.GetObject("setApikeyToolStripMenuItem.Image");
+            setApikeyToolStripMenuItem.ImageScaling = ToolStripItemImageScaling.None;
+            setApikeyToolStripMenuItem.Name = "setApikeyToolStripMenuItem";
+            setApikeyToolStripMenuItem.Size = new Size(259, 38);
+            setApikeyToolStripMenuItem.Text = "Set api-key";
+            setApikeyToolStripMenuItem.ToolTipText = "Authorize SrvSurvey against Raven Colonial";
+            setApikeyToolStripMenuItem.Click += setApikeyToolStripMenuItem_Click;
+            // 
+            // menuHideNonColonisationOverlays
+            // 
+            menuHideNonColonisationOverlays.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            menuHideNonColonisationOverlays.Name = "menuHideNonColonisationOverlays";
+            menuHideNonColonisationOverlays.Size = new Size(259, 38);
+            menuHideNonColonisationOverlays.Text = "Hide non-Colonisation overlays";
+            menuHideNonColonisationOverlays.Click += hideNonColonisationOverlaysToolStripMenuItem_Click;
             // 
             // menuColonizeWiki
             // 
             menuColonizeWiki.Font = new Font("Segoe UI", 12F);
             menuColonizeWiki.Name = "menuColonizeWiki";
-            menuColonizeWiki.Size = new Size(244, 38);
+            menuColonizeWiki.Size = new Size(259, 38);
             menuColonizeWiki.Text = "See the wiki";
             menuColonizeWiki.Click += menuColonizeWiki_Click;
             // 
             // menuColonizeLine4
             // 
             menuColonizeLine4.Name = "menuColonizeLine4";
-            menuColonizeLine4.Size = new Size(241, 6);
+            menuColonizeLine4.Size = new Size(256, 6);
             menuColonizeLine4.Visible = false;
             // 
             // menuUpdateHeader
@@ -1095,7 +1118,7 @@ namespace SrvSurvey
             // 
             menuPublishFC.Font = new Font("Segoe UI", 11.25F);
             menuPublishFC.Name = "menuPublishFC";
-            menuPublishFC.Size = new Size(244, 38);
+            menuPublishFC.Size = new Size(259, 38);
             menuPublishFC.Text = "Publish Fleet Carrier";
             menuPublishFC.Visible = false;
             menuPublishFC.Click += menuPublishFC_Click;
@@ -1104,7 +1127,7 @@ namespace SrvSurvey
             // 
             menuUpdateSystem.Font = new Font("Segoe UI", 11.25F);
             menuUpdateSystem.Name = "menuUpdateSystem";
-            menuUpdateSystem.Size = new Size(244, 38);
+            menuUpdateSystem.Size = new Size(259, 38);
             menuUpdateSystem.Text = "Update system bodies";
             menuUpdateSystem.Visible = false;
             menuUpdateSystem.Click += menuUpdateSystem_Click;
@@ -1113,7 +1136,7 @@ namespace SrvSurvey
             // 
             menuUpdateStations.Font = new Font("Segoe UI", 11.25F);
             menuUpdateStations.Name = "menuUpdateStations";
-            menuUpdateStations.Size = new Size(244, 38);
+            menuUpdateStations.Size = new Size(259, 38);
             menuUpdateStations.Text = "Update system...";
             menuUpdateStations.Click += menuUpdateStations_Click;
             // 
@@ -1426,5 +1449,7 @@ namespace SrvSurvey
         private ToolStripMenuItem menuMyProjects;
         private DrawButton btnResetBio;
         public DrawButton btnQuestComms;
+        private ToolStripMenuItem setApikeyToolStripMenuItem;
+        private ToolStripMenuItem menuHideNonColonisationOverlays;
     }
 }

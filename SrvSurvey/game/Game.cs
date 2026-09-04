@@ -113,6 +113,7 @@ namespace SrvSurvey.game
         public static Git git { get; private set; }
         public static RavenColonial.RavenColonial rcc { get; private set; }
         public static EDDN eddn { get; private set; }
+        internal Inara? inara;
 
         public bool initialized { get; private set; } // TODO: reconcile with "Game.ready"
 
@@ -251,8 +252,13 @@ namespace SrvSurvey.game
                 EDDN.header = null;
 
                 if (this.journals != null)
-                {
                     this.journals.onJournalEntry -= Journals_onJournalEntry;
+
+                this.inara?.Dispose();
+                this.inara = null;
+
+                if (this.journals != null)
+                {
                     this.journals.Dispose();
                     this.journals = null;
                 }
@@ -614,11 +620,7 @@ namespace SrvSurvey.game
                 log($"Game.initializeFromJournal: USING {this.Commander} (FID:{this.fid}), journals.Count:{journals?.Count}");
 
                 // set EDDN upload header
-                if (journals?.Entries.Count > 0)
-                {
-                    var gameFileHeader = (Fileheader)journals.Entries.First();
-                    EDDN.header = new UploadPayloadHeader(loadEntry.Commander, gameFileHeader.gameversion, gameFileHeader.build);
-                }
+                EDDN.header = new UploadPayloadHeader(loadEntry.Commander, journals!.fileheader!.gameversion, journals.fileheader.build);
             }
 
             // exit early if we are shutdown
@@ -633,7 +635,7 @@ namespace SrvSurvey.game
             if (loadEntry != null)
             {
                 // How much does it matter that v4-live/Horizons acts just like Odyssey?
-                this.cmdr = CommanderSettings.Load(loadEntry.FID, journals.isOdyssey, loadEntry.Commander);
+                this.cmdr = CommanderSettings.Load(loadEntry.FID, !journals.isLegacy, loadEntry.Commander);
                 this.cmdrCodex = cmdr.loadCodex();
                 this.cmdrColony = ColonyData.Load(loadEntry.FID, loadEntry.Commander);
                 // Maybe? Game.ready = true;
@@ -718,6 +720,15 @@ namespace SrvSurvey.game
 
                 if (this.status.PlanetRadius > 0 && this.status.PlanetRadius != cmdr.currentBodyRadius)
                     log($"Oops - bad systemBody ?!");
+
+                // do not upload non-Live data to Inara
+                if (!journals.isLegacy)
+                {
+                    // Reconstruct Inara's current-session state without uploading journal history.
+                    // This must happen before live journal callbacks begin so credits and inventory
+                    // have an authoritative baseline when the first new event is processed.
+                    this.inara = Inara.Create(this);
+                }
 
                 log($"Game.initializeFromJournal: system: '{cmdr.currentSystem}' (id:{cmdr.currentSystemAddress}), body: '{this.systemBody?.name}' (id:{this.systemBody?.id}, r: {Util.metersToString(this.systemBody?.radius ?? -1)})");
             }
@@ -1109,6 +1120,9 @@ namespace SrvSurvey.game
                     if (Game.settings.eddnUpload && EDDN.header != null)
                         eddn.onJournalEntry(this, (dynamic)entry, raw);
                 }
+
+                // Inara also understands selected journal events that SrvSurvey has no typed class for.
+                this.inara?.onJournalEntry(raw);
 
                 // finally, let active quests know about this
                 PlayState.current?.processJournalEntry(raw).justDoIt();
@@ -1640,7 +1654,7 @@ namespace SrvSurvey.game
                     inventoryItem.Count -= delta;
 
                     // update linked FC? (but not squadron FC)
-                    if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID) && lastDocked.StationServices?.Contains("squadronBank") == false)
+                    if (Game.settings.buildProjects_TEST && lastDocked?.StationType == StationType.FleetCarrier && cmdrColony.linkedFCs.ContainsKey(lastDocked.MarketID)) // TODO: confirm this is no longer needed: && lastDocked.StationServices?.Contains("squadronBank") == false)
                     {
                         Game.log($"Transferring {delta}x {transferItem.Type} to tracked marketId: {lastDocked.MarketID}");
                         fcTrackedCargo.init(transferItem.Type);
@@ -3306,6 +3320,20 @@ namespace SrvSurvey.game
             // TODO: with new UX code, this should be just
             //// overlays may want to appear or render at this time
             //PlotBase2.renderAll(this);
+        }
+
+        private void onJournalEntry(SellExplorationData entry)
+        {
+            var soldSystems = (entry.Systems ?? new List<string>())
+                .Concat(entry.Discovered ?? new List<string>());
+            this.cmdr.removeSoldExplorationData(soldSystems, entry.@event);
+        }
+
+        private void onJournalEntry(MultiSellExplorationData entry)
+        {
+            var soldSystems = entry.Discovered?
+                .Select(system => system.SystemName) ?? Enumerable.Empty<string>();
+            this.cmdr.removeSoldExplorationData(soldSystems, entry.@event);
         }
 
         private void onJournalEntry(SellOrganicData entry)
