@@ -878,7 +878,7 @@ namespace BioCriterias
                 979198957068914, //Ogairy FI-B c13-3562: should predict Sinuous Tubers
                 12180091181338, //NGC 6357 Sector AV-Y c44: should not predict Sinuous Tubers
 
-
+                1385689025315, //Blau Eur NI-T d3-40 B 6: misidentifies star as K instead of N
             };
         }
 
