@@ -38,7 +38,17 @@ namespace SrvSurvey.game
             edsm = new EDSM();
             git = new Git();
             rcc = new RavenColonial.RavenColonial();
-            eddn = new EDDN();
+        }
+
+        internal static void initializeEddn()
+        {
+            eddnService ??= new EDDN();
+        }
+
+        internal static void disposeEddn()
+        {
+            eddnService?.Dispose();
+            eddnService = null;
         }
 
         #region logging
@@ -112,7 +122,10 @@ namespace SrvSurvey.game
         public static EDSM edsm { get; private set; }
         public static Git git { get; private set; }
         public static RavenColonial.RavenColonial rcc { get; private set; }
-        public static EDDN eddn { get; private set; }
+        private static EDDN? eddnService;
+        public static EDDN eddn => eddnService
+            ?? throw new InvalidOperationException("EDDN was accessed before application services were initialized.");
+        private EddnSessionPublisher? eddnSession;
         internal Inara? inara;
 
         public bool initialized { get; private set; } // TODO: reconcile with "Game.ready"
@@ -249,7 +262,8 @@ namespace SrvSurvey.game
         {
             if (disposing)
             {
-                EDDN.header = null;
+                this.eddnSession?.Dispose();
+                this.eddnSession = null;
 
                 if (this.journals != null)
                     this.journals.onJournalEntry -= Journals_onJournalEntry;
@@ -605,9 +619,10 @@ namespace SrvSurvey.game
         private void initializeFromJournal(LoadGame? loadEntry = null)
         {
             log($"Game.initializeFromJournal: BEGIN {this.Commander} (FID:{this.fid}), journals.Count:{journals?.Count}");
+            UploadPayloadHeader? eddnHeader = null;
 
             if (loadEntry == null)
-                loadEntry = this.journals!.FindEntryByType<LoadGame>(-1, true);
+                loadEntry = this.journals!.lastLoadGame;
 
             // read cmdr info
             if (loadEntry != null)
@@ -619,8 +634,13 @@ namespace SrvSurvey.game
                 Game.settings.lastFid = this.fid;
                 log($"Game.initializeFromJournal: USING {this.Commander} (FID:{this.fid}), journals.Count:{journals?.Count}");
 
-                // set EDDN upload header
-                EDDN.header = new UploadPayloadHeader(loadEntry.Commander, journals!.fileheader!.gameversion, journals.fileheader.build);
+                // Capture the session-owned EDDN identity from the journal metadata.
+                var fileheader = journals!.fileheader;
+                eddnHeader = new UploadPayloadHeader(
+                    loadEntry.Commander,
+                    fileheader?.gameversion ?? loadEntry.gameversion,
+                    fileheader?.build ?? loadEntry.build,
+                    Program.releaseVersion);
             }
 
             // exit early if we are shutdown
@@ -788,6 +808,21 @@ namespace SrvSurvey.game
                 this.cargoFile.Count = 0;
                 this.cargoFile.Inventory.Clear();
             }
+
+            this.eddnSession?.Dispose();
+            this.eddnSession = eddnHeader == null
+                ? null
+                : new EddnSessionPublisher(
+                    Game.eddn,
+                    eddnHeader,
+                    Game.settings.watchedJournalFolder,
+                    this.systemData is { address: > 0, starPos.Length: 3 }
+                        ? new EddnLocationContext(
+                            this.systemData.name,
+                            this.systemData.address,
+                            this.systemData.starPos.ToArray())
+                        : null,
+                    Game.log);
 
             log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{cmdr?.currentSystem}, systemLocation:{cmdr?.lastSystemLocation}, systemBody:{this.systemBody}, journals.Count:{journals.Count}");
             this.initialized = Game.activeGame == this && this.Commander != null;
@@ -1116,9 +1151,30 @@ namespace SrvSurvey.game
                     // let any active plotters process the entry
                     PlotBase2.processJournalEntry(entry);
 
-                    // upload to EDDN?
-                    if (Game.settings.eddnUpload && EDDN.header != null)
-                        eddn.onJournalEntry(this, (dynamic)entry, raw);
+                }
+
+                // EDDN also needs raw events that SrvSurvey does not otherwise hydrate,
+                // such as Outfitting, Shipyard and FCMaterials file notifications.
+                try
+                {
+                    this.eddnSession?.onJournalEntry(
+                        raw,
+                        new EddnMessageContext(
+                            null,
+                            this.journals?.isGameHorizons,
+                            this.journals?.isGameOdyssey,
+                            this.status?.BodyName,
+                            this.systemBody?.name,
+                            this.systemBody?.id,
+                            this.systemBody?.type is SystemBodyType.Giant
+                                or SystemBodyType.SolidBody
+                                or SystemBodyType.LandableBody
+                                ? "Planet"
+                                : null));
+                }
+                catch (Exception ex)
+                {
+                    Game.log($"EDDN ignored an exception processing '{eventName}' so other journal consumers can continue:\r\n{ex}");
                 }
 
                 // Inara also understands selected journal events that SrvSurvey has no typed class for.

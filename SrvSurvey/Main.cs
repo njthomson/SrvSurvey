@@ -316,8 +316,7 @@ namespace SrvSurvey
                 try
                 {
                     lastProcCheck = DateTime.Now;
-                    var procs = Elite.GetGameProcs();
-                    Elite.hadManyGameProcs = procs.Length > 1;
+                    Elite.refreshManyGameProcs();
 
                     // handle single/multiple processes
                     btnNextWindow.Visible = Elite.hadManyGameProcs;
@@ -326,9 +325,18 @@ namespace SrvSurvey
                         if (this.multiFloatie == null && Elite.hadManyGameProcs) FormMultiFloatie.create();
                         if (this.multiFloatie != null && !Elite.hadManyGameProcs && !multiFloatie.IsDisposed) multiFloatie.Close();
                     }
+
+                    if (Game.settings.eddnUploadEnabled)
+                        Game.eddn.refreshRuntimeSafety(Elite.hadManyGameProcs);
                 }
                 catch (Exception ex)
                 {
+                    // EDDN must fail closed when shared file attribution cannot
+                    // be established. Other game/process handling remains live.
+                    if (Game.settings.eddnUploadEnabled)
+                        Game.eddn.setSuspended(
+                            true,
+                            "EDDN sharing is paused because running Elite instances could not be checked; pending uploads were preserved.");
                     // report but ignore any errors here
                     Game.log($"timer1_Tick: GetProcessesByName failed:\r\n\t{ex.Message}\r\n{ex.StackTrace}");
                 }

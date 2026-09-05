@@ -187,6 +187,7 @@ namespace SrvSurvey
             checkBox8 = new CheckBox2();
             checkBox4 = new CheckBox2();
             tabExternalData = new TabPage();
+            btnConfigureEddn = new DrawButton();
             btnSetApiKeyInara = new DrawButton();
             btnSetApiKeyRCC = new DrawButton();
             groupColonization = new GroupBox2();
@@ -2545,6 +2546,7 @@ namespace SrvSurvey
             // tabExternalData
             // 
             tabExternalData.BorderStyle = BorderStyle.Fixed3D;
+            tabExternalData.Controls.Add(btnConfigureEddn);
             tabExternalData.Controls.Add(btnSetApiKeyInara);
             tabExternalData.Controls.Add(btnSetApiKeyRCC);
             tabExternalData.Controls.Add(groupColonization);
@@ -2567,7 +2569,29 @@ namespace SrvSurvey
             tabExternalData.Size = new Size(699, 448);
             tabExternalData.TabIndex = 6;
             tabExternalData.Text = "External Data";
-            // 
+            //
+            // btnConfigureEddn
+            //
+            btnConfigureEddn.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnConfigureEddn.AnimateOnPress = false;
+            btnConfigureEddn.BackColorDisabled = Color.Empty;
+            btnConfigureEddn.BackColorHover = Color.Empty;
+            btnConfigureEddn.BackColorPressed = Color.Empty;
+            btnConfigureEddn.DrawBorder = true;
+            btnConfigureEddn.FlatStyle = FlatStyle.Flat;
+            btnConfigureEddn.ForeColor = Color.Black;
+            btnConfigureEddn.ForeColorDisabled = Color.Empty;
+            btnConfigureEddn.ForeColorHover = Color.Empty;
+            btnConfigureEddn.ForeColorPressed = Color.Empty;
+            btnConfigureEddn.Location = new Point(8, 371);
+            btnConfigureEddn.Margin = new Padding(4, 3, 4, 3);
+            btnConfigureEddn.Name = "btnConfigureEddn";
+            btnConfigureEddn.Size = new Size(168, 27);
+            btnConfigureEddn.TabIndex = 37;
+            btnConfigureEddn.Text = "Configure EDDN Sharing";
+            btnConfigureEddn.UseVisualStyleBackColor = true;
+            btnConfigureEddn.Click += btnConfigureEddn_Click;
+            //
             // btnSetApiKeyInara
             // 
             btnSetApiKeyInara.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
@@ -4023,6 +4047,7 @@ namespace SrvSurvey
         private CheckBox2 checkBox57;
         private CheckBox2 checkBox210;
         private LinkLabel linkLabel4;
+        private DrawButton btnConfigureEddn;
         private DrawButton btnSetApiKeyRCC;
         private DrawButton btnSetApiKeyInara;
     }

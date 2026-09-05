@@ -38,10 +38,10 @@ namespace SrvSurvey
         public string? cmdrFid { get; private set; }
         /// <summary> Returns true if this is from a Legacy journal, or false if this from a Live/Odyssey journal. Assumes NOT legacy if we don't have the Fileheader line yet. </summary>
         public bool isLegacy => this.fileheader?.Odyssey == false;
-        /// <summary> Returns true the player paid for the Odyssey DLC </summary>
-        public bool isGameOdyssey => this.lastLoadGame?.Odyssey ?? false;
-        /// <summary> Returns true the player has the Horizons expension (which I think everyone does now) </summary>
-        public bool isGameHorizons => this.lastLoadGame?.Horizons ?? false;
+        /// <summary> Returns whether the player paid for the Odyssey DLC, or null when the journal omitted the flag. </summary>
+        public bool? isGameOdyssey => this.lastLoadGame?.Odyssey;
+        /// <summary> Returns whether the player has Horizons, or null when the journal omitted the flag. </summary>
+        public bool? isGameHorizons => this.lastLoadGame?.Horizons;
 
         public bool isShutdown { get; private set; }
 

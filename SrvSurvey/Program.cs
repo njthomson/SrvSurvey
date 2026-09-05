@@ -123,8 +123,19 @@ namespace SrvSurvey
                     }
                 }
 
-                Form mainForm = invokePostProcessor ? new FormPostProcess(args.LastOrDefault()) : new Main();
-                Application.Run(mainForm);
+                try
+                {
+                    if (!invokePostProcessor)
+                        Game.initializeEddn();
+
+                    Form mainForm = invokePostProcessor ? new FormPostProcess(args.LastOrDefault()) : new Main();
+                    Application.Run(mainForm);
+                }
+                finally
+                {
+                    if (!invokePostProcessor)
+                        Game.disposeEddn();
+                }
             }
             catch (Exception ex)
             {

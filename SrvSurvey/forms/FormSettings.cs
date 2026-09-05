@@ -959,6 +959,12 @@ namespace SrvSurvey
             child.ShowDialog(this);
         }
 
+        private void btnConfigureEddn_Click(object sender, EventArgs e)
+        {
+            var child = new FormEddnIntegration(Game.eddn);
+            child.ShowDialog(this);
+        }
+
         private void btnSetApiKeyInara_Click(object sender, EventArgs e)
         {
             var child = new FormInaraIntegration();
