@@ -107,6 +107,7 @@ namespace SrvSurvey.widgets
 
             public static Pen red1 = red.toPen(1);
             public static Pen red2 = red.toPen(2);
+            public static Pen red3r = red.toPen(3, LineCap.Round);
 
             public static Pen redDark1 = redDark.toPen(1);
 

@@ -165,7 +165,7 @@ namespace SrvSurvey.plotters
 
         private double getOpacity()
         {
-            if (Program.tempHideAllPlotters || !Elite.gameHasFocus)
+            if (Program.tempHideAllPlotters || !Elite.gameHasFocus || game?.Commander == null)
                 return 0;
 
             if (game.mode == GameMode.Landed)

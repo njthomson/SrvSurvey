@@ -1375,6 +1375,10 @@ namespace SrvSurvey.game
             this.fsdJumping = false;
             this.statusBodyName = null;
 
+            // update route progress?
+            if (cmdr.route?.active == true)
+                cmdr.route.setNextHop(StarRef.from(entry));
+
             this.setLocations(entry);
         }
 
@@ -1775,7 +1779,7 @@ namespace SrvSurvey.game
             if (Game.settings.buildProjects_TEST && Game.settings.buildProjectsTrackShipCargo && cmdrColony.notHiddenProjects.Any())
                 ColonyData.publishCurrentShip(this).justDoIt();
 
-            PlotBase2.invalidate(nameof(PlotBuildCommodities));
+            PlotBase2.invalidate(nameof(PlotBuildCommodities), nameof(PlotMiniTrack));
         }
 
         private void onJournalEntry(MarketBuy entry)

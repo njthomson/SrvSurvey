@@ -130,7 +130,7 @@ namespace SrvSurvey.plotters
              * C) Show the map
              */
 
-            if (siteData.type == GuardianSiteData.SiteType.Unknown)
+            if (siteData.type == GuardianSiteData.SiteType.Unknown || game?.Commander == null)
             {
                 // we need to know the site type before anything else
                 this.setMode(Mode.siteType);

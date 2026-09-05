@@ -74,7 +74,8 @@ namespace SrvSurvey
         public bool autoShowPlotBodyInfoAtSurface = false;
 
         public bool autoShowPlotMassacre_TEST = false;
-        public bool autoShowPlotMiniTrack_TEST = false;
+        public bool autoShowPlotMiniTrack = true;
+        public bool autoShowPlotMiniTrackRhino = true;        
         public bool autoShowPlotStationInfo_TEST = true;
         public bool autoShowFloatie_TEST = true;
         public bool autoShowFootCombat_TEST = false;

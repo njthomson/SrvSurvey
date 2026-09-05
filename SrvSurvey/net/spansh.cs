@@ -345,6 +345,35 @@ namespace SrvSurvey.net
             }
         }
 
+        public class FleetCarrierRoute : RouteBase
+        {
+            public Result result;
+
+            public class Result
+            {
+                public List<Jump> jumps;
+
+                public class Jump
+                {
+                    public double distance;
+                    public double distance_to_destination;
+                    public double fuel_in_tank;
+                    public double fuel_used;
+                    public long id64;
+                    public string name;
+                    public double x;
+                    public double y;
+                    public double z;
+                    // TODO: add the rest?
+
+                    public StarRef toStarRef()
+                    {
+                        return new StarRef(x, y, z, name, id64);
+                    }
+                }
+            }
+        }
+
         public async Task getClause(string genus, string species, string gas)
         {
             //Game.log($"Querying ");

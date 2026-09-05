@@ -366,7 +366,7 @@ namespace SrvSurvey.canonn
 
             var dist = offset.dist;
             var angle = offset.angle + (decimal)shipHeading;
-            Game.log($"Adjusting landing location for: {shipType}, dist: {dist}, angle: {angle}\r\npd:{pd}, po:{offset} (alt: {Game.activeGame?.status?.Altitude})\r\n{location} =>\r\n{newLocation}");
+            Game.log($"Adjusting landing location for: {shipType}, dist: {dist}, angle: {angle}\r\nshipHeading: {shipHeading}\r\npd:{pd}, po:{offset} (alt: {Game.activeGame?.status?.Altitude})\r\n{location} =>\r\n{newLocation}");
             return newLocation;
         }
 
@@ -447,6 +447,10 @@ namespace SrvSurvey.canonn
 
             { "foot", new PointM(0d, 0d) }, // No offset applied when on foot
             { "taxi", new PointM(-0.9996653405051110150258470637, -11.913859432190865089645580760) }, // Taxi is an Adder but matching seat #2
+
+            { "MEV_Rhino", new PointM(0M, -4) },
+            // This is the offset to a rig deployed by a Rhino, not the center of a Rhino
+            { "MEV_Rhino_Rig", new PointM(0M, -7) }, 
         };
 
         public static Dictionary<string, int> mapShipSizes = new Dictionary<string, int>()
