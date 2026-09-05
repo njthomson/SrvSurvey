@@ -602,6 +602,8 @@ namespace SrvSurvey
 
             if (game.vehicle == ActiveVehicle.MainShip)
                 this.txtVehicle.Text = Util.pascal(game.currentShip.name ?? game.currentShip.type);
+            else if (game.vehicle == ActiveVehicle.SRV && game.lastLaunchSrv != null)
+                this.txtVehicle.Text = game.lastLaunchSrv.SRVType_Localised;
             else
                 this.txtVehicle.Text = game.vehicle.ToString();
 

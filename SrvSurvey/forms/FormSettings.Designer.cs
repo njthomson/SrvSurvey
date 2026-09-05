@@ -3543,7 +3543,7 @@ namespace SrvSurvey
             checkBox38.Name = "checkBox38";
             checkBox38.Size = new Size(94, 19);
             checkBox38.TabIndex = 41;
-            checkBox38.Tag = "autoShowPlotMiniTrack_TEST";
+            checkBox38.Tag = "autoShowPlotMiniTrack";
             checkBox38.Text = "Mini trackers";
             checkBox38.UseVisualStyleBackColor = true;
             // 

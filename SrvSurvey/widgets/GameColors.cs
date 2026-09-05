@@ -254,6 +254,7 @@ namespace SrvSurvey.widgets
 
         public static Brush brushTrackerClose = new SolidBrush(Color.FromArgb(32, DarkCyan));
         public static Pen penTrackerClose = newPen(Color.FromArgb(36, Cyan), 12);
+        public static Pen penRigVeryClose = newPen(Color.FromArgb(128, C.cyan), 12);
 
         public static Pen penShipDepartFar = newPen(Color.FromArgb(64, Color.Red), 32, DashStyle.DashDotDot);
         public static Pen penShipDepartNear = newPen(Color.FromArgb(255, Color.Red), 32, DashStyle.DashDotDot);

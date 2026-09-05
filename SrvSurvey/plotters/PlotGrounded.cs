@@ -31,7 +31,8 @@ namespace SrvSurvey.plotters
                 && !game.status.FsdChargingJump
                 && (!Game.settings.enableGuardianSites || !PlotGuardians.allowed(game))
                 && (!Game.settings.autoShowHumanSitesTest || !PlotHumanSite.allowed(game))
-                && (game.systemBody.bioScans?.Count > 0 || game.systemBody.bookmarks?.Keys.Count(k => k[0] != '#') > 0 ||  game.cmdr.scanOne != null)
+                //&& (game.systemBody.bioScans?.Count > 0 || game.systemBody.bookmarks?.Keys.Count(k => k[0] != '#') > 0 || game.cmdr.scanOne != null)
+                && (game.systemBody.bioScans?.Count > 0 || game.systemBody.bookmarks?.Count > 0 || game.cmdr.scanOne != null)
                 && game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.RolePanel)
                 && (!Game.settings.autoHideBioPlotNoGear || game.mode != GameMode.Flying || game.status.landingGearDown)
                 ;
@@ -272,23 +273,44 @@ namespace SrvSurvey.plotters
 
                 // default range to 50m unless name matches a Genus
                 var radius = BioGenus.getRange(name);
+                if (PlotMiniTrack.inRhino && radius == 50) radius = 70;
 
                 // draw radar circles for this group, and lines
                 foreach (var tt in form.trackers[name])
                 {
                     var b = isActive ? GameColors.brushTracker : GameColors.brushTrackInactive;
                     var p = isActive ? GameColors.penTracker : GameColors.penTrackInactive;
-                    if (isActive && tt.distance < PlotTrackers.highlightDistance)
+                    if ((isActive && tt.distance < PlotTrackers.highlightDistance) || (PlotMiniTrack.inRhino && tt.distance < 5))
                     {
                         b = GameColors.brushTrackerClose;
                         p = GameColors.penTrackerClose;
                     }
 
+                    if (PlotMiniTrack.inRhino && name[0] == '#' && tt.distance < 75 && tt.distance > 10)
+                    {
+                        b = GameColors.brushExclusionDenied;
+                        p = GameColors.penExclusionDenied;
+                    }
+
                     var rect = new RectangleF((float)tt.dx - radius, (float)-tt.dy - radius, radius * 2f, radius * 2f);
                     this.drawRadarCircle(g, rect, b, p);
 
+                    // highlight mining rigs differently
+                    if (PlotMiniTrack.inRhino && name[0] == '#')
+                    {
+                        if (tt.distance < 75)
+                        {
+                            p = GameColors.penExclusionDenied;
+                            if (tt.distance < 10)
+                                p = GameColors.penRigVeryClose;
+
+                            var innerRadius = 50;
+                            rect = new RectangleF((float)tt.dx - innerRadius, (float)-tt.dy - innerRadius, innerRadius * 2f, innerRadius * 2f);
+                            this.drawRadarCircle(g, rect, b, p);
+                        }
+                    }
                     // draw an inner circle if really close
-                    if (tt.distance < PlotTrackers.highlightDistance)
+                    else if (tt.distance < PlotTrackers.highlightDistance)
                     {
                         if (game.cmdr.scanOne == null || game.cmdr.scanOne.genus == name)
                             p = GameColors.penExclusionActive;

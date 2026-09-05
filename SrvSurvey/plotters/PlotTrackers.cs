@@ -22,8 +22,8 @@ namespace SrvSurvey.plotters
             return PlotGrounded.allowed(game)
                 // same as PlotGrounded + do we have any bookmarks?
                 && (
-                    (!Game.settings.autoShowPlotMiniTrack_TEST && game.systemBody?.bookmarks?.Count > 0)
-                || (Game.settings.autoShowPlotMiniTrack_TEST && game.systemBody?.bookmarks?.Keys.Count(k => k[0] != '#') > 0)
+                    (!Game.settings.autoShowPlotMiniTrack && game.systemBody?.bookmarks?.Count > 0)
+                || (Game.settings.autoShowPlotMiniTrack && game.systemBody?.bookmarks?.Keys.Count(k => k[0] != '#') > 0)
                 );
         }
 

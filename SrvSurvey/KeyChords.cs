@@ -441,7 +441,13 @@ namespace SrvSurvey
         {
             if (game == null) return true;
 
-            game.toggleBookmark($"#{n}", Status.here.clone());
+            var here = Status.here.clone();
+
+            // offset the location to be where rigs are deployed, vs the cockpit as usual
+            if (PlotMiniTrack.inRhino && Game.activeGame != null)
+                here = canonn.CanonnStation.adjustForCockpitOffset(Game.activeGame!.status.PlanetRadius, here, "MEV_Rhino_Rig", Game.activeGame.status.Heading);
+
+            game.toggleBookmark($"#{n}", here);
 
             return true;
         }
