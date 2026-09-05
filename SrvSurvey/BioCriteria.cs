@@ -438,6 +438,9 @@ namespace BioCriterias
 
             // Property value is not needed. The condition is if we're within a known Guardian bubble, eg: []
             { "guardian", "Guardian" },
+
+            // Property value is not needed. The condition is if we're in Empyrean Straits or a known Sinuous Tubers bubble
+            { "tubers", "Tubers" }
         };
 
         public static Dictionary<string, string> values = new Dictionary<string, string>()
