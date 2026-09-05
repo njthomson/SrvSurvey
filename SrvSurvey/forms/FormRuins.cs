@@ -454,9 +454,7 @@ namespace SrvSurvey
                 if (siteData?.obeliskGroups?.Count > 0 && (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && !siteData.obeliskGroups.Contains(poi.name[0])) continue;
 
                 // calculate render point for POI
-                var pt = (PointF)Util.rotateLine(
-                    360 - (decimal)poi.angle,
-                    poi.dist);
+                var pt = this.projectMapMarker(poi.angle, poi.dist);
 
                 // is this the closest POI?
                 var x = pt.X * this.scale - mPos.X - dragOffset.X;
@@ -766,13 +764,13 @@ namespace SrvSurvey
                 // skip obelisks in groups not in this site
                 if (siteData?.obeliskGroups.Contains(foo.Key[0]) == false) continue;
 
-                var angle = 180 - foo.Value.X;
-                var dist = foo.Value.Y;
-                var pt = (PointF)Util.rotateLine((decimal)angle, (decimal)dist);
+                var pt = this.projectMapMarker(
+                    (decimal)foo.Value.X,
+                    (decimal)foo.Value.Y);
 
-                //g.DrawLine(Pens.DarkBlue, 0,0, -pt.X, -pt.Y);
+                //g.DrawLine(Pens.DarkBlue, 0, 0, pt.X, pt.Y);
                 var sz = g.MeasureString(foo.Key, GameColors.fontBigBold);
-                g.DrawString(foo.Key, GameColors.fontBig, GameColors.brushDarkCyan, -pt.X - (sz.Width / 2) + 2, -pt.Y - (sz.Height / 2) + 2);
+                g.DrawString(foo.Key, GameColors.fontBig, GameColors.brushDarkCyan, pt.X - (sz.Width / 2) + 2, pt.Y - (sz.Height / 2) + 2);
             }
 
             // and draw all the POIs
@@ -786,9 +784,7 @@ namespace SrvSurvey
                 if (siteData?.obeliskGroups?.Count > 0 && (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && !siteData.obeliskGroups.Contains(poi.name[0])) continue;
 
                 // calculate render point for POI
-                var pt = (PointF)Util.rotateLine(
-                    360 - (decimal)poi.angle,
-                    poi.dist);
+                var pt = this.projectMapMarker(poi.angle, poi.dist);
 
                 // is this the closest POI?
                 var x = pt.X * this.scale - mousePos.X - dragOffset.X;
@@ -1050,9 +1046,7 @@ namespace SrvSurvey
                 //var deg = 180 - siteData.siteHeading - poi.angle;
                 //var pt = (PointF)Util.rotateLine(deg, poi.dist);
 
-                var pt = (PointF)Util.rotateLine(
-                    360 - (decimal)poi.angle,
-                    poi.dist);
+                var pt = this.projectMapMarker(poi.angle, poi.dist);
 
                 var cmp = siteData.components?.GetValueOrDefault(poi.name)?.items[0] ?? GComponent.unknown;
 
@@ -1075,6 +1069,12 @@ namespace SrvSurvey
                     }
                 });
             }
+        }
+
+        private PointF projectMapMarker(decimal angle, decimal distance)
+        {
+            var point = (PointF)Util.rotateLine(360 - angle, distance);
+            return this.siteData?.mapMarkerOffset.apply(point) ?? point;
         }
 
         private void drawLegend(Graphics g)

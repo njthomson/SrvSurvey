@@ -744,6 +744,7 @@ namespace SrvSurvey
 
                 btnRuinsMap.Enabled = false;
                 btnRuinsOrigin.Enabled = false;
+                btnCorrectGuardianMap.Enabled = false;
             }
             else if (game.systemSite == null || game.systemBody == null || game.systemBody.settlements?.Count == 0)
             {
@@ -751,6 +752,7 @@ namespace SrvSurvey
                 //txtGuardianSite.Text = "";
                 btnRuinsMap.Enabled = false;
                 btnRuinsOrigin.Enabled = false;
+                btnCorrectGuardianMap.Enabled = false;
             }
 
             if (Game.settings.enableGuardianSites)
@@ -760,6 +762,7 @@ namespace SrvSurvey
                     var allowed = PlotGuardians.allowed(game);
                     btnRuinsMap.Enabled = game.systemSite.siteHeading != -1 && allowed;
                     btnRuinsOrigin.Enabled = game.systemSite.siteHeading != -1 && allowed;
+                    btnCorrectGuardianMap.Enabled = game.systemSite.siteHeading != -1 && allowed;
                 }
             }
         }
@@ -1253,6 +1256,49 @@ namespace SrvSurvey
         private void btnRuinsOrigin_Click(object sender, EventArgs e)
         {
             PlotGuardians.switchMode(Mode.origin);
+        }
+
+        private void btnCorrectGuardianMap_Click(object sender, EventArgs e)
+        {
+            var site = game?.systemSite;
+            var body = game?.systemBody;
+            if (site == null
+                || body == null
+                || site.siteHeading is < 0 or > 359
+                || game?.status?.hasLatLong != true
+                || body.radius <= 0)
+                return;
+
+            var correctedLocation = Status.here.clone();
+            if (site.location.Equals(correctedLocation))
+            {
+                MessageBox.Show(
+                    this,
+                    "The survey already uses the current latitude and longitude as its origin.",
+                    "Guardian Map Alignment",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                return;
+            }
+
+            var answer = MessageBox.Show(
+                this,
+                $"Change this survey's origin from {site.location.Lat:N6}, {site.location.Long:N6} to the current position {correctedLocation.Lat:N6}, {correctedLocation.Long:N6}?\r\n\r\nAll saved map markers will be shifted by the same alignment correction. The offset is stored as top-level survey metadata so SrvSurvey Avalonia can use it too.",
+                "Correct Guardian Map Alignment",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2);
+            if (answer != DialogResult.Yes)
+                return;
+
+            site.correctMapAlignment(
+                correctedLocation,
+                (double)body.radius);
+            site.Save();
+            PlotBase2.getPlotter<PlotGuardians>()?.refreshMapAlignment();
+            FormRuins.activeForm?.Invalidate(true);
+            Game.log(
+                $"Corrected Guardian map alignment to {correctedLocation}; marker offset: {site.mapMarkerOffset}");
         }
 
         #region screenshot manipulations
