@@ -230,6 +230,11 @@ namespace SrvSurvey.game
         public SiteType type;
         public int index;
         public LatLong2 location;
+        public GuardianMapMarkerOffset mapMarkerOffset;
+        public int localSiteId;
+        public string? catalogBodyName;
+        public double[]? starPos;
+        public double? distanceToArrival;
         public long systemAddress;
         public string systemName;
         public int bodyId;
@@ -251,6 +256,49 @@ namespace SrvSurvey.game
         public List<SitePOI>? rawPoi;
 
         #endregion
+
+        public bool correctMapAlignment(
+            LatLong2 correctedLocation,
+            double planetRadiusMeters)
+        {
+            if (this.location.Equals(correctedLocation))
+                return false;
+
+            var alignmentOrigin = this.mapMarkerOffset.isEmpty
+                ? this.location
+                : GuardianMapMarkerOffsetCalculator.recoverAlignmentOrigin(
+                    this.location,
+                    this.mapMarkerOffset,
+                    this.siteHeading,
+                    planetRadiusMeters);
+            this.mapMarkerOffset = GuardianMapMarkerOffsetCalculator.calculate(
+                alignmentOrigin,
+                correctedLocation,
+                this.siteHeading,
+                planetRadiusMeters);
+            this.location = correctedLocation.clone();
+            return true;
+        }
+
+        public bool correctSiteHeading(int correctedHeading)
+        {
+            if (correctedHeading is < 0 or > 359)
+                throw new ArgumentOutOfRangeException(
+                    nameof(correctedHeading),
+                    "The site heading must be between 0 and 359 degrees.");
+            if (this.siteHeading == correctedHeading)
+                return false;
+
+            if (!this.mapMarkerOffset.isEmpty)
+                this.mapMarkerOffset = GuardianMapMarkerOffsetCalculator
+                    .rotateForHeading(
+                        this.mapMarkerOffset,
+                        this.siteHeading,
+                        correctedHeading);
+
+            this.siteHeading = correctedHeading;
+            return true;
+        }
 
         [JsonIgnore]
         public bool isRuins { get => this.type == SiteType.Alpha || this.type == SiteType.Beta || this.type == SiteType.Gamma; }
@@ -747,6 +795,29 @@ namespace SrvSurvey.game
                     obeliskGroups = new HashSet<char>(),
                 };
 
+                var mapMarkerOffset = obj["mapMarkerOffset"] as JObject;
+                if (tryReadFiniteDouble(mapMarkerOffset?["x"], out var offsetX)
+                    && tryReadFiniteDouble(mapMarkerOffset?["y"], out var offsetY))
+                    data.mapMarkerOffset = new GuardianMapMarkerOffset(
+                        offsetX,
+                        offsetY);
+
+                if (obj["localSiteId"]?.Type == JTokenType.Integer)
+                    data.localSiteId = obj["localSiteId"]!.Value<int>();
+                if (obj["catalogBodyName"]?.Type == JTokenType.String)
+                    data.catalogBodyName = obj["catalogBodyName"]!.Value<string>();
+                if (tryReadFiniteDouble(
+                    obj["distanceToArrival"],
+                    out var distanceToArrival))
+                    data.distanceToArrival = distanceToArrival;
+
+                var starPos = obj["starPos"] as JArray;
+                if (starPos?.Count >= 3
+                    && tryReadFiniteDouble(starPos[0], out var starX)
+                    && tryReadFiniteDouble(starPos[1], out var starY)
+                    && tryReadFiniteDouble(starPos[2], out var starZ))
+                    data.starPos = [starX, starY, starZ];
+
                 // read obelisk groups - in either format
                 var obeliskGroups = obj["obeliskGroups"];
                 if (obeliskGroups != null)
@@ -837,7 +908,8 @@ namespace SrvSurvey.game
                 if (rawPoi != null)
                     data.rawPoi = rawPoi.ToObject<List<SitePOI>>()!;
 
-                if (Game.settings.guardianComponentMaterials_TEST || Debugger.IsAttached)
+                if (Game.settings?.guardianComponentMaterials_TEST == true
+                    || Debugger.IsAttached)
                 {
                     var rawComponents = obj["components"] as JArray;
                     if (rawComponents != null && rawComponents.Count > 0)
@@ -882,6 +954,23 @@ namespace SrvSurvey.game
                     { "relicTowerHeading", data.relicTowerHeading },
                     { "notes", data.notes },
                 };
+
+                if (!data.mapMarkerOffset.isEmpty)
+                    obj.Add("mapMarkerOffset", new JObject
+                    {
+                        { "x", data.mapMarkerOffset.x },
+                        { "y", data.mapMarkerOffset.y },
+                    });
+                if (data.localSiteId > 0)
+                    obj.Add("localSiteId", data.localSiteId);
+                if (data.catalogBodyName != null)
+                    obj.Add("catalogBodyName", data.catalogBodyName);
+                if (data.starPos is { Length: >= 3 }
+                    && data.starPos.Take(3).All(double.IsFinite))
+                    obj.Add("starPos", new JArray(data.starPos.Take(3)));
+                if (data.distanceToArrival is { } distanceToArrival
+                    && double.IsFinite(distanceToArrival))
+                    obj.Add("distanceToArrival", distanceToArrival);
 
                 var obeliskGroups = string.Join("", data.obeliskGroups);
                 obj.Add("obeliskGroups", obeliskGroups);
@@ -929,6 +1018,19 @@ namespace SrvSurvey.game
 
                 //Game.log($"Writing: {data.bodyName} #{data.index}   ** ** ** ** {data.poiStatus.Count}");
                 obj.WriteTo(writer);
+            }
+
+            private static bool tryReadFiniteDouble(
+                JToken? token,
+                out double value)
+            {
+                value = default;
+                if (token?.Type is not JTokenType.Float
+                    and not JTokenType.Integer)
+                    return false;
+
+                value = token.Value<double>();
+                return double.IsFinite(value);
             }
         }
     }
