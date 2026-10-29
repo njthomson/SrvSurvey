@@ -436,6 +436,7 @@ namespace SrvSurvey.canonn
             { "explorer_nx", new PointM(-0.7820737162192071462787373979, -62.305031957744565101955170933) }, // Caspian Explorer
             { "smallcombat01_nx", new PointM(0.2085315294643370372562911854, -14.369195925926613078355322022) }, // Kestrel mk2
             { "mediumtransport01", new PointM(-0.6075405725357383105313236452, -42.088687972303426165395062161) }, // Lynx Highliner
+            { "anacondamkii", new PointM(-0.1373923461811600325615952617, 10.250320518913103227225885131) }, // Anaconda mk2
 
             /* Procedure to update:
              *  1. Land at some settlement, stay in ship
@@ -504,6 +505,7 @@ namespace SrvSurvey.canonn
             { "explorer_nx", 3 }, // Caspian Explorer
             { "smallcombat01_nx", 1 }, // Kestrel mk2
             { "mediumtransport01", 2 }, // Lynx Highliner
+            { "anacondamkii", 3 }, // Anaconda mk2
 
             { "foot", 0 },
             { "taxi", 1 },
