@@ -251,6 +251,7 @@ namespace SrvSurvey
             e.DrawDefault = false;
         }
 
+        [Obsolete]
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);

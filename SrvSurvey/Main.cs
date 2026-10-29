@@ -103,6 +103,7 @@ namespace SrvSurvey
             btnNextWindow.BackColor = C.cyanDark;
         }
 
+        [Obsolete]
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);

@@ -59,6 +59,7 @@ namespace SrvSurvey.forms
             Program.defer(() => this.Activate());
         }
 
+        [Obsolete]
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
