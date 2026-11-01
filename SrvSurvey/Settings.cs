@@ -278,9 +278,7 @@ namespace SrvSurvey
         public bool enableQuests = false;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public bool eddnUpload = false;
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public string? eddnEnvironment = null;
+        public bool eddnUploadEnabled = false;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool disableBioPredictions = false;

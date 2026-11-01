@@ -39,6 +39,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="SrvSurvey.EddnTests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="allBeacons.json" />
     <None Remove="allRuins.json" />
     <None Remove="allStructures.json" />

@@ -30,12 +30,17 @@
         <h1>Privacy policy for SrvSurvey</h1>
         <p>SrvSurvey reads Elite Dangerous journal and companion files on your computer to provide its features. SrvSurvey's developer does not operate a service that collects this data.</p>
 
+        <h2>Optional EDDN uploads</h2>
+        <p>If you enable EDDN sharing, SrvSurvey sends public game-world data from supported new journal events and the Market, Outfitting, Shipyard, Fleet Carrier Materials, and navigation-route companion files to the <a href="https://github.com/EDCD/EDDN" target="eddn">Elite Dangerous Data Network</a>. Each upload includes your Commander name as EDDN's uploader identifier, the game and SrvSurvey versions, and public game-world data from the event. EDDN obfuscates the uploader identifier before relaying the data. SrvSurvey removes localized and Commander-specific event fields required to be excluded by the EDDN schemas, and it does not upload journal history read during startup. Uploads are sent without an EDDN account, API key, or access token.</p>
+        <p>If EDDN is temporarily unavailable, unsent messages are stored in a local retry queue under SrvSurvey's application-data folder. They are removed after successful delivery, after a permanent rejection, or when you disable EDDN sharing. Only one running SrvSurvey process can own and rewrite that queue. Uploads pause, active requests are cancelled, and pending messages remain local while multiple Elite Dangerous clients are running, because their shared status and companion files cannot be attributed safely. SrvSurvey also rechecks the shared on-disk consent before each network request so an opt-out from another SrvSurvey process stops delivery. Uploads use EDDN's Live gateway with the integration's test schema references until a future SrvSurvey release promotes them.</p>
+        <p>To avoid duplicate submissions, enable EDDN uploads in only one application at a time&mdash;for example, SrvSurvey or EDMC.</p>
+
         <h2>Optional Inara uploads</h2>
         <p>Inara uploads are disabled until you save a personal Inara API key for a commander. SrvSurvey then sends supported updates for that commander directly to Inara. These updates may include your commander name and Frontier ID, credits, assets and loans, ranks and reputation, current location and travel, inventories and statistics, ships and loadouts, missions, combat events, suits, community goals, and friends. Credit changes are accumulated locally and reported at session boundaries, on Statistics events when changes are pending, and otherwise no more frequently than hourly, rather than after every transaction.</p>
         <p>Your personal Inara API key is stored locally only in the FID-keyed settings file for that commander and is sent only to Inara as part of authenticated API requests. A game session can use only the name, Frontier ID, and key from its own commander profile; changing commanders creates a separate upload session. SrvSurvey does not write the key or complete upload payloads to its log. You can stop new uploads and discard pending events for that commander by choosing <em>Clear Key</em>.</p>
         <p>Data sent to Inara is handled under <a href="https://inara.cz/elite/policies/" target="inara">Inara's privacy policy</a>. You can obtain or manage your personal API key in your <a href="https://inara.cz/elite/cmdr-settings-api/" target="inara">Inara API settings</a>.</p>
 
-        <p>Last updated: August 22, 2026.</p>
+        <p>Last updated: August 31, 2026.</p>
     </div>
 
     <div class="footer">

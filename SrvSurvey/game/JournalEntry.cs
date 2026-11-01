@@ -66,8 +66,8 @@ namespace SrvSurvey
 
         public string FID { get; set; }
         public string Commander { get; set; }
-        public bool Horizons { get; set; }
-        public bool Odyssey { get; set; }
+        public bool? Horizons { get; set; }
+        public bool? Odyssey { get; set; }
         public string Ship { get; set; }
         public string? Ship_Localised { get; set; }
         public long ShipID { get; set; }

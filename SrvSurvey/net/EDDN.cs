@@ -1,452 +1,235 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
-using System.Text;
-
-// https://github.com/EDCD/EDDN/blob/live/README.md
 
 namespace SrvSurvey.net
 {
-    /// <summary> For uploading to EDDN </summary>
-    internal class EDDN
+    /// <summary>
+    /// Application-lifetime EDDN delivery service. Commander and journal state
+    /// belong to <see cref="EddnSessionPublisher"/>, while this service owns the
+    /// one durable outbox and its network safety checks.
+    /// </summary>
+    internal sealed class EDDN : IEddnSessionSink, IDisposable
     {
-        public static UploadPayloadHeader? header;
-        private static HttpClient client;
-        private static string useEnv = "dev";
-        private static bool logAllUploads;
-        private static Dictionary<string, string> urls = new()
-        {
-            { "dev", "https://dev.eddn.edcd.io:4432/upload/" },
-            { "beta", "https://beta.eddn.edcd.io:4431/upload/" },
-            { "live", "https://eddn.edcd.io:4430/upload/" }
-        };
+        private readonly object sync = new();
+        private readonly EddnTransport transport;
+        private readonly EddnOutbox outbox;
+        private bool publishingSuspended;
+        private bool processDetectionWarningReported;
+        private bool consentReadWarningReported;
+        private bool disposed;
+        private long ingestionGeneration;
 
-        static EDDN()
+        internal EDDN()
         {
-            client = new HttpClient(); // Not yet --> Util.getResilienceHandler());
-            client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
+            transport = new EddnTransport(userAgent: Program.userAgent);
+            outbox = new EddnOutbox(
+                Path.Combine(Program.dataFolder, "eddn-outbox-v1.json"),
+                transport,
+                Game.log,
+                runtimeUploadAllowed: isRuntimeUploadAllowed);
+            outbox.setEnabled(
+                Game.settings.eddnUploadEnabled,
+                discardPendingWhenDisabled: !Game.settings.eddnUploadEnabled);
         }
 
-        private async Task upload(JObject message, string schemaRef)
+        internal int pendingCount => outbox.pendingCount;
+
+        internal void setEnabled(bool enabled)
         {
-            if (!Game.settings.eddnUpload || EDDN.header == null) return;
-
-            if (logAllUploads)
+            lock (sync)
             {
-                Game.log($"Send to EDDN: {message.Value<string>("event")}\r\n" + JsonConvert.SerializeObject(new JObject
-                {
-                    ["$schemaRef"] = schemaRef,
-                    ["header"] = JObject.FromObject(EDDN.header!),
-                    ["message"] = message,
-                }, Formatting.Indented));
+                if (disposed) return;
+                if (!enabled || enabled != Game.settings.eddnUploadEnabled)
+                    ingestionGeneration++;
             }
 
-            var payload = JsonConvert.SerializeObject(new JObject
+            var runtimePublishingAllowed = enabled;
+            if (enabled)
             {
-                ["$schemaRef"] = schemaRef,
-                ["header"] = JObject.FromObject(EDDN.header!),
-                ["message"] = message,
-            });
-            var url = urls[Game.settings.eddnEnvironment ?? useEnv];
-            if (url != urls["live"]) schemaRef += "/test";
-
-            if (DateTime.Now.Year > 3000)
-            {
-                var response = await client.PostAsync(url, new StringContent(payload, Encoding.UTF8, "application/json"));
-
-                Game.log($"EDDN upload response: {response.StatusCode} : {response.ReasonPhrase}");
-
-                var body = await response.Content.ReadAsStringAsync();
-                if (!response.IsSuccessStatusCode)
-                    Game.log($"EDDN.upload: failed: payload:\r\n{payload}\r\nbody:\r\n{body}");
+                refreshRuntimeSafety();
+                lock (sync)
+                    runtimePublishingAllowed = !disposed
+                        && !publishingSuspended
+                        && Game.settings.eddnUploadEnabled;
             }
+
+            outbox.setEnabled(
+                enabled,
+                discardPendingWhenDisabled: !enabled);
+            if (enabled)
+                outbox.setSuspended(!runtimePublishingAllowed);
         }
 
-        private void trim(JObject obj, params List<string> names)
+        internal void refreshRuntimeSafety(bool? hasMultipleEliteProcesses = null)
         {
-            foreach (var name in names)
+            lock (sync)
             {
-                if (name.StartsWith("*"))
+                if (disposed || !Game.settings.eddnUploadEnabled) return;
+            }
+
+            if (!EddnConsentFile.tryRead(
+                Path.Combine(Program.dataFolder, "settings.json"),
+                out var persistedEnabled,
+                out var consentError))
+            {
+                bool shouldLog;
+                lock (sync)
                 {
-                    // remove anything ending with the given name
-                    foreach (var x in obj.Properties().ToList())
-                        if (x.Name.EndsWith(name.Substring(1)))
-                            obj.Remove(x.Name);
+                    shouldLog = !consentReadWarningReported;
+                    consentReadWarningReported = true;
                 }
-                else
-                {
-                    obj.Remove(name);
-                }
+
+                var changed = setSuspended(
+                    true,
+                    "EDDN sharing is paused because current consent could not be read; pending uploads were preserved.");
+                if (shouldLog && !changed)
+                    Game.log($"EDDN sharing is paused because current consent could not be read: {consentError}");
+                return;
             }
 
-            // recurse as needed
-            foreach (var val in obj.Values())
+            lock (sync) consentReadWarningReported = false;
+            if (!persistedEnabled)
             {
-                if (val.Type == JTokenType.Object)
-                {
-                    trim((JObject)val, names);
-                }
-                else if (val.Type == JTokenType.Array)
-                {
-                    foreach (var item in (JArray)val)
-                        if (item.Type == JTokenType.Object)
-                            trim((JObject)item, names);
-                }
+                Game.settings.eddnUploadEnabled = false;
+                setEnabled(false);
+                Game.log("EDDN sharing was disabled by another SrvSurvey instance; pending uploads were discarded.");
+                return;
             }
+
+            refreshGameProcessSafety(hasMultipleEliteProcesses);
         }
 
-        public void onJournalEntry(Game game, IJournalEntry entry, JObject raw) { /* ignore */ }
-
-        public void onJournalEntry(Game game, CodexEntry _, JObject raw)
+        internal bool setSuspended(bool suspended, string? pauseMessage = null)
         {
-            if (raw.Value<long>("SystemAddress") != game.systemData?.address || game.journals == null) return;
-
-            // serialize
-            var message = new JObject(raw);
-
-            // trim (BodyID will be put back below if conditions are met)
-            trim(message, "*_Localised", nameof(CodexEntry.BodyID), nameof(CodexEntry.IsNewEntry), nameof(CodexEntry.NewTraitsDiscovered));
-
-            // augment
-            message["StarSystem"] = raw.Value<string>("System");
-            message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
-            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
-
-            // Only set body name/ID if status.json has a BodyName and it matches the body we are tracking ...
-            if (game.status.BodyName != null && game.systemBody != null && game.status.BodyName == game.systemBody.name)
+            lock (sync)
             {
-                message["BodyName"] = game.status.BodyName;
-
-                // Set BodyID only if it matches our tracked body and that name matches status.json
-                if (raw.Value<int>("BodyID") == game.systemBody.id)
-                    message["BodyID"] = game.systemBody.id;
+                if (disposed || publishingSuspended == suspended) return false;
+                publishingSuspended = suspended;
+                ingestionGeneration++;
             }
 
-            upload(message, "https://eddn.edcd.io/schemas/codexentry/1").justDoIt();
+            outbox.setSuspended(suspended);
+            Game.log(suspended
+                ? pauseMessage
+                    ?? "EDDN sharing is paused while multiple Elite instances are active; pending uploads were preserved."
+                : "EDDN sharing resumed after runtime attribution and consent checks passed.");
+            return true;
         }
 
-        public void onJournalEntry(Game game, ApproachSettlement _, JObject raw)
+        bool IEddnSessionSink.tryBeginIngestion(out long generation)
         {
-            if (raw.Value<long>("SystemAddress") != game.systemData?.address || game.journals == null) return;
-
-            // serialize
-            var message = new JObject(raw);
-
-            // trim
-            trim(message, "*_Localised");
-
-            // augment
-            message["StarSystem"] = game.systemData.name;
-            message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
-            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
-
-            upload(message, "https://eddn.edcd.io/schemas/approachsettlement/1").justDoIt();
+            lock (sync)
+            {
+                generation = ingestionGeneration;
+                return !disposed
+                    && !publishingSuspended
+                    && Game.settings.eddnUploadEnabled;
+            }
         }
 
-        public void onJournalEntry(Game game, Market _, JObject raw)
+        bool IEddnSessionSink.tryEnqueue(
+            EddnPreparedMessage prepared,
+            UploadPayloadHeader header,
+            long expectedGeneration)
         {
-            if (raw.Value<string>("StarSystem") != game.systemData?.name || game.journals == null) return;
-            var marketFile = game.marketFile;
-            if (marketFile.Items.Count == 0) return;
+            ArgumentNullException.ThrowIfNull(prepared);
+            ArgumentNullException.ThrowIfNull(header);
 
-            // TODO: ...
+            lock (sync)
+            {
+                if (disposed
+                    || publishingSuspended
+                    || !Game.settings.eddnUploadEnabled
+                    || ingestionGeneration != expectedGeneration)
+                {
+                    return false;
+                }
+            }
 
-            //// serialize market.json
-            //var message = new JObject()
-            //{
-            //    { "systemName", marketFile.StarSystem },
-            //    { "stationName", marketFile.StationName },
-            //    { "MarketId", game.marketFile.MarketId  },
-            //    { "StationType", game.marketFile.StationType },
-            //    { "CarrierDockingAccess", game.marketFile.CarrierDockingAccess },
-            //};
-
-            //// trim
-            //trim(message, "*_Localised", nameof(MarketFile.StationType), nameof(MarketFile.Item.Producer), nameof(MarketFile.Item.Rare), nameof(MarketFile.Item.id));
-            //// Skip commodities with "categoryname": "NonMarketable" (i.e. Limpets - not purchasable in station market) or a non-empty"legality": string (not normally traded at this station market).
-            //var trimmedItems = ((JArray)message[nameof(MarketFile.Items)]!).Where(x => x.Value<string>(nameof(MarketFile.Item.Category)).Contains("NonMarketable") && );
-            //message[nameof(MarketFile.Items)] = new JArray(trimmedItems);
-
-            //upload(message, "https://eddn.edcd.io/schemas/commodity/3").justDoIt();
+            var queued = transport.prepare(
+                prepared.message,
+                prepared.schemaRef,
+                header);
+            return outbox.enqueue(queued);
         }
 
-        public void onJournalEntry(Game game, DockingGranted _, JObject raw)
+        private void refreshGameProcessSafety(bool? hasMultipleEliteProcesses)
         {
-            if (game.journals == null) return;
+            try
+            {
+                var suspended = hasMultipleEliteProcesses ?? Elite.refreshManyGameProcs();
+                lock (sync) processDetectionWarningReported = false;
+                setSuspended(suspended);
+            }
+            catch (Exception ex)
+            {
+                bool shouldLog;
+                lock (sync)
+                {
+                    shouldLog = !processDetectionWarningReported;
+                    processDetectionWarningReported = true;
+                }
 
-            // serialize
-            var message = new JObject(raw);
-
-            // augment
-            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
-            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
-
-            upload(message, "https://eddn.edcd.io/schemas/dockinggranted/1").justDoIt();
+                var changed = setSuspended(
+                    true,
+                    "EDDN sharing is paused because running Elite instances could not be checked; pending uploads were preserved.");
+                if (shouldLog && !changed)
+                    Game.log($"EDDN sharing is paused because running Elite instances could not be checked: {ex.Message}");
+            }
         }
 
-        public void onJournalEntry(Game game, DockingDenied _, JObject raw)
+        private bool isRuntimeUploadAllowed()
         {
-            if (game.journals == null) return;
+            lock (sync)
+            {
+                if (disposed
+                    || publishingSuspended
+                    || !Game.settings.eddnUploadEnabled)
+                {
+                    return false;
+                }
+            }
 
-            // serialize
-            var message = new JObject(raw);
+            if (!EddnConsentFile.tryRead(
+                Path.Combine(Program.dataFolder, "settings.json"),
+                out var persistedEnabled,
+                out _)
+                || !persistedEnabled)
+            {
+                return false;
+            }
 
-            // augment
-            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
-            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
-
-            upload(message, "https://eddn.edcd.io/schemas/dockingdenied/1").justDoIt();
+            try
+            {
+                return !Elite.refreshManyGameProcs();
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public void onJournalEntry(Game game, FSSAllBodiesFound _, JObject raw)
+        public void Dispose()
         {
-            if (raw.Value<long>("SystemAddress") != game.systemData?.address || game.journals == null) return;
-
-            // serialize
-            var message = new JObject(raw);
-
-            // augment
-            message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
-            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
-
-            upload(message, "https://eddn.edcd.io/schemas/fssallbodiesfound/1").justDoIt();
-        }
-
-        public void onJournalEntry(Game game, FSSBodySignals _, JObject raw)
-        {
-            if (raw.Value<long>("SystemAddress") != game.systemData?.address || game.journals == null) return;
-
-            // serialize
-            var message = new JObject(raw);
-
-            // trim
-            trim(message, "*_Localised");
-
-            // augment
-            message["StarSystem"] = game.systemData.name;
-            message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
-            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
-
-            upload(message, "https://eddn.edcd.io/schemas/fssbodysignals/1").justDoIt();
-        }
-
-        public void onJournalEntry(Game game, FSSDiscoveryScan _, JObject raw)
-        {
-            if (raw.Value<long>("SystemAddress") != game.systemData?.address || game.journals == null) return;
-
-            // serialize
-            var message = new JObject(raw);
-
-            // trim
-            trim(message, "*_Localised", nameof(FSSDiscoveryScan.Progress));
-
-            // augment
-            message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
-            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
-
-            upload(message, "https://eddn.edcd.io/schemas/fssdiscoveryscan/1").justDoIt();
-        }
-
-        public void onJournalEntry(Game game, FSSSignalDiscovered entry, JObject raw)
-        {
-            if (raw.Value<long>("SystemAddress") != game.systemData?.address || game.journals == null) return;
-
-            // TODO: ... batching ...
-
-            //// serialize
-            //raw.Value<long>("SystemAddress")
-
-            //// trim
-            //trim(message, "*_Localised", nameof(FSSDiscoveryScan.Progress));
-
-            //// augment
-            //message["StarPos"] = new JArray(game.systemData.starPos);
-            //if (game.journals.isGameOdyssey.HasValue) message["odyssey"] = game.journals.isGameOdyssey.Value;
-            //if (game.journals.isGameHorizons.HasValue) message["horizons"] = game.journals.isGameHorizons.Value;
-
-            //upload(message, "https://eddn.edcd.io/schemas/fsssignaldiscovered/1").justDoIt();
-        }
-
-        public void onJournalEntry(Game game, NavBeaconScan _, JObject raw)
-        {
-            if (raw.Value<long>("SystemAddress") != game.systemData?.address || game.journals == null) return;
-
-            // serialize
-            var message = new JObject(raw);
-
-            // augment
-            message["StarSystem"] = game.systemData.name;
-            message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
-            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
-
-            upload(message, "https://eddn.edcd.io/schemas/navbeaconscan/1").justDoIt();
-        }
-
-        public void onJournalEntry(Game game, NavRoute entry, JObject raw)
-        {
-            if (game.journals == null) return;
-
-            // serialize
-            var message = new JObject(raw);
-
-            // augment
-            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
-            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
-
-            upload(message, "https://eddn.edcd.io/schemas/navroute/1").justDoIt();
-        }
-
-        // TODO: Outfitting ?
-
-        // TODO: Shipyard ?
-
-        public void onJournalEntry(Game game, ScanBaryCentre _, JObject raw)
-        {
-            if (raw.Value<long>("SystemAddress") != game.systemData?.address || game.journals == null) return;
-
-            // serialize
-            var message = new JObject(raw);
-
-            // augment
-            message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
-            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
-
-            upload(message, "https://eddn.edcd.io/schemas/scanbarycentre/1").justDoIt();
-        }
-
-
-        // The following use the same schemaRef
-
-        public void onJournalEntry(Game game, Docked _, JObject raw)
-        {
-            if (raw.Value<long>("SystemAddress") != game.systemData?.address || game.journals == null) return;
-
-            // serialize
-            var message = new JObject(raw);
-
-            // trim
-            trim(message, "*_Localised", nameof(Docked.Wanted), nameof(Docked.ActiveFine), nameof(Docked.CockpitBreach)); // StationEconomyKeys?
-
-            // augment
-            message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
-            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
-
-            upload(message, "https://eddn.edcd.io/schemas/journal/1").justDoIt();
-        }
-
-        public void onJournalEntry(Game game, FSDJump entry, JObject raw)
-        {
-            if (raw.Value<long>("SystemAddress") != game.systemData?.address || game.journals == null) return;
-
-            // serialize
-            var message = new JObject(raw);
-
-            // trim
-            trim(message, "*_Localised", "Wanted", nameof(FSDJump.BoostUsed), nameof(FSDJump.FuelLevel), nameof(FSDJump.FuelUsed), nameof(FSDJump.JumpDist), "HappiestSystem", "HomeSystem", nameof(SystemFaction.MyReputation), "SquadronFaction");
-
-            // augment
-            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
-            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
-
-            upload(message, "https://eddn.edcd.io/schemas/journal/1").justDoIt();
-        }
-
-        public void onJournalEntry(Game game, CarrierJump _, JObject raw)
-        {
-            if (raw.Value<long>("SystemAddress") != game.systemData?.address || game.journals == null) return;
-
-            // serialize
-            var message = new JObject(raw);
-
-            // trim
-            trim(message, "*_Localised", "Wanted", nameof(FSDJump.BoostUsed), nameof(FSDJump.FuelLevel), nameof(FSDJump.FuelUsed), nameof(FSDJump.JumpDist), "HappiestSystem", "HomeSystem", nameof(SystemFaction.MyReputation), "SquadronFaction");
-
-            // augment
-            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
-            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
-
-            upload(message, "https://eddn.edcd.io/schemas/journal/1").justDoIt();
-        }
-
-        public void onJournalEntry(Game game, Scan _, JObject raw)
-        {
-            if (raw.Value<long>("SystemAddress") != game.systemData?.address || game.journals == null) return;
-
-            // serialize
-            var message = new JObject(raw);
-
-            // trim
-            trim(message, "*_Localised");
-
-            // augment
-            message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
-            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
-
-            upload(message, "https://eddn.edcd.io/schemas/journal/1").justDoIt();
-        }
-
-        public void onJournalEntry(Game game, Location _, JObject raw)
-        {
-            if (raw.Value<long>("SystemAddress") != game.systemData?.address || game.journals == null) return;
-
-            // serialize
-            var message = new JObject(raw);
-
-            // trim
-            trim(message, "*_Localised", "Wanted", nameof(Location.Latitude), nameof(Location.Longitude), "HappiestSystem", "HomeSystem", nameof(SystemFaction.MyReputation), "SquadronFaction");
-
-            // augment
-            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
-            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
-
-            upload(message, "https://eddn.edcd.io/schemas/journal/1").justDoIt();
-        }
-
-        public void onJournalEntry(Game game, SAASignalsFound entry, JObject raw)
-        {
-            if (raw.Value<long>("SystemAddress") != game.systemData?.address || game.journals == null) return;
-
-            // serialize
-            var message = new JObject(raw);
-
-            // trim
-            trim(message, "*_Localised");
-
-            // augment
-            message["StarSystem"] = game.systemData.name;
-            message["StarPos"] = new JArray(game.systemData.starPos);
-            if (game.journals.isGameOdyssey) message["odyssey"] = game.journals.isGameOdyssey;
-            if (game.journals.isGameHorizons) message["horizons"] = game.journals.isGameHorizons;
-
-            upload(message, "https://eddn.edcd.io/schemas/journal/1").justDoIt();
+            lock (sync)
+            {
+                if (disposed) return;
+                disposed = true;
+                ingestionGeneration++;
+            }
+
+            outbox.Dispose();
+            transport.Dispose();
         }
     }
 
-    class UploadPayloadHeader
+    /// <summary>Small boundary consumed by a single Game-owned EDDN session.</summary>
+    internal interface IEddnSessionSink
     {
-        public string uploaderID;
-        public string softwareName;
-        public string softwareVersion;
-        public string gameVersion;
-        public string gamebuild;
+        bool tryBeginIngestion(out long generation);
 
-        public UploadPayloadHeader(string uploaderID, string gameVersion, string gameBuild)
-        {
-            this.uploaderID = uploaderID;
-            this.gameVersion = gameVersion;
-            this.gamebuild = gameBuild;
-
-            this.softwareName = "SrvSurvey";
-            this.softwareVersion = Program.releaseVersion;
-        }
+        bool tryEnqueue(
+            EddnPreparedMessage prepared,
+            UploadPayloadHeader header,
+            long expectedGeneration);
     }
 }
