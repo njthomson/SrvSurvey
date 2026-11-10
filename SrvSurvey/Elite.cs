@@ -126,7 +126,7 @@ namespace SrvSurvey
                     Form? form = BigOverlay.current as Form ?? SwitcherWindow.current as Form;
                     if (form == null)
                     {
-                        form = new SwitcherWindow();
+                        form = SwitcherWindow.current = new SwitcherWindow();
                         form.Show();
                     }
                     else if (form.IsHandleCreated)
@@ -374,6 +374,12 @@ namespace SrvSurvey
 
             this.TransparencyKey = Game.settings.bigOverlayMaskColor;
             this.AllowTransparency = true;
+        }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            current = null;
         }
 
         protected override bool ShowWithoutActivation => true;
