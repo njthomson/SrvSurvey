@@ -16,11 +16,12 @@ namespace BioCriterias
         /// The "predictor engine" version - used to defend against future criteria not understood by older builds.
         /// Increment this any time breaking changes are added to criteria
         /// </summary>
-        public static int engVer = 4;
+        public static int engVer = 5;
         // v1 : initial support, with legacy species recently added and incomplete
         // v2 : support for Brain Tree's with "Guardian" criteria
         // v3 : support for &[] for matches ALL and ![] matches NONE
         // v4 : support `matsComp` for Material composition testing
+        // v5 : support for bio requiring specific bodies to exist in system
 
         public string? genus;
         public string? species;
@@ -438,6 +439,19 @@ namespace BioCriterias
 
             // Property value is not needed. The condition is if we're within a known Guardian bubble, eg: []
             { "guardian", "Guardian" },
+
+            // Property value is not needed. The condition is if we're in Empyrean Straits or a known Sinuous Tubers bubble
+            { "tubers", "Tubers" },
+
+            // Condition if system contains a water body: Gas Giant with Water Based Life, Water Giant, Water World, Earthlike World
+            { "hasWaterPlanet", "HasWaterPlanet" },
+
+            // Condition if system contains a body with water or ammonia life
+            { "hasWaterOrAmmoniaPlanet", "HasWaterOrAmmoniaPlanet" },
+
+            // System must contain at least one of the following stars
+            { "hasStar", "HasStar" },
+
         };
 
         public static Dictionary<string, string> values = new Dictionary<string, string>()

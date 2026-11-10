@@ -637,6 +637,92 @@ namespace SrvSurvey.canonn
             return false;
         }
 
+        //Special thanks to PDJazzhands for Tubers bubble locations
+        public bool isWithinTubersBubble(double[] systemPos)
+        {
+            // In Empyrean Straits
+            if(GalacticRegions.currentIdx == 2)
+                return true;
+
+            //Hawking's Gap - East
+            var dist = Util.getSystemDistance(systemPos, new StarPos(10005.1, 0, 8112.2));
+            if (dist < 750) return true;
+
+            //Arcadian Stream
+            dist = Util.getSystemDistance(systemPos, new StarPos(8865.6, 0, 20487.3));
+            if (dist < 600) return true;
+
+            //Galactic Centre
+            dist = Util.getSystemDistance(systemPos, new StarPos(91.3, -156.5, 25862.5));
+            if (dist < 900) return true;
+
+            //Hawking's Gap - West
+            dist = Util.getSystemDistance(systemPos, new StarPos(5858.8, 0, 6339.6));
+            if (dist < 600) return true;
+
+            //Inner Orion Spur
+            dist = Util.getSystemDistance(systemPos, new StarPos(-3425.2, 0, 7271.0));
+            if (dist < 600) return true;
+
+            //Inner Orion-Perseus Conflux
+            dist = Util.getSystemDistance(systemPos, new StarPos(-13333.4, 191.3, 30261.7));
+            if (dist < 750) return true;
+
+            //Inner Scutum Centaurus - Central
+            dist = Util.getSystemDistance(systemPos, new StarPos(-6570.5, 208.7, 12528.9));
+            if (dist < 600) return true;
+
+            //Inner Scutum Centaurus - East
+            dist = Util.getSystemDistance(systemPos, new StarPos(-1562.4, 0, 10666.1));
+            if (dist < 600) return true;
+
+            //Inner Scutum Centaurus - North
+            dist = Util.getSystemDistance(systemPos, new StarPos(-11889.4, 0, 22656.1));
+            if (dist < 300) return true;
+
+            //Inner Scutum Centaurus - West
+            dist = Util.getSystemDistance(systemPos, new StarPos(-9378.9, 208.7, 17065.7));
+            if (dist < 600) return true;
+
+            //Izanami
+            dist = Util.getSystemDistance(systemPos, new StarPos(-4584.9, -260.8, 37210.0));
+            if (dist < 750) return true;
+
+            //Norma Arm
+            dist = Util.getSystemDistance(systemPos, new StarPos(3725.6, 0, 16404.8));
+            if (dist < 900) return true;
+
+            //Norma Expanse Major
+            dist = Util.getSystemDistance(systemPos, new StarPos(4266.4, 0, 11988.1));
+            if (dist < 600) return true;
+
+            //Norma Expanse Minor
+            dist = Util.getSystemDistance(systemPos, new StarPos(5591.6, 0, 11712.9));
+            if (dist < 300) return true;
+
+            //Odin's Hold - North
+            dist = Util.getSystemDistance(systemPos, new StarPos(-7934.8, -121.7, 28050.3));
+            if (dist < 900) return true;
+
+            //Odin's Hold - South
+            dist = Util.getSystemDistance(systemPos, new StarPos(-5257.9, 0, 18598.1));
+            if (dist < 600) return true;
+
+            //Ryker's Hope - North
+            dist = Util.getSystemDistance(systemPos, new StarPos(1664.5, -678.1, 33939.4));
+            if (dist < 600) return true;
+
+            //Odin's Hold - South
+            dist = Util.getSystemDistance(systemPos, new StarPos(-1271.5, 0, 30559.7));
+            if (dist < 900) return true;
+
+            //Trojan Belt
+            dist = Util.getSystemDistance(systemPos, new StarPos(18635.0, 0, 31625.4));
+            if (dist < 450) return true;
+
+            return false;
+        }
+
         #endregion
 
         #region missing codex items

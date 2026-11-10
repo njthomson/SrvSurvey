@@ -50,10 +50,10 @@ namespace BioCriterias
 
             // calculate relative brightness for all parent stars
             var parentsByBrightness = body.system.getParentStars(body, false)
-                .ToDictionary(s => s, s => body.getRelativeBrightness(s))
+                .Select(s => new KeyValuePair<SystemBody, double>(s, body.getRelativeBrightness(s)))
                 .Where(s => s.Value > 0)
                 .OrderByDescending(s => s.Value)
-                .ToDictionary(_ => _.Key, _ => _.Value);
+                .ToList();
             if (!BioPredictor.runningBioTests || BioPredictor.logOrganism != "")
                 Game.log($"Radiant stars for '{body.name}': \r\n" + string.Join("\r\n", parentsByBrightness.Select(_ => $"  > {_.Key.shortName} ({_.Key.starType}) : {_.Value}")) + "\r\n");
 
@@ -65,14 +65,14 @@ namespace BioCriterias
             }
 
             // take the 1st brightest parent star
-            var brightest = parentsByBrightness.First();
+            var brightest = parentsByBrightness[0];
             var parentStarTypes = new List<string>();
             parentStarTypes.Add(Util.flattenStarType(brightest.Key.starType));
 
             // consider the 2nd if the type is different but the value is really close
             if (parentsByBrightness.Count > 1)
             {
-                var nextBrightest = parentsByBrightness.Skip(1).First();
+                var nextBrightest = parentsByBrightness[1];
                 var nextBrightestType = Util.flattenStarType(nextBrightest.Key.starType);
                 if (parentStarTypes[0] != nextBrightestType)
                 {
@@ -92,8 +92,8 @@ namespace BioCriterias
                 return null;
             }
 
-            // calc distance to nearest Guardian bubble
-            var withinGuardianBubble = Game.codexRef.isWithinGuardianBubble(body.system.starPos);
+            // Use cached system data when possible for the following values that only need to be computed once per system
+            var (withinGuardianBubble, withinTubersBubble, hasWaterPlanet, hasAmmoniaPlanet, starCodes) = body.system.getBioContext();
 
             // when there is a single entry - force that atmosphereComposition to 100% 
             var atmosphereComposition = body.atmosphereComposition?.ToDictionary(x => x.Key, x => x.Value);
@@ -121,14 +121,17 @@ namespace BioCriterias
                 { "PrimaryStar", primaryStarType },
                 { "Nebulae", body.system.nebulaDist },
                 { "Guardian", withinGuardianBubble.ToString() },
-
+                { "Tubers", withinTubersBubble.ToString() },
+                { "HasWaterPlanet", hasWaterPlanet.ToString() },
+                { "HasWaterOrAmmoniaPlanet", (hasWaterPlanet || hasAmmoniaPlanet).ToString() },
+                { "HasStar", starCodes },
             };
             var predictor = new BioPredictor(body.name, bodyProps, targetVariant);
 
             // add known genus and species names
             if (body.organisms?.Count > 0)
             {
-                foreach (var org in body.organisms.ToList())
+                foreach (var org in body.organisms)
                 {
                     if (org.genus != null)
                     {
@@ -139,7 +142,7 @@ namespace BioCriterias
                     if (org.species != null)
                     {
                         var match = Game.codexRef.matchFromSpecies2(org.species);
-                        // TODO: handle Brain Tree's
+                        // TODO: handle Brain Tree's and other Horizons bio
                         if (match != null)
                             predictor.knownSpecies[match.genus.englishName] = match.species.englishName;
                     }
@@ -193,7 +196,7 @@ namespace BioCriterias
                 if (!string.IsNullOrEmpty(genus) && this.allGenusKnown && knownGenus?.Count > 0 && !knownGenus.Contains(genus))
                     return false;
                 // or stop here if we already scanned some species from this genus
-                // TODO: handle Brain Tree's
+                // TODO: handle Brain Tree's and other Horizons bio
                 if (genus != null && species != null && knownSpecies?.Count > 0 && knownSpecies.ContainsKey(genus))
                     return false;
             }
@@ -725,7 +728,7 @@ namespace BioCriterias
                 /* New places to try */
                 147547244739, //     Outorst OC-M d7-4         - Elysian Shore
                 79347697283, //      Cyoidai VI-B d2           - Sanguineous Rim
-                /*8084881608371,*/ //    Graea Hypue IS-R d5-235   - Norma Expanse // legacy in atmosphere :/ fails to predict brain tree's - this is on purpose
+                8084881608371, //    Graea Hypue IS-R d5-235   - Norma Expanse
                 37790682707, //      Bleae Phlai AK-I d9-1     - Errant Marches
                 10887906389, //      Eor Audst LM-W f1-20      - Odin's Hold
                 234056927058952, //  Phroi Pri GM-W a1-13      - Galactic Centre
@@ -855,7 +858,7 @@ namespace BioCriterias
                 2282674557658, // Vodyakamana // <-- BC4 Fails because Argon is < 100% BUT there's no Nitrogen in the atmosphere (or anything else?!)
                 1050522316081, // Ihad BK-L b35-0 // <-- we are missing data about the star AND Canonn has incomplete bio data for Ihad BK-L b35-0 1 a
 
-                2519946200947, // Qiefoea KZ-D d13-73 // D4 Osseus not found or D3 Stratum not found
+                2519946200947, // Qiefoea KZ-D d13-73 // Misidentifies star for D 3 as G (White-yellow) instead of M (Red Dwarf)
                 10393127859, //   Chaloa PI-R d5-0 // missing Stratum Tectonicas Green, Cactoida Cortexum Amethyst & Frutexa Metallicum Grey ? 
                 7269366113697, // ICZ ZJ-Z b3
 
@@ -865,6 +868,21 @@ namespace BioCriterias
                 3922344909570, // Prua Phoe DQ-D c14 A 8: Fungoida Gelata in Inner-Scutum Centaurus, high end gravity
                 2518319061187, // Praea Aoscs NJ-O d7-73: Aleoida Laminiae in Izanami
                 2920713168209, // Wregoi CJ-H b39-1: Aleoida Laminiae in outer orion spur
+
+                5459441379232, // Prieluia UC-F a108-0: Should include Bacterium Verrata
+
+                3035510119723, //Tyroewry SO-R d4-88: should predict crystalline shards, and not tubers/anemones etc
+                //183697605120891, //Byoomao SK-C d14-5346: should predict Sinuous Tubers. Incomplete system data on Spansh
+                7431576882227, //Lysoosms KL-P d5-216: should predict Sinuous Tubers
+                212215802073659, //Agnainks HI-Q d6-6176: should predict Sinuous Tubers
+                979198957068914, //Ogairy FI-B c13-3562: should predict Sinuous Tubers
+                12180091181338, //NGC 6357 Sector AV-Y c44: should not predict Sinuous Tubers
+
+                1385689025315, //Blau Eur NI-T d3-40 B 6: misidentifies star as N instead of K
+                1625351409307, //Graea Hypue IL-W d2-47: 1, 5a, and 10a should predict brain trees, 10a has atmosphere; should not predict Sinuous Tubers
+                2415642185371, //Graea Hypue HQ-W d2-70: brain trees on planet 1
+
+                663228403355, //Graea Hypue FL-W d2-19: Should not predict lindgoticum brain trees
             };
         }
 

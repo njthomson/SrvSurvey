@@ -10,7 +10,9 @@
     "     temp [1000.0 ~ 1800]",
     " pressure [ ~ 0]",
     "volcanism [Major Metallic Magma,Major Rocky Magma,Major Silicate Vapour Geysers]",
-    "  regions [AmphoraBatch]"
+    "  regions [AmphoraBatch]",
+    "  hasStar [A]",
+    "hasWaterPlanet [true]"
   ]
 
 }

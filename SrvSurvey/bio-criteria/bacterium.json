@@ -785,6 +785,7 @@
           ]
         },
         {
+          "useCommonChildren": true,
           "query": [
             "# hit count: 183",
             "atmosType [Helium]",
