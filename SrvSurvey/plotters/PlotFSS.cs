@@ -77,7 +77,7 @@ namespace SrvSurvey.plotters
             lastSystemAddress = game.systemData.address;
 
             // start watching pixels - if we have bodies to FSS
-            if (Game.settings.watchFssSettings_TEST != null && (game.systemData?.honked == true || game.systemData?.fssAllBodies == false))
+            if (Game.settings.allowWatch && Game.settings.watchFssSettings_TEST != null && (game.systemData?.honked == true || game.systemData?.fssAllBodies == false))
                 this.startWatching();
         }
 
@@ -185,7 +185,7 @@ namespace SrvSurvey.plotters
             }
 
             // show reminder to icons, if we're watching pixels
-            if (Game.settings.watchFssSettings_TEST != null && VR.app == null)
+            if (Game.settings.allowWatch && Game.settings.watchFssSettings_TEST != null && VR.app == null)
             {
                 tt.dty = this.height - N.fourFour;
                 var duration = DateTime.Now - this.lastScanTime;
@@ -206,7 +206,7 @@ namespace SrvSurvey.plotters
 
         private void startWatching()
         {
-            if (Game.settings.watchFssSettings_TEST == null || VR.app != null) return;
+            if (!Game.settings.allowWatch || Game.settings.watchFssSettings_TEST == null || VR.app != null) return;
 
             Game.log("Start watching FSS pixels");
             this.watching = true;

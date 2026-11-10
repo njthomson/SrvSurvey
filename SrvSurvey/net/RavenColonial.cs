@@ -21,7 +21,7 @@ class RavenColonial
             else if (Debugger.IsAttached && Process.GetProcessesByName("RavenColonial").Length > 0)
                 return "https://localhost:7007";
             else
-                return "https://ravencolonial100-awcbdvabgze4c5cq.canadacentral-01.azurewebsites.net";
+                return "https://ravencolonial.net";
         }
     }
 

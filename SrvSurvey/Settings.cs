@@ -200,9 +200,11 @@ namespace SrvSurvey
 
         public bool migratedAlphaSiteHeading = false;
 
-        public Color inferColor = Color.FromArgb(255, 102, 255, 255);
-        public int inferTolerance = 25;
-        public float inferThreshold = 0.002f;
+        public Color inferColor = Color.FromArgb(255, 102, 255, 255); // TODO: retire?
+        public int inferTolerance = 25; // TODO: retire?
+        public float inferThreshold = 0.002f; // TODO: retire?
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool allowWatch = false;
 
         public int pubBioCriteria = 0;
         public int pubCodexRef = 0;
