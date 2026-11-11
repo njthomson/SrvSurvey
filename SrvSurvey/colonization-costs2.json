@@ -1459,7 +1459,7 @@
     "tier": 2,
     "location": "surface",
     "displayName": "Exploration Hub",
-    "layouts": [ "Tellus" ],
+    "layouts": [ "Tellus_e" ],
     "cargo": {
       "ceramiccomposites": 134,
       "polymers": 666,
@@ -1637,7 +1637,7 @@
     "tier": 2,
     "location": "surface",
     "displayName": "Industrial Hub",
-    "layouts": [ "Molae", "Tellus", "Eunostus" ],
+    "layouts": [ "Molae", "Tellus", "Eunostus", "Tellus_i" ],
     "cargo": {
       "ceramiccomposites": 249,
       "polymers": 664,
