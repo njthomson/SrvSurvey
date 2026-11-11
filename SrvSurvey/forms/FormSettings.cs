@@ -883,10 +883,15 @@ namespace SrvSurvey
                 if (CodexRef.taskDownloadAllCodexImages != null)
                     CodexRef.taskDownloadAllCodexImages = null;
 
+                // the folder may never have been created, and a file may be held by an in-flight download
+                if (!Directory.Exists(Game.settings.downloadCodexImageFolder)) return;
                 var files = Directory.GetFiles(Game.settings.downloadCodexImageFolder);
                 Game.log($"Deleting {files.Length} codex image cache files...");
                 foreach (var file in files)
-                    File.Delete(file);
+                {
+                    try { File.Delete(file); }
+                    catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException) { Game.log($"Cannot delete: {file} - {ex.Message}"); }
+                }
             }
         }
 

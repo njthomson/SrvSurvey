@@ -19,6 +19,7 @@ namespace SrvSurvey.game
             // read and parse file contents into tmp object
             if (File.Exists(filepath))
             {
+                // (a file still locked after retrying throws: returning null here would let callers create and save a fresh object over it)
                 var json = Data.readToEndShared(filepath);
                 //var json = File.ReadAllText(filepath);
                 if (string.IsNullOrEmpty(json))
@@ -39,6 +40,9 @@ namespace SrvSurvey.game
                 {
                     Game.log($"Failed to read data from: {filepath}\r\n{ex.Message}");
                     Game.log(json);
+                    // callers treat null as "no data yet" and may save a fresh object over this file - keep the original
+                    try { File.Copy(filepath, filepath + ".bad", true); }
+                    catch (Exception ex2) { Game.log($"Cannot keep a copy of: {filepath} - {ex2.Message}"); }
                 }
             }
             else
@@ -87,22 +91,44 @@ namespace SrvSurvey.game
             {
                 Game.log($"Failed to save: {filepath} (allowRetry:{allowRetry})\r\n\r\n{ex}");
                 if (allowRetry)
-                    Program.defer(() => saveWithRetry(filepath, json, false, checkFolder));
-                else
+                    // give whatever holds the file a moment
+                    Task.Delay(500).ContinueWith(_ => Program.defer(() => saveWithRetry(filepath, json, false, checkFolder)));
+                else if (Debugger.IsAttached)
                     Debugger.Break(); // Will this keep happening?
             }
         }
 
         public static StreamReader openSharedStreamReader(string filepath)
         {
-            return new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+            // allow Delete too, so reading never blocks saveWithRetry replacing the file
+            return new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete));
         }
 
-        /// <summary> Read to end of file using a shared read access StreamReader </summary>
+        /// <summary> Read to end of file using a shared read access StreamReader, retrying briefly whilst something else has it locked </summary>
         public static string readToEndShared(string filepath)
         {
-            using var reader = Data.openSharedStreamReader(filepath);
-            return reader.ReadToEnd();
+            for (var attempt = 0; ; attempt++)
+            {
+                try
+                {
+                    using var reader = Data.openSharedStreamReader(filepath);
+                    return reader.ReadToEnd();
+                }
+                catch (IOException ex) when (attempt < 4 && isSharingViolation(ex))
+                {
+                    // eg: anti-virus, cloud sync or a save replacing the file - wait 50, 100, 200, 400ms
+                    var delay = 50 * (1 << attempt);
+                    Game.log($"File locked, retrying in {delay}ms (attempt {attempt + 1}/5): {filepath}");
+                    Thread.Sleep(delay);
+                }
+            }
+        }
+
+        private static bool isSharingViolation(IOException ex)
+        {
+            // ERROR_SHARING_VIOLATION or ERROR_LOCK_VIOLATION
+            var code = ex.HResult & 0xFFFF;
+            return code == 32 || code == 33;
         }
     }
 

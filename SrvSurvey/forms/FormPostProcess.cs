@@ -471,7 +471,8 @@ namespace SrvSurvey
 
                     // skip if wrong cmdr
                     var filepath = files[n];
-                    var sysData = SystemData.Load<SystemData>(filepath)!;
+                    var sysData = SystemData.Load<SystemData>(filepath);
+                    if (sysData == null) continue; // empty/corrupt file, Load logged why
 
                     countOrganisms += sysData.bodies.Sum(_ => _.organisms?.Count ?? 0);
 

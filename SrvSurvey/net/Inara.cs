@@ -227,7 +227,7 @@ namespace SrvSurvey.net
             foreach (var entry in entries)
             {
                 mapper.Process(entry, context, false);
-                timestamp = entry.Value<string>("timestamp") ?? timestamp;
+                timestamp = InaraEventMapper.TimestampOf(entry) ?? timestamp;
                 count++;
             }
 

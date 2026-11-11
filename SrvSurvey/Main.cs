@@ -155,21 +155,36 @@ namespace SrvSurvey
 
             Task.Factory.StartNew(async () =>
             {
+                // each step on its own: one failing (eg: offline) must not stop SrvSurvey from starting at all
                 try
                 {
                     GuardianSiteTemplate.Import();
                     HumanSiteTemplate.import(Debugger.IsAttached);
-                    await Game.git.refreshPublishedData().ContinueWith(_ =>
-                    {
-                        // show update available link as needed
-                        if (_.Result)
-                            Program.defer(() => linkNewBuildAvailable.Visible = true);
-                    });
+                }
+                catch (Exception ex) { Util.handleError(ex); }
 
+                try
+                {
+                    // show update available link as needed
+                    if (await Game.git.refreshPublishedData())
+                        Program.defer(() => linkNewBuildAvailable.Visible = true);
+                }
+                catch (Exception ex) { Util.handleError(ex); }
+
+                try
+                {
                     Game.canonn.init();
+                }
+                catch (Exception ex) { Util.handleError(ex); }
 
+                try
+                {
                     await Game.codexRef.init(false);
+                }
+                catch (Exception ex) { Util.handleError(ex); }
 
+                try
+                {
                     this.Invoke(new Action(() =>
                     {
                         btnSettings.Enabled = true;
@@ -491,11 +506,8 @@ namespace SrvSurvey
         {
             if (!this.IsHandleCreated || this.IsDisposed) return;
 
-            Program.crashGuard(true, () =>
-            {
-                Application.DoEvents();
-                this.checkFullScreenGraphics();
-            });
+            // already queued onto the UI thread - no DoEvents here, it let further watcher events nest inside each other (#1059)
+            Program.crashGuard(true, () => this.checkFullScreenGraphics());
         }
 
         private void logFolderWatcher_Created(object sender, FileSystemEventArgs e)
@@ -504,11 +516,9 @@ namespace SrvSurvey
             Program.crashGuard(true, () =>
             {
                 Game.log($"New journal file detected: {e.Name} (existing game: {this.game != null})");
+                // no DoEvents: a nested 2nd Created event would also see no game and start a 2nd newGame
                 if (this.game == null)
-                {
-                    Application.DoEvents();
                     this.newGame();
-                }
 
             });
         }
@@ -1308,14 +1318,15 @@ namespace SrvSurvey
             {
                 Task.Run(() =>
                 {
-                    // do this in a background thread
-                    this.processScreenshot(entry, imageFilename);
+                    // do this in a background thread (crashGuard: otherwise a failure here vanishes silently)
+                    Program.crashGuard(() => this.processScreenshot(entry, imageFilename));
                 });
             }
             else
             {
                 Game.log($"Waiting for: {imageFilename}");
-                this.pendingScreenshots.Add(imageFilename, entry);
+                lock (this.pendingScreenshots)
+                    this.pendingScreenshots[imageFilename] = entry;
             }
         }
 
@@ -1324,11 +1335,16 @@ namespace SrvSurvey
             if (this.IsDisposed) return;
             Program.crashGuard(() =>
             {
-                var matchFound = this.pendingScreenshots.ContainsKey(e.FullPath);
+                // (this runs on the watcher thread, the UI thread adds entries)
+                Screenshot? entry;
+                bool matchFound;
+                lock (this.pendingScreenshots)
+                    matchFound = this.pendingScreenshots.Remove(e.FullPath, out entry);
                 Game.log($"Screenshot created: {e.FullPath}, matchFound: {matchFound}");
 
+                // off the watcher thread: processing may wait for the game to finish writing the file
                 if (matchFound)
-                    this.processScreenshot(this.pendingScreenshots[e.FullPath], e.FullPath);
+                    Task.Run(() => Program.crashGuard(() => this.processScreenshot(entry!, e.FullPath)));
             });
         }
 
@@ -1393,16 +1409,28 @@ namespace SrvSurvey
             filename += ".png";
 
 
-            // load the image - quickly, so as not to lock the file
+            // load the image - quickly, so as not to lock the file. Created fires whilst the game may still be writing it
             Image sourceImage;
-            using (var img = Bitmap.FromFile(imageFilename))
-                sourceImage = new Bitmap(img);
+            for (var attempt = 1; ; attempt++)
+            {
+                try
+                {
+                    using (var img = Bitmap.FromFile(imageFilename))
+                        sourceImage = new Bitmap(img);
+                    break;
+                }
+                catch (Exception ex) when (attempt < 10 && (ex is IOException || ex is OutOfMemoryException))
+                {
+                    Game.log($"Screenshot not readable yet (attempt {attempt}): {ex.Message}");
+                    Thread.Sleep(200);
+                }
+            }
 
             // bucket all screenshots into 1 folder per system
             var folder = Path.Combine(Game.settings.screenshotTargetFolder, Util.safeFilename(entry.System));
 
             // save final image
-            var saveImage = new Bitmap(sourceImage);
+            using var saveImage = new Bitmap(sourceImage);
 
             // optionally - add image banner, only if image was created in the past 10 seconds
             if (Game.settings.addBannerToScreenshots)
@@ -1443,6 +1471,7 @@ namespace SrvSurvey
                         var x = (sourceImage.Width / 2) - (truncated.Width / 2);
                         g.DrawImage(sourceImage, -x, 0);
                     }
+                    sourceImage.Dispose();
                     sourceImage = truncated;
                     sourceImage.RotateFlip(RotateFlipType.Rotate90FlipNone);
                 }
@@ -1453,6 +1482,7 @@ namespace SrvSurvey
                 Directory.CreateDirectory(folder);
                 sourceImage.Save(Path.Combine(folder, filename), ImageFormat.Png);
             }
+            sourceImage.Dispose();
 
             // finally, remove the original file?
             if (Game.settings.deleteScreenshotOriginal)
@@ -1532,12 +1562,13 @@ namespace SrvSurvey
             if (Program.tempHideAllPlotters)
             {
                 Program.hideActivePlotters();
-                FormMultiFloatie.current?.Hide();
+                if (FormMultiFloatie.current?.IsDisposed == false) FormMultiFloatie.current.Hide();
             }
             else
             {
                 Program.showActivePlotters();
-                FormMultiFloatie.current?.Show();
+                // (it can be disposed without passing through Close/Dispose overrides, eg: when its owner game window goes away)
+                if (FormMultiFloatie.current?.IsDisposed == false) FormMultiFloatie.current.Show();
             }
         }
 

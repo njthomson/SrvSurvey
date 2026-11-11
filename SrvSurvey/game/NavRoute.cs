@@ -13,7 +13,7 @@ namespace SrvSurvey
 
         public DateTime timestamp { get; set; }
         public string @event { get; set; }
-        public List<RouteEntry> Route { get; set; }
+        public List<RouteEntry> Route { get; set; } = new();
 
         #endregion
 

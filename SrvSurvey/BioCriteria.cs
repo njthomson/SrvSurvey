@@ -50,6 +50,12 @@ namespace BioCriterias
 
             // use source files if debugging, otherwise published files
             var folder = Debugger.IsAttached && !forcePublished ? devSrcFolder : Git.pubBioCriteriaFolder;
+            if (!Directory.Exists(folder))
+            {
+                // eg: published data has not been downloaded (yet) - no predictions until it is
+                Game.log($"readCriteria: folder not found: {folder}");
+                return;
+            }
             var files = Directory.GetFiles(folder, "*.json");
 
             foreach (var filepath in files)
@@ -64,7 +70,7 @@ namespace BioCriterias
                 {
                     // One of the .json files failed to parse?
                     Game.log($"Bad json in '{filepath}': {ex}");
-                    Debugger.Break();
+                    if (Debugger.IsAttached) Debugger.Break();
                     FormErrorSubmit.Show(ex);
                 }
             }

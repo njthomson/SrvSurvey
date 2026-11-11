@@ -275,7 +275,7 @@ namespace SrvSurvey.game
                 Game.rcc.contribute(localProject.buildId, this.cmdr, diff).continueOnMain(null, () =>
                 {
                     // wait a bit then force plotter to re-render
-                    Task.Delay(500).ContinueWith(t => PlotBuildCommodities.endPending());
+                    Util.deferAfter(500, PlotBuildCommodities.endPending);
                 });
             }
         }

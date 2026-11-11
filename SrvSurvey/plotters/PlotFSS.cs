@@ -272,16 +272,15 @@ namespace SrvSurvey.plotters
                 Task.Delay(200).ContinueWith(t => this.onWatchPixels());
         }
 
-        private Bitmap screenGrab(Rectangle rect)
+        private Bitmap? screenGrab(Rectangle rect)
         {
-            using (var b = new Bitmap(rect.Width, rect.Height))
-            {
-                using (var g = Graphics.FromImage(b))
-                {
-                    g.CopyFromScreen(rect.Left, rect.Top, 0, 0, b.Size);
-                    return new Bitmap(b);
-                }
-            }
+            // the game window can report a 0 size whilst it is being created or closed
+            if (rect.Width <= 0 || rect.Height <= 0) return null;
+
+            var b = new Bitmap(rect.Width, rect.Height);
+            using (var g = Graphics.FromImage(b))
+                g.CopyFromScreen(rect.Left, rect.Top, 0, 0, b.Size);
+            return b;
         }
 
         public void analyzeGrab(bool saveDiagnosticImage)
@@ -302,7 +301,9 @@ namespace SrvSurvey.plotters
             gameRect.Height = gameRect.Height / 2;
             gameRect.X += gameRect.Width;
 
-            var grab = this.screenGrab(gameRect);
+            // dispose each grab - this runs every 200ms
+            using var grab = this.screenGrab(gameRect);
+            if (grab == null) return;
 
             // find area to analyze
             var watchArea = this.getWatchArea(gameRect, grab);

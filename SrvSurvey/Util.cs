@@ -780,6 +780,15 @@ static class Util
             && actual.B > expected.B - tolerance && actual.B < expected.B + tolerance;
     }
 
+    /// <summary> Offline/DNS (no status code), timeouts, 403 and server side errors: nothing the player can act on </summary>
+    public static bool isTransientNetworkError(Exception? ex)
+    {
+        if (ex is AggregateException agg && agg.InnerExceptions.Count == 1) ex = agg.InnerException;
+        if (ex is TaskCanceledException) return true;
+        var reqEx = ex as HttpRequestException;
+        return reqEx != null && (reqEx.StatusCode == null || reqEx.StatusCode == System.Net.HttpStatusCode.Forbidden || (int)reqEx.StatusCode >= 500);
+    }
+
     public static bool isFirewallProblem(Exception? ex)
     {
         if (ex == null) return false;
@@ -1340,6 +1349,13 @@ static class Util
     /// </summary>
     public static void deferAfter(int delayMs, string? prefix, Action func)
     {
+        // pendingCounts is only safe to touch from the UI thread
+        if (Program.control.InvokeRequired)
+        {
+            Program.defer(() => deferAfter(delayMs, prefix, func));
+            return;
+        }
+
         var name = $"{prefix}{func.Target}/{func.Method}";
         if (!pendingCounts.ContainsKey(name)) pendingCounts[name] = 0;
 
@@ -1617,15 +1633,15 @@ internal static class ExtensionMethods
             if (postTask.Exception != null || !postTask.IsCompletedSuccessfully)
                 Util.isFirewallProblem(postTask.Exception);
 
-            // exit early if the call did not succeed or returns a null
-            if (postTask.Exception != null || (!allowNull && postTask.Result == null)) return;
+            // exit early if the call did not succeed (incl. cancelled/timed out, which has no Exception) or returns a null
+            if (!postTask.IsCompletedSuccessfully || (!allowNull && postTask.Result == null)) return;
 
             // of if we have a form but it's disposed
             if (form?.IsDisposed == true) return;
 
-            // invoke back on main UX thread?
+            // invoke back on main UX thread? (checking the form again: it may have closed in the meantime)
             if (onMainThread)
-                Program.control.Invoke(() => func(postTask.Result));
+                Program.control.Invoke(() => { if (form?.IsDisposed != true) func(postTask.Result); });
             else
                 func(postTask.Result);
         });
@@ -1642,14 +1658,14 @@ internal static class ExtensionMethods
             if (postTask.Exception != null || !postTask.IsCompletedSuccessfully)
                 Util.isFirewallProblem(postTask.Exception);
 
-            // exit early if the call did not succeed or returns a null
-            if (postTask.Exception != null) return;
+            // exit early if the call did not succeed (incl. cancelled/timed out)
+            if (!postTask.IsCompletedSuccessfully) return;
 
             // of if we have a form but it's disposed
             if (form?.IsDisposed == true) return;
 
-            // invoke back on main UX thread?
-            Program.control.Invoke(() => func());
+            // invoke back on main UX thread? (checking the form again: it may have closed in the meantime)
+            Program.control.Invoke(() => { if (form?.IsDisposed != true) func(); });
         });
     }
 

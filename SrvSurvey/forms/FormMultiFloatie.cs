@@ -82,7 +82,8 @@ namespace SrvSurvey.forms
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            current = null;
+            if (current == this)
+                current = null;
         }
 
         protected override void Dispose(bool disposing)

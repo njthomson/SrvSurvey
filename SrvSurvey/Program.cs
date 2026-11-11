@@ -393,7 +393,10 @@ namespace SrvSurvey
         public static void invalidateActivePlotters()
         {
             if (Program.control.InvokeRequired)
+            {
                 Program.control.BeginInvoke(() => Program.invalidateActivePlotters());
+                return;
+            }
 
             // Game.log($"Program.invalidateActivePlotters: {activePlotters.Count}");
 
@@ -509,8 +512,15 @@ namespace SrvSurvey
         /// <summary> Defer the given action behind BeginInvoke </summary>
         public static void defer(Action func)
         {
-            if (control.IsDisposed) return;
-            Program.control.BeginInvoke(func);
+            if (control.IsDisposed || !control.IsHandleCreated) return;
+            try
+            {
+                Program.control.BeginInvoke(func);
+            }
+            catch (InvalidOperationException)
+            {
+                // handle destroyed whilst shutting down - nothing left to run this on
+            }
         }
 
         private static float getScaleFactor()

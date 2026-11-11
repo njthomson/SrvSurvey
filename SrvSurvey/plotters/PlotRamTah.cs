@@ -56,8 +56,10 @@ namespace SrvSurvey.plotters
                 var targetObelisk = PlotBase2.getPlotter<PlotGuardians>()?.targetObelisk;
                 foreach (var bar in ramTahObelisks)
                 {
+                    if (bar.Value.Count == 0) continue;
                     var obelisk = game.systemSite.getActiveObelisk(bar.Value.First());
-                    if (obelisk == null || string.IsNullOrEmpty(obelisk.name) || string.IsNullOrEmpty(bar.Key)) continue;
+                    // (items is empty, not null, for an unknown msg)
+                    if (obelisk == null || string.IsNullOrEmpty(obelisk.name) || string.IsNullOrEmpty(bar.Key) || obelisk.items.Count == 0) continue;
 
                     // first, do we have the items needed?
                     var item1 = obelisk.items.First().ToString();

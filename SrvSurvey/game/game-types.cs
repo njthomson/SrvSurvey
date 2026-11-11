@@ -517,7 +517,7 @@ namespace SrvSurvey.game
 
             if (!Data.suppressLoadingMsg)
                 Game.log($"Reading pubData for '{bodyName}' #{index} - " + (isRuins ? "Ruins" : "Structure"));
-            var json = File.ReadAllText(pubPath);
+            var json = Data.readToEndShared(pubPath);
 
             var pubData = JsonConvert.DeserializeObject<GuardianSitePub>(json);
             return pubData;
@@ -536,7 +536,7 @@ namespace SrvSurvey.game
                     if (!Data.suppressLoadingMsg)
                         Game.log($"Reading pubData for '{filename}'");
 
-                    var json = File.ReadAllText(filepath);
+                    var json = Data.readToEndShared(filepath);
                     var pubData = JsonConvert.DeserializeObject<GuardianSitePub>(json)!;
                     var idx = filename.IndexOf("-ruins");
                     if (idx < 0) idx = filename.IndexOf("-structure");

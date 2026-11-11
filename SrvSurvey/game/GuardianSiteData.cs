@@ -84,6 +84,13 @@ namespace SrvSurvey.game
             Directory.CreateDirectory(folder);
             var data = Data.Load<GuardianSiteData>(filepath);
 
+            // the file exists but could not be read: do NOT replace the player's survey with an empty site
+            if (data == null && File.Exists(filepath))
+            {
+                Game.log($"Cannot read existing site data, leaving it untouched: {filepath}");
+                return null;
+            }
+
             // create new if needed
             if (data == null)
             {
@@ -627,7 +634,8 @@ namespace SrvSurvey.game
                 foreach (var file in files)
                 {
                     string filepath = Path.Combine(rootFolder, folder, file);
-                    var data = Data.Load<GuardianSiteData>(filepath)!;
+                    var data = Data.Load<GuardianSiteData>(filepath);
+                    if (data == null) continue; // empty/unparseable, Data.Load logged it
 
                     if (data.type == SiteType.Alpha)
                     {
@@ -704,8 +712,8 @@ namespace SrvSurvey.game
 
             Game.log($"Reading {files.Length} guardian sites files from disk");
             return files
-                .Select(filename => Data.Load<GuardianSiteData>(filename)!)
-                .Where(_ => _.legacy == false)
+                .Select(filename => Data.Load<GuardianSiteData>(filename))
+                .Where(_ => _ != null && _.legacy == false)
                 .ToList()!;
         }
 

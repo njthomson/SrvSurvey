@@ -237,10 +237,12 @@ namespace SrvSurvey
             if (game?.cmdr == null) return true;
 
             var nextSystem = game.cmdr.boxelSearch?.nextSystem;
-            if (game.mode == GameMode.GalaxyMap && nextSystem != null)
+            if (game.mode == GameMode.GalaxyMap && !string.IsNullOrEmpty(nextSystem))
             {
                 Game.log($"Setting next boxel search system to clipboard: {nextSystem}");
-                Clipboard.SetText(nextSystem);
+                // same retrying API PlotSphericalSearch uses - another app may hold the clipboard
+                try { Clipboard.SetDataObject(new DataObject(DataFormats.UnicodeText, nextSystem), true, 2, 50); }
+                catch (System.Runtime.InteropServices.ExternalException ex) { Game.log($"Clipboard busy: {ex.Message}"); }
                 PlotBase2.invalidate(nameof(PlotSphericalSearch));
             }
 

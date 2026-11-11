@@ -220,7 +220,11 @@ namespace SrvSurvey.game
                 }
                 catch (Exception ex)
                 {
-                    FormErrorSubmit.Show(ex);
+                    // Spansh down/slow/offline: we'll try again next time
+                    if (Util.isTransientNetworkError(ex))
+                        Game.log($"findSystemsInCurrentBoxel: {ex.Message}");
+                    else
+                        FormErrorSubmit.Show(ex);
                 }
                 finally
                 {
@@ -759,6 +763,13 @@ namespace SrvSurvey.game
 
                 var n = obj["currentCount"]?.Value<int>() ?? 0;
                 bs.setCurrentCount(n);
+
+                // a search cannot be active without a boxel to search
+                if (bs.active && bs.boxel == null)
+                {
+                    Game.log($"Deactivating boxel search, cannot parse boxel: {obj["boxel"]}");
+                    bs.active = false;
+                }
 
                 return bs;
             }

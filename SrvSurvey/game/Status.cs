@@ -91,7 +91,8 @@ namespace SrvSurvey
             Program.crashGuard(() =>
             {
                 PlotPulse.resetPulse();
-                this.parseStatusFile();
+                // parse on the UI thread - Game and plotters read and add to `changed` (and other props) from there
+                Program.control.Invoke(this.parseStatusFile);
             });
         }
 
@@ -109,7 +110,9 @@ namespace SrvSurvey
                 var oldFlags2 = this.Flags2;
 
                 // read the file contents ...
-                var json = Data.readToEndShared(Status.Filepath);
+                // no retry/sleep here: this runs on the UI thread and the next write to the file re-triggers us anyway
+                using var sr = Data.openSharedStreamReader(Status.Filepath);
+                var json = sr.ReadToEnd();
                 if (json == null || json == "") return;
 
                 // ... parse into tmp object ...

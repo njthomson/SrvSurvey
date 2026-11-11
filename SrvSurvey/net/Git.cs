@@ -121,15 +121,15 @@ namespace SrvSurvey.net
                     var json4 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/allStructures.json");
                     Data.saveWithRetry(Path.Combine(Git.pubDataFolder, "allStructures.json"), json4);
 
-                    // Remove folder, to remove any orphan files
-                    if (Directory.Exists(Git.pubGuardianFolder))
-                        Directory.Delete(Git.pubGuardianFolder, true);
-
                     Game.log($"Downloading guardian.zip ...");
                     var url = $"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/data/guardian.zip";
                     var filepath = Path.Combine(Git.pubDataFolder, "guardian.zip");
                     Game.log($"{url} => {filepath}");
                     var bytes = await Git.client.GetByteArrayAsync(url);
+
+                    // Remove folder, to remove any orphan files (only once the download worked, else we'd have nothing)
+                    if (Directory.Exists(Git.pubGuardianFolder))
+                        Directory.Delete(Git.pubGuardianFolder, true);
                     await File.WriteAllBytesAsync(filepath, bytes);
                     ZipFile.ExtractToDirectory(filepath, Git.pubGuardianFolder, true);
 
@@ -146,12 +146,20 @@ namespace SrvSurvey.net
                 var duration = DateTime.Now - Game.settings.lastNicknames;
                 if (duration.TotalDays > 2 || !File.Exists(filepathRavenNicknames) || pubData.nicknames > Game.settings.pubNicknames)
                 {
-                    await this.updateNicknames();
+                    try
+                    {
+                        await this.updateNicknames();
 
-                    // update settings to current level
-                    Game.settings.pubNicknames = pubData.nicknames;
-                    Game.settings.lastNicknames = DateTime.Now;
-                    Game.settings.Save();
+                        // update settings to current level
+                        Game.settings.pubNicknames = pubData.nicknames;
+                        Game.settings.lastNicknames = DateTime.Now;
+                        Game.settings.Save();
+                    }
+                    catch (Exception ex)
+                    {
+                        // a different server (Raven) - do not let it block the remaining downloads
+                        Game.log($"updateNicknames failed: {ex.Message}");
+                    }
                 }
                 if (File.Exists(filepathRavenNicknames))
                 {
@@ -175,9 +183,10 @@ namespace SrvSurvey.net
             {
                 Game.log($"Error in updatePubData:\r\n{ex}");
                 var reqEx = ex as HttpRequestException;
-                if (reqEx?.StatusCode == System.Net.HttpStatusCode.NotFound || Util.isFirewallProblem(ex) || reqEx?.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
+                // we'll try again next time
+                if (Util.isTransientNetworkError(ex) || reqEx?.StatusCode == System.Net.HttpStatusCode.NotFound || Util.isFirewallProblem(ex) || reqEx?.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
                 {
-                    // swallow NotFound/TooManyRequests responses or problems caused by firewalls
+                    // swallow NotFound/TooManyRequests/transient responses or problems caused by firewalls
                 }
                 else
                 {

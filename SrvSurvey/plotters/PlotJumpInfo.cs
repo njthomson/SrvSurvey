@@ -95,7 +95,7 @@ namespace SrvSurvey.plotters
             {
                 route = game.cmdr.route.hops.Select(h => new RouteEntry()
                 {
-                    SystemAddress = h.id64!.Value,
+                    SystemAddress = h.id64 ?? 0, // hops may be saved by name only
                     StarSystem = h.name,
                     StarPos = h.xyz!,
                     StarClass = h.neutron ? "N" : null!,

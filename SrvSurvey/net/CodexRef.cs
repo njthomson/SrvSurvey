@@ -38,11 +38,9 @@ namespace SrvSurvey.canonn
             Game.log($"CodexRef init (reset: {reset}, last downloaded: {duration.TotalDays.ToString("N3")} days ago) ...");
 
             // force a download and re-processing once a week
+            // (keep the files on disk: they are the fallback when the downloads fail)
             if (duration.TotalDays > 7)
-            {
                 reset = true;
-                if (File.Exists(nebulaePath)) File.Delete(nebulaePath);
-            }
 
             // get CodexRef ready first, before running these in parallel
             var codexRef = await loadCodexRef(reset);
@@ -163,11 +161,20 @@ namespace SrvSurvey.canonn
                 {
                     Game.log($"Failed to download CodexRef: {ex.Message}");
 
-                    Game.log("loadCodexRef: preparing shadow from network ...");
-                    json = await client.GetStringAsync("https://raw.githubusercontent.com/njthomson/SrvSurvey/refs/heads/main/docs/codexRef.json");
-                    Data.saveWithRetry(codexRefPath, json);
-                    Game.log("loadCodexRef: shadow complete");
-                    Game.settings.lastCodexRefDownload = DateTime.Now;
+                    try
+                    {
+                        Game.log("loadCodexRef: preparing shadow from network ...");
+                        json = await client.GetStringAsync("https://raw.githubusercontent.com/njthomson/SrvSurvey/refs/heads/main/docs/codexRef.json");
+                        Data.saveWithRetry(codexRefPath, json);
+                        Game.log("loadCodexRef: shadow complete");
+                        Game.settings.lastCodexRefDownload = DateTime.Now;
+                    }
+                    catch (Exception ex2) when (File.Exists(codexRefPath))
+                    {
+                        // offline? use what we downloaded last time
+                        Game.log($"Failed to download shadow CodexRef: {ex2.Message} - using the copy on disk");
+                        json = Data.readToEndShared(codexRefPath);
+                    }
                 }
             }
             else
@@ -657,7 +664,20 @@ namespace SrvSurvey.canonn
             if (!File.Exists(codexNotFoundPath) || reset)
             {
                 Game.log($"prepCodexNotFounds: preparing from network ... (reset: {reset})");
-                var csv = await client.GetStringAsync("https://docs.google.com/spreadsheets/d/1TpPZUFd61KUQWy1sV8VhScZiVbRWJ435wTN8xjN0Qv0/gviz/tq?tqx=out:csv&sheet=Individual+Items");
+                string csv;
+                try
+                {
+                    csv = await client.GetStringAsync("https://docs.google.com/spreadsheets/d/1TpPZUFd61KUQWy1sV8VhScZiVbRWJ435wTN8xjN0Qv0/gviz/tq?tqx=out:csv&sheet=Individual+Items");
+                }
+                catch (Exception ex)
+                {
+                    // offline, timeout, 403 ... this is optional data: use the copy on disk, or nothing, but do not fail start-up
+                    Game.log($"prepCodexNotFounds: download failed, fileExists: {File.Exists(codexNotFoundPath)} - {ex.Message}");
+                    this.codexNotFound = File.Exists(codexNotFoundPath)
+                        ? JsonConvert.DeserializeObject<Dictionary<string, List<CodexNotFound>>>(Data.readToEndShared(codexNotFoundPath))!
+                        : new();
+                    return this.codexNotFound;
+                }
 
                 this.codexNotFound = parseNotFountCsv(csv);
                 var json = JsonConvert.SerializeObject(this.codexNotFound, Formatting.Indented);

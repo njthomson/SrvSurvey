@@ -298,7 +298,8 @@ namespace SrvSurvey.plotters
         {
             Game.log($"Map image changed, reloading...");
 
-            Program.crashGuard(() =>
+            // on the UI thread: the image is disposed here while paint may be drawing it
+            Program.crashGuard(true, () =>
             {
                 this.loadMapImage();
                 this.invalidate();
@@ -506,7 +507,7 @@ namespace SrvSurvey.plotters
         private void TemplateWatcher_Changed(object sender, FileSystemEventArgs e)
         {
             Game.log("TemplateWatcher_Changed");
-            this.reloadTemplate();
+            Program.crashGuard(true, () => this.reloadTemplate());
         }
 
         private static float zoomLevelMinWidth = 0;

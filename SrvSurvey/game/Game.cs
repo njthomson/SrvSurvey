@@ -46,10 +46,19 @@ namespace SrvSurvey.game
         private static string prepLogFile()
         {
             // prepare filepath for log file
-            Directory.CreateDirectory(Game.logFolder);
             var datepart = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             var filepath = Path.Combine(Game.logFolder, $"srvs-{datepart}.txt")!;
-            File.WriteAllLines(filepath, Game.logs);
+            try
+            {
+                Directory.CreateDirectory(Game.logFolder);
+                File.WriteAllLines(filepath, Game.logs);
+            }
+            catch (Exception ex)
+            {
+                // failing here kills Game's static init, and with it the whole app - log to %temp% instead
+                filepath = Path.Combine(Path.GetTempPath(), $"srvs-{datepart}.txt");
+                File.WriteAllLines(filepath, Game.logs.Append($"Cannot write logs to: {Game.logFolder} - {ex.Message}"));
+            }
 
             return filepath;
         }
@@ -70,8 +79,8 @@ namespace SrvSurvey.game
             }
             catch
             {
-                // try one more shortly afterwards
-                Application.DoEvents();
+                // try one more shortly afterwards (no DoEvents: this runs on any thread, and re-enters the UI thread)
+                Thread.Sleep(10);
                 try
                 {
                     File.AppendAllText(Game.logPath, txt + "\r\n");
@@ -94,7 +103,8 @@ namespace SrvSurvey.game
             {
                 var filename = logFiles[idx].FullName;
                 Game.log($"Removing old log file: {filename}");
-                File.Delete(filename);
+                try { File.Delete(filename); }
+                catch (Exception ex) { Game.log($"Cannot remove old log file: {ex.Message}"); }
             }
         }
 
@@ -1252,6 +1262,14 @@ namespace SrvSurvey.game
                     ColonyData.localUntrackedProject = null;
                     this.exitMats();
                 }
+                else if (this.systemData == null && this.cmdr != null)
+                {
+                    // MainMenu music can play briefly without the game actually reloading (no LoadGame/Location follows), so re-find where we are
+                    Game.log($"Left MainMenu without a new Location - re-initializing systemData");
+                    this.initSystemData(cmdr.fid, cmdr.commander);
+                    if (this.systemData != null && cmdr.currentBodyId >= 0)
+                        this.setCurrentBody(cmdr.currentBodyId);
+                }
             }
 
             var newCarrierMgmt = entry.MusicTrack == "FleetCarrier_Managment";
@@ -2356,6 +2374,8 @@ namespace SrvSurvey.game
             {
                 cmdr.currentBody = entry.Body;
                 cmdr.currentBodyId = entry.BodyID;
+                // the body may never have been scanned in these journals (eg: landed whilst playing on another PC)
+                this.systemData.findOrCreate(entry.Body, entry.BodyID);
                 this.setCurrentBody(entry.BodyID);
 
                 // steal radius from status?
@@ -2539,15 +2559,16 @@ namespace SrvSurvey.game
                     }
                 });
 
+                // on the UI thread, queued after the merges the tasks above defer there
                 Task.WhenAll(taskSpansh, taskEDSM, taskCanonnPoi, taskCanonnStations).ContinueWith(response =>
                 {
-                    this.fetchSystemDataEnd(shouldRefreshGuardianSystemStatus);
+                    Program.defer(() => this.fetchSystemDataEnd(shouldRefreshGuardianSystemStatus));
                 });
 
                 // measure distance to closest nebula
                 this.systemData.getNebulaDist().ContinueWith(response =>
                 {
-                    this.predictSystemSpecies();
+                    Program.defer(() => this.predictSystemSpecies());
                 });
             }
             finally
@@ -2724,8 +2745,8 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Touchdown entry)
         {
-            // wait a bit for the status file to be written?
-            Task.Delay(10).ContinueWith((x) =>
+            // wait a bit for the status file to be written? (then back on the UI thread, with everything else touching cmdr)
+            Task.Delay(10).ContinueWith((x) => Program.defer(() =>
             {
                 // store the heading at the time of touchdown, so we can adjust the cockpit location to the center of the ship
                 this.cmdr.setTouchdown(entry, status.Heading);
@@ -2734,7 +2755,7 @@ namespace SrvSurvey.game
                 var ago = Util.timeSpanToString(DateTime.UtcNow - entry.timestamp);
                 log($"Touchdown {ago}, at: {touchdownLocation}");
                 this.fireUpdate(true);
-            });
+            }));
         }
 
         private void onJournalEntry(Liftoff entry)
@@ -2959,7 +2980,7 @@ namespace SrvSurvey.game
                 else
                 {
                     // delay a little
-                    Task.Delay(500).ContinueWith(t => onDockedWhenSafe(CalcMethod.AutoDock, entry.Taxi));
+                    Task.Delay(500).ContinueWith(t => Program.defer(() => onDockedWhenSafe(CalcMethod.AutoDock, entry.Taxi)));
                 }
             }
         }
@@ -3199,13 +3220,24 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(ScanOrganic entry)
         {
-            if (this.systemData == null) throw new Exception($"Why no this.systemData?");
+            if (this.systemData == null)
+            {
+                Game.log($"ScanOrganic: no systemData - cannot track this scan: {entry.Species_Localised}");
+                return;
+            }
             if (this.systemBody == null)
             {
                 this.systemBody = this.systemData.bodies.FirstOrDefault(_ => _.id == entry.Body);
+                // eg: body never scanned or approached in these journals - but we are standing on it, so the status file knows its name
+                if (this.systemBody == null && this.status.BodyName != null)
+                    this.systemBody = this.systemData.findOrCreate(this.status.BodyName, entry.Body);
                 Game.log($"Why was no this.systemBody? Found: {this.systemBody?.name}");
             }
-            if (this.systemBody == null) throw new Exception($"Why no this.systemBody?");
+            if (this.systemBody == null)
+            {
+                Game.log($"ScanOrganic: no systemBody - cannot track this scan: {entry.Species_Localised}");
+                return;
+            }
 
             // are we changing organism before the 3rd scan?
             var hash = $"{entry.SystemAddress}|{entry.Body}|{entry.Species}";

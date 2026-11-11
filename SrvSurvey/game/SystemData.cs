@@ -29,8 +29,9 @@ namespace SrvSurvey.game
 
             if (systemFileName != "") Game.log($"Loading SystemData for: '{systemFileName}' ({systemAddress})");
 
-            // use cache entry if present
-            if (systemAddress != 0 && cache.TryGetValue(systemAddress, out SystemData? value))
+            // use cache entry if present - the cache is per system, so only if it belongs to this commander
+            var fidFolder = Path.Combine("systems", fid) + Path.DirectorySeparatorChar;
+            if (systemAddress != 0 && cache.TryGetValue(systemAddress, out SystemData? value) && value.filepath?.Contains(fidFolder) != false)
                 return value;
 
             // try finding files by systemAddress first, then system name
@@ -161,7 +162,19 @@ namespace SrvSurvey.game
 
         public static SystemData From(StarRef starRef, string fid, string? cmdr)
         {
-            return Load(starRef.name, starRef.id64, fid, cmdr, true)!;
+            var data = Load(starRef.name, starRef.id64, fid, cmdr, true);
+            if (data != null) return data;
+
+            // no (readable) file for this system, eg: visited under another commander or on another PC
+            Game.log($"SystemData.From: no data for '{starRef.name}' ({starRef.id64}), using an empty stub");
+            return new SystemData()
+            {
+                filepath = Path.Combine(Program.dataFolder, "systems", fid, Util.safeFilename($"{starRef.name}_{starRef.id64}.json")),
+                name = starRef.name,
+                address = starRef.id64,
+                starPos = new double[] { starRef.x, starRef.y, starRef.z },
+                commander = cmdr!,
+            };
         }
 
         public static SystemData From(ISystemDataLocator entry, string fid, string cmdrName)
@@ -565,7 +578,7 @@ namespace SrvSurvey.game
 
         #region journal processing
 
-        private SystemBody findOrCreate(string bodyName, int bodyId)
+        internal SystemBody findOrCreate(string bodyName, int bodyId)
         {
             lock (this.bodies)
             {
@@ -1105,7 +1118,8 @@ namespace SrvSurvey.game
         {
             if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! ScanOrganic Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
             var body = this.bodies.FirstOrDefault(_ => _.id == entry.Body);
-            if (body!.organisms == null) body.organisms = new List<SystemOrganism>();
+            if (body == null) { Game.log($"Unknown body! ScanOrganic BodyID: {entry.Body} not in '{this.name}'"); return false; }
+            if (body.organisms == null) body.organisms = new List<SystemOrganism>();
 
             // find by first variant or entryId, then genusName
             var match = entry.Variant != null
@@ -1457,8 +1471,10 @@ namespace SrvSurvey.game
                 return m.Groups[1].Value;
             else if (starType == "T Tauri Star")
                 return "TTS";
-            else
+            else if (starType.Length > 0)
                 return starType[0].ToString();
+            else
+                return "?";
         }
 
         public void onSpanshResponse(ApiSystemDump.System spanshSystem)
@@ -1513,7 +1529,8 @@ namespace SrvSurvey.game
                     body.atmosphereComposition = entry.atmosphereComposition.ToDictionary(_ => Util.compositionToCamel(_.Key), _ => _.Value);
                 if (body.materials == null && entry.materials != null) body.materials = entry.materials;
                 if (body.volcanism == null && entry.volcanismType != null) body.volcanism = entry.volcanismType == "No volcanism" ? "" : entry.volcanismType;
-                if (body.starType == null && entry.subType != null)
+                // only stars, else planets get a starType from their sub-type, eg: "High metal content world" => "H"
+                if (body.starType == null && entry.type == "Star" && entry.subType != null)
                 {
                     body.starType = parseStarType(entry.subType);
                     //body.starSubClass = int.Parse(entry.spectralClass[1]);

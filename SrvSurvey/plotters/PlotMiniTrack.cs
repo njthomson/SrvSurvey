@@ -73,9 +73,10 @@ namespace SrvSurvey.plotters
                 var x = tt.dtx;
                 tt.dty = N.ten;
 
-                if (inRhino && bookmarks?.ContainsKey(key) != true)
+                // (quick trackers can name a bookmark that was since removed)
+                if (bookmarks?.GetValueOrDefault(key)?.Count > 0 != true)
                 {
-                    // render an empty spot if in a Rhino and the bookmark is not set
+                    // render an empty spot if the bookmark is not set
                     tt.draw(x, key, C.orangeDarker);
                     var rect = new RectangleF(x + N.oneTwo, N.twoEight, N.ten * 2, N.ten * 2);
                     g.DrawEllipse(C.Pens.orangeDarker1, rect);

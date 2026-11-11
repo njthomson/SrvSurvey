@@ -662,9 +662,17 @@ namespace SrvSurvey
             {
                 Program.defer(() =>
                 {
+                    if (this.IsDisposed) return;
+                    this.Enabled = true;
+                    if (!t.IsCompletedSuccessfully)
+                    {
+                        Game.log($"importCanonnChallenge failed: {t.Exception}");
+                        MessageBox.Show(this, $"Failed to import Canonn Challenge data:\r\n{t.Exception?.InnerException?.Message ?? "cancelled"}", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
                     // re-calculate completions
                     this.calcCompletions();
-                    this.Enabled = true;
 
                     MessageBox.Show(this, $"Added {t.Result} new entries from Canonn Challenge data for commander: {cmdrCodex.commander}", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 });

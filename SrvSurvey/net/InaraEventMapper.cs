@@ -39,6 +39,18 @@ namespace SrvSurvey.net
             InMulticrew = false;
         }
 
+        /// <summary>
+        /// The journal timestamp as ISO 8601 UTC. JObject parsing turns it into a Date token, and Value&lt;string&gt;
+        /// would then give "07/28/2026 13:00:00" - not what Inara's eventTimestamp expects, and unparseable in eg: de-DE.
+        /// </summary>
+        internal static string? TimestampOf(JObject entry)
+        {
+            var token = entry["timestamp"];
+            if (token?.Type == JTokenType.Date)
+                return token.Value<DateTime>().ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            return token?.Value<string>();
+        }
+
         public IReadOnlyList<InaraEvent> Process(JObject entry, InaraContext context, bool collectEvents)
         {
             var name = entry.Value<string>("event");
@@ -59,7 +71,7 @@ namespace SrvSurvey.net
                 return [];
             }
 
-            var timestamp = entry.Value<string>("timestamp") ?? DateTime.UtcNow.ToString("O");
+            var timestamp = TimestampOf(entry) ?? DateTime.UtcNow.ToString("O");
             var events = new List<InaraEvent>();
             var sessionStarting = !sessionStarted
                 || !string.Equals(sessionCommander, context.Commander, StringComparison.OrdinalIgnoreCase);

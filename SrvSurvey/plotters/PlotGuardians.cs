@@ -1975,8 +1975,13 @@ namespace SrvSurvey.plotters
             }
             else // puddles present or empty
             {
-                g.FillEllipse(GameColors.Map.brushes[poi.type][poiStatus], -pt.X - dd, -pt.Y - dd, d, d);
-                g.DrawEllipse(GameColors.Map.pens[poi.type][poiStatus], -pt.X - dd, -pt.Y - dd, d, d);
+                // no colours for some types, eg: emptyPuddle (FormRuins skips these too)
+                var brush = GameColors.Map.brushes.GetValueOrDefault(poi.type)?.GetValueOrDefault(poiStatus);
+                var pen = GameColors.Map.pens.GetValueOrDefault(poi.type)?.GetValueOrDefault(poiStatus);
+                if (brush == null || pen == null) return;
+
+                g.FillEllipse(brush, -pt.X - dd, -pt.Y - dd, d, d);
+                g.DrawEllipse(pen, -pt.X - dd, -pt.Y - dd, d, d);
             }
         }
 

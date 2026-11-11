@@ -343,7 +343,8 @@ namespace SrvSurvey
                 if (targetType == GuardianSiteData.SiteType.Unknown)
                     name += $" - {initialData.type}";
 
-                filteredSites.Add(name, initialData);
+                // (another site can produce the same display name)
+                filteredSites.TryAdd(name, initialData);
                 comboSite.Text = initialData.displayName;
             }
 
@@ -722,6 +723,8 @@ namespace SrvSurvey
         private void drawCommander(Graphics g)
         {
             if (game?.systemSite == null || game?.status == null || game.isShutdown || this.siteData == null || game?.systemBody == null) return;
+            // site location is not known until it has been determined (or was saved without one)
+            if (this.siteData.location == null) return;
 
             g.ResetTransform();
 

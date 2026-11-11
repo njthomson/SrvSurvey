@@ -150,7 +150,7 @@ namespace SrvSurvey.net
         }
 
         private static DateTimeOffset parseTimestamp(string timestamp) =>
-            DateTimeOffset.TryParse(timestamp, out var parsed) ? parsed : DateTimeOffset.UtcNow;
+            DateTimeOffset.TryParse(timestamp, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeUniversal, out var parsed) ? parsed : DateTimeOffset.UtcNow;
 
         private static long organicDataValue(JObject entry) =>
             (entry["BioData"] as JArray)?.OfType<JObject>()

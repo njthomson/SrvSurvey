@@ -470,6 +470,8 @@ namespace SrvSurvey.game
 
         public Dictionary<string, string> getQuickStats()
         {
+            if (this.visitedSystems.Count == 0) return new();
+
             var systemNames = new HashSet<string>();
             var totalCounts = new SystemStats.Counts();
             var totalSubCats = new Dictionary<string, int>();

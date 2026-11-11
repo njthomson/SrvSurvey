@@ -126,6 +126,8 @@ namespace SrvSurvey
             this.idxBody = newIdxBody ?? 0;
             this.idxVariant = 0;
 
+            // eg: bio signals in the system but no body known to have them yet
+            if (this.idxBody >= this.stuff.Count) return;
             var pair = this.stuff.Skip(idxBody).First();
             this.currentBody = pair.Key;
             this.currentVariants = pair.Value;
@@ -137,6 +139,13 @@ namespace SrvSurvey
         /// <summary> Call when changing the thing we're looking at </summary>
         private void updateStuff(bool forceCanonn = false)
         {
+            if (currentBody == null)
+            {
+                lblBodyName.Text = "?";
+                lblTitle.Text = "?";
+                lblDetails.Text = "?";
+                return;
+            }
             lblBodyName.Text = currentBody.name + $" [{idxBody + 1} of {stuff.Count}]";
             if (currentVariants == null || currentVariants.Count == 0)
             {
@@ -144,7 +153,7 @@ namespace SrvSurvey
                 lblDetails.Text = "?";
                 return;
             }
-            if (idxVariant < 0 || idxVariant > currentVariants.Count)
+            if (idxVariant < 0 || idxVariant >= currentVariants.Count)
                 currentVariant = null;
             else
                 currentVariant = currentVariants[idxVariant];
@@ -484,7 +493,8 @@ namespace SrvSurvey
             var forceRemoteImage = e.Button == MouseButtons.Right;
             var variant = item.Tag as BioVariant;
             var body = item.OwnerItem?.Tag as SystemBody;
-            if (variant != null && body != null)
+            // the menu can be older than the last prepStuff
+            if (variant != null && body != null && stuff.ContainsKey(body))
             {
                 if (body == currentBody)
                 {
@@ -570,6 +580,7 @@ namespace SrvSurvey
 
         private void btnPrevBody_Click(object sender, EventArgs e)
         {
+            if (stuff.Count == 0) return;
             idxBody--;
             if (idxBody < 0) idxBody = stuff.Count - 1;
 
@@ -585,6 +596,7 @@ namespace SrvSurvey
 
         private void btnNextBody_Click(object sender, EventArgs e)
         {
+            if (stuff.Count == 0) return;
             idxBody++;
             if (idxBody >= stuff.Count) idxBody = 0;
 

@@ -18,6 +18,10 @@ namespace SrvSurvey.net
             var response = await Spansh.client.PostAsync($"https://spansh.co.uk/api/systems/search", body);
             var json = await response.Content.ReadAsStringAsync();
 
+            // eg: 502 with an HTML body, which otherwise fails as a JSON parsing error
+            if (!response.IsSuccessStatusCode && !json.StartsWith("{"))
+                response.EnsureSuccessStatusCode();
+
             if (json == "{\"error\":\"Invalid request\"}")
             {
                 Debugger.Break();

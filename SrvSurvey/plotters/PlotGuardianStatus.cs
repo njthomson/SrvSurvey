@@ -193,7 +193,8 @@ namespace SrvSurvey.plotters
                 tt.setMinWidth(sz.Width);
 
                 tt.draw(Res.RequiresPrefix, col, GameColors.fontMiddle);
-                if (obelisk.items == null)
+                // (items is empty, not null, for an unknown msg)
+                if (obelisk.items == null || obelisk.items.Count == 0)
                 {
                     tt.draw("??", col, GameColors.fontMiddle);
                 }

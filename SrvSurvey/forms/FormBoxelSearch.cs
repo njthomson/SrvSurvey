@@ -888,8 +888,8 @@ namespace SrvSurvey.forms
                         return ((Boxel)leftItem?.Tag!).n2.CompareTo(((Boxel)rightItem?.Tag!)?.n2 ?? int.MaxValue);
 
                     case 1:
-                        // Tag type is Double
-                        return ((double)(leftItem?.SubItems[column].Tag ?? 0)).CompareTo((double)(rightItem?.SubItems[column].Tag ?? 0));
+                        // Tag type is Double, or null when the distance is not known yet
+                        return (leftItem?.SubItems[column].Tag as double? ?? 0d).CompareTo(rightItem?.SubItems[column].Tag as double? ?? 0d);
                     case 2:
                     case 3:
                         // Tag type is DateTimeOffset
