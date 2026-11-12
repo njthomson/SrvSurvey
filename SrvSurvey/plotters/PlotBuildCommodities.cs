@@ -9,6 +9,8 @@ namespace SrvSurvey.plotters
     {
         #region def + statics
 
+        private static readonly List<ColonyCost2> allCosts = Game.rcc.loadDefaultCosts();
+
         public static PlotDef def = new PlotDef()
         {
             name = nameof(PlotBuildCommodities),
@@ -144,7 +146,8 @@ namespace SrvSurvey.plotters
                 {
                     // is tracked, use only FCs linked to this project
                     relevantProjects.Add(proj);
-                    headerText = $"{proj.buildName} ({proj.buildType})";
+                    headerText =
+                        $"{proj.buildName} ({ColonyCost2.getBuildTypeDisplayName(allCosts, proj.buildType)})";
                     relevantFCs = proj.linkedFC.Select(fc => fc.marketId).ToHashSet();
                     Game.log("setHeaderTextAndNeeds: at known site");
                 }
@@ -163,7 +166,8 @@ namespace SrvSurvey.plotters
                 if (primaryProject != null)
                 {
                     relevantProjects = new() { primaryProject };
-                    headerText = $"{primaryProject.buildName} ({primaryProject.buildType})";
+                    headerText =
+                        $"{primaryProject.buildName} ({ColonyCost2.getBuildTypeDisplayName(allCosts, primaryProject.buildType)})";
                     relevantFCs = primaryProject.linkedFC.Select(fc => fc.marketId).ToHashSet();
                 }
                 else
@@ -207,7 +211,8 @@ namespace SrvSurvey.plotters
             {
                 // if there is only 1 project - treat it as primary
                 var onlyProject = relevantProjects.First();
-                headerText = $"{onlyProject.buildName} ({onlyProject.buildType})";
+                headerText =
+                    $"{onlyProject.buildName} ({ColonyCost2.getBuildTypeDisplayName(allCosts, onlyProject.buildType)})";
 
                 // include system name if not local (and not already in the name)
                 if (game.systemData.address != onlyProject.systemAddress && !onlyProject.buildName.Contains(onlyProject.systemName, StringComparison.OrdinalIgnoreCase)) headerText += $"\r\n     ► {onlyProject.systemName}";
@@ -217,7 +222,12 @@ namespace SrvSurvey.plotters
             }
             else if (relevantProjects.Any())
             {
-                projectNames = relevantProjects.Select(p => $"{p.buildName} ({p.buildType})").Order().ToHashSet();
+                projectNames = relevantProjects
+                    .Select(p =>
+                        $"{p.buildName} ({ColonyCost2.getBuildTypeDisplayName(allCosts, p.buildType)})"
+                    )
+                    .Order()
+                    .ToHashSet();
                 this.needs = colonyData.getNeeds(relevantProjects.ToArray());
                 this.show();
             }
