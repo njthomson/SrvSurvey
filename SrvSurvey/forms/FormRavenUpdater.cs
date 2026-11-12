@@ -385,13 +385,12 @@ namespace SrvSurvey.forms
 
         private void comboBuildType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!comboBuildType.Enabled)
-                return;
+            if (!comboBuildType.Enabled) return;
 
             comboBuildSubType.Items.Clear();
 
             var buildType = comboBuildType.SelectedValue?.ToString() ?? "";
-            var match = allCosts.FirstOrDefault(c => c.buildType == buildType);
+            var match = allCosts.FirstOrDefault(c => c.layouts.Any(l => buildType.StartsWith(l, StringComparison.OrdinalIgnoreCase)));
             if (match != null)
             {
                 comboBuildSubType.Items.AddRange(match.layouts.ToArray());

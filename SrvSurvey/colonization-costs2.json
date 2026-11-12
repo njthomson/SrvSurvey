@@ -1454,7 +1454,7 @@
     }
   },
   {
-    "buildType": "tellus",
+    "buildType": "tellus_e",
     "category": "Exploration",
     "tier": 2,
     "location": "surface",
