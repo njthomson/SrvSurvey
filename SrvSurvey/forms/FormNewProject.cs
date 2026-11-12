@@ -54,7 +54,10 @@ namespace SrvSurvey.forms
 
                 foreach (var site in sites)
                     if (site.status == SystemSite.Status.plan)
-                        mapSites.Add(site.id, $"{site.name} ({site.buildType})");
+                        mapSites.Add(
+                            site.id,
+                            $"{site.name} ({ColonyCost2.getBuildTypeDisplayName(allCosts, site.buildType)})"
+                        );
 
                 comboSystemSite.DataSource = new BindingSource(mapSites, null!);
                 comboSystemSite.SelectedIndex = 0;

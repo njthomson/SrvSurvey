@@ -663,6 +663,18 @@ public class ColonyCost2
     public List<string> layouts;
     public Dictionary<string, int> cargo;
 
+    public static string getBuildTypeDisplayName(IEnumerable<ColonyCost2> costs, string? buildType)
+    {
+        if (buildType == null)
+            return "?";
+
+        var key = buildType.TrimEnd('?');
+        var match = costs.FirstOrDefault(c =>
+            c.layouts.Contains(key, StringComparer.OrdinalIgnoreCase)
+        );
+        return match == null ? buildType : $"{match.displayName} ({buildType})";
+    }
+
     public override string ToString()
     {
         // Used by ComboBox's
