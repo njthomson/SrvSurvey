@@ -8,8 +8,6 @@ namespace SrvSurvey.forms
     [Draggable, TrackPosition]
     internal partial class FormMyProjects : SizableForm
     {
-        private static List<ColonyCost2> allCosts = Game.rcc.loadDefaultCosts();
-
         private Game game => Game.activeGame!;
         private readonly string cmdr;
 
@@ -66,7 +64,7 @@ namespace SrvSurvey.forms
                 foreach (var proj in sorted)
                 {
                     var isPrep = proj.buildType == Project.fc_loading;
-                    var match = allCosts.Find(c => c.layouts.Contains(proj.buildType, StringComparer.OrdinalIgnoreCase));
+                    var match = ColonyCost2.allCosts.FirstOrDefault(c => c.layouts.Contains(proj.buildType, StringComparer.OrdinalIgnoreCase) || c.alternates.Contains(proj.buildType, StringComparer.OrdinalIgnoreCase));
                     var typeTxt = isPrep ? "FC Loading" : match == null ? "?" : $"{match.displayName} ({proj.buildType})";
                     var remaining = proj.maxNeed - proj.sumNeed;
                     var p = 1f / proj.maxNeed * remaining;

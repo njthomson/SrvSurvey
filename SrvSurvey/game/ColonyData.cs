@@ -485,7 +485,7 @@ namespace SrvSurvey.game
             var mapFinal = new Dictionary<string, double>();
             foreach (var name in cargo.Keys) mapFinal.init(name);
 
-            var allCosts = Game.rcc.loadDefaultCosts();
+            var allCosts = ColonyCost2.allCosts;
             foreach (var site in allCosts)
             {
                 var map = new Dictionary<string, double>();

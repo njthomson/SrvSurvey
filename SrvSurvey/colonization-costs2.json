@@ -6,6 +6,7 @@
     "location": "orbital",
     "displayName": "Coriolis Starport",
     "layouts": [ "no_truss", "dual_truss", "quad_truss" ],
+    "alternates": [ "no truss", "coriolis" ],
     "cargo": {
       "liquidoxygen": 3781,
       "water": 1609,
@@ -1341,6 +1342,7 @@
     "location": "surface",
     "displayName": "Tourism Settlement - Medium",
     "layouts": [ "Comus", "Gelos" ],
+    "alternates": [ "comos" ],
     "cargo": {
       "liquidoxygen": 454,
       "ceramiccomposites": 86,
@@ -1454,12 +1456,13 @@
     }
   },
   {
-    "buildType": "tellus",
+    "buildType": "tellus_e",
     "category": "Exploration",
     "tier": 2,
     "location": "surface",
     "displayName": "Exploration Hub",
-    "layouts": [ "Tellus" ],
+    "layouts": [ "Tellus_e" ],
+    "alternates": [ "tellus" ],
     "cargo": {
       "ceramiccomposites": 134,
       "polymers": 666,
@@ -1637,7 +1640,7 @@
     "tier": 2,
     "location": "surface",
     "displayName": "Industrial Hub",
-    "layouts": [ "Molae", "Tellus", "Eunostus" ],
+    "layouts": [ "Molae", "Tellus_i", "Eunostus" ],
     "cargo": {
       "ceramiccomposites": 249,
       "polymers": 664,

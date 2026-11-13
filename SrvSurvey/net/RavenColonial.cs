@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using SrvSurvey.quests;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
@@ -661,6 +662,7 @@ public class ColonyCost2
     public string location;
     public string displayName;
     public List<string> layouts;
+    public List<string> alternates = new();
     public Dictionary<string, int> cargo;
 
     public override string ToString()
@@ -668,6 +670,8 @@ public class ColonyCost2
         // Used by ComboBox's
         return $"Tier {tier}: {displayName} ({string.Join(", ", layouts)})";
     }
+
+    public static readonly ReadOnlyCollection<ColonyCost2> allCosts = new(Game.rcc.loadDefaultCosts());
 }
 
 public class ProjectCore

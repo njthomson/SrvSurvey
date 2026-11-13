@@ -38,7 +38,7 @@ namespace SrvSurvey.forms
         static FormRavenUpdater()
         {
             // prep lookups and dictionaries
-            allCosts = Game.rcc.loadDefaultCosts()
+            allCosts = ColonyCost2.allCosts
                 .OrderBy(c => c.tier)
                 .ToList();
 
