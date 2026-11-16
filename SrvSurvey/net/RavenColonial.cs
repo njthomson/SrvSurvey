@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using SrvSurvey.quests;
+using SrvSurvey.units;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -650,6 +651,23 @@ class RavenColonial
         var text = await response.Content.ReadAsStringAsync();
         return text;
     }
+
+    public async Task<AtlasRoute?> getAtlasRoute(Guid routeId, int maxTimeSeconds = 60)
+    {
+        Game.log($"RCC.getAtlasRoute: {routeId}");
+
+        try
+        {
+            var json = await RavenColonial.client.GetStringAsync($"{svcUri}/api/misc/atlas/{routeId.ToString().ToLowerInvariant()}");
+            var route = JsonConvert.DeserializeObject<AtlasRoute>(json);
+            return route;
+        }
+        catch (Exception ex)
+        {
+            Util.isFirewallProblem(ex);
+            return null;
+        }
+    }
 }
 
 class AllColonizationCosts : Dictionary<string, Dictionary<string, int>> { }
@@ -1009,5 +1027,44 @@ public class PlayQQuest : PlayQuest
         get => base.quest;
         set => base.quest = value;
 
+    }
+}
+
+internal class AtlasRoute
+{
+    public Result data;
+    public string type;
+
+    public class Result
+    {
+        public bool _fuel_requested;
+        public double _range;
+        public string _supercharge_type;
+        // corridor_ly ?
+        public string destination;
+        public long elapsed_ms;
+        public string method;
+        public bool optimised;
+        public bool proven_optimal;
+
+        public long slab_half_height_ly;
+        public string source;
+        public int totalJumps;
+        public double total_distance_ly;
+        public List<Jump> route;
+
+        public class Jump
+        {
+            public StarPos coords;
+            public double distance_from_start;
+            public double distance_to_destination;
+            public double? fuel_scooped;
+            // TODO: Add more fuel members?
+            public long id64;
+            public bool is_neutron;
+            public double jump_distance;
+            public string system;
+            public bool used_neutron_boost;
+        }
     }
 }

@@ -1,9 +1,16 @@
+/forms/FormRoute.zh-Hans.resx
+	btnImportAtlasUrl.Text
+
 /plotters/PlotBioSystem.zh-Hans.resx
 	HasCanonnSignals
 	CountRadicoidaUnica
 
 /plotters/PlotGuardians.zh-Hans.resx
 	HeaderGeneral
+
+/Properties/FormRouteExtras.zh-Hans.resx
+	ImportingAtlas
+	MsgAtlasClipboard
 
 /Properties/KeyChords.zh-Hans.resx
 	nextWindow

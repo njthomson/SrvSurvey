@@ -105,6 +105,15 @@
   <data name="&gt;&gt;btnAutoCopy.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;btnImportAtlasUrl.Name" xml:space="preserve">
+    <value>btnImportAtlasUrl</value>
+  </data>
+  <data name="btnImportAtlasUrl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>291, 22</value>
+  </data>
+  <data name="&gt;&gt;btnImportAtlasUrl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;btnImportSpanshUrl.Name" xml:space="preserve">
     <value>btnImportSpanshUrl</value>
   </data>
@@ -414,6 +423,15 @@
   <data name="&gt;&gt;toolStripSeparator3.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;toolStripSeparator4.Name" xml:space="preserve">
+    <value>toolStripSeparator4</value>
+  </data>
+  <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>288, 6</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <!--Localizable elements are below-->
   <data name="btnActive.Text">
     <value>航线激活</value>
@@ -422,6 +440,11 @@
   <data name="btnAutoCopy.Text">
     <value>在银河地图中自动复制</value>
     <source>Auto copy in Gal-Map</source>
+  </data>
+  <data name="btnImportAtlasUrl.Text">
+    <!--Machine translated-->
+    <value>从剪贴板获取地图集路由 URL</value>
+    <source>Atlas route URL from clipboard</source>
   </data>
   <data name="btnImportSpanshUrl.Text">
     <value>从剪贴板中导入 Spansh航线的URL</value>

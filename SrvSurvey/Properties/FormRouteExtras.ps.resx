@@ -81,6 +81,13 @@
 {0} int, count of systems imported</comment>
     <source>Imported {0} systems</source>
   </data>
+  <data name="ImportingAtlas">
+    <!--Machine translated-->
+    <value>* IMPORTING ATLAS ROUTE: '{0}' ... →→→!</value>
+    <comment>Shown in window footer when importing a Spansh route from a URL
+{0} string, the id (guid) of the route to import</comment>
+    <source>Importing Atlas route: '{0}' ...</source>
+  </data>
   <data name="ImportingSpansh">
     <!--Machine translated-->
     <value>* IMPORTING SPANSH ROUTE: '{0}' ... →→→!</value>
@@ -94,6 +101,12 @@
     <comment>Shown in window footer when importing names from clipboard
 {0} int, count of names to import</comment>
     <source>Importing ~{0} names...</source>
+  </data>
+  <data name="MsgAtlasClipboard">
+    <!--Machine translated-->
+    <value>* TO PROCEED: COPY THE EXPORT COPY-SHARE-LINK FROM HTTPS://ATLAS.PROJECTGALTEA.ORG TO THE CLIPBOARD →→→!</value>
+    <comment>Shown in a message box popup, instructing users how to proceed when importing Atlas links from Project Galtea</comment>
+    <source>To proceed: copy the export copy-share-link from https://atlas.projectgaltea.org to the clipboard</source>
   </data>
   <data name="MsgNamesClipboard">
     <!--Machine translated-->

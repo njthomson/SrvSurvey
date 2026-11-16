@@ -46,6 +46,7 @@
 /forms/FormRoute.fr.resx
 	btnActive.Text
 	btnAutoCopy.Text
+	btnImportAtlasUrl.Text
 	btnSave.Text
 	colDistance.Text
 	colNotes.Text
@@ -351,9 +352,11 @@
 	AutoCopyButton
 	ImportedSystems
 	ImportingSpansh
+	ImportingAtlas
 	ImportNames
 	MsgNamesClipboard
 	MsgSpanshClipboard
+	MsgAtlasClipboard
 	Neutron
 	OpenTextFileDialogTitle
 	Refuel
