@@ -65,7 +65,7 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '7.0.x'
+        dotnet-version: '10.0.x'
 
     # Add  MsBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
