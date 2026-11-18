@@ -166,6 +166,85 @@ namespace SrvSurvey.forms
             }
         }
 
+        private void btnImportAtlasUrl_Click(object sender, EventArgs e)
+        {
+            var rslt = MessageBox.Show(this, Properties.FormRouteExtras.MsgAtlasClipboard, "SrvSurvey", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            if (rslt != DialogResult.OK || !Clipboard.ContainsText(TextDataFormat.Text)) return;
+
+            var text = Clipboard.GetText();
+            if (text.StartsWith("https://atlas.projectgaltea.org/route", StringComparison.OrdinalIgnoreCase))
+            {
+                var lastSlash = text.LastIndexOf('/') + 1;
+                if (lastSlash > 0)
+                {
+                    if (Guid.TryParse(text.AsSpan(lastSlash), out var routeId))
+                    {
+                        lblStatus.Text = Properties.FormRouteExtras.ImportingAtlas.format(routeId);
+
+                        Task.Run(async () =>
+                        {
+                            var status = "";
+                            try
+                            {
+                                var route = await Game.rcc.getAtlasRoute(routeId);
+                                if (route == null)
+                                {
+                                    status = Properties.FormRouteExtras.RouteNotFound.format(routeId);
+                                }
+                                else
+                                {
+                                    var parsedHops = route.data.route.Select(jump => new FollowRoute.Hop()
+                                    {
+                                        id64 = jump.id64,
+                                        name = jump.system,
+                                        neutron = jump.is_neutron,
+                                        x = jump.coords.x,
+                                        y = jump.coords.y,
+                                        z = jump.coords.z,
+                                        refuel = jump.fuel_scooped > 0,
+                                    });
+
+                                    this.imported = true;
+                                    this.lastIdx = -1;
+                                    this.hops.Clear();
+                                    this.hops.AddRange(parsedHops);
+                                    status = Properties.FormRouteExtras.SpanshImportSuccess.format(this.hops.Count);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Game.log(ex);
+                            }
+                            finally
+                            {
+                                Program.defer(() =>
+                                {
+                                    if (this.IsDisposed) return;
+                                    Game.log($"btnImportAtlasUrl_Click: imported {this.hops.Count} hops");
+                                    prepList();
+                                    lblStatus.Text = status;
+                                    this.setChildrenEnabled(true);
+                                    if (this.hops.Count > 0)
+                                    {
+                                        btnActive.Enabled = true;
+                                        btnActive.Checked = true;
+                                        if (cmdr.currentSystemAddress == this.hops[0].id64)
+                                            list.Items[0].Checked = true;
+
+                                        btnSave.Visible = true;
+                                    }
+                                });
+                            }
+                        });
+                        return;
+
+                    }
+                }
+            }
+
+            MessageBox.Show(this, Properties.FormRouteExtras.RouteNotFound.format(text), "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
         private void btnImportSpanshUrl_Click(object sender, EventArgs e)
         {
             var rslt = MessageBox.Show(this, Properties.FormRouteExtras.MsgSpanshClipboard, "SrvSurvey", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);

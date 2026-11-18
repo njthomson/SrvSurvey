@@ -1,3 +1,6 @@
+/forms/FormRoute.ru.resx
+	btnImportAtlasUrl.Text
+
 /plotters/PlotBioSystem.ru.resx
 	HasCanonnSignals
 	CountRadicoidaUnica
@@ -36,6 +39,10 @@
 	KaineLobbyingMaterial
 	LavignyStrategicReports
 	Steel
+
+/Properties/FormRouteExtras.ru.resx
+	ImportingAtlas
+	MsgAtlasClipboard
 
 /Properties/Guardian.ru.resx
 	Unknown

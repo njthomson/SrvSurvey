@@ -143,6 +143,7 @@ namespace SrvSurvey.plotters
             }
         }
 
+        [Obsolete]
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);

@@ -41,6 +41,8 @@
             toolStripSeparator1 = new ToolStripSeparator();
             btnNamesFromClipboard = new ToolStripMenuItem();
             btnNamesFromFile = new ToolStripMenuItem();
+            toolStripSeparator4 = new ToolStripSeparator();
+            btnImportAtlasUrl = new ToolStripMenuItem();
             toolStripSeparator2 = new ToolStripSeparator();
             btnActive = new ToolStripButton();
             btnAutoCopy = new ToolStripButton();
@@ -98,7 +100,7 @@
             // toolStripDropDownButton1
             // 
             toolStripDropDownButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            toolStripDropDownButton1.DropDownItems.AddRange(new ToolStripItem[] { btnImportSpanshUrl, toolStripSeparator1, btnNamesFromClipboard, btnNamesFromFile });
+            toolStripDropDownButton1.DropDownItems.AddRange(new ToolStripItem[] { btnImportSpanshUrl, toolStripSeparator1, btnNamesFromClipboard, btnNamesFromFile, toolStripSeparator4, btnImportAtlasUrl });
             resources.ApplyResources(toolStripDropDownButton1, "toolStripDropDownButton1");
             toolStripDropDownButton1.Name = "toolStripDropDownButton1";
             // 
@@ -124,6 +126,17 @@
             btnNamesFromFile.Name = "btnNamesFromFile";
             resources.ApplyResources(btnNamesFromFile, "btnNamesFromFile");
             btnNamesFromFile.Click += btnNamesFromFile_Click;
+            // 
+            // toolStripSeparator4
+            // 
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            resources.ApplyResources(toolStripSeparator4, "toolStripSeparator4");
+            // 
+            // btnImportAtlasUrl
+            // 
+            btnImportAtlasUrl.Name = "btnImportAtlasUrl";
+            resources.ApplyResources(btnImportAtlasUrl, "btnImportAtlasUrl");
+            btnImportAtlasUrl.Click += btnImportAtlasUrl_Click;
             // 
             // toolStripSeparator2
             // 
@@ -211,5 +224,7 @@
         private ToolStripButton btnSave;
         private Label lblIntro;
         private TableLayoutPanel table;
+        private ToolStripSeparator toolStripSeparator4;
+        private ToolStripMenuItem btnImportAtlasUrl;
     }
 }

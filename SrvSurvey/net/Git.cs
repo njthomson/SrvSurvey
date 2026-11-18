@@ -562,7 +562,7 @@ namespace SrvSurvey.net
         public async Task updateNicknames()
         {
             Game.log($"Downloading colonized system nicknames ...");
-            var url = $"https://ravencolonial100-awcbdvabgze4c5cq.canadacentral-01.azurewebsites.net/api/misc/nicknames";
+            var url = $"https://ravencolonial.net/api/misc/nicknames";
             var filepath = Path.Combine(Git.pubDataFolder, "nicknames.json");
 
             Game.log($"{url} => {filepath}");

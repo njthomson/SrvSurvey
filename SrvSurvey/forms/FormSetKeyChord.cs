@@ -34,6 +34,7 @@ namespace SrvSurvey
             Main.form.hook.resetChord();
         }
 
+        [Obsolete]
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);

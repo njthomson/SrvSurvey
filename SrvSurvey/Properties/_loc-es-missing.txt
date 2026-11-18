@@ -1,3 +1,6 @@
+/forms/FormRoute.es.resx
+	btnImportAtlasUrl.Text
+
 /forms/ViewLogs.es.resx
 	btnClear.Text
 	btnClose.Text
@@ -127,6 +130,10 @@
 	KaineLobbyingMaterial
 	LavignyStrategicReports
 	Steel
+
+/Properties/FormRouteExtras.es.resx
+	ImportingAtlas
+	MsgAtlasClipboard
 
 /Properties/Guardian.es.resx
 	Alpha

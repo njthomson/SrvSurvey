@@ -11,7 +11,7 @@ namespace SrvSurvey.forms
         private Game game => Game.activeGame!;
 
         private List<SystemSite> systemSites = new();
-        private List<ColonyCost2> allCosts = Game.rcc.loadDefaultCosts()
+        private List<ColonyCost2> allCosts = ColonyCost2.allCosts
             .OrderBy(c => c.tier)
             .ToList();
 
@@ -128,7 +128,7 @@ namespace SrvSurvey.forms
                 var siteMatch = systemSites.FirstOrDefault(s => s.id == siteId);
                 if (siteMatch != null)
                 {
-                    var costMatch = allCosts.Find(c => c.layouts.Contains(siteMatch.buildType, StringComparer.OrdinalIgnoreCase));
+                    var costMatch = allCosts.Find(c => c.layouts.Contains(siteMatch.buildType, StringComparer.OrdinalIgnoreCase) || c.alternates.Contains(siteMatch.buildType, StringComparer.OrdinalIgnoreCase));
                     if (costMatch != null)
                     {
                         // if this is a primary site - use the system site name, otherwise switch it

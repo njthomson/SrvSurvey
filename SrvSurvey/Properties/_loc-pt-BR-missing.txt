@@ -50,6 +50,7 @@
 /forms/FormRoute.pt-BR.resx
 	btnActive.Text
 	btnAutoCopy.Text
+	btnImportAtlasUrl.Text
 	btnImportSpanshUrl.Text
 	btnNamesFromClipboard.Text
 	btnNamesFromFile.Text
@@ -429,9 +430,11 @@
 	AutoCopyButton
 	ImportedSystems
 	ImportingSpansh
+	ImportingAtlas
 	ImportNames
 	MsgNamesClipboard
 	MsgSpanshClipboard
+	MsgAtlasClipboard
 	Neutron
 	OpenTextFileDialogTitle
 	Refuel

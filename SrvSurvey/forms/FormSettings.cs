@@ -456,6 +456,7 @@ namespace SrvSurvey
                 PlotBase.stopWindowOne();
         }
 
+        [Obsolete]
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);

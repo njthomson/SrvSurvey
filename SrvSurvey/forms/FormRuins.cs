@@ -24,6 +24,7 @@ namespace SrvSurvey
             Util.showForm(FormRuins.activeForm);
         }
 
+        [Obsolete]
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);

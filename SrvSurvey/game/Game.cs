@@ -3553,8 +3553,6 @@ namespace SrvSurvey.game
 
         #endregion
 
-        #region screen stuff
-
         private void onJournalEntry(Disembark entry)
         {
             log($"Disembark: OnPlanet:{entry.OnPlanet}, OnStation:{entry.OnStation}, SRV:{entry.SRV}, wasFootfalled: {systemBody?.wasFootfalled}, firstFootfall: {systemBody?.firstFootFall}");
@@ -3572,10 +3570,6 @@ namespace SrvSurvey.game
                     systemBody.firstFootFall = true;
                     systemData.Save();
                 }
-                else if (!systemBody.hasValue)
-                {
-                    Program.defer(() => this.inferFirstFootFall());
-                }
             }
         }
 
@@ -3589,136 +3583,6 @@ namespace SrvSurvey.game
             if (entry.SRV)
                 this.srvLocation = null;
         }
-
-        public void inferFirstFootFall()
-        {
-            if (this.systemBody == null) return;
-            if (this.systemSite != null)
-            {
-                Game.log($"inferFirstFootFall: skip when at Guardian sites");
-                return;
-            }
-
-            var threshold = Game.settings.inferThreshold;
-
-            var fps = 20;
-            var duration = 15; // seconds
-            var frames = duration * fps;
-            Game.log($"Start counting - fps: {fps} for {duration} seconds ...");
-
-            try
-            {
-                Game.log($"## Before: InvokeRequired: {Program.control.InvokeRequired}, IsAlive: {Thread.CurrentThread.IsAlive}, IsBackground: {Thread.CurrentThread.IsBackground}, IsThreadPoolThread: {Thread.CurrentThread.IsThreadPoolThread}");
-            }
-            catch { }
-
-            float maxBlueCount = 0;
-
-            var tim = new System.Timers.Timer(1000f / fps);
-            var count = 0;
-            tim.Elapsed += (o, s) =>
-            {
-                try
-                {
-                    if (count == 0)
-                    {
-                        try
-                        {
-                            Game.log($"## {count} First: InvokeRequired: {Program.control.InvokeRequired}, IsAlive: {Thread.CurrentThread.IsAlive}, IsBackground: {Thread.CurrentThread.IsBackground}, IsThreadPoolThread: {Thread.CurrentThread.IsThreadPoolThread}");
-                        }
-                        catch { }
-                    }
-
-                    if (count++ > frames)
-                    {
-                        tim.Stop();
-                        Game.log($"Stop counting - fps: {fps} for {duration} seconds. (Max observed: {maxBlueCount.ToString("N5")})");
-                        try
-                        {
-                            Game.log($"## {count} Last: InvokeRequired: {Program.control.InvokeRequired}, IsAlive: {Thread.CurrentThread.IsAlive}, IsBackground: {Thread.CurrentThread.IsBackground}, IsThreadPoolThread: {Thread.CurrentThread.IsThreadPoolThread}");
-                        }
-                        catch { }
-                    }
-
-                    var blueCount = this.getBlueCount();
-                    if (blueCount > threshold && this.systemBody != null)
-                    {
-                        tim.Stop();
-                        Game.log($"Frame #{count}: {blueCount} > {threshold}");
-                        Game.log($"Setting first footfall on: '{systemBody.name}' ({systemBody.id})");
-                        this.systemBody.firstFootFall = true;
-                        this.systemData?.Save();
-                        try
-                        {
-                            Game.log($"## {count} Last: InvokeRequired: {Program.control.InvokeRequired}, IsAlive: {Thread.CurrentThread.IsAlive}, IsBackground: {Thread.CurrentThread.IsBackground}, IsThreadPoolThread: {Thread.CurrentThread.IsThreadPoolThread}");
-                        }
-                        catch { }
-
-                        this.fireUpdate(true);
-                    }
-                    maxBlueCount = Math.Max(maxBlueCount, blueCount);
-                }
-                catch (Exception e)
-                {
-                    Game.log($"## {count} Error: {e.Message}\r\n{e.StackTrace}");
-                    tim.Stop();
-                }
-            };
-
-            tim.Start();
-        }
-
-        public float getBlueCount()
-        {
-            var gameRect = Elite.getWindowRect();
-
-            // don't bother if we have no rectangle to analyze
-            if (gameRect.Width == 0 || gameRect.Height == 0) return 0;
-
-            var cw = gameRect.Width / 8;
-            var ch = gameRect.Height / 7;
-            var watchRect = new Rectangle(
-                gameRect.Left + (gameRect.Width / 2) - cw,
-                gameRect.Top + (int)(gameRect.Height * 0.17f),
-                cw * 2, ch);
-
-            // var hits = new Dictionary<string, int>(); // dgb
-            using (var b = new Bitmap(watchRect.Width, watchRect.Height))
-            {
-                using (var g = Graphics.FromImage(b))
-                {
-                    g.CopyFromScreen(watchRect.Left, watchRect.Top, 0, 0, b.Size);
-
-                    var countBlue = 0;
-                    for (var y = 0; y < b.Height; y++)
-                    {
-                        for (var x = 0; x < b.Width; x++)
-                        {
-                            var p = b.GetPixel(x, y);
-                            if (Util.isCloseColor(p, Game.settings.inferColor, Game.settings.inferTolerance)) countBlue++;
-
-                            /* if (p.G > 250 && p.B > 250) // dbg
-                            {
-                                var key = p.ToString();
-                                if (!hits.ContainsKey(key)) hits[key] = 0;
-                                hits[key] += 1;
-                            } // */
-                        }
-                    }
-
-                    var ratio = 1f / (watchRect.Width * watchRect.Height) * countBlue;
-
-                    /* if (hits.Count > 0) // dbg
-                    {
-                        Game.log($"ratio: {ratio}, hits: {hits.Count}");
-                        Game.log(string.Join(", ", hits.OrderBy(_ => _.Value).Reverse().Select(_ => $"{_.Key}: {_.Value}")));
-                    } // */
-                    return ratio;
-                }
-            }
-        }
-
-        #endregion
 
         public static string? generateShipBuildJsonForSpansh()
         {

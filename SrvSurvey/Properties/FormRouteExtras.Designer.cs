@@ -19,7 +19,7 @@ namespace SrvSurvey.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class FormRouteExtras {
@@ -88,6 +88,15 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Importing Atlas route: &apos;{0}&apos; ....
+        /// </summary>
+        internal static string ImportingAtlas {
+            get {
+                return ResourceManager.GetString("ImportingAtlas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Importing Spansh route: &apos;{0}&apos; ....
         /// </summary>
         internal static string ImportingSpansh {
@@ -102,6 +111,15 @@ namespace SrvSurvey.Properties {
         internal static string ImportNames {
             get {
                 return ResourceManager.GetString("ImportNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To proceed: copy the export copy-share-link from https://atlas.projectgaltea.org to the clipboard.
+        /// </summary>
+        internal static string MsgAtlasClipboard {
+            get {
+                return ResourceManager.GetString("MsgAtlasClipboard", resourceCulture);
             }
         }
         
