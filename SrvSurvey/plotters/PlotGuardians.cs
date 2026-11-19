@@ -97,6 +97,15 @@ namespace SrvSurvey.plotters
             this.nextMode();
         }
 
+        public void refreshMapAlignment()
+        {
+            this.siteLocation = this.siteData.location;
+            if (game.status != null)
+                this.onStatusChange(game.status);
+            else
+                this.invalidate();
+        }
+
         protected override void onClose()
         {
             if (siteMap != null) { siteMap.Dispose(); siteMap = null; }
@@ -745,7 +754,7 @@ namespace SrvSurvey.plotters
         private void setSiteHeading(int newHeading)
         {
             Game.log($"Changing site heading from: '{siteData.siteHeading}' to: '{newHeading}'");
-            siteData.siteHeading = (int)newHeading;
+            siteData.correctSiteHeading(newHeading);
             siteData.Save();
             siteHeading = newHeading;
 
@@ -1354,9 +1363,10 @@ namespace SrvSurvey.plotters
 
                 if (foo.Value != PointF.Empty)
                 {
-                    var angle = 180 - siteData.siteHeading - foo.Value.X;
                     var dist = foo.Value.Y;
-                    var pt = (PointF)Util.rotateLine((decimal)angle, (decimal)dist);
+                    var pt = this.projectSurfaceMarker(
+                        (decimal)foo.Value.X,
+                        (decimal)dist);
                     // draw guide lines when map editor is active
                     if (this.formEditMap?.tabs.SelectedIndex == 2 && this.formEditMap?.listGroupNames.Text == foo.Key)
                     {
@@ -1445,8 +1455,7 @@ namespace SrvSurvey.plotters
                 }
 
                 // calculate render point for POI
-                var deg = 180 - siteData.siteHeading - poi.angle;
-                var pt = (PointF)Util.rotateLine(deg, poi.dist);
+                var pt = this.projectSurfaceMarker(poi.angle, poi.dist);
 
                 // render POI
                 this.drawSitePoi(g, poi, pt);
@@ -1887,8 +1896,7 @@ namespace SrvSurvey.plotters
             foreach (var poi in template.destructablePanels)
             {
                 // calculate render point for POI
-                var deg = 180 - siteData.siteHeading - poi.angle;
-                var pt = (PointF)Util.rotateLine(deg, poi.dist);
+                var pt = this.projectSurfaceMarker(poi.angle, poi.dist);
 
                 var cmp = siteData.components?.GetValueOrDefault(poi.name)?.items[0] ?? GComponent.unknown;
 
@@ -1913,6 +1921,18 @@ namespace SrvSurvey.plotters
                     }
                 });
             }
+        }
+
+        private PointF projectSurfaceMarker(decimal angle, decimal distance)
+        {
+            var point = (PointF)Util.rotateLine(
+                180 - siteData.siteHeading - angle,
+                distance);
+            var offset = GuardianMapMarkerOffsetCalculator
+                .toSurfaceCoordinates(
+                    siteData.mapMarkerOffset,
+                    siteData.siteHeading);
+            return new PointF(point.X + offset.X, point.Y + offset.Y);
         }
 
         private void drawRelicTower(Graphics g, SitePOI poi, PointF pt, SitePoiStatus poiStatus)
