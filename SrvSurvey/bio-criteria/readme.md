@@ -138,6 +138,7 @@ In this example:
     - BarkMoundBatch: { 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 25, 32, 33, 34 }
     - BrainTreeBatch: { 2, 9, 10, 17, 18, 35 }
     - TubersBatch: { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 18, 19 }
+    - TubersBatchMinor: { 1, 2, 3, 4, 5, 8, 9, 10, 11 }
     - ShardBatch: { 14, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 34, 36, 37, 38, 39, 40, 41, 42 }
 
     Eg: regions `[Sagittarius-CarinaArm,CentreLeft]` contains the regions associated with both Sagittarius-CarinaArm and CentreLeft. `![Sagittarius-CarinaArm,CentreLeft]` would contain all regions except those in Sagittarius-CarinaArm or CentreLeft.
@@ -334,6 +335,18 @@ In this example:
 - Nitrogen rocky ice has a surface temperature of 50K-85K.
 - Nitrogen rocky has a surface temperature of 42K-260K.
 - Nitrogen HMC has a surface temperature of 43.9K-316K.
+
+- No atmosphere icy is 0.02g-7.59g.
+- No atmosphere rocky ice is 0.03g-6.60g.
+- No atmosphere rocky is 0.02g-8.74g.
+- No atmosphere HMC is 0.03g-14.99g.
+- No atmosphere Metal-rich is 0.03g-12.74g.
+- All No atmosphere have a pressure of 0atm-0.001atm
+- No atmosphere icy has a surface temperature of 0K-2072K.
+- No atmosphere rocky ice has a surface temperature of 0K-2020K.
+- No atmosphere rocky has a surface temperature of 0K-2159K.
+- No atmosphere HMC has a surface temperature of 0K-3435K.
+- No atmosphere Metal-rich has a surface temperature of 48.99K-10206K.
 
 - Oxygen icy is 0.23g-0.45g.
 - Oxygen rocky ice is 0.28g-0.50g.

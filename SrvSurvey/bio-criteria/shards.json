@@ -4,8 +4,11 @@
   "query": [
     "# hit count: 3670",
     "atmosType [None]",
+    "     temp [ ~ 273]",
     "  regions [ShardBatch]",
-    "     dist [10000 ~ ]"
+    "     dist [10000 ~ ]",
+    "  hasStar [A,F,G,K,MS,S]",
+    "hasWaterOrAmmoniaPlanet [true]"
   ],
   "children": [
     {
